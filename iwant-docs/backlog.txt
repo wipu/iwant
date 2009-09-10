@@ -1,0 +1,9 @@
+- As a @developer I want this backlog on the @website so it serves as a simple status, feature and plan documentation
+
+- As a @developer I want to start using iwant as soon as possible on the @cli level
+  - implement the simplest possible bootstrap for generating a descript document
+  * possibly no java needed at this stage
+
+- As a @developer I want to be able to drive the @cli by documentation, starting from step zero
+  - use descript
+  - publish
