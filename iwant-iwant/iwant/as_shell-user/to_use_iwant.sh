@@ -1,36 +1,30 @@
 #!/bin/bash
 
 AS_SHELL_USER=$(dirname "$0")
-IWANT="$AS_SHELL_USER/.."
+IWANT=$(dirname "$AS_SHELL_USER")
 AS_IWANT_USER=as_iwant-user
 TARGET="$IWANT/$AS_IWANT_USER"
 
-HELPSCRIPT=some_help
+SOME_HELP=some_help
+START_USING_IWANT_ON=start_using_iwant_on
 
 function iwant_is_ready() {
     echo To use iwant, just start your sentences with iwant/as_iwant-user/
     echo For example:
-    echo \$ iwant/$AS_IWANT_USER/$HELPSCRIPT
+    echo \$ iwant/$AS_IWANT_USER/$SOME_HELP
 }
 
 # TODO incremental
 rm -rf "$TARGET"
 mkdir "$TARGET"
 
-function script() {
-    local FILE="$TARGET/$1"
-    cat > "$FILE"
-    chmod u+x "$FILE"
+function install_scripts() {
+    for f in $*; do
+	cp "$IWANT/only_as_iwant-tool/shell-cli/${f}.sh" "$TARGET/$f"
+    done
 }
 
-script $HELPSCRIPT <<EOF
-#!/bin/bash
-cat <<EOF2
-Write a workspace definition using the iwant framework in any source directory SRC.
-Then type
-\$ iwant/as_iwant-user/start_using_iwant_on SRC
-and follow instructions.
-EOF2
-EOF
+install_scripts \
+    $SOME_HELP $START_USING_IWANT_ON
 
 iwant_is_ready
