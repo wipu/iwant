@@ -1,6 +1,9 @@
-- As a @developer I want this backlog on the @website so it serves as a simple status, feature and plan documentation
++ As a @developer I want this backlog on the @website so it serves as a simple status, feature and plan documentation
 
 - As a @developer I want to start using iwant as soon as possible on the @cli level
+  + stage 0: "as shell user i want to use iwant"
+  + stage 1: "as iwant user i want to use iwant on iwant"
+  + website (static) build and deploy
   - implement the simplest possible bootstrap for generating a descript document
   * possibly no java needed at this stage
 
