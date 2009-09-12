@@ -6,3 +6,34 @@ body {
 #maintitle {
 	font-family: monospace;
 }
+
+.cmd {
+		color:black;
+		white-space:pre;
+		font-family:monospace;
+}
+
+span.line {
+	background-color:#f9ecde;;
+}
+
+.prompt {
+		font-weight:bold;
+}
+
+span.output-asserted {
+	font-size:8px;
+	background-color: #def9de;;
+}
+
+DIV.editor {
+	font-family:monospace;
+	border-style:solid;
+	border-width:1px;
+	color:black;
+}
+
+div.line {white-space:pre;}
+div.add {background-color: #def9de;;}
+div.del {background-color: #f9dede;; text-decoration:line-through}
+div.keep {}

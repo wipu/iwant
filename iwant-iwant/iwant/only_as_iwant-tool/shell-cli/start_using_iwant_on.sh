@@ -55,8 +55,10 @@ EOF
 
 script "path-to-fresh/website" <<EOF
 #!/bin/bash
+iwant/as_iwant-developer/path-to-fresh/tutorial
 mkdir -p "$WEBSITE_BUILD"
 cp $IWANT/../../iwant-docs/src/main/html/website/* "$WEBSITE_BUILD/"
+cp "$TUTORIAL_HTML" "$WEBSITE_BUILD/"
 echo "$WEBSITE_BUILD"
 EOF
 
