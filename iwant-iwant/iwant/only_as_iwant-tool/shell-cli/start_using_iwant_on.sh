@@ -13,7 +13,12 @@ if [ ! -e "$ROOTDEF" ];then
     exit 1
 fi
 
+function abs() {
+	echo $(cd "$1" && pwd)
+}
+
 MYDIR=$(dirname "$0")
+MYDIR=$(abs "$MYDIR")
 IWANT=$(dirname "$MYDIR")
 WSNAME=iwant
 TARGET=$IWANT/as_${WSNAME}-developer
@@ -31,6 +36,22 @@ function script() {
 }
 
 WEBSITE_BUILD="$TARGET/once/website"
+TUTORIAL_BUILD="$TARGET/once/tutorial"
+TUTORIAL_HTML="$TUTORIAL_BUILD/tutorial.html"
+NGREASE=$(abs ../../../svn/trunk)
+
+TUTORIAL_SRC=$(abs ../iwant-docs/src/main/descript/tutorial)
+
+script path-to-fresh/tutorial <<EOF
+#!/bin/bash
+mkdir -p $(dirname "$TUTORIAL_BUILD")
+bash "$NGREASE/ngrease-descript/src/main/bash/descript.sh" \
+	"$TUTORIAL_SRC" "$TUTORIAL_BUILD"
+NGREASEPATH="${TUTORIAL_BUILD}:../iwant-docs/src/main/java:$NGREASE/ngrease-descript/src/main/java" \
+	"$NGREASE/ngrease-release/target/ngrease-all-r569/bin/ngrease" \
+		-r "/net/sf/ngrease/descript/descripted-as-html-source.ngr" \
+		> $TUTORIAL_HTML
+EOF
 
 script "path-to-fresh/website" <<EOF
 #!/bin/bash
