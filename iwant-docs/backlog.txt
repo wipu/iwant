@@ -1,12 +1,25 @@
 + As a @developer I want this backlog on the @website so it serves as a simple status, feature and plan documentation
 
-- As a @developer I want to start using iwant as soon as possible on the @cli level
++ As a @developer I want to start using iwant as soon as possible on the @cli level
   + stage 0: "as shell user i want to use iwant"
   + stage 1: "as iwant user i want to use iwant on iwant"
   + website (static) build and deploy
-  - implement the simplest possible bootstrap for generating a descript document
+  + implement the simplest possible bootstrap for generating a descript document
   * possibly no java needed at this stage
 
-- As a @developer I want to be able to drive the @cli by documentation, starting from step zero
-  - use descript
-  - publish
++ As a @developer I want to be able to drive the @cli by documentation, starting from step zero
+  + use descript
+  + publish
+
+- As a @buildscriptauthor I want an error message if and only if I try to start using iwant on an invalid workspace definition
+
+- As a @buildscriptauthor I want that my changes to the workspace definition are effective automatically (automatic compilation)
+
+- As a @buildscriptauthor I want an error message if I refer to a java classes directory with a missing source
+  * in the tutorial, call these test classes, to maintain the red-green cycle later
+
+- As a @buildscriptuser I want an error message if I refer to a java classes directory of uncompilable sources
+
+- As a @buildscriptuser I want a fresh java classes directory even if its sources have been touched
+
+- As a @buildscriptuser I want immediate answer to a reference to a java classes directory that is newer than its sources
