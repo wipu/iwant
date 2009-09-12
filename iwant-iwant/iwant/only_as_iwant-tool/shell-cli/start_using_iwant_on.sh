@@ -40,7 +40,7 @@ echo "$WEBSITE_BUILD"
 EOF
 
 script "command-to/deploy-website" <<EOF
-echo "Assuming website is uptodate (TODO should be!), type:"
+echo "# Assuming the website target is uptodate (TODO should be!), pipe this to a shell:"
 echo rsync -e ssh --delete-delay -vrucli "$WEBSITE_BUILD/" wipu_@shell.sourceforge.net:iwant-htdocs/
 EOF
 
@@ -58,7 +58,7 @@ TIME=$2
 TAG="${TIME}-website-update"
 SVNBASE=https://iwant.svn.sourceforge.net/svnroot/iwant
 
-echo "Assuming website was updated, type:"
+echo "# Assuming the website target is up to date, pipe this a shell:"
 echo svn cp -r $REV "$SVNBASE/trunk" "$SVNBASE/tags/$TAG" -m \""Tagged $TAG"\"
 EOF
 
