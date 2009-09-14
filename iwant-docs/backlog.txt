@@ -1,9 +1,13 @@
+#################################################################
+= Done
+#################################################################
+
 + As a @developer I want this backlog on the @website so it serves as a simple status, feature and plan documentation
 
 + As a @developer I want to start using iwant as soon as possible on the @cli level
   + stage 0: "as shell user i want to use iwant"
   + stage 1: "as iwant user i want to use iwant on iwant"
-  + website (static) build and deploy
+  + website (static) refresh, deploy and tag
   + implement the simplest possible bootstrap for generating a descript document
   * possibly no java needed at this stage
 
@@ -11,9 +15,19 @@
   + use descript
   + publish
 
+#################################################################
+= Planned
+#################################################################
+
 - As a @buildscriptauthor I want an error message if and only if I try to start using iwant on an invalid workspace definition
 
+- As a @buildscriptauthor I want to be able to define tests for my workspace definition so if I break it iwant won't use it
+  * this is essential for bootstrapping
+
 - As a @buildscriptauthor I want that my changes to the workspace definition are effective automatically (automatic compilation)
+
+- As a @developer I want iwant itself compiled with its workspace definition and tested with it so that I can bootstrap the whole tool, tested and working
+  * if iwant gets later split into submodules, include only essentials here
 
 - As a @buildscriptauthor I want an error message if I refer to a java classes directory with a missing source
   * in the tutorial, call these test classes, to maintain the red-green cycle later
@@ -23,3 +37,20 @@
 - As a @buildscriptuser I want a fresh java classes directory even if its sources have been touched
 
 - As a @buildscriptuser I want immediate answer to a reference to a java classes directory that is newer than its sources
+
+#################################################################
+= Story sketches, to be evaluated and or rewritten
+#################################################################
+
+- As a @buildscriptuser I want iwant to refresh targets automatically in parallel and letting me define the number of threads to use
+  - TODO on commandline, in a conf file, something else or all of them?
+  - TODO automatic detection of cpu count and using it for a good default?
+
+- As a @buildscriptauthor I want to declare some targets single-threaded so targets depending on it get never refreshed in parallel
+  * e.g. for tests that need the display, a certain shared sql table area or some other shared resource
+
+- As a @buildscriptuser I want targets refreshed in an order that tries to find cumulative problems as early as possible
+  * meaning targets that are most depended on are built first
+    so if they have problems, their dependencies probably need
+    to be refreshed again anyway
+  * if equal, recurse into targets depending on them
