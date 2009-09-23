@@ -25,10 +25,10 @@ fi
 doc 'section {name {Starting using kbd:iwant on a workspace}'
 
 cmd 'mkdir -p example-ws/ws-def/src'
-#cmd 'iwant/as_iwant-user/start_using_iwant_on example-ws/ws-def/src'
-#out-was <<\EOF
-#Please describe the workspace in file example-ws/ws-def/src/Workspace.java
-#EOF
+cmd 'iwant/as_iwant-user/start_using_iwant_on example-ws/ws-def/src'
+out-was <<\EOF
+Please describe the workspace in file example-ws/ws-def/src/Workspace.java
+EOF
 
 doc '}'
 

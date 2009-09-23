@@ -1,15 +1,16 @@
 #/bin/bash
 
 if [ $# != 1 ]; then
-    echo "Usage: $0 ROOTDEF"
-    echo "Where ROOTDEF points to the root definition java file."
+    echo "Usage: $0 WSDEFDIR"
+    echo "Where WSDEFDIR points to the workspace definition source directory."
     exit 1
 fi
 
-ROOTDEF="$1"
+WSDEFDIR="$1"
+WSDEFJAVA="$WSDEFDIR/Workspace.java"
 
-if [ ! -e "$ROOTDEF" ];then
-    echo "Workspace definition file does not exist: $WSDEF"
+if [ ! -r "$WSDEFJAVA" ];then
+    echo "Please describe the workspace in file $WSDEFJAVA"
     exit 1
 fi
 
