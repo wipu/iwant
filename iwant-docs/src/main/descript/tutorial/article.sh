@@ -46,6 +46,19 @@ cmd "iwant/as_iwant-user/start_using_iwant_on $WSSRC"
 out-was <<EOF
 Exception in thread "main" java.lang.NoSuchMethodError: main
 EOF
+
+cmd "echo public class Workspace {public static void main\(String[] args\){}} > $WSJAVA"
+cmd "iwant/as_iwant-user/start_using_iwant_on $WSSRC"
+out-was <<\EOF
+Start the output with line iwant-workspace
+EOF
+
+cmd 'echo public class Workspace {public static void main\(String[] args\){System.out.println\(\"iwant-workspace\"\)\;}} > '"$WSJAVA"
+cmd "iwant/as_iwant-user/start_using_iwant_on $WSSRC"
+out-was <<\EOF
+Please specify the workspace name on a line of form name:THENAME
+EOF
+
 doc '}'
 
 doc '}'

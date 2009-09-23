@@ -26,6 +26,9 @@
 
 - As a @buildscriptauthor I want that my changes to the workspace definition are effective automatically (automatic compilation)
 
+- As a @developer I want all error lines shown in the descript document
+  * Only the second line of the error message about missing MAGICHEADER is shown
+
 - As a @developer I want iwant itself compiled with its workspace definition and tested with it so that I can bootstrap the whole tool, tested and working
   * if iwant gets later split into submodules, include only essentials here
 

@@ -23,12 +23,31 @@ MYDIR=$(abs "$MYDIR")
 IWANT=$(dirname "$MYDIR")
 WSDEFCLASSES="$IWANT/only_as_iwant-tool/tmp"
 
+function runwsdef() {
+	java -cp "$WSDEFCLASSES" Workspace
+}
+
 rm -rf "$WSDEFCLASSES"
 mkdir -p "$WSDEFCLASSES"
 javac -d "$WSDEFCLASSES" "$WSDEFJAVA" || exit 1
-java -cp "$WSDEFCLASSES" Workspace || exit 1
+runwsdef || exit 1
 
-WSNAME=iwant
+function require() {
+	if [ x == "x$1" ]; then
+		echo $2 >/dev/stderr
+		exit 1
+	fi
+}
+
+MAGICHEADER=$(runwsdef | head -n 1)
+if [ "xiwant-workspace" != "x$MAGICHEADER" ]; then
+	echo "Please output the workspace details in the main method" >/dev/stderr
+	echo "Start the output with line iwant-workspace" >/dev/stderr
+	exit 1
+fi
+WSNAME=$(runwsdef | grep '^name:' | sed 's/^name://')
+require "$WSNAME" "Please specify the workspace name on a line of form name:THENAME"
+
 TARGET=$IWANT/as_${WSNAME}-developer
 
 # TODO incremental
