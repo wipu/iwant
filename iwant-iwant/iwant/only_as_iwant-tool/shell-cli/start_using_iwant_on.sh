@@ -48,13 +48,24 @@ fi
 WSNAME=$(runwsdef | grep '^name:' | sed 's/^name://')
 require "$WSNAME" "Please specify the workspace name on a line of form name:THENAME"
 
-TARGET=$IWANT/as_${WSNAME}-developer
+WSDEVROLE="as_${WSNAME}-developer"
+TARGET="$IWANT/$WSDEVROLE"
+
+function ready() {
+    echo "To get access to targets of the $WSNAME workspace, start your sentences with"
+    echo "\$ iwant/$WSDEVROLE"
+}
 
 # TODO incremental
 rm -rf "$TARGET"
 mkdir "$TARGET"
 mkdir "$TARGET/path-to-fresh"
 mkdir "$TARGET/command-to"
+
+if [ iwant != "$WSNAME" ]; then
+    ready
+    exit
+fi
 
 function script() {
     local FILE="$TARGET/$1"
@@ -127,5 +138,4 @@ echo "# Assuming the website target is up to date, pipe this a shell:"
 echo svn cp -r $REV "$SVNBASE/trunk" "$SVNBASE/tags/$TAG" -m \""Tagged $TAG"\"
 EOF
 
-echo "To get access to targets of the $WSNAME project, start your sentences with"
-echo "\$ $TARGET"
+ready

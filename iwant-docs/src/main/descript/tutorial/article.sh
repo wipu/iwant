@@ -59,6 +59,21 @@ out-was <<\EOF
 Please specify the workspace name on a line of form name:THENAME
 EOF
 
+cmd 'echo public class Workspace {public static void main\(String[] args\){System.out.println\(\"iwant-workspace\"\)\;System.out.println\(\"name:example-ws\"\)\;}} > '"$WSJAVA"
+cmd "iwant/as_iwant-user/start_using_iwant_on $WSSRC"
+out-was <<EOF
+iwant-workspace
+name:example-ws
+To get access to targets of the example-ws workspace, start your sentences with
+$ iwant/as_example-ws-developer
+EOF
+
+cmd 'ls iwant/as_example-ws-developer'
+out-was <<EOF
+command-to
+path-to-fresh
+EOF
+
 doc '}'
 
 doc '}'
