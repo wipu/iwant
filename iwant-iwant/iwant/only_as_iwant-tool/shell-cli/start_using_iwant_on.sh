@@ -79,7 +79,7 @@ website "path-to-fresh/local-website" "$TARGET/once/local-website" "$TARGET/once
 
 script "command-to/deploy-website" <<EOF
 echo "# Assuming the website target is uptodate (TODO should be!), pipe this to a shell:"
-echo rsync -e ssh --delete-delay -vrucli "$WEBSITE_BUILD/" wipu_@shell.sourceforge.net:iwant-htdocs/
+echo rsync -e ssh --delete-delay -vrucli "$TARGET/once/website/" wipu_@shell.sourceforge.net:iwant-htdocs/
 EOF
 
 script "command-to/tag-deployed-website" <<\EOF
