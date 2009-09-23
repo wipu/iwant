@@ -24,11 +24,24 @@ fi
 
 doc 'section {name {Starting using kbd:iwant on a workspace}'
 
-cmd 'mkdir -p example-ws/ws-def/src'
-cmd 'iwant/as_iwant-user/start_using_iwant_on example-ws/ws-def/src'
-out-was <<\EOF
-Please describe the workspace in file example-ws/ws-def/src/Workspace.java
+WSSRC=example-ws/ws-def/src
+WSJAVA=$WSSRC/Workspace.java
+cmd "mkdir -p $WSSRC"
+cmd "iwant/as_iwant-user/start_using_iwant_on $WSSRC"
+out-was <<EOF
+Please describe the workspace in file $WSJAVA
 EOF
+
+
+cmd "echo garbage > $WSJAVA"
+cmd "iwant/as_iwant-user/start_using_iwant_on $WSSRC 2>&1 | head -n 3"
+out-was <<EOF
+$WSJAVA:1: 'class' or 'interface' expected
+garbage
+^
+EOF
+
+#cmd "echo 'public class Workspace {}' > $WSJAVA"
 
 doc '}'
 
