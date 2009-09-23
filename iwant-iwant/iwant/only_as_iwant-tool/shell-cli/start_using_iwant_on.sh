@@ -26,6 +26,7 @@ WSDEFCLASSES="$IWANT/only_as_iwant-tool/tmp"
 rm -rf "$WSDEFCLASSES"
 mkdir -p "$WSDEFCLASSES"
 javac -d "$WSDEFCLASSES" "$WSDEFJAVA" || exit 1
+java -cp "$WSDEFCLASSES" Workspace || exit 1
 
 WSNAME=iwant
 TARGET=$IWANT/as_${WSNAME}-developer

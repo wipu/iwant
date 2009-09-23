@@ -41,8 +41,11 @@ garbage
 ^
 EOF
 
-#cmd "echo 'public class Workspace {}' > $WSJAVA"
-
+cmd "echo public class Workspace {} > $WSJAVA"
+cmd "iwant/as_iwant-user/start_using_iwant_on $WSSRC"
+out-was <<EOF
+Exception in thread "main" java.lang.NoSuchMethodError: main
+EOF
 doc '}'
 
 doc '}'
