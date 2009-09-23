@@ -50,12 +50,14 @@ EOF
 cmd "echo public class Workspace {public static void main\(String[] args\){}} > $WSJAVA"
 cmd "iwant/as_iwant-user/start_using_iwant_on $WSSRC"
 out-was <<\EOF
+Please output the workspace details in the main method
 Start the output with line iwant-workspace
 EOF
 
 cmd 'echo public class Workspace {public static void main\(String[] args\){System.out.println\(\"iwant-workspace\"\)\;}} > '"$WSJAVA"
 cmd "iwant/as_iwant-user/start_using_iwant_on $WSSRC"
 out-was <<\EOF
+iwant-workspace
 Please specify the workspace name on a line of form name:THENAME
 EOF
 

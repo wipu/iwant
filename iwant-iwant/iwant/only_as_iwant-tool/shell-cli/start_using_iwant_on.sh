@@ -34,15 +34,15 @@ runwsdef || exit 1
 
 function require() {
 	if [ x == "x$1" ]; then
-		echo $2 >/dev/stderr
+		echo "$2" >>/dev/stderr
 		exit 1
 	fi
 }
 
 MAGICHEADER=$(runwsdef | head -n 1)
 if [ "xiwant-workspace" != "x$MAGICHEADER" ]; then
-	echo "Please output the workspace details in the main method" >/dev/stderr
-	echo "Start the output with line iwant-workspace" >/dev/stderr
+	echo "Please output the workspace details in the main method" >>/dev/stderr
+	echo "Start the output with line iwant-workspace" >>/dev/stderr
 	exit 1
 fi
 WSNAME=$(runwsdef | grep '^name:' | sed 's/^name://')
