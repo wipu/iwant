@@ -54,3 +54,6 @@
     so if they have problems, their dependencies probably need
     to be refreshed again anyway
   * if equal, recurse into targets depending on them
+
+- As a @buildscriptauthor I want iwant to use some non-default package for my workspace definition class and iwant still to be able to auto-detect the source directory location
+  * read the package declaration from the java file to deduce where the src root is

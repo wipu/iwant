@@ -35,32 +35,47 @@ function script() {
     chmod u+x "$FILE"
 }
 
-WEBSITE_BUILD="$TARGET/once/website"
-TUTORIAL_BUILD="$TARGET/once/tutorial"
-TUTORIAL_HTML="$TUTORIAL_BUILD/tutorial.html"
 NGREASE=$(abs ../../../svn/trunk)
 
 TUTORIAL_SRC=$(abs ../iwant-docs/src/main/descript/tutorial)
 
-script path-to-fresh/tutorial <<EOF
+function tutorial() {
+local TO="$1"
+local LOCAL_IWANT="$2"
+local TUTORIAL_BUILD="$3"
+script "$TO" <<EOF
 #!/bin/bash
 mkdir -p $(dirname "$TUTORIAL_BUILD")
-bash "$NGREASE/ngrease-descript/src/main/bash/descript.sh" \
+LOCAL_IWANT="$LOCAL_IWANT" bash "$NGREASE/ngrease-descript/src/main/bash/descript.sh" \
 	"$TUTORIAL_SRC" "$TUTORIAL_BUILD"
 NGREASEPATH="${TUTORIAL_BUILD}:../iwant-docs/src/main/java:$NGREASE/ngrease-descript/src/main/java" \
 	"$NGREASE/ngrease-release/target/ngrease-all-r569/bin/ngrease" \
 		-r "/net/sf/ngrease/descript/descripted-as-html-source.ngr" \
-		> $TUTORIAL_HTML
+		> $TUTORIAL_BUILD/tutorial.html
+echo $TUTORIAL_BUILD/tutorial.html
 EOF
+}
 
-script "path-to-fresh/website" <<EOF
+tutorial path-to-fresh/tutorial "" "$TARGET/once/tutorial"
+tutorial path-to-fresh/local-tutorial "$IWANT" "$TARGET/once/local-tutorial" 
+
+function website() {
+local TO="$1"
+local WEBSITE_BUILD="$2"
+local ONCEDIR="$3"
+local TUTORIAL_NAME="$4"
+script "$TO" <<EOF
 #!/bin/bash
-iwant/as_iwant-developer/path-to-fresh/tutorial
+iwant/as_iwant-developer/path-to-fresh/$TUTORIAL_NAME
 mkdir -p "$WEBSITE_BUILD"
 cp $IWANT/../../iwant-docs/src/main/html/website/* "$WEBSITE_BUILD/"
-cp "$TUTORIAL_HTML" "$WEBSITE_BUILD/"
+cp "$ONCEDIR/$TUTORIAL_NAME/tutorial.html" "$WEBSITE_BUILD/"
 echo "$WEBSITE_BUILD"
 EOF
+}
+
+website "path-to-fresh/website" "$TARGET/once/website" "$TARGET/once" "tutorial" 
+website "path-to-fresh/local-website" "$TARGET/once/local-website" "$TARGET/once" "local-tutorial" 
 
 script "command-to/deploy-website" <<EOF
 echo "# Assuming the website target is uptodate (TODO should be!), pipe this to a shell:"
