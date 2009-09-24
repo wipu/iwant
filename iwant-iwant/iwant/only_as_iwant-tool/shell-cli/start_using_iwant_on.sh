@@ -22,14 +22,15 @@ MYDIR=$(dirname "$0")
 MYDIR=$(abs "$MYDIR")
 IWANT=$(dirname "$MYDIR")
 WSDEFCLASSES="$IWANT/only_as_iwant-tool/tmp"
+IWANT_CLASSES="$IWANT/only-as-iwant-bootstrap/classes"
 
 function runwsdef() {
-	java -cp "$WSDEFCLASSES" Workspace
+	java -cp "$WSDEFCLASSES:$IWANT_CLASSES" Workspace
 }
 
 rm -rf "$WSDEFCLASSES"
 mkdir -p "$WSDEFCLASSES"
-javac -d "$WSDEFCLASSES" "$WSDEFJAVA" || exit 1
+javac -cp "$IWANT_CLASSES" -d "$WSDEFCLASSES" "$WSDEFJAVA" || exit 1
 runwsdef || exit 1
 
 function require() {
