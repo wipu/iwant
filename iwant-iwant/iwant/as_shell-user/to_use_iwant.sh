@@ -43,7 +43,7 @@ javac \
 	|| die
 
 java -cp "$BOOTSTRAP_CLASSES" net.sf.iwant.junitlite.TestRunner \
-	a b c \
+	net.sf.iwant.core.Suite \
 	|| die
 
 # TODO incremental
