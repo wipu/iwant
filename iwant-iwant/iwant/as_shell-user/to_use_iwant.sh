@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eu
+
 function abs() {
 	echo $(cd "$1" && pwd)
 }
@@ -22,29 +24,44 @@ function iwant_is_ready() {
 }
 
 function die() {
-	exit 1
+    exit 1
 }
+
+function remote_file() {
+    local FROM="$1"
+    local FILE="$2"
+    local TO="$3"
+    local MD5="$4"
+    local TOFILE="$TO/$FILE"
+    if [ ! -e "$TOFILE" ]; then
+	wget "$FROM/$FILE" -O "$TOFILE"
+    fi
+    echo "$MD5 *$TOFILE" | md5sum -c
+}
+
+remote_file \
+    http://mirrors.ibiblio.org/pub/mirrors/maven2/junit/junit/3.8.1 \
+    junit-3.8.1.jar \
+    "$WSROOT/iwant-lib-junit-3.8.1" \
+    "1f40fb782a4f2cf78f161d32670f7a3a"
 
 function projsrc() {
 	echo "$WSROOT/$1/src/main/java:$WSROOT/$1/src/test/java"
 }
 
-#"$WSROOT/iwant-core/src/main/java:$WSROOT/iwant-core/src/test/java:$WSROOT/iwant-iwant/src/main/java:$WSROOT/iwant-iwant/src/test/java:$WSROOT/iwant-junitlite/src/main/java:$WSROOT/iwant-junitlite/src/test/java" \
-
 BOOTSTRAP_CLASSES="$BOOTSTRAP/classes"
 mkdir -p "$BOOTSTRAP_CLASSES"
 javac \
 	-sourcepath \
-		"$(projsrc iwant-core):$(projsrc iwant-iwant):$(projsrc iwant-junitlite)" \
+		"$(projsrc iwant-core):$(projsrc iwant-iwant)" \
+        -cp "$WSROOT/iwant-lib-junit-3.8.1/junit-3.8.1.jar" \
 	-d "$BOOTSTRAP_CLASSES" \
 	"$WSROOT/iwant-iwant/src/main/java/Workspace.java" \
 	"$WSROOT/iwant-core/src/test/java/net/sf/iwant/core/Suite.java" \
-	"$WSROOT/iwant-junitlite/src/main/java/net/sf/iwant/junitlite/TestRunner.java" \
 	|| die
 
-java -cp "$BOOTSTRAP_CLASSES" net.sf.iwant.junitlite.TestRunner \
-	net.sf.iwant.core.Suite \
-	|| die
+java -cp "$BOOTSTRAP_CLASSES:$WSROOT/iwant-lib-junit-3.8.1/junit-3.8.1.jar" \
+    junit.textui.TestRunner -c net.sf.iwant.core.Suite
 
 # TODO incremental
 rm -rf "$TARGET"
