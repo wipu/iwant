@@ -45,6 +45,12 @@ remote_file \
     "$WSROOT/iwant-lib-junit-3.8.1" \
     "1f40fb782a4f2cf78f161d32670f7a3a"
 
+remote_file \
+    http://mirrors.ibiblio.org/pub/mirrors/maven2/org/apache/ant/ant/1.7.1 \
+    ant-1.7.1.jar \
+    "$WSROOT/iwant-lib-ant-1.7.1" \
+    "ef62988c744551fb51f330eaa311bfc0"
+
 function projsrc() {
 	echo "$WSROOT/$1/src/main/java:$WSROOT/$1/src/test/java"
 }
