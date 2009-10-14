@@ -19,11 +19,13 @@
   * Only the second line of the error message about missing MAGICHEADER is shown
   + don't echo > /dev/stderr but >> /dev/stderr, because descript redirects to a _file_
 
++ As a @buildscriptauthor I want an error message if and only if I try to start using iwant on an invalid workspace definition
+
 #################################################################
 = Planned
 #################################################################
 
-- As a @buildscriptauthor I want an error message if and only if I try to start using iwant on an invalid workspace definition
+- As a @buildscriptauthor I want to define a target file with constant string content and get a path to it
 
 - As a @buildscriptauthor I want to be able to define tests for my workspace definition so if I break it iwant won't use it
   * this is essential for bootstrapping
@@ -32,6 +34,14 @@
 
 - As a @developer I want iwant itself compiled with its workspace definition and tested with it so that I can bootstrap the whole tool, tested and working
   * if iwant gets later split into submodules, include only essentials here
+
+- As a @buildscriptuser I want to see a non-empty build plan for a missing file with constant string content
+
+- As a @buildscriptuser I want to see an empty build plan for an uptodate constant file
+  * delegate uptodate logic away so this story stays simple
+
+- As a @buildscriptuser I want to see an non-empty build plan for a target whose definition has changed
+  * TODO what java files need to be checked, and timestamp only or content?
 
 - As a @buildscriptauthor I want an error message if I refer to a java classes directory with a missing source
   * in the tutorial, call these test classes, to maintain the red-green cycle later
