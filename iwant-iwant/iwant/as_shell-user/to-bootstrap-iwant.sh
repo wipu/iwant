@@ -90,7 +90,7 @@ function abs() {
         echo $(cd "$1" && pwd)
 }
 
-NGREASE=$(abs "$wsroot/../../svn/trunk")
+NGREASE="$wsroot/../../svn/trunk"
 TUTORIAL_SRC="$wsroot/iwant-docs/src/main/descript/tutorial"
 
 function tutorial() {
