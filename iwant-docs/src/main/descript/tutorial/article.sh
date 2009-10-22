@@ -22,7 +22,10 @@ if [ "x" == "x$LOCAL_IWANT" ]; then
 	bootstrapping
 else
 	doc 'p {i {Using local iwant}}'
-	ln -s "$LOCAL_IWANT"
+	mkdir -p iwant/cached/iwant
+	cp -a "$LOCAL_IWANT/as-iwant-user" iwant/
+	cp -a "$LOCAL_IWANT/cached/iwant/scripts" iwant/cached/iwant/
+	cp -a "$LOCAL_IWANT/cached/iwant/classes" iwant/cached/iwant/
 fi
 
 doc 'section {name {Starting using kbd:iwant on a workspace}'
