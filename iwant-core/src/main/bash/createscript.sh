@@ -9,6 +9,7 @@ WSNAME="$1"
 TARGET="$2"
 WSSRC="$3"
 WSDEFCLASS="$4"
+POSTPROCESSOR="$5"
 
 ROOTDIR="$iwant/as-$WSNAME-developer"
 TARGETDIR=$ROOTDIR/$(dirname "$TARGET")
@@ -17,6 +18,7 @@ TARGETFILE="$ROOTDIR/$TARGET"
 
 cat > "$TARGETFILE" <<EOF
 #!/bin/bash
+set -eu
 
 "$iwant/cached/iwant/scripts/javac.sh" \\
  "$iwant/cached/$WSNAME-wsdefclasses" \\
@@ -24,10 +26,11 @@ cat > "$TARGETFILE" <<EOF
  "$iwant/cached/iwant/classes"
 java \
  -cp "$iwant/cached/$WSNAME-wsdefclasses:$iwant/cached/iwant/classes" \\
+ net.sf.iwant.core.WorkspaceBuilder \\
  "$WSDEFCLASS" \\
  "$ROOTDIR" \\
  "$TARGET" \\
- "$iwant/cached/$WSNAME"
+ "$iwant/cached/$WSNAME"$POSTPROCESSOR
 EOF
 
 chmod u+x "$TARGETFILE"

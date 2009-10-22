@@ -31,11 +31,15 @@ fi
 doc 'section {name {Starting using kbd:iwant on a workspace}'
 
 WSSRC=example-ws/ws-def/src
-WSJAVA=$WSSRC/example/Workspace
+WSJAVA=$WSSRC/example/Workspace.java
 WSCLASS=example.Workspace
 
 cmd "mkdir -p $WSSRC/example"
-cmd "echo public class Workspace {} > $WSJAVA"
+cmd "echo package example\; > $WSJAVA"
+cmd "echo import net.sf.iwant.core.Path\; >> $WSJAVA"
+cmd "echo public class Workspace { >> $WSJAVA"
+cmd "echo public Path aConstant\(\) {return null\;} >> $WSJAVA"
+cmd "echo } >> $WSJAVA"
 cmd "iwant/as-iwant-user/to-use-iwant-on.sh example $WSSRC $WSCLASS"
 
 out-was <<EOF
@@ -49,6 +53,32 @@ iwant/as-example-developer
 iwant/as-example-developer/help
 iwant/as-example-developer/list-of
 iwant/as-example-developer/list-of/targets
+EOF
+
+cmd 'iwant/as-example-developer/list-of/targets'
+out-was <<EOF
+aConstant
+EOF
+
+cmd 'find iwant/as-example-developer'
+out-was <<EOF
+iwant/as-example-developer
+iwant/as-example-developer/help
+iwant/as-example-developer/list-of
+iwant/as-example-developer/list-of/targets
+iwant/as-example-developer/target
+iwant/as-example-developer/target/aConstant
+iwant/as-example-developer/target/aConstant/as-path
+EOF
+
+cmd 'iwant/as-example-developer/target/aConstant/as-path'
+out-was <<EOF
+iwant/cached/example/target/aConstant
+EOF
+
+cmd 'cat iwant/cached/example/target/aConstant'
+out-was <<EOF
+Constant generated content
 EOF
 
 doc '}'

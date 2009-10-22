@@ -19,11 +19,12 @@ function createscript() {
 	"$WSNAME" \
 	"$1" \
 	"$WSSRC" \
-	"$WSDEFCLASS"
+	"$WSDEFCLASS" \
+	"$2"
 }
 
-createscript "help"
-createscript "list-of/targets"
+createscript "help" ""
+createscript "list-of/targets" " | $iwant/cached/iwant/scripts/create-target-scripts.sh \"$WSNAME\" \"$WSSRC\" \"$WSDEFCLASS\""
 
 echo To get access to targets of the $WSNAME workspace, start your sentences with
 echo \$ iwant/as-$WSNAME-developer

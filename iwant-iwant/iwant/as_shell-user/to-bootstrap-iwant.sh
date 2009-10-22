@@ -12,6 +12,7 @@ as_iwant_user="$iwant/as-iwant-user"
 cache="$iwant/cached/iwant"
 scriptcache="$cache/scripts"
 classescache="$cache/classes"
+testarea="$cache/testarea"
 
 function cachedscript() {
     cp "$wsroot/iwant-core/src/main/bash/$1" "$scriptcache/$2"
@@ -21,6 +22,7 @@ mkdir -p "$scriptcache"
 cachedscript createscript.sh createscript.sh
 cachedscript iwant-path-for-cached-scripts.sh iwant-path.sh
 cachedscript javac.sh javac.sh
+cachedscript create-target-scripts.sh create-target-scripts.sh
 
 function remote_file() {
     local FROM="$1"
@@ -51,16 +53,17 @@ function projsrc() {
 }
 
 mkdir -p "$classescache"
+mkdir -p "$testarea/iwanttestarea"
 
 javac \
 	-sourcepath \
 		"$(projsrc iwant-core):$(projsrc iwant-iwant)" \
         -cp "$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar" \
 	-d "$classescache" \
-	"$wsroot/iwant-iwant/src/main/java/Workspace.java" \
+	"$wsroot/iwant-iwant/src/main/java/net/sf/iwant/iwant/IwantWorkspace.java" \
 	"$wsroot/iwant-core/src/test/java/net/sf/iwant/core/Suite.java"
 
-java -cp "$classescache:$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar" \
+java -cp "$testarea:$classescache:$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar" \
     junit.textui.TestRunner -c net.sf.iwant.core.Suite
 
 function targetscript() {

@@ -21,16 +21,24 @@
 
 + As a @buildscriptauthor I want an error message if and only if I try to start using iwant on an invalid workspace definition
 
++ As a @buildscriptuser I want a list of targets defined in the workspace
+  * iwant/as-X-developer/list-of/targets
+  * flat target namespace
+
++ As a @buildscriptuser I want the shell target scripts updated when I request a list of targets
+
 #################################################################
 = Planned
 #################################################################
+
+- As a @buildscriptauthor I want that my changes to the workspace definition are effective automatically (automatic compilation)
+  + done, but
+  - descript that this not only works during as-iwant-user/to-use-iwant-on
 
 - As a @buildscriptauthor I want to define a target file with constant string content and get a path to it
 
 - As a @buildscriptauthor I want to be able to define tests for my workspace definition so if I break it iwant won't use it
   * this is essential for bootstrapping
-
-- As a @buildscriptauthor I want that my changes to the workspace definition are effective automatically (automatic compilation)
 
 - As a @developer I want iwant itself compiled with its workspace definition and tested with it so that I can bootstrap the whole tool, tested and working
   * if iwant gets later split into submodules, include only essentials here
@@ -71,3 +79,5 @@
 
 - As a @buildscriptauthor I want iwant to use some non-default package for my workspace definition class and iwant still to be able to auto-detect the source directory location
   * read the package declaration from the java file to deduce where the src root is
+  + now as-iwant-user/to-use-iwant-on requires all data as cli arguments
+    so this story no more makes sense

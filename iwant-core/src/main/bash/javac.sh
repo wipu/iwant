@@ -15,7 +15,6 @@ set -eu
 
 CP=$(echo $CP | sed 's/:$//')
 
-echo -e "  Compiling $DEST..."
 mkdir -p "$DEST"
 JAVAFILES=$(find "$SRC" -name '*.java')
 javac -d "$DEST" -classpath "$CP" "$JAVAFILES"
