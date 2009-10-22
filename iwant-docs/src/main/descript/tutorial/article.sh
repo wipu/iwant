@@ -3,7 +3,7 @@ doc 'section {name {Bootstrapping from svn}'
 
 doc 'p {First let'\''s check out <code>iwant</code> from svn
         and bootstrap it as a shell user.}'
-cmd 'svn co -r 37 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk iwant-svn | tail -n 1'
+cmd 'svn co -r 41 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk iwant-svn | tail -n 1'
 cmd 'ls'
 cmd 'cd iwant-svn/iwant-iwant'
 cmd 'iwant/as_shell-user/to-bootstrap-iwant.sh 2>&1 | tail -n 3'
