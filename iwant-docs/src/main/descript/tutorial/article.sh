@@ -71,6 +71,9 @@ out-was <<EOF
 Constant generated content
 EOF
 
+edit "$WSJAVA" Workspace.java.new-constant-content.diff
+cmd 'cat $(iwant/as-example-developer/target/aConstant/as-path)'
+
 doc '}'
 
 doc '}'
