@@ -47,11 +47,9 @@ To get access to targets of the example workspace, start your sentences with
 $ iwant/as-example-developer
 EOF
 
-cmd 'find iwant/as-example-developer'
+cmd 'find iwant/as-example-developer -type f'
 out-was <<EOF
-iwant/as-example-developer
 iwant/as-example-developer/help
-iwant/as-example-developer/list-of
 iwant/as-example-developer/list-of/targets
 EOF
 
@@ -60,14 +58,10 @@ out-was <<EOF
 aConstant
 EOF
 
-cmd 'find iwant/as-example-developer'
+cmd 'find iwant/as-example-developer -type f'
 out-was <<EOF
-iwant/as-example-developer
 iwant/as-example-developer/help
-iwant/as-example-developer/list-of
 iwant/as-example-developer/list-of/targets
-iwant/as-example-developer/target
-iwant/as-example-developer/target/aConstant
 iwant/as-example-developer/target/aConstant/as-path
 EOF
 
