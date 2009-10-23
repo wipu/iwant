@@ -1,7 +1,7 @@
 package net.sf.iwant.iwant;
 
-import net.sf.iwant.core.RootTarget;
+import net.sf.iwant.core.RootPath;
 
-public class IwantWorkspace extends RootTarget {
+public class IwantWorkspace extends RootPath {
 
 }

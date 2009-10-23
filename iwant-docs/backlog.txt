@@ -27,6 +27,8 @@
 
 + As a @buildscriptuser I want the shell target scripts updated when I request a list of targets
 
++ As a @buildscriptauthor I want to define a target file with constant string content and get a path to it
+
 #################################################################
 = Planned
 #################################################################
@@ -34,8 +36,6 @@
 - As a @buildscriptauthor I want that my changes to the workspace definition are effective automatically (automatic compilation)
   + done, but
   - descript that this not only works during as-iwant-user/to-use-iwant-on
-
-- As a @buildscriptauthor I want to define a target file with constant string content and get a path to it
 
 - As a @buildscriptauthor I want to be able to define tests for my workspace definition so if I break it iwant won't use it
   * this is essential for bootstrapping

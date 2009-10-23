@@ -35,11 +35,7 @@ WSJAVA=$WSSRC/example/Workspace.java
 WSCLASS=example.Workspace
 
 cmd "mkdir -p $WSSRC/example"
-cmd "echo package example\; > $WSJAVA"
-cmd "echo import net.sf.iwant.core.Path\; >> $WSJAVA"
-cmd "echo public class Workspace { >> $WSJAVA"
-cmd "echo public Path aConstant\(\) {return null\;} >> $WSJAVA"
-cmd "echo } >> $WSJAVA"
+create "$WSJAVA"
 cmd "iwant/as-iwant-user/to-use-iwant-on.sh example $WSSRC $WSCLASS"
 
 out-was <<EOF

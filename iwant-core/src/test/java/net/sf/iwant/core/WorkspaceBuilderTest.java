@@ -1,7 +1,10 @@
 package net.sf.iwant.core;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
@@ -58,6 +61,18 @@ public class WorkspaceBuilderTest extends TestCase {
 		// TODO delete content
 	}
 
+	private String cachedContent(String target) throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader(cacheDir
+				+ "/target/" + target));
+		StringBuilder actual = new StringBuilder();
+		String line;
+		while ((line = reader.readLine()) != null) {
+			actual.append(line).append("\n");
+		}
+		return actual.toString();
+
+	}
+
 	public void tearDown() {
 		System.setIn(originalIn);
 		System.setOut(originalOut);
@@ -87,34 +102,25 @@ public class WorkspaceBuilderTest extends TestCase {
 		assertEquals("", err.toString());
 	}
 
-	public static class WorkspaceWithConstantTargetFile {
+	public static class WorkspaceWithTwoConstantTargetFiles extends RootPath {
 
-		public Path aConstant() {
-			return null;
+		public Target constantOne() {
+			return target("constantOne").content(
+					Constant.value("constantOne content\n")).end();
 		}
 
-	}
-
-	public void testListOfTargetsWithOneConstantTargetFile() {
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithConstantTargetFile.class.getName(), iwantRoot,
-				"list-of/targets", cacheDir });
-		assertEquals("aConstant\n", out.toString());
-		assertEquals("", err.toString());
-	}
-
-	public static class WorkspaceWithTwoConstantTargetFiles {
-
-		public Path constantOne() {
-			return null;
+		public Path notATarget() {
+			throw new UnsupportedOperationException("Not to be called");
 		}
 
-		public String notATarget() {
-			return null;
+		public String notEvenAPath() {
+			throw new UnsupportedOperationException("Not to be called");
 		}
 
-		public Path constantTwo() {
-			return null;
+		public Target constantTwo() {
+			return target("constant2").content(
+					Constant.value("constantTwo alias constant2 content\n"))
+					.end();
 		}
 
 	}
@@ -125,6 +131,28 @@ public class WorkspaceBuilderTest extends TestCase {
 				"list-of/targets", cacheDir });
 		assertEquals("constantOne\nconstantTwo\n", out.toString());
 		assertEquals("", err.toString());
+	}
+
+	public void testConstantOneAsPathAndItsContent() throws IOException {
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithTwoConstantTargetFiles.class.getName(), iwantRoot,
+				"target/constantOne/as-path", cacheDir });
+		assertEquals("iwant/cached/example/target/constantOne\n", out
+				.toString());
+		assertEquals("", err.toString());
+
+		assertEquals("constantOne content\n", cachedContent("constantOne"));
+	}
+
+	public void testConstantTwoAsPathAndItsContent() throws IOException {
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithTwoConstantTargetFiles.class.getName(), iwantRoot,
+				"target/constantTwo/as-path", cacheDir });
+		assertEquals("iwant/cached/example/target/constant2\n", out.toString());
+		assertEquals("", err.toString());
+
+		assertEquals("constantTwo alias constant2 content\n",
+				cachedContent("constant2"));
 	}
 
 }
