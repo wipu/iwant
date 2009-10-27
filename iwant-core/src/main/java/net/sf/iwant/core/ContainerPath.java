@@ -2,8 +2,11 @@ package net.sf.iwant.core;
 
 public class ContainerPath extends Path {
 
-	public ContainerPath(String name) {
+	private final Locations locations;
+
+	public ContainerPath(String name, Locations locations) {
 		super(name);
+		this.locations = locations;
 	}
 
 	public abstract class PathBuilder<B extends PathBuilder, P extends Path> {
@@ -29,13 +32,17 @@ public class ContainerPath extends Path {
 
 		@Override
 		public Target end() {
-			return new Target(name, content);
+			return new Target(name, locations, content);
 		}
 
 	}
 
 	public TargetBuilder target(String name) {
 		return new TargetBuilder().name(name);
+	}
+
+	public Source source(String name) {
+		return new Source(name, locations);
 	}
 
 }

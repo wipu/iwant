@@ -1,0 +1,14 @@
+4a4
+> import net.sf.iwant.core.JavaClasses;
+6a6
+> import net.sf.iwant.core.Source;
+26a26,34
+>         public Source projectATestsSrc() {
+>             return source("project-a/tests");
+>         }
+> 
+>         public Target projectATests() {
+>             return target("projectATests").
+>                 content(JavaClasses.compiledFrom(projectATestsSrc())).end();
+>         }
+> 

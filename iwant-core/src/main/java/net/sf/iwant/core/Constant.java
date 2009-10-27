@@ -1,5 +1,9 @@
 package net.sf.iwant.core;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Constant implements Content {
 
 	private final String value;
@@ -14,6 +18,10 @@ public class Constant implements Content {
 
 	public String value() {
 		return value;
+	}
+
+	public void refresh(File destination) throws IOException {
+		new FileWriter(destination).append(value()).close();
 	}
 
 }

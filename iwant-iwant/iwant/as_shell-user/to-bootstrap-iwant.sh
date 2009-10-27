@@ -11,7 +11,8 @@ as_iwant_user="$iwant/as-iwant-user"
 
 cache="$iwant/cached/iwant"
 scriptcache="$cache/scripts"
-classescache="$cache/classes"
+cpitemscache="$cache/cpitems"
+classescache="$cpitemscache/iwant-core"
 testarea="$cache/testarea"
 
 function cachedscript() {
@@ -58,13 +59,15 @@ mkdir -p "$testarea/iwanttestarea"
 javac \
 	-sourcepath \
 		"$(projsrc iwant-core):$(projsrc iwant-iwant)" \
-        -cp "$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar" \
+        -cp "$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar:$wsroot/iwant-lib-ant-1.7.1/ant-1.7.1.jar" \
 	-d "$classescache" \
 	"$wsroot/iwant-iwant/src/main/java/net/sf/iwant/iwant/IwantWorkspace.java" \
 	"$wsroot/iwant-core/src/test/java/net/sf/iwant/core/Suite.java"
 
-java -cp "$testarea:$classescache:$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar" \
+java -cp "$testarea:$classescache:$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar:$wsroot/iwant-lib-ant-1.7.1/ant-1.7.1.jar" \
     junit.textui.TestRunner -c net.sf.iwant.core.Suite
+
+cp "$wsroot/iwant-lib-ant-1.7.1/ant-1.7.1.jar" "$cpitemscache/"
 
 function targetscript() {
     cp "$wsroot/iwant-core/src/main/bash/$1" "$as_iwant_user/$2"

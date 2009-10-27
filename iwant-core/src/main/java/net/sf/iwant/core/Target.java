@@ -4,8 +4,8 @@ public class Target extends Path {
 
 	private final Content content;
 
-	public Target(String name, Content content) {
-		super(name);
+	public Target(String name, Locations locations, Content content) {
+		super(locations.cacheDir() + "/" + name);
 		this.content = content;
 	}
 
