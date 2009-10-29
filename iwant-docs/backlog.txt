@@ -32,6 +32,10 @@
 + As a @buildscriptauthor I want that my changes to the workspace definition are effective automatically (automatic compilation)
   + this not only works during as-iwant-user/to-use-iwant-on
 
++ As a @buildscriptuser I want a fresh java classes directory even if its sources have been touched
+
++ As a @buildscriptauthor and @buildscriptuser I want fresh java classes even if its dependencies have been touched
+
 #################################################################
 = Planned
 #################################################################
@@ -52,10 +56,10 @@
 
 - As a @buildscriptauthor I want an error message if I refer to a java classes directory with a missing source
   * in the tutorial, call these test classes, to maintain the red-green cycle later
+  + done but untested and undefined details
 
 - As a @buildscriptuser I want an error message if I refer to a java classes directory of uncompilable sources
-
-- As a @buildscriptuser I want a fresh java classes directory even if its sources have been touched
+  + done but untested and undefined details
 
 - As a @buildscriptuser I want immediate answer to a reference to a java classes directory that is newer than its sources
 
