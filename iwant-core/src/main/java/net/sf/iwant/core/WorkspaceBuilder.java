@@ -1,6 +1,7 @@
 package net.sf.iwant.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class WorkspaceBuilder {
@@ -29,13 +30,21 @@ public class WorkspaceBuilder {
 				targetPath.lastIndexOf("/"));
 		try {
 			Target target = target(wsDef, methodName, locations);
-			System.out.println(target.name());
 			// TODO cache should be created by to-use-iwant-on.sh
 			ensureCacheDir(new File(locations.cacheDir()));
-			target.content().refresh(new File(target.name()));
+			refresh(target);
+			System.out.println(target.name());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static void refresh(Target target) throws IOException {
+		Content content = target.content();
+		for (Target dependency : content.dependencies()) {
+			refresh(dependency);
+		}
+		content.refresh(new File(target.name()));
 	}
 
 	private static void ensureCacheDir(File cacheDir) {

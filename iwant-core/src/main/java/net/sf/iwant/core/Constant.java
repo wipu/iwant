@@ -3,6 +3,8 @@ package net.sf.iwant.core;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Constant implements Content {
 
@@ -22,6 +24,10 @@ public class Constant implements Content {
 
 	public void refresh(File destination) throws IOException {
 		new FileWriter(destination).append(value()).close();
+	}
+
+	public SortedSet<Target> dependencies() {
+		return new TreeSet();
 	}
 
 }

@@ -1,0 +1,5 @@
+6c6,7
+<         System.out.println("TODO make this a junit test");
+---
+>         System.out.println("TODO make this a junit test for " +
+>             AProd.class);

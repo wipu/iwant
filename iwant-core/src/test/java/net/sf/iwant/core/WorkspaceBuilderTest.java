@@ -57,9 +57,17 @@ public class WorkspaceBuilderTest extends TestCase {
 
 	private static void ensureEmpty(String dirname) {
 		File dir = new File(dirname);
-		if (!dir.exists())
-			dir.mkdir();
-		// TODO delete content
+		del(dir);
+		dir.mkdir();
+	}
+
+	private static void del(File file) {
+		if (file.isDirectory()) {
+			for (File child : file.listFiles()) {
+				del(child);
+			}
+		}
+		file.delete();
 	}
 
 	private String cachedContent(String target) throws IOException {
@@ -79,6 +87,8 @@ public class WorkspaceBuilderTest extends TestCase {
 		System.setOut(originalOut);
 		System.setErr(originalErr);
 		System.setProperty(LINE_SEPARATOR_KEY, originalLineSeparator);
+		System.out.print(out.toString());
+		System.err.print(err.toString());
 	}
 
 	public static class EmptyWorkspace implements WorkspaceDefinition {
@@ -223,6 +233,66 @@ public class WorkspaceBuilderTest extends TestCase {
 		assertEquals("", err.toString());
 
 		assertTrue(cachedContent("classes/Empty.class").length() > 0);
+	}
+
+	public static class WorkspaceWithClassesThatDependOnOtherClasses implements
+			WorkspaceDefinition {
+
+		private static class Root extends RootPath {
+
+			public Root(Locations locations) {
+				super(locations);
+			}
+
+			public Source src1() {
+				return source("src1");
+			}
+
+			public Target classes1() {
+				return target("classes1").content(
+						JavaClasses.compiledFrom(src1())).end();
+			}
+
+			public Source src2() {
+				return source("src2");
+			}
+
+			public Target classes2() {
+				return target("classes2").content(
+						JavaClasses.compiledFrom(src2()).using(classes1()))
+						.end();
+			}
+
+		}
+
+		public ContainerPath wsRoot(Locations locations) {
+			return new Root(locations);
+		}
+
+	}
+
+	/**
+	 * Further java compilation testing is done in the tutorial
+	 */
+	public void testClassWithDependencyCompiles() throws Exception {
+		new File(wsRoot + "/src1").mkdir();
+		new FileWriter(wsRoot + "/src1/Util.java").append(
+				"public class Util {}\n").close();
+		new File(wsRoot + "/src2").mkdir();
+		new FileWriter(wsRoot + "/src2/Client.java")
+				.append(
+						"public class Client {"
+								+ " public String foo() {return Util.class.toString();}"
+								+ "}\n").close();
+
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithClassesThatDependOnOtherClasses.class.getName(),
+				wsRoot, "target/classes2/as-path", cacheDir });
+		assertTrue(out.toString().endsWith("target/classes2\n"));
+		assertEquals("", err.toString());
+
+		assertTrue(cachedContent("classes2/Client.class").length() > 0);
+		assertTrue(cachedContent("classes1/Util.class").length() > 0);
 	}
 
 }

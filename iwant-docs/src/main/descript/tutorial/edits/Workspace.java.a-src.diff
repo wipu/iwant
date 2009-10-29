@@ -1,0 +1,17 @@
+32,33c32,44
+<                 content(JavaClasses.compiledFrom(projectATestsSrc())).end();
+<         }
+---
+>                 content(JavaClasses.compiledFrom(projectATestsSrc()).
+>                     using(projectAClasses())).end();
+>         }
+> 
+>         public Target projectAClasses() {
+>             return target("projectAClasses").
+>                 content(JavaClasses.compiledFrom(projectASrc())).end();
+>         }
+> 
+>         public Source projectASrc() {
+>             return source("project-a/src");
+>         }
+> 

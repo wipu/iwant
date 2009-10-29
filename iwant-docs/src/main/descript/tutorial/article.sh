@@ -96,6 +96,21 @@ out-was <<EOF
 TODO make this a junit test
 EOF
 
+A_SRC="example-ws/project-a/src"
+sleep 2
+edit "$A_TESTS/example/ATest.java" ATest.java.aprod.diff
+cmd "mkdir -p $A_SRC/example"
+create "$A_SRC/example/AProd.java"
+edit "$WSJAVA" Workspace.java.a-src.diff
+cmd 'iwant/as-example-developer/target/projectATests/as-path | grep -o iwant/cached/example.*'
+out-was <<EOF
+iwant/cached/example/target/projectATests
+EOF
+cmd 'java -cp iwant/cached/example/target/projectATests:iwant/cached/example/target/projectAClasses example.ATest'
+out-was <<EOF
+TODO make this a junit test for class example.AProd
+EOF
+
 doc '}'
 
 doc '}'

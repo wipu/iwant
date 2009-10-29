@@ -1,6 +1,6 @@
 package net.sf.iwant.core;
 
-public class Path {
+public class Path implements Comparable<Path> {
 
 	private final String name;
 
@@ -10,6 +10,23 @@ public class Path {
 
 	public String name() {
 		return name;
+	}
+
+	public int compareTo(Path o) {
+		return name.compareTo(o.name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Path))
+			return false;
+		Path o = (Path) obj;
+		return name.equals(o.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode();
 	}
 
 }
