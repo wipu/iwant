@@ -29,4 +29,9 @@ public class Path implements Comparable<Path> {
 		return name.hashCode();
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + ":" + name;
+	}
+
 }

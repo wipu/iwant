@@ -1,0 +1,15 @@
+5a5
+> import net.sf.iwant.core.JunitResult;
+36c36,37
+<                     using(projectAClasses())).end();
+---
+>                     using(projectAClasses()).
+>                     using(builtin().junit381Classes())).end();
+38a38,44
+>         public Target projectATestResult() {
+>             return target("projectATestResult").
+>                 content(JunitResult.ofClass("example.ATest").
+>                     using(projectATests()).
+>                     using(projectATests().content().dependencies()).
+>                     using(builtin().junit381Classes())).end();
+>         }

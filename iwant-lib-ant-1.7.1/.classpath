@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="ant-1.7.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="ant-junit-1.7.1.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

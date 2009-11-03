@@ -14,7 +14,8 @@ import org.apache.tools.ant.taskdefs.Javac;
 public class JavaClasses implements Content {
 
 	private final Source src;
-	private final List<Target> classPath = new ArrayList();
+	private final List<Path> classPath = new ArrayList();
+	private final SortedSet<Target> dependencies = new TreeSet();
 
 	public JavaClasses(Source src) {
 		this.src = src;
@@ -24,13 +25,16 @@ public class JavaClasses implements Content {
 		return new JavaClasses(src);
 	}
 
-	public JavaClasses using(Target classes) {
+	public JavaClasses using(Path classes) {
 		classPath.add(classes);
+		if (classes instanceof Target) {
+			dependencies.add((Target) classes);
+		}
 		return this;
 	}
 
 	public SortedSet<Target> dependencies() {
-		return new TreeSet(classPath);
+		return dependencies;
 	}
 
 	public void refresh(File destination) {
@@ -42,8 +46,8 @@ public class JavaClasses implements Content {
 		javac.setSrcdir(antPath(project, src.name()));
 		javac.setDestdir(destination);
 		org.apache.tools.ant.types.Path path = javac.createClasspath();
-		for (Target dependency : classPath) {
-			path.add(antPath(project, dependency.name()));
+		for (Path cpItem : classPath) {
+			path.add(antPath(project, cpItem.name()));
 		}
 		javac.setFork(true);
 		javac.setDebug(true);

@@ -80,7 +80,7 @@ EOF
 
 doc '}'
 
-doc 'section {name {Generating java classes}'
+doc 'section {name {Java classes}'
 
 A_TESTS="example-ws/project-a/tests"
 cmd "mkdir -p $A_TESTS/example"
@@ -108,8 +108,29 @@ iwant/cached/example/target/projectATests
 EOF
 cmd 'java -cp iwant/cached/example/target/projectATests:iwant/cached/example/target/projectAClasses example.ATest'
 out-was <<EOF
-TODO make this a junit test for class example.AProd
+TODO make this a junit test to assert 0
 EOF
+
+doc '}'
+
+doc 'section {name {JUnit tests}'
+
+sleep 2
+edit "$A_TESTS/example/ATest.java" ATest.java.junit.diff
+edit "$WSJAVA" Workspace.java.junit.diff
+cmd 'iwant/as-example-developer/list-of/targets | grep projectATestResult'
+out-was <<EOF
+projectATestResult
+EOF
+cmd "iwant/as-example-developer/target/projectATestResult/as-path 2>/dev/null | grep -o iwant/cached/example.*"
+out-was <<EOF
+iwant/cached/example/target/projectATestResult
+EOF
+
+cmd 'cat iwant/cached/example/target/projectATestResult'
+
+edit "$A_SRC/example/AProd.java" AProd.java.redtogreen.diff
+cmd 'cat $(iwant/as-example-developer/target/projectATestResult/as-path)'
 
 doc '}'
 

@@ -1,7 +1,6 @@
 package net.sf.iwant.core;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class WorkspaceBuilder {
@@ -39,7 +38,7 @@ public class WorkspaceBuilder {
 		}
 	}
 
-	private static void refresh(Target target) throws IOException {
+	private static void refresh(Target target) throws Exception {
 		Content content = target.content();
 		for (Target dependency : content.dependencies()) {
 			refresh(dependency);

@@ -49,6 +49,12 @@ remote_file \
     "$wsroot/iwant-lib-ant-1.7.1" \
     "ef62988c744551fb51f330eaa311bfc0"
 
+remote_file \
+    http://mirrors.ibiblio.org/pub/mirrors/maven2/org/apache/ant/ant-junit/1.7.1 \
+    ant-junit-1.7.1.jar \
+    "$wsroot/iwant-lib-ant-1.7.1" \
+    "c1b2bfa2389c405c7c07d23f368d6944"
+
 function projsrc() {
 	echo "$wsroot/$1/src/main/java:$wsroot/$1/src/test/java"
 }
@@ -59,15 +65,16 @@ mkdir -p "$testarea/iwanttestarea"
 javac \
 	-sourcepath \
 		"$(projsrc iwant-core):$(projsrc iwant-iwant)" \
-        -cp "$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar:$wsroot/iwant-lib-ant-1.7.1/ant-1.7.1.jar" \
+        -cp "$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar:$wsroot/iwant-lib-ant-1.7.1/ant-1.7.1.jar:$wsroot/iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar" \
 	-d "$classescache" \
 	"$wsroot/iwant-iwant/src/main/java/net/sf/iwant/iwant/IwantWorkspace.java" \
 	"$wsroot/iwant-core/src/test/java/net/sf/iwant/core/Suite.java"
 
-java -cp "$testarea:$classescache:$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar:$wsroot/iwant-lib-ant-1.7.1/ant-1.7.1.jar" \
+java -cp "$testarea:$classescache:$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar:$wsroot/iwant-lib-ant-1.7.1/ant-1.7.1.jar:$wsroot/iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar" \
     junit.textui.TestRunner -c net.sf.iwant.core.Suite
 
-cp "$wsroot/iwant-lib-ant-1.7.1/ant-1.7.1.jar" "$cpitemscache/"
+cp "$wsroot/iwant-lib-ant-1.7.1/"*.jar "$cpitemscache/"
+cp "$wsroot/iwant-lib-junit-3.8.1/"*.jar "$cpitemscache/"
 
 function targetscript() {
     cp "$wsroot/iwant-core/src/main/bash/$1" "$as_iwant_user/$2"

@@ -2,7 +2,7 @@ package net.sf.iwant.core;
 
 public class ContainerPath extends Path {
 
-	private final Locations locations;
+	protected final Locations locations;
 
 	public ContainerPath(String name, Locations locations) {
 		super(name);
@@ -43,6 +43,10 @@ public class ContainerPath extends Path {
 
 	public Source source(String name) {
 		return new Source(name, locations);
+	}
+
+	protected Builtins builtin() {
+		return new Builtins(locations);
 	}
 
 }

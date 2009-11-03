@@ -71,8 +71,8 @@ public class WorkspaceBuilderTest extends TestCase {
 	}
 
 	private String cachedContent(String target) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(cacheDir
-				+ "/target/" + target));
+		BufferedReader reader = new BufferedReader(new FileReader(
+				pathToCachedTarget(target)));
 		StringBuilder actual = new StringBuilder();
 		String line;
 		while ((line = reader.readLine()) != null) {
@@ -80,6 +80,14 @@ public class WorkspaceBuilderTest extends TestCase {
 		}
 		return actual.toString();
 
+	}
+
+	private String pathLine(String target) {
+		return pathToCachedTarget(target) + "\n";
+	}
+
+	private String pathToCachedTarget(String target) {
+		return cacheDir + "/target/" + target;
 	}
 
 	public void tearDown() {
@@ -175,7 +183,7 @@ public class WorkspaceBuilderTest extends TestCase {
 		WorkspaceBuilder.main(new String[] {
 				WorkspaceWithTwoConstantTargetFiles.class.getName(), wsRoot,
 				"target/constantOne/as-path", cacheDir });
-		assertTrue(out.toString().endsWith("target/constantOne\n"));
+		assertEquals(pathLine("constantOne"), out.toString());
 		assertEquals("", err.toString());
 
 		assertEquals("constantOne content\n", cachedContent("constantOne"));
@@ -185,7 +193,7 @@ public class WorkspaceBuilderTest extends TestCase {
 		WorkspaceBuilder.main(new String[] {
 				WorkspaceWithTwoConstantTargetFiles.class.getName(), wsRoot,
 				"target/constantTwo/as-path", cacheDir });
-		assertTrue(out.toString().endsWith("target/constant2\n"));
+		assertEquals(pathLine("constant2"), out.toString());
 		assertEquals("", err.toString());
 
 		assertEquals("constantTwo alias constant2 content\n",
@@ -229,7 +237,7 @@ public class WorkspaceBuilderTest extends TestCase {
 		WorkspaceBuilder.main(new String[] {
 				WorkspaceWithJavaSrcAndClasses.class.getName(), wsRoot,
 				"target/classes/as-path", cacheDir });
-		assertTrue(out.toString().endsWith("target/classes\n"));
+		assertEquals(pathLine("classes"), out.toString());
 		assertEquals("", err.toString());
 
 		assertTrue(cachedContent("classes/Empty.class").length() > 0);
@@ -288,11 +296,94 @@ public class WorkspaceBuilderTest extends TestCase {
 		WorkspaceBuilder.main(new String[] {
 				WorkspaceWithClassesThatDependOnOtherClasses.class.getName(),
 				wsRoot, "target/classes2/as-path", cacheDir });
-		assertTrue(out.toString().endsWith("target/classes2\n"));
+		assertEquals(pathLine("classes2"), out.toString());
 		assertEquals("", err.toString());
 
 		assertTrue(cachedContent("classes2/Client.class").length() > 0);
 		assertTrue(cachedContent("classes1/Util.class").length() > 0);
+	}
+
+	public static class WorkspaceWithJunitTests implements WorkspaceDefinition {
+
+		private static class Root extends RootPath {
+
+			public Root(Locations locations) {
+				super(locations);
+			}
+
+			public Source src() {
+				return source("src");
+			}
+
+			public Target classes() {
+				return target("classes").content(
+						JavaClasses.compiledFrom(src())).end();
+			}
+
+			public Source tests() {
+				return source("tests");
+			}
+
+			public Target testClasses() {
+				return target("testClasses").content(
+						JavaClasses.compiledFrom(tests()).using(classes())
+								.using(builtin().junit381Classes())).end();
+			}
+
+			public Target testResult() {
+				return target("testResult").content(
+						JunitResult.ofClass("ATest").using(testClasses())
+								.using(testClasses().content().dependencies()))
+						.end();
+			}
+
+		}
+
+		public ContainerPath wsRoot(Locations locations) {
+			return new Root(locations);
+		}
+
+	}
+
+	public void testJunitResultOfFailingTest() throws Exception {
+		new File(wsRoot + "/tests").mkdir();
+		new FileWriter(wsRoot + "/tests/ATest.java").append(
+				"public class ATest extends junit.framework.TestCase {"
+						+ " public void testValue() {"
+						+ "  assertEquals(1, AProd.value());}}\n").close();
+		new File(wsRoot + "/src").mkdir();
+		new FileWriter(wsRoot + "/src/AProd.java").append(
+				"public class AProd {"
+						+ " public static int value() {return 2;}}\n").close();
+
+		try {
+			WorkspaceBuilder.main(new String[] {
+					WorkspaceWithJunitTests.class.getName(), wsRoot,
+					"target/testResult/as-path", cacheDir });
+			fail();
+		} catch (Exception e) {
+			// expected
+		}
+		assertEquals(pathLine("testResult"), out.toString());
+		assertTrue(err.toString().contains("ATest FAILED"));
+	}
+
+	public void testJunitResultOfPassingTest() throws Exception {
+		new File(wsRoot + "/tests").mkdir();
+		new FileWriter(wsRoot + "/tests/ATest.java").append(
+				"public class ATest extends junit.framework.TestCase {"
+						+ " public void testValue() {"
+						+ "  assertEquals(1, AProd.value());}}\n").close();
+		new File(wsRoot + "/src").mkdir();
+		new FileWriter(wsRoot + "/src/AProd.java").append(
+				"public class AProd {"
+						+ " public static int value() {return 1;}}\n").close();
+
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithJunitTests.class.getName(), wsRoot,
+				"target/testResult/as-path", cacheDir });
+		assertEquals(pathLine("testResult"), out.toString());
+		assertEquals("", err.toString());
 	}
 
 }
