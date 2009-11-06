@@ -38,6 +38,7 @@
 
 + As a @buildscriptauthor and @buildscriptuser I want to get a junit test result as path, be it failure or success
   + path to stdout always, error notification to stderr
+  + exit status is zero even if tests fail
 
 #################################################################
 = Planned
@@ -65,9 +66,6 @@
   + done but untested and undefined details
 
 - As a @buildscriptuser I want immediate answer to a reference to a java classes directory that is newer than its sources
-
-- As a @buildscriptuser I want a path only for the requested test result, not test results possibly dependend on
-  * fail if a dep fails, without showing any path
 
 #################################################################
 = Story sketches, to be evaluated and or rewritten

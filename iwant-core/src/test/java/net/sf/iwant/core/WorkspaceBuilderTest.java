@@ -356,14 +356,9 @@ public class WorkspaceBuilderTest extends TestCase {
 				"public class AProd {"
 						+ " public static int value() {return 2;}}\n").close();
 
-		try {
-			WorkspaceBuilder.main(new String[] {
-					WorkspaceWithJunitTests.class.getName(), wsRoot,
-					"target/testResult/as-path", cacheDir });
-			fail();
-		} catch (Exception e) {
-			// expected
-		}
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithJunitTests.class.getName(), wsRoot,
+				"target/testResult/as-path", cacheDir });
 		assertEquals(pathLine("testResult"), out.toString());
 		assertTrue(err.toString().contains("ATest FAILED"));
 	}

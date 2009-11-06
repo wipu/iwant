@@ -88,10 +88,6 @@ public class JunitResult implements Content {
 		if (!listener.failures().isEmpty()) {
 			for (String failure : listener.failures())
 				System.err.println(failure);
-			// TODO only show if this was requested as path and we are not just
-			// a dependency:
-			System.out.println(destination.getAbsolutePath());
-			throw new RuntimeException();
 		}
 	}
 

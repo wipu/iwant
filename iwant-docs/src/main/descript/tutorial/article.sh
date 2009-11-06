@@ -122,15 +122,27 @@ cmd 'iwant/as-example-developer/list-of/targets | grep projectATestResult'
 out-was <<EOF
 projectATestResult
 EOF
-cmd "iwant/as-example-developer/target/projectATestResult/as-path 2>/dev/null | grep -o iwant/cached/example.*"
+cmd '(iwant/as-example-developer/target/projectATestResult/as-path && echo exit status was zero) | sed s:$(pwd)/::'
 out-was <<EOF
+Test example.ATest FAILED
 iwant/cached/example/target/projectATestResult
+exit status was zero
 EOF
 
-cmd 'cat iwant/cached/example/target/projectATestResult'
+cmd 'grep -m 1 expected $(iwant/as-example-developer/target/projectATestResult/as-path)'
+out-was <<EOF
+Test example.ATest FAILED
+expected:<42> but was:<0>
+EOF
 
 edit "$A_SRC/example/AProd.java" AProd.java.redtogreen.diff
-cmd 'cat $(iwant/as-example-developer/target/projectATestResult/as-path)'
+cmd 'cat $(iwant/as-example-developer/target/projectATestResult/as-path) | sed s/[^\ ]*\ sec/***/'
+out-was <<EOF
+Testsuite: example.ATest
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: ***
+
+Testcase: testAValue took ***
+EOF
 
 doc '}'
 
