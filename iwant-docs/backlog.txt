@@ -40,23 +40,22 @@
   + path to stdout always, error notification to stderr
   + exit status is zero even if tests fail
 
++ As a @buildscriptuser I don't want a target refreshed if it sources are not newer than it
+  * missing src <=> sources modified
+  * directories are always treated as single entitites: their modification
+    time is always the max of their content
+
 #################################################################
 = Planned
 #################################################################
+
+- As a @buildscriptuser I want a target refreshed if its content definition has changed, even if its sources have not been touched
 
 - As a @buildscriptauthor I want to be able to define tests for my workspace definition so if I break it iwant won't use it
   * this is essential for bootstrapping
 
 - As a @developer I want iwant itself compiled with its workspace definition and tested with it so that I can bootstrap the whole tool, tested and working
   * if iwant gets later split into submodules, include only essentials here
-
-- As a @buildscriptuser I want to see a non-empty build plan for a missing file with constant string content
-
-- As a @buildscriptuser I want to see an empty build plan for an uptodate constant file
-  * delegate uptodate logic away so this story stays simple
-
-- As a @buildscriptuser I want to see an non-empty build plan for a target whose definition has changed
-  * TODO what java files need to be checked, and timestamp only or content?
 
 - As a @buildscriptauthor I want an error message if I refer to a java classes directory with a missing source
   * in the tutorial, call these test classes, to maintain the red-green cycle later
@@ -65,11 +64,13 @@
 - As a @buildscriptuser I want an error message if I refer to a java classes directory of uncompilable sources
   + done but untested and undefined details
 
-- As a @buildscriptuser I want immediate answer to a reference to a java classes directory that is newer than its sources
-
 #################################################################
 = Story sketches, to be evaluated and or rewritten
 #################################################################
+
+- As a @buildscriptuser I want to see a refresh plan for any target so I know if I really have time to refresh it yet
+
+- As a @buildscriptuser I want to see a time estimate in a refresh plan, based on previous refresh(es)
 
 - As a @buildscriptuser I want iwant to refresh targets automatically in parallel and letting me define the number of threads to use
   - TODO on commandline, in a conf file, something else or all of them?

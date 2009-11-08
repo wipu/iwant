@@ -30,6 +30,10 @@ public class JunitResult implements Content {
 		return new JunitResult(testClassName);
 	}
 
+	public SortedSet<Path> sources() {
+		return new TreeSet(dependencies());
+	}
+
 	public SortedSet<Target> dependencies() {
 		return dependencies;
 	}

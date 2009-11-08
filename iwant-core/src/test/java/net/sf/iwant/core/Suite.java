@@ -8,6 +8,7 @@ public class Suite extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("net.sf.iwant.core");
+		suite.addTestSuite(RefresherTest.class);
 		suite.addTestSuite(WorkspaceBuilderTest.class);
 		return suite;
 	}

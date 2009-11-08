@@ -131,7 +131,6 @@ EOF
 
 cmd 'grep -m 1 expected $(iwant/as-example-developer/target/projectATestResult/as-path)'
 out-was <<EOF
-Test example.ATest FAILED
 expected:<42> but was:<0>
 EOF
 
@@ -143,6 +142,18 @@ Tests run: 1, Failures: 0, Errors: 0, Time elapsed: ***
 
 Testcase: testAValue took ***
 EOF
+
+doc '}'
+
+doc 'section {name {Laziness}'
+
+TS="touched-after-src"
+cmd "touch $TS"
+cmd "find iwant/cached/example/target -newer $TS"
+echo -n | out-was
+cmd 'iwant/as-example-developer/target/projectATestResult/as-path > /dev/null'
+cmd "find iwant/cached/example/target -newer $TS"
+echo -n | out-was
 
 doc '}'
 

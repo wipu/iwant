@@ -15,10 +15,12 @@ public class JavaClasses implements Content {
 
 	private final Source src;
 	private final List<Path> classPath = new ArrayList();
+	private final SortedSet<Path> sources = new TreeSet();
 	private final SortedSet<Target> dependencies = new TreeSet();
 
 	public JavaClasses(Source src) {
 		this.src = src;
+		this.sources.add(src);
 	}
 
 	public static JavaClasses compiledFrom(Source src) {
@@ -30,7 +32,12 @@ public class JavaClasses implements Content {
 		if (classes instanceof Target) {
 			dependencies.add((Target) classes);
 		}
+		// TODO else add to sources?
 		return this;
+	}
+
+	public SortedSet<Path> sources() {
+		return sources;
 	}
 
 	public SortedSet<Target> dependencies() {

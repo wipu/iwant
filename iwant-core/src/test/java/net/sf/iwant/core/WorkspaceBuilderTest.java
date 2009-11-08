@@ -13,6 +13,8 @@ import junit.framework.TestCase;
 
 public class WorkspaceBuilderTest extends TestCase {
 
+	private static final boolean SHOW_OUTPUT = false;
+
 	private InputStream originalIn;
 
 	private PrintStream originalOut;
@@ -95,8 +97,10 @@ public class WorkspaceBuilderTest extends TestCase {
 		System.setOut(originalOut);
 		System.setErr(originalErr);
 		System.setProperty(LINE_SEPARATOR_KEY, originalLineSeparator);
-		System.out.print(out.toString());
-		System.err.print(err.toString());
+		if (SHOW_OUTPUT) {
+			System.out.print(out.toString());
+			System.err.print(err.toString());
+		}
 	}
 
 	public static class EmptyWorkspace implements WorkspaceDefinition {
@@ -379,6 +383,22 @@ public class WorkspaceBuilderTest extends TestCase {
 				"target/testResult/as-path", cacheDir });
 		assertEquals(pathLine("testResult"), out.toString());
 		assertEquals("", err.toString());
+	}
+
+	/**
+	 * Let's test laziness when sources are directories like for javac
+	 */
+	public void testJunitResultIsFailureEvenIfSourcesAreTouchedAfterSuccess()
+			throws Exception {
+		testJunitResultOfPassingTest();
+		new FileWriter(wsRoot + "/src/AProd.java", false).append(
+				"public class AProd {"
+						+ " public static int value() {return 2;}}\n").close();
+
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithJunitTests.class.getName(), wsRoot,
+				"target/testResult/as-path", cacheDir });
+		assertTrue(err.toString().contains("ATest FAILED"));
 	}
 
 }

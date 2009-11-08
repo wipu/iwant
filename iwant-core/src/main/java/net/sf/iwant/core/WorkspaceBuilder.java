@@ -31,19 +31,11 @@ public class WorkspaceBuilder {
 			Target target = target(wsDef, methodName, locations);
 			// TODO cache should be created by to-use-iwant-on.sh
 			ensureCacheDir(new File(locations.cacheDir()));
-			refresh(target);
+			Refresher.forReal().refresh(target);
 			System.out.println(target.name());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	private static void refresh(Target target) throws Exception {
-		Content content = target.content();
-		for (Target dependency : content.dependencies()) {
-			refresh(dependency);
-		}
-		content.refresh(new File(target.name()));
 	}
 
 	private static void ensureCacheDir(File cacheDir) {
