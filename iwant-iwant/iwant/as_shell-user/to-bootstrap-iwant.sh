@@ -118,7 +118,7 @@ rm -rf "$TUTORIAL_BUILD"
 LOCAL_IWANT="$LOCAL_IWANT" bash "$NGREASE/ngrease-descript/src/main/bash/descript.sh" \\
         "$TUTORIAL_SRC" "$TUTORIAL_BUILD"
 NGREASEPATH="${TUTORIAL_BUILD}:$wsroot/iwant-docs/src/main/java:$NGREASE/ngrease-descript/src/main/java" \\
-        "$NGREASE/ngrease-release/target/ngrease-all-r569/bin/ngrease" \\
+        "$NGREASE/ngrease-release/target/ngrease-all-r575/bin/ngrease" \\
                 -r "/net/sf/ngrease/descript/descripted-as-html-source.ngr" \\
                 > $TUTORIAL_BUILD/tutorial.html
 echo $TUTORIAL_BUILD/tutorial.html
@@ -136,7 +136,7 @@ local TUTORIAL_NAME="$4"
 script "$TO" <<EOF
 #!/bin/bash
 set -eu
-$as_iwant_developer/target/$TUTORIAL_NAME/as-path
+$as_iwant_developer/target/$TUTORIAL_NAME/as-path >/dev/null
 mkdir -p "$WEBSITE_BUILD"
 rm -rf "$WEBSITE_BUILD/*"
 cp $wsroot/iwant-docs/src/main/html/website/* "$WEBSITE_BUILD/"
