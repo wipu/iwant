@@ -28,7 +28,8 @@ else
 	cp -a "$LOCAL_IWANT/cached/iwant/cpitems" iwant/cached/iwant/
 fi
 
-doc 'section {name {Starting using kbd:iwant on a workspace}'
+section Starting using kbd:iwant on a workspace
+#----------------------------------------------
 
 WSROOT=example-ws
 WSSRC=$WSROOT/ws-def/src
@@ -78,7 +79,7 @@ out-was <<EOF
 Modified constant content
 EOF
 
-doc '}'
+end
 
 doc 'section {name {Java classes}'
 
