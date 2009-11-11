@@ -23,6 +23,15 @@ public class JavaClasses implements Content {
 		this.sources.add(src);
 	}
 
+	public String definitionDescription() {
+		StringBuilder b = new StringBuilder();
+		b.append(getClass().getName()).append(" {\n");
+		b.append("  src:").append(src).append("\n");
+		b.append("  classPath:" + classPath).append("\n");
+		b.append("}\n");
+		return b.toString();
+	}
+
 	public static JavaClasses compiledFrom(Source src) {
 		return new JavaClasses(src);
 	}

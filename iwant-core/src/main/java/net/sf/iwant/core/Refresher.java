@@ -1,18 +1,24 @@
 package net.sf.iwant.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.SortedSet;
 
 class Refresher {
 
 	private final TimestampReader timestampReader;
+	private final ContentDescriptionCache contentDescriptionCache;
 
-	Refresher(TimestampReader timestampReader) {
+	Refresher(TimestampReader timestampReader,
+			ContentDescriptionCache contentDescriptionCache) {
 		this.timestampReader = timestampReader;
+		this.contentDescriptionCache = contentDescriptionCache;
 	}
 
-	static Refresher forReal() {
-		return new Refresher(new TimestampReaderFileImpl());
+	static Refresher forReal(Locations locations) {
+		return new Refresher(new TimestampReaderFileImpl(),
+				new ContentDescriptionCacheFileImpl(locations
+						.contentDescriptionCacheDir()));
 	}
 
 	void refresh(Target target) throws Exception {
@@ -24,9 +30,11 @@ class Refresher {
 			doRefresh(target);
 	}
 
-	private boolean needsRefreshing(Target target) {
+	private boolean needsRefreshing(Target target) throws IOException {
 		Long targetTimestamp = timestampReader.modificationTime(target);
 		if (targetTimestamp == null)
+			return true;
+		if (hasContentDefinitionChanged(target))
 			return true;
 		SortedSet<Path> sources = target.content().sources();
 		for (Path source : sources) {
@@ -42,12 +50,21 @@ class Refresher {
 				return true;
 			}
 		}
-		// no source was modified
+		// no source nor content definition modified
 		return false;
 	}
 
-	private static void doRefresh(Target target) throws Exception {
+	private boolean hasContentDefinitionChanged(Target target)
+			throws IOException {
+		String cached = contentDescriptionCache
+				.retrieveContentDescription(target);
+		String current = target.content().definitionDescription();
+		return !current.equals(cached);
+	}
+
+	private void doRefresh(Target target) throws Exception {
 		target.content().refresh(new File(target.name()));
+		contentDescriptionCache.cacheContentDescription(target);
 	}
 
 }

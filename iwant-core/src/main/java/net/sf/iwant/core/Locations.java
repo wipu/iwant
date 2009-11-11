@@ -14,8 +14,12 @@ public class Locations {
 		return wsRoot;
 	}
 
-	public String cacheDir() {
-		return cacheDir;
+	public String targetCacheDir() {
+		return cacheDir + "/target";
+	}
+
+	public String contentDescriptionCacheDir() {
+		return cacheDir + "/content-descr";
 	}
 
 }

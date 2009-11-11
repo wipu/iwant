@@ -27,18 +27,15 @@ public class Constant implements Content {
 	}
 
 	public SortedSet<Path> sources() {
-		// TODO implement this properly by describing the content textually
-		// and comparing current to last evaluated
-		// and this class does it by adding the constant string to the
-		// description
-		Path nonExistingPath = new Path("/path/that/we/assume/never/to/exist");
-		TreeSet sources = new TreeSet();
-		sources.add(nonExistingPath);
-		return sources;
+		return new TreeSet();
 	}
 
 	public SortedSet<Target> dependencies() {
 		return new TreeSet();
+	}
+
+	public String definitionDescription() {
+		return getClass().getName() + ":" + value + "\n";
 	}
 
 }

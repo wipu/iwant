@@ -14,6 +14,8 @@ public class ContentMock implements Content {
 
 	private final List<File> refreshedDestinations = new ArrayList();
 
+	private String description = "default-descr";
+
 	public SortedSet<Target> dependencies() {
 		return dependencies;
 	}
@@ -28,6 +30,14 @@ public class ContentMock implements Content {
 
 	public SortedSet<Path> sources() {
 		return sources;
+	}
+
+	public String definitionDescription() {
+		return description;
+	}
+
+	public void definitionDescription(String description) {
+		this.description = description;
 	}
 
 }

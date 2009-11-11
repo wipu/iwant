@@ -1,0 +1,4 @@
+24c24
+<                 content(Constant.value("Modified constant content\n")).end();
+---
+>                 content(Constant.value("A change unrelated to java and test targets\n")).end();

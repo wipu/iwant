@@ -26,6 +26,15 @@ public class JunitResult implements Content {
 		this.testClassName = testClassName;
 	}
 
+	public String definitionDescription() {
+		StringBuilder b = new StringBuilder();
+		b.append(getClass().getName()).append(" {\n");
+		b.append("  testClassName:").append(testClassName).append("\n");
+		b.append("  classPath:" + classPath).append("\n");
+		b.append("}\n");
+		return b.toString();
+	}
+
 	public static JunitResult ofClass(String testClassName) {
 		return new JunitResult(testClassName);
 	}

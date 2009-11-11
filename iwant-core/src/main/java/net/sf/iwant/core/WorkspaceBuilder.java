@@ -14,7 +14,7 @@ public class WorkspaceBuilder {
 		String wsRoot = args[1];
 		String target = args[2];
 		String cacheDir = args[3];
-		Locations locations = new Locations(wsRoot, cacheDir + "/target");
+		Locations locations = new Locations(wsRoot, cacheDir);
 		if ("list-of/targets".equals(target)) {
 			listOfTargets(wsDef, locations);
 		} else {
@@ -30,8 +30,9 @@ public class WorkspaceBuilder {
 		try {
 			Target target = target(wsDef, methodName, locations);
 			// TODO cache should be created by to-use-iwant-on.sh
-			ensureCacheDir(new File(locations.cacheDir()));
-			Refresher.forReal().refresh(target);
+			ensureCacheDir(new File(locations.targetCacheDir()));
+			ensureCacheDir(new File(locations.contentDescriptionCacheDir()));
+			Refresher.forReal(locations).refresh(target);
 			System.out.println(target.name());
 		} catch (Exception e) {
 			throw new RuntimeException(e);

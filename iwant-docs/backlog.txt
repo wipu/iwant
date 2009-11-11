@@ -45,11 +45,11 @@
   * directories are always treated as single entitites: their modification
     time is always the max of their content
 
++ As a @buildscriptuser I want a target refreshed if its content definition has changed, even if its sources have not been touched
+
 #################################################################
 = Planned
 #################################################################
-
-- As a @buildscriptuser I want a target refreshed if its content definition has changed, even if its sources have not been touched
 
 - As a @buildscriptauthor I want to be able to define tests for my workspace definition so if I break it iwant won't use it
   * this is essential for bootstrapping

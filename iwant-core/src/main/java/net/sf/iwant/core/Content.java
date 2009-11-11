@@ -14,4 +14,9 @@ public interface Content {
 
 	void refresh(File destination) throws Exception;
 
+	/**
+	 * A representation that determines equality for the content
+	 */
+	String definitionDescription();
+
 }
