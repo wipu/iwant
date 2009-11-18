@@ -1,7 +1,7 @@
 package net.sf.iwant.core;
 
 import java.io.File;
-import java.lang.reflect.Method;
+import java.util.SortedSet;
 
 public class WorkspaceBuilder {
 
@@ -25,13 +25,14 @@ public class WorkspaceBuilder {
 	private static void buildConstantFile(Locations locations,
 			String targetPath, Class wsDef) {
 		// TODO robust parsing
-		String methodName = targetPath.substring(targetPath.indexOf("/") + 1,
+		String targetName = targetPath.substring(targetPath.indexOf("/") + 1,
 				targetPath.lastIndexOf("/"));
 		try {
-			Target target = target(wsDef, methodName, locations);
-			// TODO cache should be created by to-use-iwant-on.sh
-			ensureCacheDir(new File(locations.targetCacheDir()));
-			ensureCacheDir(new File(locations.contentDescriptionCacheDir()));
+			Target target = target(wsDef, targetName, locations);
+			ensureParentDirFor(locations.targetCacheDir() + "/"
+					+ target.nameWithoutCacheDir());
+			ensureParentDirFor(locations.contentDescriptionCacheDir() + "/"
+					+ target.nameWithoutCacheDir());
 			Refresher.forReal(locations).refresh(target);
 			System.out.println(target.name());
 		} catch (Exception e) {
@@ -39,19 +40,24 @@ public class WorkspaceBuilder {
 		}
 	}
 
-	private static void ensureCacheDir(File cacheDir) {
-		File parent = cacheDir.getParentFile();
-		if (!parent.exists())
-			ensureCacheDir(parent);
-		if (!cacheDir.exists())
-			cacheDir.mkdir();
+	private static void ensureParentDirFor(String fileName) {
+		File file = new File(fileName);
+		File parent = file.getParentFile();
+		ensureDir(parent);
 	}
 
-	private static Target target(Class wsDefClass, String methodName,
+	private static void ensureDir(File dir) {
+		File parent = dir.getParentFile();
+		if (!parent.exists())
+			ensureDir(parent);
+		if (!dir.exists())
+			dir.mkdir();
+	}
+
+	private static Target target(Class wsDefClass, String targetName,
 			Locations locations) throws Exception {
 		ContainerPath wsRoot = wsRoot(wsDefClass, locations);
-		Method method = wsRoot.getClass().getMethod(methodName);
-		Target target = (Target) method.invoke(wsRoot);
+		Target target = PathDigger.target(wsRoot, targetName);
 		return target;
 	}
 
@@ -76,14 +82,10 @@ public class WorkspaceBuilder {
 
 	private static void listOfTargets(Class wsDefClass, Locations locations) {
 		ContainerPath wsRoot = wsRoot(wsDefClass, locations);
-		for (Method method : wsRoot.getClass().getMethods()) {
-			if (isTargetMethod(method))
-				System.out.println(method.getName());
+		SortedSet<Target> targets = PathDigger.targets(wsRoot);
+		for (Target target : targets) {
+			System.out.println(target.nameWithoutCacheDir());
 		}
-	}
-
-	private static boolean isTargetMethod(Method method) {
-		return Target.class.isAssignableFrom(method.getReturnType());
 	}
 
 }

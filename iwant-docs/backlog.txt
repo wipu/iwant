@@ -47,9 +47,22 @@
 
 + As a @buildscriptuser I want a target refreshed if its content definition has changed, even if its sources have not been touched
 
++ As a @buildscriptauthor and @buildscriptuser I want to use slashes in my target names so I can organize and find them easier
+  + create cache and content descriptor directories before refreshing
+  + target detection is now dedicated to a unittested PathDigger
+  + a target is now referred by its name (without cache dir), not the
+    name of the method that defines it
+  * only JUnit-tested, not descripted
+
 #################################################################
 = Planned
 #################################################################
+
+- As a @buildscriptauthor I want to define my targets in a tree of ContainerPaths for even easier organization
+  - descript
+  - PathDigger must detect and dive into methods that return a child ContainerPath
+  - maybe there is no reason *not* to keep on prepending path names with their
+    parent (container) path name
 
 - As a @buildscriptauthor I want to be able to define tests for my workspace definition so if I break it iwant won't use it
   * this is essential for bootstrapping

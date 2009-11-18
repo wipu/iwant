@@ -103,22 +103,6 @@ public class WorkspaceBuilderTest extends TestCase {
 		}
 	}
 
-	public static class EmptyWorkspace implements WorkspaceDefinition {
-
-		private static class Root extends RootPath {
-
-			public Root(Locations locations) {
-				super(locations);
-			}
-
-		}
-
-		public ContainerPath wsRoot(Locations locations) {
-			return new Root(locations);
-		}
-
-	}
-
 	public void testTooFewArguments() {
 		try {
 			WorkspaceBuilder
@@ -137,49 +121,25 @@ public class WorkspaceBuilderTest extends TestCase {
 		assertEquals("", err.toString());
 	}
 
-	public static class WorkspaceWithTwoConstantTargetFiles implements
-			WorkspaceDefinition {
-
-		private static class Root extends RootPath {
-
-			public Root(Locations locations) {
-				super(locations);
-			}
-
-			public Target constantOne() {
-				return target("constantOne").content(
-						Constant.value("constantOne content\n")).end();
-			}
-
-			public Path notATarget() {
-				throw new UnsupportedOperationException("Not to be called");
-			}
-
-			public String notEvenAPath() {
-				throw new UnsupportedOperationException("Not to be called");
-			}
-
-			public Target constantTwo() {
-				return target("constant2")
-						.content(
-								Constant
-										.value("constantTwo alias constant2 content\n"))
-						.end();
-			}
-
-		}
-
-		public ContainerPath wsRoot(Locations locations) {
-			return new Root(locations);
-		}
-
-	}
-
 	public void testListOfTargetsWithTwoConstantTargetFiles() {
 		WorkspaceBuilder.main(new String[] {
 				WorkspaceWithTwoConstantTargetFiles.class.getName(), wsRoot,
 				"list-of/targets", cacheDir });
-		assertEquals("constantOne\nconstantTwo\n", out.toString());
+		assertEquals("constant2-container/constant2\nconstantOne\n", out
+				.toString());
+		assertEquals("", err.toString());
+	}
+
+	public void testIllegalTargetAsPath() throws IOException {
+		try {
+			WorkspaceBuilder.main(new String[] {
+					WorkspaceWithTwoConstantTargetFiles.class.getName(),
+					wsRoot, "target/illegal/as-path", cacheDir });
+			fail();
+		} catch (Exception e) {
+			// expected
+		}
+		assertEquals("", out.toString());
 		assertEquals("", err.toString());
 	}
 
@@ -196,12 +156,12 @@ public class WorkspaceBuilderTest extends TestCase {
 	public void testConstantTwoAsPathAndItsContent() throws IOException {
 		WorkspaceBuilder.main(new String[] {
 				WorkspaceWithTwoConstantTargetFiles.class.getName(), wsRoot,
-				"target/constantTwo/as-path", cacheDir });
-		assertEquals(pathLine("constant2"), out.toString());
+				"target/constant2-container/constant2/as-path", cacheDir });
+		assertEquals(pathLine("constant2-container/constant2"), out.toString());
 		assertEquals("", err.toString());
 
 		assertEquals("constantTwo alias constant2 content\n",
-				cachedContent("constant2"));
+				cachedContent("constant2-container/constant2"));
 	}
 
 	public static class WorkspaceWithJavaSrcAndClasses implements
