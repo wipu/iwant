@@ -92,6 +92,17 @@ public class WorkspaceBuilderTest extends TestCase {
 		return cacheDir + "/target/" + target;
 	}
 
+	/**
+	 * TODO we really need mocking
+	 */
+	private void sleep() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public void tearDown() {
 		System.setIn(originalIn);
 		System.setOut(originalOut);
@@ -130,7 +141,7 @@ public class WorkspaceBuilderTest extends TestCase {
 		assertEquals("", err.toString());
 	}
 
-	public void testIllegalTargetAsPath() throws IOException {
+	public void testIllegalTargetAsPath() {
 		try {
 			WorkspaceBuilder.main(new String[] {
 					WorkspaceWithTwoConstantTargetFiles.class.getName(),
@@ -167,7 +178,7 @@ public class WorkspaceBuilderTest extends TestCase {
 	public static class WorkspaceWithJavaSrcAndClasses implements
 			WorkspaceDefinition {
 
-		private static class Root extends RootPath {
+		public static class Root extends RootPath {
 
 			public Root(Locations locations) {
 				super(locations);
@@ -210,7 +221,7 @@ public class WorkspaceBuilderTest extends TestCase {
 	public static class WorkspaceWithClassesThatDependOnOtherClasses implements
 			WorkspaceDefinition {
 
-		private static class Root extends RootPath {
+		public static class Root extends RootPath {
 
 			public Root(Locations locations) {
 				super(locations);
@@ -269,7 +280,7 @@ public class WorkspaceBuilderTest extends TestCase {
 
 	public static class WorkspaceWithJunitTests implements WorkspaceDefinition {
 
-		private static class Root extends RootPath {
+		public static class Root extends RootPath {
 
 			public Root(Locations locations) {
 				super(locations);
@@ -351,6 +362,7 @@ public class WorkspaceBuilderTest extends TestCase {
 	public void testJunitResultIsFailureEvenIfSourcesAreTouchedAfterSuccess()
 			throws Exception {
 		testJunitResultOfPassingTest();
+		sleep();
 		new FileWriter(wsRoot + "/src/AProd.java", false).append(
 				"public class AProd {"
 						+ " public static int value() {return 2;}}\n").close();

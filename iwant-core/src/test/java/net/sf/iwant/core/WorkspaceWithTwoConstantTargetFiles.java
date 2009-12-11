@@ -2,7 +2,7 @@ package net.sf.iwant.core;
 
 public class WorkspaceWithTwoConstantTargetFiles implements WorkspaceDefinition {
 
-	private static class Root extends RootPath {
+	public static class Root extends RootPath {
 
 		public Root(Locations locations) {
 			super(locations);
@@ -28,6 +28,7 @@ public class WorkspaceWithTwoConstantTargetFiles implements WorkspaceDefinition 
 		}
 
 		public Target targetButNeedsParameters(String parameter) {
+			System.err.println(parameter);
 			return targetButNoneOfYourBusiness();
 		}
 
