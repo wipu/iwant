@@ -1,4 +1,4 @@
 #!/bin/bash
 
-iwant=$(cd $(dirname "$0")/..; pwd)
+iwant=$(cd $(dirname "$0")/.. && pwd)
 echo $iwant

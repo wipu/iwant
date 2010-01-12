@@ -8,8 +8,8 @@ if [ $# != 4 ]; then
 fi
 
 WSNAME="$1"
-WSROOT=$(cd "$2"; pwd)
-WSSRC=$(cd "$3"; pwd)
+WSROOT=$(cd "$2" && pwd)
+WSSRC=$(cd "$3" && pwd)
 WSDEFCLASS="$4"
 
 here=$(dirname "$0")
