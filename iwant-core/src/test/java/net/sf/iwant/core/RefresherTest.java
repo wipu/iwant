@@ -99,8 +99,8 @@ public class RefresherTest extends TestCase {
 				.refreshedDestinations().toString());
 		assertEquals("[Target:cacheDir/target/classes]", descrCache
 				.recachedTargets().toString());
-		assertEquals("new-description", descrCache
-				.retrieveContentDescription(target));
+		assertEquals("new-description",
+				descrCache.retrieveContentDescription(target));
 	}
 
 }

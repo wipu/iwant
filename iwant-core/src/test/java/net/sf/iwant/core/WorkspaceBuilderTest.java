@@ -136,8 +136,8 @@ public class WorkspaceBuilderTest extends TestCase {
 		WorkspaceBuilder.main(new String[] {
 				WorkspaceWithTwoConstantTargetFiles.class.getName(), wsRoot,
 				"list-of/targets", cacheDir });
-		assertEquals("constant2-container/constant2\nconstantOne\n", out
-				.toString());
+		assertEquals("constant2-container/constant2\nconstantOne\n",
+				out.toString());
 		assertEquals("", err.toString());
 	}
 
@@ -263,10 +263,9 @@ public class WorkspaceBuilderTest extends TestCase {
 				"public class Util {}\n").close();
 		new File(wsRoot + "/src2").mkdir();
 		new FileWriter(wsRoot + "/src2/Client.java")
-				.append(
-						"public class Client {"
-								+ " public String foo() {return Util.class.toString();}"
-								+ "}\n").close();
+				.append("public class Client {"
+						+ " public String foo() {return Util.class.toString();}"
+						+ "}\n").close();
 
 		WorkspaceBuilder.main(new String[] {
 				WorkspaceWithClassesThatDependOnOtherClasses.class.getName(),

@@ -16,8 +16,8 @@ public class PathDiggerTest extends TestCase {
 		ContainerPath root = new WorkspaceWithTwoConstantTargetFiles()
 				.wsRoot(LOCATIONS);
 		assertEquals("[Target:cacheDir/target/constant2-container/constant2,"
-				+ " Target:cacheDir/target/constantOne]", PathDigger.targets(
-				root).toString());
+				+ " Target:cacheDir/target/constantOne]",
+				PathDigger.targets(root).toString());
 	}
 
 	public void testTargetByIllegalName() {
@@ -37,8 +37,8 @@ public class PathDiggerTest extends TestCase {
 
 		Target target = PathDigger
 				.target(root, "constant2-container/constant2");
-		assertEquals("cacheDir/target/constant2-container/constant2", target
-				.name());
+		assertEquals("cacheDir/target/constant2-container/constant2",
+				target.name());
 	}
 
 }

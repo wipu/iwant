@@ -17,8 +17,8 @@ class Refresher {
 
 	static Refresher forReal(Locations locations) {
 		return new Refresher(new TimestampReaderFileImpl(),
-				new ContentDescriptionCacheFileImpl(locations
-						.contentDescriptionCacheDir()));
+				new ContentDescriptionCacheFileImpl(
+						locations.contentDescriptionCacheDir()));
 	}
 
 	void refresh(Target target) throws Exception {
