@@ -79,9 +79,11 @@ public class JavaClasses implements Content {
 	private static class JavacListener implements BuildListener {
 
 		public void buildFinished(BuildEvent e) {
+			// not interested
 		}
 
 		public void buildStarted(BuildEvent e) {
+			// not interested
 		}
 
 		public void messageLogged(BuildEvent e) {
@@ -95,15 +97,19 @@ public class JavaClasses implements Content {
 		}
 
 		public void targetFinished(BuildEvent e) {
+			// not interested
 		}
 
 		public void targetStarted(BuildEvent e) {
+			// not interested
 		}
 
 		public void taskFinished(BuildEvent e) {
+			// not interested
 		}
 
 		public void taskStarted(BuildEvent e) {
+			// not interested
 		}
 
 	}

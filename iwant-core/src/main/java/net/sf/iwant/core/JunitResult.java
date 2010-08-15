@@ -15,6 +15,7 @@ import org.apache.tools.ant.taskdefs.optional.junit.FormatterElement;
 import org.apache.tools.ant.taskdefs.optional.junit.FormatterElement.TypeAttribute;
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTask;
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
+import org.apache.tools.ant.types.EnumeratedAttribute;
 
 public class JunitResult implements Content {
 
@@ -83,7 +84,7 @@ public class JunitResult implements Content {
 		}
 
 		FormatterElement formatter = new FormatterElement();
-		formatter.setType((TypeAttribute) TypeAttribute.getInstance(
+		formatter.setType((TypeAttribute) EnumeratedAttribute.getInstance(
 				TypeAttribute.class, "plain"));
 		formatter.setExtension("");
 		junit.addFormatter(formatter);
@@ -114,9 +115,11 @@ public class JunitResult implements Content {
 		private List<String> failures = new ArrayList();
 
 		public void buildFinished(BuildEvent e) {
+			// not interested
 		}
 
 		public void buildStarted(BuildEvent e) {
+			// not interested
 		}
 
 		public synchronized void messageLogged(BuildEvent e) {
@@ -133,15 +136,19 @@ public class JunitResult implements Content {
 		}
 
 		public void targetFinished(BuildEvent e) {
+			// not interested
 		}
 
 		public void targetStarted(BuildEvent e) {
+			// not interested
 		}
 
 		public void taskFinished(BuildEvent e) {
+			// not interested
 		}
 
 		public void taskStarted(BuildEvent e) {
+			// not interested
 		}
 
 	}
