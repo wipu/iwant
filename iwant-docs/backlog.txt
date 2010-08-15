@@ -54,6 +54,11 @@
     name of the method that defines it
   * only JUnit-tested, not descripted
 
++ As a @developer I want to use a different path to descript for tutorial generation
+  * currently it's too expensive to robustly depend on it, maybe later, after full bootstrapping,
+    this can easily be done properly
+  + just change the hardcoded path from $wsroot/../../svn/trunk -> $wsroot/../ngrease
+
 #################################################################
 = Planned
 #################################################################

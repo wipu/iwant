@@ -103,7 +103,7 @@ function abs() {
         echo $(cd "$1" && pwd)
 }
 
-NGREASE="$wsroot/../../svn/trunk"
+NGREASE="$wsroot/../ngrease"
 TUTORIAL_SRC="$wsroot/iwant-docs/src/main/descript/tutorial"
 
 function tutorial() {
@@ -118,7 +118,7 @@ rm -rf "$TUTORIAL_BUILD"
 LOCAL_IWANT="$LOCAL_IWANT" bash "$NGREASE/ngrease-descript/src/main/bash/descript.sh" \\
         "$TUTORIAL_SRC" "$TUTORIAL_BUILD"
 NGREASEPATH="${TUTORIAL_BUILD}:$wsroot/iwant-docs/src/main/java:$NGREASE/ngrease-descript/src/main/java" \\
-        "$NGREASE/ngrease-release/target/ngrease-all-r575/bin/ngrease" \\
+        "$NGREASE/ngrease-release/target/ngrease-all-0.4.0pre/bin/ngrease" \\
                 -r "/net/sf/ngrease/descript/descripted-as-html-source.ngr" \\
                 > $TUTORIAL_BUILD/tutorial.html
 echo $TUTORIAL_BUILD/tutorial.html
