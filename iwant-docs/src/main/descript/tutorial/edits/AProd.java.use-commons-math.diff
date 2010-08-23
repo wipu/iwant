@@ -1,0 +1,12 @@
+2a3,5
+> import org.apache.commons.math.fraction.Fraction;
+> import org.apache.commons.math.fraction.FractionConversionException;
+> 
+6c9,13
+<         return 42;
+---
+>         try {
+>             return new Fraction(84).divide(new Fraction(2)).intValue();
+>         } catch (FractionConversionException e) {
+>             throw new IllegalArgumentException(e);
+>         }

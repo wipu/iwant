@@ -1,4 +1,4 @@
-5c5
-<     public static int value() { return 0; }
+6c6
+<         return 0;
 ---
->     public static int value() { return 42; }
+>         return 42;

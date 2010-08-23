@@ -59,6 +59,14 @@
     this can easily be done properly
   + just change the hardcoded path from $wsroot/../../svn/trunk -> $wsroot/../ngrease
 
++ As a @buildscriptauthor I want a target content downloaded from an url and verified by md5
+  + download if and only if cached copy missing
+  + fail after download if and only if md5 mismatches
+  + test that download is tried again after a failed effort (automatic cache invalidation)
+  + test that cache md5 is not verified afterwards, this is different from many shell scripts
+    (of mine and others) but consistent with the way iwant handles other types of targets
+  + descript depending to a downloaded library from java classes
+
 #################################################################
 = Planned
 #################################################################
@@ -107,3 +115,7 @@
   * read the package declaration from the java file to deduce where the src root is
   + now as-iwant-user/to-use-iwant-on requires all data as cli arguments
     so this story no more makes sense
+
+- As a paranoid @buildscriptauthor I want some control over the validity of my downloaded targets
+  * if the current consistent "assume nobody is fool enough to touch the cache" strategy seems to work,
+    just provide a wish for checking the cached targets, one by one or all at once

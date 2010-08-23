@@ -2,6 +2,8 @@ package example;
 
 public class AProd {
 
-    public static int value() { return 0; }
+    public static int value() {
+        return 0;
+    }
 
 }

@@ -173,4 +173,21 @@ EOF
 
 doc '}'
 
+doc 'section {name {Downloaded content}'
+
+edit "$A_SRC/example/AProd.java" AProd.java.use-commons-math.diff
+cmd 'iwant/as-example-developer/target/projectATestResult/as-path 2> /dev/null || echo "Compilation failed"'
+out-was <<EOF
+Compilation failed
+EOF
+edit "$WSJAVA" Workspace.java.use-commons-math.diff
+cmd 'iwant/as-example-developer/target/projectATestResult/as-path 2>&1 | sed s:$(pwd)/::'
+out-was <<EOF
+Getting: http://mirrors.ibiblio.org/pub/mirrors/maven2/commons-math/commons-math/1.2/commons-math-1.2.jar
+To: iwant/cached/example/target/commons-math
+iwant/cached/example/target/projectATestResult
+EOF
+
+doc '}'
+
 doc '}'

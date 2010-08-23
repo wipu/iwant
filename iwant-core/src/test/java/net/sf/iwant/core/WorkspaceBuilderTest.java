@@ -35,6 +35,8 @@ public class WorkspaceBuilderTest extends TestCase {
 
 	private String cacheDir;
 
+	private static String mockWeb;
+
 	public void setUp() {
 		originalIn = System.in;
 		originalOut = System.out;
@@ -55,6 +57,8 @@ public class WorkspaceBuilderTest extends TestCase {
 		ensureEmpty(wsRoot);
 		cacheDir = testarea + "/iwant-cached-test";
 		ensureEmpty(cacheDir);
+		mockWeb = testarea + "/mock-web";
+		ensureEmpty(mockWeb);
 	}
 
 	private static void ensureEmpty(String dirname) {
@@ -370,6 +374,115 @@ public class WorkspaceBuilderTest extends TestCase {
 				WorkspaceWithJunitTests.class.getName(), wsRoot,
 				"target/testResult/as-path", cacheDir });
 		assertTrue(err.toString().contains("ATest FAILED"));
+	}
+
+	public static class WorkspaceWithDownloadedContent implements
+			WorkspaceDefinition {
+
+		public static class Root extends RootPath {
+
+			public Root(Locations locations) {
+				super(locations);
+			}
+
+			public Target aDownloadedFile() {
+				return target("aDownloadedFile").content(
+						Downloaded.from("file://" + mockWeb + "/aFileInTheWeb")
+								.md5("971ff50db55ffc43bdf06674fc81c885")).end();
+			}
+
+		}
+
+		public ContainerPath wsRoot(Locations locations) {
+			return new Root(locations);
+		}
+
+	}
+
+	public void testDownloadFailsIfFileDoesNotExist() throws Exception {
+		try {
+			WorkspaceBuilder.main(new String[] {
+					WorkspaceWithDownloadedContent.class.getName(), wsRoot,
+					"target/aDownloadedFile/as-path", cacheDir });
+			fail();
+		} catch (Exception e) {
+			// expected
+		}
+		assertEquals("", out.toString());
+		assertTrue(err.toString().contains("Error getting"));
+	}
+
+	public void testDownloadFailsIfDownloadedFileIsCorrupt() throws Exception {
+		new FileWriter(mockWeb + "/aFileInTheWeb").append("corrupted\n")
+				.close();
+		try {
+			WorkspaceBuilder.main(new String[] {
+					WorkspaceWithDownloadedContent.class.getName(), wsRoot,
+					"target/aDownloadedFile/as-path", cacheDir });
+			fail();
+		} catch (Exception e) {
+			// expected
+		}
+		assertEquals("", out.toString());
+		assertTrue(err.toString().contains("Checksum failed"));
+	}
+
+	public void testDownloadRetryWorksAfterFailedDownload() throws Exception {
+		testDownloadFailsIfDownloadedFileIsCorrupt();
+		new FileWriter(mockWeb + "/aFileInTheWeb").append("correct\n").close();
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithDownloadedContent.class.getName(), wsRoot,
+				"target/aDownloadedFile/as-path", cacheDir });
+		assertEquals(pathLine("aDownloadedFile"), out.toString());
+		assertTrue(err.toString().contains("Getting"));
+		assertEquals("correct\n", cachedContent("aDownloadedFile"));
+	}
+
+	/**
+	 * Custom cache invalidation logic needed to negate this feature, if needed
+	 * for the paranoid among us
+	 */
+	public void testDownloadDoesNotFailIfAlreadyCachedFileIsCorrupt()
+			throws Exception {
+		testSuccessfulFirstDownload();
+		sleep();
+		new FileWriter(pathToCachedTarget("aDownloadedFile")).append(
+				"corrupted\n").close();
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithDownloadedContent.class.getName(), wsRoot,
+				"target/aDownloadedFile/as-path", cacheDir });
+		assertEquals(pathLine("aDownloadedFile") + pathLine("aDownloadedFile"),
+				out.toString());
+		assertEquals("corrupted\n", cachedContent("aDownloadedFile"));
+	}
+
+	public void testSuccessfulFirstDownload() throws Exception {
+		new FileWriter(mockWeb + "/aFileInTheWeb").append("correct\n").close();
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithDownloadedContent.class.getName(), wsRoot,
+				"target/aDownloadedFile/as-path", cacheDir });
+		assertEquals(pathLine("aDownloadedFile"), out.toString());
+		assertTrue(err.toString().contains("Getting"));
+		assertEquals("correct\n", cachedContent("aDownloadedFile"));
+	}
+
+	public void testSuccessfulLazyDownloadWhenCorrectCachedFileExists()
+			throws Exception {
+		testSuccessfulFirstDownload();
+
+		long cachedFileModifiedAt = new File(
+				pathToCachedTarget("aDownloadedFile")).lastModified();
+		sleep();
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithDownloadedContent.class.getName(), wsRoot,
+				"target/aDownloadedFile/as-path", cacheDir });
+		assertEquals(pathLine("aDownloadedFile") + pathLine("aDownloadedFile"),
+				out.toString());
+		assertEquals("Getting: file:" + mockWeb + "/aFileInTheWeb\n" + "To: "
+				+ pathToCachedTarget("aDownloadedFile") + "\n", err.toString());
+		assertEquals("correct\n", cachedContent("aDownloadedFile"));
+		assertEquals(cachedFileModifiedAt, new File(
+				pathToCachedTarget("aDownloadedFile")).lastModified());
 	}
 
 }
