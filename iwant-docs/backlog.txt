@@ -71,6 +71,11 @@
 = Planned
 #################################################################
 
+- As a @developer I want to move shell functionality into sourcable functions so that it will be easier to create different wrapper scripts and to restructure the scripts
+  + bootstrap functions
+  - separate step for using iwant on iwant (creating the as-iwant-developer dir)
+  - replace the internal scripts with functions
+
 - As a @buildscriptauthor I want to define my targets in a tree of ContainerPaths for even easier organization
   - descript
   - PathDigger must detect and dive into methods that return a child ContainerPath
