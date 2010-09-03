@@ -10,14 +10,6 @@ wsroot=$iwant/../..
 
 bootstrapped-iwant
 
-targetscript() {
-  cp "$wsroot/iwant-core/src/main/bash/$1" "$as_iwant_user/$2"
-}
-
-mkdir -p "$as_iwant_user"
-targetscript to-use-iwant-on.sh to-use-iwant-on.sh
-targetscript iwant-path-for-targetscripts.sh iwant-path.sh
-
 # some hard-coded iwant development scripts
 # TODO move these to the wsdef and create only if
 # explicitly told to use iwant on iwant
