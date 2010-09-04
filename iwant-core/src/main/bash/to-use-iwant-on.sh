@@ -7,26 +7,27 @@ if [ $# != 4 ]; then
     exit 1
 fi
 
+here=$(dirname "$0")
+iwant=$here/..
+. "$iwant/cached/iwant/scripts/iwant-functions.sh"
+
 WSNAME="$1"
-WSROOT=$(cd "$2" && pwd)
-WSSRC=$(cd "$3" && pwd)
+WSROOT=$(abs "$2")
+WSSRC=$(abs "$3")
 WSDEFCLASS="$4"
 
-here=$(dirname "$0")
-iwant="$($here/iwant-path.sh)"
-
-function createscript() {
-    "$iwant/cached/iwant/scripts/createscript.sh" \
-	"$WSNAME" \
-	"$WSROOT" \
-	"$1" \
-	"$WSSRC" \
-	"$WSDEFCLASS" \
-	"$2"
+ws-script() {
+  createscript \
+    "$WSNAME" \
+    "$WSROOT" \
+    "$1" \
+    "$WSSRC" \
+    "$WSDEFCLASS" \
+    "$2"
 }
 
-createscript "help" ""
-createscript "list-of/targets" " | $iwant/cached/iwant/scripts/create-target-scripts.sh \"$WSNAME\" \"$WSROOT\" \"$WSSRC\" \"$WSDEFCLASS\""
+ws-script "help" ""
+ws-script "list-of/targets" " | $iwant/cached/iwant/scripts/create-target-scripts.sh \"$WSNAME\" \"$WSROOT\" \"$WSSRC\" \"$WSDEFCLASS\""
 
 echo To get access to targets of the $WSNAME workspace, start your sentences with
 echo \$ iwant/as-$WSNAME-developer

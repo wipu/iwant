@@ -13,10 +13,7 @@ cached-script() {
 
 cached-scripts() {
   mkdir -p "$scriptcache"
-  cached-script createscript.sh createscript.sh
   cached-script iwant-path-for-cached-scripts.sh iwant-path.sh
-  cached-script javac.sh javac.sh
-  cached-script create-target-scripts.sh create-target-scripts.sh
   cached-script iwant-functions.sh iwant-functions.sh
   cached-script bootstrap-functions.sh bootstrap-functions.sh
 }
