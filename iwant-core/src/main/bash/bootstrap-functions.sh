@@ -2,6 +2,9 @@
 
 . "$wsroot/iwant-core/src/main/bash/iwant-functions.sh"
 
+# variables that need to be defined before sourcing:
+wsroot=$(abs "$wsroot")
+
 testarea="$cache/testarea"
 
 cached-script() {
@@ -14,6 +17,8 @@ cached-scripts() {
   cached-script iwant-path-for-cached-scripts.sh iwant-path.sh
   cached-script javac.sh javac.sh
   cached-script create-target-scripts.sh create-target-scripts.sh
+  cached-script iwant-functions.sh iwant-functions.sh
+  cached-script bootstrap-functions.sh bootstrap-functions.sh
 }
 
 remote-file() {
@@ -80,6 +85,18 @@ as-iwant-user-targetscripts() {
   mkdir -p "$as_iwant_user"
   targetscript to-use-iwant-on.sh to-use-iwant-on.sh
   targetscript iwant-path-for-targetscripts.sh iwant-path.sh
+  as-iwant-user-to-develop-iwant-targetscript
+}
+
+as-iwant-user-to-develop-iwant-targetscript() {
+script "$as_iwant_user/to-develop-iwant.sh" <<\EOF
+#!/bin/bash -eu
+here=$(dirname "$0")
+iwant=$here/..
+wsroot=$iwant/../..
+. "$here/../cached/iwant/scripts/bootstrap-functions.sh"
+to-develop-iwant-targetdir
+EOF
 }
 
 bootstrapped-iwant() {
@@ -88,4 +105,100 @@ bootstrapped-iwant() {
   bootstrap-cpitems
   bootstrap-testrun
   as-iwant-user-targetscripts
+  echo To use iwant, just start your sentences with iwant/$(basename "$as_iwant_user")/
+  echo You can find your options with e.g.
+  echo \$ find iwant/$(basename "$as_iwant_user")/
+}
+
+developer-script() {
+  script "$as_iwant_developer/$1"
+}
+
+script() {
+  local FILE="$1"
+  local DIR=$(dirname "$FILE")
+  mkdir -p "$DIR"
+  cat > "$FILE"
+  chmod u+x "$FILE"
+}
+
+as_iwant_developer="$iwant/as-iwant-developer"
+
+NGREASE="$wsroot/../ngrease"
+TUTORIAL_SRC="$wsroot/iwant-docs/src/main/descript/tutorial"
+
+tutorial-targetscript() {
+local TO="$1"
+local LOCAL_IWANT="$2"
+local TUTORIAL_BUILD="$3"
+developer-script "$TO" <<EOF
+#!/bin/bash
+set -eu
+mkdir -p $(dirname "$TUTORIAL_BUILD")
+rm -rf "$TUTORIAL_BUILD"
+LOCAL_IWANT="$LOCAL_IWANT" bash "$NGREASE/ngrease-descript/src/main/bash/descript.sh" \\
+        "$TUTORIAL_SRC" "$TUTORIAL_BUILD"
+NGREASEPATH="${TUTORIAL_BUILD}:$wsroot/iwant-docs/src/main/java:$NGREASE/ngrease-descript/src/main/java" \\
+        "$NGREASE/ngrease-release/target/ngrease-all-0.4.0pre/bin/ngrease" \\
+                -r "/net/sf/ngrease/descript/descripted-as-html-source.ngr" \\
+                > $TUTORIAL_BUILD/tutorial.html
+echo $TUTORIAL_BUILD/tutorial.html
+EOF
+}
+
+website-targetscript() {
+local TO="$1"
+local WEBSITE_BUILD="$2"
+local CACHEDIR="$3"
+local TUTORIAL_NAME="$4"
+developer-script "$TO" <<EOF
+#!/bin/bash
+set -eu
+$as_iwant_developer/target/$TUTORIAL_NAME/as-path >/dev/null
+mkdir -p "$WEBSITE_BUILD"
+rm -rf "$WEBSITE_BUILD/*"
+cp $wsroot/iwant-docs/src/main/html/website/* "$WEBSITE_BUILD/"
+cp "$CACHEDIR/$TUTORIAL_NAME/tutorial.html" "$WEBSITE_BUILD/"
+echo "$WEBSITE_BUILD"
+EOF
+}
+
+deploy-website-commandscript() {
+developer-script "command-to/deploy-website" <<EOF
+echo "# Assuming the website target is uptodate (TODO should be!), pipe this to a shell:"
+echo rsync -e ssh --delete-delay -vrucli "$cache/website/" wipu_@shell.sourceforge.net:iwant-htdocs/
+EOF
+}
+
+tag-deployed-website-commandscript() {
+developer-script "command-to/tag-deployed-website" <<\EOF
+#!/bin/bash
+if [ $# != 2 ]; then
+  echo "Usage: $0 REV TIME"
+  echo "e.g. $0 555 2009-03-16"
+  exit 1
+fi
+
+REV=$1
+TIME=$2
+
+TAG="${TIME}-website-update"
+SVNBASE=https://iwant.svn.sourceforge.net/svnroot/iwant
+
+echo "# Assuming the website target is up to date, pipe this a shell:"
+echo svn cp -r $REV "$SVNBASE/trunk" "$SVNBASE/tags/$TAG" -m \""Tagged $TAG"\"
+EOF
+}
+
+to-develop-iwant-targetdir() {
+  mkdir -p "$as_iwant_developer"
+  tutorial-targetscript target/tutorial/as-path "" "$cache/tutorial"
+  tutorial-targetscript target/local-tutorial/as-path "$iwant" "$cache/local-tutorial" 
+  website-targetscript "target/website/as-path" "$cache/website" "$cache" "tutorial" 
+  website-targetscript "target/local-website/as-path" "$cache/local-website" "$cache" "local-tutorial" 
+  deploy-website-commandscript
+  tag-deployed-website-commandscript
+  echo To develop iwant, just start your sentences with iwant/$(basename "$as_iwant_developer")/
+  echo You can find your options with e.g.
+  echo \$ find iwant/$(basename "$as_iwant_developer")/
 }

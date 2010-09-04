@@ -74,8 +74,9 @@
 - As a @developer I want to move shell functionality into sourcable functions so that it will be easier to create different wrapper scripts and to restructure the scripts
   + bootstrap functions
   + as-iwant-user targetscript generation
-  - separate step for using iwant on iwant (creating the as-iwant-developer dir)
+  + separate step for using iwant on iwant (creating the as-iwant-developer dir)
   - replace the internal scripts with functions
+  - use only relative paths to source functions in all wrappers scripts
 
 - As a @buildscriptauthor I want to define my targets in a tree of ContainerPaths for even easier organization
   - descript
