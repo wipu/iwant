@@ -75,13 +75,9 @@ here=\$(dirname "\$0")
 iwant=\$here/..$DOTS
 . "\$iwant/cached/iwant/scripts/iwant-functions.sh"
 
-compiled-java \\
- "\$iwant/cached/$WSNAME-wsdefclasses" \\
- "$WSSRC" \\
- "\$iwant/cached/iwant/cpitems/iwant-core" \\
- "\$iwant/cached/iwant/cpitems/ant-1.7.1.jar" \\
- "\$iwant/cached/iwant/cpitems/ant-junit-1.7.1.jar" \\
- "\$iwant/cached/iwant/cpitems/junit-3.8.1.jar"
+compiled-wsdef \\
+  "$WSNAME" \\
+  "$WSSRC"
 java \
  -cp "\$iwant/cached/$WSNAME-wsdefclasses:\$iwant/cached/iwant/cpitems/iwant-core:\$iwant/cached/iwant/cpitems/ant-1.7.1.jar:\$iwant/cached/iwant/cpitems/ant-junit-1.7.1.jar:\$iwant/cached/iwant/cpitems/junit-3.8.1.jar" \\
  net.sf.iwant.core.WorkspaceBuilder \\
@@ -92,4 +88,16 @@ java \
 EOF
 
 chmod u+x "$TARGETFILE"
+}
+
+compiled-wsdef() {
+  local WSNAME=$1
+  local WSSRC=$2
+  compiled-java \
+    "$iwant/cached/$WSNAME-wsdefclasses" \
+    "$WSSRC" \
+    "$iwant/cached/iwant/cpitems/iwant-core" \
+    "$iwant/cached/iwant/cpitems/ant-1.7.1.jar" \
+    "$iwant/cached/iwant/cpitems/ant-junit-1.7.1.jar" \
+    "$iwant/cached/iwant/cpitems/junit-3.8.1.jar"
 }
