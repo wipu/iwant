@@ -78,13 +78,8 @@ iwant=\$here/..$DOTS
 compiled-wsdef \\
   "$WSNAME" \\
   "$WSSRC"
-java \
- -cp "\$iwant/cached/$WSNAME-wsdefclasses:\$iwant/cached/iwant/cpitems/iwant-core:\$iwant/cached/iwant/cpitems/ant-1.7.1.jar:\$iwant/cached/iwant/cpitems/ant-junit-1.7.1.jar:\$iwant/cached/iwant/cpitems/junit-3.8.1.jar" \\
- net.sf.iwant.core.WorkspaceBuilder \\
- "$WSDEFCLASS" \\
- "$WSROOT" \\
- "$TARGET" \\
- "\$iwant/cached/$WSNAME"$POSTPROCESSOR
+wsdef-run \\
+  "$WSNAME" "$WSDEFCLASS" "$WSROOT" "$TARGET"$POSTPROCESSOR
 EOF
 
 chmod u+x "$TARGETFILE"
@@ -100,4 +95,18 @@ compiled-wsdef() {
     "$iwant/cached/iwant/cpitems/ant-1.7.1.jar" \
     "$iwant/cached/iwant/cpitems/ant-junit-1.7.1.jar" \
     "$iwant/cached/iwant/cpitems/junit-3.8.1.jar"
+}
+
+wsdef-run() {
+  local WSNAME=$1
+  local WSDEFCLASS=$2
+  local WSROOT=$3
+  local TARGET=$4
+  java \
+   -cp "$iwant/cached/$WSNAME-wsdefclasses:$iwant/cached/iwant/cpitems/iwant-core:$iwant/cached/iwant/cpitems/ant-1.7.1.jar:$iwant/cached/iwant/cpitems/ant-junit-1.7.1.jar:$iwant/cached/iwant/cpitems/junit-3.8.1.jar" \
+   net.sf.iwant.core.WorkspaceBuilder \
+   "$WSDEFCLASS" \
+   "$WSROOT" \
+   "$TARGET" \
+   "$iwant/cached/$WSNAME"
 }
