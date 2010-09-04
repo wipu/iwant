@@ -1,2 +1,3 @@
 # TODO maybe iwant will handle all this "refresh stuff"...
-iwant/as_shell-user/to_use_iwant.sh && iwant/as_iwant-user/start_using_iwant_on src/main/java/
+rm -rf iwant/cached
+iwant/as_shell-user/to-bootstrap-iwant.sh && iwant/as-iwant-user/to-develop-iwant.sh && iwant/as-iwant-developer/target/local-website/as-path

@@ -27,7 +27,7 @@ ws-script() {
 }
 
 ws-script "help" ""
-ws-script "list-of/targets" " | $iwant/cached/iwant/scripts/create-target-scripts.sh \"$WSNAME\" \"$WSROOT\" \"$WSSRC\" \"$WSDEFCLASS\""
+ws-script "list-of/targets" " | create-target-scripts \"$WSNAME\" \"$WSROOT\" \"$WSSRC\" \"$WSDEFCLASS\""
 
 echo To get access to targets of the $WSNAME workspace, start your sentences with
 echo \$ iwant/as-$WSNAME-developer
