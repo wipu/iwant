@@ -67,6 +67,9 @@
     (of mine and others) but consistent with the way iwant handles other types of targets
   + descript depending to a downloaded library from java classes
 
++ As @developer I want iwant tests to at least sleep a shorter time to test timestamp-based features, if ant tasks make it impossible to mock time
+  * 2000ms -> 10ms, seems to work
+
 #################################################################
 = Planned
 #################################################################

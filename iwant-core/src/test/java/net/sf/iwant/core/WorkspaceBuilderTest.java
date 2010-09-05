@@ -101,7 +101,7 @@ public class WorkspaceBuilderTest extends TestCase {
 	 */
 	private void sleep() {
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(10);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
