@@ -110,3 +110,26 @@ wsdef-run() {
    "$TARGET" \
    "$iwant/cached/$WSNAME"
 }
+
+use-iwant-on() {
+  local WSNAME="$1"
+  local WSROOT=$(abs "$2")
+  local WSSRC=$(abs "$3")
+  local WSDEFCLASS="$4"
+
+  ws-script() {
+    createscript \
+      "$WSNAME" \
+      "$WSROOT" \
+      "$1" \
+      "$WSSRC" \
+      "$WSDEFCLASS" \
+      "$2"
+  }
+
+  ws-script "help" ""
+  ws-script "list-of/targets" " | create-target-scripts \"$WSNAME\" \"$WSROOT\" \"$WSSRC\" \"$WSDEFCLASS\""
+
+  echo To get access to targets of the $WSNAME workspace, start your sentences with
+  echo \$ iwant/as-$WSNAME-developer
+}
