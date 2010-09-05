@@ -13,7 +13,6 @@ cached-script() {
 
 cached-scripts() {
   mkdir -p "$scriptcache"
-  cached-script iwant-path-for-cached-scripts.sh iwant-path.sh
   cached-script iwant-functions.sh iwant-functions.sh
   cached-script bootstrap-functions.sh bootstrap-functions.sh
 }
@@ -81,7 +80,6 @@ targetscript() {
 as-iwant-user-targetscripts() {
   mkdir -p "$as_iwant_user"
   targetscript to-use-iwant-on.sh to-use-iwant-on.sh
-  targetscript iwant-path-for-targetscripts.sh iwant-path.sh
   as-iwant-user-to-develop-iwant-targetscript
 }
 

@@ -79,6 +79,8 @@
   + as-iwant-user targetscript generation
   + separate step for using iwant on iwant (creating the as-iwant-developer dir)
   - replace the internal scripts with functions
+    + remove the unneeded iwant-path.sh
+    - make to-use-iwant-on use just one sourced function call
   - use only relative paths to source functions in all wrappers scripts
 
 - As a @buildscriptauthor I want to define my targets in a tree of ContainerPaths for even easier organization
