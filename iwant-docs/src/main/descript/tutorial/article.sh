@@ -1,4 +1,5 @@
 function bootstrapping() {
+die "Sorry, deprecated"
 doc 'section {name {Bootstrapping from svn}'
 
 doc 'p {First let'\''s check out <code>iwant</code> from svn
@@ -15,17 +16,41 @@ EOF
 doc '}'
 }
 
+local-bootstrapper() {
+  cmd "cp -a \"$LOCAL_IWANT/../../iwant-bootstrapper/iwant\" ./"
+}
+
+svn-bootstrapper() {
+  die "Sorry, not yet supported"
+}
+
+bootstrap() {
+local FETCH_BOOTSTRAPPER=$1
+doc 'section {name {Bootstrapping}'
+cmd 'mkdir -p example/as-example-developer && cd example/as-example-developer'
+"$FETCH_BOOTSTRAPPER"
+cmd 'find .'
+#out-was <<EOF
+#.
+#./iwant
+#./iwant/help.sh
+#EOF
+cmd 'iwant/help.sh'
+cmd 'cat i-have/iwant-from.conf'
+cmd "echo local-iwant-wishdir \\\"$LOCAL_IWANT\\\" > i-have/iwant-from.conf"
+cmd 'cat i-have/iwant-from.conf'
+cmd 'iwant/help.sh'
+cmd 'ls iwant'
+cmd 'ls iwant/cached/iwant'
+doc '}'
+}
 
 doc 'article {name {Tutorial}'
 
 if [ "x" == "x$LOCAL_IWANT" ]; then
-	bootstrapping
+  bootstrap svn-bootstrapper
 else
-	doc 'p {i {Using local iwant}}'
-	mkdir -p iwant/cached/iwant
-	cp -a "$LOCAL_IWANT/as-iwant-user" iwant/
-	cp -a "$LOCAL_IWANT/cached/iwant/scripts" iwant/cached/iwant/
-	cp -a "$LOCAL_IWANT/cached/iwant/cpitems" iwant/cached/iwant/
+  bootstrap local-bootstrapper
 fi
 
 section Starting using kbd:iwant on a workspace
@@ -38,6 +63,7 @@ WSCLASS=example.Workspace
 
 cmd "mkdir -p $WSSRC/example"
 create "$WSJAVA"
+
 cmd "iwant/as-iwant-user/to-use-iwant-on.sh example $WSROOT $WSSRC $WSCLASS"
 
 out-was <<EOF

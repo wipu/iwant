@@ -77,10 +77,10 @@
 - As a @buildscriptauthor I want to svn export an iwant bootstrapper that will guide me to bootstrap iwant from a given source (src-url or svn revision) and form the wishdir root for the ws
   * the bootstrapper will be named iwant/help.sh (under as-x-developer)
   * help.sh=>iwant-version.conf created; edit it and rerun help.sh=>bootstrap
-  - local descript tutorial
-    - copy bootstrapper from local dir instead of svn exporting
+  + local descript tutorial
+    + copy bootstrapper from local dir instead of svn exporting
       * don't copy its cache
-    - descript bootstrapping by using the local iwant
+    + descript bootstrapping by using the local iwant
   - after commiting bootstrapper: real descript tutorial
     - svn export bootstrapper
     - descript bootstrapper
