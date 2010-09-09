@@ -74,6 +74,29 @@
 = Planned
 #################################################################
 
+- As a @buildscriptauthor I want to svn export an iwant bootstrapper that will guide me to bootstrap iwant from a given source (src-url or svn revision) and form the wishdir root for the ws
+  * the bootstrapper will be named iwant/help.sh (under as-x-developer)
+  * help.sh=>iwant-version.conf created; edit it and rerun help.sh=>bootstrap
+  - local descript tutorial
+    - copy bootstrapper from local dir instead of svn exporting
+      * don't copy its cache
+    - descript bootstrapping by using the local iwant
+  - after commiting bootstrapper: real descript tutorial
+    - svn export bootstrapper
+    - descript bootstrapper
+
+- As a @buildscriptauthor I want the bootstrapper to guide me to configure the workspace and its wsdef and generate the wsdef stub
+  * help.sh=>ws-info.conf created; edit it and rerun help.sh=>a working ws and list-of/targets for it
+  * make the functions work with the new as-x-developer/iwant wording instead of the old "centralized iwant" iwant/as-x-developer wording
+
+- As a @buildscriptauthor I want iwant to automatically rebootstrap itself when I make any wish after I have changed iwant-version.conf
+  * descript by upgrading after demoing that some new feature doesn't work with an older iwant version
+  ? how to do in local tutorial?
+    * svn co an older revision in local cache just for this?
+
+- As a @buildscriptauthor I want all cached targets invalidated when iwant is rebootstrapping itself because I changed its version
+  * even downloaded files, for now (the "don't do it" rule of optimization)
+
 - As a @developer I want to move shell functionality into sourcable functions so that it will be easier to create different wrapper scripts and to restructure the scripts
   + bootstrap functions
   + as-iwant-user targetscript generation
@@ -82,6 +105,7 @@
     + remove the unneeded iwant-path.sh
     + make to-use-iwant-on use just one sourced function call
   - use only relative paths to source functions in all wrappers scripts
+  - mark this story done when it has proven itself by making the "as-x-developer/iwant" structure possible
 
 - As a @buildscriptauthor I want to define my targets in a tree of ContainerPaths for even easier organization
   - descript
