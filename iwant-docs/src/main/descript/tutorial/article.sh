@@ -20,12 +20,21 @@ local-bootstrapper() {
   cmd "cp -a \"$LOCAL_IWANT/../../iwant-bootstrapper/iwant\" ./"
 }
 
+conf-iwant-from-local-wishdir() {
+  cmd "echo local-iwant-wishdir \\\"$LOCAL_IWANT\\\" > i-have/iwant-from.conf"
+}
+
+conf-iwant-from-sfnet() {
+  cmd "echo \"svn-revision 87\" > i-have/iwant-from.conf"
+}
+
 svn-bootstrapper() {
-  die "Sorry, not yet supported"
+  cmd "svn export -r 87 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/iwant ./"
 }
 
 bootstrap() {
 local FETCH_BOOTSTRAPPER=$1
+local CONF_IWANT_FROM=$2
 doc 'section {name {Bootstrapping}'
 cmd 'mkdir -p example/as-example-developer && cd example/as-example-developer'
 "$FETCH_BOOTSTRAPPER"
@@ -37,7 +46,7 @@ cmd 'find .'
 #EOF
 cmd 'iwant/help.sh'
 cmd 'cat i-have/iwant-from.conf'
-cmd "echo local-iwant-wishdir \\\"$LOCAL_IWANT\\\" > i-have/iwant-from.conf"
+"$CONF_IWANT_FROM"
 cmd 'cat i-have/iwant-from.conf'
 cmd 'iwant/help.sh'
 cmd 'ls iwant'
@@ -48,9 +57,9 @@ doc '}'
 doc 'article {name {Tutorial}'
 
 if [ "x" == "x$LOCAL_IWANT" ]; then
-  bootstrap svn-bootstrapper
+  bootstrap svn-bootstrapper conf-iwant-from-sfnet
 else
-  bootstrap local-bootstrapper
+  bootstrap local-bootstrapper conf-iwant-from-local-wishdir
 fi
 
 section Starting using kbd:iwant on a workspace

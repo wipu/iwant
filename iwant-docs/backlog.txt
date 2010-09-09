@@ -81,9 +81,12 @@
     + copy bootstrapper from local dir instead of svn exporting
       * don't copy its cache
     + descript bootstrapping by using the local iwant
+  + real svn export
+    + temporarily run local descript with real svn export
   - after commiting bootstrapper: real descript tutorial
     - svn export bootstrapper
     - descript bootstrapper
+  - clean descript outputs and assert them
 
 - As a @buildscriptauthor I want the bootstrapper to guide me to configure the workspace and its wsdef and generate the wsdef stub
   * help.sh=>ws-info.conf created; edit it and rerun help.sh=>a working ws and list-of/targets for it
