@@ -25,11 +25,11 @@ conf-iwant-from-local-wishdir() {
 }
 
 conf-iwant-from-sfnet() {
-  cmd "echo \"svn-revision 87\" > i-have/iwant-from.conf"
+  cmd "echo \"svn-revision 88\" > i-have/iwant-from.conf"
 }
 
 svn-bootstrapper() {
-  cmd "svn export -r 87 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/iwant ./"
+  cmd "svn export -r 88 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/iwant iwant"
 }
 
 bootstrap() {
