@@ -17,7 +17,10 @@ doc '}'
 }
 
 local-bootstrapper() {
-  cmd "cp -a \"$LOCAL_IWANT/../../iwant-bootstrapper/iwant\" ./"
+cmd "svn export \"$LOCAL_IWANT/../../iwant-bootstrapper/iwant\" iwant"
+out-was <<EOF  
+Export complete.
+EOF
 }
 
 conf-iwant-from-local-wishdir() {
@@ -29,7 +32,12 @@ conf-iwant-from-sfnet() {
 }
 
 svn-bootstrapper() {
-  cmd "svn export -r 88 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/iwant iwant"
+cmd "svn export -r 88 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/iwant iwant"
+out-was <<EOF
+A    iwant
+A    iwant/help.sh
+Exported revision 88.
+EOF
 }
 
 bootstrap() {
@@ -38,19 +46,21 @@ local CONF_IWANT_FROM=$2
 doc 'section {name {Bootstrapping}'
 cmd 'mkdir -p example/as-example-developer && cd example/as-example-developer'
 "$FETCH_BOOTSTRAPPER"
-cmd 'find .'
-#out-was <<EOF
-#.
-#./iwant
-#./iwant/help.sh
-#EOF
 cmd 'iwant/help.sh'
+out-was <<EOF
+Welcome.
+
+Please start by specify what version of iwant you wish to use.
+I created file ./i-have/iwant-from.conf for you.
+Modify it and rerun iwant/help.sh
+EOF
+EOF
 cmd 'cat i-have/iwant-from.conf'
 "$CONF_IWANT_FROM"
-cmd 'cat i-have/iwant-from.conf'
-cmd 'iwant/help.sh'
-cmd 'ls iwant'
-cmd 'ls iwant/cached/iwant'
+cmd 'iwant/help.sh 2>/dev/null | tail -n 1'
+out-was <<EOF
+ready
+EOF
 doc '}'
 }
 

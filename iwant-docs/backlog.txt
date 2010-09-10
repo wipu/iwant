@@ -70,11 +70,7 @@
 + As @developer I want iwant tests to at least sleep a shorter time to test timestamp-based features, if ant tasks make it impossible to mock time
   * 2000ms -> 10ms, seems to work
 
-#################################################################
-= Planned
-#################################################################
-
-- As a @buildscriptauthor I want to svn export an iwant bootstrapper that will guide me to bootstrap iwant from a given source (src-url or svn revision) and form the wishdir root for the ws
++ As a @buildscriptauthor I want to svn export an iwant bootstrapper that will guide me to bootstrap iwant from a given source (src-url or svn revision) and form the wishdir root for the ws
   * the bootstrapper will be named iwant/help.sh (under as-x-developer)
   * help.sh=>iwant-version.conf created; edit it and rerun help.sh=>bootstrap
   + local descript tutorial
@@ -86,7 +82,11 @@
   + after commiting bootstrapper: real descript tutorial
     + svn export bootstrapper
     + descript bootstrapper
-  - clean descript outputs and assert them
+  + clean descript outputs and assert them
+
+#################################################################
+= Planned
+#################################################################
 
 - As a @buildscriptauthor I want the bootstrapper to guide me to configure the workspace and its wsdef and generate the wsdef stub
   * help.sh=>ws-info.conf created; edit it and rerun help.sh=>a working ws and list-of/targets for it
