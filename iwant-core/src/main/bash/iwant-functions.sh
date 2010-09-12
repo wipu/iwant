@@ -1,18 +1,11 @@
 # to be sourced
+set -eu
 
-abs() {
-  readlink -f "$1"
-}
+as_iwant_user="as-iwant-user"
 
-# variables that need to be defined before sourcing:
-here=$(abs "$here")
-iwant=$(abs "$iwant")
-
-as_iwant_user="$iwant/as-iwant-user"
-
-cache="$iwant/cached/iwant"
-scriptcache="$cache/scripts"
-cpitemscache="$cache/cpitems"
+cached="cached/iwant"
+scriptcache="$cached/scripts"
+cpitemscache="$cached/cpitems"
 classescache="$cpitemscache/iwant-core"
 
 # TODO how about running the wsdef with beanshell so
@@ -60,7 +53,7 @@ local WSSRC="$4"
 local WSDEFCLASS="$5"
 local POSTPROCESSOR="$6"
 
-local ROOTDIR="$iwant/as-$WSNAME-developer"
+local ROOTDIR="$iwant"
 local TARGETDIR=$ROOTDIR/$(dirname "$TARGET")
 mkdir -p "$TARGETDIR"
 local TARGETFILE="$ROOTDIR/$TARGET"
@@ -72,7 +65,7 @@ cat > "$TARGETFILE" <<EOF
 set -eu
 
 here=\$(dirname "\$0")
-iwant=\$here/..$DOTS
+iwant=\$here$DOTS
 . "\$iwant/cached/iwant/scripts/iwant-functions.sh"
 
 compiled-wsdef \\
@@ -90,7 +83,7 @@ compiled-wsdef() {
   local WSSRC=$2
   compiled-java \
     "$iwant/cached/$WSNAME-wsdefclasses" \
-    "$WSSRC" \
+    "$iwant/$WSSRC" \
     "$iwant/cached/iwant/cpitems/iwant-core" \
     "$iwant/cached/iwant/cpitems/ant-1.7.1.jar" \
     "$iwant/cached/iwant/cpitems/ant-junit-1.7.1.jar" \
@@ -106,30 +99,16 @@ wsdef-run() {
    -cp "$iwant/cached/$WSNAME-wsdefclasses:$iwant/cached/iwant/cpitems/iwant-core:$iwant/cached/iwant/cpitems/ant-1.7.1.jar:$iwant/cached/iwant/cpitems/ant-junit-1.7.1.jar:$iwant/cached/iwant/cpitems/junit-3.8.1.jar" \
    net.sf.iwant.core.WorkspaceBuilder \
    "$WSDEFCLASS" \
-   "$WSROOT" \
+   "$iwant/$WSROOT" \
    "$TARGET" \
    "$iwant/cached/$WSNAME"
 }
 
 use-iwant-on() {
   local WSNAME="$1"
-  local WSROOT=$(abs "$2")
-  local WSSRC=$(abs "$3")
+  local WSROOT="$2"
+  local WSSRC="$3"
   local WSDEFCLASS="$4"
 
-  ws-script() {
-    createscript \
-      "$WSNAME" \
-      "$WSROOT" \
-      "$1" \
-      "$WSSRC" \
-      "$WSDEFCLASS" \
-      "$2"
-  }
-
-  ws-script "help" ""
-  ws-script "list-of/targets" " | create-target-scripts \"$WSNAME\" \"$WSROOT\" \"$WSSRC\" \"$WSDEFCLASS\""
-
-  echo To get access to targets of the $WSNAME workspace, start your sentences with
-  echo \$ iwant/as-$WSNAME-developer
+  createscript "$WSNAME" "$WSROOT" "list-of/targets" "$WSSRC" "$WSDEFCLASS" " | create-target-scripts \"$WSNAME\" \"$WSROOT\" \"$WSSRC\" \"$WSDEFCLASS\""
 }

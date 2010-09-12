@@ -91,14 +91,25 @@
 - As a @buildscriptauthor I want the bootstrapper to guide me to configure the workspace and its wsdef and generate the wsdef stub
   * help.sh=>ws-info.conf created; edit it and rerun help.sh=>a working ws and list-of/targets for it
   * make the functions work with the new as-x-developer/iwant wording instead of the old "centralized iwant" iwant/as-x-developer wording
+  + modify the bootstrap section of tutorial
+  + make it pass
+    + use paths relative to iwant (wishdir)
+    + etc
+    + improve descript (ext ngrease) to support relative in and out and explicit file creation content path
+  - clean up dots<->slashes transformations (java package) in the bootstrapper
+  - fix: some script puts and extra "/iwant" in a path (the iwant test during bootstrapping?), generating an extra local change when running refresh.sh
 
-- As a @buildscriptauthor I want iwant to automatically rebootstrap itself when I make any wish after I have changed iwant-version.conf
-  * descript by upgrading after demoing that some new feature doesn't work with an older iwant version
-  ? how to do in local tutorial?
-    * svn co an older revision in local cache just for this?
+- As a @developer I want the long sleep back, since the shorter sleep causes a test failure occasionally (WorkspaceTest.java line 376)
 
-- As a @buildscriptauthor I want all cached targets invalidated when iwant is rebootstrapping itself because I changed its version
-  * even downloaded files, for now (the "don't do it" rule of optimization)
+- As a @buildscriptuser I want to be able to move the whole workspace without breaking iwant
+  * use only relative paths internally
+  * should be mostly done, but
+  - descript and fix possible problems
+
+- As a @buildscriptuser I want target paths to be output as absolute, to make them more useful externally
+
+- As a @buildscriptuser I want any output relative paths in a minimal form, without extra ".."s
+  - mostly the bootstrapper outputs these, find out where else
 
 - As a @developer I want to move shell functionality into sourcable functions so that it will be easier to create different wrapper scripts and to restructure the scripts
   + bootstrap functions
@@ -109,6 +120,16 @@
     + make to-use-iwant-on use just one sourced function call
   - use only relative paths to source functions in all wrappers scripts
   - mark this story done when it has proven itself by making the "as-x-developer/iwant" structure possible
+    + that's done but
+    - the final proof will be that relocating the whole workspace won't break anything (another story)
+
+- As a @buildscriptauthor I want iwant to automatically rebootstrap itself when I make any wish after I have changed iwant-version.conf
+  * descript by upgrading after demoing that some new feature doesn't work with an older iwant version
+  ? how to do in local tutorial?
+    * svn co an older revision in local cache just for this?
+
+- As a @buildscriptauthor I want all cached targets invalidated when iwant is rebootstrapping itself because I changed its version
+  * even downloaded files, for now (the "don't do it" rule of optimization)
 
 - As a @buildscriptauthor I want to define my targets in a tree of ContainerPaths for even easier organization
   - descript

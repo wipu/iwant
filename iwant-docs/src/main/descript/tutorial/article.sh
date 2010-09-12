@@ -57,9 +57,10 @@ EOF
 EOF
 cmd 'cat i-have/iwant-from.conf'
 "$CONF_IWANT_FROM"
-cmd 'iwant/help.sh 2>/dev/null | tail -n 1'
+cmd 'iwant/help.sh 2>/dev/null | tail -n 2'
 out-was <<EOF
-ready
+Next, modify ./i-have/ws-info.conf to define your workspace.
+After that, rerun iwant/help.sh
 EOF
 doc '}'
 }
@@ -75,42 +76,34 @@ fi
 section Starting using kbd:iwant on a workspace
 #----------------------------------------------
 
-WSROOT=example-ws
-WSSRC=$WSROOT/ws-def/src
-WSJAVA=$WSSRC/example/Workspace.java
-WSCLASS=example.Workspace
-
-cmd "mkdir -p $WSSRC/example"
-create "$WSJAVA"
-
-cmd "iwant/as-iwant-user/to-use-iwant-on.sh example $WSROOT $WSSRC $WSCLASS"
-
+cmd 'cat i-have/ws-info.conf'
+doc "p {Let's go with the defaults.}"
+cmd 'iwant/help.sh'
 out-was <<EOF
-To get access to targets of the example workspace, start your sentences with
-$ iwant/as-example-developer
+I created a stub workspace definition at iwant/../i-have/wsdef/com/example/wsdef/Workspace.java
+Use find or code completion (tab) to see what you can iwant/
+Have fun.
 EOF
 
-cmd 'find iwant/as-example-developer -type f'
+cmd 'find iwant/list-of'
 out-was <<EOF
-iwant/as-example-developer/help
-iwant/as-example-developer/list-of/targets
+iwant/list-of
+iwant/list-of/targets
 EOF
 
-cmd 'iwant/as-example-developer/list-of/targets'
+cmd 'iwant/list-of/targets'
 out-was <<EOF
 aConstant
 EOF
 
-cmd 'find iwant/as-example-developer -type f'
+cmd 'find iwant/target -type f'
 out-was <<EOF
-iwant/as-example-developer/help
-iwant/as-example-developer/list-of/targets
-iwant/as-example-developer/target/aConstant/as-path
+iwant/target/aConstant/as-path
 EOF
 
-cmd 'iwant/as-example-developer/target/aConstant/as-path | grep -o iwant/cached/example.*'
+cmd 'iwant/target/aConstant/as-path'
 out-was <<EOF
-iwant/cached/example/target/aConstant
+iwant/target/aConstant/../../cached/example/target/aConstant
 EOF
 
 cmd 'cat iwant/cached/example/target/aConstant'
@@ -118,8 +111,10 @@ out-was <<EOF
 Constant generated content
 EOF
 
+WSJAVA=i-have/wsdef/com/example/wsdef/Workspace.java
+
 edit "$WSJAVA" Workspace.java.new-constant-content.diff
-cmd 'cat $(iwant/as-example-developer/target/aConstant/as-path)'
+cmd 'cat $(iwant/target/aConstant/as-path)'
 out-was <<EOF
 Modified constant content
 EOF
@@ -128,29 +123,29 @@ end
 
 doc 'section {name {Java classes}'
 
-A_TESTS="example-ws/project-a/tests"
-cmd "mkdir -p $A_TESTS/example"
-create "$A_TESTS/example/ATest.java"
+A_TESTS="project-a/tests"
+cmd "mkdir -p ../$A_TESTS/example"
+create-from "../$A_TESTS/example/ATest.java" "example-ws/$A_TESTS/example/ATest.java"
 edit "$WSJAVA" Workspace.java.a-tests.diff
-cmd 'iwant/as-example-developer/list-of/targets | grep projectATests'
+cmd 'iwant/list-of/targets | grep projectATests'
 out-was <<EOF
 projectATests
 EOF
 
-cmd 'java -cp $(iwant/as-example-developer/target/projectATests/as-path) example.ATest'
+cmd 'java -cp $(iwant/target/projectATests/as-path) example.ATest'
 out-was <<EOF
 TODO make this a junit test
 EOF
 
-A_SRC="example-ws/project-a/src"
+A_SRC="project-a/src"
 sleep 2
-edit "$A_TESTS/example/ATest.java" ATest.java.aprod.diff
-cmd "mkdir -p $A_SRC/example"
-create "$A_SRC/example/AProd.java"
+edit "../$A_TESTS/example/ATest.java" ATest.java.aprod.diff
+cmd "mkdir -p ../$A_SRC/example"
+create-from "../$A_SRC/example/AProd.java" "example-ws/$A_SRC/example/AProd.java"
 edit "$WSJAVA" Workspace.java.a-src.diff
-cmd 'iwant/as-example-developer/target/projectATests/as-path | grep -o iwant/cached/example.*'
+cmd 'iwant/target/projectATests/as-path'
 out-was <<EOF
-iwant/cached/example/target/projectATests
+iwant/target/projectATests/../../cached/example/target/projectATests
 EOF
 cmd 'java -cp iwant/cached/example/target/projectATests:iwant/cached/example/target/projectAClasses example.ATest'
 out-was <<EOF
@@ -162,26 +157,26 @@ doc '}'
 doc 'section {name {JUnit tests}'
 
 sleep 2
-edit "$A_TESTS/example/ATest.java" ATest.java.junit.diff
+edit "../$A_TESTS/example/ATest.java" ATest.java.junit.diff
 edit "$WSJAVA" Workspace.java.junit.diff
-cmd 'iwant/as-example-developer/list-of/targets | grep projectATestResult'
+cmd 'iwant/list-of/targets | grep projectATestResult'
 out-was <<EOF
 projectATestResult
 EOF
-cmd '(iwant/as-example-developer/target/projectATestResult/as-path && echo exit status was zero) | sed s:$(pwd)/::'
+cmd '(iwant/target/projectATestResult/as-path && echo exit status was zero) | sed s:$(pwd)/::'
 out-was <<EOF
 Test example.ATest FAILED
-iwant/cached/example/target/projectATestResult
+iwant/target/projectATestResult/../../cached/example/target/projectATestResult
 exit status was zero
 EOF
 
-cmd 'grep -m 1 expected $(iwant/as-example-developer/target/projectATestResult/as-path)'
+cmd 'grep -m 1 expected $(iwant/target/projectATestResult/as-path)'
 out-was <<EOF
 expected:<42> but was:<0>
 EOF
 
-edit "$A_SRC/example/AProd.java" AProd.java.redtogreen.diff
-cmd 'cat $(iwant/as-example-developer/target/projectATestResult/as-path) | sed s/[^\ ]*\ sec/***/'
+edit "../$A_SRC/example/AProd.java" AProd.java.redtogreen.diff
+cmd 'cat $(iwant/target/projectATestResult/as-path) | sed s/[^\ ]*\ sec/***/'
 out-was <<EOF
 Testsuite: example.ATest
 Tests run: 1, Failures: 0, Errors: 0, Time elapsed: ***
@@ -197,17 +192,17 @@ TS="touched-after-src"
 cmd "touch $TS"
 cmd "find iwant/cached/example/target -newer $TS"
 echo -n | out-was
-cmd 'cat $(iwant/as-example-developer/target/aConstant/as-path)'
+cmd 'cat $(iwant/target/aConstant/as-path)'
 out-was <<EOF
 Modified constant content
 EOF
 cmd "find iwant/cached/example/target -newer $TS"
 out-was < ../tmp/empty
 edit "$WSJAVA" Workspace.java.another-constant-change-to-demo-laziness.diff
-cmd 'iwant/as-example-developer/target/projectATestResult/as-path > /dev/null'
+cmd 'iwant/target/projectATestResult/as-path > /dev/null'
 cmd "find iwant/cached/example/target -newer $TS"
 echo -n | out-was
-cmd 'cat $(iwant/as-example-developer/target/aConstant/as-path)'
+cmd 'cat $(iwant/target/aConstant/as-path)'
 out-was <<EOF
 A change unrelated to java and test targets
 EOF
@@ -220,17 +215,17 @@ doc '}'
 
 doc 'section {name {Downloaded content}'
 
-edit "$A_SRC/example/AProd.java" AProd.java.use-commons-math.diff
-cmd 'iwant/as-example-developer/target/projectATestResult/as-path 2> /dev/null || echo "Compilation failed"'
+edit "../$A_SRC/example/AProd.java" AProd.java.use-commons-math.diff
+cmd 'iwant/target/projectATestResult/as-path 2> /dev/null || echo "Compilation failed"'
 out-was <<EOF
 Compilation failed
 EOF
 edit "$WSJAVA" Workspace.java.use-commons-math.diff
-cmd 'iwant/as-example-developer/target/projectATestResult/as-path 2>&1 | sed s:$(pwd)/::'
+cmd 'iwant/target/projectATestResult/as-path 2>&1 | sed s:$(pwd)/::'
 out-was <<EOF
 Getting: http://mirrors.ibiblio.org/pub/mirrors/maven2/commons-math/commons-math/1.2/commons-math-1.2.jar
-To: iwant/cached/example/target/commons-math
-iwant/cached/example/target/projectATestResult
+To: iwant/target/projectATestResult/../../cached/example/target/commons-math
+iwant/target/projectATestResult/../../cached/example/target/projectATestResult
 EOF
 
 doc '}'
