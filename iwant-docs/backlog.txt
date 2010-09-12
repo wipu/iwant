@@ -97,7 +97,7 @@
     + etc
     + improve descript (ext ngrease) to support relative in and out and explicit file creation content path
   - clean up dots<->slashes transformations (java package) in the bootstrapper
-  - fix: some script puts and extra "/iwant" in a path (the iwant test during bootstrapping?), generating an extra local change when running refresh.sh
+  + fix: some script puts and extra "/iwant" in a path (the iwant test during bootstrapping?), generating an extra local change when running refresh.sh
 
 - As a @developer I want the long sleep back, since the shorter sleep causes a test failure occasionally (WorkspaceTest.java line 376)
 

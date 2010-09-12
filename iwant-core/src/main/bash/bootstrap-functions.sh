@@ -3,7 +3,7 @@
 . "$iwant/$wsroot/iwant-core/src/main/bash/iwant-functions.sh"
 set -eu
 
-testarea="$iwant/$cached/testarea"
+testarea="$cached/testarea"
 
 cached-script() {
   cp "$iwant/$wsroot/iwant-core/src/main/bash/$1" "$iwant/$scriptcache/$2"
