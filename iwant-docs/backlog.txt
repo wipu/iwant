@@ -84,6 +84,8 @@
     + descript bootstrapper
   + clean descript outputs and assert them
 
++ As a @developer I want the long sleep back, since the shorter sleep causes a test failure occasionally (WorkspaceBuilderTest.java line 376)
+
 #################################################################
 = Planned
 #################################################################
@@ -96,10 +98,9 @@
     + use paths relative to iwant (wishdir)
     + etc
     + improve descript (ext ngrease) to support relative in and out and explicit file creation content path
-  - clean up dots<->slashes transformations (java package) in the bootstrapper
+  - clean up dots<->slashes conversions (java package) in the bootstrapper
   + fix: some script puts and extra "/iwant" in a path (the iwant test during bootstrapping?), generating an extra local change when running refresh.sh
-
-- As a @developer I want the long sleep back, since the shorter sleep causes a test failure occasionally (WorkspaceTest.java line 376)
+  - upgrade tutorial revisions and publish
 
 - As a @buildscriptuser I want to be able to move the whole workspace without breaking iwant
   * use only relative paths internally
