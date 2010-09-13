@@ -100,7 +100,7 @@
     + improve descript (ext ngrease) to support relative in and out and explicit file creation content path
   - clean up dots<->slashes conversions (java package) in the bootstrapper
   + fix: some script puts and extra "/iwant" in a path (the iwant test during bootstrapping?), generating an extra local change when running refresh.sh
-  - upgrade tutorial revisions and publish
+  + upgrade tutorial revisions and publish
 
 - As a @buildscriptuser I want to be able to move the whole workspace without breaking iwant
   * use only relative paths internally
