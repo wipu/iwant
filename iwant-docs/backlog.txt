@@ -90,6 +90,16 @@
 = Planned
 #################################################################
 
+- As a @buildscriptuser I want a target "eclipse-projects" in the stub that generates eclipse .project and .classpath for the wsdef project
+  - descript
+    - existence of the target
+    - that it creates the correct files
+  - project and classpath targets
+    * use absolute paths to link to the actual project sources,
+      eclipse requires this since it's outside the project dir
+  - wsdef project dir target that depends on the setting files
+  - target for the containing directory that depends on the project dir
+
 - As a @buildscriptauthor I want the bootstrapper to guide me to configure the workspace and its wsdef and generate the wsdef stub
   * help.sh=>ws-info.conf created; edit it and rerun help.sh=>a working ws and list-of/targets for it
   * make the functions work with the new as-x-developer/iwant wording instead of the old "centralized iwant" iwant/as-x-developer wording
@@ -101,6 +111,8 @@
   - clean up dots<->slashes conversions (java package) in the bootstrapper
   + fix: some script puts and extra "/iwant" in a path (the iwant test during bootstrapping?), generating an extra local change when running refresh.sh
   + upgrade tutorial revisions and publish
+
+- As a @buildscriptauthor I want the bootstrapper to svn:ignore all directories it generates so I won't see any local changes there
 
 - As a @buildscriptuser I want to be able to move the whole workspace without breaking iwant
   * use only relative paths internally
