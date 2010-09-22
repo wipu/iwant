@@ -86,11 +86,7 @@
 
 + As a @developer I want the long sleep back, since the shorter sleep causes a test failure occasionally (WorkspaceBuilderTest.java line 376)
 
-#################################################################
-= Planned
-#################################################################
-
-- As a @buildscriptuser I want a target "eclipse-projects" in the stub that generates eclipse .project and .classpath for the wsdef project
++ As a @buildscriptuser I want a target "eclipse-projects" in the stub that generates eclipse .project and .classpath for the wsdef project
   + descript
     + existence of the target
     + that it creates the correct files
@@ -99,9 +95,13 @@
       eclipse requires this since it's outside the project dir
     + absolute paths for libs
     * these are not properly tested, since the test gives WorkspaceBuilder absolute paths, but these things will be improved by future stories about absolute/relative
-  - real test and publish
+  + real use (in the gluent project) and publish
     + fix wsdef src path
-    - publish
+    + publish
+
+#################################################################
+= Planned
+#################################################################
 
 - TODO eclipse project stories
   - dep to other eclipse projects as project deps, not to iwant cache

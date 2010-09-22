@@ -28,15 +28,15 @@ conf-iwant-from-local-wishdir() {
 }
 
 conf-iwant-from-sfnet() {
-  cmd "echo \"svn-revision 92\" > i-have/iwant-from.conf"
+  cmd "echo \"svn-revision 100\" > i-have/iwant-from.conf"
 }
 
 svn-bootstrapper() {
-cmd "svn export -r 92 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/iwant iwant"
+cmd "svn export -r 100 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/iwant iwant"
 out-was <<EOF
 A    iwant
 A    iwant/help.sh
-Exported revision 92.
+Exported revision 100.
 EOF
 }
 
