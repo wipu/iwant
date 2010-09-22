@@ -122,6 +122,8 @@
   + upgrade tutorial revisions and publish
 
 - As a @buildscriptauthor I want the bootstrapper to svn:ignore all directories it generates so I won't see any local changes there
+  + as-iwant-user target cached list-of
+  - test in a real project this is enough
 
 - As a @buildscriptauthor I want iwant the JavaClasses content to remember the order of "using" calls so I can control the actual classpath in the unfortunate case I need classpath items that contain the same fqcn's with different semantics (a real problem in the real world, especially in the enterprise/xml world)
   - save the cpitems internally in a list, even though publishing them as an alphabetical sortedset for depencency management
