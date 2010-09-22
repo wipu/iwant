@@ -99,7 +99,9 @@
       eclipse requires this since it's outside the project dir
     + absolute paths for libs
     * these are not properly tested, since the test gives WorkspaceBuilder absolute paths, but these things will be improved by future stories about absolute/relative
-  - publish
+  - real test and publish
+    + fix wsdef src path
+    - publish
 
 - TODO eclipse project stories
   - dep to other eclipse projects as project deps, not to iwant cache
