@@ -45,6 +45,10 @@ public class JavaClasses implements Content {
 		return this;
 	}
 
+	public List<Path> classpathItems() {
+		return classPath;
+	}
+
 	public SortedSet<Path> sources() {
 		return sources;
 	}

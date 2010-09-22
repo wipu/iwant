@@ -91,14 +91,23 @@
 #################################################################
 
 - As a @buildscriptuser I want a target "eclipse-projects" in the stub that generates eclipse .project and .classpath for the wsdef project
-  - descript
-    - existence of the target
-    - that it creates the correct files
-  - project and classpath targets
-    * use absolute paths to link to the actual project sources,
+  + descript
+    + existence of the target
+    + that it creates the correct files
+  + content EclipseProjects, using .classpath and .project content from EclipseProject
+    + use absolute paths to link to the actual project sources,
       eclipse requires this since it's outside the project dir
-  - wsdef project dir target that depends on the setting files
-  - target for the containing directory that depends on the project dir
+    + absolute paths for libs
+    * these are not properly tested, since the test gives WorkspaceBuilder absolute paths, but these things will be improved by future stories about absolute/relative
+  - publish
+
+- TODO eclipse project stories
+  - dep to other eclipse projects as project deps, not to iwant cache
+  - src dir from the classes target, not hardcoded "src"
+  - and support multiple sources for the classes (if supported by the JavaClasses content)
+  - src link name? maybe src-main or something, when supporting many sources and test classes?
+  - distinction between targets and nontargets is clumsy: why not just declare all needed paths as dependencies? would make it easier to build eclipseprojects from javaclasses
+  - somehow make it unnecessary to get content from target and cast it
 
 - As a @buildscriptauthor I want the bootstrapper to guide me to configure the workspace and its wsdef and generate the wsdef stub
   * help.sh=>ws-info.conf created; edit it and rerun help.sh=>a working ws and list-of/targets for it
@@ -113,6 +122,11 @@
   + upgrade tutorial revisions and publish
 
 - As a @buildscriptauthor I want the bootstrapper to svn:ignore all directories it generates so I won't see any local changes there
+
+- As a @buildscriptauthor I want iwant the JavaClasses content to remember the order of "using" calls so I can control the actual classpath in the unfortunate case I need classpath items that contain the same fqcn's with different semantics (a real problem in the real world, especially in the enterprise/xml world)
+  - save the cpitems internally in a list, even though publishing them as an alphabetical sortedset for depencency management
+  - use the list during compilation
+  - use the list when generating eclipse .classpath
 
 - As a @buildscriptuser I want to be able to move the whole workspace without breaking iwant
   * use only relative paths internally

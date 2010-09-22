@@ -1,8 +1,8 @@
-4a4
-> import net.sf.iwant.core.JavaClasses;
 6a6
+> import net.sf.iwant.core.JavaClasses;
+8a8
 > import net.sf.iwant.core.Source;
-26a26,34
+28a28,36
 >         public Source projectATestsSrc() {
 >             return source("project-a/tests");
 >         }

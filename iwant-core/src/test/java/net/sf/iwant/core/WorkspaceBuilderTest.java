@@ -64,6 +64,14 @@ public class WorkspaceBuilderTest extends TestCase {
 	private static void ensureEmpty(String dirname) {
 		File dir = new File(dirname);
 		del(dir);
+		ensureDir(dir);
+	}
+
+	private static void ensureDir(File dir) {
+		File parent = dir.getParentFile();
+		if (!parent.exists()) {
+			ensureDir(parent);
+		}
 		dir.mkdir();
 	}
 
@@ -483,6 +491,172 @@ public class WorkspaceBuilderTest extends TestCase {
 		assertEquals("correct\n", cachedContent("aDownloadedFile"));
 		assertEquals(cachedFileModifiedAt, new File(
 				pathToCachedTarget("aDownloadedFile")).lastModified());
+	}
+
+	public static class WorkspaceWithEclipseProjects implements
+			WorkspaceDefinition {
+
+		public static class Root extends RootPath {
+
+			public Root(Locations locations) {
+				super(locations);
+			}
+
+			public Target eclipseProjects() {
+				return target("eclipse-projects").content(
+						EclipseProjects.with().project(aEclipseProject())
+								.project(bEclipseProject())).end();
+			}
+
+			private EclipseProject aEclipseProject() {
+				return EclipseProject.with().name("a").src(aSrc())
+						.libs(aClasses().content().dependencies()).end();
+			}
+
+			public Source aSrc() {
+				return source("a/src");
+			}
+
+			public Target aClasses() {
+				return target("a-classes").content(
+						JavaClasses.compiledFrom(aSrc()).using(bClasses()))
+						.end();
+			}
+
+			private EclipseProject bEclipseProject() {
+				JavaClasses bClassesContent = (JavaClasses) bClasses()
+						.content();
+				return EclipseProject.with().name("b").src(bSrc())
+						.libs(bClassesContent.classpathItems()).end();
+			}
+
+			public Source bSrc() {
+				return source("b/src");
+			}
+
+			public Target bClasses() {
+				return target("b-classes").content(
+						JavaClasses.compiledFrom(bSrc()).using(
+								builtin().junit381Classes())).end();
+			}
+
+		}
+
+		public ContainerPath wsRoot(Locations locations) {
+			return new Root(locations);
+		}
+
+	}
+
+	public void testEclipseProjectsFailsIfCompilationFails() throws IOException {
+		ensureEmpty(wsRoot + "/a/src");
+		ensureEmpty(wsRoot + "/b/src");
+		new FileWriter(wsRoot + "/b/src/B.java").append(
+				"public class B {compilationFailure}\n").close();
+		try {
+			WorkspaceBuilder.main(new String[] {
+					WorkspaceWithEclipseProjects.class.getName(), wsRoot,
+					"target/eclipse-projects/as-path", cacheDir });
+			fail();
+		} catch (Exception e) {
+			// expected
+		}
+	}
+
+	public void testEclipseProjectsWithTwoMinimalProjectsWithDependency()
+			throws IOException {
+		ensureEmpty(wsRoot + "/a/src");
+		ensureEmpty(wsRoot + "/b/src");
+		new FileWriter(wsRoot + "/a/src/A.java").append(
+				"public class A { public B b;}\n").close();
+		new FileWriter(wsRoot + "/b/src/B.java").append("public class B { }\n")
+				.close();
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithEclipseProjects.class.getName(), wsRoot,
+				"target/eclipse-projects/as-path", cacheDir });
+		assertEquals(pathLine("eclipse-projects"), out.toString());
+		assertEquals("", err.toString());
+
+		StringBuilder ap = new StringBuilder();
+		ap.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		ap.append("<projectDescription>\n");
+		ap.append("        <name>a</name>\n");
+		ap.append("        <comment></comment>\n");
+		ap.append("        <projects>\n");
+		ap.append("        </projects>\n");
+		ap.append("        <buildSpec>\n");
+		ap.append("                <buildCommand>\n");
+		ap.append("                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
+		ap.append("                        <arguments>\n");
+		ap.append("                        </arguments>\n");
+		ap.append("                </buildCommand>\n");
+		ap.append("        </buildSpec>\n");
+		ap.append("        <natures>\n");
+		ap.append("                <nature>org.eclipse.jdt.core.javanature</nature>\n");
+		ap.append("        </natures>\n");
+		ap.append("        <linkedResources>\n");
+		ap.append("                <link>\n");
+		ap.append("                        <name>src</name>\n");
+		ap.append("                        <type>2</type>\n");
+		ap.append("                        <location>" + wsRoot
+				+ "/a/src</location>\n");
+		ap.append("                </link>\n");
+		ap.append("        </linkedResources>\n");
+		ap.append("</projectDescription>\n");
+		assertEquals(ap.toString(),
+				cachedContent("eclipse-projects/a/.project"));
+		StringBuilder ac = new StringBuilder();
+		ac.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		ac.append("<classpath>\n");
+		ac.append("        <classpathentry kind=\"src\" path=\"src\"/>\n");
+		ac.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
+		ac.append("        <classpathentry kind=\"lib\" path=\"" + cacheDir
+				+ "/target/b-classes\"/>\n");
+		ac.append("        <classpathentry kind=\"output\" path=\"classes\"/>\n");
+		ac.append("</classpath>\n");
+		assertEquals(ac.toString(),
+				cachedContent("eclipse-projects/a/.classpath"));
+
+		StringBuilder bp = new StringBuilder();
+		bp.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		bp.append("<projectDescription>\n");
+		bp.append("        <name>b</name>\n");
+		bp.append("        <comment></comment>\n");
+		bp.append("        <projects>\n");
+		bp.append("        </projects>\n");
+		bp.append("        <buildSpec>\n");
+		bp.append("                <buildCommand>\n");
+		bp.append("                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
+		bp.append("                        <arguments>\n");
+		bp.append("                        </arguments>\n");
+		bp.append("                </buildCommand>\n");
+		bp.append("        </buildSpec>\n");
+		bp.append("        <natures>\n");
+		bp.append("                <nature>org.eclipse.jdt.core.javanature</nature>\n");
+		bp.append("        </natures>\n");
+		bp.append("        <linkedResources>\n");
+		bp.append("                <link>\n");
+		bp.append("                        <name>src</name>\n");
+		bp.append("                        <type>2</type>\n");
+		bp.append("                        <location>" + wsRoot
+				+ "/b/src</location>\n");
+		bp.append("                </link>\n");
+		bp.append("        </linkedResources>\n");
+		bp.append("</projectDescription>\n");
+		assertEquals(bp.toString(),
+				cachedContent("eclipse-projects/b/.project"));
+
+		StringBuilder bc = new StringBuilder();
+		bc.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		bc.append("<classpath>\n");
+		bc.append("        <classpathentry kind=\"src\" path=\"src\"/>\n");
+		bc.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
+		bc.append("        <classpathentry kind=\"lib\" path=\"" + testarea
+				+ "/iwant/cpitems/junit-3.8.1.jar\"/>\n");
+		bc.append("        <classpathentry kind=\"output\" path=\"classes\"/>\n");
+		bc.append("</classpath>\n");
+		assertEquals(bc.toString(),
+				cachedContent("eclipse-projects/b/.classpath"));
 	}
 
 }

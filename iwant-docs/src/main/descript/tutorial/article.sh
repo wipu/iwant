@@ -54,7 +54,6 @@ Please start by specify what version of iwant you wish to use.
 I created file ./i-have/iwant-from.conf for you.
 Modify it and rerun iwant/help.sh
 EOF
-EOF
 cmd 'cat i-have/iwant-from.conf'
 "$CONF_IWANT_FROM"
 cmd 'iwant/help.sh 2>/dev/null | tail -n 2'
@@ -94,11 +93,13 @@ EOF
 cmd 'iwant/list-of/targets'
 out-was <<EOF
 aConstant
+eclipse-projects
 EOF
 
-cmd 'find iwant/target -type f'
+cmd 'find iwant/target -type f | sort'
 out-was <<EOF
 iwant/target/aConstant/as-path
+iwant/target/eclipse-projects/as-path
 EOF
 
 cmd 'iwant/target/aConstant/as-path'
@@ -110,6 +111,25 @@ cmd 'cat iwant/cached/example/target/aConstant'
 out-was <<EOF
 Constant generated content
 EOF
+
+end
+
+section Editing the workspace definition with Eclipse
+#----------------------------------------------------
+
+cmd 'iwant/target/eclipse-projects/as-path'
+out-was <<EOF
+iwant/target/eclipse-projects/../../cached/example/target/eclipse-projects
+EOF
+cmd 'find iwant/cached/example/target/eclipse-projects'
+out-was <<EOF
+iwant/cached/example/target/eclipse-projects
+iwant/cached/example/target/eclipse-projects/as-example-developer
+iwant/cached/example/target/eclipse-projects/as-example-developer/.classpath
+iwant/cached/example/target/eclipse-projects/as-example-developer/.project
+EOF
+
+doc 'p {Import the project into Eclipse. Make sure not to copy it to the workspace.}'
 
 WSJAVA=i-have/wsdef/com/example/wsdef/Workspace.java
 
