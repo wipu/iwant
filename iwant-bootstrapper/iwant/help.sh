@@ -180,7 +180,7 @@ public class $CLASS implements WorkspaceDefinition {
 
         public EclipseProject wsdefEclipseProject() {
             return EclipseProject.with().name("as-$WSNAME-developer").
-                src(source("as-$WSNAME-developer/i-have/wsdef")).libs(builtin().all()).end();
+                src("i-have/wsdef").libs(builtin().all()).end();
         }
 
     }
