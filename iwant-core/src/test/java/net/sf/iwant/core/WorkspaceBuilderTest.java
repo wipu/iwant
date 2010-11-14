@@ -509,7 +509,7 @@ public class WorkspaceBuilderTest extends TestCase {
 			}
 
 			private EclipseProject aEclipseProject() {
-				return EclipseProject.with().name("a").src(aSrc())
+				return EclipseProject.with().name("a").src("src/main/java")
 						.libs(aClasses().content().dependencies()).end();
 			}
 
@@ -526,7 +526,7 @@ public class WorkspaceBuilderTest extends TestCase {
 			private EclipseProject bEclipseProject() {
 				JavaClasses bClassesContent = (JavaClasses) bClasses()
 						.content();
-				return EclipseProject.with().name("b").src(bSrc())
+				return EclipseProject.with().name("b").src("src").src("tests")
 						.libs(bClassesContent.classpathItems()).end();
 			}
 
@@ -567,10 +567,13 @@ public class WorkspaceBuilderTest extends TestCase {
 			throws IOException {
 		ensureEmpty(wsRoot + "/a/src");
 		ensureEmpty(wsRoot + "/b/src");
+		ensureEmpty(wsRoot + "/b/tests");
 		new FileWriter(wsRoot + "/a/src/A.java").append(
 				"public class A { public B b;}\n").close();
 		new FileWriter(wsRoot + "/b/src/B.java").append("public class B { }\n")
 				.close();
+		new FileWriter(wsRoot + "/b/tests/BTest.java").append(
+				"public class BTest extends org.junit.TestCase { }\n").close();
 		WorkspaceBuilder.main(new String[] {
 				WorkspaceWithEclipseProjects.class.getName(), wsRoot,
 				"target/eclipse-projects/as-path", cacheDir });
@@ -594,21 +597,13 @@ public class WorkspaceBuilderTest extends TestCase {
 		ap.append("        <natures>\n");
 		ap.append("                <nature>org.eclipse.jdt.core.javanature</nature>\n");
 		ap.append("        </natures>\n");
-		ap.append("        <linkedResources>\n");
-		ap.append("                <link>\n");
-		ap.append("                        <name>src</name>\n");
-		ap.append("                        <type>2</type>\n");
-		ap.append("                        <location>" + wsRoot
-				+ "/a/src</location>\n");
-		ap.append("                </link>\n");
-		ap.append("        </linkedResources>\n");
 		ap.append("</projectDescription>\n");
 		assertEquals(ap.toString(),
 				cachedContent("eclipse-projects/a/.project"));
 		StringBuilder ac = new StringBuilder();
 		ac.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		ac.append("<classpath>\n");
-		ac.append("        <classpathentry kind=\"src\" path=\"src\"/>\n");
+		ac.append("        <classpathentry kind=\"src\" path=\"src/main/java\"/>\n");
 		ac.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
 		ac.append("        <classpathentry kind=\"lib\" path=\"" + cacheDir
 				+ "/target/b-classes\"/>\n");
@@ -634,14 +629,6 @@ public class WorkspaceBuilderTest extends TestCase {
 		bp.append("        <natures>\n");
 		bp.append("                <nature>org.eclipse.jdt.core.javanature</nature>\n");
 		bp.append("        </natures>\n");
-		bp.append("        <linkedResources>\n");
-		bp.append("                <link>\n");
-		bp.append("                        <name>src</name>\n");
-		bp.append("                        <type>2</type>\n");
-		bp.append("                        <location>" + wsRoot
-				+ "/b/src</location>\n");
-		bp.append("                </link>\n");
-		bp.append("        </linkedResources>\n");
 		bp.append("</projectDescription>\n");
 		assertEquals(bp.toString(),
 				cachedContent("eclipse-projects/b/.project"));
@@ -650,6 +637,7 @@ public class WorkspaceBuilderTest extends TestCase {
 		bc.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		bc.append("<classpath>\n");
 		bc.append("        <classpathentry kind=\"src\" path=\"src\"/>\n");
+		bc.append("        <classpathentry kind=\"src\" path=\"tests\"/>\n");
 		bc.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
 		bc.append("        <classpathentry kind=\"lib\" path=\"" + testarea
 				+ "/iwant/cpitems/junit-3.8.1.jar\"/>\n");

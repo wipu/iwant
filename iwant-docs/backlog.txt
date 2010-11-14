@@ -103,10 +103,22 @@
 = Planned
 #################################################################
 
+- As a @buildscriptuser I want the generated eclipse project to use normal src, because subclipse doesn't show local changes in linked sources
+  + implement
+  - test in real project (gluent)
+  - descript that now the project files need to be copied in place, the projects don't
+    work if imported from the cache
+
+- As a @buildscriptuser I want several srcs in an eclipse project
+  + implement
+  - test in real project (gluent)
+  - descript
+
 - TODO eclipse project stories
   - dep to other eclipse projects as project deps, not to iwant cache
   - src dir from the classes target, not hardcoded "src"
   - and support multiple sources for the classes (if supported by the JavaClasses content)
+    * or some other helper to create an eclipse project for given classes and test-classes
   - src link name? maybe src-main or something, when supporting many sources and test classes?
   - distinction between targets and nontargets is clumsy: why not just declare all needed paths as dependencies? would make it easier to build eclipseprojects from javaclasses
   - somehow make it unnecessary to get content from target and cast it

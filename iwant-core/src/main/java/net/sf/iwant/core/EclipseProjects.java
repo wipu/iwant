@@ -6,7 +6,6 @@ import java.util.TreeSet;
 
 public class EclipseProjects implements Content {
 
-	private final SortedSet<Path> sources = new TreeSet();
 	private final SortedSet<Target> dependencies = new TreeSet();
 	private final SortedSet<EclipseProject> projects = new TreeSet();
 
@@ -16,7 +15,6 @@ public class EclipseProjects implements Content {
 
 	public EclipseProjects project(EclipseProject project) {
 		projects.add(project);
-		sources.add(project.src());
 		for (Path lib : project.libs()) {
 			if (lib instanceof Target) {
 				dependencies.add((Target) lib);
@@ -26,7 +24,7 @@ public class EclipseProjects implements Content {
 	}
 
 	public SortedSet<Path> sources() {
-		return sources;
+		return new TreeSet();
 	}
 
 	public SortedSet<Target> dependencies() {

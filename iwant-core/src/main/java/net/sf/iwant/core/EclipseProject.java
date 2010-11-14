@@ -14,12 +14,12 @@ import java.util.List;
 public class EclipseProject implements Comparable<EclipseProject> {
 
 	private final String name;
-	private final Source src;
+	private final List<String> srcs;
 	private final List<Path> libs;
 
-	public EclipseProject(String name, Source src, List<Path> libs) {
+	public EclipseProject(String name, List<String> srcs, List<Path> libs) {
 		this.name = name;
-		this.src = src;
+		this.srcs = srcs;
 		this.libs = libs;
 	}
 
@@ -31,7 +31,7 @@ public class EclipseProject implements Comparable<EclipseProject> {
 
 		private String name;
 
-		private Source src;
+		private final List<String> srcs = new ArrayList();
 
 		private final List<Path> libs = new ArrayList();
 
@@ -40,8 +40,8 @@ public class EclipseProject implements Comparable<EclipseProject> {
 			return this;
 		}
 
-		public EclipseProjectBuilder src(Source src) {
-			this.src = src;
+		public EclipseProjectBuilder src(String src) {
+			this.srcs.add(src);
 			return this;
 		}
 
@@ -56,17 +56,13 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		}
 
 		public EclipseProject end() {
-			return new EclipseProject(name, src, libs);
+			return new EclipseProject(name, srcs, libs);
 		}
 
 	}
 
 	public String name() {
 		return name;
-	}
-
-	public Source src() {
-		return src;
 	}
 
 	public List<Path> libs() {
@@ -77,7 +73,7 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getCanonicalName() + " {\n");
 		b.append("  name:" + name).append("\n");
-		b.append("  src:").append(src.name()).append("\n");
+		b.append("  srcs:" + srcs).append("\n");
 		b.append("  libs {\n");
 		for (Path lib : libs) {
 			b.append("    ").append(lib.name()).append("\n");
@@ -138,14 +134,6 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		b.append("        <natures>\n");
 		b.append("                <nature>org.eclipse.jdt.core.javanature</nature>\n");
 		b.append("        </natures>\n");
-		b.append("        <linkedResources>\n");
-		b.append("                <link>\n");
-		b.append("                        <name>src</name>\n");
-		b.append("                        <type>2</type>\n");
-		b.append("                        <location>" + abs(src.name())
-				+ "</location>\n");
-		b.append("                </link>\n");
-		b.append("        </linkedResources>\n");
 		b.append("</projectDescription>\n");
 		new FileWriter(destination).append(b.toString()).close();
 	}
@@ -154,7 +142,10 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		StringBuilder b = new StringBuilder();
 		b.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		b.append("<classpath>\n");
-		b.append("        <classpathentry kind=\"src\" path=\"src\"/>\n");
+		for (String src : srcs) {
+			b.append("        <classpathentry kind=\"src\" path=\"" + src
+					+ "\"/>\n");
+		}
 		b.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
 		for (Path lib : libs) {
 			b.append("        <classpathentry kind=\"lib\" path=\""
