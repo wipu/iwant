@@ -1,0 +1,30 @@
+10a11
+> import net.sf.iwant.core.NextPhase;
+73c74,75
+<                     project(wsdefEclipseProject())).end();
+---
+>                     project(wsdefEclipseProject()).
+>                     project(wsdef2EclipseProject())).end();
+80a83,104
+>         public EclipseProject wsdef2EclipseProject() {
+>             return EclipseProject.with().name("example-wsdef2").
+>                 src("src").libs(builtin().all()).
+>                 lib(commonsMath()).end();
+>         }
+> 
+>         public Target wsdef2Classes() {
+>             return target("wsdef2Classes").
+>                 content(JavaClasses.compiledFrom(wsdef2Src()).
+>                     using(builtin().all()).
+>                     using(commonsMath())).end();
+>         }
+> 
+>         public Source wsdef2Src() {
+>             return source("example-wsdef2/src");
+>         }
+> 
+>         public NextPhase wsdef2() {
+>             return NextPhase.at(wsdef2Classes()).
+>                 named("com.example.wsdef2.ExampleWorkspace");
+>         }
+> 

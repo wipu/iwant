@@ -11,6 +11,11 @@ import java.io.PrintStream;
 
 import junit.framework.TestCase;
 
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.Task;
+import org.apache.tools.ant.taskdefs.Copy;
+import org.apache.tools.ant.types.FileSet;
+
 public class WorkspaceBuilderTest extends TestCase {
 
 	private static final boolean SHOW_OUTPUT = false;
@@ -59,6 +64,51 @@ public class WorkspaceBuilderTest extends TestCase {
 		ensureEmpty(cacheDir);
 		mockWeb = testarea + "/mock-web";
 		ensureEmpty(mockWeb);
+
+		String cpitems = testarea + "/iwant/cpitems";
+		String eclipseClasses = testarea + "/../../classes";
+		if (new File(eclipseClasses).exists()) {
+			ensureEmpty(cpitems + "/iwant-core");
+			copy(eclipseClasses, cpitems + "/iwant-core");
+			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-1.7.1.jar",
+					cpitems);
+			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar",
+					cpitems);
+			copy(testarea + "/../../../iwant-lib-junit-3.8.1/junit-3.8.1.jar",
+					cpitems);
+		}
+	}
+
+	private void copy(String from, String to) {
+		Copy copy = new Copy();
+		File fromFile = new File(from);
+		if (fromFile.isDirectory()) {
+			Project project = new Project();
+			copy.setProject(project);
+			FileSet dirSet = new FileSet();
+			dirSet.setDir(fromFile);
+			dirSet.createPatternSet().setIncludes("**");
+			copy.add(dirSet);
+		} else {
+			copy.setFile(fromFile);
+		}
+		copy.setTodir(new File(to));
+		executeSilently(copy);
+	}
+
+	private static void executeSilently(Task task) {
+		PrintStream oldOut = System.out;
+		PrintStream oldErr = System.err;
+		ByteArrayOutputStream newOut = new ByteArrayOutputStream();
+		ByteArrayOutputStream newErr = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(newOut));
+		System.setErr(new PrintStream(newErr));
+		try {
+			task.execute();
+		} finally {
+			System.setOut(oldOut);
+			System.setErr(oldErr);
+		}
 	}
 
 	private static void ensureEmpty(String dirname) {
@@ -645,6 +695,93 @@ public class WorkspaceBuilderTest extends TestCase {
 		bc.append("</classpath>\n");
 		assertEquals(bc.toString(),
 				cachedContent("eclipse-projects/b/.classpath"));
+	}
+
+	public static class WorkspaceWithReferenceToNextPhase implements
+			WorkspaceDefinition {
+
+		public static class Root extends RootPath {
+
+			public Root(Locations locations) {
+				super(locations);
+			}
+
+			public Source phase2Src() {
+				return source("phase2/src");
+			}
+
+			public Target phase2Classes() {
+				return target("phase2Classes").content(
+						JavaClasses.compiledFrom(phase2Src()).using(
+								builtin().all())).end();
+			}
+
+			public NextPhase phaseTwo() {
+				return NextPhase.at(phase2Classes()).named(
+						"com.example.phasetwo.Phase2");
+			}
+
+		}
+
+		public ContainerPath wsRoot(Locations locations) {
+			return new Root(locations);
+		}
+
+	}
+
+	private static String phase2java() {
+		StringBuilder b = new StringBuilder();
+		b.append("package com.example.phasetwo;\n");
+		b.append("\n");
+		b.append("import net.sf.iwant.core.Constant;\n");
+		b.append("import net.sf.iwant.core.ContainerPath;\n");
+		b.append("import net.sf.iwant.core.Locations;\n");
+		b.append("import net.sf.iwant.core.RootPath;\n");
+		b.append("import net.sf.iwant.core.Target;\n");
+		b.append("import net.sf.iwant.core.WorkspaceDefinition;\n");
+		b.append("\n");
+		b.append("public class Phase2 implements WorkspaceDefinition {\n");
+		b.append("		public static class Root extends RootPath {\n");
+		b.append("\n");
+		b.append("			public Root(Locations locations) {\n");
+		b.append("				super(locations);\n");
+		b.append("			}\n");
+		b.append("\n");
+		b.append("			public Target targetInPhase2() {\n");
+		b.append("				return target(\"targetInPhase2\").content(\n");
+		b.append("						Constant.value(\"hello from phase2\")).end();\n");
+		b.append("			}\n");
+		b.append("\n");
+		b.append("		}\n");
+		b.append("\n");
+		b.append("		public ContainerPath wsRoot(Locations locations) {\n");
+		b.append("			return new Root(locations);\n");
+		b.append("		}\n");
+		b.append("}\n");
+		return b.toString();
+	}
+
+	public void testListOfTargetsContainsPhase2Target() throws IOException {
+		ensureEmpty(wsRoot + "/phase2/src/com/example/phasetwo");
+		new FileWriter(wsRoot + "/phase2/src/com/example/phasetwo/Phase2.java")
+				.append(phase2java()).close();
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithReferenceToNextPhase.class.getName(), wsRoot,
+				"list-of/targets", cacheDir });
+		assertEquals("", err.toString());
+		assertEquals("phase2Classes\ntargetInPhase2\n", out.toString());
+	}
+
+	public void testPhase2TargetContent() throws IOException {
+		ensureEmpty(wsRoot + "/phase2/src/com/example/phasetwo");
+		new FileWriter(wsRoot + "/phase2/src/com/example/phasetwo/Phase2.java")
+				.append(phase2java()).close();
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithReferenceToNextPhase.class.getName(), wsRoot,
+				"target/targetInPhase2/as-path", cacheDir });
+		assertEquals("", err.toString());
+		assertEquals(pathLine("targetInPhase2"), out.toString());
+		assertEquals("hello from phase2\n", cachedContent("targetInPhase2"));
 	}
 
 }

@@ -1,6 +1,8 @@
 package net.sf.iwant.core;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -17,6 +19,24 @@ class PathDigger {
 		return targets;
 	}
 
+	public static NextPhase nextPhase(ContainerPath container) {
+		List<NextPhase> nextPhases = new ArrayList();
+		for (Method method : container.getClass().getMethods()) {
+			if (isNextPhaseMethod(method)) {
+				NextPhase nextPhase = invokeNextPhaseMethod(container, method);
+				nextPhases.add(nextPhase);
+			}
+		}
+		if (nextPhases.isEmpty()) {
+			return null;
+		}
+		if (nextPhases.size() > 1) {
+			throw new IllegalArgumentException(
+					"More than one NextPhase defined!");
+		}
+		return nextPhases.get(0);
+	}
+
 	public static Target target(ContainerPath container, String targetName) {
 		SortedSet<Target> targets = targets(container);
 		for (Target target : targets) {
@@ -24,7 +44,7 @@ class PathDigger {
 				return target;
 			}
 		}
-		throw new IllegalArgumentException("No such target: " + targetName);
+		return null;
 	}
 
 	private static Target invokeTargetMethod(ContainerPath container,
@@ -37,11 +57,28 @@ class PathDigger {
 		}
 	}
 
+	private static NextPhase invokeNextPhaseMethod(ContainerPath container,
+			Method method) {
+		try {
+			NextPhase nextPhase = (NextPhase) method.invoke(container);
+			return nextPhase;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private static boolean isTargetMethod(Method method) {
 		if (method.getParameterTypes().length > 0) {
 			return false;
 		}
 		return Target.class.isAssignableFrom(method.getReturnType());
+	}
+
+	private static boolean isNextPhaseMethod(Method method) {
+		if (method.getParameterTypes().length > 0) {
+			return false;
+		}
+		return NextPhase.class.isAssignableFrom(method.getReturnType());
 	}
 
 }

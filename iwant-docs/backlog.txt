@@ -99,6 +99,11 @@
     + fix wsdef src path
     + publish
 
++ As a @buildscriptauthor I want to delegate actual workspace definition to a second phase so I can use 3rd party code in its own definition.
+  + descript
+  + test
+  + impl  
+
 #################################################################
 = Planned
 #################################################################

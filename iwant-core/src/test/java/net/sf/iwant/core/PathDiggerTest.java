@@ -23,12 +23,7 @@ public class PathDiggerTest extends TestCase {
 	public void testTargetByIllegalName() {
 		ContainerPath root = new WorkspaceWithTwoConstantTargetFiles()
 				.wsRoot(LOCATIONS);
-		try {
-			PathDigger.target(root, "illegal");
-			fail();
-		} catch (IllegalArgumentException e) {
-			// expected
-		}
+		assertNull(PathDigger.target(root, "illegal"));
 	}
 
 	public void testTargetByName() {

@@ -250,4 +250,29 @@ EOF
 
 doc '}'
 
+doc 'section {name {Two-phase workspace definition}'
+
+cmd 'mkdir -p ../example-wsdef2/src/com/example/wsdef2'
+create-from '../example-wsdef2/src/com/example/wsdef2/ExampleWorkspace.java' ExampleWorkspace.java
+create-from '../example-wsdef2/src/com/example/wsdef2/CustomContent.java' CustomContent.java
+edit "$WSJAVA" Workspace.java.refer-to-phase2.diff
+cmd 'iwant/list-of/targets'
+out-was <<EOF
+aConstant
+commons-math
+eclipse-projects
+projectAClasses
+projectATestResult
+projectATests
+wsdef2Classes
+targetWithCustomContent
+EOF
+
+cmd 'cat $(iwant/target/targetWithCustomContent/as-path)'
+out-was <<EOF
+Hello 42
+EOF
+
+doc '}'
+
 doc '}'

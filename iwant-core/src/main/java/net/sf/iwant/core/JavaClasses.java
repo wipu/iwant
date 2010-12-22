@@ -45,6 +45,13 @@ public class JavaClasses implements Content {
 		return this;
 	}
 
+	public JavaClasses using(SortedSet<Path> classesPaths) {
+		for (Path classesPath : classesPaths) {
+			using(classesPath);
+		}
+		return this;
+	}
+
 	public List<Path> classpathItems() {
 		return classPath;
 	}

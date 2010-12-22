@@ -67,6 +67,10 @@ bootstrap-cpitems() {
 }
 
 bootstrap-testrun() {
+  # 2-phase tests need em here:
+  mkdir -p "$iwant/$testarea/iwanttestarea/iwant"
+  cp -a "$iwant/$cpitemscache" "$iwant/$testarea/iwanttestarea/iwant/"
+
   java -cp "$iwant/$testarea:$iwant/$classescache:$iwant/$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar:$iwant/$wsroot/iwant-lib-ant-1.7.1/ant-1.7.1.jar:$iwant/$wsroot/iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar" \
     junit.textui.TestRunner -c net.sf.iwant.core.Suite
 }
