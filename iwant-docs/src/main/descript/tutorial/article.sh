@@ -292,9 +292,9 @@ location: class net.sf.iwant.core.Downloaded
 1 error
 EOF
 cmd "echo \"svn-revision 110\" > i-have/iwant-from.conf"
-cmd 'iwant/target/commons-math/as-path'
+cmd 'iwant/target/commons-math/as-path 2>/dev/null'
 out-was <<EOF
-iwant/cached/example/target/commons-math
+iwant/target/commons-math/../../cached/example/target/commons-math
 EOF
 doc '}'
 fi

@@ -106,24 +106,24 @@
 
 + As a @buildscriptauthor I want to use SHA to verify integrity of downloaded files
       
-#################################################################
-= Planned
-#################################################################
-
-- As a @buildscriptauthor I want iwant to automatically rebootstrap itself when I make any wish after I have changed iwant-version.conf
++ As a @buildscriptauthor I want iwant to automatically rebootstrap itself when I make any wish after I have changed iwant-version.conf
   * descript by upgrading after demoing that some new feature doesn't work with an older iwant version
   ? how to do in local tutorial?
     * svn co an older revision in local cache just for this?
   + make bootstrapper help.sh cache the iwant-from.conf and compare it to see
     if fetch is needed
-  - make normal wish scripts do the same check
+  + make normal wish scripts do the same check
     + implement (test later, since requires real commits)
       * kiss: just call iwant/help.sh, redirecting output
       + handle abs/relative paths (a bit) better in help.sh
-    - descript with the non-local tutorial
-      - first bootstrap an older version
-      - try to use a new feature (Downloaded.sha), expect failure
-      - upgrade iwant version, retry and expect success
+    + descript with the non-local tutorial
+      + first bootstrap an older version
+      + try to use a new feature (Downloaded.sha), expect failure
+      + upgrade iwant version, retry and expect success
+
+#################################################################
+= Planned
+#################################################################
 
 - As a @buildscriptuser I want the generated eclipse project to use normal src, because subclipse doesn't show local changes in linked sources
   + implement
