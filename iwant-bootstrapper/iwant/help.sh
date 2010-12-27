@@ -2,9 +2,9 @@
 
 set -eu
 
-HELP_SH=$0
+HELP_SH=$(readlink -f "$0")
 WISHROOT=$(dirname "$HELP_SH")
-HERE=$(dirname "$WISHROOT")
+export HERE=$(dirname "$WISHROOT")
 
 cached() {
   CACHED=$WISHROOT/cached
@@ -23,6 +23,11 @@ iwant-from-conf() {
   [ -e "$IWANT_FROM_CONF" ] || guide-iwant-from-conf
 }
 
+to-relative() {
+  local NAME=$1
+  echo $NAME | sed 's|^'$HERE'/||'
+}
+
 guide-iwant-from-conf() {
 cat > "$IWANT_FROM_CONF" <<EOF
 # Uncomment and modify one of these:
@@ -34,8 +39,8 @@ cat <<EOF
 Welcome.
 
 Please start by specify what version of iwant you wish to use.
-I created file $IWANT_FROM_CONF for you.
-Modify it and rerun $HELP_SH
+I created file $(to-relative "$IWANT_FROM_CONF") for you.
+Modify it and rerun $(to-relative "$HELP_SH")
 EOF
 exit
 }
@@ -101,8 +106,8 @@ WSDEF_SRC=../i-have/wsdef
 WSDEF_CLASS=com.example.wsdef.Workspace
 EOF
 cat <<EOF
-Next, modify $WS_INFO_CONF to define your workspace.
-After that, rerun $HELP_SH
+Next, modify $(to-relative "$WS_INFO_CONF") to define your workspace.
+After that, rerun $(to-relative "$HELP_SH")
 EOF
 exit
 }
@@ -145,7 +150,7 @@ local WSDEF_JAVA_DIR=$(dirname "$WSDEF_JAVA")
 mkdir -p "$WSDEF_JAVA_DIR"
 wsdef-stub-java > "$WSDEF_JAVA"
 cat <<EOF
-I created a stub workspace definition at $WSDEF_JAVA
+I created a stub workspace definition at $(to-relative "$WSDEF_JAVA")
 EOF
 }
 

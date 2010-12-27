@@ -51,14 +51,14 @@ out-was <<EOF
 Welcome.
 
 Please start by specify what version of iwant you wish to use.
-I created file ./i-have/iwant-from.conf for you.
+I created file i-have/iwant-from.conf for you.
 Modify it and rerun iwant/help.sh
 EOF
 cmd 'cat i-have/iwant-from.conf'
 "$CONF_IWANT_FROM"
 cmd 'iwant/help.sh 2>/dev/null | tail -n 2'
 out-was <<EOF
-Next, modify ./i-have/ws-info.conf to define your workspace.
+Next, modify i-have/ws-info.conf to define your workspace.
 After that, rerun iwant/help.sh
 EOF
 doc '}'

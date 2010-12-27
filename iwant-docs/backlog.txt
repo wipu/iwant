@@ -117,6 +117,7 @@
   - make normal wish scripts do the same check
     + implement (test later, since requires real commits)
       * kiss: just call iwant/help.sh, redirecting output
+      + handle abs/relative paths (a bit) better in help.sh
     - descript with the non-local tutorial
       - first bootstrap an older version
       - try to use a new feature (TODO what?), expect failure

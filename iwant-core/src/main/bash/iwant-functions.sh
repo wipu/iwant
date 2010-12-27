@@ -66,7 +66,8 @@ set -eu
 
 here=\$(dirname "\$0")
 iwant=\$here$DOTS
-"\$iwant/help.sh" > "\$iwant/cached/refresh-out"
+absiwant=\$(readlink -f "\$iwant")
+"\$absiwant/help.sh" > "\$iwant/cached/refresh-out"
 . "\$iwant/cached/iwant/scripts/iwant-functions.sh"
 
 compiled-wsdef \\
