@@ -114,8 +114,14 @@
     * svn co an older revision in local cache just for this?
   + make bootstrapper help.sh cache the iwant-from.conf and compare it to see
     if fetch is needed
-  - make normal wish scripts do the same check and restart if rebuild was needed
-
+  - make normal wish scripts do the same check
+    + implement (test later, since requires real commits)
+      * kiss: just call iwant/help.sh, redirecting output
+    - descript with the non-local tutorial
+      - first bootstrap an older version
+      - try to use a new feature (TODO what?), expect failure
+      - upgrade iwant version, retry and expect success
+      
 - As a @buildscriptuser I want the generated eclipse project to use normal src, because subclipse doesn't show local changes in linked sources
   + implement
   - test in real project (gluent)
@@ -200,6 +206,8 @@
 
 - As a @buildscriptuser I want an error message if I refer to a java classes directory of uncompilable sources
   + done but untested and undefined details
+
+- As a @buildscriptauthor I want to define a target for debugless java classes so I can ship my code
 
 #################################################################
 = Story sketches, to be evaluated and or rewritten
