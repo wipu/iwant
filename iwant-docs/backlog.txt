@@ -104,6 +104,8 @@
   + test
   + impl  
 
++ As a @buildscriptauthor I want to use SHA to verify integrity of downloaded files
+      
 #################################################################
 = Planned
 #################################################################
@@ -120,9 +122,9 @@
       + handle abs/relative paths (a bit) better in help.sh
     - descript with the non-local tutorial
       - first bootstrap an older version
-      - try to use a new feature (TODO what?), expect failure
+      - try to use a new feature (Downloaded.sha), expect failure
       - upgrade iwant version, retry and expect success
-      
+
 - As a @buildscriptuser I want the generated eclipse project to use normal src, because subclipse doesn't show local changes in linked sources
   + implement
   - test in real project (gluent)

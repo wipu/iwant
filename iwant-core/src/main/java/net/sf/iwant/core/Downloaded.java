@@ -14,6 +14,7 @@ public class Downloaded implements Content {
 
 	private final String from;
 	private String md5;
+	private String sha;
 
 	public static Downloaded from(String from) {
 		return new Downloaded(from);
@@ -25,6 +26,11 @@ public class Downloaded implements Content {
 
 	public Downloaded md5(String md5) {
 		this.md5 = md5;
+		return this;
+	}
+
+	public Downloaded sha(String sha) {
+		this.sha = sha;
 		return this;
 	}
 
@@ -42,12 +48,21 @@ public class Downloaded implements Content {
 		get.setDest(destination);
 		get.execute();
 
+		checkIfRequired(destination, "MD5", md5);
+		checkIfRequired(destination, "SHA", sha);
+	}
+
+	private void checkIfRequired(File destination, String algorithm,
+			String checksum) throws IOException {
+		if (checksum == null) {
+			return;
+		}
 		Project project = new Project();
 		Checksum checkSum = new Checksum();
 		checkSum.setProject(project);
 		checkSum.setFile(destination);
-		checkSum.setAlgorithm("MD5");
-		checkSum.setProperty(md5);
+		checkSum.setAlgorithm(algorithm);
+		checkSum.setProperty(checksum);
 		checkSum.setVerifyproperty("correct");
 		checkSum.execute();
 		if (!"true".equals(project.getProperty("correct"))) {
@@ -62,6 +77,7 @@ public class Downloaded implements Content {
 		b.append(getClass().getName()).append(" {\n");
 		b.append("  from:").append(from).append("\n");
 		b.append("  md5:" + md5).append("\n");
+		b.append("  sha:" + sha).append("\n");
 		b.append("}\n");
 		return b.toString();
 	}

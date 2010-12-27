@@ -449,6 +449,16 @@ public class WorkspaceBuilderTest extends TestCase {
 								.md5("971ff50db55ffc43bdf06674fc81c885")).end();
 			}
 
+			public Target aDownloadedFileWithSha() {
+				return target("aDownloadedFileWithSha")
+						.content(
+								Downloaded
+										.from("file://" + mockWeb
+												+ "/aFileInTheWeb")
+										.sha("97d539c5f1c4a59bd9ef0d1ec6df35ecda052020"))
+						.end();
+			}
+
 		}
 
 		public ContainerPath wsRoot(Locations locations) {
@@ -477,6 +487,21 @@ public class WorkspaceBuilderTest extends TestCase {
 			WorkspaceBuilder.main(new String[] {
 					WorkspaceWithDownloadedContent.class.getName(), wsRoot,
 					"target/aDownloadedFile/as-path", cacheDir });
+			fail();
+		} catch (Exception e) {
+			// expected
+		}
+		assertEquals("", out.toString());
+		assertTrue(err.toString().contains("Checksum failed"));
+	}
+
+	public void testDownloadFailsIfShaDoesNotMatch() throws Exception {
+		new FileWriter(mockWeb + "/aFileInTheWeb").append("corrupted\n")
+				.close();
+		try {
+			WorkspaceBuilder.main(new String[] {
+					WorkspaceWithDownloadedContent.class.getName(), wsRoot,
+					"target/aDownloadedFileWithSha/as-path", cacheDir });
 			fail();
 		} catch (Exception e) {
 			// expected
@@ -522,6 +547,16 @@ public class WorkspaceBuilderTest extends TestCase {
 		assertEquals(pathLine("aDownloadedFile"), out.toString());
 		assertTrue(err.toString().contains("Getting"));
 		assertEquals("correct\n", cachedContent("aDownloadedFile"));
+	}
+
+	public void testSuccessfulFirstDownloadWithSha() throws Exception {
+		new FileWriter(mockWeb + "/aFileInTheWeb").append("correct\n").close();
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithDownloadedContent.class.getName(), wsRoot,
+				"target/aDownloadedFileWithSha/as-path", cacheDir });
+		assertEquals(pathLine("aDownloadedFileWithSha"), out.toString());
+		assertTrue(err.toString().contains("Getting"));
+		assertEquals("correct\n", cachedContent("aDownloadedFileWithSha"));
 	}
 
 	public void testSuccessfulLazyDownloadWhenCorrectCachedFileExists()

@@ -28,15 +28,15 @@ conf-iwant-from-local-wishdir() {
 }
 
 conf-iwant-from-sfnet() {
-  cmd "echo \"svn-revision 100\" > i-have/iwant-from.conf"
+  cmd "echo \"svn-revision 109\" > i-have/iwant-from.conf"
 }
 
 svn-bootstrapper() {
-cmd "svn export -r 100 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/iwant iwant"
+cmd "svn export -r 109 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/iwant iwant"
 out-was <<EOF
 A    iwant
 A    iwant/help.sh
-Exported revision 100.
+Exported revision 109.
 EOF
 }
 
@@ -64,9 +64,13 @@ EOF
 doc '}'
 }
 
+is-online-tutorial() {
+  [ "x" == "x$LOCAL_IWANT" ]
+}
+
 doc 'article {name {Tutorial}'
 
-if [ "x" == "x$LOCAL_IWANT" ]; then
+if is-online-tutorial; then
   bootstrap svn-bootstrapper conf-iwant-from-sfnet
 else
   bootstrap local-bootstrapper conf-iwant-from-local-wishdir
@@ -274,5 +278,25 @@ Hello 42
 EOF
 
 doc '}'
+
+if is-online-tutorial; then
+doc 'section {name {Upgrading iwant version (to one that supports SHA)}'
+edit "$WSJAVA" Workspace.java.commonsMathShaCheck.diff
+cmd 'iwant/target/commons-math/as-path'
+out-was <<EOF
+iwant/target/commons-math/../../../i-have/wsdef/com/example/wsdef/Workspace.java:66: cannot find symbol
+symbol  : method sha(java.lang.String)
+location: class net.sf.iwant.core.Downloaded
+                    from("http://mirrors.ibiblio.org/pub/mirrors/maven2/commons-math/commons-math/1.2/commons-math-1.2.jar").
+                                                                                                                            ^
+1 error
+EOF
+cmd "echo \"svn-revision 110\" > i-have/iwant-from.conf"
+cmd 'iwant/target/commons-math/as-path'
+out-was <<EOF
+iwant/cached/example/target/commons-math
+EOF
+doc '}'
+fi
 
 doc '}'
