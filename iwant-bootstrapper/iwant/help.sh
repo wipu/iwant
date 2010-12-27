@@ -38,7 +38,7 @@ EOF
 cat <<EOF
 Welcome.
 
-Please start by specify what version of iwant you wish to use.
+Please start by specifying what version of iwant you wish to use.
 I created file $(to-relative "$IWANT_FROM_CONF") for you.
 Modify it and rerun $(to-relative "$HELP_SH")
 EOF

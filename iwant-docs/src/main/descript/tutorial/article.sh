@@ -50,7 +50,7 @@ cmd 'iwant/help.sh'
 out-was <<EOF
 Welcome.
 
-Please start by specify what version of iwant you wish to use.
+Please start by specifying what version of iwant you wish to use.
 I created file i-have/iwant-from.conf for you.
 Modify it and rerun iwant/help.sh
 EOF
