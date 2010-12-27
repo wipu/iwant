@@ -8,6 +8,7 @@ HERE=$(dirname "$WISHROOT")
 
 cached() {
   CACHED=$WISHROOT/cached
+  CACHED_IWANT_FROM_CONF=$CACHED/iwant-from.conf
   [ -e "$CACHED" ] || mkdir "$CACHED"
 }
 
@@ -42,7 +43,14 @@ exit
 iwant() {
   cached
   IWANT=$CACHED/iwant
-  [ -e "$IWANT" ] || fetch-iwant
+  is-cached-iwant-uptodate || fetch-iwant
+  cp "$IWANT_FROM_CONF" "$CACHED_IWANT_FROM_CONF"
+}
+
+is-cached-iwant-uptodate() {
+  [ -e "$IWANT" ] || false
+  [ -e "$CACHED_IWANT_FROM_CONF" ] || false
+  cmp -s "$IWANT_FROM_CONF" "$CACHED_IWANT_FROM_CONF"
 }
 
 fetch-iwant() {
@@ -66,6 +74,7 @@ local-iwant-wishdir() {
 svn-revision() {
   local REV=$1
   local IWANT_SRC=$CACHED/iwant-r$REV
+  rm -rf "$IWANT_SRC"
   svn export -r "$REV" "https://iwant.svn.sourceforge.net/svnroot/iwant/trunk" "$IWANT_SRC"
   "$IWANT_SRC/iwant-iwant/iwant/as_shell-user/to-bootstrap-iwant.sh"
   local-iwant-wishdir "$IWANT_SRC/iwant-iwant/iwant"
@@ -73,6 +82,7 @@ svn-revision() {
 
 iwant-cached() {
   cached
+  rm -rf "$IWANT"
   mkdir "$IWANT"
   cp -a "$@" "$IWANT"/
 }

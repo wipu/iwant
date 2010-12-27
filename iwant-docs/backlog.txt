@@ -108,6 +108,14 @@
 = Planned
 #################################################################
 
+- As a @buildscriptauthor I want iwant to automatically rebootstrap itself when I make any wish after I have changed iwant-version.conf
+  * descript by upgrading after demoing that some new feature doesn't work with an older iwant version
+  ? how to do in local tutorial?
+    * svn co an older revision in local cache just for this?
+  + make bootstrapper help.sh cache the iwant-from.conf and compare it to see
+    if fetch is needed
+  - make normal wish scripts do the same check and restart if rebuild was needed
+
 - As a @buildscriptuser I want the generated eclipse project to use normal src, because subclipse doesn't show local changes in linked sources
   + implement
   - test in real project (gluent)
@@ -170,11 +178,6 @@
   - mark this story done when it has proven itself by making the "as-x-developer/iwant" structure possible
     + that's done but
     - the final proof will be that relocating the whole workspace won't break anything (another story)
-
-- As a @buildscriptauthor I want iwant to automatically rebootstrap itself when I make any wish after I have changed iwant-version.conf
-  * descript by upgrading after demoing that some new feature doesn't work with an older iwant version
-  ? how to do in local tutorial?
-    * svn co an older revision in local cache just for this?
 
 - As a @buildscriptauthor I want all cached targets invalidated when iwant is rebootstrapping itself because I changed its version
   * even downloaded files, for now (the "don't do it" rule of optimization)
