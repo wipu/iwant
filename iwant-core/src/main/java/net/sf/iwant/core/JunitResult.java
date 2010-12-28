@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -48,7 +49,7 @@ public class JunitResult implements Content {
 		return dependencies;
 	}
 
-	public JunitResult using(SortedSet<Target> classPath) {
+	public JunitResult using(Collection<Target> classPath) {
 		this.classPath.addAll(classPath);
 		dependencies.addAll(classPath);
 		return this;
