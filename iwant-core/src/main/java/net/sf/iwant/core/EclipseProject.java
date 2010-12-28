@@ -16,11 +16,14 @@ public class EclipseProject implements Comparable<EclipseProject> {
 	private final String name;
 	private final List<String> srcs;
 	private final List<Path> libs;
+	private final boolean hasIwantAnt;
 
-	public EclipseProject(String name, List<String> srcs, List<Path> libs) {
+	public EclipseProject(String name, List<String> srcs, List<Path> libs,
+			boolean hasIwantAnt) {
 		this.name = name;
 		this.srcs = srcs;
 		this.libs = libs;
+		this.hasIwantAnt = hasIwantAnt;
 	}
 
 	public static EclipseProjectBuilder with() {
@@ -34,6 +37,8 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		private final List<String> srcs = new ArrayList();
 
 		private final List<Path> libs = new ArrayList();
+
+		private boolean hasIwantAnt;
 
 		public EclipseProjectBuilder name(String name) {
 			this.name = name;
@@ -55,8 +60,13 @@ public class EclipseProject implements Comparable<EclipseProject> {
 			return this;
 		}
 
+		public EclipseProjectBuilder iwantAnt() {
+			this.hasIwantAnt = true;
+			return this;
+		}
+
 		public EclipseProject end() {
-			return new EclipseProject(name, srcs, libs);
+			return new EclipseProject(name, srcs, libs, hasIwantAnt);
 		}
 
 	}
@@ -65,8 +75,16 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		return name;
 	}
 
+	public List<String> srcs() {
+		return srcs;
+	}
+
 	public List<Path> libs() {
 		return libs;
+	}
+
+	public boolean hasIwantAnt() {
+		return hasIwantAnt;
 	}
 
 	public String definitionDescription() {
@@ -79,6 +97,7 @@ public class EclipseProject implements Comparable<EclipseProject> {
 			b.append("    ").append(lib.name()).append("\n");
 		}
 		b.append("  }\n");
+		b.append("  hasIwantAnt:").append(hasIwantAnt).append("\n");
 		b.append("}\n");
 		return b.toString();
 	}
@@ -96,7 +115,7 @@ public class EclipseProject implements Comparable<EclipseProject> {
 	/**
 	 * TODO create and reuse a fluent reusable file declaration library
 	 */
-	private static void ensureDir(File dir) {
+	static void ensureDir(File dir) {
 		File parent = dir.getParentFile();
 		if (!parent.exists()) {
 			ensureDir(parent);
@@ -125,6 +144,18 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		b.append("        <projects>\n");
 		b.append("        </projects>\n");
 		b.append("        <buildSpec>\n");
+		if (hasIwantAnt) {
+			b.append("                <buildCommand>\n");
+			b.append("                        <name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>\n");
+			b.append("                        <triggers>auto,full,incremental,</triggers>\n");
+			b.append("                        <arguments>\n");
+			b.append("                                <dictionary>\n");
+			b.append("                                        <key>LaunchConfigHandle</key>\n");
+			b.append("                                        <value>&lt;project&gt;/.externalToolBuilders/iwant-ant-for-eclipse.launch</value>\n");
+			b.append("                                </dictionary>\n");
+			b.append("                        </arguments>\n");
+			b.append("                </buildCommand>\n");
+		}
 		b.append("                <buildCommand>\n");
 		b.append("                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
 		b.append("                        <arguments>\n");

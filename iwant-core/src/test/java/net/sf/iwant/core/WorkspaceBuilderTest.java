@@ -612,7 +612,8 @@ public class WorkspaceBuilderTest extends TestCase {
 				JavaClasses bClassesContent = (JavaClasses) bClasses()
 						.content();
 				return EclipseProject.with().name("b").src("src").src("tests")
-						.libs(bClassesContent.classpathItems()).end();
+						.iwantAnt().libs(bClassesContent.classpathItems())
+						.end();
 			}
 
 			public Source bSrc() {
@@ -706,6 +707,16 @@ public class WorkspaceBuilderTest extends TestCase {
 		bp.append("        </projects>\n");
 		bp.append("        <buildSpec>\n");
 		bp.append("                <buildCommand>\n");
+		bp.append("                        <name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>\n");
+		bp.append("                        <triggers>auto,full,incremental,</triggers>\n");
+		bp.append("                        <arguments>\n");
+		bp.append("                                <dictionary>\n");
+		bp.append("                                        <key>LaunchConfigHandle</key>\n");
+		bp.append("                                        <value>&lt;project&gt;/.externalToolBuilders/iwant-ant-for-eclipse.launch</value>\n");
+		bp.append("                                </dictionary>\n");
+		bp.append("                        </arguments>\n");
+		bp.append("                </buildCommand>\n");
+		bp.append("                <buildCommand>\n");
 		bp.append("                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
 		bp.append("                        <arguments>\n");
 		bp.append("                        </arguments>\n");
@@ -730,6 +741,34 @@ public class WorkspaceBuilderTest extends TestCase {
 		bc.append("</classpath>\n");
 		assertEquals(bc.toString(),
 				cachedContent("eclipse-projects/b/.classpath"));
+
+		StringBuilder bl = new StringBuilder();
+		bl.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
+		bl.append("<launchConfiguration type=\"org.eclipse.ant.AntBuilderLaunchConfigurationType\">\n");
+		bl.append("<stringAttribute key=\"org.eclipse.ant.ui.ATTR_ANT_AFTER_CLEAN_TARGETS\" value=\"fresh-eclipse-settings,\"/>\n");
+		bl.append("<stringAttribute key=\"org.eclipse.ant.ui.ATTR_ANT_AUTO_TARGETS\" value=\"fresh-eclipse-settings,\"/>\n");
+		bl.append("<stringAttribute key=\"org.eclipse.ant.ui.ATTR_ANT_MANUAL_TARGETS\" value=\"fresh-eclipse-settings,\"/>\n");
+		bl.append("<booleanAttribute key=\"org.eclipse.ant.ui.ATTR_TARGETS_UPDATED\" value=\"true\"/>\n");
+		bl.append("<booleanAttribute key=\"org.eclipse.ant.ui.DEFAULT_VM_INSTALL\" value=\"false\"/>\n");
+		bl.append("<stringAttribute key=\"org.eclipse.debug.core.ATTR_REFRESH_SCOPE\" value=\"${working_set:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;resources&gt;&#10;&lt;item path=&quot;/a&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/b&quot; type=&quot;4&quot;/&gt;&#10;&lt;/resources&gt;}\"/>\n");
+		bl.append("<booleanAttribute key=\"org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND\" value=\"false\"/>\n");
+		bl.append("<stringAttribute key=\"org.eclipse.jdt.launching.CLASSPATH_PROVIDER\" value=\"org.eclipse.ant.ui.AntClasspathProvider\"/>\n");
+		bl.append("<booleanAttribute key=\"org.eclipse.jdt.launching.DEFAULT_CLASSPATH\" value=\"true\"/>\n");
+		bl.append("<stringAttribute key=\"org.eclipse.jdt.launching.PROJECT_ATTR\" value=\"b\"/>\n");
+		bl.append("<stringAttribute key=\"org.eclipse.ui.externaltools.ATTR_BUILD_SCOPE\" value=\"${working_set:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;resources&gt;&#10;&lt;item path=&quot;/b/src&quot; type=&quot;2&quot;/&gt;&#10;&lt;/resources&gt;}\"/>\n");
+		bl.append("<stringAttribute key=\"org.eclipse.ui.externaltools.ATTR_LOCATION\" value=\"${workspace_loc:/b/build.xml}\"/>\n");
+		bl.append("<stringAttribute key=\"org.eclipse.ui.externaltools.ATTR_RUN_BUILD_KINDS\" value=\"full,incremental,auto,\"/>\n");
+		bl.append("<booleanAttribute key=\"org.eclipse.ui.externaltools.ATTR_TRIGGERS_CONFIGURED\" value=\"true\"/>\n");
+		bl.append("<stringAttribute key=\"process_factory_id\" value=\"org.eclipse.ant.ui.remoteAntProcessFactory\"/>\n");
+		bl.append("</launchConfiguration>\n");
+		bl.append("");
+		assertEquals(
+				bl.toString(),
+				cachedContent("eclipse-projects/b/.externalToolBuilders/iwant-ant-for-eclipse.launch"));
+
+		// only the project name is dynamic, the rest of build.xml is constant:
+		assertTrue(cachedContent("eclipse-projects/b/build.xml").startsWith(
+				"<project name=\"b-iwant\""));
 	}
 
 	public static class WorkspaceWithReferenceToNextPhase implements
