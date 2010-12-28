@@ -2,6 +2,7 @@ package net.sf.iwant.core;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -45,7 +46,7 @@ public class JavaClasses implements Content {
 		return this;
 	}
 
-	public JavaClasses using(SortedSet<Path> classesPaths) {
+	public JavaClasses using(Collection<Path> classesPaths) {
 		for (Path classesPath : classesPaths) {
 			using(classesPath);
 		}
