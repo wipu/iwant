@@ -128,6 +128,7 @@
 - As a @buildscriptauthor I want my eclipse settings automatically updated when I touch the workspace definition
   + prototype eclipse ant builder in the gluent project
   + test and implement generation of it
+  + ant targets for selected public iwant targets
   - use in gluent to verify
 
 - As a @buildscriptuser I want the generated eclipse project to use normal src, because subclipse doesn't show local changes in linked sources

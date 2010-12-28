@@ -612,8 +612,8 @@ public class WorkspaceBuilderTest extends TestCase {
 				JavaClasses bClassesContent = (JavaClasses) bClasses()
 						.content();
 				return EclipseProject.with().name("b").src("src").src("tests")
-						.iwantAnt().libs(bClassesContent.classpathItems())
-						.end();
+						.iwantAnt(aClasses(), bClasses())
+						.libs(bClassesContent.classpathItems()).end();
 			}
 
 			public Source bSrc() {
@@ -761,14 +761,89 @@ public class WorkspaceBuilderTest extends TestCase {
 		bl.append("<booleanAttribute key=\"org.eclipse.ui.externaltools.ATTR_TRIGGERS_CONFIGURED\" value=\"true\"/>\n");
 		bl.append("<stringAttribute key=\"process_factory_id\" value=\"org.eclipse.ant.ui.remoteAntProcessFactory\"/>\n");
 		bl.append("</launchConfiguration>\n");
-		bl.append("");
 		assertEquals(
 				bl.toString(),
 				cachedContent("eclipse-projects/b/.externalToolBuilders/iwant-ant-for-eclipse.launch"));
 
-		// only the project name is dynamic, the rest of build.xml is constant:
-		assertTrue(cachedContent("eclipse-projects/b/build.xml").startsWith(
-				"<project name=\"b-iwant\""));
+		StringBuilder bx = new StringBuilder();
+		bx.append("<project name=\"b-iwant\" default=\"list-of-targets\" basedir=\".\">\n");
+		bx.append("\n");
+		bx.append("	<property name=\"i-have\" value=\"i-have\"/>\n");
+		bx.append("	<property file=\"${i-have}/ws-info.conf\" prefix=\"ws-info\"/>\n");
+		bx.append("	<property name=\"ws-name\" value=\"${ws-info.WSNAME}\" />\n");
+		bx.append("	<property name=\"ws-root\" value=\"${i-have}/${ws-info.WSROOT}\" />\n");
+		bx.append("	<property name=\"wsdef-src\" value=\"${i-have}/${ws-info.WSDEF_SRC}\" />\n");
+		bx.append("	<property name=\"wsdef-classname\" value=\"${ws-info.WSDEF_CLASS}\" />\n");
+		bx.append("\n");
+		bx.append("	<target name=\"wishdir\">\n");
+		bx.append("		<property name=\"wishdir\" value=\"iwant\" />\n");
+		bx.append("	</target>\n");
+		bx.append("\n");
+		bx.append("	<target name=\"cached\" depends=\"wishdir\">\n");
+		bx.append("		<property name=\"cached\" value=\"${wishdir}/cached\" />\n");
+		bx.append("	</target>\n");
+		bx.append("\n");
+		bx.append("	<target name=\"my-cached\" depends=\"cached\">\n");
+		bx.append("		<property name=\"my-cached\" value=\"${cached}/build-xml\" />\n");
+		bx.append("		<mkdir dir=\"${my-cached}\" />\n");
+		bx.append("	</target>\n");
+		bx.append("\n");
+		bx.append("	<target name=\"iwant-classpath\" depends=\"cached\">\n");
+		bx.append("		<path id=\"iwant-classpath\">\n");
+		bx.append("			<pathelement location=\"${cached}/iwant/cpitems/iwant-core\" />\n");
+		bx.append("			<fileset dir=\"${cached}/iwant/cpitems\">\n");
+		bx.append("				<include name=\"*.jar\" />\n");
+		bx.append("			</fileset>\n");
+		bx.append("		</path>\n");
+		bx.append("	</target>\n");
+		bx.append("\n");
+		bx.append("	<target name=\"wsdef-classes\" depends=\"iwant-classpath, my-cached\">\n");
+		bx.append("		<property name=\"wsdef-classes\" value=\"${my-cached}/wsdef-classes\" />\n");
+		bx.append("		<mkdir dir=\"${wsdef-classes}\" />\n");
+		bx.append("		<javac destdir=\"${wsdef-classes}\" srcdir=\"${wsdef-src}\" classpathref=\"iwant-classpath\">\n");
+		bx.append("		</javac>\n");
+		bx.append("	</target>\n");
+		bx.append("\n");
+		bx.append("	<macrodef name=\"iwant\">\n");
+		bx.append("		<attribute name=\"target-name\" />\n");
+		bx.append("		<sequential>\n");
+		bx.append("			<java classname=\"net.sf.iwant.core.WorkspaceBuilder\" fork=\"true\" outputproperty=\"iwant-out\" failonerror=\"true\">\n");
+		bx.append("				<arg value=\"${wsdef-classname}\" />\n");
+		bx.append("				<arg value=\"${basedir}\" />\n");
+		bx.append("				<arg value=\"@{target-name}\" />\n");
+		bx.append("				<arg value=\"${cached}/${ws-name}\" />\n");
+		bx.append("				<classpath>\n");
+		bx.append("					<path refid=\"iwant-classpath\" />\n");
+		bx.append("					<path location=\"${wsdef-classes}\" />\n");
+		bx.append("				</classpath>\n");
+		bx.append("			</java>\n");
+		bx.append("			<echo message=\"${iwant-out}\" />\n");
+		bx.append("		</sequential>\n");
+		bx.append("	</macrodef>\n");
+		bx.append("\n");
+		bx.append("	<target name=\"list-of-targets\" depends=\"wsdef-classes\">\n");
+		bx.append("		<iwant target-name=\"list-of/targets\" />\n");
+		bx.append("	</target>\n");
+		bx.append("\n");
+		bx.append("	<target name=\"fresh-eclipse-settings\" depends=\"wsdef-classes\">\n");
+		bx.append("		<iwant target-name=\"target/eclipse-projects/as-path\" />\n");
+		bx.append("		<copy todir=\"${ws-root}\">\n");
+		bx.append("			<fileset dir=\"${iwant-out}\" includes=\"**/*\" />\n");
+		bx.append("		</copy>\n");
+		bx.append("	</target>\n");
+		bx.append("\n");
+		bx.append("	<target name=\"a-classes-as-path\" depends=\"wsdef-classes\" description=\"target/a-classes/as-path\">\n");
+		bx.append("		<iwant target-name=\"target/a-classes/as-path\" />\n");
+		bx.append("	</target>\n");
+		bx.append("\n");
+		bx.append("	<target name=\"b-classes-as-path\" depends=\"wsdef-classes\" description=\"target/b-classes/as-path\">\n");
+		bx.append("		<iwant target-name=\"target/b-classes/as-path\" />\n");
+		bx.append("	</target>\n");
+		bx.append("\n");
+		bx.append("</project>\n");
+		bx.append("");
+		assertEquals(bx.toString(),
+				cachedContent("eclipse-projects/b/build.xml"));
 	}
 
 	public static class WorkspaceWithReferenceToNextPhase implements

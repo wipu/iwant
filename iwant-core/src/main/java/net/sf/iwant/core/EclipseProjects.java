@@ -158,8 +158,21 @@ public class EclipseProjects implements Content {
 		b.append("		</copy>\n");
 		b.append("	</target>\n");
 		b.append("\n");
+		for (Target publicTarget : project.publicTargetsForAnt()) {
+			iwantAntTarget(b, publicTarget.nameWithoutCacheDir());
+		}
 		b.append("</project>\n");
 		new FileWriter(destination).append(b.toString()).close();
+	}
+
+	private static void iwantAntTarget(StringBuilder b, String targetName) {
+		b.append("	<target name=\"" + targetName
+				+ "-as-path\" depends=\"wsdef-classes\" description=\"target/"
+				+ targetName + "/as-path\">\n");
+		b.append("		<iwant target-name=\"target/" + targetName
+				+ "/as-path\" />\n");
+		b.append("	</target>\n");
+		b.append("\n");
 	}
 
 	public String definitionDescription() {

@@ -17,13 +17,15 @@ public class EclipseProject implements Comparable<EclipseProject> {
 	private final List<String> srcs;
 	private final List<Path> libs;
 	private final boolean hasIwantAnt;
+	private final Target[] publicTargetsForAnt;
 
 	public EclipseProject(String name, List<String> srcs, List<Path> libs,
-			boolean hasIwantAnt) {
+			boolean hasIwantAnt, Target[] publicTargetsForAnt) {
 		this.name = name;
 		this.srcs = srcs;
 		this.libs = libs;
 		this.hasIwantAnt = hasIwantAnt;
+		this.publicTargetsForAnt = publicTargetsForAnt;
 	}
 
 	public static EclipseProjectBuilder with() {
@@ -39,6 +41,8 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		private final List<Path> libs = new ArrayList();
 
 		private boolean hasIwantAnt;
+
+		private Target[] publicTargetsForAnt = new Target[0];
 
 		public EclipseProjectBuilder name(String name) {
 			this.name = name;
@@ -60,13 +64,15 @@ public class EclipseProject implements Comparable<EclipseProject> {
 			return this;
 		}
 
-		public EclipseProjectBuilder iwantAnt() {
+		public EclipseProjectBuilder iwantAnt(Target... publicTargetsForAnt) {
+			this.publicTargetsForAnt = publicTargetsForAnt;
 			this.hasIwantAnt = true;
 			return this;
 		}
 
 		public EclipseProject end() {
-			return new EclipseProject(name, srcs, libs, hasIwantAnt);
+			return new EclipseProject(name, srcs, libs, hasIwantAnt,
+					publicTargetsForAnt);
 		}
 
 	}
@@ -87,6 +93,10 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		return hasIwantAnt;
 	}
 
+	public Target[] publicTargetsForAnt() {
+		return publicTargetsForAnt;
+	}
+
 	public String definitionDescription() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getCanonicalName() + " {\n");
@@ -98,6 +108,11 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		}
 		b.append("  }\n");
 		b.append("  hasIwantAnt:").append(hasIwantAnt).append("\n");
+		b.append("  publicTargets {\n");
+		for (Target publicTarget : publicTargetsForAnt)
+			b.append("    ").append(publicTarget.nameWithoutCacheDir())
+					.append("\n");
+		b.append("  }\n");
 		b.append("}\n");
 		return b.toString();
 	}
