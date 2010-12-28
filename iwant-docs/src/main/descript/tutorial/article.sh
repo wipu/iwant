@@ -103,12 +103,14 @@ EOF
 cmd 'find iwant/target -type f | sort'
 out-was <<EOF
 iwant/target/aConstant/as-path
+iwant/target/aConstant/as-rel-path
 iwant/target/eclipse-projects/as-path
+iwant/target/eclipse-projects/as-rel-path
 EOF
 
-cmd 'iwant/target/aConstant/as-path'
+cmd 'iwant/target/aConstant/as-rel-path'
 out-was <<EOF
-iwant/target/aConstant/../../cached/example/target/aConstant
+iwant/cached/example/target/aConstant
 EOF
 
 cmd 'cat iwant/cached/example/target/aConstant'
@@ -121,9 +123,9 @@ end
 section Editing the workspace definition with Eclipse
 #----------------------------------------------------
 
-cmd 'iwant/target/eclipse-projects/as-path'
+cmd 'iwant/target/eclipse-projects/as-rel-path'
 out-was <<EOF
-iwant/target/eclipse-projects/../../cached/example/target/eclipse-projects
+iwant/cached/example/target/eclipse-projects
 EOF
 cmd 'find iwant/cached/example/target/eclipse-projects'
 out-was <<EOF
@@ -167,9 +169,9 @@ edit "../$A_TESTS/example/ATest.java" ATest.java.aprod.diff
 cmd "mkdir -p ../$A_SRC/example"
 create-from "../$A_SRC/example/AProd.java" "example-ws/$A_SRC/example/AProd.java"
 edit "$WSJAVA" Workspace.java.a-src.diff
-cmd 'iwant/target/projectATests/as-path'
+cmd 'iwant/target/projectATests/as-rel-path'
 out-was <<EOF
-iwant/target/projectATests/../../cached/example/target/projectATests
+iwant/cached/example/target/projectATests
 EOF
 cmd 'java -cp iwant/cached/example/target/projectATests:iwant/cached/example/target/projectAClasses example.ATest'
 out-was <<EOF
@@ -190,7 +192,7 @@ EOF
 cmd '(iwant/target/projectATestResult/as-path && echo exit status was zero) | sed s:$(pwd)/::'
 out-was <<EOF
 Test example.ATest FAILED
-iwant/target/projectATestResult/../../cached/example/target/projectATestResult
+iwant/cached/example/target/projectATestResult
 exit status was zero
 EOF
 
@@ -248,8 +250,8 @@ edit "$WSJAVA" Workspace.java.use-commons-math.diff
 cmd 'iwant/target/projectATestResult/as-path 2>&1 | sed s:$(pwd)/::'
 out-was <<EOF
 Getting: http://mirrors.ibiblio.org/pub/mirrors/maven2/commons-math/commons-math/1.2/commons-math-1.2.jar
-To: iwant/target/projectATestResult/../../cached/example/target/commons-math
-iwant/target/projectATestResult/../../cached/example/target/projectATestResult
+To: iwant/cached/example/target/commons-math
+iwant/cached/example/target/projectATestResult
 EOF
 
 doc '}'
@@ -282,7 +284,7 @@ doc '}'
 if is-online-tutorial; then
 doc 'section {name {Upgrading iwant version (to one that supports SHA)}'
 edit "$WSJAVA" Workspace.java.commonsMathShaCheck.diff
-cmd 'iwant/target/commons-math/as-path'
+cmd 'iwant/target/commons-math/as-rel-path'
 out-was <<EOF
 iwant/target/commons-math/../../../i-have/wsdef/com/example/wsdef/Workspace.java:66: cannot find symbol
 symbol  : method sha(java.lang.String)
@@ -292,9 +294,9 @@ location: class net.sf.iwant.core.Downloaded
 1 error
 EOF
 cmd "echo \"svn-revision 110\" > i-have/iwant-from.conf"
-cmd 'iwant/target/commons-math/as-path 2>/dev/null'
+cmd 'iwant/target/commons-math/as-rel-path 2>/dev/null'
 out-was <<EOF
-iwant/target/commons-math/../../cached/example/target/commons-math
+iwant/cached/example/target/commons-math
 EOF
 doc '}'
 fi

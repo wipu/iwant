@@ -127,6 +127,9 @@
   + ant targets for selected public iwant targets
   + use in gluent to verify
 
++ As a @buildscriptuser I want target paths to be output as absolute, to make them more useful externally
+  * when using "target/X/as-path", not ".../as-rel-path"
+
 #################################################################
 = Planned
 #################################################################
@@ -177,10 +180,9 @@
   * should be mostly done, but
   - descript and fix possible problems
 
-- As a @buildscriptuser I want target paths to be output as absolute, to make them more useful externally
-
 - As a @buildscriptuser I want any output relative paths in a minimal form, without extra ".."s
   - mostly the bootstrapper outputs these, find out where else
+  + the "target/X/as-rel-path" now works nicely
 
 - As a @developer I want to move shell functionality into sourcable functions so that it will be easier to create different wrapper scripts and to restructure the scripts
   + bootstrap functions

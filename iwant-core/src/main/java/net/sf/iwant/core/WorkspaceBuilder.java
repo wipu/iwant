@@ -17,9 +17,9 @@ public class WorkspaceBuilder {
 					"Expected arguments wsdefclass wsroot target cache-dir");
 		}
 		Class wsDef = wsDefClassByName(args[0]);
-		String wsRootArg = args[1];
+		String wsRootArg = toAbs(args[1]);
 		String targetArg = args[2];
-		String cacheDir = args[3];
+		String cacheDir = toAbs(args[3]);
 		Locations locations = new Locations(wsRootArg, cacheDir);
 		ContainerPath wsRoot = wsRoot(wsDef, locations);
 		NextPhase nextPhase = PathDigger.nextPhase(wsRoot);
@@ -36,7 +36,7 @@ public class WorkspaceBuilder {
 			Target target = target(wsRoot, targetName);
 			if (target != null) {
 				String cachedPath = freshTargetAsPath(target, locations);
-				System.out.println(cachedPath);
+				System.out.println(pathToPrint(cachedPath, targetArg));
 			} else {
 				if (nextPhase != null) {
 					runNextPhase(nextPhase, wsRootArg, targetArg, cacheDir);
@@ -46,6 +46,25 @@ public class WorkspaceBuilder {
 				}
 			}
 		}
+	}
+
+	private static String toAbs(String path) {
+		try {
+			return new File(path).getCanonicalPath();
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	private static String pathToPrint(String cachedPath, String targetArg) {
+		if (targetArg.endsWith("/as-rel-path")) {
+			String cwd = System.getProperty("user.dir");
+			return cachedPath.replaceFirst("^" + cwd + File.separator, "");
+		}
+		if (targetArg.endsWith("/as-path")) {
+			return cachedPath;
+		}
+		throw new IllegalArgumentException("Unknown suffix in " + targetArg);
 	}
 
 	private static String freshTargetAsPath(Target target, Locations locations) {

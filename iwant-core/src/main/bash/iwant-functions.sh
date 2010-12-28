@@ -38,6 +38,7 @@ create-target-scripts() {
   while read target; do
     echo "$target"
     createscript "$WSNAME" "$WSROOT" "target/$target/as-path" "$WSSRC" "$WSDEFCLASS" ""
+    createscript "$WSNAME" "$WSROOT" "target/$target/as-rel-path" "$WSSRC" "$WSDEFCLASS" ""
   done
 }
 
