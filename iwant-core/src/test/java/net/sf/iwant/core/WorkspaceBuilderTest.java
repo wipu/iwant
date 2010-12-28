@@ -821,7 +821,7 @@ public class WorkspaceBuilderTest extends TestCase {
 		bx.append("			<condition property=\"iwant-succeeded\">\n");
 		bx.append("				<equals arg1=\"0\" arg2=\"${iwant-result}\" />\n");
 		bx.append("			</condition>\n");
-		bx.append("			</fail message=\"Failure\" unless=\"iwant-succeeded\" />\n");
+		bx.append("			<fail message=\"Failure\" unless=\"iwant-succeeded\" />\n");
 		bx.append("		</sequential>\n");
 		bx.append("	</macrodef>\n");
 		bx.append("\n");

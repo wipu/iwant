@@ -147,7 +147,7 @@ public class EclipseProjects implements Content {
 		b.append("			<condition property=\"iwant-succeeded\">\n");
 		b.append("				<equals arg1=\"0\" arg2=\"${iwant-result}\" />\n");
 		b.append("			</condition>\n");
-		b.append("			</fail message=\"Failure\" unless=\"iwant-succeeded\" />\n");
+		b.append("			<fail message=\"Failure\" unless=\"iwant-succeeded\" />\n");
 		b.append("		</sequential>\n");
 		b.append("	</macrodef>\n");
 		b.append("\n");
