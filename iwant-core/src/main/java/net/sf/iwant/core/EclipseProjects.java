@@ -97,6 +97,7 @@ public class EclipseProjects implements Content {
 		b.append("	<property name=\"i-have\" value=\"i-have\"/>\n");
 		b.append("	<property file=\"${i-have}/ws-info.conf\" prefix=\"ws-info\"/>\n");
 		b.append("	<property name=\"ws-name\" value=\"${ws-info.WSNAME}\" />\n");
+		b.append("	<property name=\"ws-root\" value=\"${i-have}/${ws-info.WSROOT}\" />\n");
 		b.append("	<property name=\"wsdef-src\" value=\"${i-have}/${ws-info.WSDEF_SRC}\" />\n");
 		b.append("	<property name=\"wsdef-classname\" value=\"${ws-info.WSDEF_CLASS}\" />\n");
 		b.append("\n");
@@ -152,7 +153,7 @@ public class EclipseProjects implements Content {
 		b.append("\n");
 		b.append("	<target name=\"fresh-eclipse-settings\" depends=\"wsdef-classes\">\n");
 		b.append("		<iwant target-name=\"target/eclipse-projects/as-path\" />\n");
-		b.append("		<copy todir=\"${basedir}\">\n");
+		b.append("		<copy todir=\"${ws-root}\">\n");
 		b.append("			<fileset dir=\"${iwant-out}\" includes=\"**/*\" />\n");
 		b.append("		</copy>\n");
 		b.append("	</target>\n");
