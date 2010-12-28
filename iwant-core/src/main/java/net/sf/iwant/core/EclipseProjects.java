@@ -94,8 +94,8 @@ public class EclipseProjects implements Content {
 		b.append("<project name=\"" + project.name()
 				+ "-iwant\" default=\"list-of-targets\" basedir=\".\">\n");
 		b.append("\n");
-		b.append("	<property name=\"i-have\" location=\"i-have\"/>\n");
-		b.append("	<property file=\"${i-have}/ws-info.conf\" prefix=\"ws-info\"/>\n");
+		b.append("	<property name=\"i-have\" location=\"i-have\" />\n");
+		b.append("	<property file=\"${i-have}/ws-info.conf\" prefix=\"ws-info\" />\n");
 		b.append("	<property name=\"ws-name\" value=\"${ws-info.WSNAME}\" />\n");
 		b.append("	<property name=\"ws-root\" location=\"${i-have}/${ws-info.WSROOT}\" />\n");
 		b.append("	<property name=\"wsdef-src\" location=\"${i-have}/${ws-info.WSDEF_SRC}\" />\n");
@@ -133,7 +133,7 @@ public class EclipseProjects implements Content {
 		b.append("	<macrodef name=\"iwant\">\n");
 		b.append("		<attribute name=\"target-name\" />\n");
 		b.append("		<sequential>\n");
-		b.append("			<java dir=\"${ws-root}\" classname=\"net.sf.iwant.core.WorkspaceBuilder\" fork=\"true\" outputproperty=\"iwant-out\" failonerror=\"true\">\n");
+		b.append("			<java dir=\"${ws-root}\" classname=\"net.sf.iwant.core.WorkspaceBuilder\" fork=\"true\" outputproperty=\"iwant-out\" resultproperty=\"iwant-result\">\n");
 		b.append("				<arg value=\"${wsdef-classname}\" />\n");
 		b.append("				<arg value=\"${ws-root}\" />\n");
 		b.append("				<arg value=\"@{target-name}\" />\n");
@@ -144,6 +144,10 @@ public class EclipseProjects implements Content {
 		b.append("				</classpath>\n");
 		b.append("			</java>\n");
 		b.append("			<echo message=\"${iwant-out}\" />\n");
+		b.append("			<condition property=\"iwant-succeeded\">\n");
+		b.append("				<equals arg1=\"0\" arg2=\"${iwant-result}\" />\n");
+		b.append("			</condition>\n");
+		b.append("			</fail message=\"Failure\" unless=\"iwant-succeeded\" />\n");
 		b.append("		</sequential>\n");
 		b.append("	</macrodef>\n");
 		b.append("\n");

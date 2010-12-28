@@ -768,8 +768,8 @@ public class WorkspaceBuilderTest extends TestCase {
 		StringBuilder bx = new StringBuilder();
 		bx.append("<project name=\"b-iwant\" default=\"list-of-targets\" basedir=\".\">\n");
 		bx.append("\n");
-		bx.append("	<property name=\"i-have\" location=\"i-have\"/>\n");
-		bx.append("	<property file=\"${i-have}/ws-info.conf\" prefix=\"ws-info\"/>\n");
+		bx.append("	<property name=\"i-have\" location=\"i-have\" />\n");
+		bx.append("	<property file=\"${i-have}/ws-info.conf\" prefix=\"ws-info\" />\n");
 		bx.append("	<property name=\"ws-name\" value=\"${ws-info.WSNAME}\" />\n");
 		bx.append("	<property name=\"ws-root\" location=\"${i-have}/${ws-info.WSROOT}\" />\n");
 		bx.append("	<property name=\"wsdef-src\" location=\"${i-have}/${ws-info.WSDEF_SRC}\" />\n");
@@ -807,7 +807,7 @@ public class WorkspaceBuilderTest extends TestCase {
 		bx.append("	<macrodef name=\"iwant\">\n");
 		bx.append("		<attribute name=\"target-name\" />\n");
 		bx.append("		<sequential>\n");
-		bx.append("			<java dir=\"${ws-root}\" classname=\"net.sf.iwant.core.WorkspaceBuilder\" fork=\"true\" outputproperty=\"iwant-out\" failonerror=\"true\">\n");
+		bx.append("			<java dir=\"${ws-root}\" classname=\"net.sf.iwant.core.WorkspaceBuilder\" fork=\"true\" outputproperty=\"iwant-out\" resultproperty=\"iwant-result\">\n");
 		bx.append("				<arg value=\"${wsdef-classname}\" />\n");
 		bx.append("				<arg value=\"${ws-root}\" />\n");
 		bx.append("				<arg value=\"@{target-name}\" />\n");
@@ -818,6 +818,10 @@ public class WorkspaceBuilderTest extends TestCase {
 		bx.append("				</classpath>\n");
 		bx.append("			</java>\n");
 		bx.append("			<echo message=\"${iwant-out}\" />\n");
+		bx.append("			<condition property=\"iwant-succeeded\">\n");
+		bx.append("				<equals arg1=\"0\" arg2=\"${iwant-result}\" />\n");
+		bx.append("			</condition>\n");
+		bx.append("			</fail message=\"Failure\" unless=\"iwant-succeeded\" />\n");
 		bx.append("		</sequential>\n");
 		bx.append("	</macrodef>\n");
 		bx.append("\n");
