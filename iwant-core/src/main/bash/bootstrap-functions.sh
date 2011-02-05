@@ -63,7 +63,7 @@ bootstrap-cpitems() {
         -cp "$iwant/$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar:$iwant/$wsroot/iwant-lib-ant-1.7.1/ant-1.7.1.jar:$iwant/$wsroot/iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar" \
 	-d "$iwant/$classescache" \
 	"$iwant/$wsroot/iwant-iwant/src/main/java/net/sf/iwant/iwant/IwantWorkspace.java" \
-	"$iwant/$wsroot/iwant-core/src/test/java/net/sf/iwant/core/Suite.java"
+	"$iwant/$wsroot/iwant-core/src/test/java/net/sf/iwant/core/IwantSuite.java"
 }
 
 bootstrap-testrun() {
@@ -72,7 +72,7 @@ bootstrap-testrun() {
   cp -a "$iwant/$cpitemscache" "$iwant/$testarea/iwanttestarea/iwant/"
 
   java -cp "$iwant/$testarea:$iwant/$classescache:$iwant/$wsroot/iwant-lib-junit-3.8.1/junit-3.8.1.jar:$iwant/$wsroot/iwant-lib-ant-1.7.1/ant-1.7.1.jar:$iwant/$wsroot/iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar" \
-    junit.textui.TestRunner -c net.sf.iwant.core.Suite
+    junit.textui.TestRunner -c net.sf.iwant.core.IwantSuite
 }
 
 targetscript() {

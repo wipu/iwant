@@ -137,6 +137,14 @@
   + print summary of the script's stdout and stderr to stderr
 
 #################################################################
+= In progress
+#################################################################
+
+- As a @developer I want to clean up the code here and there to get ready for adding lots of features and to make things easier otherwise
+  - rename Suite to IwantSuite to differentiate it from other projects
+
+
+#################################################################
 = Planned
 #################################################################
 
