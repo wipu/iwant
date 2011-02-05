@@ -1,6 +1,5 @@
 package net.sf.iwant.core;
 
-import java.io.File;
 import java.util.SortedSet;
 
 public interface Content {
@@ -12,7 +11,7 @@ public interface Content {
 
 	SortedSet<Target> dependencies();
 
-	void refresh(File destination) throws Exception;
+	void refresh(RefreshEnvironment refresh) throws Exception;
 
 	/**
 	 * A representation that determines equality for the content

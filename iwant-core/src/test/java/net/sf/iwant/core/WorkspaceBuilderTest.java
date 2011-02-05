@@ -937,4 +937,101 @@ public class WorkspaceBuilderTest extends TestCase {
 		assertEquals("hello from phase2\n", cachedContent("targetInPhase2"));
 	}
 
+	public static class WorkspaceWithShellScript implements WorkspaceDefinition {
+
+		public static class Root extends RootPath {
+
+			public Root(Locations locations) {
+				super(locations);
+			}
+
+			public Target successfulScript() {
+				StringBuilder b = new StringBuilder();
+				b.append("#!/bin/bash\n");
+				b.append("set -eu\n");
+				b.append("DEST=$1\n");
+				b.append("echo this was printed to stderr > /dev/stderr\n");
+				b.append("echo this was printed to stdout\n");
+				b.append("echo DEST=$DEST\n");
+				b.append("echo -n 'pwd is '\n");
+				b.append("pwd\n");
+				b.append("echo 'hello from script' > \"$DEST\"\n");
+				return target("successfulScript").content(
+						Constant.value(b.toString())).end();
+			}
+
+			public Target successfulScriptOutput() {
+				return target("successfulScriptOutput").content(
+						ScriptGeneratedContent.of(successfulScript())).end();
+			}
+
+			public Target failingScript() {
+				StringBuilder b = new StringBuilder();
+				b.append("#!/bin/bash\n");
+				b.append("echo causing failure\n");
+				b.append("exit 1\n");
+				return target("failingScript").content(
+						Constant.value(b.toString())).end();
+			}
+
+			public Target failingScriptOutput() {
+				return target("failingScriptOutput").content(
+						ScriptGeneratedContent.of(failingScript())).end();
+			}
+
+		}
+
+		public ContainerPath wsRoot(Locations locations) {
+			return new Root(locations);
+		}
+
+	}
+
+	public void testSuccessfulShellScript() throws IOException {
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithShellScript.class.getName(), wsRoot,
+				"target/successfulScriptOutput/as-path", cacheDir });
+
+		StringBuilder expectedErr = new StringBuilder();
+		expectedErr.append("Standard out:\n");
+		expectedErr.append("this was printed to stdout\n");
+		expectedErr.append("DEST="
+				+ pathToCachedTarget("successfulScriptOutput") + "\n");
+		expectedErr.append("pwd is " + cacheDir
+				+ "/tmp-for-the-only-worker-thread\n");
+		expectedErr.append("Standard err:\n");
+		expectedErr.append("this was printed to stderr\n");
+
+		assertEquals(pathLine("successfulScriptOutput"), out.toString());
+		assertEquals(expectedErr.toString(), err.toString());
+
+		assertEquals("hello from script\n",
+				cachedContent("successfulScriptOutput"));
+	}
+
+	public void testFailingShellScript() {
+		try {
+			WorkspaceBuilder.main(new String[] {
+					WorkspaceWithShellScript.class.getName(), wsRoot,
+					"target/failingScriptOutput/as-path", cacheDir });
+			fail();
+		} catch (Exception e) {
+			// expected
+			assertEquals(
+					"java.lang.IllegalStateException: Script exited with non-zero status 1",
+					e.getMessage());
+		}
+
+		StringBuilder expectedErr = new StringBuilder();
+		expectedErr.append("Standard out:\n");
+		expectedErr.append("causing failure\n");
+		expectedErr.append("Standard err:\n");
+
+		assertEquals("", out.toString());
+		assertEquals(expectedErr.toString(), err.toString());
+
+		assertFalse(new File(pathToCachedTarget("failingScriptOutput"))
+				.exists());
+	}
+
 }

@@ -1,6 +1,5 @@
 package net.sf.iwant.core;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -65,14 +64,14 @@ public class JavaClasses implements Content {
 		return dependencies;
 	}
 
-	public void refresh(File destination) {
-		destination.mkdir();
+	public void refresh(RefreshEnvironment refresh) {
+		refresh.destination().mkdir();
 		Project project = new Project();
 		project.addBuildListener(new JavacListener());
 		Javac javac = new Javac();
 		javac.setProject(project);
 		javac.setSrcdir(antPath(project, src.name()));
-		javac.setDestdir(destination);
+		javac.setDestdir(refresh.destination());
 		org.apache.tools.ant.types.Path path = javac.createClasspath();
 		for (Path cpItem : classPath) {
 			path.add(antPath(project, cpItem.name()));

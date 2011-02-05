@@ -33,10 +33,10 @@ public class EclipseProjects implements Content {
 		return dependencies;
 	}
 
-	public void refresh(File destination) throws Exception {
+	public void refresh(RefreshEnvironment refresh) throws Exception {
 		for (EclipseProject project : projects) {
-			File projectDir = new File(destination.getCanonicalPath() + "/"
-					+ project.name());
+			File projectDir = new File(refresh.destination().getCanonicalPath()
+					+ "/" + project.name());
 			project.refresh(projectDir);
 			if (project.hasIwantAnt()) {
 				File buildXml = new File(projectDir.getCanonicalPath()

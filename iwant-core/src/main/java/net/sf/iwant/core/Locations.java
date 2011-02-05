@@ -22,4 +22,8 @@ public class Locations {
 		return cacheDir + "/content-descr";
 	}
 
+	public String temporaryDirectory() {
+		return cacheDir + "/tmp-for-the-only-worker-thread";
+	}
+
 }

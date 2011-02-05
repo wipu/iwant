@@ -1,0 +1,19 @@
+2a3
+> import net.sf.iwant.core.Constant;
+5a7
+> import net.sf.iwant.core.ScriptGeneratedContent;
+25a28,41
+>         public Target script() {
+> 	    StringBuilder b = new StringBuilder();
+> 	    b.append("#!/bin/bash -eu\n");
+> 	    b.append("DEST=$1\n");
+> 	    b.append("echo 'hello from script' > \"$DEST\"\n");
+>             return target("script").
+> 	        content(Constant.value(b.toString())).end();
+> 	}
+> 
+>         public Target scriptGeneratedContent() {
+>             return target("scriptGeneratedContent").
+> 	        content(ScriptGeneratedContent.of(script())).end();
+> 	}
+> 

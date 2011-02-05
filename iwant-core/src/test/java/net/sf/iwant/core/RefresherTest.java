@@ -1,5 +1,7 @@
 package net.sf.iwant.core;
 
+import java.io.File;
+
 import junit.framework.TestCase;
 
 public class RefresherTest extends TestCase {
@@ -14,7 +16,7 @@ public class RefresherTest extends TestCase {
 	public void setUp() {
 		ts = new TimestampReaderMock();
 		descrCache = new ContentDescriptionCacheMock();
-		refresher = new Refresher(ts, descrCache);
+		refresher = new Refresher(ts, descrCache, new File("tmp"));
 		content = new ContentMock();
 	}
 

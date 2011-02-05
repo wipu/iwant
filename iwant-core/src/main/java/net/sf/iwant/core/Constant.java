@@ -1,6 +1,5 @@
 package net.sf.iwant.core;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.SortedSet;
@@ -22,8 +21,8 @@ public class Constant implements Content {
 		return value;
 	}
 
-	public void refresh(File destination) throws IOException {
-		new FileWriter(destination).append(value()).close();
+	public void refresh(RefreshEnvironment refresh) throws IOException {
+		new FileWriter(refresh.destination()).append(value()).close();
 	}
 
 	public SortedSet<Path> sources() {

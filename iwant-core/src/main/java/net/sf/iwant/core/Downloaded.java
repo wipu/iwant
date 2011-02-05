@@ -42,14 +42,14 @@ public class Downloaded implements Content {
 		return new TreeSet();
 	}
 
-	public void refresh(File destination) throws Exception {
+	public void refresh(RefreshEnvironment refresh) throws Exception {
 		Get get = new Get();
 		get.setSrc(new URL(from));
-		get.setDest(destination);
+		get.setDest(refresh.destination());
 		get.execute();
 
-		checkIfRequired(destination, "MD5", md5);
-		checkIfRequired(destination, "SHA", sha);
+		checkIfRequired(refresh.destination(), "MD5", md5);
+		checkIfRequired(refresh.destination(), "SHA", sha);
 	}
 
 	private void checkIfRequired(File destination, String algorithm,

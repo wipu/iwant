@@ -1,12 +1,12 @@
 package com.example.wsdef2;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import net.sf.iwant.core.Content;
 import net.sf.iwant.core.Path;
+import net.sf.iwant.core.RefreshEnvironment;
 import net.sf.iwant.core.Target;
 import org.apache.commons.math.fraction.Fraction;
 import org.apache.commons.math.fraction.FractionConversionException;
@@ -39,8 +39,8 @@ public class CustomContent implements Content {
         return new TreeSet<Target>();
     }
 
-    public void refresh(File destination) throws IOException {
-        new FileWriter(destination).append(message()).close();
+    public void refresh(RefreshEnvironment refresh) throws IOException {
+        new FileWriter(refresh.destination()).append(message()).close();
     }
 
     private String message() {

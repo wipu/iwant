@@ -301,4 +301,26 @@ EOF
 doc '}'
 fi
 
+doc 'section {name {Script-generated content}'
+
+edit '../example-wsdef2/src/com/example/wsdef2/ExampleWorkspace.java' ExampleWorkspace.java.scriptGeneratedContent.diff
+
+cmd 'iwant/list-of/targets | grep scriptGeneratedContent'
+out-was <<EOF
+scriptGeneratedContent
+EOF
+cmd 'iwant/target/scriptGeneratedContent/as-rel-path'
+out-was <<EOF
+iwant/cached/example/target/scriptGeneratedContent
+Standard out:
+Standard err:
+EOF
+
+cmd 'cat $(iwant/target/scriptGeneratedContent/as-path)'
+out-was <<EOF
+hello from script
+EOF
+
+doc '}'
+
 doc '}'

@@ -24,8 +24,8 @@ public class ContentMock implements Content {
 		return refreshedDestinations;
 	}
 
-	public void refresh(File destination) throws Exception {
-		refreshedDestinations.add(destination);
+	public void refresh(RefreshEnvironment refresh) throws Exception {
+		refreshedDestinations.add(refresh.destination());
 	}
 
 	public SortedSet<Path> sources() {

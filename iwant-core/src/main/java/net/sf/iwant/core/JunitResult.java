@@ -1,7 +1,6 @@
 package net.sf.iwant.core;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,7 +62,7 @@ public class JunitResult implements Content {
 		return this;
 	}
 
-	public void refresh(File destination) throws Exception {
+	public void refresh(RefreshEnvironment refresh) throws Exception {
 		Project project = new Project();
 		JunitListener listener = new JunitListener();
 		project.addBuildListener(listener);
@@ -71,8 +70,8 @@ public class JunitResult implements Content {
 		junit.setProject(project);
 		JUnitTest test = new JUnitTest();
 		test.setName(testClassName);
-		test.setTodir(destination.getParentFile());
-		test.setOutfile(destination.getName());
+		test.setTodir(refresh.destination().getParentFile());
+		test.setOutfile(refresh.destination().getName());
 		junit.addTest(test);
 		junit.setHaltonerror(true);
 		junit.setHaltonfailure(true);
