@@ -15,29 +15,19 @@ import org.apache.tools.ant.taskdefs.Copy;
 public class ScriptGeneratedContent implements Content {
 
 	private final Path script;
-	private final SortedSet<Path> sources = new TreeSet();
-	private final SortedSet<Target> dependencies = new TreeSet();
+	private final SortedSet<Path> ingredients = new TreeSet();
 
 	private ScriptGeneratedContent(Path script) {
 		this.script = script;
-		if (script instanceof Source) {
-			sources.add(script);
-		}
-		if (script instanceof Target) {
-			dependencies.add((Target) script);
-		}
+		ingredients.add(script);
 	}
 
 	public static ScriptGeneratedContent of(Path script) {
 		return new ScriptGeneratedContent(script);
 	}
 
-	public SortedSet<Path> sources() {
-		return sources;
-	}
-
-	public SortedSet<Target> dependencies() {
-		return dependencies;
+	public SortedSet<Path> ingredients() {
+		return ingredients;
 	}
 
 	public void refresh(RefreshEnvironment refresh) throws Exception {

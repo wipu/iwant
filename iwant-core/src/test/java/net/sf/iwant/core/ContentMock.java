@@ -8,16 +8,14 @@ import java.util.TreeSet;
 
 public class ContentMock implements Content {
 
-	private final SortedSet<Path> sources = new TreeSet();
-
-	private final SortedSet<Target> dependencies = new TreeSet();
+	private final SortedSet<Path> ingredients = new TreeSet();
 
 	private final List<File> refreshedDestinations = new ArrayList();
 
 	private String description = "default-descr";
 
-	public SortedSet<Target> dependencies() {
-		return dependencies;
+	public SortedSet<Path> ingredients() {
+		return ingredients;
 	}
 
 	public List<File> refreshedDestinations() {
@@ -26,10 +24,6 @@ public class ContentMock implements Content {
 
 	public void refresh(RefreshEnvironment refresh) throws Exception {
 		refreshedDestinations.add(refresh.destination());
-	}
-
-	public SortedSet<Path> sources() {
-		return sources;
 	}
 
 	public String definitionDescription() {

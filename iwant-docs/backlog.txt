@@ -136,6 +136,15 @@
   + run the script in the temporary directory
   + print summary of the script's stdout and stderr to stderr
 
++ As a @contentauthor I want the misleading sources/dependencies separation replaced with a simpler concept: ingredients
+  * sources doesn't mean the paths are necessarily of type Source
+  * instead they mean their timestamps determine needsRefreshing
+  * this is unnecessary (until proven otherwise): a target needs refreshing when any of its
+    ingredients (paths it refers or _may_ refer to during refresh) has been touched
+  * dependencies are just ingredients of type Target i.e. possibly needing refreshing
+  + do it
+  + fix tutorial
+
 #################################################################
 = In progress
 #################################################################
@@ -145,14 +154,6 @@
   - split WorkspaceBuilderTest
     - reusable utilities in base class or driver
     - split by feature
-
-- As a @contentauthor I want the misleading sources/dependencies separation replaced with a simpler concept: ingredients
-  * sources doesn't mean the paths are necessarily of type Source
-  * instead they mean their timestamps determine needsRefreshing
-  * this is unnecessary (until proven otherwise): a target needs refreshing when any of its
-    ingredients (paths it refers or _may_ refer to during refresh) has been touched
-  * dependencies are just ingredients of type Target i.e. possibly needing refreshing
-  - do it
 
 #################################################################
 = Planned

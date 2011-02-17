@@ -2,7 +2,6 @@ package net.sf.iwant.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.SortedSet;
 
 class Refresher {
 
@@ -26,8 +25,7 @@ class Refresher {
 	}
 
 	void refresh(Target target) throws Exception {
-		Content content = target.content();
-		for (Target dependency : content.dependencies()) {
+		for (Target dependency : target.dependencies()) {
 			refresh(dependency);
 		}
 		if (needsRefreshing(target))
@@ -40,9 +38,8 @@ class Refresher {
 			return true;
 		if (hasContentDefinitionChanged(target))
 			return true;
-		SortedSet<Path> sources = target.content().sources();
-		for (Path source : sources) {
-			Long sourceTimestamp = timestampReader.modificationTime(source);
+		for (Path ingredient : target.ingredients()) {
+			Long sourceTimestamp = timestampReader.modificationTime(ingredient);
 			if (sourceTimestamp == null) {
 				// Deleted source is modified source; let the content decide
 				// whether this is OK or not.
@@ -54,7 +51,7 @@ class Refresher {
 				return true;
 			}
 		}
-		// no source nor content definition modified
+		// no ingredient nor content definition modified
 		return false;
 	}
 

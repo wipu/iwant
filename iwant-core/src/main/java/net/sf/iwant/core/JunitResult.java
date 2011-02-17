@@ -19,7 +19,7 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
 
 public class JunitResult implements Content {
 
-	private final SortedSet<Target> dependencies = new TreeSet();
+	private final SortedSet<Path> ingredients = new TreeSet();
 	private final List<Path> classPath = new ArrayList();
 	private final String testClassName;
 
@@ -40,25 +40,19 @@ public class JunitResult implements Content {
 		return new JunitResult(testClassName);
 	}
 
-	public SortedSet<Path> sources() {
-		return new TreeSet(dependencies());
-	}
-
-	public SortedSet<Target> dependencies() {
-		return dependencies;
+	public SortedSet<Path> ingredients() {
+		return ingredients;
 	}
 
 	public JunitResult using(Collection<Target> classPath) {
 		this.classPath.addAll(classPath);
-		dependencies.addAll(classPath);
+		ingredients.addAll(classPath);
 		return this;
 	}
 
 	public JunitResult using(Path classes) {
 		classPath.add(classes);
-		if (classes instanceof Target) {
-			dependencies.add((Target) classes);
-		}
+		ingredients.add(classes);
 		return this;
 	}
 

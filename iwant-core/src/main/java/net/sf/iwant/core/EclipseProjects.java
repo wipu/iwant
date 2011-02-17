@@ -8,7 +8,7 @@ import java.util.TreeSet;
 
 public class EclipseProjects implements Content {
 
-	private final SortedSet<Target> dependencies = new TreeSet();
+	private final SortedSet<Path> ingredients = new TreeSet();
 	private final SortedSet<EclipseProject> projects = new TreeSet();
 
 	public static EclipseProjects with() {
@@ -17,20 +17,12 @@ public class EclipseProjects implements Content {
 
 	public EclipseProjects project(EclipseProject project) {
 		projects.add(project);
-		for (Path lib : project.libs()) {
-			if (lib instanceof Target) {
-				dependencies.add((Target) lib);
-			}
-		}
+		ingredients.addAll(project.libs());
 		return this;
 	}
 
-	public SortedSet<Path> sources() {
-		return new TreeSet();
-	}
-
-	public SortedSet<Target> dependencies() {
-		return dependencies;
+	public SortedSet<Path> ingredients() {
+		return ingredients;
 	}
 
 	public void refresh(RefreshEnvironment refresh) throws Exception {

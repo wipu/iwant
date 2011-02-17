@@ -15,12 +15,11 @@ public class JavaClasses implements Content {
 
 	private final Source src;
 	private final List<Path> classPath = new ArrayList();
-	private final SortedSet<Path> sources = new TreeSet();
-	private final SortedSet<Target> dependencies = new TreeSet();
+	private final SortedSet<Path> ingredients = new TreeSet();
 
 	public JavaClasses(Source src) {
 		this.src = src;
-		this.sources.add(src);
+		this.ingredients.add(src);
 	}
 
 	public String definitionDescription() {
@@ -38,10 +37,7 @@ public class JavaClasses implements Content {
 
 	public JavaClasses using(Path classes) {
 		classPath.add(classes);
-		if (classes instanceof Target) {
-			dependencies.add((Target) classes);
-		}
-		// TODO else add to sources?
+		ingredients.add(classes);
 		return this;
 	}
 
@@ -56,12 +52,8 @@ public class JavaClasses implements Content {
 		return classPath;
 	}
 
-	public SortedSet<Path> sources() {
-		return sources;
-	}
-
-	public SortedSet<Target> dependencies() {
-		return dependencies;
+	public SortedSet<Path> ingredients() {
+		return ingredients;
 	}
 
 	public void refresh(RefreshEnvironment refresh) {

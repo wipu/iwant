@@ -10,6 +10,6 @@
 >             return target("projectATestResult").
 >                 content(JunitResult.ofClass("example.ATest").
 >                     using(projectATests()).
->                     using(projectATests().content().dependencies()).
+>                     using(projectATests().dependencies()).
 >                     using(builtin().junit381Classes())).end();
 >         }

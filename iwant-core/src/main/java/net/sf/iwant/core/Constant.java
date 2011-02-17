@@ -25,11 +25,7 @@ public class Constant implements Content {
 		new FileWriter(refresh.destination()).append(value()).close();
 	}
 
-	public SortedSet<Path> sources() {
-		return new TreeSet();
-	}
-
-	public SortedSet<Target> dependencies() {
+	public SortedSet<Path> ingredients() {
 		return new TreeSet();
 	}
 

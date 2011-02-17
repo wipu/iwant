@@ -31,12 +31,8 @@ public class CustomContent implements Content {
         return b.toString();
     }
 
-    public SortedSet<Path> sources() {
+    public SortedSet<Path> ingredients() {
         return new TreeSet<Path>();
-    }
-
-    public SortedSet<Target> dependencies() {
-        return new TreeSet<Target>();
     }
 
     public void refresh(RefreshEnvironment refresh) throws IOException {

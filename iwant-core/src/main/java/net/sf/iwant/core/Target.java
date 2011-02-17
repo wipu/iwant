@@ -1,6 +1,9 @@
 package net.sf.iwant.core;
 
-public class Target extends Path {
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+public final class Target extends Path {
 
 	private final Content content;
 	private final String nameWithoutCacheDir;
@@ -17,6 +20,20 @@ public class Target extends Path {
 
 	public Content content() {
 		return content;
+	}
+
+	public SortedSet<Path> ingredients() {
+		return content.ingredients();
+	}
+
+	public SortedSet<Target> dependencies() {
+		SortedSet<Target> dependencies = new TreeSet();
+		for (Path ingredient : ingredients()) {
+			if (ingredient instanceof Target) {
+				dependencies.add((Target) ingredient);
+			}
+		}
+		return dependencies;
 	}
 
 }

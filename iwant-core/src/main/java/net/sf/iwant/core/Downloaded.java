@@ -34,11 +34,7 @@ public class Downloaded implements Content {
 		return this;
 	}
 
-	public SortedSet<Path> sources() {
-		return new TreeSet();
-	}
-
-	public SortedSet<Target> dependencies() {
+	public SortedSet<Path> ingredients() {
 		return new TreeSet();
 	}
 

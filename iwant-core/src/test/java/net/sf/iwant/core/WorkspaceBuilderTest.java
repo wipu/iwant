@@ -369,8 +369,7 @@ public class WorkspaceBuilderTest extends TestCase {
 			public Target testResult() {
 				return target("testResult").content(
 						JunitResult.ofClass("ATest").using(testClasses())
-								.using(testClasses().content().dependencies()))
-						.end();
+								.using(testClasses().dependencies())).end();
 			}
 
 		}
@@ -595,7 +594,7 @@ public class WorkspaceBuilderTest extends TestCase {
 
 			private EclipseProject aEclipseProject() {
 				return EclipseProject.with().name("a").src("src/main/java")
-						.libs(aClasses().content().dependencies()).end();
+						.libs(aClasses().dependencies()).end();
 			}
 
 			public Source aSrc() {

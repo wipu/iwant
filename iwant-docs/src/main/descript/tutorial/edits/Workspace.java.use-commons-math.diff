@@ -1,7 +1,7 @@
 4a4
 > import net.sf.iwant.core.Downloaded; 
 45a45
->                     using(projectAClasses().content().dependencies()).
+>                     using(projectAClasses().dependencies()).
 50c50,51
 <                 content(JavaClasses.compiledFrom(projectASrc())).end();
 ---
