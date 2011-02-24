@@ -3,12 +3,12 @@ package net.sf.iwant.core;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public final class Target extends Path {
+public final class Target<CONTENT extends Content> extends Path {
 
-	private final Content content;
+	private final CONTENT content;
 	private final String nameWithoutCacheDir;
 
-	public Target(String name, Locations locations, Content content) {
+	public Target(String name, Locations locations, CONTENT content) {
 		super(locations.targetCacheDir() + "/" + name);
 		this.nameWithoutCacheDir = name;
 		this.content = content;
@@ -18,7 +18,7 @@ public final class Target extends Path {
 		return nameWithoutCacheDir;
 	}
 
-	public Content content() {
+	public CONTENT content() {
 		return content;
 	}
 
@@ -26,8 +26,8 @@ public final class Target extends Path {
 		return content.ingredients();
 	}
 
-	public SortedSet<Target> dependencies() {
-		SortedSet<Target> dependencies = new TreeSet();
+	public SortedSet<Target<?>> dependencies() {
+		SortedSet<Target<?>> dependencies = new TreeSet();
 		for (Path ingredient : ingredients()) {
 			if (ingredient instanceof Target) {
 				dependencies.add((Target) ingredient);

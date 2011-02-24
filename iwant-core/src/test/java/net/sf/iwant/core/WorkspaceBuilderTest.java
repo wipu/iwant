@@ -250,7 +250,7 @@ public class WorkspaceBuilderTest extends TestCase {
 				return source("src");
 			}
 
-			public Target classes() {
+			public Target<JavaClasses> classes() {
 				return target("classes").content(
 						JavaClasses.compiledFrom(src())).end();
 			}
@@ -293,7 +293,7 @@ public class WorkspaceBuilderTest extends TestCase {
 				return source("src1");
 			}
 
-			public Target classes1() {
+			public Target<JavaClasses> classes1() {
 				return target("classes1").content(
 						JavaClasses.compiledFrom(src1())).end();
 			}
@@ -302,7 +302,7 @@ public class WorkspaceBuilderTest extends TestCase {
 				return source("src2");
 			}
 
-			public Target classes2() {
+			public Target<JavaClasses> classes2() {
 				return target("classes2").content(
 						JavaClasses.compiledFrom(src2()).using(classes1()))
 						.end();
@@ -351,7 +351,7 @@ public class WorkspaceBuilderTest extends TestCase {
 				return source("src");
 			}
 
-			public Target classes() {
+			public Target<JavaClasses> classes() {
 				return target("classes").content(
 						JavaClasses.compiledFrom(src())).end();
 			}
@@ -360,16 +360,20 @@ public class WorkspaceBuilderTest extends TestCase {
 				return source("tests");
 			}
 
-			public Target testClasses() {
+			public Target<JavaClasses> testClasses() {
 				return target("testClasses").content(
 						JavaClasses.compiledFrom(tests()).using(classes())
 								.using(builtin().junit381Classes())).end();
 			}
 
-			public Target testResult() {
-				return target("testResult").content(
-						JunitResult.ofClass("ATest").using(testClasses())
-								.using(testClasses().dependencies())).end();
+			public Target<JunitResult> testResult() {
+				return target("testResult")
+						.content(
+								JunitResult
+										.ofClass("ATest")
+										.using(testClasses())
+										.using(testClasses().content()
+												.classpathItems())).end();
 			}
 
 		}
@@ -442,13 +446,13 @@ public class WorkspaceBuilderTest extends TestCase {
 				super(locations);
 			}
 
-			public Target aDownloadedFile() {
+			public Target<Downloaded> aDownloadedFile() {
 				return target("aDownloadedFile").content(
 						Downloaded.from("file://" + mockWeb + "/aFileInTheWeb")
 								.md5("971ff50db55ffc43bdf06674fc81c885")).end();
 			}
 
-			public Target aDownloadedFileWithSha() {
+			public Target<Downloaded> aDownloadedFileWithSha() {
 				return target("aDownloadedFileWithSha")
 						.content(
 								Downloaded
@@ -586,7 +590,7 @@ public class WorkspaceBuilderTest extends TestCase {
 				super(locations);
 			}
 
-			public Target eclipseProjects() {
+			public Target<EclipseProjects> eclipseProjects() {
 				return target("eclipse-projects").content(
 						EclipseProjects.with().project(aEclipseProject())
 								.project(bEclipseProject())).end();
@@ -601,15 +605,14 @@ public class WorkspaceBuilderTest extends TestCase {
 				return source("a/src");
 			}
 
-			public Target aClasses() {
+			public Target<JavaClasses> aClasses() {
 				return target("a-classes").content(
 						JavaClasses.compiledFrom(aSrc()).using(bClasses()))
 						.end();
 			}
 
 			private EclipseProject bEclipseProject() {
-				JavaClasses bClassesContent = (JavaClasses) bClasses()
-						.content();
+				JavaClasses bClassesContent = bClasses().content();
 				return EclipseProject.with().name("b").src("src").src("tests")
 						.iwantAnt(aClasses(), bClasses())
 						.libs(bClassesContent.classpathItems()).end();
@@ -619,7 +622,7 @@ public class WorkspaceBuilderTest extends TestCase {
 				return source("b/src");
 			}
 
-			public Target bClasses() {
+			public Target<JavaClasses> bClasses() {
 				return target("b-classes").content(
 						JavaClasses.compiledFrom(bSrc()).using(
 								builtin().junit381Classes())).end();
@@ -862,7 +865,7 @@ public class WorkspaceBuilderTest extends TestCase {
 				return source("phase2/src");
 			}
 
-			public Target phase2Classes() {
+			public Target<JavaClasses> phase2Classes() {
 				return target("phase2Classes").content(
 						JavaClasses.compiledFrom(phase2Src()).using(
 								builtin().all())).end();
@@ -944,7 +947,7 @@ public class WorkspaceBuilderTest extends TestCase {
 				super(locations);
 			}
 
-			public Target successfulScript() {
+			public Target<Constant> successfulScript() {
 				StringBuilder b = new StringBuilder();
 				b.append("#!/bin/bash\n");
 				b.append("set -eu\n");
@@ -959,12 +962,12 @@ public class WorkspaceBuilderTest extends TestCase {
 						Constant.value(b.toString())).end();
 			}
 
-			public Target successfulScriptOutput() {
+			public Target<ScriptGeneratedContent> successfulScriptOutput() {
 				return target("successfulScriptOutput").content(
 						ScriptGeneratedContent.of(successfulScript())).end();
 			}
 
-			public Target failingScript() {
+			public Target<Constant> failingScript() {
 				StringBuilder b = new StringBuilder();
 				b.append("#!/bin/bash\n");
 				b.append("echo causing failure\n");
@@ -973,7 +976,7 @@ public class WorkspaceBuilderTest extends TestCase {
 						Constant.value(b.toString())).end();
 			}
 
-			public Target failingScriptOutput() {
+			public Target<ScriptGeneratedContent> failingScriptOutput() {
 				return target("failingScriptOutput").content(
 						ScriptGeneratedContent.of(failingScript())).end();
 			}

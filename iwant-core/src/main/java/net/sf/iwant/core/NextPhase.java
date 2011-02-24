@@ -2,18 +2,18 @@ package net.sf.iwant.core;
 
 public class NextPhase {
 
-	private final Target classes;
+	private final Target<JavaClasses> classes;
 	private final String className;
 
-	public static NextPhaseBuilder at(Target classes) {
+	public static NextPhaseBuilder at(Target<JavaClasses> classes) {
 		return new NextPhaseBuilder(classes);
 	}
 
 	public static class NextPhaseBuilder {
 
-		private final Target classes;
+		private final Target<JavaClasses> classes;
 
-		private NextPhaseBuilder(Target classes) {
+		private NextPhaseBuilder(Target<JavaClasses> classes) {
 			this.classes = classes;
 		}
 
@@ -23,12 +23,12 @@ public class NextPhase {
 
 	}
 
-	private NextPhase(Target classes, String className) {
+	private NextPhase(Target<JavaClasses> classes, String className) {
 		this.classes = classes;
 		this.className = className;
 	}
 
-	public Target classes() {
+	public Target<JavaClasses> classes() {
 		return classes;
 	}
 

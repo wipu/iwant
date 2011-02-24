@@ -23,22 +23,47 @@ public class ContainerPath extends Path {
 
 	}
 
-	public class TargetBuilder extends PathBuilder<TargetBuilder, Target> {
+	public class TargetName {
 
-		public TargetBuilder content(Content content) {
-			this.content = content;
-			return this;
+		public TargetBuilder name(String name) {
+			return new TargetBuilder(name);
 		}
 
-		@Override
-		public Target end() {
+	}
+
+	public class TargetBuilder {
+
+		private final String name;
+
+		public TargetBuilder(String name) {
+			this.name = name;
+		}
+
+		public <CONTENT extends Content> TargetEnd<CONTENT> content(
+				CONTENT content) {
+			return new TargetEnd(name, content);
+		}
+
+	}
+
+	public class TargetEnd<CONTENT extends Content> {
+
+		private final String name;
+		private final CONTENT content;
+
+		public TargetEnd(String name, CONTENT content) {
+			this.name = name;
+			this.content = content;
+		}
+
+		public Target<CONTENT> end() {
 			return new Target(name, locations, content);
 		}
 
 	}
 
 	public TargetBuilder target(String name) {
-		return new TargetBuilder().name(name);
+		return new TargetName().name(name);
 	}
 
 	public Source source(String name) {

@@ -8,7 +8,7 @@ public class WorkspaceWithTwoConstantTargetFiles implements WorkspaceDefinition 
 			super(locations);
 		}
 
-		public Target constantOne() {
+		public Target<Constant> constantOne() {
 			return target("constantOne").content(
 					Constant.value("constantOne content\n")).end();
 		}
@@ -21,7 +21,7 @@ public class WorkspaceWithTwoConstantTargetFiles implements WorkspaceDefinition 
 			throw new UnsupportedOperationException("Not to be called");
 		}
 
-		public Target constantTwo() {
+		public Target<Constant> constantTwo() {
 			return target("constant2-container/constant2").content(
 					Constant.value("constantTwo alias constant2 content\n"))
 					.end();

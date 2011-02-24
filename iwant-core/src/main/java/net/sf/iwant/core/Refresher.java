@@ -24,15 +24,15 @@ class Refresher {
 						locations.temporaryDirectory()));
 	}
 
-	void refresh(Target target) throws Exception {
-		for (Target dependency : target.dependencies()) {
+	void refresh(Target<?> target) throws Exception {
+		for (Target<?> dependency : target.dependencies()) {
 			refresh(dependency);
 		}
 		if (needsRefreshing(target))
 			doRefresh(target);
 	}
 
-	private boolean needsRefreshing(Target target) throws IOException {
+	private boolean needsRefreshing(Target<?> target) throws IOException {
 		Long targetTimestamp = timestampReader.modificationTime(target);
 		if (targetTimestamp == null)
 			return true;

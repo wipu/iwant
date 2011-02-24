@@ -44,7 +44,7 @@ public class JunitResult implements Content {
 		return ingredients;
 	}
 
-	public JunitResult using(Collection<Target> classPath) {
+	public JunitResult using(Collection<? extends Path> classPath) {
 		this.classPath.addAll(classPath);
 		ingredients.addAll(classPath);
 		return this;
