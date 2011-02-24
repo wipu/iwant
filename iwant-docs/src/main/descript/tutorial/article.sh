@@ -88,6 +88,8 @@ Use find or code completion (tab) to see what you can iwant/
 Have fun.
 EOF
 
+cmd 'cat i-have/wsdef/com/example/wsdef/Workspace.java'
+
 cmd 'find iwant/list-of'
 out-was <<EOF
 iwant/list-of

@@ -145,18 +145,20 @@
   + do it
   + fix tutorial
 
-#################################################################
-= In progress
-#################################################################
-
-- As a @buildscriptdeveloper I want the Target class parameterized by its Content so I can use methods from the content, like classpath from JavaClasses
++ As a @buildscriptdeveloper I want the Target class parameterized by its Content so I can use methods from the content, like classpath from JavaClasses
   + add generics to
     + Target
     + builder for it
   + tutorial to use generics
-  - stub workspace to use generics
+  + stub workspace to use generics
     + impl
-    - test/fix tutorial after commit
+    (- test/fix tutorial after commit)
+       * local bootstrapper was used, after all; it was
+         a descript bug (unescaped < in the command output)
+
+#################################################################
+= In progress
+#################################################################
 
 - As a @developer I want to clean up the code here and there to get ready for adding lots of features and to make things easier otherwise
   + rename Suite to IwantSuite to differentiate it from other projects
@@ -167,6 +169,8 @@
 #################################################################
 = Planned
 #################################################################
+
+- As a @developer I want a fixed version of descript that escapes "<" correctly in editor and console divs
 
 - As a @buildscriptuser I want the generated eclipse project to use normal src, because subclipse doesn't show local changes in linked sources
   + implement

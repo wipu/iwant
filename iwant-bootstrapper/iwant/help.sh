@@ -182,12 +182,12 @@ public class $CLASS implements WorkspaceDefinition {
             super(locations);
         }
 
-        public Target aConstant() {
+        public Target<Constant> aConstant() {
             return target("aConstant").
                 content(Constant.value("Constant generated content\n")).end();
         }
 
-        public Target eclipseProjects() {
+        public Target<EclipseProjects> eclipseProjects() {
             return target("eclipse-projects").
                 content(EclipseProjects.with().
                     project(wsdefEclipseProject())).end();
