@@ -18,7 +18,7 @@ public class ExampleWorkspace implements WorkspaceDefinition {
             super(locations);
         }
 
-        public Target targetWithCustomContent() {
+        public Target<CustomContent> targetWithCustomContent() {
             return target("targetWithCustomContent").
                 content(CustomContent.value("Hello")).end();
         }

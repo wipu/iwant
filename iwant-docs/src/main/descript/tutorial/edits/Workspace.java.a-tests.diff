@@ -7,7 +7,7 @@
 >             return source("project-a/tests");
 >         }
 > 
->         public Target projectATests() {
+>         public Target<JavaClasses> projectATests() {
 >             return target("projectATests").
 >                 content(JavaClasses.compiledFrom(projectATestsSrc())).end();
 >         }

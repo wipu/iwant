@@ -3,7 +3,7 @@
 5a7
 > import net.sf.iwant.core.ScriptGeneratedContent;
 25a28,41
->         public Target script() {
+>         public Target<Constant> script() {
 > 	    StringBuilder b = new StringBuilder();
 > 	    b.append("#!/bin/bash -eu\n");
 > 	    b.append("DEST=$1\n");
@@ -12,7 +12,7 @@
 > 	        content(Constant.value(b.toString())).end();
 > 	}
 > 
->         public Target scriptGeneratedContent() {
+>         public Target<ScriptGeneratedContent> scriptGeneratedContent() {
 >             return target("scriptGeneratedContent").
 > 	        content(ScriptGeneratedContent.of(script())).end();
 > 	}

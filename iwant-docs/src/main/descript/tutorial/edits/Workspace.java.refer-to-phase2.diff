@@ -12,7 +12,7 @@
 >                 lib(commonsMath()).end();
 >         }
 > 
->         public Target wsdef2Classes() {
+>         public Target<JavaClasses> wsdef2Classes() {
 >             return target("wsdef2Classes").
 >                 content(JavaClasses.compiledFrom(wsdef2Src()).
 >                     using(builtin().all()).

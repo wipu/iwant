@@ -6,7 +6,7 @@
 >                     using(projectAClasses()).
 >                     using(builtin().junit381Classes())).end();
 38a38,44
->         public Target projectATestResult() {
+>         public Target<JunitResult> projectATestResult() {
 >             return target("projectATestResult").
 >                 content(JunitResult.ofClass("example.ATest").
 >                     using(projectATests()).

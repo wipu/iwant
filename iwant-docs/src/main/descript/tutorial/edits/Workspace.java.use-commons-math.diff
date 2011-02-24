@@ -8,7 +8,7 @@
 >                 content(JavaClasses.compiledFrom(projectASrc()).
 >                     using(commonsMath())).end();
 56a58,64
->         public Target commonsMath() {
+>         public Target<Downloaded> commonsMath() {
 >             return target("commons-math").
 >                 content(Downloaded.
 >                     from("http://mirrors.ibiblio.org/pub/mirrors/maven2/commons-math/commons-math/1.2/commons-math-1.2.jar").

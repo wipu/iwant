@@ -149,6 +149,15 @@
 = In progress
 #################################################################
 
+- As a @buildscriptdeveloper I want the Target class parameterized by its Content so I can use methods from the content, like classpath from JavaClasses
+  + add generics to
+    + Target
+    + builder for it
+  + tutorial to use generics
+  - stub workspace to use generics
+    + impl
+    - test/fix tutorial after commit
+
 - As a @developer I want to clean up the code here and there to get ready for adding lots of features and to make things easier otherwise
   + rename Suite to IwantSuite to differentiate it from other projects
   - split WorkspaceBuilderTest

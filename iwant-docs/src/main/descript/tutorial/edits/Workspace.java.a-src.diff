@@ -6,7 +6,7 @@
 >                     using(projectAClasses())).end();
 >         }
 > 
->         public Target projectAClasses() {
+>         public Target<JavaClasses> projectAClasses() {
 >             return target("projectAClasses").
 >                 content(JavaClasses.compiledFrom(projectASrc())).end();
 >         }
