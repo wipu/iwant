@@ -156,6 +156,11 @@
        * local bootstrapper was used, after all; it was
          a descript bug (unescaped < in the command output)
 
++ As a @buildscriptauthor I want content concatenated from content of other Paths or String or byte[] literals
+  * this is important for dynamic scripts that use other paths as ingredients
+  + test and implement
+  * not descripting in tutorial, this is really nothing new
+
 #################################################################
 = In progress
 #################################################################

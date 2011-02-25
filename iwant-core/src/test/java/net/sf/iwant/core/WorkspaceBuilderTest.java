@@ -1036,4 +1036,45 @@ public class WorkspaceBuilderTest extends TestCase {
 				.exists());
 	}
 
+	public void testConcatenatedSrc() throws IOException {
+		new FileWriter(wsRoot + "/src").append("src content\n").close();
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithConcatenatedContent.class.getName(), wsRoot,
+				"target/copyOfSrc/as-path", cacheDir });
+
+		assertEquals(pathLine("copyOfSrc"), out.toString());
+		assertEquals("", err.toString());
+
+		assertEquals("src content\n", cachedContent("copyOfSrc"));
+	}
+
+	public void testConcatenatedSrcAfterSrcChanges() throws IOException {
+		testConcatenatedSrc();
+		sleep();
+		new FileWriter(wsRoot + "/src").append("new src content\n").close();
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithConcatenatedContent.class.getName(), wsRoot,
+				"target/copyOfSrc/as-path", cacheDir });
+
+		assertEquals(pathLine("copyOfSrc") + pathLine("copyOfSrc"),
+				out.toString());
+		assertEquals("", err.toString());
+
+		assertEquals("new src content\n", cachedContent("copyOfSrc"));
+	}
+
+	public void testConcatenatedTargetAndBytesAndString() throws IOException {
+		new FileWriter(wsRoot + "/src").append("src content\n").close();
+		WorkspaceBuilder.main(new String[] {
+				WorkspaceWithConcatenatedContent.class.getName(), wsRoot,
+				"target/anotherTargetAndBytesConcatenated/as-path", cacheDir });
+
+		assertEquals(pathLine("anotherTargetAndBytesConcatenated"),
+				out.toString());
+		assertEquals("", err.toString());
+
+		assertEquals("src content\nABC\nDEF\n",
+				cachedContent("anotherTargetAndBytesConcatenated"));
+	}
+
 }
