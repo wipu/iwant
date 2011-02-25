@@ -13,18 +13,15 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	}
 
 	public void testListOfTargetsWithTwoConstantTargetFiles() {
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithTwoConstantTargetFiles.class.getName(), wsRoot(),
-				"list-of/targets", cacheDir() });
+		at(WorkspaceWithTwoConstantTargetFiles.class).iwant("list-of/targets");
 		assertEquals("constant2-container/constant2\nconstantOne\n", out());
 		assertEquals("", err());
 	}
 
 	public void testIllegalTargetAsPath() {
 		try {
-			WorkspaceBuilder.main(new String[] {
-					WorkspaceWithTwoConstantTargetFiles.class.getName(),
-					wsRoot(), "target/illegal/as-path", cacheDir() });
+			at(WorkspaceWithTwoConstantTargetFiles.class).iwant(
+					"target/illegal/as-path");
 			fail();
 		} catch (Exception e) {
 			// expected
@@ -34,9 +31,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	}
 
 	public void testConstantOneAsPathAndItsContent() throws IOException {
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithTwoConstantTargetFiles.class.getName(), wsRoot(),
-				"target/constantOne/as-path", cacheDir() });
+		at(WorkspaceWithTwoConstantTargetFiles.class).iwant(
+				"target/constantOne/as-path");
 		assertEquals(pathLine("constantOne"), out());
 		assertEquals("", err());
 
@@ -44,9 +40,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	}
 
 	public void testConstantTwoAsPathAndItsContent() throws IOException {
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithTwoConstantTargetFiles.class.getName(), wsRoot(),
-				"target/constant2-container/constant2/as-path", cacheDir() });
+		at(WorkspaceWithTwoConstantTargetFiles.class).iwant(
+				"target/constant2-container/constant2/as-path");
 		assertEquals(pathLine("constant2-container/constant2"), out());
 		assertEquals("", err());
 
@@ -88,9 +83,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		new FileWriter(wsRoot() + "/src/Empty.java").append(
 				"public class Empty {}\n").close();
 
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithJavaSrcAndClasses.class.getName(), wsRoot(),
-				"target/classes/as-path", cacheDir() });
+		at(WorkspaceWithJavaSrcAndClasses.class)
+				.iwant("target/classes/as-path");
 		assertEquals(pathLine("classes"), out());
 		assertEquals("", err());
 
@@ -146,9 +140,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 						+ " public String foo() {return Util.class.toString();}"
 						+ "}\n").close();
 
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithClassesThatDependOnOtherClasses.class.getName(),
-				wsRoot(), "target/classes2/as-path", cacheDir() });
+		at(WorkspaceWithClassesThatDependOnOtherClasses.class).iwant(
+				"target/classes2/as-path");
 		assertEquals(pathLine("classes2"), out());
 		assertEquals("", err());
 
@@ -212,9 +205,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				"public class AProd {"
 						+ " public static int value() {return 2;}}\n").close();
 
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithJunitTests.class.getName(), wsRoot(),
-				"target/testResult/as-path", cacheDir() });
+		at(WorkspaceWithJunitTests.class).iwant("target/testResult/as-path");
 		assertEquals(pathLine("testResult"), out());
 		assertTrue(err().contains("ATest FAILED"));
 	}
@@ -230,9 +221,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				"public class AProd {"
 						+ " public static int value() {return 1;}}\n").close();
 
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithJunitTests.class.getName(), wsRoot(),
-				"target/testResult/as-path", cacheDir() });
+		at(WorkspaceWithJunitTests.class).iwant("target/testResult/as-path");
 		assertEquals(pathLine("testResult"), out());
 		assertEquals("", err());
 	}
@@ -248,9 +237,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				"public class AProd {"
 						+ " public static int value() {return 2;}}\n").close();
 
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithJunitTests.class.getName(), wsRoot(),
-				"target/testResult/as-path", cacheDir() });
+		at(WorkspaceWithJunitTests.class).iwant("target/testResult/as-path");
 		assertTrue(err().contains("ATest FAILED"));
 	}
 
@@ -288,9 +275,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	public void testDownloadFailsIfFileDoesNotExist() throws Exception {
 		try {
-			WorkspaceBuilder.main(new String[] {
-					WorkspaceWithDownloadedContent.class.getName(), wsRoot(),
-					"target/aDownloadedFile/as-path", cacheDir() });
+			at(WorkspaceWithDownloadedContent.class).iwant(
+					"target/aDownloadedFile/as-path");
 			fail();
 		} catch (Exception e) {
 			// expected
@@ -303,9 +289,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		new FileWriter(mockWeb() + "/aFileInTheWeb").append("corrupted\n")
 				.close();
 		try {
-			WorkspaceBuilder.main(new String[] {
-					WorkspaceWithDownloadedContent.class.getName(), wsRoot(),
-					"target/aDownloadedFile/as-path", cacheDir() });
+			at(WorkspaceWithDownloadedContent.class).iwant(
+					"target/aDownloadedFile/as-path");
 			fail();
 		} catch (Exception e) {
 			// expected
@@ -318,9 +303,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		new FileWriter(mockWeb() + "/aFileInTheWeb").append("corrupted\n")
 				.close();
 		try {
-			WorkspaceBuilder.main(new String[] {
-					WorkspaceWithDownloadedContent.class.getName(), wsRoot(),
-					"target/aDownloadedFileWithSha/as-path", cacheDir() });
+			at(WorkspaceWithDownloadedContent.class).iwant(
+					"target/aDownloadedFileWithSha/as-path");
 			fail();
 		} catch (Exception e) {
 			// expected
@@ -333,9 +317,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		testDownloadFailsIfDownloadedFileIsCorrupt();
 		new FileWriter(mockWeb() + "/aFileInTheWeb").append("correct\n")
 				.close();
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithDownloadedContent.class.getName(), wsRoot(),
-				"target/aDownloadedFile/as-path", cacheDir() });
+		at(WorkspaceWithDownloadedContent.class).iwant(
+				"target/aDownloadedFile/as-path");
 		assertEquals(pathLine("aDownloadedFile"), out());
 		assertTrue(err().contains("Getting"));
 		assertEquals("correct\n", cachedContent("aDownloadedFile"));
@@ -351,9 +334,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		sleep();
 		new FileWriter(pathToCachedTarget("aDownloadedFile")).append(
 				"corrupted\n").close();
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithDownloadedContent.class.getName(), wsRoot(),
-				"target/aDownloadedFile/as-path", cacheDir() });
+		at(WorkspaceWithDownloadedContent.class).iwant(
+				"target/aDownloadedFile/as-path");
 		assertEquals(pathLine("aDownloadedFile") + pathLine("aDownloadedFile"),
 				out());
 		assertEquals("corrupted\n", cachedContent("aDownloadedFile"));
@@ -362,9 +344,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	public void testSuccessfulFirstDownload() throws Exception {
 		new FileWriter(mockWeb() + "/aFileInTheWeb").append("correct\n")
 				.close();
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithDownloadedContent.class.getName(), wsRoot(),
-				"target/aDownloadedFile/as-path", cacheDir() });
+		at(WorkspaceWithDownloadedContent.class).iwant(
+				"target/aDownloadedFile/as-path");
 		assertEquals(pathLine("aDownloadedFile"), out());
 		assertTrue(err().contains("Getting"));
 		assertEquals("correct\n", cachedContent("aDownloadedFile"));
@@ -373,9 +354,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	public void testSuccessfulFirstDownloadWithSha() throws Exception {
 		new FileWriter(mockWeb() + "/aFileInTheWeb").append("correct\n")
 				.close();
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithDownloadedContent.class.getName(), wsRoot(),
-				"target/aDownloadedFileWithSha/as-path", cacheDir() });
+		at(WorkspaceWithDownloadedContent.class).iwant(
+				"target/aDownloadedFileWithSha/as-path");
 		assertEquals(pathLine("aDownloadedFileWithSha"), out());
 		assertTrue(err().contains("Getting"));
 		assertEquals("correct\n", cachedContent("aDownloadedFileWithSha"));
@@ -388,9 +368,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		long cachedFileModifiedAt = new File(
 				pathToCachedTarget("aDownloadedFile")).lastModified();
 		sleep();
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithDownloadedContent.class.getName(), wsRoot(),
-				"target/aDownloadedFile/as-path", cacheDir() });
+		at(WorkspaceWithDownloadedContent.class).iwant(
+				"target/aDownloadedFile/as-path");
 		assertEquals(pathLine("aDownloadedFile") + pathLine("aDownloadedFile"),
 				out());
 		assertEquals("Getting: file:" + mockWeb() + "/aFileInTheWeb\n" + "To: "
@@ -461,9 +440,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		new FileWriter(wsRoot() + "/b/src/B.java").append(
 				"public class B {compilationFailure}\n").close();
 		try {
-			WorkspaceBuilder.main(new String[] {
-					WorkspaceWithEclipseProjects.class.getName(), wsRoot(),
-					"target/eclipse-projects/as-path", cacheDir() });
+			at(WorkspaceWithEclipseProjects.class).iwant(
+					"target/eclipse-projects/as-path");
 			fail();
 		} catch (Exception e) {
 			// expected
@@ -481,9 +459,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				"public class B { }\n").close();
 		new FileWriter(wsRoot() + "/b/tests/BTest.java").append(
 				"public class BTest extends org.junit.TestCase { }\n").close();
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithEclipseProjects.class.getName(), wsRoot(),
-				"target/eclipse-projects/as-path", cacheDir() });
+		at(WorkspaceWithEclipseProjects.class).iwant(
+				"target/eclipse-projects/as-path");
 		assertEquals(pathLine("eclipse-projects"), out());
 		assertEquals("", err());
 
@@ -740,9 +717,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		new FileWriter(wsRoot()
 				+ "/phase2/src/com/example/phasetwo/Phase2.java").append(
 				phase2java()).close();
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithReferenceToNextPhase.class.getName(), wsRoot(),
-				"list-of/targets", cacheDir() });
+		at(WorkspaceWithReferenceToNextPhase.class).iwant("list-of/targets");
 		assertEquals("", err());
 		assertEquals("phase2Classes\ntargetInPhase2\n", out());
 	}
@@ -752,9 +727,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		new FileWriter(wsRoot()
 				+ "/phase2/src/com/example/phasetwo/Phase2.java").append(
 				phase2java()).close();
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithReferenceToNextPhase.class.getName(), wsRoot(),
-				"target/targetInPhase2/as-path", cacheDir() });
+		at(WorkspaceWithReferenceToNextPhase.class).iwant(
+				"target/targetInPhase2/as-path");
 		assertEquals("", err());
 		assertEquals(pathLine("targetInPhase2"), out());
 		assertEquals("hello from phase2\n", cachedContent("targetInPhase2"));
@@ -811,9 +785,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	}
 
 	public void testSuccessfulShellScript() throws IOException {
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithShellScript.class.getName(), wsRoot(),
-				"target/successfulScriptOutput/as-path", cacheDir() });
+		at(WorkspaceWithShellScript.class).iwant(
+				"target/successfulScriptOutput/as-path");
 
 		StringBuilder expectedErr = new StringBuilder();
 		expectedErr.append("Standard out:\n");
@@ -834,9 +807,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	public void testFailingShellScript() {
 		try {
-			WorkspaceBuilder.main(new String[] {
-					WorkspaceWithShellScript.class.getName(), wsRoot(),
-					"target/failingScriptOutput/as-path", cacheDir() });
+			at(WorkspaceWithShellScript.class).iwant(
+					"target/failingScriptOutput/as-path");
 			fail();
 		} catch (Exception e) {
 			// expected
@@ -859,9 +831,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	public void testConcatenatedSrc() throws IOException {
 		new FileWriter(wsRoot() + "/src").append("src content\n").close();
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithConcatenatedContent.class.getName(), wsRoot(),
-				"target/copyOfSrc/as-path", cacheDir() });
+		at(WorkspaceWithConcatenatedContent.class).iwant(
+				"target/copyOfSrc/as-path");
 
 		assertEquals(pathLine("copyOfSrc"), out());
 		assertEquals("", err());
@@ -873,9 +844,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		testConcatenatedSrc();
 		sleep();
 		new FileWriter(wsRoot() + "/src").append("new src content\n").close();
-		WorkspaceBuilder.main(new String[] {
-				WorkspaceWithConcatenatedContent.class.getName(), wsRoot(),
-				"target/copyOfSrc/as-path", cacheDir() });
+		at(WorkspaceWithConcatenatedContent.class).iwant(
+				"target/copyOfSrc/as-path");
 
 		assertEquals(pathLine("copyOfSrc") + pathLine("copyOfSrc"), out());
 		assertEquals("", err());
@@ -885,12 +855,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	public void testConcatenatedTargetAndBytesAndString() throws IOException {
 		new FileWriter(wsRoot() + "/src").append("src content\n").close();
-		WorkspaceBuilder
-				.main(new String[] {
-						WorkspaceWithConcatenatedContent.class.getName(),
-						wsRoot(),
-						"target/anotherTargetAndBytesConcatenated/as-path",
-						cacheDir() });
+		at(WorkspaceWithConcatenatedContent.class).iwant(
+				"target/anotherTargetAndBytesConcatenated/as-path");
 
 		assertEquals(pathLine("anotherTargetAndBytesConcatenated"), out());
 		assertEquals("", err());
