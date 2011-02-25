@@ -169,6 +169,9 @@
   + rename Suite to IwantSuite to differentiate it from other projects
   - split WorkspaceBuilderTest
     - reusable utilities in base class or driver
+      + methods in base class
+      - helpers for src content declaration
+      - use all helpers
     - split by feature
 
 #################################################################
