@@ -171,6 +171,8 @@
 #################################################################
 
 - As a @developer I want a fixed version of descript that escapes "<" correctly in editor and console divs
+  + first just a workaround sed hack in the script that generates the tutorial
+  - then the real thing
 
 - As a @buildscriptuser I want the generated eclipse project to use normal src, because subclipse doesn't show local changes in linked sources
   + implement

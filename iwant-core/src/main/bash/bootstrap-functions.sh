@@ -143,6 +143,8 @@ NGREASEPATH="\$iwant/${TUTORIAL_BUILD}:\$iwant/$wsroot/iwant-docs/src/main/java:
         "\$iwant/$NGREASE/ngrease-release/target/ngrease-all-0.4.0pre/bin/ngrease" \\
                 -r "/net/sf/ngrease/descript/descripted-as-html-source.ngr" \\
                 > \$iwant/$TUTORIAL_BUILD/tutorial.html
+# hack workaround, remove when using a better descript:
+sed -i 's:Target<:Target\&lt;:g' \$iwant/$TUTORIAL_BUILD/tutorial.html
 echo \$iwant/$TUTORIAL_BUILD/tutorial.html
 EOF
 }
