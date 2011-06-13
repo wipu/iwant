@@ -79,9 +79,9 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	 * Further java compilation testing is done in the tutorial
 	 */
 	public void testGeneratedJavaClassIsNonempty() throws Exception {
-		new File(wsRoot() + "/src").mkdir();
-		new FileWriter(wsRoot() + "/src/Empty.java").append(
-				"public class Empty {}\n").close();
+		directoryExists("src");
+		file("src/Empty.java").withContent().line("public class Empty {}")
+				.exists();
 
 		at(WorkspaceWithJavaSrcAndClasses.class)
 				.iwant("target/classes/as-path");
@@ -131,14 +131,16 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	 * Further java compilation testing is done in the tutorial
 	 */
 	public void testClassWithDependencyCompiles() throws Exception {
-		new File(wsRoot() + "/src1").mkdir();
-		new FileWriter(wsRoot() + "/src1/Util.java").append(
-				"public class Util {}\n").close();
-		new File(wsRoot() + "/src2").mkdir();
-		new FileWriter(wsRoot() + "/src2/Client.java")
-				.append("public class Client {"
-						+ " public String foo() {return Util.class.toString();}"
-						+ "}\n").close();
+		directoryExists("src1");
+		file("src1/Util.java").withContent().line("public class Util {}")
+				.exists();
+
+		directoryExists("src2");
+		file("src2/Client.java").withContent();
+		line("public class Client {");
+		line("  public String foo() {return Util.class.toString();}");
+		line("}");
+		exists();
 
 		at(WorkspaceWithClassesThatDependOnOtherClasses.class).iwant(
 				"target/classes2/as-path");
@@ -195,15 +197,17 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	}
 
 	public void testJunitResultOfFailingTest() throws Exception {
-		new File(wsRoot() + "/tests").mkdir();
-		new FileWriter(wsRoot() + "/tests/ATest.java").append(
-				"public class ATest extends junit.framework.TestCase {"
-						+ " public void testValue() {"
-						+ "  assertEquals(1, AProd.value());}}\n").close();
-		new File(wsRoot() + "/src").mkdir();
-		new FileWriter(wsRoot() + "/src/AProd.java").append(
-				"public class AProd {"
-						+ " public static int value() {return 2;}}\n").close();
+		directoryExists("tests");
+		file("tests/ATest.java").withContent();
+		line("public class ATest extends junit.framework.TestCase {");
+		line("  public void testValue() {");
+		line("    assertEquals(1, AProd.value());}}");
+		exists();
+		directoryExists("src");
+		file("src/AProd.java").withContent();
+		line("public class AProd {");
+		line("  public static int value() {return 2;}}");
+		exists();
 
 		at(WorkspaceWithJunitTests.class).iwant("target/testResult/as-path");
 		assertEquals(pathLine("testResult"), out());

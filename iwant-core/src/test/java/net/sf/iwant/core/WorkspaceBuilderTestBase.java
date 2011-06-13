@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -216,6 +217,74 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 
 	protected <T extends WorkspaceDefinition> At at(Class<T> wsDefClass) {
 		return new At(wsDefClass.getName());
+	}
+
+	protected void directoryExists(String name) {
+		new File(wsRoot() + "/" + name).mkdir();
+	}
+
+	private Object unfinishedBuilder;
+
+	protected FileStart file(String name) {
+		return new FileStart(name);
+	}
+
+	protected class FileStart {
+
+		private final String name;
+
+		public FileStart(String name) {
+			this.name = name;
+		}
+
+		public FileContent withContent() {
+			return start(new FileContent(name));
+		}
+
+	}
+
+	private <BUILDER> BUILDER start(BUILDER builder) {
+		if (unfinishedBuilder != null) {
+			throw new IllegalStateException("You didn't finish "
+					+ unfinishedBuilder);
+		}
+		unfinishedBuilder = builder;
+		return builder;
+	}
+
+	protected class FileContent {
+
+		private final String name;
+		private final StringBuilder content = new StringBuilder();
+
+		public FileContent(String name) {
+			this.name = name;
+		}
+
+		public FileContent line(String line) {
+			content.append(line).append("\n");
+			return this;
+		}
+
+		public void exists() {
+			try {
+				unfinishedBuilder = null;
+				new FileWriter(wsRoot() + "/" + name).append(content).close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+	}
+
+	protected void line(String line) {
+		FileContent fileContent = (FileContent) unfinishedBuilder;
+		fileContent.line(line);
+	}
+
+	protected void exists() {
+		FileContent fileContent = (FileContent) unfinishedBuilder;
+		fileContent.exists();
 	}
 
 }
