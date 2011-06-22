@@ -178,6 +178,10 @@
 = Planned
 #################################################################
 
+- As @buildscriptauthor I want to use some simpler syntax for the whole buildscript so iwant will be more ergonomic for really small projects that don't need java and IDE for anything
+  * ngr or even simpler?
+  * if custom content or anything fancier is needed, I guess it's ok to require java
+
 - As a @developer I want a fixed version of descript that escapes "<" correctly in editor and console divs
   + first just a workaround sed hack in the script that generates the tutorial
   - then the real thing
