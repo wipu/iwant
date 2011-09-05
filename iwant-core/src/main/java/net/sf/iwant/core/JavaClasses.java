@@ -14,8 +14,8 @@ import org.apache.tools.ant.taskdefs.Javac;
 public class JavaClasses implements Content {
 
 	private final Source src;
-	private final List<Path> classPath = new ArrayList();
-	private final SortedSet<Path> ingredients = new TreeSet();
+	private final List<Path> classPath = new ArrayList<Path>();
+	private final SortedSet<Path> ingredients = new TreeSet<Path>();
 
 	public JavaClasses(Source src) {
 		this.src = src;

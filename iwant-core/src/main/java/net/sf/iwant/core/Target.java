@@ -21,10 +21,10 @@ public final class Target<CONTENT extends Content> extends Path {
 	}
 
 	public SortedSet<Target<?>> dependencies() {
-		SortedSet<Target<?>> dependencies = new TreeSet();
+		SortedSet<Target<?>> dependencies = new TreeSet<Target<?>>();
 		for (Path ingredient : ingredients()) {
 			if (ingredient instanceof Target) {
-				dependencies.add((Target) ingredient);
+				dependencies.add((Target<?>) ingredient);
 			}
 		}
 		return dependencies;

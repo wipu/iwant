@@ -9,11 +9,12 @@ public class ContainerPath extends Path {
 		this.locations = locations;
 	}
 
-	public abstract class PathBuilder<B extends PathBuilder, P extends Path> {
+	public abstract class PathBuilder<B extends PathBuilder<?, P>, P extends Path> {
 
 		protected String name;
 		protected Content content;
 
+		@SuppressWarnings("unchecked")
 		public B name(String name) {
 			this.name = name;
 			return (B) this;
@@ -41,7 +42,7 @@ public class ContainerPath extends Path {
 
 		public <CONTENT extends Content> TargetEnd<CONTENT> content(
 				CONTENT content) {
-			return new TargetEnd(name, content);
+			return new TargetEnd<CONTENT>(name, content);
 		}
 
 	}
@@ -57,7 +58,7 @@ public class ContainerPath extends Path {
 		}
 
 		public Target<CONTENT> end() {
-			return new Target(name, content);
+			return new Target<CONTENT>(name, content);
 		}
 
 	}

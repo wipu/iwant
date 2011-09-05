@@ -26,7 +26,7 @@ public class Constant implements Content {
 	}
 
 	public SortedSet<Path> ingredients() {
-		return new TreeSet();
+		return new TreeSet<Path>();
 	}
 
 	public String definitionDescription() {

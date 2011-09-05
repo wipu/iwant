@@ -29,8 +29,8 @@ public class PathDiggerTest extends TestCase {
 		ContainerPath root = new WorkspaceWithTwoConstantTargetFiles()
 				.wsRoot(LOCATIONS);
 
-		Target target = PathDigger
-				.target(root, "constant2-container/constant2");
+		Target<?> target = PathDigger.target(root,
+				"constant2-container/constant2");
 		assertEquals("constant2-container/constant2", target.name());
 	}
 

@@ -22,7 +22,7 @@ public class RefresherTest extends TestCase {
 
 	public void testMissingTargetWithNoSrcIsRefreshed() throws Exception {
 		ts.doesNotExist("cacheDir/target/missing");
-		Target target = new Target("missing", content);
+		Target<ContentMock> target = new Target<ContentMock>("missing", content);
 		refresher.refresh(target);
 		assertEquals("[cacheDir/target/missing]", content
 				.refreshedDestinations().toString());
@@ -32,7 +32,7 @@ public class RefresherTest extends TestCase {
 		content.ingredients().add(new Source("src"));
 		ts.modifiedAt("wsRoot/src", 1);
 		ts.doesNotExist("cacheDir/target/classes");
-		Target target = new Target("classes", content);
+		Target<ContentMock> target = new Target<ContentMock>("classes", content);
 		refresher.refresh(target);
 		assertEquals("[cacheDir/target/classes]", content
 				.refreshedDestinations().toString());
@@ -41,7 +41,8 @@ public class RefresherTest extends TestCase {
 	public void testExistingTargetWithNoSrcAndUnchangedDescrIsNotRefreshed()
 			throws Exception {
 		ts.modifiedAt("cacheDir/target/constant", 1);
-		Target target = new Target("constant", content);
+		Target<ContentMock> target = new Target<ContentMock>("constant",
+				content);
 		descrCache.alreadyContains(target, content.definitionDescription());
 		refresher.refresh(target);
 		assertEquals("[]", content.refreshedDestinations().toString());
@@ -50,7 +51,8 @@ public class RefresherTest extends TestCase {
 	public void testExistingTargetWithNoSrcAndNoCachedDescrIsRefreshed()
 			throws Exception {
 		ts.modifiedAt("cacheDir/target/constant", 1);
-		Target target = new Target("constant", content);
+		Target<ContentMock> target = new Target<ContentMock>("constant",
+				content);
 		refresher.refresh(target);
 		assertEquals("[cacheDir/target/constant]", content
 				.refreshedDestinations().toString());
@@ -60,7 +62,7 @@ public class RefresherTest extends TestCase {
 		content.ingredients().add(new Source("src"));
 		ts.modifiedAt("cacheDir/target/classes", 1);
 		ts.doesNotExist("wsRoot/src");
-		Target target = new Target("classes", content);
+		Target<ContentMock> target = new Target<ContentMock>("classes", content);
 		refresher.refresh(target);
 		assertEquals("[cacheDir/target/classes]", content
 				.refreshedDestinations().toString());
@@ -70,7 +72,7 @@ public class RefresherTest extends TestCase {
 		content.ingredients().add(new Source("src"));
 		ts.modifiedAt("cacheDir/target/classes", 1);
 		ts.modifiedAt("wsRoot/src", 2);
-		Target target = new Target("classes", content);
+		Target<ContentMock> target = new Target<ContentMock>("classes", content);
 		refresher.refresh(target);
 		assertEquals("[cacheDir/target/classes]", content
 				.refreshedDestinations().toString());
@@ -81,7 +83,7 @@ public class RefresherTest extends TestCase {
 		content.ingredients().add(new Source("src"));
 		ts.modifiedAt("wsRoot/src", 1);
 		ts.modifiedAt("cacheDir/target/classes", 1);
-		Target target = new Target("classes", content);
+		Target<ContentMock> target = new Target<ContentMock>("classes", content);
 		descrCache.alreadyContains(target, content.definitionDescription());
 		refresher.refresh(target);
 		assertEquals("[]", content.refreshedDestinations().toString());
@@ -94,7 +96,7 @@ public class RefresherTest extends TestCase {
 		content.definitionDescription("new-description");
 		ts.modifiedAt("wsRoot/src", 1);
 		ts.modifiedAt("cacheDir/target/classes", 1);
-		Target target = new Target("classes", content);
+		Target<ContentMock> target = new Target<ContentMock>("classes", content);
 		descrCache.alreadyContains(target, "old-description");
 		refresher.refresh(target);
 		assertEquals("[cacheDir/target/classes]", content

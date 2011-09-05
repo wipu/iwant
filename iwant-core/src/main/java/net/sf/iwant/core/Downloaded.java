@@ -35,7 +35,7 @@ public class Downloaded implements Content {
 	}
 
 	public SortedSet<Path> ingredients() {
-		return new TreeSet();
+		return new TreeSet<Path>();
 	}
 
 	public void refresh(RefreshEnvironment refresh) throws Exception {

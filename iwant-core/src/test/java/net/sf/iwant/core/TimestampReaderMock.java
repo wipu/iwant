@@ -5,7 +5,7 @@ import java.util.Map;
 
 class TimestampReaderMock implements TimestampReader {
 
-	private final Map<String, Status> content = new HashMap();
+	private final Map<String, Status> content = new HashMap<String, Status>();
 	private final Locations locations;
 
 	TimestampReaderMock(Locations locations) {

@@ -57,7 +57,7 @@ class Refresher {
 		return false;
 	}
 
-	private boolean hasContentDefinitionChanged(Target target)
+	private boolean hasContentDefinitionChanged(Target<?> target)
 			throws IOException {
 		String cached = contentDescriptionCache
 				.retrieveContentDescription(target);
@@ -65,7 +65,7 @@ class Refresher {
 		return !current.equals(cached);
 	}
 
-	private void doRefresh(Target target) throws Exception {
+	private void doRefresh(Target<?> target) throws Exception {
 		target.content().refresh(
 				new RefreshEnvironment(new File(target
 						.asAbsolutePath(locations)), temporaryDirectory,

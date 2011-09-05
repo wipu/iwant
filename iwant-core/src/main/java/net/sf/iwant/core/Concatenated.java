@@ -23,7 +23,7 @@ public class Concatenated implements Content {
 
 	public static class ConcatenatedBuilder {
 
-		private final List<Fragment> fragments = new ArrayList();
+		private final List<Fragment> fragments = new ArrayList<Fragment>();
 
 		public ConcatenatedBuilder string(String string) {
 			fragments.add(new StringFragment(string));
@@ -134,7 +134,7 @@ public class Concatenated implements Content {
 	}
 
 	public SortedSet<Path> ingredients() {
-		SortedSet<Path> ingredients = new TreeSet();
+		SortedSet<Path> ingredients = new TreeSet<Path>();
 		for (Fragment fragment : fragments) {
 			if (fragment instanceof PathFragment) {
 				PathFragment pathFragment = (PathFragment) fragment;

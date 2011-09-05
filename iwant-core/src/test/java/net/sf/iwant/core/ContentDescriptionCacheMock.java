@@ -7,14 +7,14 @@ import java.util.Map;
 
 public class ContentDescriptionCacheMock implements ContentDescriptionCache {
 
-	private final Map<Target, String> cache = new HashMap();
-	private final List<Target> recachedTargets = new ArrayList();
+	private final Map<Target<?>, String> cache = new HashMap<Target<?>, String>();
+	private final List<Target<?>> recachedTargets = new ArrayList<Target<?>>();
 
 	public void alreadyContains(Target target, String description) {
 		cache.put(target, description);
 	}
 
-	public List<Target> recachedTargets() {
+	public List<Target<?>> recachedTargets() {
 		return recachedTargets;
 	}
 

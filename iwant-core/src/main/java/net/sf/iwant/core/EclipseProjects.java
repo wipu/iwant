@@ -8,8 +8,8 @@ import java.util.TreeSet;
 
 public class EclipseProjects implements Content {
 
-	private final SortedSet<Path> ingredients = new TreeSet();
-	private final SortedSet<EclipseProject> projects = new TreeSet();
+	private final SortedSet<Path> ingredients = new TreeSet<Path>();
+	private final SortedSet<EclipseProject> projects = new TreeSet<EclipseProject>();
 
 	public static EclipseProjects with() {
 		return new EclipseProjects();
@@ -155,7 +155,7 @@ public class EclipseProjects implements Content {
 		b.append("		</copy>\n");
 		b.append("	</target>\n");
 		b.append("\n");
-		for (Target publicTarget : project.publicTargetsForAnt()) {
+		for (Target<?> publicTarget : project.publicTargetsForAnt()) {
 			iwantAntTarget(b, publicTarget.name());
 		}
 		b.append("</project>\n");

@@ -27,12 +27,12 @@ public class WorkspaceWithTwoConstantTargetFiles implements WorkspaceDefinition 
 					.end();
 		}
 
-		public Target targetButNeedsParameters(String parameter) {
+		public Target<?> targetButNeedsParameters(String parameter) {
 			System.err.println(parameter);
 			return targetButNoneOfYourBusiness();
 		}
 
-		private Target targetButNoneOfYourBusiness() {
+		private Target<?> targetButNoneOfYourBusiness() {
 			throw new UnsupportedOperationException("Not to be called");
 		}
 

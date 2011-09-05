@@ -8,11 +8,11 @@ import java.util.TreeSet;
 
 class PathDigger {
 
-	public static SortedSet<Target> targets(ContainerPath container) {
-		SortedSet<Target> targets = new TreeSet();
+	public static SortedSet<Target<?>> targets(ContainerPath container) {
+		SortedSet<Target<?>> targets = new TreeSet<Target<?>>();
 		for (Method method : container.getClass().getMethods()) {
 			if (isTargetMethod(method)) {
-				Target target = invokeTargetMethod(container, method);
+				Target<?> target = invokeTargetMethod(container, method);
 				targets.add(target);
 			}
 		}
@@ -20,7 +20,7 @@ class PathDigger {
 	}
 
 	public static NextPhase nextPhase(ContainerPath container) {
-		List<NextPhase> nextPhases = new ArrayList();
+		List<NextPhase> nextPhases = new ArrayList<NextPhase>();
 		for (Method method : container.getClass().getMethods()) {
 			if (isNextPhaseMethod(method)) {
 				NextPhase nextPhase = invokeNextPhaseMethod(container, method);
@@ -37,9 +37,9 @@ class PathDigger {
 		return nextPhases.get(0);
 	}
 
-	public static Target target(ContainerPath container, String targetName) {
-		SortedSet<Target> targets = targets(container);
-		for (Target target : targets) {
+	public static Target<?> target(ContainerPath container, String targetName) {
+		SortedSet<Target<?>> targets = targets(container);
+		for (Target<?> target : targets) {
 			if (targetName.equals(target.name())) {
 				return target;
 			}
@@ -47,10 +47,10 @@ class PathDigger {
 		return null;
 	}
 
-	private static Target invokeTargetMethod(ContainerPath container,
+	private static Target<?> invokeTargetMethod(ContainerPath container,
 			Method method) {
 		try {
-			Target target = (Target) method.invoke(container);
+			Target<?> target = (Target<?>) method.invoke(container);
 			return target;
 		} catch (Exception e) {
 			throw new RuntimeException(e);

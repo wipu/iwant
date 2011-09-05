@@ -10,7 +10,7 @@ public class Builtins extends ContainerPath {
 	}
 
 	public SortedSet<Path> all() {
-		SortedSet<Path> all = new TreeSet();
+		SortedSet<Path> all = new TreeSet<Path>();
 		all.add(ant171classes());
 		all.add(antJunit171classes());
 		all.add(junit381Classes());

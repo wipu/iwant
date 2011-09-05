@@ -15,7 +15,7 @@ import org.apache.tools.ant.taskdefs.Copy;
 public class ScriptGeneratedContent implements Content {
 
 	private final Path script;
-	private final SortedSet<Path> ingredients = new TreeSet();
+	private final SortedSet<Path> ingredients = new TreeSet<Path>();
 
 	private ScriptGeneratedContent(Path script) {
 		this.script = script;

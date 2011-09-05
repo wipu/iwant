@@ -14,17 +14,18 @@ class ContentDescriptionCacheFileImpl implements ContentDescriptionCache {
 		this.cacheDir = cacheDir;
 	}
 
-	public void cacheContentDescription(Target target) throws IOException {
+	public void cacheContentDescription(Target<?> target) throws IOException {
 		String filename = cacheNameFor(target);
 		new FileWriter(filename, false).append(
 				target.content().definitionDescription()).close();
 	}
 
-	private String cacheNameFor(Target target) {
+	private String cacheNameFor(Target<?> target) {
 		return cacheDir + "/" + target.name();
 	}
 
-	public String retrieveContentDescription(Target target) throws IOException {
+	public String retrieveContentDescription(Target<?> target)
+			throws IOException {
 		File file = new File(cacheNameFor(target));
 		if (!file.exists())
 			return null;

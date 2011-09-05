@@ -19,8 +19,8 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
 
 public class JunitResult implements Content {
 
-	private final SortedSet<Path> ingredients = new TreeSet();
-	private final List<Path> classPath = new ArrayList();
+	private final SortedSet<Path> ingredients = new TreeSet<Path>();
+	private final List<Path> classPath = new ArrayList<Path>();
 	private final String testClassName;
 
 	private JunitResult(String testClassName) {
@@ -107,7 +107,7 @@ public class JunitResult implements Content {
 
 	private static class JunitListener implements BuildListener {
 
-		private List<String> failures = new ArrayList();
+		private List<String> failures = new ArrayList<String>();
 
 		public void buildFinished(BuildEvent e) {
 			// not interested

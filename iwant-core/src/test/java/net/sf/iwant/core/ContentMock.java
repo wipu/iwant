@@ -8,9 +8,9 @@ import java.util.TreeSet;
 
 public class ContentMock implements Content {
 
-	private final SortedSet<Path> ingredients = new TreeSet();
+	private final SortedSet<Path> ingredients = new TreeSet<Path>();
 
-	private final List<File> refreshedDestinations = new ArrayList();
+	private final List<File> refreshedDestinations = new ArrayList<File>();
 
 	private String description = "default-descr";
 

@@ -17,10 +17,10 @@ public class EclipseProject implements Comparable<EclipseProject> {
 	private final List<String> srcs;
 	private final List<Path> libs;
 	private final boolean hasIwantAnt;
-	private final Target[] publicTargetsForAnt;
+	private final Target<?>[] publicTargetsForAnt;
 
 	public EclipseProject(String name, List<String> srcs, List<Path> libs,
-			boolean hasIwantAnt, Target[] publicTargetsForAnt) {
+			boolean hasIwantAnt, Target<?>[] publicTargetsForAnt) {
 		this.name = name;
 		this.srcs = srcs;
 		this.libs = libs;
@@ -36,13 +36,13 @@ public class EclipseProject implements Comparable<EclipseProject> {
 
 		private String name;
 
-		private final List<String> srcs = new ArrayList();
+		private final List<String> srcs = new ArrayList<String>();
 
-		private final List<Path> libs = new ArrayList();
+		private final List<Path> libs = new ArrayList<Path>();
 
 		private boolean hasIwantAnt;
 
-		private Target[] publicTargetsForAnt = new Target[0];
+		private Target<?>[] publicTargetsForAnt = new Target[0];
 
 		public EclipseProjectBuilder name(String name) {
 			this.name = name;
@@ -64,7 +64,7 @@ public class EclipseProject implements Comparable<EclipseProject> {
 			return this;
 		}
 
-		public EclipseProjectBuilder iwantAnt(Target... publicTargetsForAnt) {
+		public EclipseProjectBuilder iwantAnt(Target<?>... publicTargetsForAnt) {
 			this.publicTargetsForAnt = publicTargetsForAnt;
 			this.hasIwantAnt = true;
 			return this;
@@ -93,7 +93,7 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		return hasIwantAnt;
 	}
 
-	public Target[] publicTargetsForAnt() {
+	public Target<?>[] publicTargetsForAnt() {
 		return publicTargetsForAnt;
 	}
 
@@ -109,7 +109,7 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		b.append("  }\n");
 		b.append("  hasIwantAnt:").append(hasIwantAnt).append("\n");
 		b.append("  publicTargets {\n");
-		for (Target publicTarget : publicTargetsForAnt)
+		for (Target<?> publicTarget : publicTargetsForAnt)
 			b.append("    ").append(publicTarget.name()).append("\n");
 		b.append("  }\n");
 		b.append("}\n");

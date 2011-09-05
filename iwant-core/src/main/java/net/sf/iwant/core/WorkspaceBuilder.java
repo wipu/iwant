@@ -16,7 +16,7 @@ public class WorkspaceBuilder {
 			throw new IllegalArgumentException(
 					"Expected arguments wsdefclass wsroot target cache-dir");
 		}
-		Class wsDef = wsDefClassByName(args[0]);
+		Class<?> wsDef = wsDefClassByName(args[0]);
 		String wsRootArg = toAbs(args[1]);
 		String targetArg = args[2];
 		String cacheDir = toAbs(args[3]);
@@ -34,7 +34,7 @@ public class WorkspaceBuilder {
 			}
 		} else {
 			String targetName = targetArgumentToTargetName(targetArg);
-			Target target = target(wsRoot, targetName);
+			Target<?> target = target(wsRoot, targetName);
 			if (target != null) {
 				String cachedPath = freshTargetAsPath(target, locations);
 				System.out.println(pathToPrint(cachedPath, targetArg));
@@ -69,7 +69,8 @@ public class WorkspaceBuilder {
 		throw new IllegalArgumentException("Unknown suffix in " + targetArg);
 	}
 
-	private static String freshTargetAsPath(Target target, Locations locations) {
+	private static String freshTargetAsPath(Target<?> target,
+			Locations locations) {
 		try {
 			// TODO only 1 places for building these paths:
 			ensureParentDirFor(locations.targetCacheDir() + "/" + target.name());
@@ -104,12 +105,12 @@ public class WorkspaceBuilder {
 			dir.mkdir();
 	}
 
-	private static Target target(ContainerPath wsRoot, String targetName) {
-		Target target = PathDigger.target(wsRoot, targetName);
+	private static Target<?> target(ContainerPath wsRoot, String targetName) {
+		Target<?> target = PathDigger.target(wsRoot, targetName);
 		return target;
 	}
 
-	private static ContainerPath wsRoot(Class wsDefClass, Locations locations) {
+	private static ContainerPath wsRoot(Class<?> wsDefClass, Locations locations) {
 		try {
 			WorkspaceDefinition wsDef = (WorkspaceDefinition) wsDefClass
 					.newInstance();
@@ -120,7 +121,7 @@ public class WorkspaceBuilder {
 		}
 	}
 
-	private static Class wsDefClassByName(String wsDefName) {
+	private static Class<?> wsDefClassByName(String wsDefName) {
 		try {
 			return Class.forName(wsDefName);
 		} catch (ClassNotFoundException e) {
@@ -129,15 +130,15 @@ public class WorkspaceBuilder {
 	}
 
 	private static void listOfTargets(ContainerPath wsRoot) {
-		SortedSet<Target> targets = PathDigger.targets(wsRoot);
-		for (Target target : targets) {
+		SortedSet<Target<?>> targets = PathDigger.targets(wsRoot);
+		for (Target<?> target : targets) {
 			System.out.println(target.name());
 		}
 	}
 
 	private static void runNextPhase(NextPhase nextPhase, String wsRoot,
 			String targetArg, String cacheDir, Locations locations) {
-		JavaClasses classes = (JavaClasses) nextPhase.classes().content();
+		JavaClasses classes = nextPhase.classes().content();
 		Project project = new Project();
 		Java java = new Java();
 		java.setProject(project);
