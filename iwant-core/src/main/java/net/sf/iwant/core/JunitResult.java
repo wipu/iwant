@@ -74,7 +74,8 @@ public class JunitResult implements Content {
 		// .getInstance(SummaryAttribute.class, "withOutAndErr"));
 		org.apache.tools.ant.types.Path path = junit.createClasspath();
 		for (Path cpItem : classPath) {
-			path.add(antPath(project, cpItem.name()));
+			path.add(antPath(project,
+					cpItem.asAbsolutePath(refresh.locations())));
 		}
 
 		FormatterElement formatter = new FormatterElement();

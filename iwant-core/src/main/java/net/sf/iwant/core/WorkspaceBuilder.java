@@ -29,7 +29,8 @@ public class WorkspaceBuilder {
 		if ("list-of/targets".equals(targetArg)) {
 			listOfTargets(wsRoot);
 			if (nextPhase != null) {
-				runNextPhase(nextPhase, wsRootArg, targetArg, cacheDir);
+				runNextPhase(nextPhase, wsRootArg, targetArg, cacheDir,
+						locations);
 			}
 		} else {
 			String targetName = targetArgumentToTargetName(targetArg);
@@ -39,7 +40,8 @@ public class WorkspaceBuilder {
 				System.out.println(pathToPrint(cachedPath, targetArg));
 			} else {
 				if (nextPhase != null) {
-					runNextPhase(nextPhase, wsRootArg, targetArg, cacheDir);
+					runNextPhase(nextPhase, wsRootArg, targetArg, cacheDir,
+							locations);
 				} else {
 					throw new IllegalArgumentException("No such target: "
 							+ targetName);
@@ -69,12 +71,12 @@ public class WorkspaceBuilder {
 
 	private static String freshTargetAsPath(Target target, Locations locations) {
 		try {
-			ensureParentDirFor(locations.targetCacheDir() + "/"
-					+ target.nameWithoutCacheDir());
+			// TODO only 1 places for building these paths:
+			ensureParentDirFor(locations.targetCacheDir() + "/" + target.name());
 			ensureParentDirFor(locations.contentDescriptionCacheDir() + "/"
-					+ target.nameWithoutCacheDir());
+					+ target.name());
 			Refresher.forReal(locations).refresh(target);
-			return target.name();
+			return target.asAbsolutePath(locations);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -129,21 +131,22 @@ public class WorkspaceBuilder {
 	private static void listOfTargets(ContainerPath wsRoot) {
 		SortedSet<Target> targets = PathDigger.targets(wsRoot);
 		for (Target target : targets) {
-			System.out.println(target.nameWithoutCacheDir());
+			System.out.println(target.name());
 		}
 	}
 
 	private static void runNextPhase(NextPhase nextPhase, String wsRoot,
-			String targetArg, String cacheDir) {
+			String targetArg, String cacheDir, Locations locations) {
 		JavaClasses classes = (JavaClasses) nextPhase.classes().content();
 		Project project = new Project();
 		Java java = new Java();
 		java.setProject(project);
 
 		org.apache.tools.ant.types.Path path = java.createClasspath();
-		path.append(antPath(project, nextPhase.classes().name()));
+		path.append(antPath(project,
+				nextPhase.classes().asAbsolutePath(locations)));
 		for (Path cpItem : classes.classpathItems()) {
-			path.append(antPath(project, cpItem.name()));
+			path.append(antPath(project, cpItem.asAbsolutePath(locations)));
 		}
 
 		// The Java task is broken and doesn't work like Javac, so this hack is

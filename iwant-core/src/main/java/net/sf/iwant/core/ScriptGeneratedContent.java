@@ -37,7 +37,7 @@ public class ScriptGeneratedContent implements Content {
 		Project project = new Project();
 
 		Copy copy = new Copy();
-		copy.setFile(new File(script.name()));
+		copy.setFile(new File(script.asAbsolutePath(refresh.locations())));
 		copy.setTofile(tmpScript);
 		PrintStream syserr = System.err;
 		try {

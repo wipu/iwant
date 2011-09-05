@@ -29,7 +29,8 @@ public class EclipseProjects implements Content {
 		for (EclipseProject project : projects) {
 			File projectDir = new File(refresh.destination().getCanonicalPath()
 					+ "/" + project.name());
-			project.refresh(projectDir);
+			project.refresh(new RefreshEnvironment(projectDir, refresh
+					.temporaryDirectory(), refresh.locations()));
 			if (project.hasIwantAnt()) {
 				File buildXml = new File(projectDir.getCanonicalPath()
 						+ "/build.xml");
@@ -155,7 +156,7 @@ public class EclipseProjects implements Content {
 		b.append("	</target>\n");
 		b.append("\n");
 		for (Target publicTarget : project.publicTargetsForAnt()) {
-			iwantAntTarget(b, publicTarget.nameWithoutCacheDir());
+			iwantAntTarget(b, publicTarget.name());
 		}
 		b.append("</project>\n");
 		new FileWriter(destination).append(b.toString()).close();

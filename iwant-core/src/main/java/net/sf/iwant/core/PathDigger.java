@@ -40,7 +40,7 @@ class PathDigger {
 	public static Target target(ContainerPath container, String targetName) {
 		SortedSet<Target> targets = targets(container);
 		for (Target target : targets) {
-			if (targetName.equals(target.nameWithoutCacheDir())) {
+			if (targetName.equals(target.name())) {
 				return target;
 			}
 		}

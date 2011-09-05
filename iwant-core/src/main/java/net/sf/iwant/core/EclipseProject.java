@@ -110,8 +110,7 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		b.append("  hasIwantAnt:").append(hasIwantAnt).append("\n");
 		b.append("  publicTargets {\n");
 		for (Target publicTarget : publicTargetsForAnt)
-			b.append("    ").append(publicTarget.nameWithoutCacheDir())
-					.append("\n");
+			b.append("    ").append(publicTarget.name()).append("\n");
 		b.append("  }\n");
 		b.append("}\n");
 		return b.toString();
@@ -121,10 +120,10 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		return name.compareTo(o.name);
 	}
 
-	void refresh(File destination) throws Exception {
-		ensureDir(destination);
-		dotProject(new File(destination.getCanonicalPath() + "/.project"));
-		dotClasspath(new File(destination.getCanonicalPath() + "/.classpath"));
+	void refresh(RefreshEnvironment refresh) throws Exception {
+		ensureDir(refresh.destination());
+		dotProject(refresh);
+		dotClasspath(refresh);
 	}
 
 	/**
@@ -150,7 +149,9 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		}
 	}
 
-	private void dotProject(File destination) throws IOException {
+	private void dotProject(RefreshEnvironment refresh) throws IOException {
+		File destination = new File(refresh.destination().getCanonicalPath()
+				+ "/.project");
 		StringBuilder b = new StringBuilder();
 		b.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		b.append("<projectDescription>\n");
@@ -184,7 +185,9 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		new FileWriter(destination).append(b.toString()).close();
 	}
 
-	private void dotClasspath(File destination) throws IOException {
+	private void dotClasspath(RefreshEnvironment refresh) throws IOException {
+		File destination = new File(refresh.destination().getCanonicalPath()
+				+ "/.classpath");
 		StringBuilder b = new StringBuilder();
 		b.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		b.append("<classpath>\n");
@@ -195,11 +198,10 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		b.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
 		for (Path lib : libs) {
 			b.append("        <classpathentry kind=\"lib\" path=\""
-					+ abs(lib.name()) + "\"/>\n");
+					+ abs(lib.asAbsolutePath(refresh.locations())) + "\"/>\n");
 		}
 		b.append("        <classpathentry kind=\"output\" path=\"classes\"/>\n");
 		b.append("</classpath>\n");
 		new FileWriter(destination).append(b.toString()).close();
 	}
-
 }

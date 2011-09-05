@@ -41,7 +41,12 @@ public class Builtins extends ContainerPath {
 	private class BuiltinPath extends Path {
 
 		public BuiltinPath(String name) {
-			super(locations.targetCacheDir() + "/../../iwant/" + name);
+			super(name);
+		}
+
+		@Override
+		public String asAbsolutePath(Locations locations) {
+			return locations.targetCacheDir() + "/../../iwant/" + name();
 		}
 
 	}

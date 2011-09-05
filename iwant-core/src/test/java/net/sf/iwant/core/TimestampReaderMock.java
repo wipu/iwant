@@ -6,6 +6,11 @@ import java.util.Map;
 class TimestampReaderMock implements TimestampReader {
 
 	private final Map<String, Status> content = new HashMap();
+	private final Locations locations;
+
+	TimestampReaderMock(Locations locations) {
+		this.locations = locations;
+	}
 
 	private abstract class Status {
 
@@ -46,7 +51,7 @@ class TimestampReaderMock implements TimestampReader {
 	}
 
 	public Long modificationTime(Path path) {
-		Status status = content.get(path.name());
+		Status status = content.get(path.asAbsolutePath(locations));
 		if (status == null) {
 			throw new IllegalStateException("Please tell me about " + path);
 		}

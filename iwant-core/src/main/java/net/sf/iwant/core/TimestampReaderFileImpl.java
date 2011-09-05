@@ -4,8 +4,14 @@ import java.io.File;
 
 class TimestampReaderFileImpl implements TimestampReader {
 
+	private final Locations locations;
+
+	TimestampReaderFileImpl(Locations locations) {
+		this.locations = locations;
+	}
+
 	public Long modificationTime(Path path) {
-		File file = new File(path.name());
+		File file = new File(path.asAbsolutePath(locations));
 		if (!file.exists())
 			return null;
 		return modificationTime(file);

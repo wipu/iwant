@@ -6,16 +6,10 @@ import java.util.TreeSet;
 public final class Target<CONTENT extends Content> extends Path {
 
 	private final CONTENT content;
-	private final String nameWithoutCacheDir;
 
-	public Target(String name, Locations locations, CONTENT content) {
-		super(locations.targetCacheDir() + "/" + name);
-		this.nameWithoutCacheDir = name;
+	public Target(String name, CONTENT content) {
+		super(name);
 		this.content = content;
-	}
-
-	public String nameWithoutCacheDir() {
-		return nameWithoutCacheDir;
 	}
 
 	public CONTENT content() {
@@ -34,6 +28,11 @@ public final class Target<CONTENT extends Content> extends Path {
 			}
 		}
 		return dependencies;
+	}
+
+	@Override
+	public String asAbsolutePath(Locations locations) {
+		return locations.targetCacheDir() + "/" + name();
 	}
 
 }

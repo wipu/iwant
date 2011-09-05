@@ -56,7 +56,8 @@ public class Concatenated implements Content {
 
 	private static interface Fragment {
 
-		void writeTo(FileWriter out) throws IOException;
+		void writeTo(FileWriter out, RefreshEnvironment refresh)
+				throws IOException;
 
 	}
 
@@ -73,7 +74,8 @@ public class Concatenated implements Content {
 			return "string:'" + value + "'";
 		}
 
-		public void writeTo(FileWriter out) throws IOException {
+		public void writeTo(FileWriter out, RefreshEnvironment refresh)
+				throws IOException {
 			out.write(value);
 		}
 
@@ -92,8 +94,10 @@ public class Concatenated implements Content {
 			return "path:" + value;
 		}
 
-		public void writeTo(FileWriter out) throws IOException {
-			FileReader in = new FileReader(value.name());
+		public void writeTo(FileWriter out, RefreshEnvironment refresh)
+				throws IOException {
+			FileReader in = new FileReader(value.asAbsolutePath(refresh
+					.locations()));
 			// TODO optimize if needed
 			while (true) {
 				int c = in.read();
@@ -120,7 +124,8 @@ public class Concatenated implements Content {
 			return "bytes:" + Arrays.toString(value);
 		}
 
-		public void writeTo(FileWriter out) throws IOException {
+		public void writeTo(FileWriter out, RefreshEnvironment refresh)
+				throws IOException {
 			for (int c : value) {
 				out.write(c);
 			}
@@ -142,7 +147,7 @@ public class Concatenated implements Content {
 	public void refresh(RefreshEnvironment refresh) throws Exception {
 		FileWriter out = new FileWriter(refresh.destination());
 		for (Fragment fragment : fragments) {
-			fragment.writeTo(out);
+			fragment.writeTo(out, refresh);
 		}
 		out.close();
 	}

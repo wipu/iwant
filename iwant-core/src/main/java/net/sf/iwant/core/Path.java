@@ -1,6 +1,6 @@
 package net.sf.iwant.core;
 
-public class Path implements Comparable<Path> {
+public abstract class Path implements Comparable<Path> {
 
 	private final String name;
 
@@ -33,5 +33,7 @@ public class Path implements Comparable<Path> {
 	public String toString() {
 		return getClass().getSimpleName() + ":" + name;
 	}
+
+	public abstract String asAbsolutePath(Locations locations);
 
 }

@@ -161,6 +161,9 @@
   + test and implement
   * not descripting in tutorial, this is really nothing new
 
++ As a developer I want Locations out of Paths so they will be easier to use embedded, for example in tests
+  * name returns the relative path, asAbsolutePath is abstract and takes Locations as parameter 
+
 #################################################################
 = In progress
 #################################################################

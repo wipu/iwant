@@ -62,11 +62,13 @@ public class JavaClasses implements Content {
 		project.addBuildListener(new JavacListener());
 		Javac javac = new Javac();
 		javac.setProject(project);
-		javac.setSrcdir(antPath(project, src.name()));
+		javac.setSrcdir(antPath(project,
+				src.asAbsolutePath(refresh.locations())));
 		javac.setDestdir(refresh.destination());
 		org.apache.tools.ant.types.Path path = javac.createClasspath();
 		for (Path cpItem : classPath) {
-			path.add(antPath(project, cpItem.name()));
+			path.add(antPath(project,
+					cpItem.asAbsolutePath(refresh.locations())));
 		}
 		javac.setFork(true);
 		javac.setDebug(true);

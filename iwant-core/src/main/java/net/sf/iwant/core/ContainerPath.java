@@ -57,7 +57,7 @@ public class ContainerPath extends Path {
 		}
 
 		public Target<CONTENT> end() {
-			return new Target(name, locations, content);
+			return new Target(name, content);
 		}
 
 	}
@@ -67,11 +67,16 @@ public class ContainerPath extends Path {
 	}
 
 	public Source source(String name) {
-		return new Source(name, locations);
+		return new Source(name);
 	}
 
 	protected Builtins builtin() {
 		return new Builtins(locations);
+	}
+
+	@Override
+	public String asAbsolutePath(Locations locations) {
+		throw new UnsupportedOperationException("TODO test and implement");
 	}
 
 }

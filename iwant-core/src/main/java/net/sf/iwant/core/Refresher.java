@@ -8,20 +8,22 @@ class Refresher {
 	private final TimestampReader timestampReader;
 	private final ContentDescriptionCache contentDescriptionCache;
 	private final File temporaryDirectory;
+	private final Locations locations;
 
 	Refresher(TimestampReader timestampReader,
 			ContentDescriptionCache contentDescriptionCache,
-			File temporaryDirectory) {
+			File temporaryDirectory, Locations locations) {
 		this.timestampReader = timestampReader;
 		this.contentDescriptionCache = contentDescriptionCache;
 		this.temporaryDirectory = temporaryDirectory;
+		this.locations = locations;
 	}
 
 	static Refresher forReal(Locations locations) {
-		return new Refresher(new TimestampReaderFileImpl(),
+		return new Refresher(new TimestampReaderFileImpl(locations),
 				new ContentDescriptionCacheFileImpl(
 						locations.contentDescriptionCacheDir()), new File(
-						locations.temporaryDirectory()));
+						locations.temporaryDirectory()), locations);
 	}
 
 	void refresh(Target<?> target) throws Exception {
@@ -65,8 +67,9 @@ class Refresher {
 
 	private void doRefresh(Target target) throws Exception {
 		target.content().refresh(
-				new RefreshEnvironment(new File(target.name()),
-						temporaryDirectory));
+				new RefreshEnvironment(new File(target
+						.asAbsolutePath(locations)), temporaryDirectory,
+						locations));
 		contentDescriptionCache.cacheContentDescription(target);
 	}
 

@@ -6,10 +6,13 @@ public class RefreshEnvironment {
 
 	private final File destination;
 	private final File temporaryDirectory;
+	private final Locations locations;
 
-	public RefreshEnvironment(File destination, File temporaryDirectory) {
+	public RefreshEnvironment(File destination, File temporaryDirectory,
+			Locations locations) {
 		this.destination = destination;
 		this.temporaryDirectory = temporaryDirectory;
+		this.locations = locations;
 	}
 
 	public File destination() {
@@ -22,6 +25,10 @@ public class RefreshEnvironment {
 		}
 		temporaryDirectory.mkdir();
 		return temporaryDirectory;
+	}
+
+	public Locations locations() {
+		return locations;
 	}
 
 }

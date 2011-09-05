@@ -21,7 +21,7 @@ class ContentDescriptionCacheFileImpl implements ContentDescriptionCache {
 	}
 
 	private String cacheNameFor(Target target) {
-		return cacheDir + "/" + target.nameWithoutCacheDir();
+		return cacheDir + "/" + target.name();
 	}
 
 	public String retrieveContentDescription(Target target) throws IOException {

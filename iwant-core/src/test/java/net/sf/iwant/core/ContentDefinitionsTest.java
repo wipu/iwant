@@ -4,8 +4,6 @@ import junit.framework.TestCase;
 
 public class ContentDefinitionsTest extends TestCase {
 
-	private static final Locations LOCATIONS = new Locations("ws", "cache");
-
 	private String descr;
 
 	public void setUp() {
@@ -30,14 +28,13 @@ public class ContentDefinitionsTest extends TestCase {
 	}
 
 	public void testJavaClasses() {
-		JavaClasses content = JavaClasses.compiledFrom(new Source("src",
-				LOCATIONS));
+		JavaClasses content = JavaClasses.compiledFrom(new Source("src"));
 		descrChanged(content);
-		content = JavaClasses.compiledFrom(new Source("other-src", LOCATIONS));
+		content = JavaClasses.compiledFrom(new Source("other-src"));
 		descrChanged(content);
-		content = content.using(new Path("some-classes"));
+		content = content.using(new Source("some-classes"));
 		descrChanged(content);
-		content.using(new Path("some-other-classes"));
+		content.using(new Source("some-other-classes"));
 		descrChanged(content);
 	}
 
@@ -46,9 +43,9 @@ public class ContentDefinitionsTest extends TestCase {
 		descrChanged(content);
 		content = JunitResult.ofClass("SomeOtherTest");
 		descrChanged(content);
-		content = content.using(new Path("some-classes"));
+		content = content.using(new Source("some-classes"));
 		descrChanged(content);
-		content.using(new Path("some-other-classes"));
+		content.using(new Source("some-other-classes"));
 		descrChanged(content);
 	}
 
