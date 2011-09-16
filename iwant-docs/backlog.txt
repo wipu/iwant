@@ -166,9 +166,20 @@
 
 + As a @developer I want even the strictest generics-related eclipse warnings fixed so I can use generics more efficiently
 
++ As a @developer I want to replace the ngrease-based descript with the new standalone descript so I can start document-driving ant bootstrapping more easily
+
 #################################################################
 = In progress
 #################################################################
+
+- As a @buildscriptauthor I want to use ant to bootstrap iwant so I can take it into use in a project where not everybody chooses bash
+  * delegate as much as possible to "phase 2" exported from actual iwant
+
+#################################################################
+= Planned
+#################################################################
+
+- As a @developer I want to simplify the bash bootstrapper so it will share as much code with the ant bootstrapper as possible
 
 - As a @developer I want to clean up the code here and there to get ready for adding lots of features and to make things easier otherwise
   + rename Suite to IwantSuite to differentiate it from other projects
@@ -178,10 +189,6 @@
       - helpers for src content declaration
       - use all helpers
     - split by feature
-
-#################################################################
-= Planned
-#################################################################
 
 - As @buildscriptauthor I want to use some simpler syntax for the whole buildscript so iwant will be more ergonomic for really small projects that don't need java and IDE for anything
   * ngr or even simpler?

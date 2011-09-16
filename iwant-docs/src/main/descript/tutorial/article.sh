@@ -1,21 +1,3 @@
-function bootstrapping() {
-die "Sorry, deprecated"
-doc 'section {name {Bootstrapping from svn}'
-
-doc 'p {First let'\''s check out <code>iwant</code> from svn
-        and bootstrap it as a shell user.}'
-cmd 'svn co -r 64 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk iwant-svn | tail -n 1'
-cmd 'ls'
-cmd 'cd iwant-svn/iwant-iwant'
-cmd 'iwant/as_shell-user/to-bootstrap-iwant.sh 2>&1 | tail -n 3'
-cmd 'iwant/as-iwant-user/to-use-iwant-on.sh'
-out-was <<EOF
-Usage: iwant/as-iwant-user/to-use-iwant-on.sh WSNAME WSROOT WSSRC WSDEFCLASS
-EOF
-
-doc '}'
-}
-
 local-bootstrapper() {
 cmd "svn export \"$LOCAL_IWANT/../../iwant-bootstrapper/iwant\" iwant"
 out-was <<EOF  
@@ -43,7 +25,7 @@ EOF
 bootstrap() {
 local FETCH_BOOTSTRAPPER=$1
 local CONF_IWANT_FROM=$2
-doc 'section {name {Bootstrapping}'
+section "Bootstrapping"
 cmd 'mkdir -p example/as-example-developer && cd example/as-example-developer'
 "$FETCH_BOOTSTRAPPER"
 cmd 'iwant/help.sh'
@@ -61,14 +43,27 @@ out-was <<EOF
 Next, modify i-have/ws-info.conf to define your workspace.
 After that, rerun iwant/help.sh
 EOF
-doc '}'
+end-section
 }
 
 is-online-tutorial() {
   [ "x" == "x$LOCAL_IWANT" ]
 }
 
-doc 'article {name {Tutorial}'
+# temporary, remove when descript supports these properly:
+end-section() {
+  debuglog "TODO support end-section with nesting"
+}
+
+kbd() {
+  echo "$@"
+}
+
+doc-name() {
+  echo Tutorial
+}
+
+doc() {
 
 if is-online-tutorial; then
   bootstrap svn-bootstrapper conf-iwant-from-sfnet
@@ -76,11 +71,11 @@ else
   bootstrap local-bootstrapper conf-iwant-from-local-wishdir
 fi
 
-section Starting using kbd:iwant on a workspace
-#----------------------------------------------
+section "Starting using $(kbd iwant) on a workspace"
+#---------------------------------------------------
 
 cmd 'cat i-have/ws-info.conf'
-doc "p {Let's go with the defaults.}"
+p "Let's go with the defaults."
 cmd 'iwant/help.sh'
 out-was <<EOF
 I created a stub workspace definition at iwant/../i-have/wsdef/com/example/wsdef/Workspace.java
@@ -120,10 +115,28 @@ out-was <<EOF
 Constant generated content
 EOF
 
-end
+end-section
 
-section Editing the workspace definition with Eclipse
-#----------------------------------------------------
+MYEDITS=$(dirname "$DOC")/edits
+
+my-edit() {
+  local FILE=$1
+  local DIFF=$2
+  local MYDIFF=$MYEDITS/$DIFF
+  debuglog "my-edit $FILE $DIFF ($MYDIFF)"
+  diffedit "$FILE" "edited-by-$DIFF" < "$MYDIFF"
+}
+
+create-from() {
+  local FILE=$1
+  local FROM=$2
+  local MYFROM=$MYEDITS/$FROM
+  debuglog "create-from $FILE $FROM ($MYFROM)"
+  edit "$FILE" "creation" < "$MYFROM"
+}
+
+section "Editing the workspace definition with Eclipse"
+#------------------------------------------------------
 
 cmd 'iwant/target/eclipse-projects/as-rel-path'
 out-was <<EOF
@@ -137,24 +150,25 @@ iwant/cached/example/target/eclipse-projects/as-example-developer/.classpath
 iwant/cached/example/target/eclipse-projects/as-example-developer/.project
 EOF
 
-doc 'p {Import the project into Eclipse. Make sure not to copy it to the workspace.}'
+p 'Import the project into Eclipse. Make sure not to copy it to the workspace.'
 
 WSJAVA=i-have/wsdef/com/example/wsdef/Workspace.java
 
-edit "$WSJAVA" Workspace.java.new-constant-content.diff
+my-edit "$WSJAVA" Workspace.java.new-constant-content.diff
 cmd 'cat $(iwant/target/aConstant/as-path)'
 out-was <<EOF
 Modified constant content
 EOF
 
-end
+end-section
 
-doc 'section {name {Java classes}'
+section 'Java classes'
+#---------------------
 
 A_TESTS="project-a/tests"
 cmd "mkdir -p ../$A_TESTS/example"
 create-from "../$A_TESTS/example/ATest.java" "example-ws/$A_TESTS/example/ATest.java"
-edit "$WSJAVA" Workspace.java.a-tests.diff
+my-edit "$WSJAVA" Workspace.java.a-tests.diff
 cmd 'iwant/list-of/targets | grep projectATests'
 out-was <<EOF
 projectATests
@@ -167,10 +181,10 @@ EOF
 
 A_SRC="project-a/src"
 sleep 2
-edit "../$A_TESTS/example/ATest.java" ATest.java.aprod.diff
+my-edit "../$A_TESTS/example/ATest.java" ATest.java.aprod.diff
 cmd "mkdir -p ../$A_SRC/example"
 create-from "../$A_SRC/example/AProd.java" "example-ws/$A_SRC/example/AProd.java"
-edit "$WSJAVA" Workspace.java.a-src.diff
+my-edit "$WSJAVA" Workspace.java.a-src.diff
 cmd 'iwant/target/projectATests/as-rel-path'
 out-was <<EOF
 iwant/cached/example/target/projectATests
@@ -180,13 +194,14 @@ out-was <<EOF
 TODO make this a junit test to assert 0
 EOF
 
-doc '}'
+end-section
 
-doc 'section {name {JUnit tests}'
+section "JUnit tests"
+#--------------------
 
 sleep 2
-edit "../$A_TESTS/example/ATest.java" ATest.java.junit.diff
-edit "$WSJAVA" Workspace.java.junit.diff
+my-edit "../$A_TESTS/example/ATest.java" ATest.java.junit.diff
+my-edit "$WSJAVA" Workspace.java.junit.diff
 cmd 'iwant/list-of/targets | grep projectATestResult'
 out-was <<EOF
 projectATestResult
@@ -203,7 +218,7 @@ out-was <<EOF
 expected:<42> but was:<0>
 EOF
 
-edit "../$A_SRC/example/AProd.java" AProd.java.redtogreen.diff
+my-edit "../$A_SRC/example/AProd.java" AProd.java.redtogreen.diff
 cmd 'cat $(iwant/target/projectATestResult/as-path) | sed s/[^\ ]*\ sec/***/'
 out-was <<EOF
 Testsuite: example.ATest
@@ -212,9 +227,10 @@ Tests run: 1, Failures: 0, Errors: 0, Time elapsed: ***
 Testcase: testAValue took ***
 EOF
 
-doc '}'
+end-section
 
-doc 'section {name {Laziness}'
+section "Laziness"
+#-----------------
 
 TS="touched-after-src"
 cmd "touch $TS"
@@ -225,8 +241,8 @@ out-was <<EOF
 Modified constant content
 EOF
 cmd "find iwant/cached/example/target -newer $TS"
-out-was < ../tmp/empty
-edit "$WSJAVA" Workspace.java.another-constant-change-to-demo-laziness.diff
+echo -n | out-was
+my-edit "$WSJAVA" Workspace.java.another-constant-change-to-demo-laziness.diff
 cmd 'iwant/target/projectATestResult/as-path > /dev/null'
 cmd "find iwant/cached/example/target -newer $TS"
 echo -n | out-was
@@ -239,16 +255,17 @@ out-was <<EOF
 iwant/cached/example/target/aConstant
 EOF
 
-doc '}'
+end-section
 
-doc 'section {name {Downloaded content}'
+section "Downloaded content"
+#---------------------------
 
-edit "../$A_SRC/example/AProd.java" AProd.java.use-commons-math.diff
+my-edit "../$A_SRC/example/AProd.java" AProd.java.use-commons-math.diff
 cmd 'iwant/target/projectATestResult/as-path 2> /dev/null || echo "Compilation failed"'
 out-was <<EOF
 Compilation failed
 EOF
-edit "$WSJAVA" Workspace.java.use-commons-math.diff
+my-edit "$WSJAVA" Workspace.java.use-commons-math.diff
 cmd 'iwant/target/projectATestResult/as-path 2>&1 | sed s:$(pwd)/::'
 out-was <<EOF
 Getting: http://mirrors.ibiblio.org/pub/mirrors/maven2/commons-math/commons-math/1.2/commons-math-1.2.jar
@@ -256,14 +273,15 @@ To: iwant/cached/example/target/commons-math
 iwant/cached/example/target/projectATestResult
 EOF
 
-doc '}'
+end-section
 
-doc 'section {name {Two-phase workspace definition}'
+section "Two-phase workspace definition"
+#---------------------------------------
 
 cmd 'mkdir -p ../example-wsdef2/src/com/example/wsdef2'
 create-from '../example-wsdef2/src/com/example/wsdef2/ExampleWorkspace.java' ExampleWorkspace.java
 create-from '../example-wsdef2/src/com/example/wsdef2/CustomContent.java' CustomContent.java
-edit "$WSJAVA" Workspace.java.refer-to-phase2.diff
+my-edit "$WSJAVA" Workspace.java.refer-to-phase2.diff
 cmd 'iwant/list-of/targets'
 out-was <<EOF
 aConstant
@@ -281,11 +299,11 @@ out-was <<EOF
 Hello 42
 EOF
 
-doc '}'
+end-section
 
 if is-online-tutorial; then
-doc 'section {name {Upgrading iwant version (to one that supports SHA)}'
-edit "$WSJAVA" Workspace.java.commonsMathShaCheck.diff
+section 'Upgrading iwant version (to one that supports SHA)'
+my-edit "$WSJAVA" Workspace.java.commonsMathShaCheck.diff
 cmd 'iwant/target/commons-math/as-rel-path'
 out-was <<EOF
 iwant/target/commons-math/../../../i-have/wsdef/com/example/wsdef/Workspace.java:66: cannot find symbol
@@ -300,12 +318,13 @@ cmd 'iwant/target/commons-math/as-rel-path 2>/dev/null'
 out-was <<EOF
 iwant/cached/example/target/commons-math
 EOF
-doc '}'
+end-section
 fi
 
-doc 'section {name {Script-generated content}'
+section "Script-generated content"
+#---------------------------------
 
-edit '../example-wsdef2/src/com/example/wsdef2/ExampleWorkspace.java' ExampleWorkspace.java.scriptGeneratedContent.diff
+my-edit '../example-wsdef2/src/com/example/wsdef2/ExampleWorkspace.java' ExampleWorkspace.java.scriptGeneratedContent.diff
 
 cmd 'iwant/list-of/targets | grep scriptGeneratedContent'
 out-was <<EOF
@@ -323,6 +342,7 @@ out-was <<EOF
 hello from script
 EOF
 
-doc '}'
+end-section
 
-doc '}'
+end-section
+}

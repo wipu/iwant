@@ -121,31 +121,26 @@ script() {
 
 as_iwant_developer="as-iwant-developer"
 
-NGREASE="$wsroot/../ngrease"
 TUTORIAL_SRC="$wsroot/iwant-docs/src/main/descript/tutorial"
 
 tutorial-targetscript() {
-local TO="$1"
-local LOCAL_IWANT="$2"
+local TO=$1
+local LOCAL_IWANT=$2
 # descript needs absolute path here, since it's going to cd:
 [ -n "$LOCAL_IWANT" ] && LOCAL_IWANT=$(readlink -f "$LOCAL_IWANT")
-local TUTORIAL_BUILD="$3"
+local TUTORIAL_DIR=$3
+local TUTORIAL=$TUTORIAL_DIR/tutorial.html
 developer-script "$TO" <<EOF
 #!/bin/bash
 set -eu
 here=\$(dirname "\$0")
 iwant=\$here/../../..
-mkdir -p $(dirname "\$iwant/$TUTORIAL_BUILD")
-rm -rf "\$iwant/$TUTORIAL_BUILD"
-LOCAL_IWANT="$LOCAL_IWANT" bash "\$iwant/$NGREASE/ngrease-descript/src/main/bash/descript.sh" \\
-        "\$iwant/$TUTORIAL_SRC" "\$iwant/$TUTORIAL_BUILD"
-NGREASEPATH="\$iwant/${TUTORIAL_BUILD}:\$iwant/$wsroot/iwant-docs/src/main/java:\$iwant/$NGREASE/ngrease-descript/src/main/java" \\
-        "\$iwant/$NGREASE/ngrease-release/target/ngrease-all-0.4.0pre/bin/ngrease" \\
-                -r "/net/sf/ngrease/descript/descripted-as-html-source.ngr" \\
-                > \$iwant/$TUTORIAL_BUILD/tutorial.html
-# hack workaround, remove when using a better descript:
-sed -i 's:Target<:Target\&lt;:g' \$iwant/$TUTORIAL_BUILD/tutorial.html
-echo \$iwant/$TUTORIAL_BUILD/tutorial.html
+iwant=\$(readlink -f "\$iwant")
+rm -rf "\$iwant/$TUTORIAL_DIR"
+mkdir -p "\$iwant/$TUTORIAL_DIR"
+LOCAL_IWANT="$LOCAL_IWANT" bash "\$iwant/$wsroot/iwant-lib-descript/descript.sh" \\
+        "\$iwant/$TUTORIAL_SRC/article.sh" "\$iwant/$TUTORIAL" true
+echo \$iwant/$TUTORIAL
 EOF
 }
 
