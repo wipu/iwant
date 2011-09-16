@@ -1,0 +1,87 @@
+<project name="iwant-bootstrap-phase2" default="iwant" basedir=".">
+
+	<target name="iwant" description="iwant" depends="iwant-bin">
+		<echo message="TODO delegate to ${iwant-bin}" />
+	</target>
+
+	<target name="iwant-bin" depends="iwant-classes">
+		<property name="iwant-bin" location="${cached-internal}/bin" />
+		<echo message="TODO Build ${iwant-bin} from ${iwant-classes}, ${ant.jar} ..." />
+	</target>
+
+	<target name="iwant-classes" depends="iwant-classes-status, jars" unless="iwant-classes-uptodate">
+		<echo message="generate ${iwant-classes}" />
+	</target>
+
+	<target name="iwant-classes-status" depends="cached-internal">
+		<property name="iwant-classes" location="${cached-internal}/iwant-classes" />
+		<available file="${iwant-classes}" property="iwant-classes-uptodate" />
+	</target>
+
+	<target name="jars" depends="ant.jar, ant-junit.jar, junit.jar" />
+
+	<target name="ant.jar" depends="ant.jar-status" unless="ant.jar-exists">
+		<download name="ant.jar" src="http://mirrors.ibiblio.org/pub/mirrors/maven2/org/apache/ant/ant/1.7.1" md5="ef62988c744551fb51f330eaa311bfc0" />
+	</target>
+
+	<target name="ant.jar-status" depends="cached-unmodifiable">
+		<unmodifiable-target-status name="ant.jar" filename="ant-1.7.1.jar" />
+	</target>
+
+	<target name="ant-junit.jar" depends="ant-junit.jar-status" unless="ant-junit.jar-exists">
+		<download name="ant-junit.jar" src="http://mirrors.ibiblio.org/pub/mirrors/maven2/org/apache/ant/ant-junit/1.7.1" md5="c1b2bfa2389c405c7c07d23f368d6944" />
+	</target>
+
+	<target name="ant-junit.jar-status" depends="cached-unmodifiable">
+		<unmodifiable-target-status name="ant-junit.jar" filename="ant-junit-1.7.1.jar" />
+	</target>
+
+	<target name="junit.jar" depends="junit.jar-status" unless="junit.jar-exists">
+		<download name="junit.jar" src="http://mirrors.ibiblio.org/pub/mirrors/maven2/junit/junit/3.8.1" md5="1f40fb782a4f2cf78f161d32670f7a3a" />
+	</target>
+
+	<target name="junit.jar-status" depends="cached-unmodifiable">
+		<unmodifiable-target-status name="junit.jar" filename="junit-3.8.1.jar" />
+	</target>
+
+	<macrodef name="unmodifiable-target-status">
+		<attribute name="name" />
+		<attribute name="filename" />
+		<sequential>
+			<property name="@{name}-name" value="@{filename}" />
+			<property name="@{name}" location="${cached-unmodifiable}/@{filename}" />
+			<available file="${@{name}}" property="@{name}-exists" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="download">
+		<attribute name="name" />
+		<attribute name="src" />
+		<attribute name="md5" />
+		<sequential>
+			<get dest="${@{name}}.unverified" src="@{src}/${@{name}-name}" />
+			<checksum algorithm="MD5" property="@{md5}" verifyproperty="@{name}-md5-status" file="${@{name}}.unverified" />
+			<condition property="@{name}-isok">
+				<equals arg1="true" arg2="${@{name}-md5-status}" />
+			</condition>
+			<fail message="Checksum failed!" unless="@{name}-isok" />
+			<move file="${@{name}}.unverified" tofile="${@{name}}" />
+		</sequential>
+	</macrodef>
+
+	<target name="cached-unmodifiable">
+		<fail message="Please call with -Dcached-unmodifiable" unless="cached-unmodifiable" />
+	</target>
+
+	<target name="cached-internal" depends="cached">
+		<property name="cached-internal" location="${cached}/.internal" />
+		<mkdir dir="${cached-internal}" />
+	</target>
+
+	<target name="cached">
+		<fail message="Please call this with inheritall='false'" if="cached" />
+		<property name="cached" location="cached" />
+		<mkdir dir="${cached}" />
+	</target>
+
+</project>

@@ -70,11 +70,11 @@ EOF
 end-section
 }
 
-optimize-svnkit-download() {
-  p "Using a cached svnkit.zip to optimize building this article."
+optimize-downloads() {
+  p "Using cached external libraries to optimize building this article."
   local OPTIMCACHE=$LOCAL_IWANT_ROOT/iwant-iwant/iwant/cached/iwant/optimization
   local SVNKITZIP=org.tmatesoft.svn_1.3.5.standalone.nojna.zip
-  local INTERNALCACHE=../iwant/cached/.internal
+  local INTERNALCACHE=../iwant/cached/.internal/unmodifiable
   [ -e "$OPTIMCACHE/$SVNKITZIP" ] || {
     log "Fetching svnkit using the ant script to test."
     ant svnkit.zip
@@ -84,7 +84,9 @@ optimize-svnkit-download() {
   }
   log "Copying cached svnkit from $OPTIMCACHE to $INTERNALCACHE"
   mkdir -p "$INTERNALCACHE"
-  cp "$OPTIMCACHE/$SVNKITZIP" "$INTERNALCACHE"/
+  cp -v "$OPTIMCACHE/$SVNKITZIP" "$INTERNALCACHE"/
+  log "Also copying jars for iwant compilation."
+  cp -v "$LOCAL_IWANT/cached/iwant/cpitems/"*.jar "$INTERNALCACHE"/
 }
 
 phase1-run-with-correct-iwant-from() {
@@ -94,12 +96,15 @@ edit "../i-have/iwant-from.conf" use-local-iwant <<EOF
 iwant-rev=
 iwant-url=$LOCAL_IWANT_ROOT
 EOF
-optimize-svnkit-download
+optimize-downloads
+ant
 cmd ant
 p "The bootstrapper downloaded tools:"
-cmd 'find .. -maxdepth 4'
+cmd 'find .. -maxdepth 4 | sort'
 out-was <<EOF
 ..
+../i-have
+../i-have/iwant-from.conf
 ../iw
 ../iw/build.xml
 ../iwant
@@ -107,9 +112,7 @@ out-was <<EOF
 ../iwant/cached/.internal
 ../iwant/cached/.internal/iwant-r
 ../iwant/cached/.internal/org.tmatesoft.svn_1.3.5.standalone.nojna
-../iwant/cached/.internal/org.tmatesoft.svn_1.3.5.standalone.nojna.zip
-../i-have
-../i-have/iwant-from.conf
+../iwant/cached/.internal/unmodifiable
 EOF
 end-section
 }

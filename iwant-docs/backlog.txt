@@ -185,7 +185,12 @@
     + modify dir structure so ant and bash users will share iwant/cached
       * as-example-developer/{iw,iwant,i-have}
     + svn export (ignoring rev) iwant-src
-    - delegate to phase2
+    + delegate to phase2
+    + download jars
+    + share "cached unmodifiable" (use the same for the optimization above)
+      and use it to optimize jars
+      + phase1 uses default when not set
+      + phase2 requires it from phase1
     - make rev optional, branching the export
 
 #################################################################

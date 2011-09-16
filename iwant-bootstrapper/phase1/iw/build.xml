@@ -1,6 +1,9 @@
 <project name="iwant-bootstrap" default="help" basedir=".">
 
-	<target name="help" description="help" depends="iwant-src">
+	<target name="help" description="help" depends="iwant-src, cached-unmodifiable">
+		<ant dir="${iwant-src}/iwant-bootstrapper/phase2/iw" inheritall="false">
+			<property name="cached-unmodifiable" location="${cached-unmodifiable}" />
+		</ant>
 	</target>
 
 	<target name="iwant-src" depends="iwant-src-status,iwant-from-information, svnkit" unless="iwant-src-uptodate">
@@ -45,9 +48,9 @@
 		<move file="${svnkit.zip}.unverified" tofile="${svnkit.zip}" />
 	</target>
 
-	<target name="svnkit.zip-status" depends="svnkit.name, cached-internal">
+	<target name="svnkit.zip-status" depends="svnkit.name, cached-unmodifiable">
 		<property name="svnkit.zip.name" value="${svnkit.name}.zip" />
-		<property name="svnkit.zip" location="${cached-internal}/${svnkit.zip.name}" />
+		<property name="svnkit.zip" location="${cached-unmodifiable}/${svnkit.zip.name}" />
 		<available file="${svnkit.zip}" property="svnkit.zip-uptodate" />
 	</target>
 
@@ -72,6 +75,11 @@ Please edit it and rerun me." />
 	<target name="i-have/iwant-from.conf-status" depends="i-have">
 		<property name="i-have/iwant-from.conf" location="${i-have}/iwant-from.conf" />
 		<available file="${i-have/iwant-from.conf}" property="i-have/iwant-from.conf_exists" />
+	</target>
+
+	<target name="cached-unmodifiable" unless="cached-unmodifiable">
+		<property name="cached-unmodifiable" location="${cached-internal}/unmodifiable" />
+		<echo message="cached-unmodifiable=${cached-unmodifiable}" />
 	</target>
 
 	<target name="cached-internal" depends="cached">
