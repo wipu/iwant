@@ -3,8 +3,37 @@
 	<target name="help" description="help" depends="iwant-src">
 	</target>
 
-	<target name="iwant-src" depends="iwant-from-information">
+	<target name="iwant-src" depends="iwant-from-information, svnkit">
 		<echo message="TODO svn export -r ${iwant-rev} ${iwant-url}" />
+	</target>
+
+	<target name="svnkit" depends="svnkit-status, svnkit.zip" unless="svnkit-uptodate">
+		<unzip dest="${svnkit}" src="${svnkit.zip}" />
+	</target>
+
+	<target name="svnkit-status" depends="svnkit.name, cached-internal">
+		<property name="svnkit" location="${cached-internal}/${svnkit.name}" />
+		<available file="${svnkit}" property="svnkit-uptodate" />
+	</target>
+
+	<target name="svnkit.zip" depends="svnkit.zip-status" unless="svnkit.zip-uptodate">
+		<get dest="${svnkit.zip}.unverified" src="http://www.svnkit.com/${svnkit.zip.name}" />
+		<checksum algorithm="MD5" property="329ab36ad39e878d54f92c3891e5a486" verifyproperty="svnkit.zip-md5-status" file="${svnkit.zip}.unverified" />
+		<condition property="svnkit.zip-isok">
+			<equals arg1="true" arg2="${svnkit.zip-md5-status}" />
+		</condition>
+		<fail message="Checksum failed!" unless="svnkit.zip-isok" />
+		<move file="${svnkit.zip}.unverified" tofile="${svnkit.zip}" />
+	</target>
+
+	<target name="svnkit.zip-status" depends="svnkit.name, cached-internal">
+		<property name="svnkit.zip.name" value="${svnkit.name}.zip" />
+		<property name="svnkit.zip" location="${cached-internal}/${svnkit.zip.name}" />
+		<available file="${svnkit.zip}" property="svnkit.zip-uptodate" />
+	</target>
+
+	<target name="svnkit.name">
+		<property name="svnkit.name" value="org.tmatesoft.svn_1.3.5.standalone.nojna" />
 	</target>
 
 	<target name="iwant-from-information" depends="i-have/iwant-from.conf">
@@ -24,6 +53,16 @@ Please edit it and rerun me." />
 	<target name="i-have/iwant-from.conf-status" depends="i-have">
 		<property name="i-have/iwant-from.conf" location="${i-have}/iwant-from.conf" />
 		<available file="${i-have/iwant-from.conf}" property="i-have/iwant-from.conf_exists" />
+	</target>
+
+	<target name="cached-internal" depends="cached">
+		<property name="cached-internal" location="${cached}/.internal" />
+		<mkdir dir="${cached-internal}" />
+	</target>
+
+	<target name="cached" depends="as-somebody">
+		<property name="cached" location="${as-somebody}/iwant/cached" />
+		<mkdir dir="${cached}" />
 	</target>
 
 	<target name="i-have" depends="as-somebody">

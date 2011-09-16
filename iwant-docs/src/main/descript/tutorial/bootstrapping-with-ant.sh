@@ -70,12 +70,31 @@ EOF
 end-section
 }
 
+optimize-svnkit-download() {
+  p "Using a cached svnkit.zip to optimize building this article."
+  local OPTIMCACHE=$LOCAL_IWANT_ROOT/iwant-iwant/iwant/cached/iwant/optimization
+  local SVNKITZIP=org.tmatesoft.svn_1.3.5.standalone.nojna.zip
+  local INTERNALCACHE=../iwant/cached/.internal
+  [ -e "$OPTIMCACHE/$SVNKITZIP" ] || {
+    log "Fetching svnkit using the ant script to test."
+    ant svnkit.zip
+    log "Caching it to $OPTIMCACHE"
+    mkdir -p "$OPTIMCACHE"
+    cp "$INTERNALCACHE/$SVNKITZIP" "$OPTIMCACHE"/
+  }
+  log "Copying cached svnkit from $OPTIMCACHE to $INTERNALCACHE"
+  mkdir -p "$INTERNALCACHE"
+  cp "$OPTIMCACHE/$SVNKITZIP" "$INTERNALCACHE"/
+}
+
 phase1-run-with-correct-iwant-from() {
 section "We'll use a local copy of iwant."
+
 edit "../i-have/iwant-from.conf" use-local-iwant <<EOF
 iwant-rev=
 iwant-url=$LOCAL_IWANT_ROOT
 EOF
+optimize-svnkit-download
 cmd ant
 end-section
 }
