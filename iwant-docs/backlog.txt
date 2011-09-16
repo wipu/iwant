@@ -191,6 +191,16 @@
       and use it to optimize jars
       + phase1 uses default when not set
       + phase2 requires it from phase1
+    + compile iwant-classes and test-classes
+    - write and delegate to "Phase3.class"
+      - run tests
+      - create bin
+      - call bin to continue bootstrapping
+        - create wsdef-info
+        - read it
+        - generate example Workspace
+        - work from then on
+    - separate iwant-main-classes and iwant-test-classes if needed
     - make rev optional, branching the export
 
 #################################################################

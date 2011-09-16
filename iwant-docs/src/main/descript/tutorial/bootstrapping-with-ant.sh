@@ -97,7 +97,6 @@ iwant-rev=
 iwant-url=$LOCAL_IWANT_ROOT
 EOF
 optimize-downloads
-ant
 cmd ant
 p "The bootstrapper downloaded tools:"
 cmd 'find .. -maxdepth 4 | sort'

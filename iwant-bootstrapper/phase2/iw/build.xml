@@ -10,7 +10,19 @@
 	</target>
 
 	<target name="iwant-classes" depends="iwant-classes-status, jars" unless="iwant-classes-uptodate">
-		<echo message="generate ${iwant-classes}" />
+		<delete dir="${iwant-classes}" />
+		<mkdir dir="${iwant-classes}" />
+		<javac destdir="${iwant-classes}" debug="true" source="1.6" target="1.6" includeantruntime="false">
+			<src>
+				<path location="../../../iwant-core/src/main/java" />
+				<path location="../../../iwant-core/src/test/java" />
+			</src>
+			<classpath>
+				<path location="${ant.jar}" />
+				<path location="${ant-junit.jar}" />
+				<path location="${junit.jar}" />
+			</classpath>
+		</javac>
 	</target>
 
 	<target name="iwant-classes-status" depends="cached-internal">
