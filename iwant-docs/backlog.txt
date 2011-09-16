@@ -182,8 +182,12 @@
     + run to read correct iwant-from
     + download svnkit if not downloaded
     + make the caller cache it and copy to place to avoid downloading
-    - modify dir structure so ant and bash users will share iwant/cached
+    + modify dir structure so ant and bash users will share iwant/cached
       * as-example-developer/{iw,iwant,i-have}
+    - svn export (ignoring rev) iwant-src
+    - uncompress iwant-src
+    - delegate to phase2
+    - make rev optional, branching the export
 
 #################################################################
 = Planned

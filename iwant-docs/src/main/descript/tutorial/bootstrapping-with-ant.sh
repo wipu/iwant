@@ -6,7 +6,7 @@ LOCAL_IWANT_ROOT=$(readlink -f "$LOCAL_IWANT/../..")
 
 copy-phase1-xml() {
 cmd 'echo $LOCAL_IWANT'
-cmd "svn export \"$LOCAL_IWANT_ROOT/iwant-bootstrapper/phase1/using-ant\""
+cmd "svn export \"$LOCAL_IWANT_ROOT/iwant-bootstrapper/phase1/iw\""
 out-was <<EOF
 Export complete.
 EOF
@@ -96,6 +96,20 @@ iwant-url=$LOCAL_IWANT_ROOT
 EOF
 optimize-svnkit-download
 cmd ant
+p "The bootstrapper downloaded tools:"
+cmd 'find .. -maxdepth 4'
+out-was <<EOF
+..
+../iw
+../iw/build.xml
+../iwant
+../iwant/cached
+../iwant/cached/.internal
+../iwant/cached/.internal/org.tmatesoft.svn_1.3.5.standalone.nojna
+../iwant/cached/.internal/org.tmatesoft.svn_1.3.5.standalone.nojna.zip
+../i-have
+../i-have/iwant-from.conf
+EOF
 end-section
 }
 
@@ -107,7 +121,7 @@ section 'Boostrapping iwant with ant'
 cmd 'mkdir -p example/as-example-developer && cd example/as-example-developer'
 get-phase1-xml
 
-cmd 'cd using-ant/iw'
+cmd 'cd iw'
 
 phase1-run-1
 phase1-run-with-incorrect-iwant-from
