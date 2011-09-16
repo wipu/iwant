@@ -105,6 +105,7 @@ out-was <<EOF
 ../iwant
 ../iwant/cached
 ../iwant/cached/.internal
+../iwant/cached/.internal/iwant-r
 ../iwant/cached/.internal/org.tmatesoft.svn_1.3.5.standalone.nojna
 ../iwant/cached/.internal/org.tmatesoft.svn_1.3.5.standalone.nojna.zip
 ../i-have

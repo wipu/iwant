@@ -3,8 +3,27 @@
 	<target name="help" description="help" depends="iwant-src">
 	</target>
 
-	<target name="iwant-src" depends="iwant-from-information, svnkit">
-		<echo message="TODO svn export -r ${iwant-rev} ${iwant-url}" />
+	<target name="iwant-src" depends="iwant-src-status,iwant-from-information, svnkit" unless="iwant-src-uptodate">
+		<echo message="TODO use -r $${iwant-rev} when set" />
+		<echo message="Exporting iwant src revision ${iwant-rev} from ${iwant-url}" />
+		<java classname="org.tmatesoft.svn.cli.SVN" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="export" />
+			<!--<arg value="-r" />
+			<arg value="${iwant-rev}" />-->
+			<arg value="${iwant-url}" />
+			<arg value="${iwant-src}" />
+			<classpath>
+				<fileset dir="${svnkit}">
+					<include name="**/svnkit.jar" />
+					<include name="**/svnkit-cli.jar" />
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="iwant-src-status" depends="iwant-from-information, cached-internal">
+		<property name="iwant-src" location="${cached-internal}/iwant-r${iwant-rev}" />
+		<available file="${iwant-src}" property="iwant-src-uptodate" />
 	</target>
 
 	<target name="svnkit" depends="svnkit-status, svnkit.zip" unless="svnkit-uptodate">
