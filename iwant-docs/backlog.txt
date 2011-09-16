@@ -176,8 +176,12 @@
   * delegate as much as possible to "phase 2" exported from actual iwant
   + empty descript article "Bootstrapping with ant"
   - local version
-    - copy bootstrap phase 1
-    - run to generate iwant-from
+    + copy bootstrap phase 1
+    + run to generate iwant-from
+    + run to read incorrect iwant-from
+    + run to read correct iwant-from
+    - download svnkit if not downloaded
+    - make the caller cache it and copy to place to avoid downloading
 
 #################################################################
 = Planned

@@ -1,0 +1,38 @@
+<project name="iwant-bootstrap" default="help" basedir=".">
+
+	<target name="help" description="help" depends="iwant-src">
+	</target>
+
+	<target name="iwant-src" depends="iwant-from-information">
+		<echo message="TODO svn export -r ${iwant-rev} ${iwant-url}" />
+	</target>
+
+	<target name="iwant-from-information" depends="i-have/iwant-from.conf">
+		<property file="${i-have/iwant-from.conf}" />
+		<fail message="Please specify iwant-rev in ${i-have/iwant-from.conf}" unless="iwant-rev" />
+		<fail message="Please specify iwant-url in ${i-have/iwant-from.conf}" unless="iwant-url" />
+	</target>
+
+	<target name="i-have/iwant-from.conf" depends="i-have/iwant-from.conf-status" unless="i-have/iwant-from.conf_exists">
+		<echo file="${i-have/iwant-from.conf}">iwant-rev=140
+iwant-url=https://iwant.svn.sourceforge.net/svnroot/iwant/trunk
+</echo>
+		<fail message="I created file ${i-have/iwant-from.conf} for your convenience.
+Please edit it and rerun me." />
+	</target>
+
+	<target name="i-have/iwant-from.conf-status" depends="i-have">
+		<property name="i-have/iwant-from.conf" location="${i-have}/iwant-from.conf" />
+		<available file="${i-have/iwant-from.conf}" property="i-have/iwant-from.conf_exists" />
+	</target>
+
+	<target name="i-have" depends="as-somebody">
+		<property name="i-have" location="${as-somebody}/i-have" />
+		<mkdir dir="${i-have}" />
+	</target>
+
+	<target name="as-somebody">
+		<property name="as-somebody" location=".." />
+	</target>
+
+</project>
