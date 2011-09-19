@@ -77,8 +77,9 @@ Please edit it and rerun me." />
 		<available file="${i-have/iwant-from.conf}" property="i-have/iwant-from.conf_exists" />
 	</target>
 
-	<target name="cached-unmodifiable" unless="cached-unmodifiable">
+	<target name="cached-unmodifiable" depends="cached-internal" unless="cached-unmodifiable">
 		<property name="cached-unmodifiable" location="${cached-internal}/unmodifiable" />
+		<mkdir dir="${cached-unmodifiable}" />
 		<echo message="cached-unmodifiable=${cached-unmodifiable}" />
 	</target>
 
