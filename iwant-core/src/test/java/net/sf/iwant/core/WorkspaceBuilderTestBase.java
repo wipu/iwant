@@ -1,6 +1,5 @@
 package net.sf.iwant.core;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
@@ -135,15 +134,18 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 	}
 
 	protected String cachedContent(String target) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(
-				pathToCachedTarget(target)));
-		StringBuilder actual = new StringBuilder();
-		String line;
-		while ((line = reader.readLine()) != null) {
-			actual.append(line).append("\n");
-		}
-		return actual.toString();
+		return contentOf(pathToCachedTarget(target));
+	}
 
+	protected String contentOf(String path) throws IOException {
+		FileReader reader = new FileReader(path);
+		StringBuilder actual = new StringBuilder();
+		int c;
+		while ((c = reader.read()) >= 0) {
+			actual.append((char) c);
+		}
+		reader.close();
+		return actual.toString();
 	}
 
 	protected String pathLine(String target) {
@@ -220,7 +222,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 	}
 
 	protected void directoryExists(String name) {
-		new File(wsRoot() + "/" + name).mkdir();
+		ensureDir(new File(wsRoot() + "/" + name));
 	}
 
 	private Object unfinishedBuilder;

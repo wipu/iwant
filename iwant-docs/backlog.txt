@@ -193,13 +193,18 @@
       + phase2 requires it from phase1
     + compile iwant-classes and test-classes
     - write and delegate to "Phase3.class"
-      - run tests
-      - create bin
-      - call bin to continue bootstrapping
-        - create wsdef-info
-        - read it
-        - generate example Workspace
-        - work from then on
+      (- run tests: not yet, see a dedicated story)
+      * it's called Iwant.class
+      + create bin: just an ant path for ext-jars at this stage
+      + call bin to continue bootstrapping
+      + create wsdef-info from Iwant.class
+        + fix file content assertion: don't use BufferedReader.readLine, it
+          won't detect missing trailing newline
+      - don't print stacktrace but still fail
+        * System.exit probably needed
+      - read wsdef-into
+      - generate example Workspace
+      - work from then on
     - separate iwant-main-classes and iwant-test-classes if needed
     - make rev optional, branching the export
 
@@ -207,7 +212,17 @@
 = Planned
 #################################################################
 
+- As a @buildscriptauthor I want iwant to test itself during bootstrap when the tests are fast
+  - somehow forge timestamps of files so no sleeps are required
+  - make sure nothing is downloaded from network
+  * note: run _only_ during bootstrap
+  - _if_ testarea still needed, create one
+
 - As a @developer I want to simplify the bash bootstrapper so it will share as much code with the ant bootstrapper as possible
+
+- @maybe as a @buildscriptauthor I want bootstrapper to generate example files that need editing before it agrees to continue so I won't screw things up by running the bootstrapper again before really editing the confs
+
+- As a @buildscriptauthor I want the bootstrapper to use an ".unverified" temp dir for classes 
 
 - As a @developer I want to clean up the code here and there to get ready for adding lots of features and to make things easier otherwise
   + rename Suite to IwantSuite to differentiate it from other projects

@@ -4,12 +4,22 @@
 		<echo message="TODO delegate to ${iwant-bin}" />
 	</target>
 
-	<target name="iwant-bin" depends="iwant-classes">
+	<target name="iwant-bin" depends="iwant-classes, ext-jars, as-somebody">
 		<property name="iwant-bin" location="${cached-internal}/bin" />
-		<echo message="TODO Build ${iwant-bin} from ${iwant-classes}, ${ant.jar} ..." />
+		<java classname="net.sf.iwant.core.Iwant" failonerror="true">
+			<arg value="${as-somebody}" />
+			<classpath>
+				<path location="${iwant-classes}" />
+				<path refid="ext-jars" />
+			</classpath>
+		</java>
 	</target>
 
-	<target name="iwant-classes" depends="iwant-classes-status, jars" unless="iwant-classes-uptodate">
+	<target name="as-somebody">
+		<fail message="Please call with -Das-somebody" unless="as-somebody" />
+	</target>
+
+	<target name="iwant-classes" depends="iwant-classes-status, ext-jars" unless="iwant-classes-uptodate">
 		<delete dir="${iwant-classes}" />
 		<mkdir dir="${iwant-classes}" />
 		<javac destdir="${iwant-classes}" debug="true" source="1.6" target="1.6" includeantruntime="false">
@@ -18,9 +28,7 @@
 				<path location="../../../iwant-core/src/test/java" />
 			</src>
 			<classpath>
-				<path location="${ant.jar}" />
-				<path location="${ant-junit.jar}" />
-				<path location="${junit.jar}" />
+				<path refid="ext-jars" />
 			</classpath>
 		</javac>
 	</target>
@@ -30,7 +38,13 @@
 		<available file="${iwant-classes}" property="iwant-classes-uptodate" />
 	</target>
 
-	<target name="jars" depends="ant.jar, ant-junit.jar, junit.jar" />
+	<target name="ext-jars" depends="ant.jar, ant-junit.jar, junit.jar">
+		<path id="ext-jars">
+			<path location="${ant.jar}" />
+			<path location="${ant-junit.jar}" />
+			<path location="${junit.jar}" />
+		</path>
+	</target>
 
 	<target name="ant.jar" depends="ant.jar-status" unless="ant.jar-exists">
 		<download name="ant.jar" src="http://mirrors.ibiblio.org/pub/mirrors/maven2/org/apache/ant/ant/1.7.1" md5="ef62988c744551fb51f330eaa311bfc0" />

@@ -735,7 +735,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				"target/targetInPhase2/as-path");
 		assertEquals("", err());
 		assertEquals(pathLine("targetInPhase2"), out());
-		assertEquals("hello from phase2\n", cachedContent("targetInPhase2"));
+		assertEquals("hello from phase2", cachedContent("targetInPhase2"));
 	}
 
 	public static class WorkspaceWithShellScript implements WorkspaceDefinition {

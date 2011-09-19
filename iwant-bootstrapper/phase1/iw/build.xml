@@ -1,8 +1,9 @@
 <project name="iwant-bootstrap" default="help" basedir=".">
 
-	<target name="help" description="help" depends="iwant-src, cached-unmodifiable">
+	<target name="help" description="help" depends="iwant-src, cached-unmodifiable, as-somebody">
 		<ant dir="${iwant-src}/iwant-bootstrapper/phase2/iw" inheritall="false">
 			<property name="cached-unmodifiable" location="${cached-unmodifiable}" />
+			<property name="as-somebody" location="${as-somebody}" />
 		</ant>
 	</target>
 

@@ -11,6 +11,7 @@ public class IwantSuite extends TestCase {
 		suite.addTestSuite(PathDiggerTest.class);
 		suite.addTestSuite(ContentDefinitionsTest.class);
 		suite.addTestSuite(RefresherTest.class);
+		suite.addTestSuite(IwantTest.class);
 		suite.addTestSuite(WorkspaceBuilderTest.class);
 		suite.addTestSuite(WorkspaceBuilderArgumentsTest.class);
 		return suite;

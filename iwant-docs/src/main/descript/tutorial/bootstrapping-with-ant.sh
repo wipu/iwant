@@ -97,21 +97,14 @@ iwant-rev=
 iwant-url=$LOCAL_IWANT_ROOT
 EOF
 optimize-downloads
-cmd ant
-p "The bootstrapper downloaded tools:"
-cmd 'find .. -maxdepth 4 | sort'
+failing-cmd 1 ant
+cmd 'cat ../i-have/ws-info.conf'
 out-was <<EOF
-..
-../i-have
-../i-have/iwant-from.conf
-../iw
-../iw/build.xml
-../iwant
-../iwant/cached
-../iwant/cached/.internal
-../iwant/cached/.internal/iwant-r
-../iwant/cached/.internal/org.tmatesoft.svn_1.3.5.standalone.nojna
-../iwant/cached/.internal/unmodifiable
+# paths are relative to this file's directory
+WSNAME=example
+WSROOT=../..
+WSDEF_SRC=../i-have/wsdef
+WSDEF_CLASS=com.example.wsdef.Workspace
 EOF
 end-section
 }
