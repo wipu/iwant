@@ -49,7 +49,7 @@ end-section
 
 phase1-run-with-incorrect-iwant-from() {
 section "Test handling of incorrect iwant-from.conf"
-p "Bootstrapper complains if iwant-rev is not specified."
+p "The bootstrapper complains if iwant-rev is not specified."
 edit "../i-have/iwant-from.conf" empty-file <<EOF
 EOF
 failing-cmd 1 ant
@@ -98,14 +98,23 @@ iwant-url=$LOCAL_IWANT_ROOT
 EOF
 optimize-downloads
 failing-cmd 1 ant
-cmd 'cat ../i-have/ws-info.conf'
-out-was <<EOF
+cmd 'find ../i-have'
+end-section
+}
+
+phase1-run-with-correct-ws-info() {
+section "Generate the workspace definition java file"
+p "Let's modify the file the iwant generated for us."
+edit '../i-have/ws-info.conf' creation <<EOF
 # paths are relative to this file's directory
-WSNAME=example
+WSNAME=ant-bootstrap-example
 WSROOT=../..
-WSDEF_SRC=../i-have/wsdef
-WSDEF_CLASS=com.example.wsdef.Workspace
+WSDEF_SRC=wsdef
+WSDEF_CLASS=com.antbootstrapexample.wsdef.Workspace
 EOF
+p "We'll try to proceed again."
+failing-cmd 1 ant
+cmd 'find ../i-have/wsdef'
 end-section
 }
 
@@ -122,6 +131,7 @@ cmd 'cd iw'
 phase1-run-1
 phase1-run-with-incorrect-iwant-from
 phase1-run-with-correct-iwant-from
+phase1-run-with-correct-ws-info
 
 end-section
 

@@ -202,8 +202,8 @@
           won't detect missing trailing newline
       + don't print stacktrace but still fail
         * System.exit probably needed
-      - read wsdef-into
-      - generate example Workspace
+      + read wsdef-into
+      + generate example Workspace
       - work from then on
     - separate iwant-main-classes and iwant-test-classes if needed
     - make rev optional, branching the export

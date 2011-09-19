@@ -88,10 +88,39 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				+ " Please edit it and rerun me.\n", err());
 
 		assertEquals("# paths are relative to this file's directory\n"
-				+ "WSNAME=example\n" + "WSROOT=../..\n"
-				+ "WSDEF_SRC=../i-have/wsdef\n"
+				+ "WSNAME=example\n" + "WSROOT=../..\n" + "WSDEF_SRC=wsdef\n"
 				+ "WSDEF_CLASS=com.example.wsdef.Workspace\n",
 				contentOf(wsRoot() + "/as-x-developer/i-have/ws-info.conf"));
+	}
+
+	public void testMissingWsDefJavaGetsCreatedThenBuildAborts()
+			throws IOException {
+		directoryExists("as-x-developer/i-have");
+		file("as-x-developer/i-have/ws-info.conf").withContent();
+		line("WSNAME=test");
+		line("WSROOT=../..");
+		line("WSDEF_SRC=wsdef");
+		line("WSDEF_CLASS=net.sf.iwant.test.wsdef.TestWorkspace");
+		exists();
+		try {
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer" });
+			fail();
+		} catch (ExitCalledException e) {
+			assertEquals(1, e.status());
+		}
+		assertEquals("", out());
+		assertEquals(
+				"I created "
+						+ wsRoot()
+						+ "/as-x-developer/i-have/wsdef/net/sf/iwant/test/wsdef/TestWorkspace.java"
+						+ " for you. Please edit it and rerun me.\n", err());
+
+		String content = contentOf(wsRoot()
+				+ "/as-x-developer/i-have/wsdef/net/sf/iwant/test/wsdef/TestWorkspace.java");
+		// full content is tested in descript docs and by functionality
+		assertTrue(content.contains("package net.sf.iwant.test.wsdef;"));
+		assertTrue(content
+				.contains("class TestWorkspace implements WorkspaceDefinition {"));
 	}
 
 }
