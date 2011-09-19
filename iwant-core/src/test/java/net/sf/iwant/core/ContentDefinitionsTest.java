@@ -6,6 +6,7 @@ public class ContentDefinitionsTest extends TestCase {
 
 	private String descr;
 
+	@Override
 	public void setUp() {
 		descr = "";
 	}

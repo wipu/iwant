@@ -13,6 +13,7 @@ public class RefresherTest extends TestCase {
 	private Refresher refresher;
 	private ContentMock content;
 
+	@Override
 	public void setUp() {
 		ts = new TimestampReaderMock(LOCATIONS);
 		descrCache = new ContentDescriptionCacheMock();

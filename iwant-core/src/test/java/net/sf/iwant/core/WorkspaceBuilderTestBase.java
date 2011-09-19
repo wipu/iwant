@@ -41,6 +41,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 
 	private static String mockWeb;
 
+	@Override
 	public void setUp() {
 		originalIn = System.in;
 		originalOut = System.out;
@@ -167,6 +168,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		}
 	}
 
+	@Override
 	public void tearDown() {
 		System.setIn(originalIn);
 		System.setOut(originalOut);
