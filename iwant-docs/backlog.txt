@@ -200,7 +200,7 @@
       + create wsdef-info from Iwant.class
         + fix file content assertion: don't use BufferedReader.readLine, it
           won't detect missing trailing newline
-      - don't print stacktrace but still fail
+      + don't print stacktrace but still fail
         * System.exit probably needed
       - read wsdef-into
       - generate example Workspace
@@ -221,8 +221,13 @@
 - As a @developer I want to simplify the bash bootstrapper so it will share as much code with the ant bootstrapper as possible
 
 - @maybe as a @buildscriptauthor I want bootstrapper to generate example files that need editing before it agrees to continue so I won't screw things up by running the bootstrapper again before really editing the confs
+  - descript all
+  - choose option:
+    * just compare content to the example string
+    * put extra conf "remove-me"
+    * put confs in comments
 
-- As a @buildscriptauthor I want the bootstrapper to use an ".unverified" temp dir for classes 
+- As a @buildscriptauthor I want the bootstrapper to use an ".unverified" temp dir for classes (like svnkit download does before md5 check) so compilation failure won't leave the system in a broken state
 
 - As a @developer I want to clean up the code here and there to get ready for adding lots of features and to make things easier otherwise
   + rename Suite to IwantSuite to differentiate it from other projects
