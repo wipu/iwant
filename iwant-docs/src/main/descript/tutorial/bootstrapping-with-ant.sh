@@ -112,9 +112,34 @@ WSROOT=../..
 WSDEF_SRC=wsdef
 WSDEF_CLASS=com.antbootstrapexample.wsdef.Workspace
 EOF
-p "We'll try to proceed again."
+p "Now iwant will generate the Workspace definition."
 failing-cmd 1 ant
 cmd 'find ../i-have/wsdef'
+out-was <<EOF
+../i-have/wsdef
+../i-have/wsdef/com
+../i-have/wsdef/com/antbootstrapexample
+../i-have/wsdef/com/antbootstrapexample/wsdef
+../i-have/wsdef/com/antbootstrapexample/wsdef/Workspace.java
+EOF
+end-section
+}
+
+phase1-run-with-default-wsjava() {
+section 'Using the new workspace'
+p "Bootstrapping is now ready, let's run once more for help."
+cmd 'ant 2>&1 | head -n -4 | tail -n 7'
+out-was <<EOF
+     [java] Try one of these:
+     [java]   ant list-of-targets
+     [java]   ant -D/target=TARGETNAME
+     [java]     (use tab or ls/dir -D to see valid targets)
+     [java] 
+
+BUILD FAILED
+EOF
+p "Let's try refreshing a target."
+cmd 'ant -D/target=aConstant'
 end-section
 }
 
@@ -132,6 +157,7 @@ phase1-run-1
 phase1-run-with-incorrect-iwant-from
 phase1-run-with-correct-iwant-from
 phase1-run-with-correct-ws-info
+phase1-run-with-default-wsjava
 
 end-section
 

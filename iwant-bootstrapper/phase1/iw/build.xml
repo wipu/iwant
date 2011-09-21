@@ -1,10 +1,15 @@
 <project name="iwant-bootstrap" default="help" basedir=".">
 
-	<target name="help" description="help" depends="iwant-src, cached-unmodifiable, as-somebody">
+	<target name="help" description="help" depends="iwant-src, cached-unmodifiable, as-somebody, /target">
 		<ant dir="${iwant-src}/iwant-bootstrapper/phase2/iw" inheritall="false">
 			<property name="cached-unmodifiable" location="${cached-unmodifiable}" />
 			<property name="as-somebody" location="${as-somebody}" />
+			<property name="the-wish" value="${/target}" />
 		</ant>
+	</target>
+
+	<target name="/target" unless="/target">
+		<property name="/target" value="" />
 	</target>
 
 	<target name="iwant-src" depends="iwant-src-status,iwant-from-information, svnkit" unless="iwant-src-uptodate">

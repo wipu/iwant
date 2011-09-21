@@ -4,10 +4,11 @@
 		<echo message="TODO delegate to ${iwant-bin}" />
 	</target>
 
-	<target name="iwant-bin" depends="iwant-classes, ext-jars, as-somebody">
+	<target name="iwant-bin" depends="iwant-classes, ext-jars, as-somebody, the-wish">
 		<property name="iwant-bin" location="${cached-internal}/bin" />
 		<java classname="net.sf.iwant.core.Iwant" failonerror="true">
 			<arg value="${as-somebody}" />
+			<arg value="${the-wish}" />
 			<classpath>
 				<path location="${iwant-classes}" />
 				<path refid="ext-jars" />
@@ -17,6 +18,10 @@
 
 	<target name="as-somebody">
 		<fail message="Please call with -Das-somebody" unless="as-somebody" />
+	</target>
+
+	<target name="the-wish">
+		<fail message="Please call with -Dthe-wish" unless="the-wish" />
 	</target>
 
 	<target name="iwant-classes" depends="iwant-classes-status, ext-jars" unless="iwant-classes-uptodate">

@@ -205,6 +205,8 @@
       + read wsdef-into
       + generate example Workspace
       - work from then on
+        + print usage help when target wish is missing
+        - refresh wished target
     - separate iwant-main-classes and iwant-test-classes if needed
     - make rev optional, branching the export
 

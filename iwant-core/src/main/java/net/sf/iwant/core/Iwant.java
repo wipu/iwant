@@ -28,6 +28,7 @@ public class Iwant {
 	private static void targetAsPath(String[] args) throws IwantException,
 			IOException {
 		File iHave = new File(args[0], "i-have");
+		String wish = args[1];
 		if (!iHave.exists()) {
 			throw new IllegalStateException("Internal error: missing " + iHave);
 		}
@@ -54,7 +55,19 @@ public class Iwant {
 			throw new IwantException("I created " + wsDefJava + " for you."
 					+ " Please edit it and rerun me.");
 		}
-		System.err.println(iHave);
+		if ("".equals(wish)) {
+			throw new IwantException(usage());
+		}
+		System.err.println("TODO refresh " + wish + " for " + iHave);
+	}
+
+	private static String usage() {
+		StringBuilder b = new StringBuilder();
+		b.append("Try one of these:\n");
+		b.append("  ant list-of-targets\n");
+		b.append("  ant -D/target=TARGETNAME\n");
+		b.append("    (use tab or ls/dir -D to see valid targets)\n");
+		return b.toString();
 	}
 
 	private static CharSequence exampleWsDefJava(String wsDefClassName) {

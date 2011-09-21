@@ -50,7 +50,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 
 	public void testMissingAsSomebodyIsAnInternalFailure() throws IOException {
 		try {
-			Iwant.main(new String[] { wsRoot() + "/as-x-developer" });
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "" });
 			fail();
 		} catch (IllegalStateException e) {
 			assertEquals("Internal error: missing " + wsRoot()
@@ -63,7 +63,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 	public void testMissingIHaveIsAnInternalFailure() throws IOException {
 		directoryExists("as-x-developer");
 		try {
-			Iwant.main(new String[] { wsRoot() + "/as-x-developer" });
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "" });
 			fail();
 		} catch (IllegalStateException e) {
 			assertEquals("Internal error: missing " + wsRoot()
@@ -77,7 +77,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 			throws IOException {
 		directoryExists("as-x-developer/i-have");
 		try {
-			Iwant.main(new String[] { wsRoot() + "/as-x-developer" });
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "" });
 			fail();
 		} catch (ExitCalledException e) {
 			assertEquals(1, e.status());
@@ -103,7 +103,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		line("WSDEF_CLASS=net.sf.iwant.test.wsdef.TestWorkspace");
 		exists();
 		try {
-			Iwant.main(new String[] { wsRoot() + "/as-x-developer" });
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "" });
 			fail();
 		} catch (ExitCalledException e) {
 			assertEquals(1, e.status());
@@ -121,6 +121,18 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		assertTrue(content.contains("package net.sf.iwant.test.wsdef;"));
 		assertTrue(content
 				.contains("class TestWorkspace implements WorkspaceDefinition {"));
+	}
+
+	public void testEmptyWishCausesAHelpMessage() throws IOException {
+		testMissingWsDefJavaGetsCreatedThenBuildAborts();
+		try {
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "" });
+			fail();
+		} catch (ExitCalledException e) {
+			assertEquals(1, e.status());
+		}
+		assertEquals("", out());
+		assertTrue(err().contains("Try one of these"));
 	}
 
 }
