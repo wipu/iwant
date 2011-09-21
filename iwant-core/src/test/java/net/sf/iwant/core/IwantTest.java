@@ -7,11 +7,14 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 
 	private SecurityManager origSecman;
 
+	private String iwantLibs;
+
 	@Override
 	public void setUp() {
 		super.setUp();
 		origSecman = System.getSecurityManager();
 		System.setSecurityManager(new ExitCatcher());
+		iwantLibs = testarea() + "/iwant/cpitems";
 	}
 
 	private static class ExitCalledException extends SecurityException {
@@ -50,7 +53,8 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 
 	public void testMissingAsSomebodyIsAnInternalFailure() throws IOException {
 		try {
-			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "" });
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "",
+					iwantLibs });
 			fail();
 		} catch (IllegalStateException e) {
 			assertEquals("Internal error: missing " + wsRoot()
@@ -63,7 +67,8 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 	public void testMissingIHaveIsAnInternalFailure() throws IOException {
 		directoryExists("as-x-developer");
 		try {
-			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "" });
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "",
+					iwantLibs });
 			fail();
 		} catch (IllegalStateException e) {
 			assertEquals("Internal error: missing " + wsRoot()
@@ -77,7 +82,8 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 			throws IOException {
 		directoryExists("as-x-developer/i-have");
 		try {
-			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "" });
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "",
+					iwantLibs });
 			fail();
 		} catch (ExitCalledException e) {
 			assertEquals(1, e.status());
@@ -103,7 +109,8 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		line("WSDEF_CLASS=net.sf.iwant.test.wsdef.TestWorkspace");
 		exists();
 		try {
-			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "" });
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "",
+					iwantLibs });
 			fail();
 		} catch (ExitCalledException e) {
 			assertEquals(1, e.status());
@@ -125,14 +132,56 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 
 	public void testEmptyWishCausesAHelpMessage() throws IOException {
 		testMissingWsDefJavaGetsCreatedThenBuildAborts();
+		startOfOutAndErrCapture();
 		try {
-			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "" });
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "",
+					iwantLibs });
 			fail();
 		} catch (ExitCalledException e) {
 			assertEquals(1, e.status());
 		}
 		assertEquals("", out());
-		assertTrue(err().contains("Try one of these"));
+		assertTrue("Shouldn't have been " + err(),
+				err().startsWith("Try one of these"));
+	}
+
+	public void testListOfTargets() throws IOException {
+		testMissingWsDefJavaGetsCreatedThenBuildAborts();
+		startOfOutAndErrCapture();
+
+		Iwant.main(new String[] { wsRoot() + "/as-x-developer",
+				"list-of/targets", iwantLibs });
+		assertEquals("aConstant\n" + "eclipse-projects\n", out());
+		assertEquals("", err());
+	}
+
+	public void testRefreshingNonExistentTargetCausesErrorMessage()
+			throws IOException {
+		testMissingWsDefJavaGetsCreatedThenBuildAborts();
+		startOfOutAndErrCapture();
+		try {
+			Iwant.main(new String[] { wsRoot() + "/as-x-developer",
+					"nonExisting", iwantLibs });
+			fail();
+		} catch (ExitCalledException e) {
+			assertEquals(1, e.status());
+		}
+		assertEquals("", out());
+		assertTrue(err().contains("No such target: nonExisting\n"));
+	}
+
+	public void testRefreshingOfAConstant() throws IOException {
+		testMissingWsDefJavaGetsCreatedThenBuildAborts();
+		startOfOutAndErrCapture();
+
+		Iwant.main(new String[] { wsRoot() + "/as-x-developer", "aConstant",
+				iwantLibs });
+		assertEquals(wsRoot()
+				+ "/as-x-developer/iwant/cached/test/target/aConstant\n", out());
+		assertEquals("", err());
+
+		assertEquals("Constant generated content\n", contentOf(wsRoot()
+				+ "/as-x-developer/iwant/cached/test/target/aConstant"));
 	}
 
 }

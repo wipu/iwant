@@ -10,6 +10,7 @@ public class IwantSuite extends TestCase {
 		TestSuite suite = new TestSuite("net.sf.iwant.core");
 		suite.addTestSuite(PathDiggerTest.class);
 		suite.addTestSuite(ContentDefinitionsTest.class);
+		suite.addTestSuite(LocationsTest.class);
 		suite.addTestSuite(RefresherTest.class);
 		suite.addTestSuite(IwantTest.class);
 		suite.addTestSuite(WorkspaceBuilderTest.class);

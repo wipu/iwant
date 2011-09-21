@@ -1,11 +1,18 @@
-<project name="iwant-bootstrap" default="help" basedir=".">
+<project name="iwant-bootstrap" default="iwant" basedir=".">
 
-	<target name="help" description="help" depends="iwant-src, cached-unmodifiable, as-somebody, /target">
+	<target name="iwant" description="iwant" depends="iwant-src, cached-unmodifiable, as-somebody, /target">
 		<ant dir="${iwant-src}/iwant-bootstrapper/phase2/iw" inheritall="false">
 			<property name="cached-unmodifiable" location="${cached-unmodifiable}" />
 			<property name="as-somebody" location="${as-somebody}" />
 			<property name="the-wish" value="${/target}" />
 		</ant>
+	</target>
+
+	<target name="list-of-targets" description="list-of-targets" depends="list-of-targets-wish, iwant" />
+
+	<target name="list-of-targets-wish">
+		<fail if="/target" />
+		<property name="/target" value="list-of/targets" />
 	</target>
 
 	<target name="/target" unless="/target">

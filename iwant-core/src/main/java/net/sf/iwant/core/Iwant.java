@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.tools.ant.ExitStatusException;
+
 public class Iwant {
 
 	private static class IwantException extends Exception {
@@ -29,6 +31,7 @@ public class Iwant {
 			IOException {
 		File iHave = new File(args[0], "i-have");
 		String wish = args[1];
+		File iwantLibs = new File(args[2]);
 		if (!iHave.exists()) {
 			throw new IllegalStateException("Internal error: missing " + iHave);
 		}
@@ -45,6 +48,8 @@ public class Iwant {
 		}
 		Properties props = new Properties();
 		props.load(new FileReader(wsInfo));
+		String wsName = props.getProperty("WSNAME");
+		File wsRoot = new File(iHave, props.getProperty("WSROOT"));
 		File wsDefSrc = new File(iHave, props.getProperty("WSDEF_SRC"));
 		String wsDefClassName = props.getProperty("WSDEF_CLASS");
 		File wsDefJava = wsDefJava(wsDefSrc, wsDefClassName);
@@ -58,7 +63,64 @@ public class Iwant {
 		if ("".equals(wish)) {
 			throw new IwantException(usage());
 		}
-		System.err.println("TODO refresh " + wish + " for " + iHave);
+		Locations locations = Locations.from(wsRoot, iHave, wsName, iwantLibs);
+		refreshAndPrint(locations, wsDefSrc, wsDefClassName, wish);
+	}
+
+	/**
+	 * TODO find a better way, this is ugly
+	 * 
+	 * Or if this proves to be a handy class, make it public.
+	 */
+	private static class AbsoluteSource extends Source {
+
+		public AbsoluteSource(File file) throws IOException {
+			super(file.getCanonicalPath());
+		}
+
+		@Override
+		public String asAbsolutePath(Locations locations) {
+			return name();
+		}
+
+	}
+
+	/**
+	 * TODO use Builtins when old code does not need the old locations of it.
+	 */
+	private static class NewBuiltin extends Path {
+
+		public NewBuiltin(String name) {
+			super(name);
+		}
+
+		@Override
+		public String asAbsolutePath(Locations locations) {
+			return locations.iwantLibs() + "/" + name();
+		}
+
+	}
+
+	private static void refreshAndPrint(Locations locations, File wsDefSrcFile,
+			String wsDefClassName, String wish) throws IOException,
+			IwantException {
+		Source wsDefSrc = new AbsoluteSource(wsDefSrcFile);
+		Target<JavaClasses> wsDefClasses = new Target<JavaClasses>(
+				"wsDefClasses", JavaClasses.compiledFrom(wsDefSrc)
+						.using(new NewBuiltin("iwant-core"))
+						.using(new NewBuiltin("ant-1.7.1.jar"))
+						.using(new NewBuiltin("ant-junit-1.7.1.jar"))
+						.using(new NewBuiltin("junit-3.8.1.jar")));
+		WorkspaceBuilder.freshTargetAsPath(wsDefClasses, locations);
+		NextPhase nextPhase = NextPhase.at(wsDefClasses).named(wsDefClassName);
+		try {
+			// TODO just pass wish as such:
+			String effectiveWish = "list-of/targets".equals(wish) ? wish
+					: "target/" + wish + "/as-path";
+			WorkspaceBuilder.runNextPhase(nextPhase, effectiveWish, locations);
+		} catch (ExitStatusException e) {
+			throw new IwantException("Refresh failed.");
+		}
 	}
 
 	private static String usage() {

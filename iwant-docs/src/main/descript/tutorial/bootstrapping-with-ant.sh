@@ -138,8 +138,13 @@ out-was <<EOF
 
 BUILD FAILED
 EOF
-p "Let's try refreshing a target."
+p "Let's try it."
+cmd 'ant list-of-targets'
 cmd 'ant -D/target=aConstant'
+cmd 'cat ../iwant/cached/ant-bootstrap-example/target/aConstant'
+out-was <<EOF
+Constant generated content
+EOF
 end-section
 }
 

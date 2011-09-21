@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class PathDiggerTest extends TestCase {
 
 	private static final Locations LOCATIONS = new Locations("wsRoot",
-			"cacheDir");
+			"cacheDir", "iwant-libs");
 
 	public void testEmptyListOfTargets() {
 		ContainerPath root = new EmptyWorkspace().wsRoot(LOCATIONS);

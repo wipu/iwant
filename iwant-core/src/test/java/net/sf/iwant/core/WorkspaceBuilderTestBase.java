@@ -48,11 +48,15 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		originalErr = System.err;
 		originalLineSeparator = System.getProperty(LINE_SEPARATOR_KEY);
 		System.setProperty(LINE_SEPARATOR_KEY, "\n");
+		startOfOutAndErrCapture();
+		initializeTestArea();
+	}
+
+	protected void startOfOutAndErrCapture() {
 		out = new ByteArrayOutputStream();
 		err = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(out));
 		System.setErr(new PrintStream(err));
-		initializeTestArea();
 	}
 
 	private void initializeTestArea() {
@@ -70,12 +74,21 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		if (new File(eclipseClasses).exists()) {
 			ensureEmpty(cpitems + "/iwant-core");
 			copy(eclipseClasses, cpitems + "/iwant-core");
+			createMarker(cpitems + "/iwant-core/iwant-core-marker.txt");
 			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-1.7.1.jar",
 					cpitems);
 			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar",
 					cpitems);
 			copy(testarea + "/../../../iwant-lib-junit-3.8.1/junit-3.8.1.jar",
 					cpitems);
+		}
+	}
+
+	private void createMarker(String path) {
+		try {
+			new FileWriter(path).append("marker").close();
+		} catch (IOException e) {
+			throw new IllegalStateException("Cannot create marker.", e);
 		}
 	}
 

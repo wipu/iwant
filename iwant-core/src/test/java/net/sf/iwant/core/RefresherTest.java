@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 public class RefresherTest extends TestCase {
 
 	private static final Locations LOCATIONS = new Locations("wsRoot",
-			"cacheDir");
+			"cacheDir", "iwant-libs");
 	private TimestampReaderMock ts;
 	private ContentDescriptionCacheMock descrCache;
 	private Refresher refresher;

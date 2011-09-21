@@ -1,19 +1,30 @@
 <project name="iwant-bootstrap-phase2" default="iwant" basedir=".">
 
-	<target name="iwant" description="iwant" depends="iwant-bin">
-		<echo message="TODO delegate to ${iwant-bin}" />
-	</target>
-
-	<target name="iwant-bin" depends="iwant-classes, ext-jars, as-somebody, the-wish">
-		<property name="iwant-bin" location="${cached-internal}/bin" />
+	<target name="iwant" description="iwant" depends="iwant-bin, as-somebody, the-wish">
 		<java classname="net.sf.iwant.core.Iwant" failonerror="true">
 			<arg value="${as-somebody}" />
 			<arg value="${the-wish}" />
+			<arg value="${iwant-bin}" />
 			<classpath>
-				<path location="${iwant-classes}" />
-				<path refid="ext-jars" />
+				<dirset dir="${iwant-bin}" includes="iwant-core" />
+				<fileset dir="${iwant-bin}" includes="*.jar" />
 			</classpath>
 		</java>
+	</target>
+
+	<target name="iwant-bin" depends="iwant-bin-status, iwant-classes, ext-jars" unless="iwant-bin-exists">
+		<mkdir dir="${iwant-bin}/iwant-core" />
+		<copy todir="${iwant-bin}/iwant-core">
+			<fileset dir="${iwant-classes}" />
+		</copy>
+		<copy todir="${iwant-bin}" flatten="true">
+			<path refid="ext-jars" />
+		</copy>
+	</target>
+
+	<target name="iwant-bin-status" depends="cached-internal">
+		<property name="iwant-bin" location="${cached-internal}/bin" />
+		<available file="${iwant-bin}" property="iwant-bin-exists" />
 	</target>
 
 	<target name="as-somebody">

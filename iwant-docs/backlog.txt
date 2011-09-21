@@ -168,14 +168,10 @@
 
 + As a @developer I want to replace the ngrease-based descript with the new standalone descript so I can start document-driving ant bootstrapping more easily
 
-#################################################################
-= In progress
-#################################################################
-
-- As a @buildscriptauthor I want to use ant to bootstrap iwant so I can take it into use in a project where not everybody chooses bash
++ As a @buildscriptauthor I want to use ant to bootstrap iwant so I can take it into use in a project where not everybody chooses bash
   * delegate as much as possible to "phase 2" exported from actual iwant
   + empty descript article "Bootstrapping with ant"
-  - local version
+  + local version
     + copy bootstrap phase 1
     + run to generate iwant-from
     + run to read incorrect iwant-from
@@ -192,7 +188,7 @@
       + phase1 uses default when not set
       + phase2 requires it from phase1
     + compile iwant-classes and test-classes
-    - write and delegate to "Phase3.class"
+    + write and delegate to "Phase3.class"
       (- run tests: not yet, see a dedicated story)
       * it's called Iwant.class
       + create bin: just an ant path for ext-jars at this stage
@@ -204,15 +200,32 @@
         * System.exit probably needed
       + read wsdef-into
       + generate example Workspace
-      - work from then on
+      + work from then on
         + print usage help when target wish is missing
-        - refresh wished target
-    - separate iwant-main-classes and iwant-test-classes if needed
-    - make rev optional, branching the export
+        + refresh wished target
+          + create and refresh wsDefClasses Target
+            + use builtins in classpath
+              + build iwant-lib
+              + pass iwant-lib to Iwant.class
+              + put it and all relevant paths to Locations
+          + refresh as NextPhase
+          + missing target => make NextPhase forked java throw
+        + list-of/targets
+          * just set the wish in phase1.xml
+
+#################################################################
+= In progress
+#################################################################
 
 #################################################################
 = Planned
 #################################################################
+
+- As a @buildscriptauthor I want non-local documentation of ant bootstrapping
+  - make rev optional, branching the export
+
+- As a @buildscriptauthor I don't want to see iwant tests in my classpath so I don't accidentally use them
+  - separate iwant-main-classes and iwant-test-classes in phase2.xml
 
 - As a @buildscriptauthor I want iwant to test itself during bootstrap when the tests are fast
   - somehow forge timestamps of files so no sleeps are required

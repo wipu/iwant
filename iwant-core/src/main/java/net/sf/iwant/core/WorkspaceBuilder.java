@@ -20,7 +20,8 @@ public class WorkspaceBuilder {
 		String wsRootArg = toAbs(args[1]);
 		String targetArg = args[2];
 		String cacheDir = toAbs(args[3]);
-		Locations locations = new Locations(wsRootArg, cacheDir);
+		Locations locations = new Locations(wsRootArg, cacheDir, cacheDir
+				+ "/todo-fix-path-to-iwant-libs");
 		ContainerPath wsRoot = wsRoot(wsDef, locations);
 		NextPhase nextPhase = PathDigger.nextPhase(wsRoot);
 		if (nextPhase != null) {
@@ -29,8 +30,7 @@ public class WorkspaceBuilder {
 		if ("list-of/targets".equals(targetArg)) {
 			listOfTargets(wsRoot);
 			if (nextPhase != null) {
-				runNextPhase(nextPhase, wsRootArg, targetArg, cacheDir,
-						locations);
+				runNextPhase(nextPhase, targetArg, locations);
 			}
 		} else {
 			String targetName = targetArgumentToTargetName(targetArg);
@@ -40,8 +40,7 @@ public class WorkspaceBuilder {
 				System.out.println(pathToPrint(cachedPath, targetArg));
 			} else {
 				if (nextPhase != null) {
-					runNextPhase(nextPhase, wsRootArg, targetArg, cacheDir,
-							locations);
+					runNextPhase(nextPhase, targetArg, locations);
 				} else {
 					throw new IllegalArgumentException("No such target: "
 							+ targetName);
@@ -69,8 +68,7 @@ public class WorkspaceBuilder {
 		throw new IllegalArgumentException("Unknown suffix in " + targetArg);
 	}
 
-	private static String freshTargetAsPath(Target<?> target,
-			Locations locations) {
+	static String freshTargetAsPath(Target<?> target, Locations locations) {
 		try {
 			// TODO only 1 places for building these paths:
 			ensureParentDirFor(locations.targetCacheDir() + "/" + target.name());
@@ -136,8 +134,8 @@ public class WorkspaceBuilder {
 		}
 	}
 
-	private static void runNextPhase(NextPhase nextPhase, String wsRoot,
-			String targetArg, String cacheDir, Locations locations) {
+	static void runNextPhase(NextPhase nextPhase, String targetArg,
+			Locations locations) {
 		JavaClasses classes = nextPhase.classes().content();
 		Project project = new Project();
 		Java java = new Java();
@@ -157,19 +155,23 @@ public class WorkspaceBuilder {
 
 		java.setClassname(WorkspaceBuilder.class.getCanonicalName());
 		java.createArg().setValue(nextPhase.className());
-		java.createArg().setValue(wsRoot);
+		java.createArg().setValue(locations.wsRoot());
 		java.createArg().setValue(targetArg);
-		java.createArg().setValue(cacheDir);
+		java.createArg().setValue(locations.cacheDir());
 		java.setFork(true);
+		java.setFailonerror(true);
 		// TODO test with a longer chain and generate unique names:
-		File err = new File(cacheDir + "/nextPhase-err");
-		File out = new File(cacheDir + "/nextPhase-out");
+		File err = new File(locations.cacheDir() + "/nextPhase-err");
+		File out = new File(locations.cacheDir() + "/nextPhase-out");
 		java.setError(err);
 		java.setOutput(out);
 
-		java.execute();
-		print(out, System.out);
-		print(err, System.err);
+		try {
+			java.execute();
+		} finally {
+			print(out, System.out);
+			print(err, System.err);
+		}
 	}
 
 	private static void print(File file, PrintStream out) {
