@@ -165,23 +165,47 @@ echo \$iwant/$TUTORIAL
 EOF
 }
 
+bash-bootstrapping-tutorial-targetscript() {
+local TO=$1
+local LOCAL_IWANT=$2
+# descript needs absolute path here, since it's going to cd:
+[ -n "$LOCAL_IWANT" ] && LOCAL_IWANT=$(readlink -f "$LOCAL_IWANT")
+local TUTORIAL_DIR=$3
+local TUTORIAL=$TUTORIAL_DIR/bootstrapping-with-bash.html
+developer-script "$TO" <<EOF
+#!/bin/bash
+set -eu
+here=\$(dirname "\$0")
+iwant=\$here/../../..
+iwant=\$(readlink -f "\$iwant")
+rm -rf "\$iwant/$TUTORIAL_DIR"
+mkdir -p "\$iwant/$TUTORIAL_DIR"
+LOCAL_IWANT="$LOCAL_IWANT" bash "\$iwant/$wsroot/iwant-lib-descript/descript.sh" \\
+        "\$iwant/$wsroot/iwant-docs/src/main/descript/tutorial/bootstrapping-with-bash.sh" "\$iwant/$TUTORIAL" true
+echo \$iwant/$TUTORIAL
+EOF
+}
+
 website-targetscript() {
 local TO="$1"
 local WEBSITE_BUILD="$2"
 local CACHEDIR="$3"
 local TUTORIAL_NAME="$4"
 local ANT_TUTORIAL_NAME="$5"
+local BASH_TUTORIAL_NAME="$6"
 developer-script "$TO" <<EOF
 #!/bin/bash
 set -eu
 here=\$(dirname "\$0")
 iwant=\$here/../../..
 \$iwant/$as_iwant_developer/target/$ANT_TUTORIAL_NAME/as-path >/dev/null
+\$iwant/$as_iwant_developer/target/$BASH_TUTORIAL_NAME/as-path >/dev/null
 \$iwant/$as_iwant_developer/target/$TUTORIAL_NAME/as-path >/dev/null
 mkdir -p "\$iwant/$WEBSITE_BUILD"
 rm -rf "\$iwant/$WEBSITE_BUILD/"*
 cp \$iwant/$wsroot/iwant-docs/src/main/html/website/* "\$iwant/$WEBSITE_BUILD/"
 cp "\$iwant/$CACHEDIR/$ANT_TUTORIAL_NAME/bootstrapping-with-ant.html" "\$iwant/$WEBSITE_BUILD/"
+cp "\$iwant/$CACHEDIR/$BASH_TUTORIAL_NAME/bootstrapping-with-bash.html" "\$iwant/$WEBSITE_BUILD/"
 cp "\$iwant/$CACHEDIR/$TUTORIAL_NAME/tutorial.html" "\$iwant/$WEBSITE_BUILD/"
 echo "\$iwant/$WEBSITE_BUILD"
 EOF
@@ -218,10 +242,12 @@ to-develop-iwant-targetdir() {
   mkdir -p "$iwant/$as_iwant_developer"
   ant-bootstrapping-tutorial-targetscript target/ant-bootstrapping-tutorial/as-path "" "$cached/ant-bootstrapping-tutorial"
   ant-bootstrapping-tutorial-targetscript target/local-ant-bootstrapping-tutorial/as-path "$iwant" "$cached/local-ant-bootstrapping-tutorial"
+  bash-bootstrapping-tutorial-targetscript target/bash-bootstrapping-tutorial/as-path "" "$cached/bash-bootstrapping-tutorial"
+  bash-bootstrapping-tutorial-targetscript target/local-bash-bootstrapping-tutorial/as-path "$iwant" "$cached/local-bash-bootstrapping-tutorial"
   tutorial-targetscript target/tutorial/as-path "" "$cached/tutorial"
   tutorial-targetscript target/local-tutorial/as-path "$iwant" "$cached/local-tutorial" 
-  website-targetscript "target/website/as-path" "$cached/website" "$cached" "tutorial" "ant-bootstrapping-tutorial"
-  website-targetscript "target/local-website/as-path" "$cached/local-website" "$cached" "local-tutorial" "local-ant-bootstrapping-tutorial"
+  website-targetscript "target/website/as-path" "$cached/website" "$cached" "tutorial" "ant-bootstrapping-tutorial"  "bash-bootstrapping-tutorial"
+  website-targetscript "target/local-website/as-path" "$cached/local-website" "$cached" "local-tutorial" "local-ant-bootstrapping-tutorial" "local-bash-bootstrapping-tutorial"
   deploy-website-commandscript
   tag-deployed-website-commandscript
   echo To develop iwant, just start your sentences with iwant/$(basename "$iwant/$as_iwant_developer")/

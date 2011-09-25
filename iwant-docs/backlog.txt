@@ -217,6 +217,17 @@
 = In progress
 #################################################################
 
+- As @developer I want help.sh (bash bootstrapper phase1) to delegate most work to the ant script so I can get rid of a lot of legacy scripts
+  - new bootstrap tutorial for driving
+    * the tutorial wish script creation is very redundant but will be replaced with real iwant target later so it's ok
+    + source the ant tutorial
+    + hello from help.sh
+  - abstract descripted cli so bash tutorial can override ant tutorial
+  - download and extract ant distro
+  - delegate commands to build.xml
+  - the simplest thing that could possibly work for wish script creation, to keep the tutorial green
+  - modify ant script to download ant distro and take the jar deps from it
+
 #################################################################
 = Planned
 #################################################################

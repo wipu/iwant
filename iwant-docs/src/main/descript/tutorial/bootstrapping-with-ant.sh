@@ -4,21 +4,16 @@ end-section() {
 
 LOCAL_IWANT_ROOT=$(readlink -f "$LOCAL_IWANT/../..")
 
-copy-phase1-xml() {
-cmd 'echo $LOCAL_IWANT'
-cmd "svn export \"$LOCAL_IWANT_ROOT/iwant-bootstrapper/phase1/iw\""
+copy-phase1() {
+cmd "svn export \"$LOCAL_IWANT_ROOT/iwant-bootstrapper/phase1\" as-example-developer"
 out-was <<EOF
 Export complete.
 EOF
 }
 
-svn-export-phase1-xml() {
-  die "TODO implement"
-}
-
-get-phase1-xml() {
+get-phase1() {
   debuglog "TODO check LOCAL_IWANT"
-  copy-phase1-xml
+  copy-phase1
 }
 
 antcmd() {
@@ -28,18 +23,22 @@ antcmd() {
 phase1-run-1() {
 section "First run to create iwant-from.conf"
 p "The first run creates us a file in which we can specify the iwant revision to use."
-cmd find ..
+cmd 'find ..'
 out-was <<EOF
 ..
 ../iw
 ../iw/build.xml
+../iwant
+../iwant/help.sh
 EOF
 failing-cmd 1 ant
-cmd find ..
+cmd 'find ..'
 out-was <<EOF
 ..
 ../iw
 ../iw/build.xml
+../iwant
+../iwant/help.sh
 ../i-have
 ../i-have/iwant-from.conf
 EOF
@@ -64,6 +63,8 @@ out-was <<EOF
 ..
 ../iw
 ../iw/build.xml
+../iwant
+../iwant/help.sh
 ../i-have
 ../i-have/iwant-from.conf
 EOF
@@ -153,10 +154,9 @@ doc() {
 section 'Boostrapping iwant with ant'
 #------------------------------------
 
-cmd 'mkdir -p example/as-example-developer && cd example/as-example-developer'
-get-phase1-xml
-
-cmd 'cd iw'
+cmd 'mkdir -p example && cd example'
+get-phase1
+cmd 'cd as-example-developer/iw'
 
 phase1-run-1
 phase1-run-with-incorrect-iwant-from
