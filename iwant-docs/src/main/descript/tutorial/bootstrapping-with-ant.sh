@@ -20,53 +20,61 @@ antcmd() {
   cmd 'ant | head -n -1'
 }
 
+phase1-cmd() {
+  local EXITCODE=$1
+  _cmd "$EXITCODE" 'ant'
+}
+
+REL_AS_SOMEONE=..
+REL_IHAVE=$REL_AS_SOMEONE/i-have
+
 phase1-run-1() {
 section "First run to create iwant-from.conf"
 p "The first run creates us a file in which we can specify the iwant revision to use."
-cmd 'find ..'
+cmd "find $REL_AS_SOMEONE"
 out-was <<EOF
-..
-../iw
-../iw/build.xml
-../iwant
-../iwant/help.sh
+$REL_AS_SOMEONE
+$REL_AS_SOMEONE/iw
+$REL_AS_SOMEONE/iw/build.xml
+$REL_AS_SOMEONE/iwant
+$REL_AS_SOMEONE/iwant/help.sh
 EOF
-failing-cmd 1 ant
-cmd 'find ..'
+phase1-cmd 1
+cmd "find $REL_AS_SOMEONE"
 out-was <<EOF
-..
-../iw
-../iw/build.xml
-../iwant
-../iwant/help.sh
-../i-have
-../i-have/iwant-from.conf
+$REL_AS_SOMEONE
+$REL_AS_SOMEONE/iw
+$REL_AS_SOMEONE/iw/build.xml
+$REL_AS_SOMEONE/iwant
+$REL_AS_SOMEONE/iwant/help.sh
+$REL_AS_SOMEONE/i-have
+$REL_AS_SOMEONE/i-have/iwant-from.conf
 EOF
-cmd 'cat ../i-have/iwant-from.conf'
+cmd "cat $REL_AS_SOMEONE/i-have/iwant-from.conf"
 end-section
 }
 
 phase1-run-with-incorrect-iwant-from() {
 section "Test handling of incorrect iwant-from.conf"
 p "The bootstrapper complains if iwant-rev is not specified."
-edit "../i-have/iwant-from.conf" empty-file <<EOF
+edit "$REL_IHAVE/iwant-from.conf" empty-file <<EOF
 EOF
-failing-cmd 1 ant
+phase1-cmd 1
 p "It also complains about missing iwant-url."
-edit "../i-have/iwant-from.conf" only-rev <<EOF
+edit "$REL_IHAVE/iwant-from.conf" only-rev <<EOF
 iwant-rev=
 EOF
-failing-cmd 1 ant
+phase1-cmd 1
 p "No further side-effects until we fix the issue:"
-cmd find ..
+cmd find $REL_AS_SOMEONE
 out-was <<EOF
-..
-../iw
-../iw/build.xml
-../iwant
-../iwant/help.sh
-../i-have
-../i-have/iwant-from.conf
+$REL_AS_SOMEONE
+$REL_AS_SOMEONE/iw
+$REL_AS_SOMEONE/iw/build.xml
+$REL_AS_SOMEONE/iwant
+$REL_AS_SOMEONE/iwant/help.sh
+$REL_AS_SOMEONE/i-have
+$REL_AS_SOMEONE/i-have/iwant-from.conf
 EOF
 end-section
 }

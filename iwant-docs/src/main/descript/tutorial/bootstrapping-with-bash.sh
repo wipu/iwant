@@ -15,19 +15,26 @@ get-phase1() {
   copy-phase1
 }
 
+phase1-cmd() {
+  local EXITCODE=$1
+  _cmd "$EXITCODE" 'iwant/help.sh'
+}
+
+REL_AS_SOMEONE=.
+REL_IHAVE=i-have
+
 doc() {
 
-section 'Boostrapping iwant with ant'
-#------------------------------------
+section 'Boostrapping iwant with bash'
+#-------------------------------------
 
 cmd 'mkdir -p example && cd example'
 get-phase1
 
 cmd 'cd as-example-developer'
-cmd 'iwant/help.sh'
 
-#phase1-run-1
-#phase1-run-with-incorrect-iwant-from
+phase1-run-1
+phase1-run-with-incorrect-iwant-from
 #phase1-run-with-correct-iwant-from
 #phase1-run-with-correct-ws-info
 #phase1-run-with-default-wsjava

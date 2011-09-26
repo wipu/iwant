@@ -2,4 +2,7 @@
 
 set -eu
 
-echo hello from help.sh
+AS_SOMEONE_IWANT=$(dirname "$0")
+AS_SOMEONE=$(dirname "$AS_SOMEONE_IWANT")
+cd "$AS_SOMEONE/iw"
+ant
