@@ -20,11 +20,8 @@ antcmd() {
   cmd 'ant | head -n -1'
 }
 
-phase1-cmd() {
-  local EXITCODE=$1
-  _cmd "$EXITCODE" 'ant'
-}
-
+EXAMPLENAME=ant
+PHASE1=ant
 REL_AS_SOMEONE=..
 REL_IHAVE=$REL_AS_SOMEONE/i-have
 
@@ -39,7 +36,7 @@ $REL_AS_SOMEONE/iw/build.xml
 $REL_AS_SOMEONE/iwant
 $REL_AS_SOMEONE/iwant/help.sh
 EOF
-phase1-cmd 1
+failing-cmd 1 "$PHASE1"
 cmd "find $REL_AS_SOMEONE"
 out-was <<EOF
 $REL_AS_SOMEONE
@@ -59,12 +56,12 @@ section "Test handling of incorrect iwant-from.conf"
 p "The bootstrapper complains if iwant-rev is not specified."
 edit "$REL_IHAVE/iwant-from.conf" empty-file <<EOF
 EOF
-phase1-cmd 1
+failing-cmd 1 "$PHASE1"
 p "It also complains about missing iwant-url."
 edit "$REL_IHAVE/iwant-from.conf" only-rev <<EOF
 iwant-rev=
 EOF
-phase1-cmd 1
+failing-cmd 1 "$PHASE1"
 p "No further side-effects until we fix the issue:"
 cmd find $REL_AS_SOMEONE
 out-was <<EOF
@@ -83,7 +80,7 @@ optimize-downloads() {
   p "Using cached external libraries to optimize building this article."
   local OPTIMCACHE=$LOCAL_IWANT_ROOT/iwant-iwant/iwant/cached/iwant/optimization
   local SVNKITZIP=org.tmatesoft.svn_1.3.5.standalone.nojna.zip
-  local INTERNALCACHE=../iwant/cached/.internal/unmodifiable
+  local INTERNALCACHE=$REL_AS_SOMEONE/iwant/cached/.internal/unmodifiable
   [ -e "$OPTIMCACHE/$SVNKITZIP" ] || {
     log "Fetching svnkit using the ant script to test."
     ant svnkit.zip
@@ -101,43 +98,47 @@ optimize-downloads() {
 phase1-run-with-correct-iwant-from() {
 section "We'll use a local copy of iwant."
 
-edit "../i-have/iwant-from.conf" use-local-iwant <<EOF
+edit "$REL_IHAVE/iwant-from.conf" use-local-iwant <<EOF
 iwant-rev=
 iwant-url=$LOCAL_IWANT_ROOT
 EOF
 optimize-downloads
-failing-cmd 1 ant
-cmd 'find ../i-have'
+failing-cmd 1 "$PHASE1"
+cmd find $REL_IHAVE
 end-section
 }
 
 phase1-run-with-correct-ws-info() {
 section "Generate the workspace definition java file"
 p "Let's modify the file the iwant generated for us."
-edit '../i-have/ws-info.conf' creation <<EOF
+edit "$REL_IHAVE/ws-info.conf" creation <<EOF
 # paths are relative to this file's directory
-WSNAME=ant-bootstrap-example
+WSNAME=$EXAMPLENAME-bootstrap-example
 WSROOT=../..
 WSDEF_SRC=wsdef
-WSDEF_CLASS=com.antbootstrapexample.wsdef.Workspace
+WSDEF_CLASS=com.${EXAMPLENAME}bootstrapexample.wsdef.Workspace
 EOF
 p "Now iwant will generate the Workspace definition."
-failing-cmd 1 ant
-cmd 'find ../i-have/wsdef'
+failing-cmd 1 "$PHASE1"
+cmd "find $REL_IHAVE/wsdef"
 out-was <<EOF
-../i-have/wsdef
-../i-have/wsdef/com
-../i-have/wsdef/com/antbootstrapexample
-../i-have/wsdef/com/antbootstrapexample/wsdef
-../i-have/wsdef/com/antbootstrapexample/wsdef/Workspace.java
+$REL_IHAVE/wsdef
+$REL_IHAVE/wsdef/com
+$REL_IHAVE/wsdef/com/${EXAMPLENAME}bootstrapexample
+$REL_IHAVE/wsdef/com/${EXAMPLENAME}bootstrapexample/wsdef
+$REL_IHAVE/wsdef/com/${EXAMPLENAME}bootstrapexample/wsdef/Workspace.java
 EOF
 end-section
+}
+
+cd-to-iw() {
+  log "Nothing to do for cd-to-iw"
 }
 
 phase1-run-with-default-wsjava() {
 section 'Using the new workspace'
 p "Bootstrapping is now ready, let's run once more for help."
-cmd 'ant 2>&1 | head -n -4 | tail -n 7'
+cmd "$PHASE1 2>&1 | head -n -4 | tail -n 7"
 out-was <<EOF
      [java] Try one of these:
      [java]   ant list-of-targets
@@ -147,13 +148,23 @@ out-was <<EOF
 
 BUILD FAILED
 EOF
-p "Let's try it."
+p "Let's try first the ant cli."
+cd-to-iw
 cmd 'ant list-of-targets'
 cmd 'ant -D/target=aConstant'
-cmd 'cat ../iwant/cached/ant-bootstrap-example/target/aConstant'
+cmd "cat ../iwant/cached/$EXAMPLENAME-bootstrap-example/target/aConstant"
 out-was <<EOF
 Constant generated content
 EOF
+p "Then the bash cli."
+cmd "cd .."
+p "TODO generate the wish scripts:"
+failing-cmd 127 "iwant/list-of/targets"
+p "Abusing internals:"
+cmd "iwant/help.sh -D/target=aConstant 2>/dev/null"
+#out-was <<EOF
+#$(readlink -f iwant/cached/...)
+#EOF
 end-section
 }
 

@@ -226,7 +226,13 @@
   + abstract descripted cli so bash tutorial can override ant tutorial
   - simply cd to iw and call ant
     + first two calls
-  - when refreshing targets, make sure ant output goes to stderr and the refreshed path to stdout
+    + all calls
+  + document both clis in both bootstrapping tutorials
+  - "abusing internals" cli for bash
+    + pass -D/target/... to ant
+    - when refreshing targets, make sure ant output goes to stderr and the refreshed path to stdout
+  - generate wish scripts in "Phase3" to make bash cli work again properly
+  - mention both clis in the help output
   - download and extract ant distro
   - delegate commands to build.xml
   - the simplest thing that could possibly work for wish script creation, to keep the tutorial green

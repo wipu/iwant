@@ -15,13 +15,14 @@ get-phase1() {
   copy-phase1
 }
 
-phase1-cmd() {
-  local EXITCODE=$1
-  _cmd "$EXITCODE" 'iwant/help.sh'
-}
-
+EXAMPLENAME=bash
+PHASE1=iwant/help.sh
 REL_AS_SOMEONE=.
 REL_IHAVE=i-have
+
+cd-to-iw() {
+  cmd "cd iw"
+}
 
 doc() {
 
@@ -35,9 +36,9 @@ cmd 'cd as-example-developer'
 
 phase1-run-1
 phase1-run-with-incorrect-iwant-from
-#phase1-run-with-correct-iwant-from
-#phase1-run-with-correct-ws-info
-#phase1-run-with-default-wsjava
+phase1-run-with-correct-iwant-from
+phase1-run-with-correct-ws-info
+phase1-run-with-default-wsjava
 
 end-section
 
