@@ -379,7 +379,9 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("Getting: file:" + mockWeb() + "/aFileInTheWeb\n" + "To: "
 				+ pathToCachedTarget("aDownloadedFile") + "\n", err());
 		assertEquals("correct\n", cachedContent("aDownloadedFile"));
-		assertEquals(cachedFileModifiedAt, new File(
+
+		// TODO find a way to keep the sleep hack invisible to test
+		assertEquals(cachedFileModifiedAt - 2000L, new File(
 				pathToCachedTarget("aDownloadedFile")).lastModified());
 	}
 

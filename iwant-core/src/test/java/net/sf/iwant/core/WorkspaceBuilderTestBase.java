@@ -70,25 +70,21 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		ensureEmpty(mockWeb);
 
 		String cpitems = testarea + "/iwant/cpitems";
-		String eclipseClasses = testarea + "/../../classes";
-		if (new File(eclipseClasses).exists()) {
-			ensureEmpty(cpitems + "/iwant-core");
-			copy(eclipseClasses, cpitems + "/iwant-core");
-			createMarker(cpitems + "/iwant-core/iwant-core-marker.txt");
-			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-1.7.1.jar",
-					cpitems);
-			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar",
-					cpitems);
-			copy(testarea + "/../../../iwant-lib-junit-3.8.1/junit-3.8.1.jar",
-					cpitems);
-		}
-	}
-
-	private void createMarker(String path) {
-		try {
-			new FileWriter(path).append("marker").close();
-		} catch (IOException e) {
-			throw new IllegalStateException("Cannot create marker.", e);
+		// these are not modified during tests so we need only one instantiation
+		if (!new File(cpitems).exists()) {
+			String eclipseClasses = testarea + "/../../classes";
+			if (new File(eclipseClasses).exists()) {
+				ensureEmpty(cpitems + "/iwant-core");
+				copy(eclipseClasses, cpitems + "/iwant-core");
+				copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-1.7.1.jar",
+						cpitems);
+				copy(testarea
+						+ "/../../../iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar",
+						cpitems);
+				copy(testarea
+						+ "/../../../iwant-lib-junit-3.8.1/junit-3.8.1.jar",
+						cpitems);
+			}
 		}
 	}
 
@@ -170,15 +166,23 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		return cacheDir + "/target/" + target;
 	}
 
-	/**
-	 * TODO we really need mocking
-	 */
 	protected void sleep() {
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
+		touchTwoSecondsBack(new File(testarea()));
+	}
+
+	private void touchTwoSecondsBack(File file) {
+		if (".svn".equals(file.getName())) {
+			return;
 		}
+		// save old timestamp first because modifiying directory contents will
+		// change it
+		long oldStamp = file.lastModified();
+		if (file.isDirectory()) {
+			for (File child : file.listFiles()) {
+				touchTwoSecondsBack(child);
+			}
+		}
+		file.setLastModified(oldStamp - 2000L);
 	}
 
 	@Override

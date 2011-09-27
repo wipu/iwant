@@ -213,6 +213,8 @@
         + list-of/targets
           * just set the wish in phase1.xml
 
++ As @developer I want sleep forged by moving testarea timestamps back so tests are faster
+
 #################################################################
 = In progress
 #################################################################
@@ -245,11 +247,12 @@
 - As a @buildscriptauthor I want non-local documentation of ant bootstrapping
   - make rev optional, branching the export
 
+- As @developer I want the timestamp hack to be invisible to tests so I don't need to assert a file hasn't been touched by asserting its timestamp has moved back 2 seconds.
+
 - As a @buildscriptauthor I don't want to see iwant tests in my classpath so I don't accidentally use them
   - separate iwant-main-classes and iwant-test-classes in phase2.xml
 
 - As a @buildscriptauthor I want iwant to test itself during bootstrap when the tests are fast
-  - somehow forge timestamps of files so no sleeps are required
   - make sure nothing is downloaded from network
   * note: run _only_ during bootstrap
   - _if_ testarea still needed, create one
