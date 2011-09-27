@@ -215,6 +215,8 @@
 
 + As @developer I want sleep forged by moving testarea timestamps back so tests are faster
 
++ As eclipse user I want my eclipse environment creator script shared as part of iwant so I and my colleagues can use it anywhere and I can later integrate it with iwant
+
 #################################################################
 = In progress
 #################################################################
