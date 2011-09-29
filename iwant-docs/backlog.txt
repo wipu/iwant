@@ -232,9 +232,10 @@
     + first two calls
     + all calls
   + document both clis in both bootstrapping tutorials
-  - "abusing internals" cli for bash
+  + "abusing internals" cli for bash
     + pass -D/target/... to ant
-    - when refreshing targets, make sure ant output goes to stderr and the refreshed path to stdout
+    + when refreshing targets, make sure only path to cached goes to stdout
+      + hack: use sysprop to tell java layer to prefix all relevant output so the bash cli can filter non-prefixes output and redirect by prefix (out/err)
   - generate wish scripts in "Phase3" to make bash cli work again properly
   - mention both clis in the help output
   - download and extract ant distro

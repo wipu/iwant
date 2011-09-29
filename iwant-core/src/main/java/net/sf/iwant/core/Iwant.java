@@ -22,7 +22,8 @@ public class Iwant {
 		try {
 			targetAsPath(args);
 		} catch (IwantException e) {
-			System.err.println(e.getMessage());
+			System.err.println(PrintPrefixes.fromSystemProperty().multiLineErr(
+					e.getMessage()));
 			System.exit(1);
 		}
 	}

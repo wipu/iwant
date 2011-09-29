@@ -1,10 +1,11 @@
 <project name="iwant-bootstrap" default="iwant" basedir=".">
 
-	<target name="iwant" description="iwant" depends="iwant-src, cached-unmodifiable, as-somebody, /target">
+	<target name="iwant" description="iwant" depends="iwant-src, cached-unmodifiable, as-somebody, /target, iwant-print-prefix">
 		<ant dir="${iwant-src}/iwant-bootstrapper/phase2/iw" inheritall="false">
 			<property name="cached-unmodifiable" location="${cached-unmodifiable}" />
 			<property name="as-somebody" location="${as-somebody}" />
 			<property name="the-wish" value="${/target}" />
+			<property name="iwant-print-prefix" value="${iwant-print-prefix}" />
 		</ant>
 	</target>
 
@@ -17,6 +18,10 @@
 
 	<target name="/target" unless="/target">
 		<property name="/target" value="" />
+	</target>
+
+	<target name="iwant-print-prefix" unless="iwant-print-prefix">
+		<property name="iwant-print-prefix" value="" />
 	</target>
 
 	<target name="iwant-src" depends="iwant-src-status,iwant-from-information, svnkit" unless="iwant-src-uptodate">
@@ -51,13 +56,13 @@
 		<available file="${svnkit}" property="svnkit-uptodate" />
 	</target>
 
-	<target name="svnkit.zip" depends="svnkit.zip-status" unless="svnkit.zip-uptodate">
+	<target name="svnkit.zip" depends="svnkit.zip-status, iwant-print-prefix" unless="svnkit.zip-uptodate">
 		<get dest="${svnkit.zip}.unverified" src="http://www.svnkit.com/${svnkit.zip.name}" />
 		<checksum algorithm="MD5" property="329ab36ad39e878d54f92c3891e5a486" verifyproperty="svnkit.zip-md5-status" file="${svnkit.zip}.unverified" />
 		<condition property="svnkit.zip-isok">
 			<equals arg1="true" arg2="${svnkit.zip-md5-status}" />
 		</condition>
-		<fail message="Checksum failed!" unless="svnkit.zip-isok" />
+		<fail message="${iwant-print-prefix}err:Checksum failed!" unless="svnkit.zip-isok" />
 		<move file="${svnkit.zip}.unverified" tofile="${svnkit.zip}" />
 	</target>
 
@@ -71,17 +76,17 @@
 		<property name="svnkit.name" value="org.tmatesoft.svn_1.3.5.standalone.nojna" />
 	</target>
 
-	<target name="iwant-from-information" depends="i-have/iwant-from.conf">
+	<target name="iwant-from-information" depends="i-have/iwant-from.conf, iwant-print-prefix">
 		<property file="${i-have/iwant-from.conf}" />
-		<fail message="Please specify iwant-rev in ${i-have/iwant-from.conf}" unless="iwant-rev" />
-		<fail message="Please specify iwant-url in ${i-have/iwant-from.conf}" unless="iwant-url" />
+		<fail message="${iwant-print-prefix}err:Please specify iwant-rev in ${i-have/iwant-from.conf}" unless="iwant-rev" />
+		<fail message="${iwant-print-prefix}err:Please specify iwant-url in ${i-have/iwant-from.conf}" unless="iwant-url" />
 	</target>
 
-	<target name="i-have/iwant-from.conf" depends="i-have/iwant-from.conf-status" unless="i-have/iwant-from.conf_exists">
+	<target name="i-have/iwant-from.conf" depends="i-have/iwant-from.conf-status, iwant-print-prefix" unless="i-have/iwant-from.conf_exists">
 		<echo file="${i-have/iwant-from.conf}">iwant-rev=140
 iwant-url=https://iwant.svn.sourceforge.net/svnroot/iwant/trunk
 </echo>
-		<fail message="I created file ${i-have/iwant-from.conf} for your convenience.
+		<fail message="${iwant-print-prefix}err:I created file ${i-have/iwant-from.conf} for your convenience.
 Please edit it and rerun me." />
 	</target>
 
@@ -93,7 +98,6 @@ Please edit it and rerun me." />
 	<target name="cached-unmodifiable" depends="cached-internal" unless="cached-unmodifiable">
 		<property name="cached-unmodifiable" location="${cached-internal}/unmodifiable" />
 		<mkdir dir="${cached-unmodifiable}" />
-		<echo message="cached-unmodifiable=${cached-unmodifiable}" />
 	</target>
 
 	<target name="cached-internal" depends="cached">

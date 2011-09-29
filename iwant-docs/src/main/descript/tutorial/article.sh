@@ -324,6 +324,7 @@ fi
 section "Script-generated content"
 #---------------------------------
 
+sleep 2
 my-edit '../example-wsdef2/src/com/example/wsdef2/ExampleWorkspace.java' ExampleWorkspace.java.scriptGeneratedContent.diff
 
 cmd 'iwant/list-of/targets | grep scriptGeneratedContent'

@@ -37,7 +37,8 @@ public class WorkspaceBuilder {
 			Target<?> target = target(wsRoot, targetName);
 			if (target != null) {
 				String cachedPath = freshTargetAsPath(target, locations);
-				System.out.println(pathToPrint(cachedPath, targetArg));
+				System.out.println(PrintPrefixes.fromSystemProperty()
+						.outPrefix() + pathToPrint(cachedPath, targetArg));
 			} else {
 				if (nextPhase != null) {
 					runNextPhase(nextPhase, targetArg, locations);
@@ -130,7 +131,8 @@ public class WorkspaceBuilder {
 	private static void listOfTargets(ContainerPath wsRoot) {
 		SortedSet<Target<?>> targets = PathDigger.targets(wsRoot);
 		for (Target<?> target : targets) {
-			System.out.println(target.name());
+			System.out.println(PrintPrefixes.fromSystemProperty().outPrefix()
+					+ target.name());
 		}
 	}
 
@@ -152,6 +154,10 @@ public class WorkspaceBuilder {
 		// needed:
 		java.createJvmarg().setValue("-classpath");
 		java.createJvmarg().setValue(path.toString());
+
+		java.createJvmarg().setValue(
+				"-Diwant-print-prefix="
+						+ PrintPrefixes.fromSystemProperty().prefix());
 
 		java.setClassname(WorkspaceBuilder.class.getCanonicalName());
 		java.createArg().setValue(nextPhase.className());

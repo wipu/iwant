@@ -19,9 +19,22 @@ EXAMPLENAME=bash
 PHASE1=iwant/help.sh
 REL_AS_SOMEONE=.
 REL_IHAVE=i-have
+PHASE1XML=iw/build.xml
 
 cd-to-iw() {
   cmd "cd iw"
+}
+
+phase1-run-for-successful-help() {
+failing-cmd 1 'iwant/help.sh'
+return
+out-was <<EOF
+Try one of these:
+  ant list-of-targets
+  ant -D/target=TARGETNAME
+    (use tab or ls/dir -D to see valid targets)
+
+EOF
 }
 
 doc() {

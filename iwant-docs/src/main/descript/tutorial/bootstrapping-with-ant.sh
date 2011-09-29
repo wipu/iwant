@@ -24,6 +24,7 @@ EXAMPLENAME=ant
 PHASE1=ant
 REL_AS_SOMEONE=..
 REL_IHAVE=$REL_AS_SOMEONE/i-have
+PHASE1XML=build.xml
 
 phase1-run-1() {
 section "First run to create iwant-from.conf"
@@ -83,7 +84,7 @@ optimize-downloads() {
   local INTERNALCACHE=$REL_AS_SOMEONE/iwant/cached/.internal/unmodifiable
   [ -e "$OPTIMCACHE/$SVNKITZIP" ] || {
     log "Fetching svnkit using the ant script to test."
-    ant svnkit.zip
+    ant -f "$PHASE1XML" svnkit.zip
     log "Caching it to $OPTIMCACHE"
     mkdir -p "$OPTIMCACHE"
     cp "$INTERNALCACHE/$SVNKITZIP" "$OPTIMCACHE"/
@@ -135,9 +136,7 @@ cd-to-iw() {
   log "Nothing to do for cd-to-iw"
 }
 
-phase1-run-with-default-wsjava() {
-section 'Using the new workspace'
-p "Bootstrapping is now ready, let's run once more for help."
+phase1-run-for-successful-help() {
 cmd "$PHASE1 2>&1 | head -n -4 | tail -n 7"
 out-was <<EOF
      [java] Try one of these:
@@ -148,6 +147,12 @@ out-was <<EOF
 
 BUILD FAILED
 EOF
+}
+
+phase1-run-with-default-wsjava() {
+section 'Using the new workspace'
+p "Bootstrapping is now ready, let's run once more for help."
+phase1-run-for-successful-help
 p "Let's try first the ant cli."
 cd-to-iw
 cmd 'ant list-of-targets'
@@ -161,10 +166,14 @@ cmd "cd .."
 p "TODO generate the wish scripts:"
 failing-cmd 127 "iwant/list-of/targets"
 p "Abusing internals:"
-cmd "iwant/help.sh -D/target=aConstant 2>/dev/null"
-#out-was <<EOF
-#$(readlink -f iwant/cached/...)
-#EOF
+cmd "iwant/help.sh -D/target=aConstant"
+out-was <<EOF
+$(readlink -f iwant/cached/$EXAMPLENAME-bootstrap-example/target/aConstant)
+EOF
+cmd 'cat $(iwant/help.sh -D/target=aConstant)'
+out-was <<EOF
+Constant generated content
+EOF
 end-section
 }
 

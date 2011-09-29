@@ -1,6 +1,6 @@
 <project name="iwant-bootstrap-phase2" default="iwant" basedir=".">
 
-	<target name="iwant" description="iwant" depends="iwant-bin, as-somebody, the-wish">
+	<target name="iwant" description="iwant" depends="iwant-bin, as-somebody, the-wish, iwant-print-prefix">
 		<java classname="net.sf.iwant.core.Iwant" failonerror="true">
 			<arg value="${as-somebody}" />
 			<arg value="${the-wish}" />
@@ -9,6 +9,7 @@
 				<dirset dir="${iwant-bin}" includes="iwant-core" />
 				<fileset dir="${iwant-bin}" includes="*.jar" />
 			</classpath>
+			<sysproperty key="iwant-print-prefix" value="${iwant-print-prefix}" />
 		</java>
 	</target>
 
@@ -27,12 +28,16 @@
 		<available file="${iwant-bin}" property="iwant-bin-exists" />
 	</target>
 
-	<target name="as-somebody">
-		<fail message="Please call with -Das-somebody" unless="as-somebody" />
+	<target name="as-somebody" depends="iwant-print-prefix">
+		<fail message="${iwant-print-prefix}err:Please call with -Das-somebody" unless="as-somebody" />
 	</target>
 
-	<target name="the-wish">
-		<fail message="Please call with -Dthe-wish" unless="the-wish" />
+	<target name="the-wish" depends="iwant-print-prefix">
+		<fail message="${iwant-print-prefix}err:Please call with -Dthe-wish" unless="the-wish" />
+	</target>
+
+	<target name="iwant-print-prefix">
+		<fail message="Please call with -Diwant-print-prefix" unless="iwant-print-prefix" />
 	</target>
 
 	<target name="iwant-classes" depends="iwant-classes-status, ext-jars" unless="iwant-classes-uptodate">
@@ -62,7 +67,7 @@
 		</path>
 	</target>
 
-	<target name="ant.jar" depends="ant.jar-status" unless="ant.jar-exists">
+	<target name="ant.jar" depends="ant.jar-status, iwant-print-prefix" unless="ant.jar-exists">
 		<download name="ant.jar" src="http://mirrors.ibiblio.org/pub/mirrors/maven2/org/apache/ant/ant/1.7.1" md5="ef62988c744551fb51f330eaa311bfc0" />
 	</target>
 
@@ -70,7 +75,7 @@
 		<unmodifiable-target-status name="ant.jar" filename="ant-1.7.1.jar" />
 	</target>
 
-	<target name="ant-junit.jar" depends="ant-junit.jar-status" unless="ant-junit.jar-exists">
+	<target name="ant-junit.jar" depends="ant-junit.jar-status, iwant-print-prefix" unless="ant-junit.jar-exists">
 		<download name="ant-junit.jar" src="http://mirrors.ibiblio.org/pub/mirrors/maven2/org/apache/ant/ant-junit/1.7.1" md5="c1b2bfa2389c405c7c07d23f368d6944" />
 	</target>
 
@@ -78,7 +83,7 @@
 		<unmodifiable-target-status name="ant-junit.jar" filename="ant-junit-1.7.1.jar" />
 	</target>
 
-	<target name="junit.jar" depends="junit.jar-status" unless="junit.jar-exists">
+	<target name="junit.jar" depends="junit.jar-status, iwant-print-prefix" unless="junit.jar-exists">
 		<download name="junit.jar" src="http://mirrors.ibiblio.org/pub/mirrors/maven2/junit/junit/3.8.1" md5="1f40fb782a4f2cf78f161d32670f7a3a" />
 	</target>
 
@@ -101,18 +106,19 @@
 		<attribute name="src" />
 		<attribute name="md5" />
 		<sequential>
+			<fail unless="iwant-print-prefix" />
 			<get dest="${@{name}}.unverified" src="@{src}/${@{name}-name}" />
 			<checksum algorithm="MD5" property="@{md5}" verifyproperty="@{name}-md5-status" file="${@{name}}.unverified" />
 			<condition property="@{name}-isok">
 				<equals arg1="true" arg2="${@{name}-md5-status}" />
 			</condition>
-			<fail message="Checksum failed!" unless="@{name}-isok" />
+			<fail message="${iwant-print-prefix}err:Checksum failed!" unless="@{name}-isok" />
 			<move file="${@{name}}.unverified" tofile="${@{name}}" />
 		</sequential>
 	</macrodef>
 
-	<target name="cached-unmodifiable">
-		<fail message="Please call with -Dcached-unmodifiable" unless="cached-unmodifiable" />
+	<target name="cached-unmodifiable" depends="iwant-print-prefix">
+		<fail message="${iwant-print-prefix}err:Please call with -Dcached-unmodifiable" unless="cached-unmodifiable" />
 	</target>
 
 	<target name="cached-internal" depends="cached">
