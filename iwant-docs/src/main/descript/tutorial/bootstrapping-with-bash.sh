@@ -26,7 +26,7 @@ cd-to-iw() {
 }
 
 phase1-run-for-successful-help() {
-failing-cmd 1 'iwant/help.sh'
+cmde 1 'iwant/help.sh'
 return
 out-was <<EOF
 Try one of these:

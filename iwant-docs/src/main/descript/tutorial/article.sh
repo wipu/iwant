@@ -38,7 +38,7 @@ Modify it and rerun iwant/help.sh
 EOF
 cmd 'cat i-have/iwant-from.conf'
 "$CONF_IWANT_FROM"
-cmd 'iwant/help.sh 2>/dev/null | tail -n 2'
+cmde "0 0" 'iwant/help.sh 2>/dev/null | tail -n 2'
 out-was <<EOF
 Next, modify i-have/ws-info.conf to define your workspace.
 After that, rerun iwant/help.sh
@@ -97,7 +97,7 @@ aConstant
 eclipse-projects
 EOF
 
-cmd 'find iwant/target -type f | sort'
+cmde "0 0" 'find iwant/target -type f | sort'
 out-was <<EOF
 iwant/target/aConstant/as-path
 iwant/target/aConstant/as-rel-path
@@ -169,7 +169,7 @@ A_TESTS="project-a/tests"
 cmd "mkdir -p ../$A_TESTS/example"
 create-from "../$A_TESTS/example/ATest.java" "example-ws/$A_TESTS/example/ATest.java"
 my-edit "$WSJAVA" Workspace.java.a-tests.diff
-cmd 'iwant/list-of/targets | grep projectATests'
+cmde "0 0" 'iwant/list-of/targets | grep projectATests'
 out-was <<EOF
 projectATests
 EOF
@@ -202,11 +202,11 @@ section "JUnit tests"
 sleep 2
 my-edit "../$A_TESTS/example/ATest.java" ATest.java.junit.diff
 my-edit "$WSJAVA" Workspace.java.junit.diff
-cmd 'iwant/list-of/targets | grep projectATestResult'
+cmde "0 0" 'iwant/list-of/targets | grep projectATestResult'
 out-was <<EOF
 projectATestResult
 EOF
-cmd '(iwant/target/projectATestResult/as-path && echo exit status was zero) | sed s:$(pwd)/::'
+cmde "0 0" '(iwant/target/projectATestResult/as-path && echo exit status was zero) | sed s:$(pwd)/::'
 out-was <<EOF
 Test example.ATest FAILED
 iwant/cached/example/target/projectATestResult
@@ -219,7 +219,7 @@ expected:<42> but was:<0>
 EOF
 
 my-edit "../$A_SRC/example/AProd.java" AProd.java.redtogreen.diff
-cmd 'cat $(iwant/target/projectATestResult/as-path) | sed s/[^\ ]*\ sec/***/'
+cmde "0 0" 'cat $(iwant/target/projectATestResult/as-path) | sed s/[^\ ]*\ sec/***/'
 out-was <<EOF
 Testsuite: example.ATest
 Tests run: 1, Failures: 0, Errors: 0, Time elapsed: ***
@@ -266,7 +266,7 @@ out-was <<EOF
 Compilation failed
 EOF
 my-edit "$WSJAVA" Workspace.java.use-commons-math.diff
-cmd 'iwant/target/projectATestResult/as-path 2>&1 | sed s:$(pwd)/::'
+cmde "0 0" 'iwant/target/projectATestResult/as-path 2>&1 | sed s:$(pwd)/::'
 out-was <<EOF
 Getting: http://mirrors.ibiblio.org/pub/mirrors/maven2/commons-math/commons-math/1.2/commons-math-1.2.jar
 To: iwant/cached/example/target/commons-math
@@ -327,7 +327,7 @@ section "Script-generated content"
 sleep 2
 my-edit '../example-wsdef2/src/com/example/wsdef2/ExampleWorkspace.java' ExampleWorkspace.java.scriptGeneratedContent.diff
 
-cmd 'iwant/list-of/targets | grep scriptGeneratedContent'
+cmde "0 0" 'iwant/list-of/targets | grep scriptGeneratedContent'
 out-was <<EOF
 scriptGeneratedContent
 EOF
