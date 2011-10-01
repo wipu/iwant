@@ -7,6 +7,7 @@ import net.sf.iwant.core.WorkspaceDefinition;
 
 public class IwantWorkspace implements WorkspaceDefinition {
 
+	@Override
 	public ContainerPath wsRoot(Locations locations) {
 		return new Root(locations);
 	}
