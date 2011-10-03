@@ -8,6 +8,7 @@ import java.util.SortedSet;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Java;
+import org.apache.tools.ant.types.Environment.Variable;
 
 public class WorkspaceBuilder {
 
@@ -20,7 +21,8 @@ public class WorkspaceBuilder {
 		String wsRootArg = toAbs(args[1]);
 		String targetArg = args[2];
 		String cacheDir = toAbs(args[3]);
-		Locations locations = new Locations(wsRootArg, cacheDir, cacheDir
+		Locations locations = new Locations(wsRootArg, wsRootArg
+				+ "/todo-fix-path-to-as-someone", cacheDir, cacheDir
 				+ "/todo-fix-path-to-iwant-libs");
 		ContainerPath wsRoot = wsRoot(wsDef, locations);
 		NextPhase nextPhase = PathDigger.nextPhase(wsRoot);
@@ -72,9 +74,10 @@ public class WorkspaceBuilder {
 	static String freshTargetAsPath(Target<?> target, Locations locations) {
 		try {
 			// TODO only 1 places for building these paths:
-			ensureParentDirFor(locations.targetCacheDir() + "/" + target.name());
-			ensureParentDirFor(locations.contentDescriptionCacheDir() + "/"
+			FileUtils.ensureParentDirFor(locations.targetCacheDir() + "/"
 					+ target.name());
+			FileUtils.ensureParentDirFor(locations.contentDescriptionCacheDir()
+					+ "/" + target.name());
 			Refresher.forReal(locations).refresh(target);
 			return target.asAbsolutePath(locations);
 		} catch (Exception e) {
@@ -88,20 +91,6 @@ public class WorkspaceBuilder {
 	private static String targetArgumentToTargetName(String targetPath) {
 		return targetPath.substring(targetPath.indexOf("/") + 1,
 				targetPath.lastIndexOf("/"));
-	}
-
-	private static void ensureParentDirFor(String fileName) {
-		File file = new File(fileName);
-		File parent = file.getParentFile();
-		ensureDir(parent);
-	}
-
-	private static void ensureDir(File dir) {
-		File parent = dir.getParentFile();
-		if (!parent.exists())
-			ensureDir(parent);
-		if (!dir.exists())
-			dir.mkdir();
 	}
 
 	private static Target<?> target(ContainerPath wsRoot, String targetName) {
@@ -142,6 +131,8 @@ public class WorkspaceBuilder {
 		Project project = new Project();
 		Java java = new Java();
 		java.setProject(project);
+		java.setFork(true);
+		java.setFailonerror(true);
 
 		org.apache.tools.ant.types.Path path = java.createClasspath();
 		path.append(antPath(project,
@@ -155,17 +146,19 @@ public class WorkspaceBuilder {
 		java.createJvmarg().setValue("-classpath");
 		java.createJvmarg().setValue(path.toString());
 
-		java.createJvmarg().setValue(
-				"-Diwant-print-prefix="
-						+ PrintPrefixes.fromSystemProperty().prefix());
+		String printPrefix = PrintPrefixes.fromSystemProperty().prefix();
+		if (printPrefix != null) {
+			Variable sysp = new Variable();
+			sysp.setKey(PrintPrefixes.SYSTEM_PROPERTY_NAME);
+			sysp.setValue(printPrefix);
+			java.addSysproperty(sysp);
+		}
 
 		java.setClassname(WorkspaceBuilder.class.getCanonicalName());
 		java.createArg().setValue(nextPhase.className());
 		java.createArg().setValue(locations.wsRoot());
 		java.createArg().setValue(targetArg);
 		java.createArg().setValue(locations.cacheDir());
-		java.setFork(true);
-		java.setFailonerror(true);
 		// TODO test with a longer chain and generate unique names:
 		File err = new File(locations.cacheDir() + "/nextPhase-err");
 		File out = new File(locations.cacheDir() + "/nextPhase-out");

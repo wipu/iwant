@@ -14,6 +14,9 @@ public class LocationsTest extends TestCase {
 		assertEquals(
 				"Locations {\n"
 						+ "  wsRoot():/wsRoot\n"
+						+ "  asSomeone():/as-x\n"
+						+ "  iHave():/as-x/i-have\n"
+						+ "  iwant():/as-x/iwant\n"
 						+ "  cacheDir():/as-x/iwant/cached/wsName\n"
 						+ "  targetCacheDir():/as-x/iwant/cached/wsName/target\n"
 						+ "  contentDescriptionCacheDir():/as-x/iwant/cached/wsName/content-descr\n"

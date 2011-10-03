@@ -2,12 +2,14 @@ package net.sf.iwant.core;
 
 class PrintPrefixes {
 
+	public static final String SYSTEM_PROPERTY_NAME = "iwant-print-prefix";
+
 	private final String prefix;
 	private final String errPrefix;
 	private final String outPrefix;
 
 	public static PrintPrefixes fromSystemProperty() {
-		return fromPrefix(System.getProperty("iwant-print-prefix"));
+		return fromPrefix(System.getProperty(SYSTEM_PROPERTY_NAME));
 	}
 
 	public static PrintPrefixes fromPrefix(String prefix) {
@@ -52,6 +54,12 @@ class PrintPrefixes {
 			}
 		}
 		return out.toString();
+	}
+
+	@Override
+	public String toString() {
+		return "PrintPrefixes [prefix=" + prefix + ", errPrefix=" + errPrefix
+				+ ", outPrefix=" + outPrefix + "]";
 	}
 
 }

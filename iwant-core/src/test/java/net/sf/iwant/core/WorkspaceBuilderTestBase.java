@@ -70,21 +70,16 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		ensureEmpty(mockWeb);
 
 		String cpitems = testarea + "/iwant/cpitems";
-		// these are not modified during tests so we need only one instantiation
-		if (!new File(cpitems).exists()) {
-			String eclipseClasses = testarea + "/../../classes";
-			if (new File(eclipseClasses).exists()) {
-				ensureEmpty(cpitems + "/iwant-core");
-				copy(eclipseClasses, cpitems + "/iwant-core");
-				copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-1.7.1.jar",
-						cpitems);
-				copy(testarea
-						+ "/../../../iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar",
-						cpitems);
-				copy(testarea
-						+ "/../../../iwant-lib-junit-3.8.1/junit-3.8.1.jar",
-						cpitems);
-			}
+		String eclipseClasses = testarea + "/../../classes";
+		if (new File(eclipseClasses).exists()) {
+			ensureEmpty(cpitems + "/iwant-core");
+			copy(eclipseClasses, cpitems + "/iwant-core");
+			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-1.7.1.jar",
+					cpitems);
+			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar",
+					cpitems);
+			copy(testarea + "/../../../iwant-lib-junit-3.8.1/junit-3.8.1.jar",
+					cpitems);
 		}
 	}
 
@@ -121,26 +116,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 	}
 
 	protected static void ensureEmpty(String dirname) {
-		File dir = new File(dirname);
-		del(dir);
-		ensureDir(dir);
-	}
-
-	private static void ensureDir(File dir) {
-		File parent = dir.getParentFile();
-		if (!parent.exists()) {
-			ensureDir(parent);
-		}
-		dir.mkdir();
-	}
-
-	private static void del(File file) {
-		if (file.isDirectory()) {
-			for (File child : file.listFiles()) {
-				del(child);
-			}
-		}
-		file.delete();
+		FileUtils.ensureEmpty(dirname);
 	}
 
 	protected String cachedContent(String target) throws IOException {
@@ -241,7 +217,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 	}
 
 	protected void directoryExists(String name) {
-		ensureDir(new File(wsRoot() + "/" + name));
+		FileUtils.ensureDir(new File(wsRoot() + "/" + name));
 	}
 
 	private Object unfinishedBuilder;

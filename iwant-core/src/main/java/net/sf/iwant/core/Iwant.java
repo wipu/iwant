@@ -1,9 +1,13 @@
 package net.sf.iwant.core;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.StringReader;
 import java.util.Properties;
 
 import org.apache.tools.ant.ExitStatusException;
@@ -55,17 +59,70 @@ public class Iwant {
 		String wsDefClassName = props.getProperty("WSDEF_CLASS");
 		File wsDefJava = wsDefJava(wsDefSrc, wsDefClassName);
 		if (!wsDefJava.exists()) {
-			ensureDir(wsDefJava.getParentFile());
+			FileUtils.ensureDir(wsDefJava.getParentFile());
 			new FileWriter(wsDefJava).append(exampleWsDefJava(wsDefClassName))
 					.close();
 			throw new IwantException("I created " + wsDefJava + " for you."
 					+ " Please edit it and rerun me.");
 		}
+		Locations locations = Locations.from(wsRoot, iHave, wsName, iwantLibs);
+		Target<JavaClasses> wsDefClasses = wsDefClassesAsFreshTarget(locations,
+				wsDefSrc);
+		NextPhase nextPhase = NextPhase.at(wsDefClasses).named(wsDefClassName);
+		regenerateWishScripts(locations, nextPhase);
 		if ("".equals(wish)) {
 			throw new IwantException(usage());
 		}
-		Locations locations = Locations.from(wsRoot, iHave, wsName, iwantLibs);
-		refreshAndPrint(locations, wsDefSrc, wsDefClassName, wish);
+		refreshAndPrintUsingWsDefClasses(locations, wish, nextPhase);
+	}
+
+	private static void regenerateWishScripts(Locations locations,
+			NextPhase nextPhase) throws IwantException, IOException {
+		String listOfTargetsString = listOfTargetsString(locations, nextPhase);
+
+		File listOfTargetsWish = new File(locations.iwant()
+				+ "/list-of/targets");
+		generateWishScript("list-of/targets", listOfTargetsWish, "..");
+
+		FileUtils.ensureEmpty(locations.iwant() + "/target");
+
+		BufferedReader reader = new BufferedReader(new StringReader(
+				listOfTargetsString));
+		String targetName;
+		while ((targetName = reader.readLine()) != null) {
+			targetName = targetName.replaceFirst("^"
+					+ PrintPrefixes.fromSystemProperty().outPrefix(), "");
+			File targetWish = new File(locations.iwant() + "/target/"
+					+ targetName + "/as-path");
+			// TODO allow / in target name => more .. in rel path:
+			generateWishScript(targetName, targetWish, "../..");
+		}
+	}
+
+	private static void generateWishScript(String name, File to,
+			String relPathToIwant) throws IOException {
+		FileUtils.ensureParentDirFor(to.getCanonicalPath());
+		FileWriter f = new FileWriter(to);
+		f.append("#!/bin/bash\n");
+		f.append("HERE=$(dirname \"$0\")\n");
+		f.append("exec \"$HERE/").append(relPathToIwant)
+				.append("/help.sh\" -D/target=").append(name).append("\n");
+		f.close();
+		to.setExecutable(true);
+	}
+
+	private static String listOfTargetsString(Locations locations,
+			NextPhase nextPhase) throws IwantException {
+		PrintStream origOut = System.out;
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(out));
+		try {
+			refreshAndPrintUsingWsDefClasses(locations, "list-of/targets",
+					nextPhase);
+		} finally {
+			System.setOut(origOut);
+		}
+		return out.toString();
 	}
 
 	/**
@@ -102,18 +159,8 @@ public class Iwant {
 
 	}
 
-	private static void refreshAndPrint(Locations locations, File wsDefSrcFile,
-			String wsDefClassName, String wish) throws IOException,
-			IwantException {
-		Source wsDefSrc = new AbsoluteSource(wsDefSrcFile);
-		Target<JavaClasses> wsDefClasses = new Target<JavaClasses>(
-				"wsDefClasses", JavaClasses.compiledFrom(wsDefSrc)
-						.using(new NewBuiltin("iwant-core"))
-						.using(new NewBuiltin("ant-1.7.1.jar"))
-						.using(new NewBuiltin("ant-junit-1.7.1.jar"))
-						.using(new NewBuiltin("junit-3.8.1.jar")));
-		WorkspaceBuilder.freshTargetAsPath(wsDefClasses, locations);
-		NextPhase nextPhase = NextPhase.at(wsDefClasses).named(wsDefClassName);
+	private static void refreshAndPrintUsingWsDefClasses(Locations locations,
+			String wish, NextPhase nextPhase) throws IwantException {
 		try {
 			// TODO just pass wish as such:
 			String effectiveWish = "list-of/targets".equals(wish) ? wish
@@ -122,6 +169,19 @@ public class Iwant {
 		} catch (ExitStatusException e) {
 			throw new IwantException("Refresh failed.");
 		}
+	}
+
+	private static Target<JavaClasses> wsDefClassesAsFreshTarget(
+			Locations locations, File wsDefSrcFile) throws IOException {
+		Source wsDefSrc = new AbsoluteSource(wsDefSrcFile);
+		Target<JavaClasses> wsDefClasses = new Target<JavaClasses>(
+				"wsDefClasses", JavaClasses.compiledFrom(wsDefSrc)
+						.using(new NewBuiltin("iwant-core"))
+						.using(new NewBuiltin("ant-1.7.1.jar"))
+						.using(new NewBuiltin("ant-junit-1.7.1.jar"))
+						.using(new NewBuiltin("junit-3.8.1.jar")));
+		WorkspaceBuilder.freshTargetAsPath(wsDefClasses, locations);
+		return wsDefClasses;
 	}
 
 	private static String usage() {
@@ -188,17 +248,6 @@ public class Iwant {
 	private static File wsDefJava(File wsDefSrc, String wsDefClassName) {
 		return new File(wsDefSrc, wsDefClassName.replaceAll("\\.", "/")
 				+ ".java");
-	}
-
-	/**
-	 * TODO replace all copies of this with one
-	 */
-	private static void ensureDir(File dir) {
-		File parent = dir.getParentFile();
-		if (!parent.exists()) {
-			ensureDir(parent);
-		}
-		dir.mkdir();
 	}
 
 }

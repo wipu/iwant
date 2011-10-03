@@ -38,7 +38,7 @@ public class EclipseProjects implements Content {
 
 				File extBuilders = new File(projectDir.getCanonicalPath()
 						+ "/.externalToolBuilders");
-				EclipseProject.ensureDir(extBuilders);
+				FileUtils.ensureDir(extBuilders);
 				iwantAnt(project, new File(extBuilders.getCanonicalPath()
 						+ "/iwant-ant-for-eclipse.launch"));
 			}

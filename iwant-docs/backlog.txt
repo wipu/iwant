@@ -236,12 +236,15 @@
     + pass -D/target/... to ant
     + when refreshing targets, make sure only path to cached goes to stdout
       + hack: use sysprop to tell java layer to prefix all relevant output so the bash cli can filter non-prefixes output and redirect by prefix (out/err)
-  - (don't clear the "optimization cache" in the old deprecated "paranoia build" refresh.sh)
-  - generate wish scripts in "Phase3" to make bash cli work again properly
+  + (don't clear the "optimization cache" in the old deprecated "paranoia build" refresh.sh)
+  + generate wish scripts in "Phase3" to make bash cli work again properly
+    + bootstrap descript: list and use them
+    + tests (also for scenarios where the scripts are not touched)
+    + refresh list-of/targets, use it
+    + use print prefix in tests to make sure they don't break the list of targets
   - mention both clis in the help output
   - download and extract ant distro
   - delegate commands to build.xml
-  - the simplest thing that could possibly work for wish script creation, to keep the tutorial green
   - modify ant script to download ant distro and take the jar deps from it
 
 #################################################################

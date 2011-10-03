@@ -6,25 +6,41 @@ import java.io.IOException;
 public class Locations {
 
 	private final String wsRoot;
+	private final String asSomeone;
 	private final String cacheDir;
 	private final String iwantLibs;
 
-	public Locations(String wsRoot, String cacheDir, String iwantLibs) {
+	public Locations(String wsRoot, String asSomeone, String cacheDir,
+			String iwantLibs) {
 		this.wsRoot = wsRoot;
+		this.asSomeone = asSomeone;
 		this.cacheDir = cacheDir;
 		this.iwantLibs = iwantLibs;
 	}
 
 	public static Locations from(File wsRoot, File iHave, String wsName,
 			File iwantLibs) throws IOException {
-		return new Locations(wsRoot.getCanonicalPath(), new File(iHave,
-				"../iwant/cached/" + wsName).getCanonicalPath(),
+		return new Locations(wsRoot.getCanonicalPath(),
+				new File(iHave, "/..").getCanonicalPath(), new File(iHave,
+						"../iwant/cached/" + wsName).getCanonicalPath(),
 				iwantLibs.getCanonicalPath());
 
 	}
 
 	public String wsRoot() {
 		return wsRoot;
+	}
+
+	public String asSomeone() {
+		return asSomeone;
+	}
+
+	public String iHave() {
+		return asSomeone + "/i-have";
+	}
+
+	public String iwant() {
+		return asSomeone + "/iwant";
 	}
 
 	public String cacheDir() {
@@ -49,8 +65,10 @@ public class Locations {
 
 	@Override
 	public String toString() {
-		return "Locations {\n  wsRoot():" + wsRoot() + "\n  cacheDir():"
-				+ cacheDir() + "\n  targetCacheDir():" + targetCacheDir()
+		return "Locations {\n  wsRoot():" + wsRoot() + "\n  asSomeone():"
+				+ asSomeone() + "\n  iHave():" + iHave() + "\n  iwant():"
+				+ iwant() + "\n  cacheDir():" + cacheDir()
+				+ "\n  targetCacheDir():" + targetCacheDir()
 				+ "\n  contentDescriptionCacheDir():"
 				+ contentDescriptionCacheDir() + "\n  temporaryDirectory():"
 				+ temporaryDirectory() + "\n  iwantLibs():" + iwantLibs()

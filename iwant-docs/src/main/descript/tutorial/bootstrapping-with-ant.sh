@@ -163,14 +163,25 @@ Constant generated content
 EOF
 p "Then the bash cli."
 cmd "cd .."
-p "TODO generate the wish scripts:"
-cmde 127 "iwant/list-of/targets"
-p "Abusing internals:"
-cmd "iwant/help.sh -D/target=aConstant"
+p "Let's see what wish scripts we have."
+cmde "0 0 0" "find iwant/ -not -type d | grep -v '^iwant/cached' | sort"
+out-was <<EOF
+iwant/help.sh
+iwant/list-of/targets
+iwant/target/aConstant/as-path
+iwant/target/eclipse-projects/as-path
+EOF
+cmd "iwant/list-of/targets"
+out-was <<EOF
+aConstant
+eclipse-projects
+EOF
+p "We make a wish."
+cmd "iwant/target/aConstant/as-path"
 out-was <<EOF
 $(readlink -f iwant/cached/$EXAMPLENAME-bootstrap-example/target/aConstant)
 EOF
-cmd 'cat $(iwant/help.sh -D/target=aConstant)'
+cmd 'cat $(iwant/target/aConstant/as-path)'
 out-was <<EOF
 Constant generated content
 EOF

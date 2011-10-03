@@ -121,32 +121,9 @@ public class EclipseProject implements Comparable<EclipseProject> {
 	}
 
 	void refresh(RefreshEnvironment refresh) throws Exception {
-		ensureDir(refresh.destination());
+		FileUtils.ensureDir(refresh.destination());
 		dotProject(refresh);
 		dotClasspath(refresh);
-	}
-
-	/**
-	 * TODO create and reuse a fluent reusable file declaration library
-	 */
-	static void ensureDir(File dir) {
-		File parent = dir.getParentFile();
-		if (!parent.exists()) {
-			ensureDir(parent);
-		}
-		dir.mkdir();
-	}
-
-	/**
-	 * TODO encapsulate all information inside a Path abstraction so we can get
-	 * an absolute or a relative path whenever needed.
-	 */
-	private static String abs(String path) {
-		try {
-			return new File(path).getCanonicalPath();
-		} catch (IOException e) {
-			throw new IllegalArgumentException(e);
-		}
 	}
 
 	private void dotProject(RefreshEnvironment refresh) throws IOException {
@@ -198,7 +175,8 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		b.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
 		for (Path lib : libs) {
 			b.append("        <classpathentry kind=\"lib\" path=\""
-					+ abs(lib.asAbsolutePath(refresh.locations())) + "\"/>\n");
+					+ FileUtils.abs(lib.asAbsolutePath(refresh.locations()))
+					+ "\"/>\n");
 		}
 		b.append("        <classpathentry kind=\"output\" path=\"classes\"/>\n");
 		b.append("</classpath>\n");

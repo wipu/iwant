@@ -1,6 +1,7 @@
 #!/bin/bash
 
 AS_SOMEONE_IWANT=$(dirname "$0")
+AS_SOMEONE_IWANT=$(readlink -f "$AS_SOMEONE_IWANT")
 AS_SOMEONE=$(dirname "$AS_SOMEONE_IWANT")
 cd "$AS_SOMEONE/iw"
 
