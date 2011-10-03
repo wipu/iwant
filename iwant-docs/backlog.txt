@@ -217,18 +217,23 @@
 
 + As eclipse user I want my eclipse environment creator script shared as part of iwant so I and my colleagues can use it anywhere and I can later integrate it with iwant
 
++ As a @developer I want a fixed version of descript that escapes "<" correctly in editor and console divs
+  + first just a workaround sed hack in the script that generates the tutorial
+  + then the real thing
+  * marked done afterwards
+
 #################################################################
 = In progress
 #################################################################
 
-- As @developer I want help.sh (bash bootstrapper phase1) to delegate most work to the ant script so I can get rid of a lot of legacy scripts
+- As @developer I want help.sh (bash bootstrapper phase1) to delegate most work to the ant script so I can start gettin rid of a lot of legacy scripts
   - new bootstrap tutorial for driving
     * the tutorial wish script creation is very redundant but will be replaced with real iwant target later so it's ok
     + source the ant tutorial
     + hello from help.sh
   + first just use os-provided ant
   + abstract descripted cli so bash tutorial can override ant tutorial
-  - simply cd to iw and call ant
+  + simply cd to iw and call ant
     + first two calls
     + all calls
   + document both clis in both bootstrapping tutorials
@@ -243,16 +248,20 @@
     + refresh list-of/targets, use it
     + use print prefix in tests to make sure they don't break the list of targets
   - mention both clis in the help output
-  - download and extract ant distro
-  - delegate commands to build.xml
-  - modify ant script to download ant distro and take the jar deps from it
 
 #################################################################
 = Planned
 #################################################################
 
+- As @developer I want iwant to bootstrap itself properly so I can get rid of the first generation bootstrapping hack scripts that are no more fun to maintain
+
 - As a @buildscriptauthor I want non-local documentation of ant bootstrapping
   - make rev optional, branching the export
+
+- As a bash user I want the bootstrapper to download and use an ant distro so I don't need to install ant
+  * also better control over ant features
+  - bash bootstrapper phase1: download and extract ant distro
+  - ant phase1: download the same ant distro (to the same location) and take the jar deps from it instead of downloading them separately
 
 - As @developer I want the timestamp hack to be invisible to tests so I don't need to assert a file hasn't been touched by asserting its timestamp has moved back 2 seconds.
 
@@ -263,8 +272,6 @@
   - make sure nothing is downloaded from network
   * note: run _only_ during bootstrap
   - _if_ testarea still needed, create one
-
-- As a @developer I want to simplify the bash bootstrapper so it will share as much code with the ant bootstrapper as possible
 
 - @maybe as a @buildscriptauthor I want bootstrapper to generate example files that need editing before it agrees to continue so I won't screw things up by running the bootstrapper again before really editing the confs
   - descript all
@@ -287,10 +294,6 @@
 - As @buildscriptauthor I want to use some simpler syntax for the whole buildscript so iwant will be more ergonomic for really small projects that don't need java and IDE for anything
   * ngr or even simpler?
   * if custom content or anything fancier is needed, I guess it's ok to require java
-
-- As a @developer I want a fixed version of descript that escapes "<" correctly in editor and console divs
-  + first just a workaround sed hack in the script that generates the tutorial
-  - then the real thing
 
 - As a @buildscriptuser I want the generated eclipse project to use normal src, because subclipse doesn't show local changes in linked sources
   + implement
