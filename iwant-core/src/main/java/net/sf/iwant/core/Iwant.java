@@ -186,10 +186,13 @@ public class Iwant {
 
 	private static String usage() {
 		StringBuilder b = new StringBuilder();
-		b.append("Try one of these:\n");
-		b.append("  ant list-of-targets\n");
-		b.append("  ant -D/target=TARGETNAME\n");
-		b.append("    (use tab or ls/dir -D to see valid targets)\n");
+		b.append("Please tell what you want.\n\n");
+		b.append("Ant usage:\n");
+		b.append("  as-someone/iw $ ant list-of-targets\n");
+		b.append("  as-someone/iw $ ant -D/target=TARGETNAME\n");
+		b.append("Shell usage:\n");
+		b.append("  as-someone $ iwant/list-of/targets\n");
+		b.append("  as-someone $ iwant/target/TARGETNAME/as-path");
 		return b.toString();
 	}
 

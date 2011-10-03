@@ -222,11 +222,7 @@
   + then the real thing
   * marked done afterwards
 
-#################################################################
-= In progress
-#################################################################
-
-- As @developer I want help.sh (bash bootstrapper phase1) to delegate most work to the ant script so I can start gettin rid of a lot of legacy scripts
++ As @developer I want help.sh (bash bootstrapper phase1) to delegate most work to the ant script so I can start gettin rid of a lot of legacy scripts
   - new bootstrap tutorial for driving
     * the tutorial wish script creation is very redundant but will be replaced with real iwant target later so it's ok
     + source the ant tutorial
@@ -247,7 +243,12 @@
     + tests (also for scenarios where the scripts are not touched)
     + refresh list-of/targets, use it
     + use print prefix in tests to make sure they don't break the list of targets
-  - mention both clis in the help output
+  + mention both clis in the help output
+    + bugfix: colon broke the old awk script in help.sh, replaced with more robust stream splitting
+
+#################################################################
+= In progress
+#################################################################
 
 #################################################################
 = Planned

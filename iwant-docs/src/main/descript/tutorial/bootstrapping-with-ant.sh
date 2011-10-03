@@ -137,13 +137,16 @@ cd-to-iw() {
 }
 
 phase1-run-for-successful-help() {
-cmde "1 0 0" "$PHASE1 2>&1 | head -n -4 | tail -n 7"
+cmde "1 0" "$PHASE1 2>&1 | sed -n '/Please tell what/,+9 p'"
 out-was <<EOF
-     [java] Try one of these:
-     [java]   ant list-of-targets
-     [java]   ant -D/target=TARGETNAME
-     [java]     (use tab or ls/dir -D to see valid targets)
+     [java] Please tell what you want.
      [java] 
+     [java] Ant usage:
+     [java]   as-someone/iw $ ant list-of-targets
+     [java]   as-someone/iw $ ant -D/target=TARGETNAME
+     [java] Shell usage:
+     [java]   as-someone $ iwant/list-of/targets
+     [java]   as-someone $ iwant/target/TARGETNAME/as-path
 
 BUILD FAILED
 EOF

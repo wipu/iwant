@@ -154,7 +154,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		}
 		assertEquals("", out());
 		assertTrue("Shouldn't have been " + err(),
-				err().startsWith("perr:Try one of these"));
+				err().startsWith("perr:Please tell what you want."));
 	}
 
 	public void testEmptyWishAlsoGeneratesWishScripts() throws IOException {

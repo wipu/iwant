@@ -27,13 +27,15 @@ cd-to-iw() {
 
 phase1-run-for-successful-help() {
 cmde 1 'iwant/help.sh'
-return
 out-was <<EOF
-Try one of these:
-  ant list-of-targets
-  ant -D/target=TARGETNAME
-    (use tab or ls/dir -D to see valid targets)
+Please tell what you want.
 
+Ant usage:
+  as-someone/iw $ ant list-of-targets
+  as-someone/iw $ ant -D/target=TARGETNAME
+Shell usage:
+  as-someone $ iwant/list-of/targets
+  as-someone $ iwant/target/TARGETNAME/as-path
 EOF
 }
 
