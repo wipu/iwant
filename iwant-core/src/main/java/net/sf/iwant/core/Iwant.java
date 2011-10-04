@@ -188,11 +188,11 @@ public class Iwant {
 		StringBuilder b = new StringBuilder();
 		b.append("Please tell what you want.\n\n");
 		b.append("Ant usage:\n");
-		b.append("  as-someone/iw $ ant list-of-targets\n");
-		b.append("  as-someone/iw $ ant -D/target=TARGETNAME\n");
+		b.append("  as-someone/with/ant/iw $ ant list-of-targets\n");
+		b.append("  as-someone/with/ant/iw $ ant -D/target=TARGETNAME\n");
 		b.append("Shell usage:\n");
-		b.append("  as-someone $ iwant/list-of/targets\n");
-		b.append("  as-someone $ iwant/target/TARGETNAME/as-path");
+		b.append("  as-someone/with/bash $ iwant/list-of/targets\n");
+		b.append("  as-someone/with/bash $ iwant/target/TARGETNAME/as-path");
 		return b.toString();
 	}
 

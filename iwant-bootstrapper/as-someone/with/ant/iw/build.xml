@@ -106,7 +106,7 @@ Please edit it and rerun me." />
 	</target>
 
 	<target name="cached" depends="as-somebody">
-		<property name="cached" location="${as-somebody}/iwant/cached" />
+		<property name="cached" location="${as-somebody}/with/bash/iwant/cached" />
 		<mkdir dir="${cached}" />
 	</target>
 
@@ -116,7 +116,7 @@ Please edit it and rerun me." />
 	</target>
 
 	<target name="as-somebody">
-		<property name="as-somebody" location=".." />
+		<property name="as-somebody" location="../../.." />
 	</target>
 
 </project>

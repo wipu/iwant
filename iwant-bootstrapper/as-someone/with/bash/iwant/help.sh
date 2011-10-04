@@ -1,9 +1,9 @@
 #!/bin/bash
 
-AS_SOMEONE_IWANT=$(dirname "$0")
-AS_SOMEONE_IWANT=$(readlink -f "$AS_SOMEONE_IWANT")
-AS_SOMEONE=$(dirname "$AS_SOMEONE_IWANT")
-cd "$AS_SOMEONE/iw"
+HERE=$(dirname "$0")
+HERE=$(readlink -f "$HERE")
+AS_SOMEONE=$(readlink -f "$HERE/../../..")
+cd "$AS_SOMEONE/with/ant/iw"
 
 iwant-messages-forwarded() {
   grep -o ':iwant:out:.*\|:iwant:err:.*' |

@@ -5,7 +5,8 @@ end-section() {
 LOCAL_IWANT_ROOT=$(readlink -f "$LOCAL_IWANT/../..")
 
 copy-phase1() {
-cmd "svn export \"$LOCAL_IWANT_ROOT/iwant-bootstrapper/phase1\" as-example-developer"
+cmd 'mkdir as-example-developer && cd as-example-developer'
+cmd "svn export \"$LOCAL_IWANT_ROOT/iwant-bootstrapper/as-someone/with\""
 out-was <<EOF
 Export complete.
 EOF
@@ -22,31 +23,24 @@ antcmd() {
 
 EXAMPLENAME=ant
 PHASE1=ant
-REL_AS_SOMEONE=..
+REL_AS_SOMEONE=../../..
 REL_IHAVE=$REL_AS_SOMEONE/i-have
 PHASE1XML=build.xml
 
 phase1-run-1() {
 section "First run to create iwant-from.conf"
 p "The first run creates us a file in which we can specify the iwant revision to use."
-cmd "find $REL_AS_SOMEONE"
+cmde "0 0" "find $REL_AS_SOMEONE -not -type d | sort"
 out-was <<EOF
-$REL_AS_SOMEONE
-$REL_AS_SOMEONE/iw
-$REL_AS_SOMEONE/iw/build.xml
-$REL_AS_SOMEONE/iwant
-$REL_AS_SOMEONE/iwant/help.sh
+$REL_AS_SOMEONE/with/ant/iw/build.xml
+$REL_AS_SOMEONE/with/bash/iwant/help.sh
 EOF
 cmde 1 "$PHASE1"
-cmd "find $REL_AS_SOMEONE"
+cmde "0 0" "find $REL_AS_SOMEONE -not -type d | sort"
 out-was <<EOF
-$REL_AS_SOMEONE
-$REL_AS_SOMEONE/iw
-$REL_AS_SOMEONE/iw/build.xml
-$REL_AS_SOMEONE/iwant
-$REL_AS_SOMEONE/iwant/help.sh
-$REL_AS_SOMEONE/i-have
 $REL_AS_SOMEONE/i-have/iwant-from.conf
+$REL_AS_SOMEONE/with/ant/iw/build.xml
+$REL_AS_SOMEONE/with/bash/iwant/help.sh
 EOF
 cmd "cat $REL_AS_SOMEONE/i-have/iwant-from.conf"
 end-section
@@ -64,15 +58,11 @@ iwant-rev=
 EOF
 cmde 1 "$PHASE1"
 p "No further side-effects until we fix the issue:"
-cmd find $REL_AS_SOMEONE
+cmde "0 0" "find $REL_AS_SOMEONE -not -type d | sort"
 out-was <<EOF
-$REL_AS_SOMEONE
-$REL_AS_SOMEONE/iw
-$REL_AS_SOMEONE/iw/build.xml
-$REL_AS_SOMEONE/iwant
-$REL_AS_SOMEONE/iwant/help.sh
-$REL_AS_SOMEONE/i-have
 $REL_AS_SOMEONE/i-have/iwant-from.conf
+$REL_AS_SOMEONE/with/ant/iw/build.xml
+$REL_AS_SOMEONE/with/bash/iwant/help.sh
 EOF
 end-section
 }
@@ -81,7 +71,7 @@ optimize-downloads() {
   p "Using cached external libraries to optimize building this article."
   local OPTIMCACHE=$LOCAL_IWANT_ROOT/iwant-iwant/iwant/cached/iwant/optimization
   local SVNKITZIP=org.tmatesoft.svn_1.3.5.standalone.nojna.zip
-  local INTERNALCACHE=$REL_AS_SOMEONE/iwant/cached/.internal/unmodifiable
+  local INTERNALCACHE=$REL_AS_SOMEONE/with/bash/iwant/cached/.internal/unmodifiable
   [ -e "$OPTIMCACHE/$SVNKITZIP" ] || {
     log "Fetching svnkit using the ant script to test."
     ant -f "$PHASE1XML" svnkit.zip
@@ -142,11 +132,11 @@ out-was <<EOF
      [java] Please tell what you want.
      [java] 
      [java] Ant usage:
-     [java]   as-someone/iw $ ant list-of-targets
-     [java]   as-someone/iw $ ant -D/target=TARGETNAME
+     [java]   as-someone/with/ant/iw $ ant list-of-targets
+     [java]   as-someone/with/ant/iw $ ant -D/target=TARGETNAME
      [java] Shell usage:
-     [java]   as-someone $ iwant/list-of/targets
-     [java]   as-someone $ iwant/target/TARGETNAME/as-path
+     [java]   as-someone/with/bash $ iwant/list-of/targets
+     [java]   as-someone/with/bash $ iwant/target/TARGETNAME/as-path
 
 BUILD FAILED
 EOF
@@ -160,12 +150,12 @@ p "Let's try first the ant cli."
 cd-to-iw
 cmd 'ant list-of-targets'
 cmd 'ant -D/target=aConstant'
-cmd "cat ../iwant/cached/$EXAMPLENAME-bootstrap-example/target/aConstant"
+cmd "cat ../../bash/iwant/cached/$EXAMPLENAME-bootstrap-example/target/aConstant"
 out-was <<EOF
 Constant generated content
 EOF
 p "Then the bash cli."
-cmd "cd .."
+cmd "cd ../../bash"
 p "Let's see what wish scripts we have."
 cmde "0 0 0" "find iwant/ -not -type d | grep -v '^iwant/cached' | sort"
 out-was <<EOF
@@ -198,7 +188,7 @@ section 'Boostrapping iwant with ant'
 
 cmd 'mkdir -p example && cd example'
 get-phase1
-cmd 'cd as-example-developer/iw'
+cmd 'cd with/ant/iw'
 
 phase1-run-1
 phase1-run-with-incorrect-iwant-from

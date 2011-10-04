@@ -21,9 +21,9 @@ public class Locations {
 	public static Locations from(File wsRoot, File iHave, String wsName,
 			File iwantLibs) throws IOException {
 		return new Locations(wsRoot.getCanonicalPath(),
-				new File(iHave, "/..").getCanonicalPath(), new File(iHave,
-						"../iwant/cached/" + wsName).getCanonicalPath(),
-				iwantLibs.getCanonicalPath());
+				new File(iHave, "/..").getCanonicalPath(),
+				new File(iHave, "../with/bash/iwant/cached/" + wsName)
+						.getCanonicalPath(), iwantLibs.getCanonicalPath());
 
 	}
 
@@ -40,7 +40,7 @@ public class Locations {
 	}
 
 	public String iwant() {
-		return asSomeone + "/iwant";
+		return asSomeone + "/with/bash/iwant";
 	}
 
 	public String cacheDir() {

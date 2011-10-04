@@ -162,14 +162,16 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		// just a few examples asserted, descript tests more:
 		assertEquals("#!/bin/bash\n" + "HERE=$(dirname \"$0\")\n"
 				+ "exec \"$HERE/../help.sh\" -D/target=list-of/targets\n",
-				contentOf(wsRoot() + "/as-x-developer/iwant/list-of/targets"));
-		assertEquals("#!/bin/bash\n" + "HERE=$(dirname \"$0\")\n"
-				+ "exec \"$HERE/../../help.sh\" -D/target=aConstant\n",
 				contentOf(wsRoot()
-						+ "/as-x-developer/iwant/target/aConstant/as-path"));
+						+ "/as-x-developer/with/bash/iwant/list-of/targets"));
+		assertEquals(
+				"#!/bin/bash\n" + "HERE=$(dirname \"$0\")\n"
+						+ "exec \"$HERE/../../help.sh\" -D/target=aConstant\n",
+				contentOf(wsRoot()
+						+ "/as-x-developer/with/bash/iwant/target/aConstant/as-path"));
 
 		assertTrue(new File(wsRoot()
-				+ "/as-x-developer/iwant/target/aConstant/as-path")
+				+ "/as-x-developer/with/bash/iwant/target/aConstant/as-path")
 				.canExecute());
 	}
 
@@ -194,10 +196,12 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		line("	}\n");
 		line("}\n");
 		exists();
-		assertTrue(contentOf(wsRoot() + "/as-x-developer/iwant/list-of/targets")
+		assertTrue(contentOf(
+				wsRoot() + "/as-x-developer/with/bash/iwant/list-of/targets")
 				.length() > 0);
 		assertTrue(contentOf(
-				wsRoot() + "/as-x-developer/iwant/target/aConstant/as-path")
+				wsRoot()
+						+ "/as-x-developer/with/bash/iwant/target/aConstant/as-path")
 				.length() > 0);
 	}
 
@@ -223,10 +227,11 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 
 		assertTrue(contentOf(
 				wsRoot()
-						+ "/as-x-developer/iwant/target/constantWithModifiedName/as-path")
+						+ "/as-x-developer/with/bash/iwant/target/constantWithModifiedName/as-path")
 				.length() > 0);
 		assertFalse(new File(wsRoot()
-				+ "/as-x-developer/iwant/target/aConstant/as-path").exists());
+				+ "/as-x-developer/with/bash/iwant/target/aConstant/as-path")
+				.exists());
 	}
 
 	public void testListOfTargets() throws IOException {
@@ -260,12 +265,17 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 
 		Iwant.main(new String[] { wsRoot() + "/as-x-developer", "aConstant",
 				iwantLibs });
-		assertEquals("pout:" + wsRoot()
-				+ "/as-x-developer/iwant/cached/test/target/aConstant\n", out());
+		assertEquals(
+				"pout:"
+						+ wsRoot()
+						+ "/as-x-developer/with/bash/iwant/cached/test/target/aConstant\n",
+				out());
 		assertEquals("", err());
 
-		assertEquals("Constant generated content\n", contentOf(wsRoot()
-				+ "/as-x-developer/iwant/cached/test/target/aConstant"));
+		assertEquals(
+				"Constant generated content\n",
+				contentOf(wsRoot()
+						+ "/as-x-developer/with/bash/iwant/cached/test/target/aConstant"));
 	}
 
 }
