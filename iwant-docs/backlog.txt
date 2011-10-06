@@ -253,11 +253,20 @@
 = In progress
 #################################################################
 
+- As @developer I want iwant to bootstrap itself properly so I can get rid of the first generation bootstrapping hack scripts that are no more fun to maintain
+  + bootstrapper as svn:externals, mainly for "real-life testing"
+  * we could put the whole bootstrapper under as-iwant-developer, but that would look silly in the url users use, symlink/external/whatever more explicitly documents that iwant _uses_ itself for bootstrapping
+  - define and commit "default-wsroot" in phase1 build.xml, because svn export does not like "file://${i-have}/../.."
+  - use "file://${default-wsroot} as iwant-url
+  - symbolic link to bootstrapper so we use latest and to reduce network traffic for users
+    - remove ".." from paths with something else than "File.getCanonicalPath()" and "readlink -f", because they both break symlinks
+      - for dirs, use the old (cd DIR && pwd) trick
+      - find or write the java solution
+    - do it
+
 #################################################################
 = Planned
 #################################################################
-
-- As @developer I want iwant to bootstrap itself properly so I can get rid of the first generation bootstrapping hack scripts that are no more fun to maintain
 
 - As a @buildscriptauthor I want non-local documentation of ant bootstrapping
   - make rev optional, branching the export

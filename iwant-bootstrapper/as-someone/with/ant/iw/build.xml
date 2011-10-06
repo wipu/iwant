@@ -76,7 +76,8 @@
 		<property name="svnkit.name" value="org.tmatesoft.svn_1.3.5.standalone.nojna" />
 	</target>
 
-	<target name="iwant-from-information" depends="i-have/iwant-from.conf, iwant-print-prefix">
+	<!-- depends on default-wsroot so iwant-from.conf can refer to it -->
+	<target name="iwant-from-information" depends="i-have/iwant-from.conf, default-wsroot, iwant-print-prefix">
 		<property file="${i-have/iwant-from.conf}" />
 		<fail message="${iwant-print-prefix}err:Please specify iwant-rev in ${i-have/iwant-from.conf}" unless="iwant-rev" />
 		<fail message="${iwant-print-prefix}err:Please specify iwant-url in ${i-have/iwant-from.conf}" unless="iwant-url" />
@@ -88,6 +89,10 @@ iwant-url=https://iwant.svn.sourceforge.net/svnroot/iwant/trunk
 </echo>
 		<fail message="${iwant-print-prefix}err:I created file ${i-have/iwant-from.conf} for your convenience.
 Please edit it and rerun me." />
+	</target>
+
+	<target name="default-wsroot" depends="as-somebody">
+		<property name="default-wsroot" location="${as-somebody}/.." />
 	</target>
 
 	<target name="i-have/iwant-from.conf-status" depends="i-have">
