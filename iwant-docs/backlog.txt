@@ -256,20 +256,38 @@
 - As @developer I want iwant to bootstrap itself properly so I can get rid of the first generation bootstrapping hack scripts that are no more fun to maintain
   + bootstrapper as svn:externals, mainly for "real-life testing"
   * we could put the whole bootstrapper under as-iwant-developer, but that would look silly in the url users use, symlink/external/whatever more explicitly documents that iwant _uses_ itself for bootstrapping
-  - define and commit "default-wsroot" in phase1 build.xml, because svn export does not like "file://${i-have}/../.."
-  - use "file://${default-wsroot} as iwant-url
+  + define and commit "default-wsroot" in phase1 build.xml, because svn export does not like "file://${i-have}/../.."
+  + use "file://${default-wsroot} as iwant-url
+    * we might not be able to bootstrap iwant for user, because user's own build already set default-wsroot to elsewhere!
+  + bootstrap
+    + run help.sh many times to generate the i-have
+    + hand-modify and version wsdef source eclipse settings (active generation later, when eclipse generation is more robust and easier)
+    + import as-iwant-developer to eclipse
+  - svn:ignore in bootstrapper: with/bash/iwant/{target,cached,list-of}: they'll appear when used
   - symbolic link to bootstrapper so we use latest and to reduce network traffic for users
-    - remove ".." from paths with something else than "File.getCanonicalPath()" and "readlink -f", because they both break symlinks
+    - remove ".." from paths with something else than "File.getCanonicalPath()" and "readlink -f", because they both break symlinks (resolve away)
       - for dirs, use the old (cd DIR && pwd) trick
       - find or write the java solution
     - do it
+  - replace versioned eclipse settings with built ones
+    - define all eclipse projects using iwant
+    - document copying them in place
+    - refine eclipse stories and implement to make it more usable
 
 #################################################################
 = Planned
 #################################################################
 
-- As a @buildscriptauthor I want non-local documentation of ant bootstrapping
+- As @buildscriptauthor I want bootstrapper to help generate eclipse settings before telling to edit the workspace definition, because I want to use eclipse for editing it
+
+- bugfix: eclipse settings project directory is as-\$WSNAME"-developer instead of as-iwant-developer
+
+- As eclipse user I want jar classpaths to point to the workspace-relative as-WSNAME-developer/with/bash/iwant/cached/... instead of absolute paths so the workspace is easier to move (maybe) and so I can choose to version them when it's a pragmatic choise.
+
+- As a @buildscriptauthor I want non-local documentation of the new bootstrapping and the old scripts removed
   - make rev optional, branching the export
+
+- bugfix: As @buildscriptauthor I want the generated wsdef class to compile without warnings (add missing @Override annotation)
 
 - As a bash user I want the bootstrapper to download and use an ant distro so I don't need to install ant
   * also better control over ant features
