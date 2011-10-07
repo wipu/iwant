@@ -263,7 +263,7 @@
     + run help.sh many times to generate the i-have
     + hand-modify and version wsdef source eclipse settings (active generation later, when eclipse generation is more robust and easier)
     + import as-iwant-developer to eclipse
-  - svn:ignore in bootstrapper: with/bash/iwant/{target,cached,list-of}: they'll appear when used
+  + svn:ignore in bootstrapper: with/bash/iwant/{target,cached,list-of}: they'll appear when used
   - symbolic link to bootstrapper so we use latest and to reduce network traffic for users
     - remove ".." from paths with something else than "File.getCanonicalPath()" and "readlink -f", because they both break symlinks (resolve away)
       - for dirs, use the old (cd DIR && pwd) trick
