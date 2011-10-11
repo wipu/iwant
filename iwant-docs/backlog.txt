@@ -249,6 +249,8 @@
 + As @buildscriptauthor (especially iwant @developer wanting to bootstrap) I want bootstrapping cli's in a different directory than i-have so that I can svn:external the former and version the latter
   * as-someone/with/{ant,bash}
 
++ As eclipse user I want new-eclipse-env.sh to use the "r=1" trick (documented in eclise bug #359826) for load balancing of downloads
+
 #################################################################
 = In progress
 #################################################################
