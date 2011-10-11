@@ -1,7 +1,6 @@
 package net.sf.iwant.wsdef;
 
 import net.sf.iwant.core.Concatenated;
-import net.sf.iwant.core.Constant;
 import net.sf.iwant.core.ContainerPath;
 import net.sf.iwant.core.EclipseProject;
 import net.sf.iwant.core.EclipseProjects;

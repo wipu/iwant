@@ -2,7 +2,6 @@ package net.sf.iwant.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.SortedSet;
@@ -57,31 +56,29 @@ public class ScriptGeneratedContent implements Content {
 
 		String[] cmd = { tmpScript.getAbsolutePath(),
 				refresh.destination().getAbsolutePath() };
-		Process process = Runtime.getRuntime().exec(cmd, null, tmpDir);
+
+		Process process = new ProcessBuilder(cmd).directory(tmpDir)
+				.redirectErrorStream(true).start();
+
+		// err is redirected to out so we need to stream only out...
 		InputStream out = process.getInputStream();
-		InputStream err = process.getErrorStream();
+		boolean readingOut = true;
+		while (readingOut) {
+			if (readingOut) {
+				int c = out.read();
+				if (c < 0) {
+					readingOut = false;
+				} else {
+					// ... and we stream it to err
+					System.err.print((char) c);
+				}
+			}
+		}
+
 		int result = process.waitFor();
-		System.err.println("Standard out:");
-		print(out);
-		System.err.println("Standard err:");
-		print(err);
 		if (result > 0) {
 			throw new IllegalStateException(
 					"Script exited with non-zero status " + result);
-		}
-	}
-
-	private static void print(InputStream in) {
-		while (true) {
-			try {
-				int c = in.read();
-				if (c < 0) {
-					return;
-				}
-				System.err.print((char) c);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
 		}
 	}
 

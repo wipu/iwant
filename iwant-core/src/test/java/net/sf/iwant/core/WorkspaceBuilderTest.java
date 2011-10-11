@@ -795,14 +795,12 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				"target/successfulScriptOutput/as-path");
 
 		StringBuilder expectedErr = new StringBuilder();
-		expectedErr.append("Standard out:\n");
+		expectedErr.append("this was printed to stderr\n");
 		expectedErr.append("this was printed to stdout\n");
 		expectedErr.append("DEST="
 				+ pathToCachedTarget("successfulScriptOutput") + "\n");
 		expectedErr.append("pwd is " + cacheDir()
 				+ "/tmp-for-the-only-worker-thread\n");
-		expectedErr.append("Standard err:\n");
-		expectedErr.append("this was printed to stderr\n");
 
 		assertEquals(pathLine("successfulScriptOutput"), out());
 		assertEquals(expectedErr.toString(), err());
@@ -824,9 +822,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		}
 
 		StringBuilder expectedErr = new StringBuilder();
-		expectedErr.append("Standard out:\n");
 		expectedErr.append("causing failure\n");
-		expectedErr.append("Standard err:\n");
 
 		assertEquals("", out());
 		assertEquals(expectedErr.toString(), err());

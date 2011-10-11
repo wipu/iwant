@@ -282,11 +282,14 @@
     - document copying them in place
     - refine eclipse stories and implement to make it more usable
 
+- As @buildscriptuser I want iwant to stream stderr in realtime when refreshing a target (e.g. script running descript) so I can track its progress and debug the script
+  + implement for ScriptGeneratedContent and change tests (merge out and err and no more headers in output)
+  - implement for NextPhase etc
+  - test manually to make sure it really streams (tests don't test that)
+
 #################################################################
 = Planned
 #################################################################
-
-- As @buildscriptuser I want iwant to stream stderr in realtime when refreshing a target (e.g. script running descript) so I can track its progress and debug the script
 
 - bugfix: as @buildscriptauthor I want to append Paths explicitly as Paths to Concatenated content so the target will be refreshed when the paths have been touched
   - implement path(Path path)
