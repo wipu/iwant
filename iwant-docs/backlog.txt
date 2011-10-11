@@ -266,6 +266,12 @@
     + hand-modify and version wsdef source eclipse settings (active generation later, when eclipse generation is more robust and easier)
     + import as-iwant-developer to eclipse
   + svn:ignore in bootstrapper: with/bash/iwant/{target,cached,list-of}: they'll appear when used
+  - development-time targets in wsdef
+    + iwant main classes
+    - local tutorial
+    + local ant bootstrapping
+    - local bash bootstrapping
+    - local website
   - symbolic link to bootstrapper so we use latest and to reduce network traffic for users
     - remove ".." from paths with something else than "File.getCanonicalPath()" and "readlink -f", because they both break symlinks (resolve away)
       - for dirs, use the old (cd DIR && pwd) trick
@@ -280,6 +286,13 @@
 = Planned
 #################################################################
 
+- As @buildscriptuser I want iwant to stream stderr in realtime when refreshing a target (e.g. script running descript) so I can track its progress and debug the script
+
+- bugfix: as @buildscriptauthor I want to append Paths explicitly as Paths to Concatenated content so the target will be refreshed when the paths have been touched
+  - implement path(Path path)
+  - use in the descript script content target
+  - use in the gluent project
+
 - As @buildscriptauthor I want bootstrapper to help generate eclipse settings before telling to edit the workspace definition, because I want to use eclipse for editing it
 
 - bugfix: eclipse settings project directory is as-\$WSNAME"-developer instead of as-iwant-developer
@@ -288,6 +301,8 @@
 
 - As a @buildscriptauthor I want non-local documentation of the new bootstrapping and the old scripts removed
   - make rev optional, branching the export
+
+- bugfix: as @buildscriptauthor I want iwant to fail if I define two targets with the same name instead of just overwriting
 
 - bugfix: As @buildscriptauthor I want the generated wsdef class to compile without warnings (add missing @Override annotation)
 
