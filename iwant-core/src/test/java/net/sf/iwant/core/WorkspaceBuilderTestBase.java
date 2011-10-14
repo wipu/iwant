@@ -25,6 +25,8 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 
 	private PrintStream originalErr;
 
+	private String oldPrintPrefix;
+
 	private static final String LINE_SEPARATOR_KEY = "line.separator";
 
 	private String originalLineSeparator;
@@ -49,6 +51,8 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		originalLineSeparator = System.getProperty(LINE_SEPARATOR_KEY);
 		System.setProperty(LINE_SEPARATOR_KEY, "\n");
 		startOfOutAndErrCapture();
+		oldPrintPrefix = System.getProperty(PrintPrefixes.SYSTEM_PROPERTY_NAME);
+		System.setProperty(PrintPrefixes.SYSTEM_PROPERTY_NAME, "p");
 		initializeTestArea();
 	}
 
@@ -135,7 +139,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 	}
 
 	protected String pathLine(String target) {
-		return pathToCachedTarget(target) + "\n";
+		return "pout:" + pathToCachedTarget(target) + "\n";
 	}
 
 	protected String pathToCachedTarget(String target) {
@@ -150,7 +154,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		if (".svn".equals(file.getName())) {
 			return;
 		}
-		// save old timestamp first because modifiying directory contents will
+		// save old timestamp first because modifying directory contents will
 		// change it
 		long oldStamp = file.lastModified();
 		if (file.isDirectory()) {
@@ -163,6 +167,12 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 
 	@Override
 	public void tearDown() {
+		if (oldPrintPrefix == null) {
+			System.clearProperty(PrintPrefixes.SYSTEM_PROPERTY_NAME);
+		} else {
+			System.setProperty(PrintPrefixes.SYSTEM_PROPERTY_NAME,
+					oldPrintPrefix);
+		}
 		System.setIn(originalIn);
 		System.setOut(originalOut);
 		System.setErr(originalErr);
@@ -206,7 +216,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		}
 
 		public void iwant(String wish) {
-			WorkspaceBuilder.main(new String[] { wsDefClassName, wsRoot(),
+			WorkspaceBuilder.build(new String[] { wsDefClassName, wsRoot(),
 					wish, cacheDir() });
 		}
 

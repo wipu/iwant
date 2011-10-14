@@ -251,6 +251,12 @@
 
 + As eclipse user I want new-eclipse-env.sh to use the "r=1" trick (documented in eclise bug #359826) for load balancing of downloads
 
++ As @buildscriptuser I want iwant to stream stderr in realtime when refreshing a target (e.g. script running descript) so I can track its progress and debug the script
+  + implement for ScriptGeneratedContent and change tests (merge out and err and no more headers in output)
+  + implement for NextPhase etc
+  + test manually to make sure it really streams (tests don't test that)
+    * exec seems to buffer and output the stream in bursts, see a later story
+
 #################################################################
 = In progress
 #################################################################
@@ -282,11 +288,6 @@
     - document copying them in place
     - refine eclipse stories and implement to make it more usable
 
-- As @buildscriptuser I want iwant to stream stderr in realtime when refreshing a target (e.g. script running descript) so I can track its progress and debug the script
-  + implement for ScriptGeneratedContent and change tests (merge out and err and no more headers in output)
-  - implement for NextPhase etc
-  - test manually to make sure it really streams (tests don't test that)
-
 #################################################################
 = Planned
 #################################################################
@@ -295,6 +296,8 @@
   - implement path(Path path)
   - use in the descript script content target
   - use in the gluent project
+
+- As @buildscriptuser I want script generated content (e.g. iwant descripts) to refresh stderr more frequently, if java exec allows this, so it will be easier and more reliable to track script progress
 
 - As @buildscriptauthor I want bootstrapper to help generate eclipse settings before telling to edit the workspace definition, because I want to use eclipse for editing it
 

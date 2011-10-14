@@ -1,18 +1,31 @@
 package net.sf.iwant.core;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.SortedSet;
 
+import org.apache.tools.ant.BuildEvent;
+import org.apache.tools.ant.DefaultLogger;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Java;
 import org.apache.tools.ant.types.Environment.Variable;
 
 public class WorkspaceBuilder {
 
+	private static final PrintPrefixes PHASE2_PRINT_PREFIXES = PrintPrefixes
+			.fromPrefix(":iwant-phase2:");
+
 	public static void main(String[] args) {
+		try {
+			build(args);
+		} catch (Exception e) {
+			System.err.println(PrintPrefixes.fromSystemProperty().multiLineErr(
+					e.getMessage()));
+			System.exit(1);
+		}
+	}
+
+	static void build(String[] args) {
 		if (args.length != 4) {
 			throw new IllegalArgumentException(
 					"Expected arguments wsdefclass wsroot target cache-dir");
@@ -128,7 +141,10 @@ public class WorkspaceBuilder {
 	static void runNextPhase(NextPhase nextPhase, String targetArg,
 			Locations locations) {
 		JavaClasses classes = nextPhase.classes().content();
+
 		Project project = new Project();
+		project.addBuildListener(new Phase2BuildLogger());
+
 		Java java = new Java();
 		java.setProject(project);
 		java.setFork(true);
@@ -146,50 +162,39 @@ public class WorkspaceBuilder {
 		java.createJvmarg().setValue("-classpath");
 		java.createJvmarg().setValue(path.toString());
 
-		String printPrefix = PrintPrefixes.fromSystemProperty().prefix();
-		if (printPrefix != null) {
-			Variable sysp = new Variable();
-			sysp.setKey(PrintPrefixes.SYSTEM_PROPERTY_NAME);
-			sysp.setValue(printPrefix);
-			java.addSysproperty(sysp);
-		}
+		Variable sysp = new Variable();
+		sysp.setKey(PrintPrefixes.SYSTEM_PROPERTY_NAME);
+		sysp.setValue(PHASE2_PRINT_PREFIXES.prefix());
+		java.addSysproperty(sysp);
 
 		java.setClassname(WorkspaceBuilder.class.getCanonicalName());
 		java.createArg().setValue(nextPhase.className());
 		java.createArg().setValue(locations.wsRoot());
 		java.createArg().setValue(targetArg);
 		java.createArg().setValue(locations.cacheDir());
-		// TODO test with a longer chain and generate unique names:
-		File err = new File(locations.cacheDir() + "/nextPhase-err");
-		File out = new File(locations.cacheDir() + "/nextPhase-out");
-		java.setError(err);
-		java.setOutput(out);
 
-		try {
-			java.execute();
-		} finally {
-			print(out, System.out);
-			print(err, System.err);
-		}
+		java.execute();
 	}
 
-	private static void print(File file, PrintStream out) {
-		if (!file.exists()) {
-			return;
-		}
-		try {
-			FileReader reader = new FileReader(file);
-			while (true) {
-				int c = reader.read();
-				if (c < 0) {
-					reader.close();
-					return;
-				}
-				out.print((char) c);
+	private static class Phase2BuildLogger extends DefaultLogger {
+
+		@Override
+		public void messageLogged(BuildEvent e) {
+			PrintPrefixes p = PrintPrefixes.fromSystemProperty();
+			if (e.getMessage().startsWith(PHASE2_PRINT_PREFIXES.errPrefix())) {
+				System.err.println(p.errPrefix()
+						+ e.getMessage().substring(
+								PHASE2_PRINT_PREFIXES.errPrefix().length()));
+			} else if (e.getMessage().startsWith(
+					PHASE2_PRINT_PREFIXES.outPrefix())) {
+				System.out.println(p.outPrefix()
+						+ e.getMessage().substring(
+								PHASE2_PRINT_PREFIXES.outPrefix().length()));
+			} else {
+				// just ant noise, we are not printing it
 			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
 		}
+
 	}
 
 	private static org.apache.tools.ant.types.Path antPath(Project project,

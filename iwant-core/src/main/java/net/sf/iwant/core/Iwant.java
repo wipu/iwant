@@ -20,6 +20,10 @@ public class Iwant {
 			super(message);
 		}
 
+		public IwantException(String message, Throwable cause) {
+			super(message, cause);
+		}
+
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -167,7 +171,7 @@ public class Iwant {
 					: "target/" + wish + "/as-path";
 			WorkspaceBuilder.runNextPhase(nextPhase, effectiveWish, locations);
 		} catch (ExitStatusException e) {
-			throw new IwantException("Refresh failed.");
+			throw new IwantException("Refresh failed.", e);
 		}
 	}
 

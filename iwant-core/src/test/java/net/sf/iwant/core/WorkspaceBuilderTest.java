@@ -14,7 +14,8 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	public void testListOfTargetsWithTwoConstantTargetFiles() {
 		at(WorkspaceWithTwoConstantTargetFiles.class).iwant("list-of/targets");
-		assertEquals("constant2-container/constant2\nconstantOne\n", out());
+		assertEquals("pout:constant2-container/constant2\npout:constantOne\n",
+				out());
 		assertEquals("", err());
 	}
 
@@ -725,7 +726,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				phase2java()).close();
 		at(WorkspaceWithReferenceToNextPhase.class).iwant("list-of/targets");
 		assertEquals("", err());
-		assertEquals("phase2Classes\ntargetInPhase2\n", out());
+		assertEquals("pout:phase2Classes\npout:targetInPhase2\n", out());
 	}
 
 	public void testPhase2TargetContent() throws IOException {
@@ -795,11 +796,11 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				"target/successfulScriptOutput/as-path");
 
 		StringBuilder expectedErr = new StringBuilder();
-		expectedErr.append("this was printed to stderr\n");
-		expectedErr.append("this was printed to stdout\n");
-		expectedErr.append("DEST="
+		expectedErr.append("perr:this was printed to stderr\n");
+		expectedErr.append("perr:this was printed to stdout\n");
+		expectedErr.append("perr:DEST="
 				+ pathToCachedTarget("successfulScriptOutput") + "\n");
-		expectedErr.append("pwd is " + cacheDir()
+		expectedErr.append("perr:pwd is " + cacheDir()
 				+ "/tmp-for-the-only-worker-thread\n");
 
 		assertEquals(pathLine("successfulScriptOutput"), out());
@@ -822,7 +823,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		}
 
 		StringBuilder expectedErr = new StringBuilder();
-		expectedErr.append("causing failure\n");
+		expectedErr.append("perr:causing failure\n");
 
 		assertEquals("", out());
 		assertEquals(expectedErr.toString(), err());

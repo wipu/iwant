@@ -11,16 +11,12 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 
 	private String iwantLibs;
 
-	private String oldPrintPrefix;
-
 	@Override
 	public void setUp() {
 		super.setUp();
 		origSecman = System.getSecurityManager();
 		System.setSecurityManager(new ExitCatcher());
 		iwantLibs = testarea() + "/iwant/cpitems";
-		oldPrintPrefix = System.getProperty(PrintPrefixes.SYSTEM_PROPERTY_NAME);
-		System.setProperty(PrintPrefixes.SYSTEM_PROPERTY_NAME, "p");
 	}
 
 	private static class ExitCalledException extends SecurityException {
@@ -54,12 +50,6 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 	@Override
 	public void tearDown() {
 		System.setSecurityManager(origSecman);
-		if (oldPrintPrefix == null) {
-			System.clearProperty(PrintPrefixes.SYSTEM_PROPERTY_NAME);
-		} else {
-			System.setProperty(PrintPrefixes.SYSTEM_PROPERTY_NAME,
-					oldPrintPrefix);
-		}
 		super.tearDown();
 	}
 
@@ -256,7 +246,9 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 			assertEquals(1, e.status());
 		}
 		assertEquals("", out());
-		assertTrue(err().contains("No such target: nonExisting\n"));
+		assertEquals(
+				"perr:No such target: nonExisting\nperr:Refresh failed.\n",
+				err());
 	}
 
 	public void testRefreshingOfAConstant() throws IOException {

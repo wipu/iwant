@@ -60,17 +60,27 @@ public class ScriptGeneratedContent implements Content {
 		Process process = new ProcessBuilder(cmd).directory(tmpDir)
 				.redirectErrorStream(true).start();
 
-		// err is redirected to out so we need to stream only out...
+		// err is redirected to out so we need to stream only out, and we stream
+		// it to err.
+		// TODO reuse code with PrintPrefixes.multiLineErr:
 		InputStream out = process.getInputStream();
 		boolean readingOut = true;
+		boolean lineStart = true;
 		while (readingOut) {
 			if (readingOut) {
 				int c = out.read();
 				if (c < 0) {
 					readingOut = false;
 				} else {
-					// ... and we stream it to err
+					if (lineStart) {
+						System.err.print(PrintPrefixes.fromSystemProperty()
+								.errPrefix());
+						lineStart = false;
+					}
 					System.err.print((char) c);
+				}
+				if ('\n' == c) {
+					lineStart = true;
 				}
 			}
 		}
