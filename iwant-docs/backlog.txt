@@ -297,6 +297,8 @@
   - use in the descript script content target
   - use in the gluent project
 
+- "reactive" bugfix: print prefix in an ant message (how is this possible?) won't cause that line to be printed when using bash
+
 - As @buildscriptuser I want script generated content (e.g. iwant descripts) to refresh stderr more frequently, if java exec allows this, so it will be easier and more reliable to track script progress
 
 - As @buildscriptauthor I want bootstrapper to help generate eclipse settings before telling to edit the workspace definition, because I want to use eclipse for editing it
