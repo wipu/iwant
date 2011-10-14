@@ -33,7 +33,8 @@ public class WorkspaceWithTwoConstantTargetFiles implements WorkspaceDefinition 
 		}
 
 		private Target<?> targetButNoneOfYourBusiness() {
-			throw new UnsupportedOperationException("Not to be called");
+			throw new UnsupportedOperationException("Not to be called "
+					+ locations);
 		}
 
 	}

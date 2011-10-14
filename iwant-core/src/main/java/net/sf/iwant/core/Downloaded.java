@@ -48,7 +48,7 @@ public class Downloaded implements Content {
 		checkIfRequired(refresh.destination(), "SHA", sha);
 	}
 
-	private void checkIfRequired(File destination, String algorithm,
+	private static void checkIfRequired(File destination, String algorithm,
 			String checksum) throws IOException {
 		if (checksum == null) {
 			return;

@@ -81,7 +81,7 @@ public class EclipseProjects implements Content {
 		new FileWriter(destination).append(b.toString()).close();
 	}
 
-	private void buildXml(EclipseProject project, File destination)
+	private static void buildXml(EclipseProject project, File destination)
 			throws IOException {
 		StringBuilder b = new StringBuilder();
 		b.append("<project name=\"" + project.name()

@@ -83,7 +83,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		}
 	}
 
-	private void copy(String from, String to) {
+	private static void copy(String from, String to) {
 		Copy copy = new Copy();
 		File fromFile = new File(from);
 		if (fromFile.isDirectory()) {
@@ -123,7 +123,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		return contentOf(pathToCachedTarget(target));
 	}
 
-	protected String contentOf(String path) throws IOException {
+	protected static String contentOf(String path) throws IOException {
 		FileReader reader = new FileReader(path);
 		StringBuilder actual = new StringBuilder();
 		int c;

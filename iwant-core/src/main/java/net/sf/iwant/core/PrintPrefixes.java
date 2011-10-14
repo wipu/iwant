@@ -22,7 +22,7 @@ class PrintPrefixes {
 		this.outPrefix = combined(prefix, "out:");
 	}
 
-	private String combined(String prefix, String postfix) {
+	private static String combined(String prefix, String postfix) {
 		return "".equals(prefix) ? "" : prefix + postfix;
 	}
 
