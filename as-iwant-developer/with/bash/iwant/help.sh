@@ -1,0 +1,1 @@
+../../../../iwant-bootstrapper/as-someone/with/bash/iwant/help.sh

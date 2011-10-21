@@ -1,8 +1,7 @@
 #!/bin/bash
 
 HERE=$(dirname "$0")
-HERE=$(readlink -f "$HERE")
-AS_SOMEONE=$(readlink -f "$HERE/../../..")
+AS_SOMEONE=$HERE/../../..
 cd "$AS_SOMEONE/with/ant/iw"
 
 iwant-messages-forwarded() {
