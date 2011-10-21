@@ -24,13 +24,12 @@
 		<property name="iwant-print-prefix" value="" />
 	</target>
 
-	<target name="iwant-src" depends="iwant-src-status,iwant-from-information, svnkit" unless="iwant-src-uptodate">
-		<echo message="TODO use -r $${iwant-rev} when set" />
-		<echo message="Exporting iwant src revision ${iwant-rev} from ${iwant-url}" />
+	<target name="iwant-src" depends="iwant-src-status, iwant-from-information, svnkit" unless="iwant-src-uptodate">
+		<delete file="${iwant-src.timestamp}" />
+		<delete dir="${iwant-src}" />
+		<echo message="Exporting iwant src from ${iwant-url}" />
 		<java classname="org.tmatesoft.svn.cli.SVN" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="export" />
-			<!--<arg value="-r" />
-			<arg value="${iwant-rev}" />-->
 			<arg value="${iwant-url}" />
 			<arg value="${iwant-src}" />
 			<classpath>
@@ -40,11 +39,28 @@
 				</fileset>
 			</classpath>
 		</java>
+		<touch file="${iwant-src.timestamp}" />
 	</target>
 
 	<target name="iwant-src-status" depends="iwant-from-information, cached-internal">
 		<property name="iwant-src" location="${cached-internal}/iwant-r${iwant-rev}" />
-		<available file="${iwant-src}" property="iwant-src-uptodate" />
+		<property name="iwant-src.timestamp" location="${iwant-src}.timestamp" />
+		<condition property="iwant-src-uptodate">
+			<and>
+				<available file="${iwant-src}" />
+				<!-- the following means "this is not iwant using itself or its sources are uptodate": -->
+				<or>
+					<not>
+						<equals arg1="${iwant-url-is-a-dir-and-its-content-may-change}" arg2="true" />
+					</not>
+					<uptodate targetfile="${iwant-src.timestamp}">
+						<srcfiles dir="${iwant-url}">
+							<exclude name="as-iwant-developer/**" />
+						</srcfiles>
+					</uptodate>
+				</or>
+			</and>
+		</condition>
 	</target>
 
 	<target name="svnkit" depends="svnkit-status, svnkit.zip" unless="svnkit-uptodate">

@@ -13,7 +13,9 @@
 		</java>
 	</target>
 
-	<target name="iwant-bin" depends="iwant-bin-status, iwant-classes, ext-jars" unless="iwant-bin-exists">
+	<target name="iwant-bin" depends="iwant-bin-status, iwant-classes, ext-jars" unless="iwant-bin-uptodate">
+		<delete file="${iwant-bin.timestamp}" />
+		<delete dir="${iwant-bin}" />
 		<mkdir dir="${iwant-bin}/iwant-core" />
 		<copy todir="${iwant-bin}/iwant-core">
 			<fileset dir="${iwant-classes}" />
@@ -21,11 +23,15 @@
 		<copy todir="${iwant-bin}" flatten="true">
 			<path refid="ext-jars" />
 		</copy>
+		<touch file="${iwant-bin.timestamp}" />
 	</target>
 
-	<target name="iwant-bin-status" depends="cached-internal">
+	<target name="iwant-bin-status" depends="cached-internal, iwant-classes-status">
 		<property name="iwant-bin" location="${cached-internal}/bin" />
-		<available file="${iwant-bin}" property="iwant-bin-exists" />
+		<property name="iwant-bin.timestamp" location="${iwant-bin}.timestamp" />
+		<uptodate property="iwant-bin-uptodate" targetfile="${iwant-bin.timestamp}">
+			<srcfiles file="${iwant-classes.timestamp}" />
+		</uptodate>
 	</target>
 
 	<target name="as-somebody" depends="iwant-print-prefix">
@@ -41,6 +47,7 @@
 	</target>
 
 	<target name="iwant-classes" depends="iwant-classes-status, ext-jars" unless="iwant-classes-uptodate">
+		<delete file="${iwant-classes.timestamp}" />
 		<delete dir="${iwant-classes}" />
 		<mkdir dir="${iwant-classes}" />
 		<javac destdir="${iwant-classes}" debug="true" source="1.6" target="1.6" includeantruntime="false">
@@ -52,11 +59,16 @@
 				<path refid="ext-jars" />
 			</classpath>
 		</javac>
+		<touch file="${iwant-classes.timestamp}" />
 	</target>
 
 	<target name="iwant-classes-status" depends="cached-internal">
 		<property name="iwant-classes" location="${cached-internal}/iwant-classes" />
-		<available file="${iwant-classes}" property="iwant-classes-uptodate" />
+		<property name="iwant-classes.timestamp" location="${iwant-classes}.timestamp" />
+		<uptodate property="iwant-classes-uptodate" targetfile="${iwant-classes.timestamp}">
+			<srcfiles dir="../../../iwant-core/src/main/java" includes="**/*" />
+			<srcfiles dir="../../../iwant-core/src/test/java" includes="**/*" />
+		</uptodate>
 	</target>
 
 	<target name="ext-jars" depends="ant.jar, ant-junit.jar, junit.jar">

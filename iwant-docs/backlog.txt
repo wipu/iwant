@@ -292,7 +292,9 @@
     + so instead: just symlink the individual boostrap phase1 files (help.sh, build.xml) under
       versioned with/{ant/iw,bash/iwant} dirs
   - rebuild iwant-bin iff sources have been touched so we get latest functionality in use
-    - the normal depends=...status unless=...-uptodate for classes and bin
+    + the normal depends=...status unless=...-uptodate for classes and bin
+    + also phase1 svn export needs to be redone iff i-have/iwant-from.conf states the iwant-url
+      is a dir and its content might change (and in iwant we do state that)
   - replace versioned eclipse settings with built ones
     - define all eclipse projects using iwant
     - document copying them in place
@@ -306,6 +308,14 @@
   - implement path(Path path)
   - use in the descript script content target
   - use in the gluent project
+
+- As @buildscriptauthor I don't want to use iwant-rev in i-have/iwant-from.conf but just point iwant-url to a published tag so I can more easily point to a stable publication instead of a "random" rev
+  * also easier to implement: it's always just iwant-url
+  - don't require it
+  - remove from generated i-have/iwant-from.conf
+
+- As @developer I want iwant-url replaced with iwant-from, because it's not an url in the iwant workspace
+  * and when iwant-rev has been removed, the file iwant-from.conf only contains iwant-from
 
 - "reactive" bugfix: print prefix in an ant message (how is this possible?) won't cause that line to be printed when using bash
 
