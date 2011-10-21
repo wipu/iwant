@@ -14,7 +14,7 @@ import org.apache.tools.ant.ExitStatusException;
 
 public class Iwant {
 
-	private static class IwantException extends Exception {
+	static class IwantException extends RuntimeException {
 
 		public IwantException(String message) {
 			super(message);
@@ -26,18 +26,22 @@ public class Iwant {
 
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		try {
-			targetAsPath(args);
+			wish(args);
 		} catch (IwantException e) {
 			System.err.println(PrintPrefixes.fromSystemProperty().multiLineErr(
 					e.getMessage()));
 			System.exit(1);
+		} catch (Exception e) {
+			System.err.println(PrintPrefixes.fromSystemProperty().multiLineErr(
+					e.getMessage()));
+			// TODO test and implement prefixed stack trace and exit 1
+			throw e;
 		}
 	}
 
-	private static void targetAsPath(String[] args) throws IwantException,
-			IOException {
+	private static void wish(String[] args) throws IwantException, IOException {
 		File iHave = new File(args[0], "i-have");
 		String wish = args[1];
 		File iwantLibs = new File(args[2]);

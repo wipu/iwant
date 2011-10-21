@@ -2,7 +2,6 @@ package net.sf.iwant.core;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.security.Permission;
 
 public class IwantTest extends WorkspaceBuilderTestBase {
@@ -53,7 +52,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		super.tearDown();
 	}
 
-	public void testMissingAsSomebodyIsAnInternalFailure() throws IOException {
+	public void testMissingAsSomebodyIsAnInternalFailure() throws Exception {
 		try {
 			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "",
 					iwantLibs });
@@ -63,10 +62,11 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 					+ "/as-x-developer/i-have", e.getMessage());
 		}
 		assertEquals("", out());
-		assertEquals("", err());
+		assertEquals("perr:Internal error: missing " + wsRoot()
+				+ "/as-x-developer/i-have\n", err());
 	}
 
-	public void testMissingIHaveIsAnInternalFailure() throws IOException {
+	public void testMissingIHaveIsAnInternalFailure() throws Exception {
 		directoryExists("as-x-developer");
 		try {
 			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "",
@@ -77,11 +77,12 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 					+ "/as-x-developer/i-have", e.getMessage());
 		}
 		assertEquals("", out());
-		assertEquals("", err());
+		assertEquals("perr:Internal error: missing " + wsRoot()
+				+ "/as-x-developer/i-have\n", err());
 	}
 
 	public void testMissingIHaveWsInfoGetsCreatedThenBuildAborts()
-			throws IOException {
+			throws Exception {
 		directoryExists("as-x-developer/i-have");
 		try {
 			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "",
@@ -102,7 +103,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 	}
 
 	public void testMissingWsDefJavaGetsCreatedThenBuildAborts()
-			throws IOException {
+			throws Exception {
 		directoryExists("as-x-developer/i-have");
 		file("as-x-developer/i-have/ws-info.conf").withContent();
 		line("WSNAME=test");
@@ -132,7 +133,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				.contains("class TestWorkspace implements WorkspaceDefinition {"));
 	}
 
-	public void testEmptyWishCausesAHelpMessage() throws IOException {
+	public void testEmptyWishCausesAHelpMessage() throws Exception {
 		testMissingWsDefJavaGetsCreatedThenBuildAborts();
 		startOfOutAndErrCapture();
 		try {
@@ -147,7 +148,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				err().startsWith("perr:Please tell what you want."));
 	}
 
-	public void testEmptyWishAlsoGeneratesWishScripts() throws IOException {
+	public void testEmptyWishAlsoGeneratesWishScripts() throws Exception {
 		testEmptyWishCausesAHelpMessage();
 		// just a few examples asserted, descript tests more:
 		assertEquals("#!/bin/bash\n" + "HERE=$(dirname \"$0\")\n"
@@ -166,7 +167,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 	}
 
 	public void testWishScriptsAreNotDeletedWhenTargetDetectionFails()
-			throws IOException {
+			throws Exception {
 		testEmptyWishAlsoGeneratesWishScripts();
 		file(
 				"as-x-developer/i-have/wsdef/net/sf/iwant/test/wsdef/TestWorkspace.java")
@@ -196,7 +197,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 	}
 
 	public void testListOfTargetsWorksAndRenamesWishScriptAfterTargetRename()
-			throws IOException {
+			throws Exception {
 		testEmptyWishAlsoGeneratesWishScripts();
 
 		startOfOutAndErrCapture();
@@ -224,7 +225,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				.exists());
 	}
 
-	public void testListOfTargets() throws IOException {
+	public void testListOfTargets() throws Exception {
 		testMissingWsDefJavaGetsCreatedThenBuildAborts();
 		startOfOutAndErrCapture();
 
@@ -235,7 +236,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 	}
 
 	public void testRefreshingNonExistentTargetCausesErrorMessage()
-			throws IOException {
+			throws Exception {
 		testMissingWsDefJavaGetsCreatedThenBuildAborts();
 		startOfOutAndErrCapture();
 		try {
@@ -251,7 +252,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				err());
 	}
 
-	public void testRefreshingOfAConstant() throws IOException {
+	public void testRefreshingOfAConstant() throws Exception {
 		testMissingWsDefJavaGetsCreatedThenBuildAborts();
 		startOfOutAndErrCapture();
 

@@ -257,6 +257,9 @@
   + test manually to make sure it really streams (tests don't test that)
     * exec seems to buffer and output the stream in bursts, see a later story
 
++ bugfix: As @developer I want internal errors prefixed too, so users can report them
+  + catch Exception, not only IwantException, and print prefixed
+
 #################################################################
 = In progress
 #################################################################
@@ -298,6 +301,8 @@
   - use in the gluent project
 
 - "reactive" bugfix: print prefix in an ant message (how is this possible?) won't cause that line to be printed when using bash
+
+- enhancement: As @developer I want internal error stacktraces printed prefixed so I can debug more easily
 
 - As @buildscriptuser I want script generated content (e.g. iwant descripts) to refresh stderr more frequently, if java exec allows this, so it will be easier and more reliable to track script progress
 
