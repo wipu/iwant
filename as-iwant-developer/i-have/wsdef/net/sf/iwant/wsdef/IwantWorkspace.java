@@ -48,12 +48,32 @@ public class IwantWorkspace implements WorkspaceDefinition {
 		}
 
 		public Target<Concatenated> localAntBootstrappingTutorialScript() {
+			return bootstrappingTutorialScript(
+					"localAntBootstrappingTutorialScript",
+					"bootstrapping-with-ant.sh");
+		}
+
+		public Target<ScriptGeneratedContent> localBashBootstrappingTutorial() {
+			return target("localBashBootstrappingTutorial").content(
+					ScriptGeneratedContent
+							.of(localBashBootstrappingTutorialScript())).end();
+		}
+
+		public Target<Concatenated> localBashBootstrappingTutorialScript() {
+			return bootstrappingTutorialScript(
+					"localBashBootstrappingTutorialScript",
+					"bootstrapping-with-bash.sh");
+		}
+
+		private Target<Concatenated> bootstrappingTutorialScript(
+				String targetName, String descriptFileName) {
 			// TODO depend on these so we get refreshed when they have been
 			// modified:
 			String descriptSh = locations.wsRoot()
 					+ "/iwant-lib-descript/descript.sh";
 			String docSh = locations.wsRoot()
-					+ "/iwant-docs/src/main/descript/tutorial/bootstrapping-with-ant.sh";
+					+ "/iwant-docs/src/main/descript/tutorial/"
+					+ descriptFileName;
 
 			StringBuilder b = new StringBuilder();
 			b.append("#!/bin/bash\n");
@@ -63,7 +83,7 @@ public class IwantWorkspace implements WorkspaceDefinition {
 					+ "/iwant-iwant/iwant\" bash \"" + descriptSh + "\"");
 			b.append(" \"" + docSh + "\"");
 			b.append(" \"$DEST\" true\n");
-			return target("localAntBootstrappingTutorialScript").content(
+			return target(targetName).content(
 					Concatenated.from().string(b.toString()).end()).end();
 		}
 

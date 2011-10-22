@@ -279,8 +279,17 @@
     + iwant main classes
     - local tutorial
     + local ant bootstrapping
-    - local bash bootstrapping
+    + local bash bootstrapping
     - local website
+  - online tutorial targets
+    - static html links to bootstrapping
+    - ant bootstrapping
+    - bash bootstrapping
+    - tutorial
+      - target
+      - shorten bootstrapping, already covered in bootstrapping tutorial
+    - website
+    - publish and mark this story done
   + symbolic link to bootstrapper so we use latest and to reduce network traffic for users
     (- remove ".." from paths with something else than "File.getCanonicalPath()" and "readlink -f", because they both break symlinks (resolve away)
       - for dirs, use the old (cd DIR && pwd) trick
@@ -291,14 +300,10 @@
       iwant-bootstrapper)
     + so instead: just symlink the individual boostrap phase1 files (help.sh, build.xml) under
       versioned with/{ant/iw,bash/iwant} dirs
-  - rebuild iwant-bin iff sources have been touched so we get latest functionality in use
+  + rebuild iwant-bin iff sources have been touched so we get latest functionality in use
     + the normal depends=...status unless=...-uptodate for classes and bin
     + also phase1 svn export needs to be redone iff i-have/iwant-from.conf states the iwant-url
       is a dir and its content might change (and in iwant we do state that)
-  - replace versioned eclipse settings with built ones
-    - define all eclipse projects using iwant
-    - document copying them in place
-    - refine eclipse stories and implement to make it more usable
 
 #################################################################
 = Planned
@@ -326,6 +331,16 @@
 - As @buildscriptauthor I want bootstrapper to help generate eclipse settings before telling to edit the workspace definition, because I want to use eclipse for editing it
 
 - bugfix: eclipse settings project directory is as-\$WSNAME"-developer instead of as-iwant-developer
+
+- As @developer I want generated eclipse settings so no more duplicate classpaths
+  - define all eclipse projects using iwant
+  - document copying them in place
+    OR: see story about side-effects
+  - refine eclipse stories and implement to make it more usable
+
+- As @buildscriptauthor I want to define side-effects, not only targets, so that I can e.g. put eclipse settings in place
+  * clear separation: iwant/target/.../as-path and iwant/side-effect/.../effective
+  * technically probably much like target
 
 - If needed for performance, as @buildscriptuser I don't want iwant bootstrapper to check timestamps but instead trust that iwant-bin is unmodifiable
 
