@@ -65,6 +65,16 @@ public class IwantWorkspace implements WorkspaceDefinition {
 					"bootstrapping-with-bash.sh");
 		}
 
+		public Target<ScriptGeneratedContent> localTutorial() {
+			return target("localTutorial").content(
+					ScriptGeneratedContent.of(localTutorialScript())).end();
+		}
+
+		public Target<Concatenated> localTutorialScript() {
+			return bootstrappingTutorialScript("localTutorialScript",
+					"article.sh");
+		}
+
 		private Target<Concatenated> bootstrappingTutorialScript(
 				String targetName, String descriptFileName) {
 			// TODO depend on these so we get refreshed when they have been

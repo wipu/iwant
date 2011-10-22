@@ -278,16 +278,22 @@
   - development-time targets in wsdef
     + iwant main classes
     - local tutorial
+      + target
+      - use new bootstrapping, tersely (alreay covered in bs tutorials)
     + local ant bootstrapping
     + local bash bootstrapping
     - local website
+      - new Content: directory with files
+        - svn:extern from gluent
+        - test and implement Content around it
+      - dir with three tutorials and iwant-docs/src/main/html/website/*
   - online tutorial targets
     - static html links to bootstrapping
     - ant bootstrapping
     - bash bootstrapping
     - tutorial
       - target
-      - shorten bootstrapping, already covered in bootstrapping tutorial
+      - make sure new bootstrapping works
     - website
     - publish and mark this story done
   + symbolic link to bootstrapper so we use latest and to reduce network traffic for users
@@ -321,6 +327,12 @@
 
 - As @developer I want iwant-url replaced with iwant-from, because it's not an url in the iwant workspace
   * and when iwant-rev has been removed, the file iwant-from.conf only contains iwant-from
+
+- As programmer I want to reuse another project integrating on source and build level so I don't need hassle with binary releases
+  * dependencies could be handled through an interface per classpathitem in the Path that defines the needer
+  * then both sides can define those whatever way thay want, binary or source
+  * TODO more stories: what if 3rd party binary dep could declare version constraints like
+    "at least 2.x"
 
 - "reactive" bugfix: print prefix in an ant message (how is this possible?) won't cause that line to be printed when using bash
 
