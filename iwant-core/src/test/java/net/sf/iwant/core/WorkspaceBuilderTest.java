@@ -859,16 +859,62 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("new src content\n", cachedContent("copyOfSrc"));
 	}
 
-	public void testConcatenatedTargetAndBytesAndString() throws IOException {
+	public void testAnotherTargetContentAndBytesConcatenated()
+			throws IOException {
 		new FileWriter(wsRoot() + "/src").append("src content\n").close();
 		at(WorkspaceWithConcatenatedContent.class).iwant(
-				"target/anotherTargetAndBytesConcatenated/as-path");
+				"target/anotherTargetContentAndBytesConcatenated/as-path");
 
-		assertEquals(pathLine("anotherTargetAndBytesConcatenated"), out());
+		assertEquals(pathLine("anotherTargetContentAndBytesConcatenated"),
+				out());
 		assertEquals("", err());
 
 		assertEquals("src content\nABC\nDEF\n",
-				cachedContent("anotherTargetAndBytesConcatenated"));
+				cachedContent("anotherTargetContentAndBytesConcatenated"));
+	}
+
+	public void testAnotherTargetPathAndStringConcatenated() throws IOException {
+		new FileWriter(wsRoot() + "/src").append("src content\n").close();
+		at(WorkspaceWithConcatenatedContent.class).iwant(
+				"target/anotherTargetPathAndStringConcatenated/as-path");
+
+		assertEquals(pathLine("anotherTargetPathAndStringConcatenated"), out());
+		assertEquals("", err());
+
+		assertEquals("path=" + pathToCachedTarget("copyOfSrc"),
+				cachedContent("anotherTargetPathAndStringConcatenated"));
+	}
+
+	/**
+	 * TODO actually we shouldn't refresh, but this is so far the easiest way of
+	 * ensuring scripts get rerun when paths referenced in them have been
+	 * refreshed, because this way the scripts themselves get touched.
+	 */
+	public void testAnotherTargetPathAndStringConcatenatedIsRefreshedWhenSrcChanges()
+			throws IOException, InterruptedException {
+		testAnotherTargetPathAndStringConcatenated();
+		long firstModTime = new File(
+				pathToCachedTarget("anotherTargetPathAndStringConcatenated"))
+				.lastModified();
+
+		Thread.sleep(1000);
+		startOfOutAndErrCapture();
+		new FileWriter(wsRoot() + "/src").append("modified src content\n")
+				.close();
+		at(WorkspaceWithConcatenatedContent.class).iwant(
+				"target/anotherTargetPathAndStringConcatenated/as-path");
+
+		assertEquals(pathLine("anotherTargetPathAndStringConcatenated"), out());
+		assertEquals("", err());
+
+		// ingredient shall be fresh:
+		assertEquals("modified src content\n", cachedContent("copyOfSrc"));
+		// and target itself also:
+		long newModTime = new File(
+				pathToCachedTarget("anotherTargetPathAndStringConcatenated"))
+				.lastModified();
+		assertTrue(newModTime + " should have been > " + firstModTime,
+				newModTime > firstModTime);
 	}
 
 }

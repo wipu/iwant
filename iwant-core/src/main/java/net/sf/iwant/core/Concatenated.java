@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -44,6 +46,11 @@ public class Concatenated implements Content {
 		}
 
 		public ConcatenatedBuilder contentOf(Path path) {
+			fragments.add(new PathContentFragment(path));
+			return this;
+		}
+
+		public ConcatenatedBuilder pathTo(Path path) {
 			fragments.add(new PathFragment(path));
 			return this;
 		}
@@ -58,6 +65,8 @@ public class Concatenated implements Content {
 
 		void writeTo(FileWriter out, RefreshEnvironment refresh)
 				throws IOException;
+
+		Collection<? extends Path> ingredients();
 
 	}
 
@@ -79,19 +88,23 @@ public class Concatenated implements Content {
 			out.write(value);
 		}
 
+		public Collection<? extends Path> ingredients() {
+			return Collections.emptySet();
+		}
+
 	}
 
-	private static class PathFragment implements Fragment {
+	private static class PathContentFragment implements Fragment {
 
 		private final Path value;
 
-		public PathFragment(Path value) {
+		public PathContentFragment(Path value) {
 			this.value = value;
 		}
 
 		@Override
 		public String toString() {
-			return "path:" + value;
+			return "content-of:" + value;
 		}
 
 		public void writeTo(FileWriter out, RefreshEnvironment refresh)
@@ -107,6 +120,34 @@ public class Concatenated implements Content {
 				}
 				out.write(c);
 			}
+		}
+
+		public Collection<? extends Path> ingredients() {
+			return Collections.singleton(value);
+		}
+
+	}
+
+	private static class PathFragment implements Fragment {
+
+		private final Path value;
+
+		public PathFragment(Path value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return "path-of:" + value;
+		}
+
+		public void writeTo(FileWriter out, RefreshEnvironment refresh)
+				throws IOException {
+			out.append(value.asAbsolutePath(refresh.locations()));
+		}
+
+		public Collection<? extends Path> ingredients() {
+			return Collections.singleton(value);
 		}
 
 	}
@@ -131,15 +172,16 @@ public class Concatenated implements Content {
 			}
 		}
 
+		public Collection<? extends Path> ingredients() {
+			return Collections.emptySet();
+		}
+
 	}
 
 	public SortedSet<Path> ingredients() {
 		SortedSet<Path> ingredients = new TreeSet<Path>();
 		for (Fragment fragment : fragments) {
-			if (fragment instanceof PathFragment) {
-				PathFragment pathFragment = (PathFragment) fragment;
-				ingredients.add(pathFragment.value);
-			}
+			ingredients.addAll(fragment.ingredients());
 		}
 		return ingredients;
 	}

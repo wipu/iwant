@@ -268,6 +268,12 @@
 = In progress
 #################################################################
 
+- bugfix: as @buildscriptauthor I want to append Paths explicitly as Paths to Concatenated content so the target will be refreshed when the paths have been touched
+  + test
+  + implement path(Path path)
+  + use in the descript script content target
+  - use in the gluent project
+
 - As @developer I want iwant to bootstrap itself properly so I can get rid of the first generation bootstrapping hack scripts that are no more fun to maintain
   + bootstrapper as svn:externals, mainly for "real-life testing"
   * we could put the whole bootstrapper under as-iwant-developer, but that would look silly in the url users use, symlink/external/whatever more explicitly documents that iwant _uses_ itself for bootstrapping
@@ -299,8 +305,10 @@
       (not yet: - new Content: directory with files
         - svn:extern from gluent
         - test and implement Content around it)
-      * for now just use ScriptGeneratedContent
-      - dir with three tutorials and iwant-docs/src/main/html/website/*
+      - for now just use ScriptGeneratedContent
+        + impl bugfix story about correctly depending on Path ingredients, otherwise website won't be
+          refreshed when a tutorial has changed
+        - dir with three tutorials and iwant-docs/src/main/html/website/*
   - online tutorial targets
     - static html links to bootstrapping
     - ant bootstrapping
@@ -341,12 +349,11 @@
 
 - As @buildscriptauthor I want WsDefClasses to put contentdescription in a different cache dir than my own targets, to avoid name clashes (just like the actual cached content already does)
 
-- bugfix: As @developer I want to see an error message when bootstrap fails because of compilation error caused by missing svn add of new file 
+- As @buildscriptauthor I want to define extra ingredients not mentioned in a script but indirectly needed at runtime so the script will be rerun when those ingredients have changed
+  * e.g. bootstrapping-with-bash.sh sources bootstrapping-with-ant.sh and
+         descript.sh sources descript-functions.sh
 
-- bugfix: as @buildscriptauthor I want to append Paths explicitly as Paths to Concatenated content so the target will be refreshed when the paths have been touched
-  - implement path(Path path)
-  - use in the descript script content target
-  - use in the gluent project
+- bugfix: As @developer I want to see an error message when bootstrap fails because of compilation error caused by missing svn add of new file 
 
 - As @developer I want to refactor all ouput to go through the same interface, to make sure everything is prefixed, and to perhaps control verboseness later
 

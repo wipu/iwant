@@ -1,6 +1,7 @@
 package net.sf.iwant.wsdef;
 
 import net.sf.iwant.core.Concatenated;
+import net.sf.iwant.core.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.core.ContainerPath;
 import net.sf.iwant.core.EclipseProject;
 import net.sf.iwant.core.EclipseProjects;
@@ -50,7 +51,7 @@ public class IwantWorkspace implements WorkspaceDefinition {
 		public Target<Concatenated> localAntBootstrappingTutorialScript() {
 			return bootstrappingTutorialScript(
 					"localAntBootstrappingTutorialScript",
-					"bootstrapping-with-ant.sh");
+					bootstrappingWithAntSh());
 		}
 
 		public Target<ScriptGeneratedContent> localBashBootstrappingTutorial() {
@@ -62,7 +63,7 @@ public class IwantWorkspace implements WorkspaceDefinition {
 		public Target<Concatenated> localBashBootstrappingTutorialScript() {
 			return bootstrappingTutorialScript(
 					"localBashBootstrappingTutorialScript",
-					"bootstrapping-with-bash.sh");
+					bootstrappingWithBashSh());
 		}
 
 		public Target<ScriptGeneratedContent> localTutorial() {
@@ -72,29 +73,37 @@ public class IwantWorkspace implements WorkspaceDefinition {
 
 		public Target<Concatenated> localTutorialScript() {
 			return bootstrappingTutorialScript("localTutorialScript",
-					"article.sh");
+					articleSh());
+		}
+
+		private Source descriptSh() {
+			return source("iwant-lib-descript/descript.sh");
+		}
+
+		private Source articleSh() {
+			return source("iwant-docs/src/main/descript/tutorial/article.sh");
+		}
+
+		private Source bootstrappingWithAntSh() {
+			return source("iwant-docs/src/main/descript/tutorial/bootstrapping-with-ant.sh");
+		}
+
+		private Source bootstrappingWithBashSh() {
+			return source("iwant-docs/src/main/descript/tutorial/bootstrapping-with-bash.sh");
 		}
 
 		private Target<Concatenated> bootstrappingTutorialScript(
-				String targetName, String descriptFileName) {
-			// TODO depend on these so we get refreshed when they have been
-			// modified:
-			String descriptSh = locations.wsRoot()
-					+ "/iwant-lib-descript/descript.sh";
-			String docSh = locations.wsRoot()
-					+ "/iwant-docs/src/main/descript/tutorial/"
-					+ descriptFileName;
-
-			StringBuilder b = new StringBuilder();
-			b.append("#!/bin/bash\n");
-			b.append("set -eu\n");
-			b.append("DEST=$1\n");
-			b.append("LOCAL_IWANT_WSROOT=\"" + locations.wsRoot()
-					+ "\" bash \"" + descriptSh + "\"");
-			b.append(" \"" + docSh + "\"");
-			b.append(" \"$DEST\" true\n");
-			return target(targetName).content(
-					Concatenated.from().string(b.toString()).end()).end();
+				String targetName, Source tutorialSh) {
+			ConcatenatedBuilder b = Concatenated.from();
+			b.string("#!/bin/bash\n");
+			b.string("set -eu\n");
+			b.string("DEST=$1\n");
+			b.string(
+					"LOCAL_IWANT_WSROOT=\"" + locations.wsRoot() + "\" bash \"")
+					.pathTo(descriptSh()).string("\"");
+			b.string(" \"").pathTo(tutorialSh).string("\"");
+			b.string(" \"$DEST\" true\n");
+			return target(targetName).content(b.end()).end();
 		}
 
 		public EclipseProject wsdefEclipseProject() {

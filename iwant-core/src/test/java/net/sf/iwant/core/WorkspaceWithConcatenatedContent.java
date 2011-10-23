@@ -17,11 +17,17 @@ public class WorkspaceWithConcatenatedContent implements WorkspaceDefinition {
 					Concatenated.from().contentOf(src()).end()).end();
 		}
 
-		public Target<Concatenated> anotherTargetAndBytesConcatenated() {
-			return target("anotherTargetAndBytesConcatenated").content(
+		public Target<Concatenated> anotherTargetContentAndBytesConcatenated() {
+			return target("anotherTargetContentAndBytesConcatenated").content(
 					Concatenated.from().contentOf(copyOfSrc())
 							.bytes('A', 'B', 'C', '\n').string("DEF\n").end())
 					.end();
+		}
+
+		public Target<Concatenated> anotherTargetPathAndStringConcatenated() {
+			return target("anotherTargetPathAndStringConcatenated").content(
+					Concatenated.from().string("path=").pathTo(copyOfSrc())
+							.end()).end();
 		}
 
 	}
