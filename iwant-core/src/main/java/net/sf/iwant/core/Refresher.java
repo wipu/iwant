@@ -30,16 +30,24 @@ class Refresher {
 		for (Target<?> dependency : target.dependencies()) {
 			refresh(dependency);
 		}
-		if (needsRefreshing(target))
+		if (needsRefreshing(target)) {
 			doRefresh(target);
+		}
 	}
 
 	private boolean needsRefreshing(Target<?> target) throws IOException {
 		Long targetTimestamp = timestampReader.modificationTime(target);
-		if (targetTimestamp == null)
+		if (targetTimestamp == null) {
+			TextOutput.debugLog("Needs refreshing, because target missing: "
+					+ target);
 			return true;
-		if (hasContentDefinitionChanged(target))
+		}
+		if (hasContentDefinitionChanged(target)) {
+			TextOutput
+					.debugLog("Needs refreshing, because content definition changed: "
+							+ target);
 			return true;
+		}
 		for (Path ingredient : target.ingredients()) {
 			Long sourceTimestamp = timestampReader.modificationTime(ingredient);
 			if (sourceTimestamp == null) {
@@ -47,9 +55,15 @@ class Refresher {
 				// whether this is OK or not.
 				// TODO should we log a warning, in case the user would like to
 				// remove the source declaration
+				TextOutput
+						.debugLog("Needs refreshing, because ingredient missing: "
+								+ target + " (ingredient: " + ingredient + ")");
 				return true;
 			}
 			if (sourceTimestamp > targetTimestamp) {
+				TextOutput
+						.debugLog("Needs refreshing, because ingredient changed: "
+								+ target + " (ingredient: " + ingredient + ")");
 				return true;
 			}
 		}
@@ -66,6 +80,7 @@ class Refresher {
 	}
 
 	private void doRefresh(Target<?> target) throws Exception {
+		TextOutput.debugLog("Refreshing " + target);
 		target.content().refresh(
 				new RefreshEnvironment(new File(target
 						.asAbsolutePath(locations)), temporaryDirectory,

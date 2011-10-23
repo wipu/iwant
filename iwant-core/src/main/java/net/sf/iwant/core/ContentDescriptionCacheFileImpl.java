@@ -16,6 +16,8 @@ class ContentDescriptionCacheFileImpl implements ContentDescriptionCache {
 
 	public void cacheContentDescription(Target<?> target) throws IOException {
 		String filename = cacheNameFor(target);
+		TextOutput.debugLog("Caching content description of " + target + " to "
+				+ filename);
 		new FileWriter(filename, false).append(
 				target.content().definitionDescription()).close();
 	}
@@ -27,8 +29,9 @@ class ContentDescriptionCacheFileImpl implements ContentDescriptionCache {
 	public String retrieveContentDescription(Target<?> target)
 			throws IOException {
 		File file = new File(cacheNameFor(target));
-		if (!file.exists())
+		if (!file.exists()) {
 			return null;
+		}
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		StringBuilder b = new StringBuilder();
 		String line;

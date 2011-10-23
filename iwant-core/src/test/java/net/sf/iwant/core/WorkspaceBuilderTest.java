@@ -212,7 +212,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 		at(WorkspaceWithJunitTests.class).iwant("target/testResult/as-path");
 		assertEquals(pathLine("testResult"), out());
-		assertTrue(err().contains("ATest FAILED"));
+		assertEquals("perr:Test ATest FAILED\n", err());
 	}
 
 	public void testJunitResultOfPassingTest() throws Exception {
@@ -377,7 +377,9 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				"target/aDownloadedFile/as-path");
 		assertEquals(pathLine("aDownloadedFile") + pathLine("aDownloadedFile"),
 				out());
-		assertEquals("Getting: file:" + mockWeb() + "/aFileInTheWeb\n" + "To: "
+		assertEquals("perr:Downloading file://" + mockWeb()
+				+ "/aFileInTheWeb\nGetting: file:" + mockWeb()
+				+ "/aFileInTheWeb\n" + "To: "
 				+ pathToCachedTarget("aDownloadedFile") + "\n", err());
 		assertEquals("correct\n", cachedContent("aDownloadedFile"));
 
@@ -540,8 +542,9 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		bc.append("        <classpathentry kind=\"src\" path=\"src\"/>\n");
 		bc.append("        <classpathentry kind=\"src\" path=\"tests\"/>\n");
 		bc.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
-		bc.append("        <classpathentry kind=\"lib\" path=\"" + testarea()
-				+ "/iwant/cpitems/junit-3.8.1.jar\"/>\n");
+		bc.append("        <classpathentry kind=\"lib\" path=\""
+				+ testarea()
+				+ "/.internal/iwant-r/iwant-bootstrapper/phase2/iw/cached/.internal/bin/junit-3.8.1.jar\"/>\n");
 		bc.append("        <classpathentry kind=\"output\" path=\"classes\"/>\n");
 		bc.append("</classpath>\n");
 		assertEquals(bc.toString(),

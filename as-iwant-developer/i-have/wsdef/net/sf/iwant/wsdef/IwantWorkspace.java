@@ -89,8 +89,8 @@ public class IwantWorkspace implements WorkspaceDefinition {
 			b.append("#!/bin/bash\n");
 			b.append("set -eu\n");
 			b.append("DEST=$1\n");
-			b.append("LOCAL_IWANT=\"" + locations.wsRoot()
-					+ "/iwant-iwant/iwant\" bash \"" + descriptSh + "\"");
+			b.append("LOCAL_IWANT_WSROOT=\"" + locations.wsRoot()
+					+ "\" bash \"" + descriptSh + "\"");
 			b.append(" \"" + docSh + "\"");
 			b.append(" \"$DEST\" true\n");
 			return target(targetName).content(

@@ -12,8 +12,10 @@ class TimestampReaderFileImpl implements TimestampReader {
 
 	public Long modificationTime(Path path) {
 		File file = new File(path.asAbsolutePath(locations));
-		if (!file.exists())
+		if (!file.exists()) {
+			TextOutput.debugLog("File does not exist: " + file);
 			return null;
+		}
 		return modificationTime(file);
 	}
 

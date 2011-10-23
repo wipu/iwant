@@ -95,8 +95,13 @@ public class JunitResult implements Content {
 			System.setOut(sysout);
 		}
 		if (!listener.failures().isEmpty()) {
-			for (String failure : listener.failures())
-				System.err.println(failure);
+			for (String failure : listener.failures()) {
+				String prefixedFailure = PrintPrefixes.fromSystemProperty()
+						.multiLineErr(failure);
+				TextOutput.debugLog("Warning user about test failure: "
+						+ prefixedFailure);
+				System.err.println(prefixedFailure);
+			}
 		}
 	}
 
@@ -118,12 +123,16 @@ public class JunitResult implements Content {
 		}
 
 		public synchronized void messageLogged(BuildEvent e) {
-			if (e.getTask() == null)
+			if (e.getTask() == null) {
 				return;
-			if (!JUnitTask.class.equals(e.getTask().getClass()))
+			}
+			if (!JUnitTask.class.equals(e.getTask().getClass())) {
 				return;
-			if (e.getPriority() <= Project.MSG_ERR)
+			}
+			if (e.getPriority() <= Project.MSG_ERR) {
 				this.failures.add(e.getMessage());
+				TextOutput.debugLog("Junit test failed: " + e.getMessage());
+			}
 		}
 
 		public synchronized List<String> failures() {

@@ -73,17 +73,18 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		mockWeb = testarea + "/mock-web";
 		ensureEmpty(mockWeb);
 
-		String cpitems = testarea + "/iwant/cpitems";
+		String iwantBin = testarea
+				+ "/.internal/iwant-r/iwant-bootstrapper/phase2/iw/cached/.internal/bin";
 		String eclipseClasses = testarea + "/../../classes";
 		if (new File(eclipseClasses).exists()) {
-			ensureEmpty(cpitems + "/iwant-core");
-			copy(eclipseClasses, cpitems + "/iwant-core");
+			ensureEmpty(iwantBin + "/iwant-core");
+			copy(eclipseClasses, iwantBin + "/iwant-core");
 			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-1.7.1.jar",
-					cpitems);
+					iwantBin);
 			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar",
-					cpitems);
+					iwantBin);
 			copy(testarea + "/../../../iwant-lib-junit-3.8.1/junit-3.8.1.jar",
-					cpitems);
+					iwantBin);
 		}
 	}
 

@@ -15,7 +15,8 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		super.setUp();
 		origSecman = System.getSecurityManager();
 		System.setSecurityManager(new ExitCatcher());
-		iwantLibs = testarea() + "/iwant/cpitems";
+		iwantLibs = testarea()
+				+ "/.internal/iwant-r/iwant-bootstrapper/phase2/iw/cached/.internal/bin";
 	}
 
 	private static class ExitCalledException extends SecurityException {

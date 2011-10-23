@@ -2,6 +2,7 @@ package net.sf.iwant.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.SortedSet;
 
 import org.apache.tools.ant.BuildEvent;
@@ -16,6 +17,7 @@ public class WorkspaceBuilder {
 			.fromPrefix(":iwant-phase2:");
 
 	public static void main(String[] args) {
+		TextOutput.debugLog("WorkspaceBuilder.main: " + Arrays.toString(args));
 		try {
 			build(args);
 		} catch (Exception e) {
@@ -34,12 +36,14 @@ public class WorkspaceBuilder {
 		String wsRootArg = toAbs(args[1]);
 		String targetArg = args[2];
 		String cacheDir = toAbs(args[3]);
+		String libsDir = toAbs(cacheDir
+				+ "/../.internal/iwant-r/iwant-bootstrapper/phase2/iw/cached/.internal/bin");
 		Locations locations = new Locations(wsRootArg, wsRootArg
-				+ "/todo-fix-path-to-as-someone", cacheDir, cacheDir
-				+ "/todo-fix-path-to-iwant-libs");
+				+ "/todo-fix-path-to-as-someone", cacheDir, libsDir);
 		ContainerPath wsRoot = wsRoot(wsDef, locations);
 		NextPhase nextPhase = PathDigger.nextPhase(wsRoot);
 		if (nextPhase != null) {
+			TextOutput.debugLog("Fresh NextPhase needed: " + nextPhase);
 			freshTargetAsPath(nextPhase.classes(), locations);
 		}
 		if ("list-of/targets".equals(targetArg)) {
@@ -85,12 +89,11 @@ public class WorkspaceBuilder {
 	}
 
 	static String freshTargetAsPath(Target<?> target, Locations locations) {
+		TextOutput.debugLog("freshTargetAsPath: " + target);
 		try {
-			// TODO only 1 places for building these paths:
-			FileUtils.ensureParentDirFor(locations.targetCacheDir() + "/"
-					+ target.name());
-			FileUtils.ensureParentDirFor(locations.contentDescriptionCacheDir()
-					+ "/" + target.name());
+			FileUtils.ensureParentDirFor(target.asAbsolutePath(locations));
+			FileUtils.ensureParentDirFor(target
+					.contentDescriptionCacheDir(locations));
 			Refresher.forReal(locations).refresh(target);
 			return target.asAbsolutePath(locations);
 		} catch (Exception e) {
@@ -140,6 +143,8 @@ public class WorkspaceBuilder {
 
 	static void runNextPhase(NextPhase nextPhase, String targetArg,
 			Locations locations) {
+		TextOutput.debugLog("runNextPhase starting, targetArg=" + targetArg
+				+ ", nextPhase.classes=" + nextPhase.classes());
 		JavaClasses classes = nextPhase.classes().content();
 
 		Project project = new Project();
@@ -182,14 +187,16 @@ public class WorkspaceBuilder {
 		public void messageLogged(BuildEvent e) {
 			PrintPrefixes p = PrintPrefixes.fromSystemProperty();
 			if (e.getMessage().startsWith(PHASE2_PRINT_PREFIXES.errPrefix())) {
-				System.err.println(p.errPrefix()
+				String rePrefixed = p.errPrefix()
 						+ e.getMessage().substring(
-								PHASE2_PRINT_PREFIXES.errPrefix().length()));
+								PHASE2_PRINT_PREFIXES.errPrefix().length());
+				System.err.println(rePrefixed);
 			} else if (e.getMessage().startsWith(
 					PHASE2_PRINT_PREFIXES.outPrefix())) {
-				System.out.println(p.outPrefix()
+				String rePrefixed = p.outPrefix()
 						+ e.getMessage().substring(
-								PHASE2_PRINT_PREFIXES.outPrefix().length()));
+								PHASE2_PRINT_PREFIXES.outPrefix().length());
+				System.out.println(rePrefixed);
 			} else {
 				// just ant noise, we are not printing it
 			}

@@ -1,6 +1,14 @@
 <project name="iwant-bootstrap-phase2" default="iwant" basedir=".">
 
+	<macrodef name="log">
+		<attribute name="msg" />
+		<sequential>
+			<echo message="${ant.file} | @{msg}${line.separator}" file="/tmp/iwant.log" append="true" />
+		</sequential>
+	</macrodef>
+
 	<target name="iwant" description="iwant" depends="iwant-bin, as-somebody, the-wish, iwant-print-prefix">
+		<log msg="Calling Iwant: ${the-wish}"/>
 		<java classname="net.sf.iwant.core.Iwant" failonerror="true">
 			<arg value="${as-somebody}" />
 			<arg value="${the-wish}" />
@@ -14,6 +22,7 @@
 	</target>
 
 	<target name="iwant-bin" depends="iwant-bin-status, iwant-classes, ext-jars" unless="iwant-bin-uptodate">
+		<log msg="Building iwant-bin to ${iwant-bin}"/>
 		<delete file="${iwant-bin.timestamp}" />
 		<delete dir="${iwant-bin}" />
 		<mkdir dir="${iwant-bin}/iwant-core" />
@@ -47,6 +56,7 @@
 	</target>
 
 	<target name="iwant-classes" depends="iwant-classes-status, ext-jars" unless="iwant-classes-uptodate">
+		<log msg="Compiling iwant-classes to ${iwant-classes}"/>
 		<delete file="${iwant-classes.timestamp}" />
 		<delete dir="${iwant-classes}" />
 		<mkdir dir="${iwant-classes}" />
@@ -118,6 +128,7 @@
 		<attribute name="src" />
 		<attribute name="md5" />
 		<sequential>
+			<log msg="Downloading @{name} to ${@{name}}"/>
 			<fail unless="iwant-print-prefix" />
 			<get dest="${@{name}}.unverified" src="@{src}/${@{name}-name}" />
 			<checksum algorithm="MD5" property="@{md5}" verifyproperty="@{name}-md5-status" file="${@{name}}.unverified" />

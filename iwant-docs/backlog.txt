@@ -260,6 +260,10 @@
 + bugfix: As @developer I want internal errors prefixed too, so users can report them
   + catch Exception, not only IwantException, and print prefixed
 
++ As a @buildscriptauthor I want the bootstrapper to svn:ignore all directories it generates so I won't see any local changes there
+  + as-iwant-user target cached list-of
+  + test in a real project this is enough
+
 #################################################################
 = In progress
 #################################################################
@@ -277,15 +281,25 @@
   + svn:ignore in bootstrapper: with/bash/iwant/{target,cached,list-of}: they'll appear when used
   - development-time targets in wsdef
     + iwant main classes
-    - local tutorial
+    + local tutorial
       + target
-      - use new bootstrapping, tersely (alreay covered in bs tutorials)
+      + use new bootstrapping, tersely (alreay covered in bs tutorials)
+        + path fixes, we are now under as.../with/bash, not as...
+        + bugfix: eclipse settings project directory is as-\$WSNAME"-developer instead of as-iwant-developer
+        + bugfix: JunitResult must prefix message about test failure
+        + bugfix: add >> /dev/stdout in help.sh to see all output
+        + don't generate wsDefClasses to where user targets are, polluting namespace
+          and breaking laziness tutorial
+        + fix path to builtin cpitems
+        + pass iwant wsroot as LOCAL_IWANT_WSROOT to descript scripts instead of
+          passing iwant-iwant as LOCAL_IWANT
     + local ant bootstrapping
     + local bash bootstrapping
     - local website
-      - new Content: directory with files
+      (not yet: - new Content: directory with files
         - svn:extern from gluent
-        - test and implement Content around it
+        - test and implement Content around it)
+      * for now just use ScriptGeneratedContent
       - dir with three tutorials and iwant-docs/src/main/html/website/*
   - online tutorial targets
     - static html links to bootstrapping
@@ -295,7 +309,8 @@
       - target
       - make sure new bootstrapping works
     - website
-    - publish and mark this story done
+  - targets for website publication and tagging scripts
+  - remove iwant-iwant (the old self-bootstrapper)
   + symbolic link to bootstrapper so we use latest and to reduce network traffic for users
     (- remove ".." from paths with something else than "File.getCanonicalPath()" and "readlink -f", because they both break symlinks (resolve away)
       - for dirs, use the old (cd DIR && pwd) trick
@@ -310,15 +325,30 @@
     + the normal depends=...status unless=...-uptodate for classes and bin
     + also phase1 svn export needs to be redone iff i-have/iwant-from.conf states the iwant-url
       is a dir and its content might change (and in iwant we do state that)
+  - publish website and mark this story done
 
 #################################################################
 = Planned
 #################################################################
 
+- As @developer I want a fixed version of descript so we no more need >> to make sure script output doesn't delete previous output and break descript output assertions
+
+- As @developer I want to see some progress messages in stderr so I can more easily detect problems and remember/understand what's going on
+  - replace/enhance TextOutput.java
+
+- As @developer I want WsDefClasses to inherit some abstract super class together with Target instead of extending Target, to be able to make Target final again so users don't get any stupid ideas about having to extend it
+  * Path logic should be the same in every workspace; new Content can and should be defined easily 
+
+- As @buildscriptauthor I want WsDefClasses to put contentdescription in a different cache dir than my own targets, to avoid name clashes (just like the actual cached content already does)
+
+- bugfix: As @developer I want to see an error message when bootstrap fails because of compilation error caused by missing svn add of new file 
+
 - bugfix: as @buildscriptauthor I want to append Paths explicitly as Paths to Concatenated content so the target will be refreshed when the paths have been touched
   - implement path(Path path)
   - use in the descript script content target
   - use in the gluent project
+
+- As @developer I want to refactor all ouput to go through the same interface, to make sure everything is prefixed, and to perhaps control verboseness later
 
 - As @buildscriptauthor I don't want to use iwant-rev in i-have/iwant-from.conf but just point iwant-url to a published tag so I can more easily point to a stable publication instead of a "random" rev
   * also easier to implement: it's always just iwant-url
@@ -342,8 +372,6 @@
 
 - As @buildscriptauthor I want bootstrapper to help generate eclipse settings before telling to edit the workspace definition, because I want to use eclipse for editing it
 
-- bugfix: eclipse settings project directory is as-\$WSNAME"-developer instead of as-iwant-developer
-
 - As @developer I want generated eclipse settings so no more duplicate classpaths
   - define all eclipse projects using iwant
   - document copying them in place
@@ -357,9 +385,6 @@
 - If needed for performance, as @buildscriptuser I don't want iwant bootstrapper to check timestamps but instead trust that iwant-bin is unmodifiable
 
 - As eclipse user I want jar classpaths to point to the workspace-relative as-WSNAME-developer/with/bash/iwant/cached/... instead of absolute paths so the workspace is easier to move (maybe) and so I can choose to version them when it's a pragmatic choise.
-
-- As a @buildscriptauthor I want non-local documentation of the new bootstrapping and the old scripts removed
-  - make rev optional, branching the export
 
 - bugfix: as @buildscriptauthor I want iwant to fail if I define two targets with the same name instead of just overwriting
 
@@ -433,10 +458,6 @@
   - clean up dots<->slashes conversions (java package) in the bootstrapper
   + fix: some script puts and extra "/iwant" in a path (the iwant test during bootstrapping?), generating an extra local change when running refresh.sh
   + upgrade tutorial revisions and publish
-
-- As a @buildscriptauthor I want the bootstrapper to svn:ignore all directories it generates so I won't see any local changes there
-  + as-iwant-user target cached list-of
-  - test in a real project this is enough
 
 - As a @buildscriptauthor I want iwant the JavaClasses content to remember the order of "using" calls so I can control the actual classpath in the unfortunate case I need classpath items that contain the same fqcn's with different semantics (a real problem in the real world, especially in the enterprise/xml world)
   - save the cpitems internally in a list, even though publishing them as an alphabetical sortedset for depencency management

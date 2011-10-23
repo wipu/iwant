@@ -4,24 +4,35 @@ HERE=$(dirname "$0")
 AS_SOMEONE=$HERE/../../..
 cd "$AS_SOMEONE/with/ant/iw"
 
+log() {
+  echo "sh-$$ | $@" >> /tmp/iwant.log
+}
+
 iwant-messages-forwarded() {
   grep -o ':iwant:out:.*\|:iwant:err:.*' |
   while read LINE; do
     local PREF=${LINE:7:4}
     local MSG=${LINE:11}
     [ "out:" == "$PREF" ] && {
-      echo "$MSG"
+      log "to stdout: $MSG"
+      echo "$MSG" >> /dev/stdout
       continue
     }
     [ "err:" == "$PREF" ] && {
       echo "$MSG" >> /dev/stderr
       continue
     }
-    echo "Internal error: Don't know where to output line $LINE" >> /dev/stderr
+    local ERRORMSG="Internal error: Don't know where to output line $LINE"
+    log "$ERRORMSG"
+    echo "$ERRORMSG" >> /dev/stderr
     exit 1
   done
 }
 
-ant 2>&1 -Diwant-print-prefix=:iwant: "$@" | iwant-messages-forwarded
+log "Starting: $0 $@"
 
-exit "${PIPESTATUS[0]}"
+ant 2>&1 -Diwant-print-prefix=:iwant: "$@" | iwant-messages-forwarded
+EXITSTATUS=${PIPESTATUS[0]}
+
+log "Exiting: $0 -> $EXITSTATUS"
+exit "$EXITSTATUS"

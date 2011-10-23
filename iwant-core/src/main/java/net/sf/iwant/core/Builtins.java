@@ -35,7 +35,7 @@ public class Builtins extends ContainerPath {
 	}
 
 	private Path builtInClasses(String name) {
-		return new BuiltinPath("cpitems/" + name);
+		return new BuiltinPath(name);
 	}
 
 	private class BuiltinPath extends Path {
@@ -46,7 +46,7 @@ public class Builtins extends ContainerPath {
 
 		@Override
 		public String asAbsolutePath(Locations locations) {
-			return locations.targetCacheDir() + "/../../iwant/" + name();
+			return locations.iwantLibs() + "/" + name();
 		}
 
 	}

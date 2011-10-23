@@ -2,18 +2,16 @@ end-section() {
   debuglog "TODO Really, define end-section in descript."
 }
 
-LOCAL_IWANT_ROOT=$(readlink -f "$LOCAL_IWANT/../..")
-
 copy-phase1() {
 cmd 'mkdir as-example-developer && cd as-example-developer'
-cmd "svn export \"$LOCAL_IWANT_ROOT/iwant-bootstrapper/as-someone/with\""
+cmd "svn export \"$LOCAL_IWANT_WSROOT/iwant-bootstrapper/as-someone/with\""
 out-was <<EOF
 Export complete.
 EOF
 }
 
 get-phase1() {
-  debuglog "TODO check LOCAL_IWANT"
+  debuglog "TODO check LOCAL_IWANT_WSROOT"
   copy-phase1
 }
 
@@ -69,7 +67,7 @@ end-section
 
 optimize-downloads() {
   p "Using cached external libraries to optimize building this article."
-  local OPTIMCACHE=$LOCAL_IWANT_ROOT/iwant-iwant/iwant/cached/iwant/optimization
+  local OPTIMCACHE=$LOCAL_IWANT_WSROOT/iwant-iwant/iwant/cached/iwant/optimization
   local SVNKITZIP=org.tmatesoft.svn_1.3.5.standalone.nojna.zip
   local INTERNALCACHE=$REL_AS_SOMEONE/with/bash/iwant/cached/.internal/unmodifiable
   [ -e "$OPTIMCACHE/$SVNKITZIP" ] || {
@@ -83,7 +81,7 @@ optimize-downloads() {
   mkdir -p "$INTERNALCACHE"
   cp -v "$OPTIMCACHE/$SVNKITZIP" "$INTERNALCACHE"/
   log "Also copying jars for iwant compilation."
-  cp -v "$LOCAL_IWANT/cached/iwant/cpitems/"*.jar "$INTERNALCACHE"/
+  cp -v "$LOCAL_IWANT_WSROOT/as-iwant-developer/with/bash/iwant/cached/.internal/iwant-r/iwant-bootstrapper/phase2/iw/cached/.internal/bin/"*.jar "$INTERNALCACHE"/
 }
 
 phase1-run-with-correct-iwant-from() {
@@ -91,7 +89,7 @@ section "We'll use a local copy of iwant."
 
 edit "$REL_IHAVE/iwant-from.conf" use-local-iwant <<EOF
 iwant-rev=
-iwant-url=$LOCAL_IWANT_ROOT
+iwant-url=$LOCAL_IWANT_WSROOT
 EOF
 optimize-downloads
 cmde 1 "$PHASE1"

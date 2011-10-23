@@ -1,6 +1,14 @@
 <project name="iwant-bootstrap" default="iwant" basedir=".">
 
+	<macrodef name="log">
+		<attribute name="msg" />
+		<sequential>
+			<echo message="${ant.file} | @{msg}${line.separator}" file="/tmp/iwant.log" append="true" />
+		</sequential>
+	</macrodef>
+
 	<target name="iwant" description="iwant" depends="iwant-src, cached-unmodifiable, as-somebody, /target, iwant-print-prefix">
+		<log msg="Calling phase2: ${/target}" />
 		<ant dir="${iwant-src}/iwant-bootstrapper/phase2/iw" inheritall="false">
 			<property name="cached-unmodifiable" location="${cached-unmodifiable}" />
 			<property name="as-somebody" location="${as-somebody}" />
@@ -25,6 +33,7 @@
 	</target>
 
 	<target name="iwant-src" depends="iwant-src-status, iwant-from-information, svnkit" unless="iwant-src-uptodate">
+		<log msg="Exporting iwant src from ${iwant-url}" />
 		<delete file="${iwant-src.timestamp}" />
 		<delete dir="${iwant-src}" />
 		<echo message="Exporting iwant src from ${iwant-url}" />
@@ -73,6 +82,7 @@
 	</target>
 
 	<target name="svnkit.zip" depends="svnkit.zip-status, iwant-print-prefix" unless="svnkit.zip-uptodate">
+		<log msg="Downloading ${svnkit.zip}" />
 		<get dest="${svnkit.zip}.unverified" src="http://www.svnkit.com/${svnkit.zip.name}" />
 		<checksum algorithm="MD5" property="329ab36ad39e878d54f92c3891e5a486" verifyproperty="svnkit.zip-md5-status" file="${svnkit.zip}.unverified" />
 		<condition property="svnkit.zip-isok">

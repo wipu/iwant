@@ -39,6 +39,9 @@ public class Downloaded implements Content {
 	}
 
 	public void refresh(RefreshEnvironment refresh) throws Exception {
+		TextOutput.debugLog("Downloading " + from);
+		System.err.println(PrintPrefixes.fromSystemProperty().multiLineErr(
+				"Downloading " + from));
 		Get get = new Get();
 		get.setSrc(new URL(from));
 		get.setDest(refresh.destination());
@@ -53,6 +56,7 @@ public class Downloaded implements Content {
 		if (checksum == null) {
 			return;
 		}
+		TextOutput.debugLog("Verifying " + algorithm + " of " + destination);
 		Project project = new Project();
 		Checksum checkSum = new Checksum();
 		checkSum.setProject(project);
@@ -62,8 +66,9 @@ public class Downloaded implements Content {
 		checkSum.setVerifyproperty("correct");
 		checkSum.execute();
 		if (!"true".equals(project.getProperty("correct"))) {
-			System.err.println("Checksum failed, please delete " + destination
-					+ " or correct the checksum and try again.");
+			System.err.println(PrintPrefixes.fromSystemProperty().multiLineErr(
+					"Checksum failed, please delete " + destination
+							+ " or correct the checksum and try again."));
 			throw new IOException("Checksum failed for " + destination);
 		}
 	}

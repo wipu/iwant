@@ -1,19 +1,28 @@
+REL_AS_SOMEONE=../..
+REL_IHAVE=$REL_AS_SOMEONE/i-have
+REL_WSROOT=$REL_AS_SOMEONE/..
+
 local-bootstrapper() {
-cmd "svn export \"$LOCAL_IWANT/../../iwant-bootstrapper/iwant\" iwant"
+cmd "svn export \"$LOCAL_IWANT_WSROOT/iwant-bootstrapper/as-someone/with\""
 out-was <<EOF  
 Export complete.
 EOF
 }
 
 conf-iwant-from-local-wishdir() {
-  cmd "echo local-iwant-wishdir \\\"$LOCAL_IWANT\\\" > i-have/iwant-from.conf"
+edit "$REL_IHAVE/iwant-from.conf" use-local-iwant <<EOF
+iwant-rev=
+iwant-url=$LOCAL_IWANT_WSROOT
+EOF
 }
 
 conf-iwant-from-sfnet() {
+  die fix this
   cmd "echo \"svn-revision 109\" > i-have/iwant-from.conf"
 }
 
 svn-bootstrapper() {
+die fix this
 cmd "svn export -r 109 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/iwant iwant"
 out-was <<EOF
 A    iwant
@@ -27,27 +36,23 @@ local FETCH_BOOTSTRAPPER=$1
 local CONF_IWANT_FROM=$2
 section "Bootstrapping"
 cmd 'mkdir -p example/as-example-developer && cd example/as-example-developer'
+WSROOT=$(readlink -f ..)
 "$FETCH_BOOTSTRAPPER"
-cmd 'iwant/help.sh'
+cmd 'cd with/bash'
+cmde 1 'iwant/help.sh'
 out-was <<EOF
-Welcome.
-
-Please start by specifying what version of iwant you wish to use.
-I created file i-have/iwant-from.conf for you.
-Modify it and rerun iwant/help.sh
+I created file $WSROOT/as-example-developer/i-have/iwant-from.conf for your convenience. Please edit it and rerun me.
 EOF
-cmd 'cat i-have/iwant-from.conf'
 "$CONF_IWANT_FROM"
-cmde "0 0" 'iwant/help.sh 2>/dev/null | tail -n 2'
+cmde 1 'iwant/help.sh'
 out-was <<EOF
-Next, modify i-have/ws-info.conf to define your workspace.
-After that, rerun iwant/help.sh
+I created $WSROOT/as-example-developer/i-have/ws-info.conf for you. Please edit it and rerun me.
 EOF
 end-section
 }
 
 is-online-tutorial() {
-  [ "x" == "x$LOCAL_IWANT" ]
+  [ "x" == "x$LOCAL_IWANT_WSROOT" ]
 }
 
 # temporary, remove when descript supports these properly:
@@ -74,22 +79,15 @@ fi
 section "Starting using $(kbd iwant) on a workspace"
 #---------------------------------------------------
 
-cmd 'cat i-have/ws-info.conf'
+cmd "cat $REL_IHAVE/ws-info.conf"
 p "Let's go with the defaults."
-cmd 'iwant/help.sh'
+cmde 1 'iwant/help.sh'
 out-was <<EOF
-I created a stub workspace definition at iwant/../i-have/wsdef/com/example/wsdef/Workspace.java
-Use find or code completion (tab) to see what you can iwant/
-Have fun.
+I created $WSROOT/as-example-developer/i-have/wsdef/com/example/wsdef/Workspace.java for you. Please edit it and rerun me.
 EOF
 
-cmd 'cat i-have/wsdef/com/example/wsdef/Workspace.java'
-
-cmd 'find iwant/list-of'
-out-was <<EOF
-iwant/list-of
-iwant/list-of/targets
-EOF
+cmd "cat $REL_IHAVE/wsdef/com/example/wsdef/Workspace.java"
+cmde 1 'iwant/help.sh'
 
 cmd 'iwant/list-of/targets'
 out-was <<EOF
@@ -97,17 +95,9 @@ aConstant
 eclipse-projects
 EOF
 
-cmde "0 0" 'find iwant/target -type f | sort'
+cmd 'iwant/target/aConstant/as-path'
 out-was <<EOF
-iwant/target/aConstant/as-path
-iwant/target/aConstant/as-rel-path
-iwant/target/eclipse-projects/as-path
-iwant/target/eclipse-projects/as-rel-path
-EOF
-
-cmd 'iwant/target/aConstant/as-rel-path'
-out-was <<EOF
-iwant/cached/example/target/aConstant
+$PWD/iwant/cached/example/target/aConstant
 EOF
 
 cmd 'cat iwant/cached/example/target/aConstant'
@@ -138,9 +128,9 @@ create-from() {
 section "Editing the workspace definition with Eclipse"
 #------------------------------------------------------
 
-cmd 'iwant/target/eclipse-projects/as-rel-path'
+cmd 'iwant/target/eclipse-projects/as-path'
 out-was <<EOF
-iwant/cached/example/target/eclipse-projects
+$PWD/iwant/cached/example/target/eclipse-projects
 EOF
 cmd 'find iwant/cached/example/target/eclipse-projects'
 out-was <<EOF
@@ -152,7 +142,7 @@ EOF
 
 p 'Import the project into Eclipse. Make sure not to copy it to the workspace.'
 
-WSJAVA=i-have/wsdef/com/example/wsdef/Workspace.java
+WSJAVA=$REL_IHAVE/wsdef/com/example/wsdef/Workspace.java
 
 my-edit "$WSJAVA" Workspace.java.new-constant-content.diff
 cmd 'cat $(iwant/target/aConstant/as-path)'
@@ -165,15 +155,17 @@ end-section
 section 'Java classes'
 #---------------------
 
-A_TESTS="project-a/tests"
-cmd "mkdir -p ../$A_TESTS/example"
-create-from "../$A_TESTS/example/ATest.java" "example-ws/$A_TESTS/example/ATest.java"
+A_TESTS=project-a/tests
+sleep 2
+cmd "mkdir -p $REL_WSROOT/$A_TESTS/example"
+create-from "$REL_WSROOT/$A_TESTS/example/ATest.java" "example-ws/$A_TESTS/example/ATest.java"
 my-edit "$WSJAVA" Workspace.java.a-tests.diff
 cmde "0 0" 'iwant/list-of/targets | grep projectATests'
 out-was <<EOF
 projectATests
 EOF
 
+cmd 'iwant/target/projectATests/as-path'
 cmd 'java -cp $(iwant/target/projectATests/as-path) example.ATest'
 out-was <<EOF
 TODO make this a junit test
@@ -181,13 +173,13 @@ EOF
 
 A_SRC="project-a/src"
 sleep 2
-my-edit "../$A_TESTS/example/ATest.java" ATest.java.aprod.diff
-cmd "mkdir -p ../$A_SRC/example"
-create-from "../$A_SRC/example/AProd.java" "example-ws/$A_SRC/example/AProd.java"
+my-edit "$REL_WSROOT/$A_TESTS/example/ATest.java" ATest.java.aprod.diff
+cmd "mkdir -p $REL_WSROOT/$A_SRC/example"
+create-from "$REL_WSROOT/$A_SRC/example/AProd.java" "example-ws/$A_SRC/example/AProd.java"
 my-edit "$WSJAVA" Workspace.java.a-src.diff
-cmd 'iwant/target/projectATests/as-rel-path'
+cmd 'iwant/target/projectATests/as-path'
 out-was <<EOF
-iwant/cached/example/target/projectATests
+$PWD/iwant/cached/example/target/projectATests
 EOF
 cmd 'java -cp iwant/cached/example/target/projectATests:iwant/cached/example/target/projectAClasses example.ATest'
 out-was <<EOF
@@ -200,17 +192,16 @@ section "JUnit tests"
 #--------------------
 
 sleep 2
-my-edit "../$A_TESTS/example/ATest.java" ATest.java.junit.diff
+my-edit "$REL_WSROOT/$A_TESTS/example/ATest.java" ATest.java.junit.diff
 my-edit "$WSJAVA" Workspace.java.junit.diff
 cmde "0 0" 'iwant/list-of/targets | grep projectATestResult'
 out-was <<EOF
 projectATestResult
 EOF
-cmde "0 0" '(iwant/target/projectATestResult/as-path && echo exit status was zero) | sed s:$(pwd)/::'
+cmd 'iwant/target/projectATestResult/as-path || echo "Refresh failed."'
 out-was <<EOF
 Test example.ATest FAILED
-iwant/cached/example/target/projectATestResult
-exit status was zero
+$PWD/iwant/cached/example/target/projectATestResult
 EOF
 
 cmd 'grep -m 1 expected $(iwant/target/projectATestResult/as-path)'
@@ -218,7 +209,7 @@ out-was <<EOF
 expected:<42> but was:<0>
 EOF
 
-my-edit "../$A_SRC/example/AProd.java" AProd.java.redtogreen.diff
+my-edit "$REL_WSROOT/$A_SRC/example/AProd.java" AProd.java.redtogreen.diff
 cmde "0 0" 'cat $(iwant/target/projectATestResult/as-path) | sed s/[^\ ]*\ sec/***/'
 out-was <<EOF
 Testsuite: example.ATest
@@ -260,17 +251,16 @@ end-section
 section "Downloaded content"
 #---------------------------
 
-my-edit "../$A_SRC/example/AProd.java" AProd.java.use-commons-math.diff
+my-edit "$REL_WSROOT/$A_SRC/example/AProd.java" AProd.java.use-commons-math.diff
 cmd 'iwant/target/projectATestResult/as-path 2> /dev/null || echo "Compilation failed"'
 out-was <<EOF
 Compilation failed
 EOF
 my-edit "$WSJAVA" Workspace.java.use-commons-math.diff
-cmde "0 0" 'iwant/target/projectATestResult/as-path 2>&1 | sed s:$(pwd)/::'
+cmd 'iwant/target/projectATestResult/as-path'
 out-was <<EOF
-Getting: http://mirrors.ibiblio.org/pub/mirrors/maven2/commons-math/commons-math/1.2/commons-math-1.2.jar
-To: iwant/cached/example/target/commons-math
-iwant/cached/example/target/projectATestResult
+Downloading http://mirrors.ibiblio.org/pub/mirrors/maven2/commons-math/commons-math/1.2/commons-math-1.2.jar
+$PWD/iwant/cached/example/target/projectATestResult
 EOF
 
 end-section
@@ -278,9 +268,9 @@ end-section
 section "Two-phase workspace definition"
 #---------------------------------------
 
-cmd 'mkdir -p ../example-wsdef2/src/com/example/wsdef2'
-create-from '../example-wsdef2/src/com/example/wsdef2/ExampleWorkspace.java' ExampleWorkspace.java
-create-from '../example-wsdef2/src/com/example/wsdef2/CustomContent.java' CustomContent.java
+cmd 'mkdir -p $REL_WSROOT/example-wsdef2/src/com/example/wsdef2'
+create-from "$REL_WSROOT/example-wsdef2/src/com/example/wsdef2/ExampleWorkspace.java" ExampleWorkspace.java
+create-from "$REL_WSROOT/example-wsdef2/src/com/example/wsdef2/CustomContent.java" CustomContent.java
 my-edit "$WSJAVA" Workspace.java.refer-to-phase2.diff
 cmd 'iwant/list-of/targets'
 out-was <<EOF
@@ -304,7 +294,7 @@ end-section
 if is-online-tutorial; then
 section 'Upgrading iwant version (to one that supports SHA)'
 my-edit "$WSJAVA" Workspace.java.commonsMathShaCheck.diff
-cmd 'iwant/target/commons-math/as-rel-path'
+cmd 'iwant/target/commons-math/as-path'
 out-was <<EOF
 iwant/target/commons-math/../../../i-have/wsdef/com/example/wsdef/Workspace.java:66: cannot find symbol
 symbol  : method sha(java.lang.String)
@@ -313,10 +303,11 @@ location: class net.sf.iwant.core.Downloaded
                                                                                                                             ^
 1 error
 EOF
+die fix this
 cmd "echo \"svn-revision 110\" > i-have/iwant-from.conf"
-cmd 'iwant/target/commons-math/as-rel-path 2>/dev/null'
+cmd 'iwant/target/commons-math/as-path 2>/dev/null'
 out-was <<EOF
-iwant/cached/example/target/commons-math
+$PWD/iwant/cached/example/target/commons-math
 EOF
 end-section
 fi
@@ -325,17 +316,15 @@ section "Script-generated content"
 #---------------------------------
 
 sleep 2
-my-edit '../example-wsdef2/src/com/example/wsdef2/ExampleWorkspace.java' ExampleWorkspace.java.scriptGeneratedContent.diff
+my-edit "$REL_WSROOT/example-wsdef2/src/com/example/wsdef2/ExampleWorkspace.java" ExampleWorkspace.java.scriptGeneratedContent.diff
 
 cmde "0 0" 'iwant/list-of/targets | grep scriptGeneratedContent'
 out-was <<EOF
 scriptGeneratedContent
 EOF
-cmd 'iwant/target/scriptGeneratedContent/as-rel-path'
+cmd 'iwant/target/scriptGeneratedContent/as-path'
 out-was <<EOF
-iwant/cached/example/target/scriptGeneratedContent
-Standard out:
-Standard err:
+$PWD/iwant/cached/example/target/scriptGeneratedContent
 EOF
 
 cmd 'cat $(iwant/target/scriptGeneratedContent/as-path)'

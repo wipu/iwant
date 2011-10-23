@@ -3,7 +3,7 @@ package net.sf.iwant.core;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public final class Target<CONTENT extends Content> extends Path {
+public class Target<CONTENT extends Content> extends Path {
 
 	private final CONTENT content;
 
@@ -33,6 +33,15 @@ public final class Target<CONTENT extends Content> extends Path {
 	@Override
 	public String asAbsolutePath(Locations locations) {
 		return locations.targetCacheDir() + "/" + name();
+	}
+
+	/**
+	 * TODO override when the cache obeys it, to avoid name clashes between user
+	 * targets and wsDefClasses like asAbsolutePath does for the actual cached
+	 * target.
+	 */
+	public final String contentDescriptionCacheDir(Locations locations) {
+		return locations.contentDescriptionCacheDir() + "/" + name();
 	}
 
 }

@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.Properties;
 
 import org.apache.tools.ant.ExitStatusException;
@@ -27,6 +28,8 @@ public class Iwant {
 	}
 
 	public static void main(String[] args) throws Exception {
+		TextOutput.debugLog("\n --- Iwant.main: " + Arrays.toString(args)
+				+ "\n");
 		try {
 			wish(args);
 		} catch (IwantException e) {
@@ -68,14 +71,14 @@ public class Iwant {
 		File wsDefJava = wsDefJava(wsDefSrc, wsDefClassName);
 		if (!wsDefJava.exists()) {
 			FileUtils.ensureDir(wsDefJava.getParentFile());
-			new FileWriter(wsDefJava).append(exampleWsDefJava(wsDefClassName))
-					.close();
+			new FileWriter(wsDefJava).append(
+					exampleWsDefJava(wsDefClassName, wsName)).close();
 			throw new IwantException("I created " + wsDefJava + " for you."
 					+ " Please edit it and rerun me.");
 		}
 		Locations locations = Locations.from(wsRoot, iHave, wsName, iwantLibs);
 		Target<JavaClasses> wsDefClasses = wsDefClassesAsFreshTarget(locations,
-				wsDefSrc);
+				wsDefSrc, wsName);
 		NextPhase nextPhase = NextPhase.at(wsDefClasses).named(wsDefClassName);
 		regenerateWishScripts(locations, nextPhase);
 		if ("".equals(wish)) {
@@ -86,6 +89,7 @@ public class Iwant {
 
 	private static void regenerateWishScripts(Locations locations,
 			NextPhase nextPhase) throws IwantException, IOException {
+		TextOutput.debugLog("Regenerating wish scripts.");
 		String listOfTargetsString = listOfTargetsString(locations, nextPhase);
 
 		File listOfTargetsWish = new File(locations.iwant()
@@ -109,6 +113,7 @@ public class Iwant {
 
 	private static void generateWishScript(String name, File to,
 			String relPathToIwant) throws IOException {
+		TextOutput.debugLog("Generating wish script: " + name);
 		FileUtils.ensureParentDirFor(to.getCanonicalPath());
 		FileWriter f = new FileWriter(to);
 		f.append("#!/bin/bash\n");
@@ -151,22 +156,6 @@ public class Iwant {
 
 	}
 
-	/**
-	 * TODO use Builtins when old code does not need the old locations of it.
-	 */
-	private static class NewBuiltin extends Path {
-
-		public NewBuiltin(String name) {
-			super(name);
-		}
-
-		@Override
-		public String asAbsolutePath(Locations locations) {
-			return locations.iwantLibs() + "/" + name();
-		}
-
-	}
-
 	private static void refreshAndPrintUsingWsDefClasses(Locations locations,
 			String wish, NextPhase nextPhase) throws IwantException {
 		try {
@@ -180,14 +169,12 @@ public class Iwant {
 	}
 
 	private static Target<JavaClasses> wsDefClassesAsFreshTarget(
-			Locations locations, File wsDefSrcFile) throws IOException {
+			Locations locations, File wsDefSrcFile, String wsName)
+			throws IOException {
 		Source wsDefSrc = new AbsoluteSource(wsDefSrcFile);
-		Target<JavaClasses> wsDefClasses = new Target<JavaClasses>(
-				"wsDefClasses", JavaClasses.compiledFrom(wsDefSrc)
-						.using(new NewBuiltin("iwant-core"))
-						.using(new NewBuiltin("ant-1.7.1.jar"))
-						.using(new NewBuiltin("ant-junit-1.7.1.jar"))
-						.using(new NewBuiltin("junit-3.8.1.jar")));
+		Builtins builtins = new Builtins(locations);
+		WsDefClassesTarget wsDefClasses = new WsDefClassesTarget(wsName,
+				JavaClasses.compiledFrom(wsDefSrc).using(builtins.all()));
 		WorkspaceBuilder.freshTargetAsPath(wsDefClasses, locations);
 		return wsDefClasses;
 	}
@@ -204,7 +191,8 @@ public class Iwant {
 		return b.toString();
 	}
 
-	private static CharSequence exampleWsDefJava(String wsDefClassName) {
+	private static CharSequence exampleWsDefJava(String wsDefClassName,
+			String wsName) {
 		int lastDotIndex = wsDefClassName.lastIndexOf('.');
 		String pack = wsDefClassName.substring(0, lastDotIndex);
 		String className = wsDefClassName.substring(lastDotIndex + 1,
@@ -246,7 +234,8 @@ public class Iwant {
 		b.append("        }\n");
 		b.append("\n");
 		b.append("        public EclipseProject wsdefEclipseProject() {\n");
-		b.append("            return EclipseProject.with().name(\"as-$WSNAME-developer\").\n");
+		b.append("            return EclipseProject.with().name(\"as-" + wsName
+				+ "-developer\").\n");
 		b.append("                src(\"i-have/wsdef\").libs(builtin().all()).end();\n");
 		b.append("        }\n");
 		b.append("\n");
