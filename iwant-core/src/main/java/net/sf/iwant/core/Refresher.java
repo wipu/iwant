@@ -82,11 +82,19 @@ class Refresher {
 
 	private void doRefresh(Target<?> target) throws Exception {
 		TextOutput.debugLog("Refreshing " + target);
+		File destination = new File(target.asAbsolutePath(locations));
+		remove(destination);
+		TextOutput.debugLog("Calling "
+				+ target.content().getClass().getSimpleName() + ".refresh");
 		target.content().refresh(
-				new RefreshEnvironment(new File(target
-						.asAbsolutePath(locations)), temporaryDirectory,
+				new RefreshEnvironment(destination, temporaryDirectory,
 						locations));
 		contentDescriptionCache.cacheContentDescription(target);
+	}
+
+	private void remove(File destination) {
+		TextOutput.debugLog("Removing outdated " + destination);
+		FileUtils.del(destination);
 	}
 
 }

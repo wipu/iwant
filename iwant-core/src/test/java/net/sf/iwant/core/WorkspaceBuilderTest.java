@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import net.sf.iwant.core.Concatenated.ConcatenatedBuilder;
+
 public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	public void testListOfTargetsOfEmptyWs() {
@@ -786,6 +788,26 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 						ScriptGeneratedContent.of(failingScript())).end();
 			}
 
+			public Source mkdirScriptSource() {
+				return source("mkdirScriptSource");
+			}
+
+			public Target<Concatenated> mkdirScript() {
+				ConcatenatedBuilder b = Concatenated.from();
+				b.string("#!/bin/bash\n");
+				b.string("set -eu\n");
+				b.string("DEST=$1\n");
+				b.string("mkdir \"$DEST\"\n");
+				b.string("cp '").pathTo(mkdirScriptSource())
+						.string("' \"$DEST\"/\n");
+				return target("mkdirScript").content(b.end()).end();
+			}
+
+			public Target<ScriptGeneratedContent> mkdirScriptGeneratedContent() {
+				return target("mkdirScriptGeneratedContent").content(
+						ScriptGeneratedContent.of(mkdirScript())).end();
+			}
+
 		}
 
 		public ContainerPath wsRoot(Locations locations) {
@@ -915,6 +937,37 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				.lastModified();
 		assertTrue(newModTime + " should have been > " + firstModTime,
 				newModTime > firstModTime);
+	}
+
+	/**
+	 * This tests iwant deletes the cached target before calling refresh
+	 */
+	public void testScriptThatCreatesDirWorksTwice() throws IOException {
+		file("mkdirScriptSource").withContent().line("1").exists();
+		at(WorkspaceWithShellScript.class).iwant(
+				"target/mkdirScriptGeneratedContent/as-path");
+
+		assertEquals("", err());
+		assertEquals(pathLine("mkdirScriptGeneratedContent"), out());
+
+		assertEquals("1\n",
+				contentOf(pathToCachedTarget("mkdirScriptGeneratedContent")
+						+ "/mkdirScriptSource"));
+
+		// now again with a different source content:
+		sleep();
+		startOfOutAndErrCapture();
+
+		file("mkdirScriptSource").withContent().line("2").exists();
+		at(WorkspaceWithShellScript.class).iwant(
+				"target/mkdirScriptGeneratedContent/as-path");
+
+		assertEquals("", err());
+		assertEquals(pathLine("mkdirScriptGeneratedContent"), out());
+
+		assertEquals("2\n",
+				contentOf(pathToCachedTarget("mkdirScriptGeneratedContent")
+						+ "/mkdirScriptSource"));
 	}
 
 }

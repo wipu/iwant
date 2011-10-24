@@ -264,6 +264,13 @@
   + as-iwant-user target cached list-of
   + test in a real project this is enough
 
++ bugfix: delete java classes dir before compilation, otherwise some timestamps are not touched and the dir is always not fresh
+  + test with a script that just mkdirs
+    because currently localWebsite fails on 2nd run because it does not rm the dir first
+    => seems that this is a universally desirable feature => let iwant do it for
+       all targets before refreshing
+  (- replace mkdir with FileUtils.ensureEmpty)
+
 #################################################################
 = In progress
 #################################################################
@@ -340,10 +347,6 @@
 #################################################################
 
 - As @developer I want a fixed version of descript so we no more need >> to make sure script output doesn't delete previous output and break descript output assertions
-
-- bugfix: delete java classes dir before compilation, otherwise some timestamps are not touched and the dir is always not fresh
-  - test
-  - replace mkdir with FileUtils.ensureEmpty
 
 - As @buildscriptauthor and @buildscriptuser I want to define cached name and target name so e.g. cached html files are more easily deployed/displayed and the "logical" name can express the meaning
   - test normal case
