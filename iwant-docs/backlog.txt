@@ -318,7 +318,13 @@
         + dir with three tutorials and iwant-docs/src/main/html/website/*
   - online tutorial targets
     - fix static html links to tutorials: mention the alternatives first, then the rest in tutorial
-    - ant bootstrapping
+    + ant bootstrapping
+      + target
+      + use remote urls if no local set
+        * for now, just use HEAD
+      + add -mindepth 1 to Laziness find cmd, because once it found the cached dir itsef
+      + in ant bootstrapping (and not in bash) filter out iwant src svn export messages
+        to shorten the article
     - bash bootstrapping
     - tutorial
       - target
@@ -341,6 +347,9 @@
     + also phase1 svn export needs to be redone iff i-have/iwant-from.conf states the iwant-url
       is a dir and its content might change (and in iwant we do state that)
   - publish website and mark this story done
+    - make a tag
+    - make remote tutorials point to the tag instead of HEAD
+    - then publish
 
 #################################################################
 = Planned

@@ -223,25 +223,29 @@ end-section
 section "Laziness"
 #-----------------
 
+find-newer-than-ts() {
+  cmd "find iwant/cached/example/target -mindepth 1 -newer $TS"
+}
+
 TS="touched-after-src"
 cmd "touch $TS"
-cmd "find iwant/cached/example/target -newer $TS"
+find-newer-than-ts
 echo -n | out-was
 cmd 'cat $(iwant/target/aConstant/as-path)'
 out-was <<EOF
 Modified constant content
 EOF
-cmd "find iwant/cached/example/target -newer $TS"
+find-newer-than-ts
 echo -n | out-was
 my-edit "$WSJAVA" Workspace.java.another-constant-change-to-demo-laziness.diff
 cmd 'iwant/target/projectATestResult/as-path > /dev/null'
-cmd "find iwant/cached/example/target -newer $TS"
+find-newer-than-ts
 echo -n | out-was
 cmd 'cat $(iwant/target/aConstant/as-path)'
 out-was <<EOF
 A change unrelated to java and test targets
 EOF
-cmd "find iwant/cached/example/target -newer $TS"
+find-newer-than-ts
 out-was <<EOF
 iwant/cached/example/target/aConstant
 EOF

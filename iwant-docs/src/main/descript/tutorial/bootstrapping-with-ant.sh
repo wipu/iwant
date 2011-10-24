@@ -2,17 +2,39 @@ end-section() {
   debuglog "TODO Really, define end-section in descript."
 }
 
-copy-phase1() {
-cmd 'mkdir as-example-developer && cd as-example-developer'
+local-get-phase1() {
 cmd "svn export \"$LOCAL_IWANT_WSROOT/iwant-bootstrapper/as-someone/with\""
 out-was <<EOF
 Export complete.
 EOF
 }
 
+remote-get-phase1() {
+local REV=189
+cmd "svn export -r $REV https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/as-someone/with"
+out-was <<EOF
+A    with
+A    with/ant
+A    with/ant/iw
+A    with/ant/iw/build.xml
+A    with/bash
+A    with/bash/iwant
+A    with/bash/iwant/help.sh
+Exported revision $REV.
+EOF
+}
+
+is-local() {
+  [ "${LOCAL_IWANT_WSROOT:-}" != "" ]
+}
+
 get-phase1() {
-  debuglog "TODO check LOCAL_IWANT_WSROOT"
-  copy-phase1
+  cmd 'mkdir as-example-developer && cd as-example-developer'
+  if is-local; then
+    local-get-phase1
+  else
+    remote-get-phase1
+  fi
 }
 
 antcmd() {
@@ -84,7 +106,7 @@ optimize-downloads() {
   cp -v "$LOCAL_IWANT_WSROOT/as-iwant-developer/with/bash/iwant/cached/.internal/iwant-r/iwant-bootstrapper/phase2/iw/cached/.internal/bin/"*.jar "$INTERNALCACHE"/
 }
 
-phase1-run-with-correct-iwant-from() {
+phase1-run-with-iwant-from-local() {
 section "We'll use a local copy of iwant."
 
 edit "$REL_IHAVE/iwant-from.conf" use-local-iwant <<EOF
@@ -92,8 +114,34 @@ iwant-rev=
 iwant-url=$LOCAL_IWANT_WSROOT
 EOF
 optimize-downloads
-cmde 1 "$PHASE1"
-cmd find $REL_IHAVE
+}
+
+phase1-run-with-iwant-from-sfnet() {
+section "We'll use iwant HEAD."
+
+edit "$REL_IHAVE/iwant-from.conf" use-local-iwant <<EOF
+iwant-rev=
+iwant-url=https://iwant.svn.sourceforge.net/svnroot/iwant/trunk
+EOF
+}
+
+cmd-phase1-filter-iwant-src-export() {
+  cmde "1 0" "$PHASE1 | grep -v '^     \[java\] A'"
+}
+
+phase1-run-with-correct-iwant-from() {
+if is-local; then
+  phase1-run-with-iwant-from-local
+else
+  phase1-run-with-iwant-from-sfnet
+fi
+cmd-phase1-filter-iwant-src-export
+cmde "0 0" "find $REL_IHAVE | sort"
+out-was <<EOF
+$REL_IHAVE
+$REL_IHAVE/iwant-from.conf
+$REL_IHAVE/ws-info.conf
+EOF
 end-section
 }
 

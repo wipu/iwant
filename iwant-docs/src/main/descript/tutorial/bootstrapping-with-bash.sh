@@ -25,6 +25,11 @@ Shell usage:
 EOF
 }
 
+cmd-phase1-filter-iwant-src-export() {
+  # nothing to filter
+  cmde 1 "$PHASE1"
+}
+
 doc() {
 
 section 'Boostrapping iwant with bash'

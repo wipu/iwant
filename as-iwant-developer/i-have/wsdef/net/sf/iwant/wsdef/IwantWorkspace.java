@@ -49,10 +49,24 @@ public class IwantWorkspace implements WorkspaceDefinition {
 							.of(localAntBootstrappingTutorialScript())).end();
 		}
 
+		public Target<ScriptGeneratedContent> antBootstrappingTutorial() {
+			return target("antBootstrappingTutorial")
+					.content(
+							ScriptGeneratedContent
+									.of(antBootstrappingTutorialScript()))
+					.end();
+		}
+
 		public Target<Concatenated> localAntBootstrappingTutorialScript() {
 			return bootstrappingTutorialScript(
 					"localAntBootstrappingTutorialScript",
-					bootstrappingWithAntSh());
+					bootstrappingWithAntSh(), true);
+		}
+
+		public Target<Concatenated> antBootstrappingTutorialScript() {
+			return bootstrappingTutorialScript(
+					"antBootstrappingTutorialScript", bootstrappingWithAntSh(),
+					false);
 		}
 
 		public Target<ScriptGeneratedContent> localBashBootstrappingTutorial() {
@@ -64,7 +78,7 @@ public class IwantWorkspace implements WorkspaceDefinition {
 		public Target<Concatenated> localBashBootstrappingTutorialScript() {
 			return bootstrappingTutorialScript(
 					"localBashBootstrappingTutorialScript",
-					bootstrappingWithBashSh());
+					bootstrappingWithBashSh(), true);
 		}
 
 		public Target<ScriptGeneratedContent> localTutorial() {
@@ -74,7 +88,7 @@ public class IwantWorkspace implements WorkspaceDefinition {
 
 		public Target<Concatenated> localTutorialScript() {
 			return bootstrappingTutorialScript("localTutorialScript",
-					articleSh());
+					articleSh(), true);
 		}
 
 		public Target<ScriptGeneratedContent> localWebsite() {
@@ -105,14 +119,15 @@ public class IwantWorkspace implements WorkspaceDefinition {
 		}
 
 		private Target<Concatenated> bootstrappingTutorialScript(
-				String targetName, Source tutorialSh) {
+				String targetName, Source tutorialSh, boolean isLocal) {
 			ConcatenatedBuilder b = Concatenated.from();
 			b.string("#!/bin/bash\n");
 			b.string("set -eu\n");
 			b.string("DEST=$1\n");
-			b.string(
-					"LOCAL_IWANT_WSROOT=\"" + locations.wsRoot() + "\" bash \"")
-					.pathTo(descriptSh()).string("\"");
+			if (isLocal) {
+				b.string("LOCAL_IWANT_WSROOT=\"" + locations.wsRoot() + "\" ");
+			}
+			b.string("bash \"").pathTo(descriptSh()).string("\"");
 			b.string(" \"").pathTo(tutorialSh).string("\"");
 			b.string(" \"$DEST\" true\n");
 			return target(targetName).content(b.end()).end();
