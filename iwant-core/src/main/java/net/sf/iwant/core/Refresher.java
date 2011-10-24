@@ -38,14 +38,13 @@ class Refresher {
 	private boolean needsRefreshing(Target<?> target) throws IOException {
 		Long targetTimestamp = timestampReader.modificationTime(target);
 		if (targetTimestamp == null) {
-			TextOutput.debugLog("Needs refreshing, because target missing: "
-					+ target);
+			TextOutput.debugLog(target
+					+ " needs refreshing, because it is missing.");
 			return true;
 		}
 		if (hasContentDefinitionChanged(target)) {
-			TextOutput
-					.debugLog("Needs refreshing, because content definition changed: "
-							+ target);
+			TextOutput.debugLog(target
+					+ " needs refreshing, because content definition changed.");
 			return true;
 		}
 		for (Path ingredient : target.ingredients()) {
@@ -55,15 +54,17 @@ class Refresher {
 				// whether this is OK or not.
 				// TODO should we log a warning, in case the user would like to
 				// remove the source declaration
-				TextOutput
-						.debugLog("Needs refreshing, because ingredient missing: "
-								+ target + " (ingredient: " + ingredient + ")");
+				TextOutput.debugLog(target
+						+ " needs refreshing, because ingredient missing: "
+						+ ingredient);
 				return true;
 			}
 			if (sourceTimestamp > targetTimestamp) {
-				TextOutput
-						.debugLog("Needs refreshing, because ingredient changed: "
-								+ target + " (ingredient: " + ingredient + ")");
+				TextOutput.debugLog(target
+						+ " needs refreshing, because its timestamp "
+						+ targetTimestamp + " <= " + sourceTimestamp
+						+ " of its ingredient " + ingredient + " ("
+						+ ingredient.asAbsolutePath(locations) + ")");
 				return true;
 			}
 		}

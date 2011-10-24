@@ -341,6 +341,14 @@
 
 - As @developer I want a fixed version of descript so we no more need >> to make sure script output doesn't delete previous output and break descript output assertions
 
+- bugfix: delete java classes dir before compilation, otherwise some timestamps are not touched and the dir is always not fresh
+  - test
+  - replace mkdir with FileUtils.ensureEmpty
+
+- potential bugfix: filter out .svn etc when determining directory modification time
+  - test with .svn
+  - manually filter or use and Fileset
+
 - As @developer I want to see some progress messages in stderr so I can more easily detect problems and remember/understand what's going on
   - replace/enhance TextOutput.java
 
