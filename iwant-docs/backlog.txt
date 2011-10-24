@@ -285,7 +285,7 @@
     + hand-modify and version wsdef source eclipse settings (active generation later, when eclipse generation is more robust and easier)
     + import as-iwant-developer to eclipse
   + svn:ignore in bootstrapper: with/bash/iwant/{target,cached,list-of}: they'll appear when used
-  - development-time targets in wsdef
+  + development-time targets in wsdef
     + iwant main classes
     + local tutorial
       + target
@@ -301,16 +301,16 @@
           passing iwant-iwant as LOCAL_IWANT
     + local ant bootstrapping
     + local bash bootstrapping
-    - local website
+    + local website
       (not yet: - new Content: directory with files
         - svn:extern from gluent
         - test and implement Content around it)
       - for now just use ScriptGeneratedContent
         + impl bugfix story about correctly depending on Path ingredients, otherwise website won't be
           refreshed when a tutorial has changed
-        - dir with three tutorials and iwant-docs/src/main/html/website/*
+        + dir with three tutorials and iwant-docs/src/main/html/website/*
   - online tutorial targets
-    - static html links to bootstrapping
+    - fix static html links to tutorials: mention the alternatives first, then the rest in tutorial
     - ant bootstrapping
     - bash bootstrapping
     - tutorial
@@ -344,6 +344,12 @@
 - bugfix: delete java classes dir before compilation, otherwise some timestamps are not touched and the dir is always not fresh
   - test
   - replace mkdir with FileUtils.ensureEmpty
+
+- As @buildscriptauthor and @buildscriptuser I want to define cached name and target name so e.g. cached html files are more easily deployed/displayed and the "logical" name can express the meaning
+  - test normal case
+  - test name clash is detected and "use subdir" hint is given
+  - test subdirs in cached name work
+  - use in iwant website target
 
 - potential bugfix: filter out .svn etc when determining directory modification time
   - test with .svn

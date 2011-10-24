@@ -7,6 +7,7 @@ import net.sf.iwant.core.EclipseProject;
 import net.sf.iwant.core.EclipseProjects;
 import net.sf.iwant.core.JavaClasses;
 import net.sf.iwant.core.Locations;
+import net.sf.iwant.core.Path;
 import net.sf.iwant.core.RootPath;
 import net.sf.iwant.core.ScriptGeneratedContent;
 import net.sf.iwant.core.Source;
@@ -76,6 +77,17 @@ public class IwantWorkspace implements WorkspaceDefinition {
 					articleSh());
 		}
 
+		public Target<ScriptGeneratedContent> localWebsite() {
+			return target("localWebsite").content(
+					ScriptGeneratedContent.of(localWebsiteScript())).end();
+		}
+
+		public Target<Concatenated> localWebsiteScript() {
+			return websiteScript("localWebsiteScript",
+					localAntBootstrappingTutorial(),
+					localBashBootstrappingTutorial(), localTutorial());
+		}
+
 		private Source descriptSh() {
 			return source("iwant-lib-descript/descript.sh");
 		}
@@ -103,6 +115,27 @@ public class IwantWorkspace implements WorkspaceDefinition {
 					.pathTo(descriptSh()).string("\"");
 			b.string(" \"").pathTo(tutorialSh).string("\"");
 			b.string(" \"$DEST\" true\n");
+			return target(targetName).content(b.end()).end();
+		}
+
+		private Source websiteHtml() {
+			return source("iwant-docs/src/main/html/website");
+		}
+
+		private Target<Concatenated> websiteScript(String targetName,
+				Path antTutorial, Path bashTutorial, Path tutorial) {
+			ConcatenatedBuilder b = Concatenated.from();
+			b.string("#!/bin/bash\n");
+			b.string("set -eu\n");
+			b.string("DEST=$1\n");
+			b.string("mkdir \"$DEST\"\n");
+			b.string("cp '").pathTo(websiteHtml()).string("'/* \"$DEST\"/\n");
+			b.string("cp '").pathTo(antTutorial)
+					.string("' \"$DEST\"/bootstrapping-with-ant.html\n");
+			b.string("cp '").pathTo(bashTutorial)
+					.string("' \"$DEST\"/bootstrapping-with-bash.html\n");
+			b.string("cp '").pathTo(tutorial)
+					.string("' \"$DEST\"/tutorial.html\n");
 			return target(targetName).content(b.end()).end();
 		}
 
