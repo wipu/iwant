@@ -75,10 +75,22 @@ public class IwantWorkspace implements WorkspaceDefinition {
 							.of(localBashBootstrappingTutorialScript())).end();
 		}
 
+		public Target<ScriptGeneratedContent> bashBootstrappingTutorial() {
+			return target("bashBootstrappingTutorial").content(
+					ScriptGeneratedContent
+							.of(bashBootstrappingTutorialScript())).end();
+		}
+
 		public Target<Concatenated> localBashBootstrappingTutorialScript() {
 			return bootstrappingTutorialScript(
 					"localBashBootstrappingTutorialScript",
 					bootstrappingWithBashSh(), true);
+		}
+
+		public Target<Concatenated> bashBootstrappingTutorialScript() {
+			return bootstrappingTutorialScript(
+					"bashBootstrappingTutorialScript",
+					bootstrappingWithBashSh(), false);
 		}
 
 		public Target<ScriptGeneratedContent> localTutorial() {

@@ -325,7 +325,7 @@
       + add -mindepth 1 to Laziness find cmd, because once it found the cached dir itsef
       + in ant bootstrapping (and not in bash) filter out iwant src svn export messages
         to shorten the article
-    - bash bootstrapping
+    + bash bootstrapping
     - tutorial
       - target
       - make sure new bootstrapping works
