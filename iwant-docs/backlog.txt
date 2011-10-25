@@ -568,6 +568,13 @@
 = Story sketches, to be evaluated and or rewritten
 #################################################################
 
+- todo write stories:
+  - "i just touched src X, what needs refreshing"
+  - "autoupdated entrypoint build.xml that can also be imported to eclipse as a gui for iwant of the ws"
+  - root could just have one target, all, and list-of/targets would be its direct deps
+  - refresher must delete cached target if refresh fails
+  - todo gen wishscripts lazily
+
 - EPIC: As a @buildscriptauthor that has to serve users that don't have unix tools installed I want iwant to provide a JPC-based virtual machine for running my scripts
   - a way to command the VM and read its results
   - a very minimal disk image that contains basic tools
