@@ -186,6 +186,37 @@ public class IwantWorkspace implements WorkspaceDefinition {
 			return target(targetName).content(b.end()).end();
 		}
 
+		public Target<Concatenated> scriptToTagDeployedWebsite() {
+			ConcatenatedBuilder b = Concatenated.from();
+			b.string("#!/bin/bash\n");
+			b.string("if [ $# != 2 ]; then\n");
+			b.string("  echo \"Usage: $0 REV TIME\"\n");
+			b.string("  echo \"e.g. $0 555 2009-03-16\"\n");
+			b.string("  exit 1\n");
+			b.string("fi\n");
+			b.string("\n");
+			b.string("REV=$1\n");
+			b.string("TIME=$2\n");
+			b.string("\n");
+			b.string("TAG=\"${TIME}-website-update\"\n");
+			b.string("SVNBASE=https://iwant.svn.sourceforge.net/svnroot/iwant\n");
+			b.string("\n");
+			b.string("echo \"# Assuming the website target is up to date, pipe this a shell:\"\n");
+			b.string("echo svn cp -r $REV \"$SVNBASE/trunk\" \"$SVNBASE/tags/$TAG\""
+					+ " -m \\\"\"Tagged $TAG\"\\\"\n");
+			return target("scriptToTagWebsite").content(b.end()).end();
+		}
+
+		public Target<Concatenated> scriptToDeployWebsite() {
+			ConcatenatedBuilder b = Concatenated.from();
+			b.string("echo \"# Assuming the website target is uptodate"
+					+ " (TODO should be!), pipe this to a shell:\"\n");
+			b.string("echo rsync -e ssh --delete-delay -vrucli"
+					+ " \"iwant/as-iwant-user/../cached/iwant/website/\""
+					+ " wipu_@shell.sourceforge.net:iwant-htdocs/\n");
+			return target("scriptToDeployWebsite").content(b.end()).end();
+		}
+
 		public EclipseProject wsdefEclipseProject() {
 			return EclipseProject.with().name("as-$WSNAME-developer")
 					.src("i-have/wsdef").libs(builtin().all()).end();

@@ -333,7 +333,9 @@
       + remove the automatic iwant upgrade part
         * will be replace in a future story
     + website
-  - targets for website publication and tagging scripts
+  + targets for website publication and tagging scripts
+    + copypaste content from iwant-iwant
+    + diff results
   - remove iwant-iwant (the old self-bootstrapper)
   + symbolic link to bootstrapper so we use latest and to reduce network traffic for users
     (- remove ".." from paths with something else than "File.getCanonicalPath()" and "readlink -f", because they both break symlinks (resolve away)
