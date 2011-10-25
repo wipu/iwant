@@ -118,10 +118,20 @@ public class IwantWorkspace implements WorkspaceDefinition {
 					ScriptGeneratedContent.of(localWebsiteScript())).end();
 		}
 
+		public Target<ScriptGeneratedContent> website() {
+			return target("website").content(
+					ScriptGeneratedContent.of(websiteScript())).end();
+		}
+
 		public Target<Concatenated> localWebsiteScript() {
 			return websiteScript("localWebsiteScript",
 					localAntBootstrappingTutorial(),
 					localBashBootstrappingTutorial(), localTutorial());
+		}
+
+		public Target<Concatenated> websiteScript() {
+			return websiteScript("websiteScript", antBootstrappingTutorial(),
+					bashBootstrappingTutorial(), tutorial());
 		}
 
 		private Source descriptSh() {

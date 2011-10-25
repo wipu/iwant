@@ -316,7 +316,7 @@
         + impl bugfix story about correctly depending on Path ingredients, otherwise website won't be
           refreshed when a tutorial has changed
         + dir with three tutorials and iwant-docs/src/main/html/website/*
-  - online tutorial targets
+  + online tutorial targets
     - fix static html links to tutorials: mention the alternatives first, then the rest in tutorial
     + ant bootstrapping
       + target
@@ -332,7 +332,7 @@
         * for now, just use HEAD
       + remove the automatic iwant upgrade part
         * will be replace in a future story
-    - website
+    + website
   - targets for website publication and tagging scripts
   - remove iwant-iwant (the old self-bootstrapper)
   + symbolic link to bootstrapper so we use latest and to reduce network traffic for users
