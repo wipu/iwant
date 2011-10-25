@@ -336,7 +336,15 @@
   + targets for website publication and tagging scripts
     + copypaste content from iwant-iwant
     + diff results
-  - remove iwant-iwant (the old self-bootstrapper)
+  + remove iwant-iwant (the old self-bootstrapper)
+    + iwant-iwant dir
+    + iwant-core/src/main/bash: all but new-eclipse-env
+    + delete all caches and want all targets to verify
+      * note: can't use find as-iwant-developer/with/bash/iwant/target/ -name as-path | bash
+        because the two processes will have a race condition because atm iwant refreshes
+        wish scripts on all runs
+    + make sure nothing gets written to iwant-iwant
+      + don't use it for optimization cache
   + symbolic link to bootstrapper so we use latest and to reduce network traffic for users
     (- remove ".." from paths with something else than "File.getCanonicalPath()" and "readlink -f", because they both break symlinks (resolve away)
       - for dirs, use the old (cd DIR && pwd) trick

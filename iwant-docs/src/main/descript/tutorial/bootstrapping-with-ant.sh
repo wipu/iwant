@@ -89,7 +89,7 @@ end-section
 
 optimize-downloads() {
   p "Using cached external libraries to optimize building this article."
-  local OPTIMCACHE=$LOCAL_IWANT_WSROOT/iwant-iwant/iwant/cached/iwant/optimization
+  local OPTIMCACHE=$LOCAL_IWANT_WSROOT/as-iwant-developer/with/bash/iwant/cached/.internal/unmodifiable
   local SVNKITZIP=org.tmatesoft.svn_1.3.5.standalone.nojna.zip
   local INTERNALCACHE=$REL_AS_SOMEONE/with/bash/iwant/cached/.internal/unmodifiable
   [ -e "$OPTIMCACHE/$SVNKITZIP" ] || {
