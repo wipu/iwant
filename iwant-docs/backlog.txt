@@ -326,9 +326,12 @@
       + in ant bootstrapping (and not in bash) filter out iwant src svn export messages
         to shorten the article
     + bash bootstrapping
-    - tutorial
-      - target
-      - make sure new bootstrapping works
+    + tutorial
+      + target
+      + make sure new bootstrapping works
+        * for now, just use HEAD
+      + remove the automatic iwant upgrade part
+        * will be replace in a future story
     - website
   - targets for website publication and tagging scripts
   - remove iwant-iwant (the old self-bootstrapper)
@@ -355,6 +358,11 @@
 = Planned
 #################################################################
 
+- As @developer I want new tests for automatic rebootstrap after editing iwant-from.conf now that sha verification support cannot be used for that in tutorial
+  * new bootstrapper has to use a rev that already implements sha so another way is needed
+  - make iwant/help.sh print svn revision?
+  - junit test for sha, if there is none
+
 - As @developer I want a fixed version of descript so we no more need >> to make sure script output doesn't delete previous output and break descript output assertions
 
 - As @buildscriptauthor and @buildscriptuser I want to define cached name and target name so e.g. cached html files are more easily deployed/displayed and the "logical" name can express the meaning
@@ -374,6 +382,10 @@
   * Path logic should be the same in every workspace; new Content can and should be defined easily 
 
 - As @buildscriptauthor I want WsDefClasses to put contentdescription in a different cache dir than my own targets, to avoid name clashes (just like the actual cached content already does)
+
+- As eclipse user I want iwant to warn as long as I have outdated eclipse settings that differ from the ones defined in my wsdef so I won't debug classpath problems in vain
+  - eclipseProjects outdated => warn
+  - after that cached ecliseProjects different than "deployed" ones => warn
 
 - As @buildscriptauthor I want to define extra ingredients not mentioned in a script but indirectly needed at runtime so the script will be rerun when those ingredients have changed
   * e.g. bootstrapping-with-bash.sh sources bootstrapping-with-ant.sh and

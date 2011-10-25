@@ -17,17 +17,25 @@ EOF
 }
 
 conf-iwant-from-sfnet() {
-  die fix this
-  cmd "echo \"svn-revision 109\" > i-have/iwant-from.conf"
+p 'TODO use a tag here.'
+edit "$REL_IHAVE/iwant-from.conf" use-remote-iwant <<EOF
+iwant-rev=
+iwant-url=https://iwant.svn.sourceforge.net/svnroot/iwant/trunk
+EOF
 }
 
 svn-bootstrapper() {
-die fix this
-cmd "svn export -r 109 https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/iwant iwant"
+BOOTSTRAPPER_REV=192
+cmd "svn export -r $BOOTSTRAPPER_REV https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/as-someone/with"
 out-was <<EOF
-A    iwant
-A    iwant/help.sh
-Exported revision 109.
+A    with
+A    with/ant
+A    with/ant/iw
+A    with/ant/iw/build.xml
+A    with/bash
+A    with/bash/iwant
+A    with/bash/iwant/help.sh
+Exported revision $BOOTSTRAPPER_REV.
 EOF
 }
 
@@ -52,7 +60,7 @@ end-section
 }
 
 is-online-tutorial() {
-  [ "x" == "x$LOCAL_IWANT_WSROOT" ]
+  [ "${LOCAL_IWANT_WSROOT:-}" == "" ]
 }
 
 # temporary, remove when descript supports these properly:
@@ -294,27 +302,6 @@ Hello 42
 EOF
 
 end-section
-
-if is-online-tutorial; then
-section 'Upgrading iwant version (to one that supports SHA)'
-my-edit "$WSJAVA" Workspace.java.commonsMathShaCheck.diff
-cmd 'iwant/target/commons-math/as-path'
-out-was <<EOF
-iwant/target/commons-math/../../../i-have/wsdef/com/example/wsdef/Workspace.java:66: cannot find symbol
-symbol  : method sha(java.lang.String)
-location: class net.sf.iwant.core.Downloaded
-                    from("http://mirrors.ibiblio.org/pub/mirrors/maven2/commons-math/commons-math/1.2/commons-math-1.2.jar").
-                                                                                                                            ^
-1 error
-EOF
-die fix this
-cmd "echo \"svn-revision 110\" > i-have/iwant-from.conf"
-cmd 'iwant/target/commons-math/as-path 2>/dev/null'
-out-was <<EOF
-$PWD/iwant/cached/example/target/commons-math
-EOF
-end-section
-fi
 
 section "Script-generated content"
 #---------------------------------

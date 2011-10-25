@@ -98,9 +98,19 @@ public class IwantWorkspace implements WorkspaceDefinition {
 					ScriptGeneratedContent.of(localTutorialScript())).end();
 		}
 
+		public Target<ScriptGeneratedContent> tutorial() {
+			return target("tutorial").content(
+					ScriptGeneratedContent.of(tutorialScript())).end();
+		}
+
 		public Target<Concatenated> localTutorialScript() {
 			return bootstrappingTutorialScript("localTutorialScript",
 					articleSh(), true);
+		}
+
+		public Target<Concatenated> tutorialScript() {
+			return bootstrappingTutorialScript("tutorialScript", articleSh(),
+					false);
 		}
 
 		public Target<ScriptGeneratedContent> localWebsite() {
