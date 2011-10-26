@@ -23,7 +23,7 @@ EOF
 }
 
 svn-bootstrapper() {
-BOOTSTRAPPER_REV=192
+BOOTSTRAPPER_REV=199
 cmd "svn export -r $BOOTSTRAPPER_REV https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/as-someone/with"
 out-was <<EOF
 A    with

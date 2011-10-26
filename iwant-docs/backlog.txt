@@ -271,20 +271,21 @@
        all targets before refreshing
   (- replace mkdir with FileUtils.ensureEmpty)
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I don't want to use iwant-rev in i-have/iwant-from.conf but just point iwant-url to a published tag so I can more easily point to a stable publication instead of a "random" rev
++ As @buildscriptauthor I don't want to use iwant-rev in i-have/iwant-from.conf but just point iwant-url to a published tag so I can more easily point to a stable publication instead of a "random" rev
   * also easier to implement: it's always just iwant-url
   + don't require it
   + remove from generated i-have/iwant-from.conf
   + update descript tests and run local ones
-  - commit and run remote ones
+  + commit and run remote ones
     + aaand fix error in locals, too, caused by:
       * I wished the targets by evaluating a script without set -eu => failures were not detected on run #1
       * story about deleting cached target after failure is not implemented => run #2 didn't even refresh
       * and the error itself: iwant-r$REV references here and there, cached iwant is now "iwant"
+    + update bootstrapper rev in tutorials
+
+#################################################################
+= In progress
+#################################################################
 
 - bugfix: as @buildscriptauthor I want to append Paths explicitly as Paths to Concatenated content so the target will be refreshed when the paths have been touched
   + test

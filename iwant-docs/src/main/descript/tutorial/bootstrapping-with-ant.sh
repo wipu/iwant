@@ -10,7 +10,7 @@ EOF
 }
 
 remote-get-phase1() {
-local REV=189
+local REV=199
 cmd "svn export -r $REV https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/as-someone/with"
 out-was <<EOF
 A    with
