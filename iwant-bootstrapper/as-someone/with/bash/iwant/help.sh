@@ -8,6 +8,11 @@ log() {
   echo "sh-$$ | $@" >> /tmp/iwant.log
 }
 
+logcolor() {
+  # TODO why doesn't [ -t 1 ] && printf... work here?
+  if [ -t 2 ]; then printf "\033[${1}m" >> /dev/stderr; fi
+}
+
 iwant-messages-forwarded() {
   grep -o ':iwant:out:.*\|:iwant:err:.*' |
   while read LINE; do
@@ -19,7 +24,10 @@ iwant-messages-forwarded() {
       continue
     }
     [ "err:" == "$PREF" ] && {
+      logcolor 1
+      logcolor 34
       echo "$MSG" >> /dev/stderr
+      logcolor 0
       continue
     }
     local ERRORMSG="Internal error: Don't know where to output line $LINE"

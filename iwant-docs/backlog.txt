@@ -283,6 +283,9 @@
       * and the error itself: iwant-r$REV references here and there, cached iwant is now "iwant"
     + update bootstrapper rev in tutorials
 
++ As @developer I want stderr coloured so I can see which build failures are printed by descript scripts and which are read failures
+  + copy logcolor function from descript and use
+
 #################################################################
 = In progress
 #################################################################
