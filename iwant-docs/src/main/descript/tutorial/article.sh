@@ -11,7 +11,6 @@ EOF
 
 conf-iwant-from-local-wishdir() {
 edit "$REL_IHAVE/iwant-from.conf" use-local-iwant <<EOF
-iwant-rev=
 iwant-url=$LOCAL_IWANT_WSROOT
 EOF
 }
@@ -19,7 +18,6 @@ EOF
 conf-iwant-from-sfnet() {
 p 'TODO use a tag here.'
 edit "$REL_IHAVE/iwant-from.conf" use-remote-iwant <<EOF
-iwant-rev=
 iwant-url=https://iwant.svn.sourceforge.net/svnroot/iwant/trunk
 EOF
 }

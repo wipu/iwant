@@ -52,7 +52,7 @@
 	</target>
 
 	<target name="iwant-src-status" depends="iwant-from-information, cached-internal">
-		<property name="iwant-src" location="${cached-internal}/iwant-r${iwant-rev}" />
+		<property name="iwant-src" location="${cached-internal}/iwant" />
 		<property name="iwant-src.timestamp" location="${iwant-src}.timestamp" />
 		<condition property="iwant-src-uptodate">
 			<and>
@@ -105,13 +105,11 @@
 	<!-- depends on default-wsroot so iwant-from.conf can refer to it -->
 	<target name="iwant-from-information" depends="i-have/iwant-from.conf, default-wsroot, iwant-print-prefix">
 		<property file="${i-have/iwant-from.conf}" />
-		<fail message="${iwant-print-prefix}err:Please specify iwant-rev in ${i-have/iwant-from.conf}" unless="iwant-rev" />
 		<fail message="${iwant-print-prefix}err:Please specify iwant-url in ${i-have/iwant-from.conf}" unless="iwant-url" />
 	</target>
 
 	<target name="i-have/iwant-from.conf" depends="i-have/iwant-from.conf-status, iwant-print-prefix" unless="i-have/iwant-from.conf_exists">
-		<echo file="${i-have/iwant-from.conf}">iwant-rev=140
-iwant-url=https://iwant.svn.sourceforge.net/svnroot/iwant/trunk
+		<echo file="${i-have/iwant-from.conf}">iwant-url=https://iwant.svn.sourceforge.net/svnroot/iwant/trunk
 </echo>
 		<fail message="${iwant-print-prefix}err:I created file ${i-have/iwant-from.conf} for your convenience.
 Please edit it and rerun me." />

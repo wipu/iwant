@@ -275,6 +275,13 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I don't want to use iwant-rev in i-have/iwant-from.conf but just point iwant-url to a published tag so I can more easily point to a stable publication instead of a "random" rev
+  * also easier to implement: it's always just iwant-url
+  + don't require it
+  + remove from generated i-have/iwant-from.conf
+  + update descript tests and run local ones
+  - commit and run remote ones
+
 - bugfix: as @buildscriptauthor I want to append Paths explicitly as Paths to Concatenated content so the target will be refreshed when the paths have been touched
   + test
   + implement path(Path path)
@@ -360,6 +367,7 @@
     + also phase1 svn export needs to be redone iff i-have/iwant-from.conf states the iwant-url
       is a dir and its content might change (and in iwant we do state that)
   - publish website and mark this story done
+    - impl the iwant-rev removal story: let's not confuse users
     - make a tag
     - make remote tutorials point to the tag instead of HEAD
     - then publish
@@ -367,6 +375,8 @@
 #################################################################
 = Planned
 #################################################################
+
+- bugfix: delete cached file if refresh fails, otherwise partially created file will make next run think it's uptodate
 
 - As @developer I want new tests for automatic rebootstrap after editing iwant-from.conf now that sha verification support cannot be used for that in tutorial
   * new bootstrapper has to use a rev that already implements sha so another way is needed
@@ -404,11 +414,6 @@
 - bugfix: As @developer I want to see an error message when bootstrap fails because of compilation error caused by missing svn add of new file 
 
 - As @developer I want to refactor all ouput to go through the same interface, to make sure everything is prefixed, and to perhaps control verboseness later
-
-- As @buildscriptauthor I don't want to use iwant-rev in i-have/iwant-from.conf but just point iwant-url to a published tag so I can more easily point to a stable publication instead of a "random" rev
-  * also easier to implement: it's always just iwant-url
-  - don't require it
-  - remove from generated i-have/iwant-from.conf
 
 - As @developer I want iwant-url replaced with iwant-from, because it's not an url in the iwant workspace
   * and when iwant-rev has been removed, the file iwant-from.conf only contains iwant-from

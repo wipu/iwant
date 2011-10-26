@@ -68,13 +68,8 @@ end-section
 
 phase1-run-with-incorrect-iwant-from() {
 section "Test handling of incorrect iwant-from.conf"
-p "The bootstrapper complains if iwant-rev is not specified."
+p "The bootstrapper complains if iwant-url is not specified."
 edit "$REL_IHAVE/iwant-from.conf" empty-file <<EOF
-EOF
-cmde 1 "$PHASE1"
-p "It also complains about missing iwant-url."
-edit "$REL_IHAVE/iwant-from.conf" only-rev <<EOF
-iwant-rev=
 EOF
 cmde 1 "$PHASE1"
 p "No further side-effects until we fix the issue:"
@@ -110,7 +105,6 @@ phase1-run-with-iwant-from-local() {
 section "We'll use a local copy of iwant."
 
 edit "$REL_IHAVE/iwant-from.conf" use-local-iwant <<EOF
-iwant-rev=
 iwant-url=$LOCAL_IWANT_WSROOT
 EOF
 optimize-downloads
@@ -120,7 +114,6 @@ phase1-run-with-iwant-from-sfnet() {
 section "We'll use iwant HEAD."
 
 edit "$REL_IHAVE/iwant-from.conf" use-local-iwant <<EOF
-iwant-rev=
 iwant-url=https://iwant.svn.sourceforge.net/svnroot/iwant/trunk
 EOF
 }
