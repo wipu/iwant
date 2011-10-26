@@ -98,7 +98,7 @@ optimize-downloads() {
   mkdir -p "$INTERNALCACHE"
   cp -v "$OPTIMCACHE/$SVNKITZIP" "$INTERNALCACHE"/
   log "Also copying jars for iwant compilation."
-  cp -v "$LOCAL_IWANT_WSROOT/as-iwant-developer/with/bash/iwant/cached/.internal/iwant-r/iwant-bootstrapper/phase2/iw/cached/.internal/bin/"*.jar "$INTERNALCACHE"/
+  cp -v "$LOCAL_IWANT_WSROOT/as-iwant-developer/with/bash/iwant/cached/.internal/iwant/iwant-bootstrapper/phase2/iw/cached/.internal/bin/"*.jar "$INTERNALCACHE"/
 }
 
 phase1-run-with-iwant-from-local() {

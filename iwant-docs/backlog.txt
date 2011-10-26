@@ -281,6 +281,10 @@
   + remove from generated i-have/iwant-from.conf
   + update descript tests and run local ones
   - commit and run remote ones
+    + aaand fix error in locals, too, caused by:
+      * I wished the targets by evaluating a script without set -eu => failures were not detected on run #1
+      * story about deleting cached target after failure is not implemented => run #2 didn't even refresh
+      * and the error itself: iwant-r$REV references here and there, cached iwant is now "iwant"
 
 - bugfix: as @buildscriptauthor I want to append Paths explicitly as Paths to Concatenated content so the target will be refreshed when the paths have been touched
   + test
@@ -380,6 +384,8 @@
 
 - As @developer I want new tests for automatic rebootstrap after editing iwant-from.conf now that sha verification support cannot be used for that in tutorial
   * new bootstrapper has to use a rev that already implements sha so another way is needed
+  * now that iwant-rev is no more used, cached iwant is always in the same directory, so
+    the probability of the feature being already broken is high!
   - make iwant/help.sh print svn revision?
   - junit test for sha, if there is none
 

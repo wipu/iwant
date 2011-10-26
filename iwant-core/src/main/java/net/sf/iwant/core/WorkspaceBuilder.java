@@ -37,7 +37,7 @@ public class WorkspaceBuilder {
 		String targetArg = args[2];
 		String cacheDir = toAbs(args[3]);
 		String libsDir = toAbs(cacheDir
-				+ "/../.internal/iwant-r/iwant-bootstrapper/phase2/iw/cached/.internal/bin");
+				+ "/../.internal/iwant/iwant-bootstrapper/phase2/iw/cached/.internal/bin");
 		Locations locations = new Locations(wsRootArg, wsRootArg
 				+ "/todo-fix-path-to-as-someone", cacheDir, libsDir);
 		ContainerPath wsRoot = wsRoot(wsDef, locations);

@@ -546,7 +546,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		bc.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
 		bc.append("        <classpathentry kind=\"lib\" path=\""
 				+ testarea()
-				+ "/.internal/iwant-r/iwant-bootstrapper/phase2/iw/cached/.internal/bin/junit-3.8.1.jar\"/>\n");
+				+ "/.internal/iwant/iwant-bootstrapper/phase2/iw/cached/.internal/bin/junit-3.8.1.jar\"/>\n");
 		bc.append("        <classpathentry kind=\"output\" path=\"classes\"/>\n");
 		bc.append("</classpath>\n");
 		assertEquals(bc.toString(),

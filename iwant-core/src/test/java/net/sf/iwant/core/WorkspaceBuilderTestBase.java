@@ -74,7 +74,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		ensureEmpty(mockWeb);
 
 		String iwantBin = testarea
-				+ "/.internal/iwant-r/iwant-bootstrapper/phase2/iw/cached/.internal/bin";
+				+ "/.internal/iwant/iwant-bootstrapper/phase2/iw/cached/.internal/bin";
 		String eclipseClasses = testarea + "/../../classes";
 		if (new File(eclipseClasses).exists()) {
 			ensureEmpty(iwantBin + "/iwant-core");

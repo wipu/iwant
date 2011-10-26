@@ -78,7 +78,7 @@ local-iwant-wishdir() {
 
 svn-revision() {
   local REV=$1
-  local IWANT_SRC=$CACHED/iwant-r$REV
+  local IWANT_SRC=$CACHED/iwant
   rm -rf "$IWANT_SRC"
   svn export -r "$REV" "https://iwant.svn.sourceforge.net/svnroot/iwant/trunk" "$IWANT_SRC"
   "$IWANT_SRC/iwant-iwant/iwant/as_shell-user/to-bootstrap-iwant.sh"
