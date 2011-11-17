@@ -15,15 +15,16 @@ public class RefreshEnvironment {
 		this.locations = locations;
 	}
 
+	public RefreshEnvironment(File destination, RefreshEnvironment other) {
+		this(destination, other.temporaryDirectory, other.locations);
+	}
+
 	public File destination() {
 		return destination;
 	}
 
-	public File temporaryDirectory() {
-		if (temporaryDirectory.exists()) {
-			temporaryDirectory.delete();
-		}
-		temporaryDirectory.mkdir();
+	public File freshTemporaryDirectory() {
+		FileUtils.ensureEmpty(temporaryDirectory.getAbsolutePath());
 		return temporaryDirectory;
 	}
 

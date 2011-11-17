@@ -774,6 +774,22 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 						ScriptGeneratedContent.of(successfulScript())).end();
 			}
 
+			public Target<Constant> anotherSuccessfulScript() {
+				StringBuilder b = new StringBuilder();
+				b.append("#!/bin/bash\n");
+				b.append("set -eu\n");
+				b.append("DEST=$1\n");
+				b.append("echo 'hello from anotherSuccessfulScript' > \"$DEST\"\n");
+				return target("anotherSuccessfulScript").content(
+						Constant.value(b.toString())).end();
+			}
+
+			public Target<ScriptGeneratedContent> anotherSuccessfulScriptOutput() {
+				return target("anotherSuccessfulScriptOutput").content(
+						ScriptGeneratedContent.of(anotherSuccessfulScript()))
+						.end();
+			}
+
 			public Target<Constant> failingScript() {
 				StringBuilder b = new StringBuilder();
 				b.append("#!/bin/bash\n");
@@ -833,6 +849,22 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 		assertEquals("hello from script\n",
 				cachedContent("successfulScriptOutput"));
+	}
+
+	/**
+	 * A bug made the second run run the first script again.
+	 */
+	public void testAnotherScriptAfterOneScript() throws IOException {
+		testSuccessfulShellScript();
+		startOfOutAndErrCapture();
+		at(WorkspaceWithShellScript.class).iwant(
+				"target/anotherSuccessfulScriptOutput/as-path");
+
+		assertEquals(pathLine("anotherSuccessfulScriptOutput"), out());
+		assertEquals("", err());
+
+		assertEquals("hello from anotherSuccessfulScript\n",
+				cachedContent("anotherSuccessfulScriptOutput"));
 	}
 
 	public void testFailingShellScript() {

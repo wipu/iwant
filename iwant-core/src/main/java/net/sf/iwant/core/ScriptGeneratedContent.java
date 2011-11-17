@@ -30,7 +30,7 @@ public class ScriptGeneratedContent implements Content {
 	}
 
 	public void refresh(RefreshEnvironment refresh) throws Exception {
-		File tmpDir = refresh.temporaryDirectory();
+		File tmpDir = refresh.freshTemporaryDirectory();
 		File tmpScript = new File(tmpDir.getCanonicalPath() + "/script");
 
 		Project project = new Project();
@@ -99,6 +99,11 @@ public class ScriptGeneratedContent implements Content {
 		b.append("  script:").append(script).append("\n");
 		b.append("}\n");
 		return b.toString();
+	}
+
+	@Override
+	public String toString() {
+		return definitionDescription();
 	}
 
 }

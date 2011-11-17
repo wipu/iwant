@@ -286,6 +286,11 @@
 + As @developer I want stderr coloured so I can see which build failures are printed by descript scripts and which are read failures
   + copy logcolor function from descript and use
 
++ bugfix: 1st script of ScriptGeneratedContent is not replaced for further targets
+  * ant copy does not overwrite
+  + fix by clearing the whole temp area when user requests for it
+  + don't call the clearing method when copying the temp area to a new RefreshEnvironment instance
+
 #################################################################
 = In progress
 #################################################################

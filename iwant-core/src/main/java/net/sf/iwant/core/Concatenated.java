@@ -204,4 +204,9 @@ public class Concatenated implements Content {
 		return b.toString();
 	}
 
+	@Override
+	public String toString() {
+		return definitionDescription();
+	}
+
 }

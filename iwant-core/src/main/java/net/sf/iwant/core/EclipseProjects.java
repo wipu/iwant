@@ -29,8 +29,7 @@ public class EclipseProjects implements Content {
 		for (EclipseProject project : projects) {
 			File projectDir = new File(refresh.destination().getCanonicalPath()
 					+ "/" + project.name());
-			project.refresh(new RefreshEnvironment(projectDir, refresh
-					.temporaryDirectory(), refresh.locations()));
+			project.refresh(new RefreshEnvironment(projectDir, refresh));
 			if (project.hasIwantAnt()) {
 				File buildXml = new File(projectDir.getCanonicalPath()
 						+ "/build.xml");

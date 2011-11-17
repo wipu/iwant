@@ -84,8 +84,7 @@ class Refresher {
 		TextOutput.debugLog("Refreshing " + target);
 		File destination = new File(target.asAbsolutePath(locations));
 		remove(destination);
-		TextOutput.debugLog("Calling "
-				+ target.content().getClass().getSimpleName() + ".refresh");
+		TextOutput.debugLog("Calling refresh of " + target.content());
 		target.content().refresh(
 				new RefreshEnvironment(destination, temporaryDirectory,
 						locations));
