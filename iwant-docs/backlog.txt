@@ -296,8 +296,11 @@
 #################################################################
 
 - As @buildscriptauthor I want a java API for iwant so I can easily build things embedded in a java program, without having to operate on file and cli level
-  - interface for declaring Target collection
-    * current reflection-based solution will be just one impl for this
+  + reusable TestArea for testing
+  - Targets
+    + interface for declaring Target collection
+    - many Targets with dependency
+  - NextPhase
 
 - bugfix: as @buildscriptauthor I want to append Paths explicitly as Paths to Concatenated content so the target will be refreshed when the paths have been touched
   + test

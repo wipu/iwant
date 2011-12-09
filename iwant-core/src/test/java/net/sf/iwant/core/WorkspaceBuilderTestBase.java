@@ -2,18 +2,12 @@ package net.sf.iwant.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
 import junit.framework.TestCase;
-
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.Task;
-import org.apache.tools.ant.taskdefs.Copy;
-import org.apache.tools.ant.types.FileSet;
 
 public abstract class WorkspaceBuilderTestBase extends TestCase {
 
@@ -35,13 +29,10 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 
 	private ByteArrayOutputStream err;
 
-	private String testarea;
-
-	private String wsRoot;
-
-	private String cacheDir;
-
-	private static String mockWeb;
+	/**
+	 * TODO find a way to make this non-static
+	 */
+	private static TestArea testArea;
 
 	@Override
 	public void setUp() {
@@ -53,7 +44,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		startOfOutAndErrCapture();
 		oldPrintPrefix = System.getProperty(PrintPrefixes.SYSTEM_PROPERTY_NAME);
 		System.setProperty(PrintPrefixes.SYSTEM_PROPERTY_NAME, "p");
-		initializeTestArea();
+		testArea = TestArea.newEmpty();
 	}
 
 	protected void startOfOutAndErrCapture() {
@@ -63,80 +54,16 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 		System.setErr(new PrintStream(err));
 	}
 
-	private void initializeTestArea() {
-		testarea = new File(getClass().getResource("/iwanttestarea").getPath())
-				.getAbsolutePath();
-		wsRoot = testarea + "/wsroot";
-		ensureEmpty(wsRoot);
-		cacheDir = testarea + "/iwant-cached-test";
-		ensureEmpty(cacheDir);
-		mockWeb = testarea + "/mock-web";
-		ensureEmpty(mockWeb);
-
-		String iwantBin = testarea
-				+ "/.internal/iwant/iwant-bootstrapper/phase2/iw/cached/.internal/bin";
-		String eclipseClasses = testarea + "/../../classes";
-		if (new File(eclipseClasses).exists()) {
-			ensureEmpty(iwantBin + "/iwant-core");
-			copy(eclipseClasses, iwantBin + "/iwant-core");
-			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-1.7.1.jar",
-					iwantBin);
-			copy(testarea + "/../../../iwant-lib-ant-1.7.1/ant-junit-1.7.1.jar",
-					iwantBin);
-			copy(testarea + "/../../../iwant-lib-junit-3.8.1/junit-3.8.1.jar",
-					iwantBin);
-		}
-	}
-
-	private static void copy(String from, String to) {
-		Copy copy = new Copy();
-		File fromFile = new File(from);
-		if (fromFile.isDirectory()) {
-			Project project = new Project();
-			copy.setProject(project);
-			FileSet dirSet = new FileSet();
-			dirSet.setDir(fromFile);
-			dirSet.createPatternSet().setIncludes("**");
-			copy.add(dirSet);
-		} else {
-			copy.setFile(fromFile);
-		}
-		copy.setTodir(new File(to));
-		executeSilently(copy);
-	}
-
-	private static void executeSilently(Task task) {
-		PrintStream oldOut = System.out;
-		PrintStream oldErr = System.err;
-		ByteArrayOutputStream newOut = new ByteArrayOutputStream();
-		ByteArrayOutputStream newErr = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(newOut));
-		System.setErr(new PrintStream(newErr));
-		try {
-			task.execute();
-		} finally {
-			System.setOut(oldOut);
-			System.setErr(oldErr);
-		}
-	}
-
 	protected static void ensureEmpty(String dirname) {
 		FileUtils.ensureEmpty(dirname);
 	}
 
 	protected String cachedContent(String target) throws IOException {
-		return contentOf(pathToCachedTarget(target));
+		return testArea.cachedContent(target);
 	}
 
 	protected static String contentOf(String path) throws IOException {
-		FileReader reader = new FileReader(path);
-		StringBuilder actual = new StringBuilder();
-		int c;
-		while ((c = reader.read()) >= 0) {
-			actual.append((char) c);
-		}
-		reader.close();
-		return actual.toString();
+		return TestArea.contentOf(path);
 	}
 
 	protected String pathLine(String target) {
@@ -144,7 +71,7 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 	}
 
 	protected String pathToCachedTarget(String target) {
-		return cacheDir + "/target/" + target;
+		return testArea.pathToCachedTarget(target);
 	}
 
 	protected void sleep() {
@@ -185,19 +112,19 @@ public abstract class WorkspaceBuilderTestBase extends TestCase {
 	}
 
 	protected String wsRoot() {
-		return wsRoot;
+		return testArea.wsRoot();
 	}
 
 	protected String cacheDir() {
-		return cacheDir;
+		return testArea.cacheDir();
 	}
 
 	protected static String mockWeb() {
-		return mockWeb;
+		return testArea.mockWeb();
 	}
 
 	protected String testarea() {
-		return testarea;
+		return testArea.testArea();
 	}
 
 	protected String out() {

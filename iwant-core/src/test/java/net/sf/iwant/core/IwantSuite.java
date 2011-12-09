@@ -13,6 +13,7 @@ public class IwantSuite extends TestCase {
 		suite.addTestSuite(LocationsTest.class);
 		suite.addTestSuite(RefresherTest.class);
 		suite.addTestSuite(PrintPrefixesTest.class);
+		suite.addTestSuite(EmbeddedUsageTest.class);
 		suite.addTestSuite(IwantTest.class);
 		suite.addTestSuite(WorkspaceBuilderTest.class);
 		suite.addTestSuite(WorkspaceBuilderArgumentsTest.class);

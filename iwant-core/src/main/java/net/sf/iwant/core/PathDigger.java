@@ -39,6 +39,11 @@ class PathDigger {
 
 	public static Target<?> target(ContainerPath container, String targetName) {
 		SortedSet<Target<?>> targets = targets(container);
+		return target(targets, targetName);
+	}
+
+	public static Target<?> target(SortedSet<Target<?>> targets,
+			String targetName) {
 		for (Target<?> target : targets) {
 			if (targetName.equals(target.name())) {
 				return target;
