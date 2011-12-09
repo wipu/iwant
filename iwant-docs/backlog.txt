@@ -295,6 +295,10 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want a java API for iwant so I can easily build things embedded in a java program, without having to operate on file and cli level
+  - interface for declaring Target collection
+    * current reflection-based solution will be just one impl for this
+
 - bugfix: as @buildscriptauthor I want to append Paths explicitly as Paths to Concatenated content so the target will be refreshed when the paths have been touched
   + test
   + implement path(Path path)
@@ -388,8 +392,6 @@
 #################################################################
 = Planned
 #################################################################
-
-- As @buildscriptauthor I want a java API for iwant so I can easily build things embedded in a java program, without having to operate on file and cli level
 
 - bugfix: show javac error messages in bash cli (using iwant-prefix)
 
