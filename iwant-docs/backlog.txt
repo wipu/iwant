@@ -291,6 +291,9 @@
   + fix by clearing the whole temp area when user requests for it
   + don't call the clearing method when copying the temp area to a new RefreshEnvironment instance
 
++ As @buildscriptauthor I want to create Target collection programmatically instead of declaring them as public methods for reflection so I can generate dynamic targets
+  + ask targets directly from ContainerPath and make it use reflection by default, users can override
+
 #################################################################
 = In progress
 #################################################################

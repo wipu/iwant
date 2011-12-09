@@ -38,7 +38,7 @@ class PathDigger {
 	}
 
 	public static Target<?> target(ContainerPath container, String targetName) {
-		SortedSet<Target<?>> targets = targets(container);
+		SortedSet<Target<?>> targets = container.targets();
 		return target(targets, targetName);
 	}
 

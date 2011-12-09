@@ -3,6 +3,8 @@ package net.sf.iwant.core;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import net.sf.iwant.core.Concatenated.ConcatenatedBuilder;
 
@@ -1000,6 +1002,85 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("2\n",
 				contentOf(pathToCachedTarget("mkdirScriptGeneratedContent")
 						+ "/mkdirScriptSource"));
+	}
+
+	public static class WorkspaceWithExplicitTargetCollection implements
+			WorkspaceDefinition {
+
+		public static class Root extends RootPath {
+
+			public Root(Locations locations) {
+				super(locations);
+			}
+
+			@Override
+			public SortedSet<Target<?>> targets() {
+				SortedSet<Target<?>> targets = new TreeSet<Target<?>>();
+				targets.add(visible());
+				for (int i = 0; i < 4; i++) {
+					targets.add(target("dynamic-" + i).content(
+							Concatenated.from()
+									.string("content of dynamic-" + i).end())
+							.end());
+				}
+				return targets;
+			}
+
+			public Target<Concatenated> visible() {
+				return target("visible").content(
+						Concatenated.from().string("content of visible").end())
+						.end();
+			}
+
+			/**
+			 * This shall not be visible
+			 */
+			public Target<Concatenated> invisible() {
+				return target("invisible").content(
+						Concatenated.from().string("content of invisible")
+								.end()).end();
+			}
+
+		}
+
+		public ContainerPath wsRoot(Locations locations) {
+			return new Root(locations);
+		}
+
+	}
+
+	public void testListOfTargetsFromExplicitCollectionWithDynamicTargets() {
+		at(WorkspaceWithExplicitTargetCollection.class)
+				.iwant("list-of/targets");
+		assertEquals(
+				"pout:dynamic-0\npout:dynamic-1\npout:dynamic-2\npout:dynamic-3\npout:visible\n",
+				out());
+		assertEquals("", err());
+	}
+
+	public void testRefreshOfDynamicTarget() throws IOException {
+		at(WorkspaceWithExplicitTargetCollection.class).iwant(
+				"target/dynamic-2/as-path");
+
+		assertEquals(pathLine("dynamic-2"), out());
+		assertEquals("", err());
+
+		assertEquals("content of dynamic-2", cachedContent("dynamic-2"));
+	}
+
+	public void testRefreshOfPublicMethodTargetFailsWhenItDoesNotBelongToExplicitCollection() {
+		try {
+			at(WorkspaceWithExplicitTargetCollection.class).iwant(
+					"target/invisible/as-path");
+			fail();
+		} catch (IllegalArgumentException e) {
+			// expected
+		}
+
+		assertEquals("", out());
+		assertEquals("", err());
+
+		assertFalse(new File(pathToCachedTarget("invisible")).exists());
 	}
 
 }

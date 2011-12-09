@@ -134,7 +134,7 @@ public class WorkspaceBuilder {
 	}
 
 	private static void listOfTargets(ContainerPath wsRoot) {
-		SortedSet<Target<?>> targets = PathDigger.targets(wsRoot);
+		SortedSet<Target<?>> targets = wsRoot.targets();
 		for (Target<?> target : targets) {
 			System.out.println(PrintPrefixes.fromSystemProperty().outPrefix()
 					+ target.name());

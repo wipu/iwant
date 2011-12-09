@@ -1,5 +1,7 @@
 package net.sf.iwant.core;
 
+import java.util.SortedSet;
+
 public class ContainerPath extends Path {
 
 	protected final Locations locations;
@@ -78,6 +80,13 @@ public class ContainerPath extends Path {
 	@Override
 	public String asAbsolutePath(Locations locations) {
 		throw new UnsupportedOperationException("TODO test and implement");
+	}
+
+	/**
+	 * Override if automatic target digging by reflection is not what you want.
+	 */
+	public SortedSet<Target<?>> targets() {
+		return PathDigger.targets(this);
 	}
 
 }
