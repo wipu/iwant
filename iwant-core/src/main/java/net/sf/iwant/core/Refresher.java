@@ -91,7 +91,7 @@ class Refresher {
 		contentDescriptionCache.cacheContentDescription(target);
 	}
 
-	private void remove(File destination) {
+	private static void remove(File destination) {
 		TextOutput.debugLog("Removing outdated " + destination);
 		FileUtils.del(destination);
 	}
