@@ -389,6 +389,10 @@
 = Planned
 #################################################################
 
+- As @buildscriptauthor I want a java API for iwant so I can easily build things embedded in a java program, without having to operate on file and cli level
+
+- bugfix: show javac error messages in bash cli (using iwant-prefix)
+
 - bugfix: delete cached file if refresh fails, otherwise partially created file will make next run think it's uptodate
 
 - As @developer I want new tests for automatic rebootstrap after editing iwant-from.conf now that sha verification support cannot be used for that in tutorial
