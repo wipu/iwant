@@ -1,0 +1,3 @@
+doc() {
+  cmd echo hello
+}

@@ -298,6 +298,21 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor and @developer I want the work-in-progress ant-based bootstrapper replaced with a mostly java-based one so it will be simpler and also provide a java entry point for embedded use
+  + distillery directory for low-ceremony development
+  + driver script
+    + compile java entry point with tests
+      * just use junit jar assumedly downloaded by the current as-iwant-developer iwant
+    + run junit tests
+      * they drive as much as possible (as much responsibility to java as possible)
+    + descript with versioned output for easy and pragmatic TDD: no need to edit expectations, just verify output diffs by eye before commits
+      + cmd echo hello, version output
+  - one call to help.sh, it produces hello
+  - user-specific external dependencies cache: ~/.iwant/cached/by-url/<escaped-url-with-slashes>
+  - publish
+    - modify bootstrapping tutorials
+    - clean up the other bootstrapper story
+
 - As @buildscriptauthor I want a java API for iwant so I can easily build things embedded in a java program, without having to operate on file and cli level
   + reusable TestArea for testing
   - Targets
@@ -398,6 +413,9 @@
 #################################################################
 = Planned
 #################################################################
+
+- security guard: whenever opening file for writing, make sure the canonical path (what about symlink resolving?) points to an allowed directory
+  * important when building a path from url for example
 
 - bugfix: show javac error messages in bash cli (using iwant-prefix)
 
