@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="ant-1.7.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="ant-junit-1.7.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/as-iwant-developer/with/bash/iwant/cached/.internal/unmodifiable/ant-1.7.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/as-iwant-developer/with/bash/iwant/cached/.internal/unmodifiable/ant-junit-1.7.1.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
