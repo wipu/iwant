@@ -28,5 +28,5 @@ java -cp "$CLASSES_TO_TEST:$JUNIT" junit.textui.TestRunner net.sf.iwant.entry.Iw
 
 DESCRNAMEBASE=$HERE/java-bootstrapping
 
-$HERE/../iwant-lib-descript/descript.sh "$DESCRNAMEBASE".sh "$DESCRNAMEBASE".html true
+IWANT_DISTILLERY=$HERE $HERE/../iwant-lib-descript/descript.sh "$DESCRNAMEBASE".sh "$DESCRNAMEBASE".html true
 
