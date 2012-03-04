@@ -309,8 +309,18 @@
       + cmd echo hello, version output
   + descript svn-exports the cli
   + descript runs help.sh
-  - descript: 1st call to help.sh prints "I created iwant-from for you"
+  + refresh.sh unit tests help.sh
+    + create mock java entry that prints cwd and cmdline args
+    + assert stdout, stderr and cwd
+  + help.sh does NOT cd but passes AS_SOMEONE as the 1st cmdline arg
+    * this way the java entry is more robust and useful in envs that make
+      it more cumbersome to control cwd (like eclipse)
+  - 1st call to help.sh prints "I created iwant-from for you"
+    + descript
+    - junit
   - 1st call creates example iwant-from.conf
+    + descript
+    - junit
   - user-specific external dependencies cache: ~/.iwant/cached/by-url/<escaped-url-with-slashes>
   - publish
     - modify bootstrapping tutorials
