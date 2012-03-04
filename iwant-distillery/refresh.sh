@@ -22,6 +22,7 @@ CACHED=$HERE/cached
 
 tested-java-classes() {
   JUNIT=$HERE/../as-iwant-developer/with/bash/iwant/cached/.internal/unmodifiable/junit-3.8.1.jar
+  IWANT_TESTAREA_PROJ=$HERE/../iwant-testarea
 
   CLASSES_TO_TEST=$CACHED/classes-to-test
   fresh-dir "$CLASSES_TO_TEST"
@@ -29,9 +30,10 @@ tested-java-classes() {
     -d "$CLASSES_TO_TEST" \
     -cp "$JUNIT" \
     $(find $HERE/as-some-developer/with/java -name '*.java') \
+    $(find $IWANT_TESTAREA_PROJ/src/main/java -name '*.java') \
     $(find $HERE/src/test/java -name '*.java')
 
-  java -cp "$CLASSES_TO_TEST:$JUNIT" junit.textui.TestRunner net.sf.iwant.entry.IwantEntrySuite
+  java -cp "$CLASSES_TO_TEST:$IWANT_TESTAREA_PROJ/testarea-classdir:$JUNIT" junit.textui.TestRunner net.sf.iwant.entry.IwantEntrySuite
 }
 
 mocked-java-entry-content() {

@@ -315,13 +315,21 @@
   + help.sh does NOT cd but passes AS_SOMEONE as the 1st cmdline arg
     * this way the java entry is more robust and useful in envs that make
       it more cumbersome to control cwd (like eclipse)
-  - 1st call to help.sh prints "I created iwant-from for you"
+  + 1st call to help.sh prints "I created iwant-from for you"
     + descript
-    - junit
-  - 1st call creates example iwant-from.conf
+    + junit
+  + 1st call creates example iwant-from.conf
     + descript
-    - junit
+    + junit
+  + reusable module iwant-testarea
+  + junit: as-someone arg or dir missing => main fails
+  - new name for cache: as-someone/.iwanted
+    * no more with/bash: cli does not matter
+    * past tense shows for the possible user of the path that this is potentially stale data
   - user-specific external dependencies cache: ~/.iwant/cached/by-url/<escaped-url-with-slashes>
+  - remove main and its tests from core
+    * the entry is the only main, from then on just proper java
+  - from java both entry and entry2 are usable as entry points
   - publish
     - modify bootstrapping tutorials
     - clean up the other bootstrapper story
