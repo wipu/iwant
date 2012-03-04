@@ -323,6 +323,32 @@
     + junit
   + reusable module iwant-testarea
   + junit: as-someone arg or dir missing => main fails
+  - iwant-from points to local iwant wsroot, run
+    - descript
+      + edit iwant-from
+      - call help.sh
+    - junit
+      - mocked url provider for svnkit jar
+      + mocked cache location for unmodifiable
+      - real values for locations
+      - get svnkit jar from downloader method
+        - robust cache path for url/sha
+        - test download of correct content when cached missing
+        - test download of incorrect content causes failure (sha check)
+        - test sha failure causes rename of cached file
+        - test does not download when cached exists
+      - svn export of iwant
+        - robust cache path for iwant-from value
+        - test export when cached iwant missing
+        - test no export when cached iwant exists
+      + delegate to entry2
+        + write mock impl of entry2
+        + test correct args get passed
+        + impl: compile and run
+  - incorrect iwant-from => friendly error
+  - maybe: more expandable contract between entry and entry2
+    - instead of assuming entry2 can only depend on entry, there could
+      be a text file that can be passed as the source list to javac
   - new name for cache: as-someone/.iwanted
     * no more with/bash: cli does not matter
     * past tense shows for the possible user of the path that this is potentially stale data

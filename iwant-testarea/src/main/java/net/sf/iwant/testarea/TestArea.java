@@ -21,7 +21,7 @@ public abstract class TestArea {
 
 	public File newDir(String dirName) {
 		File dir = new File(root(), dirName);
-		dir.mkdir();
+		ensureDir(dir);
 		return dir;
 	}
 
@@ -42,7 +42,7 @@ public abstract class TestArea {
 	/**
 	 * TODO create and reuse a fluent reusable file declaration library
 	 */
-	private static void ensureDir(File dir) {
+	public static void ensureDir(File dir) {
 		File parent = dir.getParentFile();
 		if (!parent.exists()) {
 			ensureDir(parent);
