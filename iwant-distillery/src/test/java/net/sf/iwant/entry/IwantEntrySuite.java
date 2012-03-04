@@ -11,5 +11,5 @@ public class IwantEntrySuite extends TestCase {
 		suite.addTestSuite(IwantTest.class);
 		return suite;
 	}
-	
+
 }
