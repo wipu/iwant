@@ -26,7 +26,7 @@ public abstract class TestArea {
 		return dir;
 	}
 
-	private static void ensureEmpty(File dir) {
+	public static void ensureEmpty(File dir) {
 		del(dir);
 		ensureDir(dir);
 	}

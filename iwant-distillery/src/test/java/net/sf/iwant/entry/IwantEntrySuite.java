@@ -12,6 +12,7 @@ public class IwantEntrySuite extends TestCase {
 		suite.addTestSuite(CachePathBuildingTest.class);
 		suite.addTestSuite(DownloadingTest.class);
 		suite.addTestSuite(UnzippingTest.class);
+		suite.addTestSuite(UnzippedSvnkitTest.class);
 		suite.addTestSuite(IwantTest.class);
 		return suite;
 	}

@@ -331,7 +331,7 @@
       - mocked url provider for svnkit jar
       + mocked cache location for unmodifiable
       - real values for locations
-      - get svnkit jar from downloader method
+      + get svnkit jar from downloader method
         + robust cache path for url
         + entry asks cache location from the mockable network interface
           so the download test can control the cache
@@ -339,9 +339,9 @@
         + test does not download when cached exists
         + unzip method
           + test with hard-coded small zipfile
-        - svnkit download method
-          - test with mocked url and cache
-          - assert result is an unzipped dir that contains the 2 jars needed
+        + svnkit download method
+          + test with mocked url and cache
+          + assert result is an unzipped dir that contains the unzipped url
       - svn export of iwant
         - export when cached iwant missing
           - utilize the tested download method to get svnkit for the test

@@ -1,6 +1,7 @@
 package net.sf.iwant.entry;
 
 import java.io.File;
+import java.net.URL;
 
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.testarea.TestArea;
@@ -24,6 +25,10 @@ public class IwantNetworkMock implements IwantNetwork {
 	public String messages() {
 		// TODO Auto-generated method stub
 		return "lkj";
+	}
+
+	public URL svnkitUrl() {
+		return getClass().getResource("dir-containing-a-and-b.zip");
 	}
 
 }

@@ -22,8 +22,7 @@ public class UnzippingTest extends TestCase {
 
 	public void testStreamIsCorrectlyUnzippedToCacheWhenCacheDoesNotExist()
 			throws FileNotFoundException, IOException {
-		InputStream in = getClass().getResourceAsStream(
-				"dir-containing-a-and-b.zip");
+		InputStream in = network.svnkitUrl().openStream();
 		File unzipped = iwant.unmodifiableZipUnzipped("a:nasty/name&", in);
 		assertEquals(network.wantedUnmodifiable()
 				+ "/unzipped/a%3Anasty%2Fname%26", unzipped.getCanonicalPath());

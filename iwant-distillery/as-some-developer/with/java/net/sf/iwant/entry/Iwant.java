@@ -2,6 +2,7 @@ package net.sf.iwant.entry;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -43,11 +44,17 @@ public class Iwant {
 
 		File wantedUnmodifiable();
 
+		URL svnkitUrl();
+
 	}
 
 	private static class RealIwantNetwork implements IwantNetwork {
 
 		public File wantedUnmodifiable() {
+			throw new UnsupportedOperationException("TODO test and implement");
+		}
+
+		public URL svnkitUrl() {
 			throw new UnsupportedOperationException("TODO test and implement");
 		}
 
@@ -255,6 +262,18 @@ public class Iwant {
 			}
 			zip.close();
 			return dest;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public File unzippedSvnkit() {
+		try {
+			URL url = network.svnkitUrl();
+			File cached = downloaded(url);
+			InputStream in = new FileInputStream(cached);
+			File unzipped = unmodifiableZipUnzipped(url.toExternalForm(), in);
+			return unzipped;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
