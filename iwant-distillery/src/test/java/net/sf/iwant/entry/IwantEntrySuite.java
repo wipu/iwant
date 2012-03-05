@@ -10,6 +10,7 @@ public class IwantEntrySuite extends TestCase {
 		TestSuite suite = new TestSuite("net.sf.iwant.entry");
 		suite.addTestSuite(FilenameEscapingTest.class);
 		suite.addTestSuite(CachePathBuildingTest.class);
+		suite.addTestSuite(DownloadingTest.class);
 		suite.addTestSuite(IwantTest.class);
 		return suite;
 	}

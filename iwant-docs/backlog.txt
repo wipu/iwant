@@ -333,10 +333,12 @@
       - real values for locations
       - get svnkit jar from downloader method
         + robust cache path for url
-        - test download of correct content when cached missing
+        + entry asks cache location from the mockable network interface
+          so the download test can control the cache
+        + test download of correct content when cached missing
         - test download of incorrect content causes failure (sha check)
         - test sha failure causes rename of cached file
-        - test does not download when cached exists
+        + test does not download when cached exists
       - svn export of iwant
         - robust cache path for iwant-from value
         - test export when cached iwant missing
@@ -355,6 +357,9 @@
     * no more with/bash: cli does not matter
     * past tense shows for the possible user of the path that this is potentially stale data
   - user-specific external dependencies cache: ~/.iwant/cached/by-url/<escaped-url-with-slashes>
+  - maybe: another entry method: one with given iwant-from, for fully embedded case
+    where a file is not needed for that
+    ? on the other hand, the as-someone dir is needed anyway
   - remove main and its tests from core
     * the entry is the only main, from then on just proper java
   - from java both entry and entry2 are usable as entry points

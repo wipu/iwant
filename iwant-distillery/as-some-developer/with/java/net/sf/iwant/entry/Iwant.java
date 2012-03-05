@@ -1,9 +1,12 @@
 package net.sf.iwant.entry;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -179,9 +182,46 @@ public class Iwant {
 		}
 	}
 
-	public String toCachePath(String url) {
-		return System.getProperty("user.home") + "/.iwant/wanted/by-url/"
-				+ toSafeFilename(url);
+	public File toCachePath(URL url) {
+		return new File(network.wantedUnmodifiable(),
+				toSafeFilename(url.toExternalForm()));
+	}
+
+	public File downloaded(URL url) {
+		try {
+			File cached = toCachePath(url);
+			if (cached.exists()) {
+				return cached;
+			}
+			byte[] bytes = downloadBytes(url);
+			FileOutputStream cachedOut = new FileOutputStream(cached);
+			cachedOut.write(bytes);
+			cachedOut.close();
+			return cached;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static byte[] downloadBytes(URL url) throws MalformedURLException,
+			IOException {
+		InputStream in = url.openStream();
+		byte[] respBody = readBytes(in);
+		in.close();
+		return respBody;
+	}
+
+	private static byte[] readBytes(InputStream in) throws IOException {
+		ByteArrayOutputStream body = new ByteArrayOutputStream();
+		while (true) {
+			int i = in.read();
+			if (i < 0) {
+				break;
+			}
+			byte b = (byte) i;
+			body.write(b);
+		}
+		return body.toByteArray();
 	}
 
 }

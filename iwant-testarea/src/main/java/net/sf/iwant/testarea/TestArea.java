@@ -1,6 +1,7 @@
 package net.sf.iwant.testarea;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -54,6 +55,11 @@ public abstract class TestArea {
 
 	public String contentOf(String relativePath) throws IOException {
 		File file = new File(root(), relativePath);
+		return contentOf(file);
+	}
+
+	public String contentOf(File file) throws FileNotFoundException,
+			IOException {
 		FileReader reader = new FileReader(file);
 		StringBuilder actual = new StringBuilder();
 		int c;
