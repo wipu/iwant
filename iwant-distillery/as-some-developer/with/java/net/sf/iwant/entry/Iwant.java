@@ -50,12 +50,20 @@ public class Iwant {
 
 	private static class RealIwantNetwork implements IwantNetwork {
 
+		private static final File HOME = new File(
+				System.getProperty("user.home"));
+
 		public File wantedUnmodifiable() {
-			throw new UnsupportedOperationException("TODO test and implement");
+			return new File(HOME, "/.net.sf.iwant/wanted-unmodifiable");
 		}
 
 		public URL svnkitUrl() {
-			throw new UnsupportedOperationException("TODO test and implement");
+			try {
+				return new URL(
+						"http://www.svnkit.com/org.tmatesoft.svn_1.3.5.standalone.nojna");
+			} catch (MalformedURLException e) {
+				throw new IllegalStateException(e);
+			}
 		}
 
 	}
@@ -277,6 +285,14 @@ public class Iwant {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public URL svnkitUrl() {
+		return network.svnkitUrl();
+	}
+
+	public File wantedUnmodifiable() {
+		return network.wantedUnmodifiable();
 	}
 
 }

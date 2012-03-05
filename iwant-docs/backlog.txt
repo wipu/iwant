@@ -345,10 +345,11 @@
       - svn export of iwant
         - export when cached iwant missing
           - utilize the tested download method to get svnkit for the test
-            - in suite, test all needed functionality before this test:
-              - download
-              - real cache location
-              - real svnkit location
+            + in suite, test all needed functionality before this test:
+              + download
+              + real cache location
+              + real svnkit location
+            - test class, setUp ensures cached unzipped svnkit
         - test no export when cached iwant exists
       - checksum after download
         - test download of incorrect content causes failure (sha check)
