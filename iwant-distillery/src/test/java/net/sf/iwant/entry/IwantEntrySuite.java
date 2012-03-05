@@ -11,6 +11,7 @@ public class IwantEntrySuite extends TestCase {
 		suite.addTestSuite(FilenameEscapingTest.class);
 		suite.addTestSuite(CachePathBuildingTest.class);
 		suite.addTestSuite(DownloadingTest.class);
+		suite.addTestSuite(UnzippingTest.class);
 		suite.addTestSuite(IwantTest.class);
 		return suite;
 	}

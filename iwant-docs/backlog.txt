@@ -337,8 +337,8 @@
           so the download test can control the cache
         + test download of correct content when cached missing
         + test does not download when cached exists
-        - unzip method
-          - test with hard-coded small zipfile
+        + unzip method
+          + test with hard-coded small zipfile
         - svnkit download method
           - test with mocked url and cache
           - assert result is an unzipped dir that contains the 2 jars needed

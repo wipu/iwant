@@ -32,6 +32,8 @@ tested-java-classes() {
     $(find $HERE/as-some-developer/with/java -name '*.java') \
     $(find $IWANT_TESTAREA_PROJ/src/main/java -name '*.java') \
     $(find $HERE/src/test/java -name '*.java')
+  cp "$HERE/src/test/java/net/sf/iwant/entry/dir-containing-a-and-b.zip" \
+    "$CLASSES_TO_TEST/net/sf/iwant/entry/"
 
   java -cp "$CLASSES_TO_TEST:$IWANT_TESTAREA_PROJ/testarea-classdir:$JUNIT" junit.textui.TestRunner net.sf.iwant.entry.IwantEntrySuite
 }

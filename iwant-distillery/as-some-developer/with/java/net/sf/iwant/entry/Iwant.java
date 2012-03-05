@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -17,6 +18,8 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.tools.DiagnosticListener;
 import javax.tools.JavaCompiler;
@@ -222,6 +225,39 @@ public class Iwant {
 			body.write(b);
 		}
 		return body.toByteArray();
+	}
+
+	public File unmodifiableZipUnzipped(String name, InputStream in) {
+		try {
+			File dest = new File(network.wantedUnmodifiable(), "unzipped/"
+					+ toSafeFilename(name));
+			if (dest.exists()) {
+				return dest;
+			}
+			ensureDir(dest);
+			ZipInputStream zip = new ZipInputStream(in);
+			ZipEntry e = null;
+			while ((e = zip.getNextEntry()) != null) {
+				File entryFile = new File(dest, e.getName());
+				if (e.isDirectory()) {
+					ensureDir(entryFile);
+					continue;
+				}
+				OutputStream out = new FileOutputStream(entryFile);
+				while (true) {
+					int i = zip.read();
+					if (i == -1) {
+						break;
+					}
+					out.write(i);
+				}
+				out.close();
+			}
+			zip.close();
+			return dest;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
