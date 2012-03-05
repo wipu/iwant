@@ -179,4 +179,9 @@ public class Iwant {
 		}
 	}
 
+	public String toCachePath(String url) {
+		return System.getProperty("user.home") + "/.iwant/wanted/by-url/"
+				+ toSafeFilename(url);
+	}
+
 }

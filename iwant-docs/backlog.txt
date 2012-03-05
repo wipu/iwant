@@ -332,7 +332,7 @@
       + mocked cache location for unmodifiable
       - real values for locations
       - get svnkit jar from downloader method
-        - robust cache path for url/sha
+        + robust cache path for url
         - test download of correct content when cached missing
         - test download of incorrect content causes failure (sha check)
         - test sha failure causes rename of cached file
@@ -340,6 +340,8 @@
       - svn export of iwant
         - robust cache path for iwant-from value
         - test export when cached iwant missing
+          - utilize the tested download method to get svnkit for the test
+            * put it before this in the suite
         - test no export when cached iwant exists
       + delegate to entry2
         + write mock impl of entry2
@@ -460,6 +462,9 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptuser I want downloaded files cached by sha256 so the file is not downloaded again if some other buildscript uses a different url
+  * sha256 would then be mandatory for all downloads
 
 - security guard: whenever opening file for writing, make sure the canonical path (what about symlink resolving?) points to an allowed directory
   * important when building a path from url for example
