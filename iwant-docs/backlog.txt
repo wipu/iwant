@@ -336,15 +336,23 @@
         + entry asks cache location from the mockable network interface
           so the download test can control the cache
         + test download of correct content when cached missing
+        + test does not download when cached exists
+        - unzip method
+          - test with hard-coded small zipfile
+        - svnkit download method
+          - test with mocked url and cache
+          - assert result is an unzipped dir that contains the 2 jars needed
+      - svn export of iwant
+        - export when cached iwant missing
+          - utilize the tested download method to get svnkit for the test
+            - in suite, test all needed functionality before this test:
+              - download
+              - real cache location
+              - real svnkit location
+        - test no export when cached iwant exists
+      - checksum after download
         - test download of incorrect content causes failure (sha check)
         - test sha failure causes rename of cached file
-        + test does not download when cached exists
-      - svn export of iwant
-        - robust cache path for iwant-from value
-        - test export when cached iwant missing
-          - utilize the tested download method to get svnkit for the test
-            * put it before this in the suite
-        - test no export when cached iwant exists
       + delegate to entry2
         + write mock impl of entry2
         + test correct args get passed
