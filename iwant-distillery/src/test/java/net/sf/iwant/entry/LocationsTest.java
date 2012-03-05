@@ -26,7 +26,7 @@ public class LocationsTest extends TestCase {
 	public void testRealLocations() throws MalformedURLException {
 		assertUrl(
 				new URL(
-						"http://www.svnkit.com/org.tmatesoft.svn_1.3.5.standalone.nojna"),
+						"http://www.svnkit.com/org.tmatesoft.svn_1.3.5.standalone.nojna.zip"),
 				Iwant.usingRealNetwork().svnkitUrl());
 		assertEquals(new File(System.getProperty("user.home")
 				+ "/.net.sf.iwant/wanted-unmodifiable"), Iwant

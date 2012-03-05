@@ -14,6 +14,7 @@ public class IwantEntrySuite extends TestCase {
 		suite.addTestSuite(UnzippingTest.class);
 		suite.addTestSuite(UnzippedSvnkitTest.class);
 		suite.addTestSuite(LocationsTest.class);
+		suite.addTestSuite(ExportedFromSvnTest.class);
 		suite.addTestSuite(IwantTest.class);
 		return suite;
 	}

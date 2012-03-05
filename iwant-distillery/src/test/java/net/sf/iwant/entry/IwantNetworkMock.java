@@ -9,17 +9,13 @@ import net.sf.iwant.testarea.TestArea;
 public class IwantNetworkMock implements IwantNetwork {
 
 	private final TestArea testArea;
-	private File wantedUnmodifiable;
 
 	public IwantNetworkMock(TestArea testArea) {
 		this.testArea = testArea;
 	}
 
 	public File wantedUnmodifiable() {
-		if (wantedUnmodifiable == null) {
-			wantedUnmodifiable = testArea.newDir("wanted-unmodifiable");
-		}
-		return wantedUnmodifiable;
+		return new File(testArea.root(), "wanted-unmodifiable");
 	}
 
 	public String messages() {

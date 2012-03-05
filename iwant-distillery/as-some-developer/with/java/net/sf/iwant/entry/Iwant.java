@@ -60,7 +60,7 @@ public class Iwant {
 		public URL svnkitUrl() {
 			try {
 				return new URL(
-						"http://www.svnkit.com/org.tmatesoft.svn_1.3.5.standalone.nojna");
+						"http://www.svnkit.com/org.tmatesoft.svn_1.3.5.standalone.nojna.zip");
 			} catch (MalformedURLException e) {
 				throw new IllegalStateException(e);
 			}
@@ -201,7 +201,7 @@ public class Iwant {
 	}
 
 	public File toCachePath(URL url) {
-		return new File(network.wantedUnmodifiable(),
+		return new File(wantedUnmodifiable(),
 				toSafeFilename(url.toExternalForm()));
 	}
 
@@ -292,7 +292,9 @@ public class Iwant {
 	}
 
 	public File wantedUnmodifiable() {
-		return network.wantedUnmodifiable();
+		File retval = network.wantedUnmodifiable();
+		ensureDir(retval);
+		return retval;
 	}
 
 }

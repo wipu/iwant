@@ -349,7 +349,7 @@
               + download
               + real cache location
               + real svnkit location
-            - test class, setUp ensures cached unzipped svnkit
+            + test class, setUp ensures cached unzipped svnkit
         - test no export when cached iwant exists
       - checksum after download
         - test download of incorrect content causes failure (sha check)
