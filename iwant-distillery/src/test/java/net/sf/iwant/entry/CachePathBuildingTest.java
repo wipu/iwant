@@ -25,10 +25,10 @@ public class CachePathBuildingTest extends TestCase {
 
 	public void testUrlsWithCharactersNotAllowedInFileNames()
 			throws IOException {
-		urlToCachePath("file:///some/file", network.wantedUnmodifiable()
+		urlToCachePath("file:///some/file", network.wantedUnmodifiable(null)
 				+ "/file%3A%2Fsome%2Ffile");
 		urlToCachePath("http://some.host:8080/o'clock?a=1&b=2",
-				network.wantedUnmodifiable()
+				network.wantedUnmodifiable(null)
 						+ "/http%3A%2F%2Fsome.host%3A8080%2F"
 						+ "o%27clock%3Fa%3D1%26b%3D2");
 	}

@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -16,6 +17,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.security.Permission;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Properties;
@@ -42,7 +44,7 @@ public class Iwant {
 	 */
 	public interface IwantNetwork {
 
-		File wantedUnmodifiable();
+		File wantedUnmodifiable(URL url);
 
 		URL svnkitUrl();
 
@@ -53,7 +55,7 @@ public class Iwant {
 		private static final File HOME = new File(
 				System.getProperty("user.home"));
 
-		public File wantedUnmodifiable() {
+		public File wantedUnmodifiable(URL url) {
 			return new File(HOME, "/.net.sf.iwant/wanted-unmodifiable");
 		}
 
@@ -74,6 +76,10 @@ public class Iwant {
 
 	public static Iwant usingRealNetwork() {
 		return new Iwant(new RealIwantNetwork());
+	}
+
+	public IwantNetwork network() {
+		return network;
 	}
 
 	public static void main(String[] args) {
@@ -120,14 +126,15 @@ public class Iwant {
 
 		Properties iwantFromProps = new Properties();
 		iwantFromProps.load(new FileReader(iwantFrom));
-		String iwantLocation = iwantFromProps.getProperty("iwant-from");
+		URL iwantLocation = new URL(iwantFromProps.getProperty("iwant-from"));
 
-		File wantedUnmodifiable = network.wantedUnmodifiable();
+		File wantedUnmodifiable = network.wantedUnmodifiable(iwantLocation);
 		File iwantWs = new File(wantedUnmodifiable, "iwant/"
-				+ toSafeFilename(iwantLocation));
+				+ toSafeFilename(iwantLocation.toExternalForm()));
 
 		File iwantBootstrapClasses = iwantBootstrapperClasses(iwantWs);
-		runEntry2(iwantBootstrapClasses, args);
+		runJavaMain(false, "net.sf.iwant.entry2.Iwant2",
+				new File[] { iwantBootstrapClasses }, args);
 	}
 
 	private File iwantBootstrapperClasses(File iwantWs) throws IOException {
@@ -139,12 +146,8 @@ public class Iwant {
 		Charset charset = null;
 		StandardJavaFileManager fileManager = compiler.getStandardFileManager(
 				diagnosticListener, locale, charset);
-		Iterable<? extends JavaFileObject> compilationUnits = fileManager
-				.getJavaFileObjects(
-						new File(iwantWs,
-								"iwant-distillery/src/main/java/net/sf/iwant/entry2/Iwant2.java"),
-						new File(iwantWs,
-								"iwant-distillery/as-some-developer/with/java/net/sf/iwant/entry/Iwant.java"));
+		Iterable<? extends JavaFileObject> compilationUnits = iwantBootstrappingJavaSources(
+				iwantWs, fileManager);
 		Writer compilerTaskOut = null;
 		Iterable<String> options = Arrays.asList(new String[] { "-d",
 				bsClasses.getCanonicalPath() });
@@ -160,14 +163,79 @@ public class Iwant {
 		return bsClasses;
 	}
 
-	private void runEntry2(File classes, String[] args) throws Exception {
-		ClassLoader classLoader = classLoader(classes);
-		Class<?> helloClass = classLoader
-				.loadClass("net.sf.iwant.entry2.Iwant2");
+	private Iterable<? extends JavaFileObject> iwantBootstrappingJavaSources(
+			File iwantWs, StandardJavaFileManager fileManager) {
+		File iwant2 = new File(iwantWs,
+				"iwant-distillery/src/main/java/net/sf/iwant/entry2/Iwant2.java");
+		File iwant = new File(iwantWs,
+				"iwant-distillery/as-some-developer/with/java/net/sf/iwant/entry/Iwant.java");
+		System.err.println("Compiling " + Arrays.asList(iwant2, iwant));
+
+		Iterable<? extends JavaFileObject> compilationUnits = fileManager
+				.getJavaFileObjects(iwant2, iwant);
+		return compilationUnits;
+	}
+
+	private void runJavaMain(boolean outToErr, String className,
+			File[] classLocations, String... args) throws Exception {
+		System.err.println("Running " + className + "\n  "
+				+ Arrays.toString(args) + "\n  "
+				+ Arrays.toString(classLocations));
+		ClassLoader classLoader = classLoader(classLocations);
+		Class<?> helloClass = classLoader.loadClass(className);
 		Method mainMethod = helloClass.getMethod("main", String[].class);
 
 		Object[] invocationArgs = { args };
-		mainMethod.invoke(null, invocationArgs);
+
+		SecurityManager origSecman = System.getSecurityManager();
+		PrintStream origOut = System.out;
+		PrintStream origErr = System.err;
+
+		System.setSecurityManager(new ExitCatcher());
+		if (outToErr) {
+			System.setOut(origErr);
+		}
+		try {
+			mainMethod.invoke(null, invocationArgs);
+		} catch (ExitCalledException e) {
+			System.err.println("exit " + e.status());
+			if (e.status() != 0) {
+				throw new IwantException(className + " exited with "
+						+ e.status());
+			}
+		} finally {
+			System.setOut(origOut);
+			System.setErr(origErr);
+			System.setSecurityManager(origSecman);
+		}
+	}
+
+	private static class ExitCalledException extends SecurityException {
+
+		private final int status;
+
+		public ExitCalledException(int status) {
+			this.status = status;
+		}
+
+		public int status() {
+			return status;
+		}
+
+	}
+
+	private static class ExitCatcher extends SecurityManager {
+
+		@Override
+		public void checkPermission(Permission perm) {
+			// everything allowed
+		}
+
+		@Override
+		public void checkExit(int status) {
+			throw new ExitCalledException(status);
+		}
+
 	}
 
 	private static URLClassLoader classLoader(File... locations)
@@ -201,7 +269,7 @@ public class Iwant {
 	}
 
 	public File toCachePath(URL url) {
-		return new File(wantedUnmodifiable(),
+		return new File(wantedUnmodifiable(url),
 				toSafeFilename(url.toExternalForm()));
 	}
 
@@ -211,6 +279,7 @@ public class Iwant {
 			if (cached.exists()) {
 				return cached;
 			}
+			System.err.println("Downloading " + url);
 			byte[] bytes = downloadBytes(url);
 			FileOutputStream cachedOut = new FileOutputStream(cached);
 			cachedOut.write(bytes);
@@ -242,13 +311,14 @@ public class Iwant {
 		return body.toByteArray();
 	}
 
-	public File unmodifiableZipUnzipped(String name, InputStream in) {
+	public File unmodifiableZipUnzipped(URL url, InputStream in) {
 		try {
-			File dest = new File(network.wantedUnmodifiable(), "unzipped/"
-					+ toSafeFilename(name));
+			File dest = new File(network.wantedUnmodifiable(url), "unzipped/"
+					+ toSafeFilename(url.toExternalForm()));
 			if (dest.exists()) {
 				return dest;
 			}
+			System.err.println("Unzipping to " + dest);
 			ensureDir(dest);
 			ZipInputStream zip = new ZipInputStream(in);
 			ZipEntry e = null;
@@ -280,7 +350,7 @@ public class Iwant {
 			URL url = network.svnkitUrl();
 			File cached = downloaded(url);
 			InputStream in = new FileInputStream(cached);
-			File unzipped = unmodifiableZipUnzipped(url.toExternalForm(), in);
+			File unzipped = unmodifiableZipUnzipped(url, in);
 			return unzipped;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -291,10 +361,31 @@ public class Iwant {
 		return network.svnkitUrl();
 	}
 
-	public File wantedUnmodifiable() {
-		File retval = network.wantedUnmodifiable();
+	private File wantedUnmodifiable(URL url) {
+		File retval = network.wantedUnmodifiable(url);
 		ensureDir(retval);
 		return retval;
+	}
+
+	public File exportedFromSvn(URL url) {
+		try {
+			File exported = toCachePath(url);
+			System.err.println("svn exporting " + url);
+			String urlString = url.toExternalForm();
+			if (urlString.startsWith("file:")) {
+				urlString = url.getFile();
+			}
+			File svnkit = unzippedSvnkit();
+			File svnkitJar = new File(svnkit, "svnkit-1.3.5.7406/svnkit.jar");
+			File svnkitCliJar = new File(svnkit,
+					"svnkit-1.3.5.7406/svnkit-cli.jar");
+			runJavaMain(true, "org.tmatesoft.svn.cli.SVN", new File[] {
+					svnkitJar, svnkitCliJar }, "export", urlString,
+					exported.getCanonicalPath());
+			return exported;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

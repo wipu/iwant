@@ -350,7 +350,16 @@
               + real cache location
               + real svnkit location
             + test class, setUp ensures cached unzipped svnkit
+            + versioned mock iwant rootdir
+            + assert export method exports to given dir
+              + pass url to cache location method so the mock can
+                mock all but the svnkit zip cache
         - test no export when cached iwant exists
+      - don't generate entry2 mock now that we have one versioned
+      - fix: unzip works with test files but not with svnkit zip
+        * currently tests pass only if fixing the real cache by hand
+        - test if it is because of jars inside zip
+        - test if it is because parent dirs come after their content in the stream
       - checksum after download
         - test download of incorrect content causes failure (sha check)
         - test sha failure causes rename of cached file

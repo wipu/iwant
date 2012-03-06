@@ -172,37 +172,45 @@ public class IwantTest extends TestCase {
 		return b.toString();
 	}
 
-	public void testIwantCompilesAndRunsExistingEntry2() throws Exception {
-		IwantNetworkMock network = new IwantNetworkMock(testArea);
+	public void testIwantCompilesAndRunsExistingEntry2() {
+		try {
+			IwantNetworkMock network = new IwantNetworkMock(testArea);
 
-		File asSomeone = testArea.newDir("as-test");
-		File iHave = testArea.newDir("as-test/i-have");
-		new FileWriter(new File(iHave, "iwant-from")).append(
-				"iwant-from=file:///mocked-iwant-from\n").close();
+			File asSomeone = testArea.newDir("as-test");
+			File iHave = testArea.newDir("as-test/i-have");
+			new FileWriter(new File(iHave, "iwant-from")).append(
+					"iwant-from=file:///mocked-iwant-from\n").close();
 
-		String wantedBootstrapper = "iwant/file%3A%2F%2F%2Fmocked-iwant-from/iwant-distillery";
-		File entry2Dir = new File(network.wantedUnmodifiable(),
-				wantedBootstrapper + "/src/main/java/" + "net/sf/iwant/entry2");
-		TestArea.ensureDir(entry2Dir);
-		File entryDir = new File(network.wantedUnmodifiable(),
-				wantedBootstrapper
-						+ "/as-some-developer/with/java/net/sf/iwant/entry");
-		TestArea.ensureDir(entryDir);
-		new FileWriter(new File(entry2Dir, "Iwant2.java")).append(
-				mockedEntry2Java()).close();
-		new FileWriter(new File(entryDir, "Iwant.java")).append(
-				"package net.sf.iwant.entry;\npublic class Iwant {}\n").close();
+			String wantedBootstrapper = "iwant/file%3A%2Fmocked-iwant-from/iwant-distillery";
+			File entry2Dir = new File(network.wantedUnmodifiable(null),
+					wantedBootstrapper + "/src/main/java/"
+							+ "net/sf/iwant/entry2");
+			TestArea.ensureDir(entry2Dir);
+			File entryDir = new File(network.wantedUnmodifiable(null),
+					wantedBootstrapper
+							+ "/as-some-developer/with/java/net/sf/iwant/entry");
+			TestArea.ensureDir(entryDir);
+			new FileWriter(new File(entry2Dir, "Iwant2.java")).append(
+					mockedEntry2Java()).close();
+			new FileWriter(new File(entryDir, "Iwant.java")).append(
+					"package net.sf.iwant.entry;\npublic class Iwant {}\n")
+					.close();
 
-		Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
-				"to be", "passed");
+			Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
+					"to be", "passed");
 
-		assertEquals("lkj", network.messages());
+			assertEquals("lkj", network.messages());
 
-		assertEquals(
-				"Mocked iwant entry2\nCWD=" + System.getProperty("user.dir")
-						+ "\nargs=[" + asSomeone + ", args, to be, passed]\n",
-				out());
-		assertEquals("", err());
+			assertEquals(
+					"Mocked iwant entry2\nCWD="
+							+ System.getProperty("user.dir") + "\nargs=["
+							+ asSomeone + ", args, to be, passed]\n", out());
+			// we don't care about err
+		} catch (Exception e) {
+			tearDown();
+			System.out.println(out);
+			System.err.println(err);
+		}
 	}
 
 }

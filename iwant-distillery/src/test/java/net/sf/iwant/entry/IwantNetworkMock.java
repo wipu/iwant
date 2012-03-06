@@ -14,7 +14,7 @@ public class IwantNetworkMock implements IwantNetwork {
 		this.testArea = testArea;
 	}
 
-	public File wantedUnmodifiable() {
+	public File wantedUnmodifiable(URL url) {
 		return new File(testArea.root(), "wanted-unmodifiable");
 	}
 

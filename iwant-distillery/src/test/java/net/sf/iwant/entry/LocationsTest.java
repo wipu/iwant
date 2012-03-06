@@ -20,7 +20,8 @@ public class LocationsTest extends TestCase {
 		Iwant iwant = Iwant.using(network);
 
 		assertUrl(network.svnkitUrl(), iwant.svnkitUrl());
-		assertEquals(network.wantedUnmodifiable(), iwant.wantedUnmodifiable());
+		assertEquals(network.wantedUnmodifiable(null), iwant.network()
+				.wantedUnmodifiable(null));
 	}
 
 	public void testRealLocations() throws MalformedURLException {
@@ -30,7 +31,7 @@ public class LocationsTest extends TestCase {
 				Iwant.usingRealNetwork().svnkitUrl());
 		assertEquals(new File(System.getProperty("user.home")
 				+ "/.net.sf.iwant/wanted-unmodifiable"), Iwant
-				.usingRealNetwork().wantedUnmodifiable());
+				.usingRealNetwork().network().wantedUnmodifiable(null));
 	}
 
 }
