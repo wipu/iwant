@@ -328,9 +328,9 @@
       + edit iwant-from
       - call help.sh
     - junit
-      - mocked url provider for svnkit jar
+      + mocked url provider for svnkit jar
       + mocked cache location for unmodifiable
-      - real values for locations
+      + real values for locations
       + get svnkit jar from downloader method
         + robust cache path for url
         + entry asks cache location from the mockable network interface
