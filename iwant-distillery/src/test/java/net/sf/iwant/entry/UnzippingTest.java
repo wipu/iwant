@@ -66,4 +66,23 @@ public class UnzippingTest extends TestCase {
 		assertEquals("b\n", testArea.contentOf(new File(unzipped, "root/b")));
 	}
 
+	public void testNeededJarsAreUnzippedFromRealSvnkitZip()
+			throws FileNotFoundException, IOException {
+		InputStream in = Iwant.usingRealNetwork()
+				.downloaded(Iwant.usingRealNetwork().svnkitUrl()).toURI()
+				.toURL().openStream();
+		File unzipped = iwant.unmodifiableZipUnzipped(new URL(
+				"http:nasty/name&"), in);
+		assertEquals(network.wantedUnmodifiable(null)
+				+ "/unzipped/http%3Anasty%2Fname%26",
+				unzipped.getCanonicalPath());
+		assertTrue(unzipped.isDirectory());
+
+		assertEquals("[svnkit-1.3.5.7406]", Arrays.toString(unzipped.list()));
+		assertEquals(1907786,
+				new File(unzipped, "svnkit-1.3.5.7406/svnkit.jar").length());
+		assertEquals(320051, new File(unzipped,
+				"svnkit-1.3.5.7406/svnkit-cli.jar").length());
+	}
+
 }

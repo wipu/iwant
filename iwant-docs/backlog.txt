@@ -357,10 +357,12 @@
         - test no export when cached iwant exists
       + fix: find wsroot even when running refesh.sh
       - don't generate entry2 mock now that we have one versioned
-      - fix: unzip works with test files but not with svnkit zip
+      + fix: unzip works with test files but not with svnkit zip
         * currently tests pass only if fixing the real cache by hand
-        - test if it is because of jars inside zip
-        - test if it is because parent dirs come after their content in the stream
+        + test if it is because of jars inside zip
+        + test if it is because parent dirs come after their content in the stream
+        + fixed: it was just awfully slow because of no buffering: I had just stopped a test so I got a partially unzipped svnkit there, doh!
+      - remove the zip tests using versioned zip files now that we have the svnkit unzip test
       - checksum after download
         - test download of incorrect content causes failure (sha check)
         - test sha failure causes rename of cached file
