@@ -311,40 +311,6 @@ public class Iwant {
 		return body.toByteArray();
 	}
 
-	private File slow_unmodifiableZipUnzipped(URL url, InputStream in) {
-		try {
-			File dest = new File(network.wantedUnmodifiable(url), "unzipped/"
-					+ toSafeFilename(url.toExternalForm()));
-			if (dest.exists()) {
-				return dest;
-			}
-			System.err.println("Unzipping to " + dest);
-			ensureDir(dest);
-			ZipInputStream zip = new ZipInputStream(in);
-			ZipEntry e = null;
-			while ((e = zip.getNextEntry()) != null) {
-				File entryFile = new File(dest, e.getName());
-				if (e.isDirectory()) {
-					ensureDir(entryFile);
-					continue;
-				}
-				OutputStream out = new FileOutputStream(entryFile);
-				while (true) {
-					int i = zip.read();
-					if (i == -1) {
-						break;
-					}
-					out.write(i);
-				}
-				out.close();
-			}
-			zip.close();
-			return dest;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	public File unmodifiableZipUnzipped(URL url, InputStream in) {
 		try {
 			File dest = new File(network.wantedUnmodifiable(url), "unzipped/"
