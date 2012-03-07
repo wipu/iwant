@@ -323,11 +323,10 @@
     + junit
   + reusable module iwant-testarea
   + junit: as-someone arg or dir missing => main fails
-  - iwant-from points to local iwant wsroot, run
-    - descript
+  + iwant-from points to local iwant wsroot, run
+    + descript a bit
       + edit iwant-from
-      - call help.sh
-    - junit
+    + junit
       + mocked url provider for svnkit jar
       + mocked cache location for unmodifiable
       + real values for locations
@@ -342,9 +341,9 @@
         + svnkit download method
           + test with mocked url and cache
           + assert result is an unzipped dir that contains the unzipped url
-      - svn export of iwant
-        - export when cached iwant missing
-          - utilize the tested download method to get svnkit for the test
+      + svn export of iwant
+        + export when cached iwant missing
+          + utilize the tested download method to get svnkit for the test
             + in suite, test all needed functionality before this test:
               + download
               + real cache location
@@ -354,9 +353,8 @@
             + assert export method exports to given dir
               + pass url to cache location method so the mock can
                 mock all but the svnkit zip cache
-        - test no export when cached iwant exists
       + fix: find wsroot even when running refesh.sh
-      - don't generate entry2 mock now that we have one versioned
+      + don't generate entry2 mock now that we have one versioned
       + fix: unzip works with test files but not with svnkit zip
         * currently tests pass only if fixing the real cache by hand
         + test if it is because of jars inside zip
@@ -367,16 +365,22 @@
         + point svnkit url to really downloaded file
         + assert hello from entry 2 using the mocked wsroot
         + assert hello from mocked entry 1, referenced by entry 2 to prove the common functionality from there can also be evolved without breaking runtime
-      - test laziness of compilation of unmodifiable
-      - test laziness of svn export
-      - remove the zip tests using versioned zip files now that we have the svnkit unzip test
-      - checksum after download
-        - test download of incorrect content causes failure (sha check)
-        - test sha failure causes rename of cached file
       + delegate to entry2
         + write mock impl of entry2
         + test correct args get passed
         + impl: compile and run
+  + descript bootstrap call: call help.sh to show real iwant2 output
+    + implement failing iwant2
+  - iwant2
+    - compile enough api and engine to use real iwant for iwant
+    - call compiled engine
+  - no export when cached iwant exists
+  - laziness of compilation of unmodifiable
+  - laziness of svn export
+  - remove the zip tests using versioned zip files now that we have the svnkit unzip test
+  - checksum after download
+     - test download of incorrect content causes failure (sha check)
+     - test sha failure causes rename of cached file
   - incorrect iwant-from => friendly error
   - maybe: more expandable contract between entry and entry2
     - instead of assuming entry2 can only depend on entry, there could
