@@ -44,23 +44,9 @@ public class ExportedFromSvnTest extends TestCase {
 
 	}
 
-	private File wsRoot() {
-		try {
-			File marker = new File(getClass().getResource(
-					"/iwant-distillery-marker.txt").toURI());
-			return marker.getParentFile().getParentFile().getParentFile();
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	private File mockWsRoot() {
-		return new File(wsRoot(), "iwant-mock-wsroot");
-	}
-
 	public void testExportReturnsDifferentFileFromSourceWithCorrectContent()
 			throws MalformedURLException {
-		File remote = mockWsRoot();
+		File remote = WsRootFinder.mockWsRoot();
 		URL remoteUrl = remote.toURI().toURL();
 
 		File exported = iwant.exportedFromSvn(remoteUrl);

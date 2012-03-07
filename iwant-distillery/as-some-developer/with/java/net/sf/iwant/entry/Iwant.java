@@ -128,9 +128,7 @@ public class Iwant {
 		iwantFromProps.load(new FileReader(iwantFrom));
 		URL iwantLocation = new URL(iwantFromProps.getProperty("iwant-from"));
 
-		File wantedUnmodifiable = network.wantedUnmodifiable(iwantLocation);
-		File iwantWs = new File(wantedUnmodifiable, "iwant/"
-				+ toSafeFilename(iwantLocation.toExternalForm()));
+		File iwantWs = exportedFromSvn(iwantLocation);
 
 		File iwantBootstrapClasses = iwantBootstrapperClasses(iwantWs);
 		runJavaMain(false, "net.sf.iwant.entry2.Iwant2",

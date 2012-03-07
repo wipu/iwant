@@ -6,9 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.Permission;
 
 import junit.framework.TestCase;
+import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.testarea.TestArea;
 
 public class IwantTest extends TestCase {
@@ -158,59 +161,44 @@ public class IwantTest extends TestCase {
 				testArea.contentOf("as-test/i-have/iwant-from"));
 	}
 
-	private static String mockedEntry2Java() {
-		StringBuilder b = new StringBuilder();
-		b.append("package net.sf.iwant.entry2;\n");
-		b.append("public class Iwant2 {\n");
-		b.append("  public static void main(String[] args) {\n");
-		b.append("    System.out.println(\"Mocked iwant entry2\");");
-		b.append("    System.out.println(\"CWD=\"+System.getProperty(\"user.dir\"));");
-		b.append("    System.out.println(\"args=\"+java.util.Arrays.toString(args));");
-		b.append("");
-		b.append("  }\n");
-		b.append("}\n");
-		return b.toString();
+	private class IwantNetworkWithLocallyDownloadedSvnkit implements
+			IwantNetwork {
+
+		private final IwantNetwork mock = new IwantNetworkMock(testArea);
+
+		public File wantedUnmodifiable(URL url) {
+			return mock.wantedUnmodifiable(url);
+		}
+
+		public URL svnkitUrl() {
+			try {
+				return Iwant.usingRealNetwork()
+						.downloaded(Iwant.usingRealNetwork().svnkitUrl())
+						.toURI().toURL();
+			} catch (MalformedURLException e) {
+				throw new IllegalStateException(e);
+			}
+		}
+
 	}
 
-	public void testIwantCompilesAndRunsExistingEntry2() {
-		try {
-			IwantNetworkMock network = new IwantNetworkMock(testArea);
+	public void testIwantBootstrapsWhenNothingHasBeenDownloadedAndJustIwantFromIsGiven()
+			throws Exception {
+		File asSomeone = testArea.newDir("as-test");
+		File iHave = testArea.newDir("as-test/i-have");
+		new FileWriter(new File(iHave, "iwant-from")).append(
+				"iwant-from=file://" + WsRootFinder.mockWsRoot() + "\n")
+				.close();
 
-			File asSomeone = testArea.newDir("as-test");
-			File iHave = testArea.newDir("as-test/i-have");
-			new FileWriter(new File(iHave, "iwant-from")).append(
-					"iwant-from=file:///mocked-iwant-from\n").close();
+		// here we assume real download has been tested
+		IwantNetwork network = new IwantNetworkWithLocallyDownloadedSvnkit();
+		Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
+				"for", "entry two");
 
-			String wantedBootstrapper = "iwant/file%3A%2Fmocked-iwant-from/iwant-distillery";
-			File entry2Dir = new File(network.wantedUnmodifiable(null),
-					wantedBootstrapper + "/src/main/java/"
-							+ "net/sf/iwant/entry2");
-			TestArea.ensureDir(entry2Dir);
-			File entryDir = new File(network.wantedUnmodifiable(null),
-					wantedBootstrapper
-							+ "/as-some-developer/with/java/net/sf/iwant/entry");
-			TestArea.ensureDir(entryDir);
-			new FileWriter(new File(entry2Dir, "Iwant2.java")).append(
-					mockedEntry2Java()).close();
-			new FileWriter(new File(entryDir, "Iwant.java")).append(
-					"package net.sf.iwant.entry;\npublic class Iwant {}\n")
-					.close();
-
-			Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
-					"to be", "passed");
-
-			assertEquals("lkj", network.messages());
-
-			assertEquals(
-					"Mocked iwant entry2\nCWD="
-							+ System.getProperty("user.dir") + "\nargs=["
-							+ asSomeone + ", args, to be, passed]\n", out());
-			// we don't care about err
-		} catch (Exception e) {
-			tearDown();
-			System.out.println(out);
-			System.err.println(err);
-		}
+		String cwd = System.getProperty("user.dir");
+		assertEquals("Mocked iwant entry2\n" + "CWD: " + cwd + "\n" + "args: ["
+				+ asSomeone + ", args, for, entry two]\n" + "", out());
+		assertTrue(err().endsWith("And syserr message from mocked entry2\n"));
 	}
 
 }
