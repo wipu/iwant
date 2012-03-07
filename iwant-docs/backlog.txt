@@ -355,7 +355,7 @@
               + pass url to cache location method so the mock can
                 mock all but the svnkit zip cache
         - test no export when cached iwant exists
-      - fix: find wsroot even when running refesh.sh
+      + fix: find wsroot even when running refesh.sh
       - don't generate entry2 mock now that we have one versioned
       - fix: unzip works with test files but not with svnkit zip
         * currently tests pass only if fixing the real cache by hand

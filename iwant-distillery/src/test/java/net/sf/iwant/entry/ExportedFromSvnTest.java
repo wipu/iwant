@@ -47,7 +47,7 @@ public class ExportedFromSvnTest extends TestCase {
 	private File wsRoot() {
 		try {
 			File marker = new File(getClass().getResource(
-					"/iwant-distillery-src-test-java.txt").toURI());
+					"/iwant-distillery-marker.txt").toURI());
 			return marker.getParentFile().getParentFile().getParentFile();
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
