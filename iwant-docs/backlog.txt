@@ -362,11 +362,11 @@
         + test if it is because of jars inside zip
         + test if it is because parent dirs come after their content in the stream
         + fixed: it was just awfully slow because of no buffering: I had just stopped a test so I got a partially unzipped svnkit there, doh!
-      - junit: bootstrap when only iwant-from is given
+      + junit: bootstrap when only iwant-from is given
         * removed the test for already downloaded iwant
         + point svnkit url to really downloaded file
         + assert hello from entry 2 using the mocked wsroot
-        - assert hello from mocked entry 1, referenced by entry 2 to prove the common functionality from there can also be evolved without breaking runtime
+        + assert hello from mocked entry 1, referenced by entry 2 to prove the common functionality from there can also be evolved without breaking runtime
       - test laziness of compilation of unmodifiable
       - test laziness of svn export
       - remove the zip tests using versioned zip files now that we have the svnkit unzip test

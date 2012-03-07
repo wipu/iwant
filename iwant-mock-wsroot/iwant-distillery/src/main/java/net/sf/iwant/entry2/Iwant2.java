@@ -1,5 +1,7 @@
 package net.sf.iwant.entry2;
 
+import net.sf.iwant.entry.Iwant;
+
 public class Iwant2 {
 
 	public static void main(String[] args) {
@@ -7,7 +9,7 @@ public class Iwant2 {
 		System.out.println("CWD: " + System.getProperty("user.dir"));
 		System.out.println("args: " + java.util.Arrays.toString(args));
 		System.err.println("And syserr message from mocked entry2");
-		// System.out.println("And " + Iwant.helloFromMockedEntryOne());
+		System.out.println("And " + Iwant.helloFromMockedEntryOne());
 	}
 
 }

@@ -197,7 +197,8 @@ public class IwantTest extends TestCase {
 
 		String cwd = System.getProperty("user.dir");
 		assertEquals("Mocked iwant entry2\n" + "CWD: " + cwd + "\n" + "args: ["
-				+ asSomeone + ", args, for, entry two]\n" + "", out());
+				+ asSomeone + ", args, for, entry two]\n"
+				+ "And hello from mocked entry one.\n", out());
 		assertTrue(err().endsWith("And syserr message from mocked entry2\n"));
 	}
 

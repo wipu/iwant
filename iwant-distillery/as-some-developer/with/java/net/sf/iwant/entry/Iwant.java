@@ -236,13 +236,32 @@ public class Iwant {
 
 	}
 
+	/**
+	 * This forces the second phase of bootstrapping to use its own versions of
+	 * any iwant classes so we are free to make changes to this very file
+	 * without breaking things.
+	 */
+	private static class ClassLoaderThatHidesIwant extends ClassLoader {
+
+		@Override
+		protected synchronized Class<?> loadClass(String name, boolean resolve)
+				throws ClassNotFoundException {
+			if (name.startsWith("net.sf.iwant")) {
+				return null;
+			} else {
+				return super.loadClass(name, resolve);
+			}
+		}
+
+	}
+
 	private static URLClassLoader classLoader(File... locations)
 			throws MalformedURLException {
 		URL[] urls = new URL[locations.length];
 		for (int i = 0; i < locations.length; i++) {
 			urls[i] = locations[i].toURI().toURL();
 		}
-		return new URLClassLoader(urls);
+		return new URLClassLoader(urls, new ClassLoaderThatHidesIwant());
 	}
 
 	public static String toSafeFilename(String s) {
