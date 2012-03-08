@@ -161,13 +161,30 @@ public class Iwant {
 		return bsClasses;
 	}
 
+	private static void debugLog(String task, Object... lines) {
+		StringBuilder b = new StringBuilder();
+		for (Object part : lines) {
+			b.append(String.format("(%16s    ", task));
+			b.append(part);
+			b.append(")\n");
+		}
+		System.err.print(b);
+	}
+
+	private static void log(String task, File target) {
+		StringBuilder b = new StringBuilder();
+		b.append(String.format(":%16s -> ", task));
+		b.append(target.getName());
+		System.err.println(b);
+	}
+
 	private Iterable<? extends JavaFileObject> iwantBootstrappingJavaSources(
 			File iwantWs, StandardJavaFileManager fileManager) {
 		File iwant2 = new File(iwantWs,
 				"iwant-distillery/src/main/java/net/sf/iwant/entry2/Iwant2.java");
 		File iwant = new File(iwantWs,
 				"iwant-distillery/as-some-developer/with/java/net/sf/iwant/entry/Iwant.java");
-		System.err.println("Compiling " + Arrays.asList(iwant2, iwant));
+		debugLog("javac" + Arrays.asList(iwant2, iwant));
 
 		Iterable<? extends JavaFileObject> compilationUnits = fileManager
 				.getJavaFileObjects(iwant2, iwant);
@@ -177,9 +194,8 @@ public class Iwant {
 	private void runJavaMain(boolean outToErr, boolean catchSystemExit,
 			String className, File[] classLocations, String... args)
 			throws Exception {
-		System.err.println("Running " + className + "\n  "
-				+ Arrays.toString(args) + "\n  "
-				+ Arrays.toString(classLocations));
+		debugLog("invoke", "Running " + className, Arrays.toString(args),
+				Arrays.toString(classLocations));
 		ClassLoader classLoader = classLoader(classLocations);
 		Class<?> helloClass = classLoader.loadClass(className);
 		Method mainMethod = helloClass.getMethod("main", String[].class);
@@ -309,7 +325,8 @@ public class Iwant {
 			if (cached.exists()) {
 				return cached;
 			}
-			System.err.println("Downloading " + url);
+			debugLog("downloaded", "from " + url);
+			log("downloaded", cached);
 			byte[] bytes = downloadBytes(url);
 			FileOutputStream cachedOut = new FileOutputStream(cached);
 			cachedOut.write(bytes);
@@ -348,7 +365,7 @@ public class Iwant {
 			if (dest.exists()) {
 				return dest;
 			}
-			System.err.println("Unzipping to " + dest);
+			log("unzipped", dest);
 			ensureDir(dest);
 			ZipInputStream zip = new ZipInputStream(in);
 			ZipEntry e = null;
@@ -403,14 +420,15 @@ public class Iwant {
 			File exported = toCachePath(url);
 			if (exported.exists()) {
 				if (isFile(url)) {
-					System.err.println("new svn export needed,"
+					debugLog("svn-exported", "re-export needed,"
 							+ " remote is a file.");
 					del(exported);
 				} else {
 					return exported;
 				}
 			}
-			System.err.println("svn exporting " + url);
+			debugLog("svn-exported", url);
+			log("svn-exported", exported);
 			String urlString = url.toExternalForm();
 			if (isFile(url)) {
 				urlString = url.getFile();

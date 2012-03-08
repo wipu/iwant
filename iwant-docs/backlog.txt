@@ -391,6 +391,7 @@
   + svn export laziness/eagerness
     + no export when cached iwant exists
     + except when remote is a file: changes in entry2 are effective immediately when developing, if local dir is deleted and re-exported
+  + slighty nicer stderr: ":task -> destfile" and "(task debug message)*"
   - laziness of compilation of unmodifiable
   - laziness of svn export
   - remove the zip tests using versioned zip files now that we have the svnkit unzip test
@@ -515,6 +516,8 @@
 #################################################################
 = Planned
 #################################################################
+
+- logging: one letter to show if the generated target is a local (workspace) or global (user cache) one
 
 - As @buildscriptuser I want downloaded files cached by sha256 so the file is not downloaded again if some other buildscript uses a different url
   * sha256 would then be mandatory for all downloads
