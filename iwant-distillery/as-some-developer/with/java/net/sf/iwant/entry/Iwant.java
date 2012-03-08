@@ -289,6 +289,15 @@ public class Iwant {
 		}
 	}
 
+	private static void del(File file) {
+		if (file.isDirectory()) {
+			for (File child : file.listFiles()) {
+				del(child);
+			}
+		}
+		file.delete();
+	}
+
 	public File toCachePath(URL url) {
 		return new File(wantedUnmodifiable(url),
 				toSafeFilename(url.toExternalForm()));
@@ -392,9 +401,18 @@ public class Iwant {
 	public File exportedFromSvn(URL url) {
 		try {
 			File exported = toCachePath(url);
+			if (exported.exists()) {
+				if (isFile(url)) {
+					System.err.println("new svn export needed,"
+							+ " remote is a file.");
+					del(exported);
+				} else {
+					return exported;
+				}
+			}
 			System.err.println("svn exporting " + url);
 			String urlString = url.toExternalForm();
-			if (urlString.startsWith("file:")) {
+			if (isFile(url)) {
 				urlString = url.getFile();
 			}
 			File svnkit = unzippedSvnkit();
@@ -408,6 +426,10 @@ public class Iwant {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static boolean isFile(URL url) {
+		return "file".equals(url.getProtocol());
 	}
 
 }

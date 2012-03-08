@@ -388,7 +388,9 @@
         + don't prevent system exit in entry1 when calling entry2
         + cat the example ws-info
     - rerun with example ws-info => fail with message, example wsdef created
-  - no export when cached iwant exists
+  + svn export laziness/eagerness
+    + no export when cached iwant exists
+    + except when remote is a file: changes in entry2 are effective immediately when developing, if local dir is deleted and re-exported
   - laziness of compilation of unmodifiable
   - laziness of svn export
   - remove the zip tests using versioned zip files now that we have the svnkit unzip test
