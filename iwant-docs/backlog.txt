@@ -375,12 +375,17 @@
     * now just KISS: don't use iwant (workspace, targets), just raw
       download+compilation using entry 1. Later we can eat the dogfood,
       when we have it
-    - no i-have/ws-info => fail with message, example created
+    + no i-have/ws-info => fail with message, example created
       * ha, TDD again drives design: I don't want to call Iwant2.main!
       + instead: Iwant2.using(nw) just like Iwant
         * Iwant still calls Iwant2 by main, because it will always
           use the real locations and because they have different classloaders
           so there isn't even an easy way to pass other than standard classes
+      + test & impl
+      - descript
+        - call help.sh again
+        - make entry2 main call evaluate with real locations
+    - rerun with example ws-info => fail with message, example wsdef created
   - no export when cached iwant exists
   - laziness of compilation of unmodifiable
   - laziness of svn export
