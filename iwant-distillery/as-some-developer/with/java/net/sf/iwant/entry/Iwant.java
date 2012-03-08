@@ -131,7 +131,7 @@ public class Iwant {
 		File iwantWs = exportedFromSvn(iwantLocation);
 
 		File iwantBootstrapClasses = iwantBootstrapperClasses(iwantWs);
-		runJavaMain(false, "net.sf.iwant.entry2.Iwant2",
+		runJavaMain(false, false, "net.sf.iwant.entry2.Iwant2",
 				new File[] { iwantBootstrapClasses }, args);
 	}
 
@@ -174,8 +174,9 @@ public class Iwant {
 		return compilationUnits;
 	}
 
-	private void runJavaMain(boolean outToErr, String className,
-			File[] classLocations, String... args) throws Exception {
+	private void runJavaMain(boolean outToErr, boolean catchSystemExit,
+			String className, File[] classLocations, String... args)
+			throws Exception {
 		System.err.println("Running " + className + "\n  "
 				+ Arrays.toString(args) + "\n  "
 				+ Arrays.toString(classLocations));
@@ -189,7 +190,9 @@ public class Iwant {
 		PrintStream origOut = System.out;
 		PrintStream origErr = System.err;
 
-		System.setSecurityManager(new ExitCatcher());
+		if (catchSystemExit) {
+			System.setSecurityManager(new ExitCatcher());
+		}
 		if (outToErr) {
 			System.setOut(origErr);
 		}
@@ -202,6 +205,7 @@ public class Iwant {
 						+ e.status());
 			}
 		} finally {
+			// no ifs here, you never know what changes the called class did:
 			System.setOut(origOut);
 			System.setErr(origErr);
 			System.setSecurityManager(origSecman);
@@ -397,7 +401,7 @@ public class Iwant {
 			File svnkitJar = new File(svnkit, "svnkit-1.3.5.7406/svnkit.jar");
 			File svnkitCliJar = new File(svnkit,
 					"svnkit-1.3.5.7406/svnkit-cli.jar");
-			runJavaMain(true, "org.tmatesoft.svn.cli.SVN", new File[] {
+			runJavaMain(true, true, "org.tmatesoft.svn.cli.SVN", new File[] {
 					svnkitJar, svnkitCliJar }, "export", urlString,
 					exported.getCanonicalPath());
 			return exported;

@@ -17,7 +17,16 @@ public class Iwant2 {
 	}
 
 	public static void main(String[] args) {
-		throw new UnsupportedOperationException("TODO test and implement");
+		File asSomeone = new File(args[0]);
+		String[] args2 = new String[args.length - 1];
+		System.arraycopy(args, 1, args2, 0, args2.length);
+		try {
+			using(Iwant.usingRealNetwork().network())
+					.evaluate(asSomeone, args2);
+		} catch (IwantException e) {
+			System.err.println(e.getMessage());
+			System.exit(1);
+		}
 	}
 
 	public static Iwant2 using(IwantNetwork network) {

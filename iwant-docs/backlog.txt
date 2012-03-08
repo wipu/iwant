@@ -382,9 +382,11 @@
           use the real locations and because they have different classloaders
           so there isn't even an easy way to pass other than standard classes
       + test & impl
-      - descript
-        - call help.sh again
-        - make entry2 main call evaluate with real locations
+      + descript
+        + make entry2 main call evaluate with real locations
+        + catch IwantException (a non-bug one), print message and exit 1
+        + don't prevent system exit in entry1 when calling entry2
+        + cat the example ws-info
     - rerun with example ws-info => fail with message, example wsdef created
   - no export when cached iwant exists
   - laziness of compilation of unmodifiable

@@ -7,4 +7,5 @@ edit as-distillery-developer/i-have/iwant-from local-iwant-from <<EOF
 iwant-from=file://$LOCAL_IWANT_WSROOT
 EOF
 cmde 1 'as-distillery-developer/with/bash/iwant/help.sh'
+cmd 'cat as-distillery-developer/i-have/ws-info'
 }
