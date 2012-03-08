@@ -372,8 +372,15 @@
   + descript bootstrap call: call help.sh to show real iwant2 output
     + implement failing iwant2
   - iwant2
-    - compile enough api and engine to use real iwant for iwant
-    - call compiled engine
+    * now just KISS: don't use iwant (workspace, targets), just raw
+      download+compilation using entry 1. Later we can eat the dogfood,
+      when we have it
+    - no i-have/ws-info => fail with message, example created
+      * ha, TDD again drives design: I don't want to call Iwant2.main!
+      + instead: Iwant2.using(nw) just like Iwant
+        * Iwant still calls Iwant2 by main, because it will always
+          use the real locations and because they have different classloaders
+          so there isn't even an easy way to pass other than standard classes
   - no export when cached iwant exists
   - laziness of compilation of unmodifiable
   - laziness of svn export

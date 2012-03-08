@@ -30,6 +30,7 @@ tested-java-classes() {
     -d "$CLASSES_TO_TEST" \
     -cp "$JUNIT" \
     $(find $HERE/as-some-developer/with/java -name '*.java') \
+    $(find $HERE/src/main/java -name '*.java') \
     $(find $IWANT_TESTAREA_PROJ/src/main/java -name '*.java') \
     $(find $HERE/src/test/java -name '*.java')
   cp "$HERE/src/test/java/net/sf/iwant/entry/"*.zip \
