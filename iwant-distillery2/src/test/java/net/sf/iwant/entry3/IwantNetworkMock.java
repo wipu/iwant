@@ -21,5 +21,5 @@ public class IwantNetworkMock implements IwantNetwork {
 	public URL svnkitUrl() {
 		throw new UnsupportedOperationException("TODO test and implement");
 	}
-	
+
 }
