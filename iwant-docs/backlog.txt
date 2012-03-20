@@ -387,6 +387,14 @@
         + catch IwantException (a non-bug one), print message and exit 1
         + don't prevent system exit in entry1 when calling entry2
         + cat the example ws-info
+    - delegate to actual (distilling) iwant
+      + Iwant3 and its test to do what Iwant2 does now
+      - Iwant2's new role
+        - download junit.jar
+        - compile iwant (distillery2) test and main
+        - run main suite
+          - mock-wsroot to test both test failure and success
+      - 3rd delegation
     - rerun with example ws-info => fail with message, example wsdef created
   + svn export laziness/eagerness
     + no export when cached iwant exists
