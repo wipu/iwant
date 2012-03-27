@@ -397,7 +397,8 @@
           - mock-wsroot to test both test failure and success
         + 3rd delegation: iwant2 -> iwant3
     - rerun with example ws-info => fail with message, example wsdef created
-  - compile iwant to separate dir, not a subdir of exported wsroot
+  + compile iwant to separate dir, not a subdir of exported wsroot
+    * it was already like this, the dir was a leftover of some work in progress testrun
   + svn export laziness/eagerness
     + no export when cached iwant exists
     + except when remote is a file: changes in entry2 are effective immediately when developing, if local dir is deleted and re-exported
