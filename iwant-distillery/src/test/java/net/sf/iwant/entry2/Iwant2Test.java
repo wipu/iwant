@@ -1,50 +1,116 @@
 package net.sf.iwant.entry2;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.security.Permission;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.IwantEntryTestArea;
 import net.sf.iwant.entry.IwantNetworkMock;
+import net.sf.iwant.entry.WsRootFinder;
+import net.sf.iwant.testarea.TestArea;
 
 public class Iwant2Test extends TestCase {
 
-	private IwantEntryTestArea testArea;
+	private static final String LINE_SEPARATOR_KEY = "line.separator";
+
+	private TestArea testArea;
+
+	private SecurityManager origSecman;
+
+	private InputStream originalIn;
+
+	private PrintStream originalOut;
+
+	private PrintStream originalErr;
+
+	private ByteArrayOutputStream out;
+
+	private ByteArrayOutputStream err;
+
+	private String originalLineSeparator;
+
 	private IwantNetworkMock network;
 	private Iwant2 iwant2;
-	private File asSomeone;
 
+	/**
+	 * TODO a reusable main-method testing tools project
+	 */
 	public void setUp() {
+		origSecman = System.getSecurityManager();
+		System.setSecurityManager(new ExitCatcher());
+		originalIn = System.in;
+		originalOut = System.out;
+		originalErr = System.err;
+		originalLineSeparator = System.getProperty(LINE_SEPARATOR_KEY);
+		System.setProperty(LINE_SEPARATOR_KEY, "\n");
+		startOfOutAndErrCapture();
 		testArea = new IwantEntryTestArea();
 		network = new IwantNetworkMock(testArea);
 		iwant2 = Iwant2.using(network);
-		asSomeone = new File(testArea.root(), "as-test");
 	}
 
-	private void evaluateAndExpectFriendlyFailureAndExampleWsInfoCreation()
-			throws IOException {
-		try {
-			iwant2.evaluate(asSomeone);
-			fail();
-		} catch (RuntimeException e) {
-			assertEquals("I created " + asSomeone + "/i-have/ws-info\n"
-					+ "Please edit it and rerun me.", e.getMessage());
+	private void startOfOutAndErrCapture() {
+		out = new ByteArrayOutputStream();
+		err = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(out));
+		System.setErr(new PrintStream(err));
+	}
+
+	private static class ExitCalledException extends SecurityException {
+
+		private final int status;
+
+		public ExitCalledException(int status) {
+			this.status = status;
 		}
-		assertEquals("# paths are relative to this file's directory\n"
-				+ "WSNAME=example\n" + "WSROOT=../..\n" + "WSDEF_SRC=wsdef\n"
-				+ "WSDEF_CLASS=com.example.wsdef.Workspace\n",
-				testArea.contentOf("as-test/i-have/ws-info"));
+
+		@SuppressWarnings("unused")
+		public int status() {
+			return status;
+		}
+
 	}
 
-	public void testMissingAsSomeoneCausesFriendlyFailureAndExampleCreation()
-			throws IOException {
-		evaluateAndExpectFriendlyFailureAndExampleWsInfoCreation();
+	private static class ExitCatcher extends SecurityManager {
+
+		@Override
+		public void checkPermission(Permission perm) {
+			// everything allowed
+		}
+
+		@Override
+		public void checkExit(int status) {
+			throw new ExitCalledException(status);
+		}
+
 	}
 
-	public void testMissingWsInfoCausesFriendlyFailureAndExampleCreation()
-			throws IOException {
-		testArea.newDir("as-test");
-		evaluateAndExpectFriendlyFailureAndExampleWsInfoCreation();
+	@Override
+	public void tearDown() {
+		System.setSecurityManager(origSecman);
+		System.setIn(originalIn);
+		System.setOut(originalOut);
+		System.setErr(originalErr);
+		System.setProperty(LINE_SEPARATOR_KEY, originalLineSeparator);
+	}
+
+	private String out() {
+		return out.toString();
+	}
+
+	private String err() {
+		return err.toString();
+	}
+
+	public void testIwant2CompilesAndCallsIwant3() {
+		iwant2.evaluate(WsRootFinder.mockWsRoot(), "args", "to be", "passed");
+
+		assertEquals("Mocked net.sf.iwant.entry3.Iwant3\n"
+				+ "args: [args, to be, passed]\n", out());
+		assertTrue(err().contains(" javac "));
+		assertTrue(err().contains(" invoke "));
 	}
 
 }

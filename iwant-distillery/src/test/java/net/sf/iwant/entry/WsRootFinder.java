@@ -2,9 +2,9 @@ package net.sf.iwant.entry;
 
 import java.io.File;
 
-class WsRootFinder {
+public class WsRootFinder {
 
-	static File wsRoot() {
+	public static File wsRoot() {
 		try {
 			File marker = new File(WsRootFinder.class.getResource(
 					"/iwant-distillery-marker.txt").toURI());
@@ -14,7 +14,7 @@ class WsRootFinder {
 		}
 	}
 
-	static File mockWsRoot() {
+	public static File mockWsRoot() {
 		return new File(wsRoot(), "iwant-mock-wsroot");
 	}
 

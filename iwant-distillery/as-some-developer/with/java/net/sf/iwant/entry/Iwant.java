@@ -19,6 +19,7 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.security.Permission;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
@@ -113,52 +114,76 @@ public class Iwant {
 			throw new IwantException("AS_SOMEONE_DIRECTORY does not exist: "
 					+ asSomeone.getCanonicalPath());
 		}
-		File iHave = new File(asSomeone, "i-have");
-		if (!iHave.exists()) {
-			iHave.mkdir();
-		}
-		File iwantFrom = new File(iHave, "iwant-from");
-		if (!iwantFrom.exists()) {
-			new FileWriter(iwantFrom).append("iwant-from=TODO\n").close();
-			throw new IwantException("I created " + iwantFrom
-					+ "\nPlease edit it and rerun me.");
-		}
-
-		Properties iwantFromProps = new Properties();
-		iwantFromProps.load(new FileReader(iwantFrom));
-		URL iwantLocation = new URL(iwantFromProps.getProperty("iwant-from"));
-
-		File iwantWs = exportedFromSvn(iwantLocation);
+		File iwantWs = iwantWsrootOfWishedVersion(asSomeone);
 
 		File iwantBootstrapClasses = iwantBootstrapperClasses(iwantWs);
-		runJavaMain(false, false, "net.sf.iwant.entry2.Iwant2",
-				new File[] { iwantBootstrapClasses }, args);
+
+		String[] iwant2Args = new String[args.length + 1];
+		iwant2Args[0] = iwantWs.getCanonicalPath();
+		System.arraycopy(args, 0, iwant2Args, 1, args.length);
+
+		runJavaMain(false, false, true, "net.sf.iwant.entry2.Iwant2",
+				new File[] { iwantBootstrapClasses }, iwant2Args);
 	}
 
-	private File iwantBootstrapperClasses(File iwantWs) throws IOException {
-		File bsClasses = new File(iwantWs, "bootstrap-classes");
-		ensureDir(bsClasses);
-		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-		DiagnosticListener<? super JavaFileObject> diagnosticListener = null;
-		Locale locale = null;
-		Charset charset = null;
-		StandardJavaFileManager fileManager = compiler.getStandardFileManager(
-				diagnosticListener, locale, charset);
-		Iterable<? extends JavaFileObject> compilationUnits = iwantBootstrappingJavaSources(
-				iwantWs, fileManager);
-		Writer compilerTaskOut = null;
-		Iterable<String> options = Arrays.asList(new String[] { "-d",
-				bsClasses.getCanonicalPath() });
-		Iterable<String> classes = null;
-		CompilationTask compilerTask = compiler.getTask(compilerTaskOut,
-				fileManager, diagnosticListener, options, classes,
-				compilationUnits);
-		Boolean compilerTaskResult = compilerTask.call();
-		fileManager.close();
-		if (!compilerTaskResult) {
-			throw new IwantException("Compilation failed.");
+	private File iwantWsrootOfWishedVersion(File asSomeone) {
+		try {
+			File iHave = new File(asSomeone, "i-have");
+			if (!iHave.exists()) {
+				iHave.mkdir();
+			}
+			File iwantFrom = new File(iHave, "iwant-from");
+			if (!iwantFrom.exists()) {
+				new FileWriter(iwantFrom).append("iwant-from=TODO\n").close();
+				throw new IwantException("I created " + iwantFrom
+						+ "\nPlease edit it and rerun me.");
+			}
+			Properties iwantFromProps = new Properties();
+			iwantFromProps.load(new FileReader(iwantFrom));
+			URL iwantLocation = new URL(
+					iwantFromProps.getProperty("iwant-from"));
+			File iwantWs = exportedFromSvn(iwantLocation);
+			return iwantWs;
+		} catch (IwantException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return bsClasses;
+	}
+
+	private File iwantBootstrapperClasses(File iwantWs) {
+		return compiledClasses(new File(iwantWs, "bootstrap-classes"),
+				iwantBootstrappingJavaSources(iwantWs));
+	}
+
+	public File compiledClasses(File dest, List<File> src) {
+		try {
+			debugLog("javac", dest);
+			ensureDir(dest);
+			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+			DiagnosticListener<? super JavaFileObject> diagnosticListener = null;
+			Locale locale = null;
+			Charset charset = null;
+			StandardJavaFileManager fileManager = compiler
+					.getStandardFileManager(diagnosticListener, locale, charset);
+			Iterable<? extends JavaFileObject> compilationUnits = fileManager
+					.getJavaFileObjectsFromFiles(src);
+			Writer compilerTaskOut = null;
+			Iterable<String> options = Arrays.asList(new String[] { "-d",
+					dest.getCanonicalPath() });
+			Iterable<String> classes = null;
+			CompilationTask compilerTask = compiler.getTask(compilerTaskOut,
+					fileManager, diagnosticListener, options, classes,
+					compilationUnits);
+			Boolean compilerTaskResult = compilerTask.call();
+			fileManager.close();
+			if (!compilerTaskResult) {
+				throw new IwantException("Compilation failed.");
+			}
+			return dest;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private static void debugLog(String task, Object... lines) {
@@ -178,25 +203,20 @@ public class Iwant {
 		System.err.println(b);
 	}
 
-	private Iterable<? extends JavaFileObject> iwantBootstrappingJavaSources(
-			File iwantWs, StandardJavaFileManager fileManager) {
+	private List<File> iwantBootstrappingJavaSources(File iwantWs) {
 		File iwant2 = new File(iwantWs,
 				"iwant-distillery/src/main/java/net/sf/iwant/entry2/Iwant2.java");
 		File iwant = new File(iwantWs,
 				"iwant-distillery/as-some-developer/with/java/net/sf/iwant/entry/Iwant.java");
-		debugLog("javac" + Arrays.asList(iwant2, iwant));
-
-		Iterable<? extends JavaFileObject> compilationUnits = fileManager
-				.getJavaFileObjects(iwant2, iwant);
-		return compilationUnits;
+		return Arrays.asList(iwant2, iwant);
 	}
 
-	private void runJavaMain(boolean outToErr, boolean catchSystemExit,
-			String className, File[] classLocations, String... args)
-			throws Exception {
+	public static void runJavaMain(boolean outToErr, boolean catchSystemExit,
+			boolean hideIwantClasses, String className, File[] classLocations,
+			String... args) throws Exception {
 		debugLog("invoke", "Running " + className, Arrays.toString(args),
 				Arrays.toString(classLocations));
-		ClassLoader classLoader = classLoader(classLocations);
+		ClassLoader classLoader = classLoader(hideIwantClasses, classLocations);
 		Class<?> helloClass = classLoader.loadClass(className);
 		Method mainMethod = helloClass.getMethod("main", String[].class);
 
@@ -275,13 +295,17 @@ public class Iwant {
 
 	}
 
-	private static URLClassLoader classLoader(File... locations)
-			throws MalformedURLException {
+	private static URLClassLoader classLoader(boolean hideIwantClasses,
+			File... locations) throws MalformedURLException {
 		URL[] urls = new URL[locations.length];
 		for (int i = 0; i < locations.length; i++) {
 			urls[i] = locations[i].toURI().toURL();
 		}
-		return new URLClassLoader(urls, new ClassLoaderThatHidesIwant());
+		if (hideIwantClasses) {
+			return new URLClassLoader(urls, new ClassLoaderThatHidesIwant());
+		} else {
+			return new URLClassLoader(urls);
+		}
 	}
 
 	public static String toSafeFilename(String s) {
@@ -437,9 +461,9 @@ public class Iwant {
 			File svnkitJar = new File(svnkit, "svnkit-1.3.5.7406/svnkit.jar");
 			File svnkitCliJar = new File(svnkit,
 					"svnkit-1.3.5.7406/svnkit-cli.jar");
-			runJavaMain(true, true, "org.tmatesoft.svn.cli.SVN", new File[] {
-					svnkitJar, svnkitCliJar }, "export", urlString,
-					exported.getCanonicalPath());
+			runJavaMain(true, true, false, "org.tmatesoft.svn.cli.SVN",
+					new File[] { svnkitJar, svnkitCliJar }, "export",
+					urlString, exported.getCanonicalPath());
 			return exported;
 		} catch (Exception e) {
 			throw new RuntimeException(e);

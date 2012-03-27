@@ -390,12 +390,14 @@
     - delegate to actual (distilling) iwant
       + Iwant3 and its test to do what Iwant2 does now
       - Iwant2's new role
-        - download junit.jar
-        - compile iwant (distillery2) test and main
+        + compile iwant (distillery2) main
         - run main suite
+          - compile tests, too
+          - download junit.jar
           - mock-wsroot to test both test failure and success
-      - 3rd delegation
+        + 3rd delegation: iwant2 -> iwant3
     - rerun with example ws-info => fail with message, example wsdef created
+  - compile iwant to separate dir, not a subdir of exported wsroot
   + svn export laziness/eagerness
     + no export when cached iwant exists
     + except when remote is a file: changes in entry2 are effective immediately when developing, if local dir is deleted and re-exported

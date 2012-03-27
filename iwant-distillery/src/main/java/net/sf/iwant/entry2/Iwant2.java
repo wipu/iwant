@@ -1,15 +1,14 @@
 package net.sf.iwant.entry2;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 
 public class Iwant2 {
 
-	@SuppressWarnings("unused")
 	private final IwantNetwork network;
 
 	public Iwant2(IwantNetwork network) {
@@ -17,12 +16,11 @@ public class Iwant2 {
 	}
 
 	public static void main(String[] args) {
-		File asSomeone = new File(args[0]);
+		File iwantWs = new File(args[0]);
 		String[] args2 = new String[args.length - 1];
 		System.arraycopy(args, 1, args2, 0, args2.length);
 		try {
-			using(Iwant.usingRealNetwork().network())
-					.evaluate(asSomeone, args2);
+			using(Iwant.usingRealNetwork().network()).evaluate(iwantWs, args2);
 		} catch (IwantException e) {
 			System.err.println(e.getMessage());
 			System.exit(1);
@@ -41,25 +39,23 @@ public class Iwant2 {
 
 	}
 
-	public void evaluate(File asSomeone,
-			@SuppressWarnings("unused") String... args) {
-		File iHave = new File(asSomeone, "i-have");
-		Iwant.ensureDir(iHave);
-		File wsInfo = new File(iHave, "ws-info");
-		createExampleWsInfo(wsInfo);
-		throw new IwantException("I created " + wsInfo
-				+ "\nPlease edit it and rerun me.");
-	}
-
-	private static void createExampleWsInfo(File wsInfo) {
+	public void evaluate(File iwantWs, String... args) {
 		try {
-			new FileWriter(wsInfo).append(
-					"# paths are relative to this file's directory\n"
-							+ "WSNAME=example\n" + "WSROOT=../..\n"
-							+ "WSDEF_SRC=wsdef\n"
-							+ "WSDEF_CLASS=com.example.wsdef.Workspace\n")
-					.close();
-		} catch (IOException e) {
+			Iwant iwant = Iwant.using(network);
+
+			File allIwantClasses = iwant.toCachePath(new File(iwantWs,
+					"all-classes").toURI().toURL());
+			Iwant.ensureDir(allIwantClasses);
+
+			List<File> src = new ArrayList<File>();
+			src.add(new File(iwantWs, "iwant-distillery2/" + "src/main/java/"
+					+ "net/sf/iwant/entry3/Iwant3.java"));
+			iwant.compiledClasses(allIwantClasses, src);
+
+			File[] classLocations = { allIwantClasses };
+			Iwant.runJavaMain(false, false, false,
+					"net.sf.iwant.entry3.Iwant3", classLocations, args);
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}

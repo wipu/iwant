@@ -187,7 +187,7 @@ public class IwantTest extends TestCase {
 		File asSomeone = testArea.newDir("as-test");
 		File iHave = testArea.newDir("as-test/i-have");
 		new FileWriter(new File(iHave, "iwant-from")).append(
-				"iwant-from=file://" + WsRootFinder.mockWsRoot() + "\n")
+				"iwant-from=file://" + WsRootFinder.mockWsRoot() + "/\n")
 				.close();
 
 		// here we assume real download has been tested
@@ -195,9 +195,13 @@ public class IwantTest extends TestCase {
 		Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
 				"for", "entry two");
 
+		File exportedWsRoot = Iwant.using(network).toCachePath(
+				WsRootFinder.mockWsRoot().toURI().toURL());
+
 		String cwd = System.getProperty("user.dir");
 		assertEquals("Mocked iwant entry2\n" + "CWD: " + cwd + "\n" + "args: ["
-				+ asSomeone + ", args, for, entry two]\n"
+				+ exportedWsRoot + ", " + asSomeone
+				+ ", args, for, entry two]\n"
 				+ "And hello from mocked entry one.\n", out());
 		assertTrue(err().endsWith("And syserr message from mocked entry2\n"));
 	}
