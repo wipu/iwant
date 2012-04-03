@@ -8,4 +8,6 @@ iwant-from=file://$LOCAL_IWANT_WSROOT
 EOF
 cmde 1 'as-distillery-developer/with/bash/iwant/help.sh'
 cmd 'cat as-distillery-developer/i-have/ws-info'
+cmde 1 'as-distillery-developer/with/bash/iwant/help.sh'
+cmd 'cat as-distillery-developer/i-have/wsdef/com/example/wsdef/Workspace.java'
 }

@@ -398,7 +398,9 @@
         + 3rd delegation: iwant2 -> iwant3
           + only if test passes
   - iwant3
-    - rerun with example ws-info => fail with message, example wsdef created
+    + invalid wsinfo => failure
+    + valid wsinfo => create example wsdef java
+    + descript: rerun with example ws-info => fail with message, example wsdef java created
   + compile iwant to separate dir, not a subdir of exported wsroot
     * it was already like this, the dir was a leftover of some work in progress testrun
   + svn export laziness/eagerness

@@ -7,6 +7,7 @@ public class IwantEntry3Suite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("net.sf.iwant.entry3");
+		suite.addTestSuite(WsInfoTest.class);
 		suite.addTestSuite(Iwant3Test.class);
 		return suite;
 	}

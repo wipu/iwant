@@ -1,6 +1,8 @@
 package net.sf.iwant.entry3;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -45,20 +47,44 @@ public class Iwant3 {
 			@SuppressWarnings("unused") String... args) {
 		File iHave = new File(asSomeone, "i-have");
 		Iwant.ensureDir(iHave);
-		File wsInfo = new File(iHave, "ws-info");
-		createExampleWsInfo(wsInfo);
-		throw new IwantException("I created " + wsInfo
+		File wsInfoFile = new File(iHave, "ws-info");
+		if (!wsInfoFile.exists()) {
+			createExampleWsInfo(wsInfoFile);
+			throw new IwantException("I created " + wsInfoFile
+					+ "\nPlease edit it and rerun me.");
+		}
+		WsInfo wsInfo = parseWsInfo(wsInfoFile);
+		createExampleWsdefJava(wsInfo);
+		throw new IwantException("I created " + wsInfo.wsdefJava()
 				+ "\nPlease edit it and rerun me.");
 	}
 
-	private static void createExampleWsInfo(File wsInfo) {
+	private static void createExampleWsdefJava(WsInfo wsInfo) {
+		createExampleFile(wsInfo.wsdefJava(),
+				"package " + wsInfo.wsdefPackage() + ";\n");
+	}
+
+	private static WsInfo parseWsInfo(File wsInfoFile) {
 		try {
-			new FileWriter(wsInfo).append(
-					"# paths are relative to this file's directory\n"
-							+ "WSNAME=example\n" + "WSROOT=../..\n"
-							+ "WSDEF_SRC=wsdef\n"
-							+ "WSDEF_CLASS=com.example.wsdef.Workspace\n")
-					.close();
+			return new WsInfo(new FileReader(wsInfoFile), wsInfoFile);
+		} catch (FileNotFoundException e) {
+			throw new IllegalStateException("Sorry, for a while I thought "
+					+ wsInfoFile + " exists.");
+		}
+	}
+
+	private static void createExampleWsInfo(File wsInfo) {
+		createExampleFile(wsInfo,
+				"# paths are relative to this file's directory\n"
+						+ "WSNAME=example\n" + "WSROOT=../..\n"
+						+ "WSDEF_SRC=wsdef\n"
+						+ "WSDEF_CLASS=com.example.wsdef.Workspace\n");
+	}
+
+	private static void createExampleFile(File file, String content) {
+		try {
+			Iwant.ensureDir(file.getParentFile());
+			new FileWriter(file).append(content).close();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
