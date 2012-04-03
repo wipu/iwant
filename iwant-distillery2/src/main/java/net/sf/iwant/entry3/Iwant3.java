@@ -40,15 +40,20 @@ public class Iwant3 {
 			@SuppressWarnings("unused") String... args) {
 		File iHave = new File(asSomeone, "i-have");
 		Iwant.ensureDir(iHave);
-		File wsInfoFile = new File(iHave, "ws-info");
-		if (!wsInfoFile.exists()) {
-			createExampleWsInfo(wsInfoFile);
-			throw new IwantException("I created " + wsInfoFile
-					+ "\nPlease edit it and rerun me.");
-		}
+		File wsInfoFile = wsInfoFile(iHave);
 		WsInfo wsInfo = parseWsInfo(wsInfoFile);
 		createExampleWsdefJava(wsInfo);
 		throw new IwantException("I created " + wsInfo.wsdefJava()
+				+ "\nPlease edit it and rerun me.");
+	}
+
+	private static File wsInfoFile(File iHave) {
+		File wsInfoFile = new File(iHave, "ws-info");
+		if (wsInfoFile.exists()) {
+			return wsInfoFile;
+		}
+		createExampleWsInfo(wsInfoFile);
+		throw new IwantException("I created " + wsInfoFile
 				+ "\nPlease edit it and rerun me.");
 	}
 
