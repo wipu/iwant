@@ -22,4 +22,8 @@ public class IwantNetworkMock implements IwantNetwork {
 		throw new UnsupportedOperationException("TODO test and implement");
 	}
 
+	public URL junitUrl() {
+		throw new UnsupportedOperationException("TODO test and implement");
+	}
+
 }

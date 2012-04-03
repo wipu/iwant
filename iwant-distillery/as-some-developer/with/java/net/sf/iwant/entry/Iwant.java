@@ -19,6 +19,8 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.security.Permission;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -49,6 +51,8 @@ public class Iwant {
 
 		URL svnkitUrl();
 
+		URL junitUrl();
+
 	}
 
 	private static class RealIwantNetwork implements IwantNetwork {
@@ -61,14 +65,24 @@ public class Iwant {
 		}
 
 		public URL svnkitUrl() {
-			try {
-				return new URL(
-						"http://www.svnkit.com/org.tmatesoft.svn_1.3.5.standalone.nojna.zip");
-			} catch (MalformedURLException e) {
-				throw new IllegalStateException(e);
-			}
+			return url("http://www.svnkit.com/"
+					+ "org.tmatesoft.svn_1.3.5.standalone.nojna.zip");
 		}
 
+		public URL junitUrl() {
+			final String v = "4.8.2";
+			return url("http://mirrors.ibiblio.org/pub/mirrors/maven2"
+					+ "/junit/junit/" + v + "/junit-" + v + ".jar");
+		}
+
+	}
+
+	public static URL url(String url) {
+		try {
+			return new URL(url);
+		} catch (MalformedURLException e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 
 	public static Iwant using(IwantNetwork network) {
@@ -153,12 +167,14 @@ public class Iwant {
 
 	private File iwantBootstrapperClasses(File iwantWs) {
 		return compiledClasses(new File(iwantWs, "bootstrap-classes"),
-				iwantBootstrappingJavaSources(iwantWs));
+				iwantBootstrappingJavaSources(iwantWs),
+				Collections.<File> emptyList());
 	}
 
-	public File compiledClasses(File dest, List<File> src) {
+	public File compiledClasses(File dest, List<File> src,
+			List<File> classLocations) {
 		try {
-			debugLog("javac", dest);
+			debugLog("javac", "dest: " + dest, "src:  " + src);
 			ensureDir(dest);
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 			DiagnosticListener<? super JavaFileObject> diagnosticListener = null;
@@ -169,9 +185,21 @@ public class Iwant {
 			Iterable<? extends JavaFileObject> compilationUnits = fileManager
 					.getJavaFileObjectsFromFiles(src);
 			Writer compilerTaskOut = null;
-			Iterable<String> options = Arrays.asList(new String[] { "-d",
-					dest.getCanonicalPath() });
 			Iterable<String> classes = null;
+			StringBuilder cp = new StringBuilder();
+			for (Iterator<File> iterator = classLocations.iterator(); iterator
+					.hasNext();) {
+				File classLocation = iterator.next();
+				debugLog("javac", "class-location: " + classLocation);
+				cp.append(classLocation.getCanonicalPath());
+				if (iterator.hasNext()) {
+					cp.append(pathSeparator());
+				}
+			}
+
+			List<String> options = Arrays.asList(new String[] { "-d",
+					dest.getCanonicalPath(), "-classpath", cp.toString() });
+
 			CompilationTask compilerTask = compiler.getTask(compilerTaskOut,
 					fileManager, diagnosticListener, options, classes,
 					compilationUnits);
@@ -184,6 +212,10 @@ public class Iwant {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static char pathSeparator() {
+		return File.pathSeparatorChar;
 	}
 
 	private static void debugLog(String task, Object... lines) {
@@ -214,8 +246,11 @@ public class Iwant {
 	public static void runJavaMain(boolean outToErr, boolean catchSystemExit,
 			boolean hideIwantClasses, String className, File[] classLocations,
 			String... args) throws Exception {
-		debugLog("invoke", "Running " + className, Arrays.toString(args),
-				Arrays.toString(classLocations));
+		debugLog("invoke", "class: " + className,
+				"args: " + Arrays.toString(args));
+		for (File classLocation : classLocations) {
+			debugLog("invoke", "class-location: " + classLocation);
+		}
 		ClassLoader classLoader = classLoader(hideIwantClasses, classLocations);
 		Class<?> helloClass = classLoader.loadClass(className);
 		Method mainMethod = helloClass.getMethod("main", String[].class);
@@ -299,7 +334,9 @@ public class Iwant {
 			File... locations) throws MalformedURLException {
 		URL[] urls = new URL[locations.length];
 		for (int i = 0; i < locations.length; i++) {
-			urls[i] = locations[i].toURI().toURL();
+			File location = locations[i];
+			URL asUrl = location.toURI().toURL();
+			urls[i] = asUrl;
 		}
 		if (hideIwantClasses) {
 			return new URLClassLoader(urls, new ClassLoaderThatHidesIwant());

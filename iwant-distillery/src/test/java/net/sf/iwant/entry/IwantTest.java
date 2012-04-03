@@ -180,6 +180,10 @@ public class IwantTest extends TestCase {
 			}
 		}
 
+		public URL junitUrl() {
+			throw new UnsupportedOperationException("TODO test and implement");
+		}
+
 	}
 
 	public void testIwantBootstrapsWhenNothingHasBeenDownloadedAndJustIwantFromIsGiven()

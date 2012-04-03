@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="iwant-distillery/src/main/java"/>
+	<classpathentry kind="src" path="iwant-testrunner/src/main/java"/>
+	<classpathentry kind="src" path="iwant-testarea/src/main/java"/>
+	<classpathentry kind="src" path="iwant-distillery/src/test/java"/>
+	<classpathentry kind="src" path="iwant-distillery2/src/test/java"/>
 	<classpathentry kind="src" path="iwant-distillery2/src/main/java"/>
 	<classpathentry kind="src" path="iwant-distillery/as-some-developer/with/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

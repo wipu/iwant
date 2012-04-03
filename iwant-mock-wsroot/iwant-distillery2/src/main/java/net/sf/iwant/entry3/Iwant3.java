@@ -12,4 +12,8 @@ public class Iwant3 {
 		System.out.println("args: " + Arrays.toString(args));
 	}
 
+	public static String helloFromMockedIwant3() {
+		return "Hello from mocked Iwant3";
+	}
+
 }

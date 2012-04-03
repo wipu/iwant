@@ -387,15 +387,17 @@
         + catch IwantException (a non-bug one), print message and exit 1
         + don't prevent system exit in entry1 when calling entry2
         + cat the example ws-info
-    - delegate to actual (distilling) iwant
+    + delegate to actual (distilling) iwant
       + Iwant3 and its test to do what Iwant2 does now
       - Iwant2's new role
         + compile iwant (distillery2) main
-        - run main suite
-          - compile tests, too
-          - download junit.jar
-          - mock-wsroot to test both test failure and success
+        + run main suite
+          + compile tests, too
+          + download junit.jar
+          + mock-wsroot to test both test failure and success
         + 3rd delegation: iwant2 -> iwant3
+          + only if test passes
+  - iwant3
     - rerun with example ws-info => fail with message, example wsdef created
   + compile iwant to separate dir, not a subdir of exported wsroot
     * it was already like this, the dir was a leftover of some work in progress testrun
