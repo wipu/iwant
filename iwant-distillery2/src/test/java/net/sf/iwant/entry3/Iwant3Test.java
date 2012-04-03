@@ -11,21 +11,21 @@ public class Iwant3Test extends TestCase {
 	private IwantEntry3TestArea testArea;
 	private IwantNetworkMock network;
 	private Iwant3 iwant3;
-	private File asSomeone;
+	private File asTest;
 
 	public void setUp() {
 		testArea = new IwantEntry3TestArea();
 		network = new IwantNetworkMock(testArea);
 		iwant3 = Iwant3.using(network);
-		asSomeone = new File(testArea.root(), "as-test");
+		asTest = new File(testArea.root(), "as-test");
 	}
 
 	private void evaluateAndExpectFriendlyFailureAndExampleWsInfoCreation() {
 		try {
-			iwant3.evaluate(asSomeone);
+			iwant3.evaluate(asTest);
 			fail();
 		} catch (IwantException e) {
-			assertEquals("I created " + asSomeone + "/i-have/ws-info\n"
+			assertEquals("I created " + asTest + "/i-have/ws-info\n"
 					+ "Please edit it and rerun me.", e.getMessage());
 		}
 		assertEquals("# paths are relative to this file's directory\n"
@@ -51,10 +51,10 @@ public class Iwant3Test extends TestCase {
 	public void testInvalidWsInfoCausesFailure() {
 		testArea.hasFile("as-test/i-have/ws-info", "invalid\n");
 		try {
-			iwant3.evaluate(asSomeone);
+			iwant3.evaluate(asTest);
 			fail();
 		} catch (IwantException e) {
-			assertEquals("Please specify WSNAME in " + asSomeone
+			assertEquals("Please specify WSNAME in " + asTest
 					+ "/i-have/ws-info", e.getMessage());
 		}
 	}
@@ -64,10 +64,10 @@ public class Iwant3Test extends TestCase {
 				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdef\n"
 				+ "WSDEF_CLASS=com.example.wsdef.Workspace\n");
 		try {
-			iwant3.evaluate(asSomeone);
+			iwant3.evaluate(asTest);
 			fail();
 		} catch (IwantException e) {
-			assertEquals("I created " + asSomeone
+			assertEquals("I created " + asTest
 					+ "/i-have/wsdef/com/example/wsdef/Workspace.java"
 					+ "\nPlease edit it and rerun me.", e.getMessage());
 		}
