@@ -21,14 +21,17 @@ public class Constant implements Content {
 		return value;
 	}
 
+	@Override
 	public void refresh(RefreshEnvironment refresh) throws IOException {
 		new FileWriter(refresh.destination()).append(value()).close();
 	}
 
+	@Override
 	public SortedSet<Path> ingredients() {
 		return new TreeSet<Path>();
 	}
 
+	@Override
 	public String definitionDescription() {
 		return getClass().getName() + ":" + value + "\n";
 	}

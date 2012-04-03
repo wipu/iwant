@@ -27,6 +27,7 @@ public class JunitResult implements Content {
 		this.testClassName = testClassName;
 	}
 
+	@Override
 	public String definitionDescription() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getName()).append(" {\n");
@@ -40,6 +41,7 @@ public class JunitResult implements Content {
 		return new JunitResult(testClassName);
 	}
 
+	@Override
 	public SortedSet<Path> ingredients() {
 		return ingredients;
 	}
@@ -56,6 +58,7 @@ public class JunitResult implements Content {
 		return this;
 	}
 
+	@Override
 	public void refresh(RefreshEnvironment refresh) throws Exception {
 		Project project = new Project();
 		JunitListener listener = new JunitListener();
@@ -114,14 +117,17 @@ public class JunitResult implements Content {
 
 		private List<String> failures = new ArrayList<String>();
 
+		@Override
 		public void buildFinished(BuildEvent e) {
 			// not interested
 		}
 
+		@Override
 		public void buildStarted(BuildEvent e) {
 			// not interested
 		}
 
+		@Override
 		public synchronized void messageLogged(BuildEvent e) {
 			if (e.getTask() == null) {
 				return;
@@ -139,18 +145,22 @@ public class JunitResult implements Content {
 			return failures;
 		}
 
+		@Override
 		public void targetFinished(BuildEvent e) {
 			// not interested
 		}
 
+		@Override
 		public void targetStarted(BuildEvent e) {
 			// not interested
 		}
 
+		@Override
 		public void taskFinished(BuildEvent e) {
 			// not interested
 		}
 
+		@Override
 		public void taskStarted(BuildEvent e) {
 			// not interested
 		}

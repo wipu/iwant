@@ -14,6 +14,7 @@ class ContentDescriptionCacheFileImpl implements ContentDescriptionCache {
 		this.cacheDir = cacheDir;
 	}
 
+	@Override
 	public void cacheContentDescription(Target<?> target) throws IOException {
 		String filename = cacheNameFor(target);
 		TextOutput.debugLog("Caching content description of " + target + " to "
@@ -26,6 +27,7 @@ class ContentDescriptionCacheFileImpl implements ContentDescriptionCache {
 		return cacheDir + "/" + target.name();
 	}
 
+	@Override
 	public String retrieveContentDescription(Target<?> target)
 			throws IOException {
 		File file = new File(cacheNameFor(target));

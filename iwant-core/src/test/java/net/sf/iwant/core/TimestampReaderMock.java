@@ -50,6 +50,7 @@ class TimestampReaderMock implements TimestampReader {
 		content.put(path, new Exists(modificationTime));
 	}
 
+	@Override
 	public Long modificationTime(Path path) {
 		Status status = content.get(path.asAbsolutePath(locations));
 		if (status == null) {

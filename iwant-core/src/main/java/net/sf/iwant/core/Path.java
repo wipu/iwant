@@ -12,6 +12,7 @@ public abstract class Path implements Comparable<Path> {
 		return name;
 	}
 
+	@Override
 	public int compareTo(Path o) {
 		return name.compareTo(o.name);
 	}

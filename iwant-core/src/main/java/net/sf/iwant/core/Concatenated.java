@@ -83,11 +83,13 @@ public class Concatenated implements Content {
 			return "string:'" + value + "'";
 		}
 
+		@Override
 		public void writeTo(FileWriter out, RefreshEnvironment refresh)
 				throws IOException {
 			out.write(value);
 		}
 
+		@Override
 		public Collection<? extends Path> ingredients() {
 			return Collections.emptySet();
 		}
@@ -107,6 +109,7 @@ public class Concatenated implements Content {
 			return "content-of:" + value;
 		}
 
+		@Override
 		public void writeTo(FileWriter out, RefreshEnvironment refresh)
 				throws IOException {
 			FileReader in = new FileReader(value.asAbsolutePath(refresh
@@ -122,6 +125,7 @@ public class Concatenated implements Content {
 			}
 		}
 
+		@Override
 		public Collection<? extends Path> ingredients() {
 			return Collections.singleton(value);
 		}
@@ -141,11 +145,13 @@ public class Concatenated implements Content {
 			return "path-of:" + value;
 		}
 
+		@Override
 		public void writeTo(FileWriter out, RefreshEnvironment refresh)
 				throws IOException {
 			out.append(value.asAbsolutePath(refresh.locations()));
 		}
 
+		@Override
 		public Collection<? extends Path> ingredients() {
 			return Collections.singleton(value);
 		}
@@ -165,6 +171,7 @@ public class Concatenated implements Content {
 			return "bytes:" + Arrays.toString(value);
 		}
 
+		@Override
 		public void writeTo(FileWriter out, RefreshEnvironment refresh)
 				throws IOException {
 			for (int c : value) {
@@ -172,12 +179,14 @@ public class Concatenated implements Content {
 			}
 		}
 
+		@Override
 		public Collection<? extends Path> ingredients() {
 			return Collections.emptySet();
 		}
 
 	}
 
+	@Override
 	public SortedSet<Path> ingredients() {
 		SortedSet<Path> ingredients = new TreeSet<Path>();
 		for (Fragment fragment : fragments) {
@@ -186,6 +195,7 @@ public class Concatenated implements Content {
 		return ingredients;
 	}
 
+	@Override
 	public void refresh(RefreshEnvironment refresh) throws Exception {
 		FileWriter out = new FileWriter(refresh.destination());
 		for (Fragment fragment : fragments) {
@@ -194,6 +204,7 @@ public class Concatenated implements Content {
 		out.close();
 	}
 
+	@Override
 	public String definitionDescription() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getSimpleName()).append(" {\n");

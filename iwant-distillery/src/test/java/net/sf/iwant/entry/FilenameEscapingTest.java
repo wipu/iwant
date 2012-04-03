@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 public class FilenameEscapingTest extends TestCase {
 
-	private void escapeCase(String from, String to) {
+	private static void escapeCase(String from, String to) {
 		assertEquals(to, Iwant.toSafeFilename(from));
 	}
 

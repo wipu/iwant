@@ -10,6 +10,7 @@ class TimestampReaderFileImpl implements TimestampReader {
 		this.locations = locations;
 	}
 
+	@Override
 	public Long modificationTime(Path path) {
 		File file = new File(path.asAbsolutePath(locations));
 		if (!file.exists()) {

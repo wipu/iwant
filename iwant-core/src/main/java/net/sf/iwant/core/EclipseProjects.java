@@ -21,10 +21,12 @@ public class EclipseProjects implements Content {
 		return this;
 	}
 
+	@Override
 	public SortedSet<Path> ingredients() {
 		return ingredients;
 	}
 
+	@Override
 	public void refresh(RefreshEnvironment refresh) throws Exception {
 		for (EclipseProject project : projects) {
 			File projectDir = new File(refresh.destination().getCanonicalPath()
@@ -171,6 +173,7 @@ public class EclipseProjects implements Content {
 		b.append("\n");
 	}
 
+	@Override
 	public String definitionDescription() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getCanonicalName() + " {\n");

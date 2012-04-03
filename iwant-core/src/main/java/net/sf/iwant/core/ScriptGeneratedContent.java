@@ -25,10 +25,12 @@ public class ScriptGeneratedContent implements Content {
 		return new ScriptGeneratedContent(script);
 	}
 
+	@Override
 	public SortedSet<Path> ingredients() {
 		return ingredients;
 	}
 
+	@Override
 	public void refresh(RefreshEnvironment refresh) throws Exception {
 		File tmpDir = refresh.freshTemporaryDirectory();
 		File tmpScript = new File(tmpDir.getCanonicalPath() + "/script");
@@ -92,6 +94,7 @@ public class ScriptGeneratedContent implements Content {
 		}
 	}
 
+	@Override
 	public String definitionDescription() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getSimpleName());

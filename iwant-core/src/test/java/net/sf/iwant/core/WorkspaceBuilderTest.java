@@ -74,6 +74,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 		}
 
+		@Override
 		public ContainerPath wsRoot(Locations locations) {
 			return new Root(locations);
 		}
@@ -126,6 +127,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 		}
 
+		@Override
 		public ContainerPath wsRoot(Locations locations) {
 			return new Root(locations);
 		}
@@ -195,6 +197,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 		}
 
+		@Override
 		public ContainerPath wsRoot(Locations locations) {
 			return new Root(locations);
 		}
@@ -276,6 +279,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 		}
 
+		@Override
 		public ContainerPath wsRoot(Locations locations) {
 			return new Root(locations);
 		}
@@ -441,6 +445,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 		}
 
+		@Override
 		public ContainerPath wsRoot(Locations locations) {
 			return new Root(locations);
 		}
@@ -688,6 +693,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 		}
 
+		@Override
 		public ContainerPath wsRoot(Locations locations) {
 			return new Root(locations);
 		}
@@ -828,6 +834,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 		}
 
+		@Override
 		public ContainerPath wsRoot(Locations locations) {
 			return new Root(locations);
 		}
@@ -1043,6 +1050,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 		}
 
+		@Override
 		public ContainerPath wsRoot(Locations locations) {
 			return new Root(locations);
 		}

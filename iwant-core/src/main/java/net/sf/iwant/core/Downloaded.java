@@ -34,10 +34,12 @@ public class Downloaded implements Content {
 		return this;
 	}
 
+	@Override
 	public SortedSet<Path> ingredients() {
 		return new TreeSet<Path>();
 	}
 
+	@Override
 	public void refresh(RefreshEnvironment refresh) throws Exception {
 		TextOutput.debugLog("Downloading " + from);
 		System.err.println(PrintPrefixes.fromSystemProperty().multiLineErr(
@@ -73,6 +75,7 @@ public class Downloaded implements Content {
 		}
 	}
 
+	@Override
 	public String definitionDescription() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getName()).append(" {\n");

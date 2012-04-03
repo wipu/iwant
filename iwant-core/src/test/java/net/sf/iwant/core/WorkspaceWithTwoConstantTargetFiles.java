@@ -39,6 +39,7 @@ public class WorkspaceWithTwoConstantTargetFiles implements WorkspaceDefinition 
 
 	}
 
+	@Override
 	public ContainerPath wsRoot(Locations locations) {
 		return new Root(locations);
 	}

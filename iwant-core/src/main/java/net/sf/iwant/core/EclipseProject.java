@@ -116,6 +116,7 @@ public class EclipseProject implements Comparable<EclipseProject> {
 		return b.toString();
 	}
 
+	@Override
 	public int compareTo(EclipseProject o) {
 		return name.compareTo(o.name);
 	}

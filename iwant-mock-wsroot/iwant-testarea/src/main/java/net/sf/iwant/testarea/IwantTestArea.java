@@ -5,4 +5,6 @@ package net.sf.iwant.testarea;
  */
 public class IwantTestArea {
 
+	// nothing to declare
+
 }

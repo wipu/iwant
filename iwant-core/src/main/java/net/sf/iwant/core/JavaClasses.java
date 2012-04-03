@@ -22,6 +22,7 @@ public class JavaClasses implements Content {
 		this.ingredients.add(src);
 	}
 
+	@Override
 	public String definitionDescription() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getName()).append(" {\n");
@@ -52,10 +53,12 @@ public class JavaClasses implements Content {
 		return classPath;
 	}
 
+	@Override
 	public SortedSet<Path> ingredients() {
 		return ingredients;
 	}
 
+	@Override
 	public void refresh(RefreshEnvironment refresh) {
 		refresh.destination().mkdir();
 		Project project = new Project();
@@ -83,14 +86,17 @@ public class JavaClasses implements Content {
 
 	private static class JavacListener implements BuildListener {
 
+		@Override
 		public void buildFinished(BuildEvent e) {
 			// not interested
 		}
 
+		@Override
 		public void buildStarted(BuildEvent e) {
 			// not interested
 		}
 
+		@Override
 		public void messageLogged(BuildEvent e) {
 			if (e.getTask() == null)
 				return;
@@ -101,18 +107,22 @@ public class JavaClasses implements Content {
 			System.err.println(e.getMessage());
 		}
 
+		@Override
 		public void targetFinished(BuildEvent e) {
 			// not interested
 		}
 
+		@Override
 		public void targetStarted(BuildEvent e) {
 			// not interested
 		}
 
+		@Override
 		public void taskFinished(BuildEvent e) {
 			// not interested
 		}
 
+		@Override
 		public void taskStarted(BuildEvent e) {
 			// not interested
 		}

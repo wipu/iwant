@@ -4,4 +4,6 @@ import net.sf.iwant.testarea.TestArea;
 
 public class IwantEntryTestArea extends TestArea {
 
+	// nothing to declare
+
 }

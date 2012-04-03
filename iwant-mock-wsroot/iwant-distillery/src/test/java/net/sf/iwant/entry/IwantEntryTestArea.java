@@ -5,4 +5,6 @@ package net.sf.iwant.entry;
  */
 public class IwantEntryTestArea {
 
+	// nothing to declare
+
 }

@@ -18,11 +18,13 @@ public class ContentDescriptionCacheMock implements ContentDescriptionCache {
 		return recachedTargets;
 	}
 
+	@Override
 	public void cacheContentDescription(Target<?> target) {
 		cache.put(target, target.content().definitionDescription());
 		recachedTargets.add(target);
 	}
 
+	@Override
 	public String retrieveContentDescription(Target<?> target) {
 		return cache.get(target);
 	}

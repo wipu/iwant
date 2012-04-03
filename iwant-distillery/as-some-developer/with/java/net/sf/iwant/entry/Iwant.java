@@ -235,7 +235,7 @@ public class Iwant {
 		System.err.println(b);
 	}
 
-	private List<File> iwantBootstrappingJavaSources(File iwantWs) {
+	private static List<File> iwantBootstrappingJavaSources(File iwantWs) {
 		File iwant2 = new File(iwantWs,
 				"iwant-distillery/src/main/java/net/sf/iwant/entry2/Iwant2.java");
 		File iwant = new File(iwantWs,

@@ -14,6 +14,7 @@ public class ContentMock implements Content {
 
 	private String description = "default-descr";
 
+	@Override
 	public SortedSet<Path> ingredients() {
 		return ingredients;
 	}
@@ -22,10 +23,12 @@ public class ContentMock implements Content {
 		return refreshedDestinations;
 	}
 
+	@Override
 	public void refresh(RefreshEnvironment refresh) throws Exception {
 		refreshedDestinations.add(refresh.destination());
 	}
 
+	@Override
 	public String definitionDescription() {
 		return description;
 	}

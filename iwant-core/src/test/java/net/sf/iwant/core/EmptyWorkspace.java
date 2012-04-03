@@ -10,6 +10,7 @@ public class EmptyWorkspace implements WorkspaceDefinition {
 
 	}
 
+	@Override
 	public ContainerPath wsRoot(Locations locations) {
 		return new Root(locations);
 	}
