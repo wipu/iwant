@@ -21,7 +21,8 @@ public class WsInfoTest extends TestCase {
 	}
 
 	public void testEmpty() {
-		// empty
+		// empty in
+
 		try {
 			newWsInfo();
 			fail();
@@ -37,6 +38,7 @@ public class WsInfoTest extends TestCase {
 		in.append("WSROOT=../..\n");
 		in.append("WSDEF_SRC=wsdef\n");
 		in.append("WSDEF_CLASS=com.example.wsdef.Workspace\n");
+
 		try {
 			newWsInfo();
 			fail();
@@ -52,6 +54,7 @@ public class WsInfoTest extends TestCase {
 		in.append("WSNAME=example\n");
 		in.append("WSDEF_SRC=wsdef\n");
 		in.append("WSDEF_CLASS=com.example.wsdef.Workspace\n");
+
 		try {
 			newWsInfo();
 			fail();
@@ -67,6 +70,7 @@ public class WsInfoTest extends TestCase {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../..\n");
 		in.append("WSDEF_CLASS=com.example.wsdef.Workspace\n");
+
 		try {
 			newWsInfo();
 			fail();
@@ -82,6 +86,7 @@ public class WsInfoTest extends TestCase {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../..\n");
 		in.append("WSDEF_SRC=wsdef-src\n");
+
 		try {
 			newWsInfo();
 			fail();
@@ -98,7 +103,9 @@ public class WsInfoTest extends TestCase {
 		in.append("WSROOT=../..\n");
 		in.append("WSDEF_SRC=wsdef\n");
 		in.append("WSDEF_CLASS=com.example.wsdef.Workspace\n");
+
 		WsInfo wsInfo = newWsInfo();
+
 		assertEquals("example", wsInfo.wsName());
 		assertEquals("/project", wsInfo.wsRoot().getCanonicalPath());
 		assertEquals("/project/as-test/i-have/wsdef", wsInfo.wsdefSrc()
@@ -115,7 +122,9 @@ public class WsInfoTest extends TestCase {
 		in.append("WSROOT=../../wsroot\n");
 		in.append("WSDEF_SRC=../../wsroot/wsdefinition\n");
 		in.append("WSDEF_CLASS=com.example2.wsdef.Workspace\n");
+
 		WsInfo wsInfo = newWsInfo();
+
 		assertEquals("example2", wsInfo.wsName());
 		assertEquals("/project/wsroot", wsInfo.wsRoot().getCanonicalPath());
 		assertEquals("/project/wsroot/wsdefinition", wsInfo.wsdefSrc()
