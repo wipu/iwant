@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 
 public class Iwant2 {
@@ -33,14 +34,6 @@ public class Iwant2 {
 
 	public static Iwant2 using(IwantNetwork network) {
 		return new Iwant2(network);
-	}
-
-	public static class IwantException extends RuntimeException {
-
-		public IwantException(String message) {
-			super(message);
-		}
-
 	}
 
 	public void evaluate(File iwantWs, String... args) {

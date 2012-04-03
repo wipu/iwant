@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import junit.framework.TestCase;
-import net.sf.iwant.entry3.Iwant3.IwantException;
+import net.sf.iwant.entry.Iwant.IwantException;
 
 public class WsInfoTest extends TestCase {
 

@@ -3,8 +3,8 @@ package net.sf.iwant.entry3;
 import java.io.File;
 
 import junit.framework.TestCase;
+import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.IwantNetworkMock;
-import net.sf.iwant.entry3.Iwant3.IwantException;
 
 public class Iwant3Test extends TestCase {
 

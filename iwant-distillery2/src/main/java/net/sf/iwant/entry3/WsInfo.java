@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Properties;
 
-import net.sf.iwant.entry3.Iwant3.IwantException;
+import net.sf.iwant.entry.Iwant.IwantException;
 
 public class WsInfo {
 

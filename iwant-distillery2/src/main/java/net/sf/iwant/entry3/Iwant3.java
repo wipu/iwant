@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 
 public class Iwant3 {
@@ -33,14 +34,6 @@ public class Iwant3 {
 
 	public static Iwant3 using(IwantNetwork network) {
 		return new Iwant3(network);
-	}
-
-	public static class IwantException extends RuntimeException {
-
-		public IwantException(String message) {
-			super(message);
-		}
-
 	}
 
 	public void evaluate(File asSomeone,
