@@ -11,7 +11,7 @@ import java.security.Permission;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
-import net.sf.iwant.entry.IwantNetworkMock;
+import net.sf.iwant.entry.Iwant3NetworkMock;
 import net.sf.iwant.entry.WsRootFinder;
 import net.sf.iwant.testarea.TestArea;
 
@@ -35,7 +35,7 @@ public class Iwant2Test extends TestCase {
 
 	private String originalLineSeparator;
 
-	private IwantNetworkMock network;
+	private Iwant3NetworkMock network;
 	private Iwant2 iwant2;
 
 	/**
@@ -51,7 +51,7 @@ public class Iwant2Test extends TestCase {
 		System.setProperty(LINE_SEPARATOR_KEY, "\n");
 		startOfOutAndErrCapture();
 		testArea = new IwantEntry2TestArea();
-		network = new IwantNetworkMock(testArea);
+		network = new Iwant3NetworkMock(testArea);
 		iwant2 = Iwant2.using(network);
 	}
 

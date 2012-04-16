@@ -7,11 +7,11 @@ import java.net.URL;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.testarea.TestArea;
 
-public class IwantNetworkMock implements IwantNetwork {
+public class Iwant3NetworkMock implements IwantNetwork {
 
 	private final TestArea testArea;
 
-	public IwantNetworkMock(TestArea testArea) {
+	public Iwant3NetworkMock(TestArea testArea) {
 		this.testArea = testArea;
 	}
 

@@ -21,7 +21,7 @@ public class ExportedFromSvnTest extends TestCase {
 	}
 
 	private static class IwantNetworkMockWithRealSvnkitLocations extends
-			IwantNetworkMock {
+			Iwant3NetworkMock {
 
 		public IwantNetworkMockWithRealSvnkitLocations(
 				IwantEntryTestArea testArea) {

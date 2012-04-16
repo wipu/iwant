@@ -8,12 +8,12 @@ import junit.framework.TestCase;
 public class CachePathBuildingTest extends TestCase {
 
 	private IwantEntryTestArea testArea;
-	private IwantNetworkMock network;
+	private Iwant3NetworkMock network;
 	private Iwant iwant;
 
 	public void setUp() {
 		testArea = new IwantEntryTestArea();
-		network = new IwantNetworkMock(testArea);
+		network = new Iwant3NetworkMock(testArea);
 		iwant = Iwant.using(network);
 	}
 

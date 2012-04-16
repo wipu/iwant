@@ -115,13 +115,14 @@ public class WsInfoTest extends TestCase {
 				"/project/as-test/i-have/wsdef/com/example/wsdef/Workspace.java",
 				wsInfo.wsdefJava().getCanonicalPath());
 		assertEquals("com.example.wsdef", wsInfo.wsdefPackage());
+		assertEquals("Workspace", wsInfo.wsdefClassSimpleName());
 	}
 
 	public void testValidWithDifferentValues() throws IOException {
 		in.append("WSNAME=example2\n");
 		in.append("WSROOT=../../wsroot\n");
 		in.append("WSDEF_SRC=../../wsroot/wsdefinition\n");
-		in.append("WSDEF_CLASS=com.example2.wsdef.Workspace\n");
+		in.append("WSDEF_CLASS=com.example2.wsdef.Workspace2\n");
 
 		WsInfo wsInfo = newWsInfo();
 
@@ -129,11 +130,12 @@ public class WsInfoTest extends TestCase {
 		assertEquals("/project/wsroot", wsInfo.wsRoot().getCanonicalPath());
 		assertEquals("/project/wsroot/wsdefinition", wsInfo.wsdefSrc()
 				.getCanonicalPath());
-		assertEquals("com.example2.wsdef.Workspace", wsInfo.wsdefClass());
+		assertEquals("com.example2.wsdef.Workspace2", wsInfo.wsdefClass());
 		assertEquals(
-				"/project/wsroot/wsdefinition/com/example2/wsdef/Workspace.java",
+				"/project/wsroot/wsdefinition/com/example2/wsdef/Workspace2.java",
 				wsInfo.wsdefJava().getCanonicalPath());
 		assertEquals("com.example2.wsdef", wsInfo.wsdefPackage());
+		assertEquals("Workspace2", wsInfo.wsdefClassSimpleName());
 	}
 
 }

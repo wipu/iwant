@@ -401,6 +401,15 @@
     + invalid wsinfo => failure
     + valid wsinfo => create example wsdef java
     + descript: rerun with example ws-info => fail with message, example wsdef java created
+    + forge junit times in the descript to prevent unnecessary diffs
+    - functional example wsdef
+      + copy example java from actual source directory
+        + use WsRootFinder to find it
+      - descript: rerun with example wsdef => "try .../list-of/targets"
+      - inherit a base wsdef
+      - test-drive base
+  - move WsRootFinder to main src from test
+  - dedicated module for WsRootFinder, replace other classpath markers (in testarea at least) with this
   + compile iwant to separate dir, not a subdir of exported wsroot
     * it was already like this, the dir was a leftover of some work in progress testrun
   + svn export laziness/eagerness

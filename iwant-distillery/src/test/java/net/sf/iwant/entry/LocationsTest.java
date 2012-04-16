@@ -16,7 +16,7 @@ public class LocationsTest extends TestCase {
 
 	public void testMockedLocations() {
 		TestArea testArea = new IwantEntryTestArea();
-		IwantNetwork network = new IwantNetworkMock(testArea);
+		IwantNetwork network = new Iwant3NetworkMock(testArea);
 		Iwant iwant = Iwant.using(network);
 
 		assertUrl(network.svnkitUrl(), iwant.svnkitUrl());

@@ -67,4 +67,8 @@ public class WsInfo {
 		return wsdefClass.substring(0, wsdefClass.lastIndexOf('.'));
 	}
 
+	public String wsdefClassSimpleName() {
+		return wsdefClass.substring(wsdefClass.lastIndexOf('.') + 1);
+	}
+
 }

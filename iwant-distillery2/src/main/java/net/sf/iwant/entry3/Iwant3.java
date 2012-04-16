@@ -9,6 +9,7 @@ import java.io.IOException;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
+import net.sf.iwant.entry.WsRootFinder;
 
 public class Iwant3 {
 
@@ -57,9 +58,12 @@ public class Iwant3 {
 				+ "\nPlease edit it and rerun me.");
 	}
 
-	private static void createExampleWsdefJava(WsInfo wsInfo) {
-		createExampleFile(wsInfo.wsdefJava(),
-				"package " + wsInfo.wsdefPackage() + ";\n");
+	private void createExampleWsdefJava(WsInfo wsInfo) {
+		File iwantWsRoot = WsRootFinder.wsRoot();
+		createExampleFile(
+				wsInfo.wsdefJava(),
+				ExampleWsDefGenerator.example(iwantWsRoot,
+						wsInfo.wsdefPackage(), wsInfo.wsdefClassSimpleName()));
 	}
 
 	private static WsInfo parseWsInfo(File wsInfoFile) {

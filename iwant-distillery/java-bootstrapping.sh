@@ -1,3 +1,5 @@
+JUNITFIX="sed 's/^Time: .*/Time: ?/'"
+
 doc() {
 LOCAL_IWANT_WSROOT=$(readlink -f "$IWANT_DISTILLERY/..")
 svn export "$IWANT_DISTILLERY/as-some-developer" as-distillery-developer
@@ -6,8 +8,8 @@ cmde 1 'as-distillery-developer/with/bash/iwant/help.sh'
 edit as-distillery-developer/i-have/iwant-from local-iwant-from <<EOF
 iwant-from=file://$LOCAL_IWANT_WSROOT
 EOF
-cmde 1 'as-distillery-developer/with/bash/iwant/help.sh'
+cmde "1 0" "as-distillery-developer/with/bash/iwant/help.sh 2>&1 | $JUNITFIX"
 cmd 'cat as-distillery-developer/i-have/ws-info'
-cmde 1 'as-distillery-developer/with/bash/iwant/help.sh'
+cmde "1 0" "as-distillery-developer/with/bash/iwant/help.sh 2>&1 | $JUNITFIX"
 cmd 'cat as-distillery-developer/i-have/wsdef/com/example/wsdef/Workspace.java'
 }

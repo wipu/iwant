@@ -63,8 +63,11 @@ public class Iwant2 {
 
 			File testArea = new File(iwantWs,
 					"iwant-testarea/testarea-classdir");
+			File classpathMarker = new File(iwantWs,
+					"iwant-distillery/classpath-marker");
 
-			File[] classLocations = { testArea, allIwantClasses, junitJar };
+			File[] classLocations = { classpathMarker, testArea,
+					allIwantClasses, junitJar };
 
 			Iwant.runJavaMain(true, true, false,
 					"net.sf.iwant.testrunner.IwantTestRunner", classLocations,

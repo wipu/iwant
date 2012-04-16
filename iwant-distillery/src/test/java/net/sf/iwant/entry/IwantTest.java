@@ -164,7 +164,7 @@ public class IwantTest extends TestCase {
 	private class IwantNetworkWithLocallyDownloadedSvnkit implements
 			IwantNetwork {
 
-		private final IwantNetwork mock = new IwantNetworkMock(testArea);
+		private final IwantNetwork mock = new Iwant3NetworkMock(testArea);
 
 		public File wantedUnmodifiable(URL url) {
 			return mock.wantedUnmodifiable(url);
