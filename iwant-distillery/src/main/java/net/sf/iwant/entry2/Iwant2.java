@@ -69,12 +69,15 @@ public class Iwant2 {
 			File[] classLocations = { classpathMarker, testArea,
 					allIwantClasses, junitJar };
 
-			Iwant.runJavaMain(true, true, false,
+			Iwant.log("self-tested", allIwantClasses);
+			Iwant.runJavaMain(true, false,
 					"net.sf.iwant.testrunner.IwantTestRunner", classLocations,
 					"net.sf.iwant.entry3.IwantEntry3Suite");
 
-			Iwant.runJavaMain(false, false, false,
-					"net.sf.iwant.entry3.Iwant3", classLocations, args);
+			Iwant.runJavaMain(false, false, "net.sf.iwant.entry3.Iwant3",
+					classLocations, args);
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

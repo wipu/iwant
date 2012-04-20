@@ -397,11 +397,17 @@
           + mock-wsroot to test both test failure and success
         + 3rd delegation: iwant2 -> iwant3
           + only if test passes
+  + debug log disabled
+  + run junit silently and only print after failure
+    (failure tested only manually with temporarily broken test)
   - iwant3
     + invalid wsinfo => failure
     + valid wsinfo => create example wsdef java
     + descript: rerun with example ws-info => fail with message, example wsdef java created
     + forge junit times in the descript to prevent unnecessary diffs
+    + create wish scripts, not only example wsdef
+    + wish scripts call help.sh with own relpath as arg
+    + descript: iwant3 prints hardcoded output for list-of/targets and hello
     - functional example wsdef
       + copy example java from actual source directory
         + use WsRootFinder to find it

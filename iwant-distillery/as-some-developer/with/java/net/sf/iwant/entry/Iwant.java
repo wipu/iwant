@@ -36,6 +36,8 @@ import javax.tools.ToolProvider;
 
 public class Iwant {
 
+	private static final boolean DEBUG_LOG = "a".contains("b");
+
 	private final IwantNetwork network;
 
 	private Iwant(IwantNetwork network) {
@@ -136,7 +138,7 @@ public class Iwant {
 		iwant2Args[0] = iwantWs.getCanonicalPath();
 		System.arraycopy(args, 0, iwant2Args, 1, args.length);
 
-		runJavaMain(false, false, true, "net.sf.iwant.entry2.Iwant2",
+		runJavaMain(false, true, "net.sf.iwant.entry2.Iwant2",
 				new File[] { iwantBootstrapClasses }, iwant2Args);
 	}
 
@@ -219,6 +221,9 @@ public class Iwant {
 	}
 
 	private static void debugLog(String task, Object... lines) {
+		if (!DEBUG_LOG) {
+			return;
+		}
 		StringBuilder b = new StringBuilder();
 		for (Object part : lines) {
 			b.append(String.format("(%16s    ", task));
@@ -228,7 +233,7 @@ public class Iwant {
 		System.err.print(b);
 	}
 
-	private static void log(String task, File target) {
+	public static void log(String task, File target) {
 		StringBuilder b = new StringBuilder();
 		b.append(String.format(":%16s -> ", task));
 		b.append(target.getName());
@@ -243,7 +248,7 @@ public class Iwant {
 		return Arrays.asList(iwant2, iwant);
 	}
 
-	public static void runJavaMain(boolean outToErr, boolean catchSystemExit,
+	public static void runJavaMain(boolean catchPrintsAndSystemExit,
 			boolean hideIwantClasses, String className, File[] classLocations,
 			String... args) throws Exception {
 		debugLog("invoke", "class: " + className,
@@ -261,14 +266,17 @@ public class Iwant {
 		PrintStream origOut = System.out;
 		PrintStream origErr = System.err;
 
-		if (catchSystemExit) {
+		ByteArrayOutputStream outBytes = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(outBytes);
+		boolean callSucceeded = false;
+		if (catchPrintsAndSystemExit) {
 			System.setSecurityManager(new ExitCatcher());
-		}
-		if (outToErr) {
-			System.setOut(origErr);
+			System.setOut(out);
+			System.setErr(out);
 		}
 		try {
 			mainMethod.invoke(null, invocationArgs);
+			callSucceeded = true;
 		} catch (ExitCalledException e) {
 			System.err.println("exit " + e.status());
 			if (e.status() != 0) {
@@ -280,6 +288,9 @@ public class Iwant {
 			System.setOut(origOut);
 			System.setErr(origErr);
 			System.setSecurityManager(origSecman);
+			if (!callSucceeded) {
+				System.err.print(outBytes.toString());
+			}
 		}
 	}
 
@@ -498,9 +509,9 @@ public class Iwant {
 			File svnkitJar = new File(svnkit, "svnkit-1.3.5.7406/svnkit.jar");
 			File svnkitCliJar = new File(svnkit,
 					"svnkit-1.3.5.7406/svnkit-cli.jar");
-			runJavaMain(true, true, false, "org.tmatesoft.svn.cli.SVN",
-					new File[] { svnkitJar, svnkitCliJar }, "export",
-					urlString, exported.getCanonicalPath());
+			runJavaMain(true, false, "org.tmatesoft.svn.cli.SVN", new File[] {
+					svnkitJar, svnkitCliJar }, "export", urlString,
+					exported.getCanonicalPath());
 			return exported;
 		} catch (Exception e) {
 			throw new RuntimeException(e);

@@ -37,15 +37,34 @@ public class Iwant3 {
 		return new Iwant3(network);
 	}
 
-	public void evaluate(File asSomeone,
-			@SuppressWarnings("unused") String... args) {
+	public void evaluate(File asSomeone, String... args) {
 		File iHave = new File(asSomeone, "i-have");
 		Iwant.ensureDir(iHave);
 		File wsInfoFile = wsInfoFile(iHave);
 		WsInfo wsInfo = parseWsInfo(wsInfoFile);
-		createExampleWsdefJava(wsInfo);
-		throw new IwantException("I created " + wsInfo.wsdefJava()
-				+ "\nPlease edit it and rerun me.");
+		if (!wsInfo.wsdefJava().exists()) {
+			createExampleWsdefJava(wsInfo);
+			refreshWishScripts(asSomeone);
+			throw new IwantException("I created " + wsInfo.wsdefJava()
+					+ "\nPlease edit it and rerun me.");
+		}
+		String wish = args[0];
+		if ("list-of/targets".equals(wish)) {
+			System.out.println("hello");
+		} else {
+			System.out.println("todo path to hello");
+		}
+	}
+
+	private void refreshWishScripts(File asSomeone) {
+		File withBashIwant = new File(asSomeone, "with/bash/iwant");
+		createWishScript(withBashIwant, "list-of/targets");
+		createWishScript(withBashIwant, "target/hello/as-path");
+	}
+
+	private static void createWishScript(File withBashIwant, String wish) {
+		createScript(new File(withBashIwant, wish),
+				WishScriptGenerator.wishScriptContent(wish));
 	}
 
 	private static File wsInfoFile(File iHave) {
@@ -60,7 +79,7 @@ public class Iwant3 {
 
 	private void createExampleWsdefJava(WsInfo wsInfo) {
 		File iwantWsRoot = WsRootFinder.wsRoot();
-		createExampleFile(
+		createFile(
 				wsInfo.wsdefJava(),
 				ExampleWsDefGenerator.example(iwantWsRoot,
 						wsInfo.wsdefPackage(), wsInfo.wsdefClassSimpleName()));
@@ -76,14 +95,17 @@ public class Iwant3 {
 	}
 
 	private static void createExampleWsInfo(File wsInfo) {
-		createExampleFile(wsInfo,
-				"# paths are relative to this file's directory\n"
-						+ "WSNAME=example\n" + "WSROOT=../..\n"
-						+ "WSDEF_SRC=wsdef\n"
-						+ "WSDEF_CLASS=com.example.wsdef.Workspace\n");
+		createFile(wsInfo, "# paths are relative to this file's directory\n"
+				+ "WSNAME=example\n" + "WSROOT=../..\n" + "WSDEF_SRC=wsdef\n"
+				+ "WSDEF_CLASS=com.example.wsdef.Workspace\n");
 	}
 
-	private static void createExampleFile(File file, String content) {
+	private static void createScript(File file, String content) {
+		createFile(file, content);
+		file.setExecutable(true);
+	}
+
+	private static void createFile(File file, String content) {
 		try {
 			Iwant.ensureDir(file.getParentFile());
 			new FileWriter(file).append(content).close();
