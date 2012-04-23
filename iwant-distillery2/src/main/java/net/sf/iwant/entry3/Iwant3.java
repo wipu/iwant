@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
@@ -13,7 +16,6 @@ import net.sf.iwant.entry.WsRootFinder;
 
 public class Iwant3 {
 
-	@SuppressWarnings("unused")
 	private final IwantNetwork network;
 
 	public Iwant3(IwantNetwork network) {
@@ -49,11 +51,36 @@ public class Iwant3 {
 					+ "\nPlease edit it and rerun me.");
 		}
 		String wish = args[0];
+
+		File cached = cached(asSomeone);
+		File wsDefClasses = new File(cached, "wsdef-classes");
+
+		Iwant iwant = Iwant.using(network);
+		List<File> srcFiles = Arrays.asList(wsInfo.wsdefJava());
+		List<File> classLocations = Arrays.asList(iwantApiClasses());
+
+		iwant.compiledClasses(wsDefClasses, srcFiles, classLocations);
+
 		if ("list-of/targets".equals(wish)) {
 			System.out.println("hello");
 		} else {
 			System.out.println("todo path to hello");
 		}
+	}
+
+	private static File iwantApiClasses() {
+		try {
+			URL url = Iwant3.class
+					.getResource("/net/sf/iwant/api/IwantWorkspace.class");
+			return new File(url.toURI()).getParentFile().getParentFile()
+					.getParentFile().getParentFile().getParentFile();
+		} catch (Exception e) {
+			throw new IllegalStateException("Cannot find classes.", e);
+		}
+	}
+
+	private static File cached(File iHave) {
+		return new File(iHave, ".cached");
 	}
 
 	private void refreshWishScripts(File asSomeone) {

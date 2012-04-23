@@ -15,11 +15,13 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 	private void assertChangeTo(String newPackage, String newName) {
 		testArea.hasFile("iwant-example-wsdef/src/main/java/"
 				+ "com/example/wsdef/Workspace.java",
-				"package com.example.wsdef;\n" + "public class Workspace {}\n");
+				"package com.example.wsdef;\n"
+						+ "public class Workspace {\n}\n");
 		String actualOut = ExampleWsDefGenerator.example(testArea.root(),
 				newPackage, newName);
 		assertTrue("actual:\n" + actualOut,
 				actualOut.startsWith(expectedStart.toString()));
+		assertTrue("actual:\n" + actualOut, actualOut.endsWith("\n}\n"));
 	}
 
 	public void testName1() {

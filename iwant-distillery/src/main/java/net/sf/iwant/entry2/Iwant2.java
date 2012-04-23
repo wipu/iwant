@@ -1,6 +1,7 @@
 package net.sf.iwant.entry2;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,28 +39,8 @@ public class Iwant2 {
 
 	public void evaluate(File iwantWs, String... args) {
 		try {
-			File junitJar = junitJar();
-
-			File allIwantClasses = iwant.toCachePath(new File(iwantWs,
-					"all-classes").toURI().toURL());
-			Iwant.ensureDir(allIwantClasses);
-
-			List<File> src = new ArrayList<File>();
-			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
-					+ "as-some-developer/with/java/" + "net/sf/iwant/entry"));
-			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
-					+ "src/main/java/" + "net/sf/iwant/entry2"));
-			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
-					+ "src/test/java/" + "net/sf/iwant/entry"));
-			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-					+ "src/main/java/" + "net/sf/iwant/entry3"));
-			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-					+ "src/test/java/" + "net/sf/iwant/entry3"));
-			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-testarea/"
-					+ "src/main/java/" + "net/sf/iwant/testarea"));
-			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-testrunner/"
-					+ "src/main/java/" + "net/sf/iwant/testrunner"));
-			iwant.compiledClasses(allIwantClasses, src, Arrays.asList(junitJar));
+			Iwant.debugLog("evaluate", (Object[]) args);
+			File allIwantClasses = allIwantClasses(iwantWs);
 
 			File testArea = new File(iwantWs,
 					"iwant-testarea/testarea-classdir");
@@ -67,7 +48,7 @@ public class Iwant2 {
 					"iwant-distillery/classpath-marker");
 
 			File[] classLocations = { classpathMarker, testArea,
-					allIwantClasses, junitJar };
+					allIwantClasses, junitJar() };
 
 			Iwant.log("self-tested", allIwantClasses);
 			Iwant.runJavaMain(true, false,
@@ -80,6 +61,41 @@ public class Iwant2 {
 			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	private File allIwantClasses(File iwantWs) {
+		try {
+			File allIwantClasses = iwant.toCachePath(new File(iwantWs,
+					"all-classes").toURI().toURL());
+			Iwant.ensureDir(allIwantClasses);
+			// TODO need for laziness?
+			if (allIwantClasses.exists()) {
+				System.err.println("TODO laziness, and for testing, too");
+			}
+
+			List<File> src = new ArrayList<File>();
+			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
+					+ "as-some-developer/with/java/" + "net/sf/iwant/entry"));
+			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
+					+ "src/main/java/" + "net/sf/iwant/entry2"));
+			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
+					+ "src/test/java/" + "net/sf/iwant/entry"));
+			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
+					+ "src/main/java/" + "net/sf/iwant/api"));
+			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
+					+ "src/main/java/" + "net/sf/iwant/entry3"));
+			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
+					+ "src/test/java/" + "net/sf/iwant/entry3"));
+			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-testarea/"
+					+ "src/main/java/" + "net/sf/iwant/testarea"));
+			src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-testrunner/"
+					+ "src/main/java/" + "net/sf/iwant/testrunner"));
+			iwant.compiledClasses(allIwantClasses, src,
+					Arrays.asList(junitJar()));
+			return allIwantClasses;
+		} catch (MalformedURLException e) {
+			throw new IllegalStateException(e);
 		}
 	}
 

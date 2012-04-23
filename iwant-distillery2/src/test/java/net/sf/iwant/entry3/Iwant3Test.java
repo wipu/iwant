@@ -133,7 +133,9 @@ public class Iwant3Test extends TestCase {
 	public void testListOfTargetsOfExampleWsDef() {
 		testMissingWsdefCausesFriendlyFailureAndExampleCreation();
 		startOfOutAndErrCapture();
+
 		iwant3.evaluate(asTest, "list-of/targets");
+
 		assertEquals("hello\n", out());
 		assertEquals("", err());
 	}
@@ -141,9 +143,31 @@ public class Iwant3Test extends TestCase {
 	public void testTargetHelloAsPathOfExampleWsDef() {
 		testMissingWsdefCausesFriendlyFailureAndExampleCreation();
 		startOfOutAndErrCapture();
+
 		iwant3.evaluate(asTest, "target/hello/as-path");
+
 		assertEquals("todo path to hello\n", out());
 		assertEquals("", err());
+	}
+
+	public void testListOfTargetsFailsIfWsDefDoesNotCompile() {
+		testMissingWsdefCausesFriendlyFailureAndExampleCreation();
+		startOfOutAndErrCapture();
+		testArea.hasFile(
+				"as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java",
+				"crap\n");
+
+		try {
+			iwant3.evaluate(asTest, "list-of/targets");
+			fail();
+		} catch (IwantException e) {
+			assertEquals("Compilation failed.", e.getMessage());
+		}
+		assertEquals("", out());
+		assertEquals(testArea.root()
+				+ "/as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java"
+				+ ":1: reached end of file while parsing\n" + "crap\n" + "^\n"
+				+ "1 error\n", err());
 	}
 
 }

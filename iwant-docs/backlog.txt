@@ -411,6 +411,7 @@
     - functional example wsdef
       + copy example java from actual source directory
         + use WsRootFinder to find it
+      + iwant3 compiles wsdef
       - descript: rerun with example wsdef => "try .../list-of/targets"
       - inherit a base wsdef
       - test-drive base

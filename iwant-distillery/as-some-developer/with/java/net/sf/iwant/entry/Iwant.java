@@ -63,7 +63,7 @@ public class Iwant {
 				System.getProperty("user.home"));
 
 		public File wantedUnmodifiable(URL url) {
-			return new File(HOME, "/.net.sf.iwant/wanted-unmodifiable");
+			return new File(HOME, ".net.sf.iwant/wanted-unmodifiable");
 		}
 
 		public URL svnkitUrl() {
@@ -176,6 +176,26 @@ public class Iwant {
 	public File compiledClasses(File dest, List<File> src,
 			List<File> classLocations) {
 		try {
+			StringBuilder cp = new StringBuilder();
+			for (Iterator<File> iterator = classLocations.iterator(); iterator
+					.hasNext();) {
+				File classLocation = iterator.next();
+				debugLog("javac", "class-location: " + classLocation);
+				cp.append(classLocation.getCanonicalPath());
+				if (iterator.hasNext()) {
+					cp.append(pathSeparator());
+				}
+			}
+			return compiledClasses(dest, src, cp.toString());
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public File compiledClasses(File dest, List<File> src, String classpath) {
+		try {
 			debugLog("javac", "dest: " + dest, "src:  " + src);
 			ensureDir(dest);
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -188,19 +208,9 @@ public class Iwant {
 					.getJavaFileObjectsFromFiles(src);
 			Writer compilerTaskOut = null;
 			Iterable<String> classes = null;
-			StringBuilder cp = new StringBuilder();
-			for (Iterator<File> iterator = classLocations.iterator(); iterator
-					.hasNext();) {
-				File classLocation = iterator.next();
-				debugLog("javac", "class-location: " + classLocation);
-				cp.append(classLocation.getCanonicalPath());
-				if (iterator.hasNext()) {
-					cp.append(pathSeparator());
-				}
-			}
 
 			List<String> options = Arrays.asList(new String[] { "-d",
-					dest.getCanonicalPath(), "-classpath", cp.toString() });
+					dest.getCanonicalPath(), "-classpath", classpath });
 
 			CompilationTask compilerTask = compiler.getTask(compilerTaskOut,
 					fileManager, diagnosticListener, options, classes,
@@ -211,6 +221,8 @@ public class Iwant {
 				throw new IwantException("Compilation failed.");
 			}
 			return dest;
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -220,7 +232,7 @@ public class Iwant {
 		return File.pathSeparatorChar;
 	}
 
-	private static void debugLog(String task, Object... lines) {
+	public static void debugLog(String task, Object... lines) {
 		if (!DEBUG_LOG) {
 			return;
 		}

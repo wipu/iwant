@@ -27,7 +27,7 @@ class ExampleWsDefGenerator {
 			if (charsRead < 0) {
 				break;
 			}
-			out.append(buffer);
+			out.append(buffer, 0, charsRead);
 		}
 		return out.toString();
 	}
