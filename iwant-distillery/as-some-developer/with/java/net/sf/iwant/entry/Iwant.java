@@ -353,8 +353,8 @@ public class Iwant {
 
 	}
 
-	private static URLClassLoader classLoader(boolean hideIwantClasses,
-			File... locations) throws MalformedURLException {
+	public static URLClassLoader classLoader(boolean hideIwantClasses,
+			File[] locations) throws MalformedURLException {
 		URL[] urls = new URL[locations.length];
 		for (int i = 0; i < locations.length; i++) {
 			File location = locations[i];

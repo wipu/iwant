@@ -60,6 +60,13 @@ public class Iwant3Test extends TestCase {
 		System.setOut(originalOut);
 		System.setErr(originalErr);
 		System.setProperty(LINE_SEPARATOR_KEY, originalLineSeparator);
+
+		if (!out().isEmpty()) {
+			System.err.println("=== out:\n" + out());
+		}
+		if (!err().isEmpty()) {
+			System.err.println("=== err:\n" + err());
+		}
 	}
 
 	private void evaluateAndExpectFriendlyFailureAndExampleWsInfoCreation() {
@@ -140,6 +147,40 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", err());
 	}
 
+	private static String modifiedExampleWsDef() {
+		StringBuilder wsdef = new StringBuilder();
+		wsdef.append("package com.example.wsdef;\n");
+		wsdef.append("\n");
+		wsdef.append("import net.sf.iwant.api.IwantWorkspace;\n");
+		wsdef.append("\n");
+		wsdef.append("public class ExampleWs implements IwantWorkspace {\n");
+		wsdef.append("\n");
+		wsdef.append("	public void iwant(String wish) {\n");
+		wsdef.append("		if (\"list-of/targets\".equals(wish)) {\n");
+		wsdef.append("			System.out.println(\"modified-hello\");\n");
+		wsdef.append("		} else {\n");
+		wsdef.append("			System.out.println(\"todo path to modified-hello\");\n");
+		wsdef.append("		}\n");
+		wsdef.append("	}\n");
+		wsdef.append("\n");
+		wsdef.append("}\n");
+		return wsdef.toString();
+	}
+
+	public void testListOfTargetsOfModifiedWsDef() {
+		testArea.hasFile("as-test/i-have/ws-info", "WSNAME=example\n"
+				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdef\n"
+				+ "WSDEF_CLASS=com.example.wsdef.ExampleWs\n");
+		testArea.hasFile(
+				"as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java",
+				modifiedExampleWsDef());
+
+		iwant3.evaluate(asTest, "list-of/targets");
+
+		assertEquals("modified-hello\n", out());
+		assertEquals("", err());
+	}
+
 	public void testTargetHelloAsPathOfExampleWsDef() {
 		testMissingWsdefCausesFriendlyFailureAndExampleCreation();
 		startOfOutAndErrCapture();
@@ -150,9 +191,24 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", err());
 	}
 
+	public void testTargetHelloAsPathOfModifiedWsDef() {
+		testArea.hasFile("as-test/i-have/ws-info", "WSNAME=example\n"
+				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdef\n"
+				+ "WSDEF_CLASS=com.example.wsdef.ExampleWs\n");
+		testArea.hasFile(
+				"as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java",
+				modifiedExampleWsDef());
+
+		iwant3.evaluate(asTest, "target/hello/as-path");
+
+		assertEquals("todo path to modified-hello\n", out());
+		assertEquals("", err());
+	}
+
 	public void testListOfTargetsFailsIfWsDefDoesNotCompile() {
-		testMissingWsdefCausesFriendlyFailureAndExampleCreation();
-		startOfOutAndErrCapture();
+		testArea.hasFile("as-test/i-have/ws-info", "WSNAME=example\n"
+				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdef\n"
+				+ "WSDEF_CLASS=com.example.wsdef.ExampleWs\n");
 		testArea.hasFile(
 				"as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java",
 				"crap\n");

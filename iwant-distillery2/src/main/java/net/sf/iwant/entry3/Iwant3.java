@@ -5,7 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,10 +63,35 @@ public class Iwant3 {
 
 		iwant.compiledClasses(wsDefClasses, srcFiles, classLocations);
 
-		if ("list-of/targets".equals(wish)) {
-			System.out.println("hello");
-		} else {
-			System.out.println("todo path to hello");
+		List<File> runtimeClasses = new ArrayList<File>();
+		runtimeClasses.add(wsDefClasses);
+		runtimeClasses.addAll(classLocations);
+		Class<?> wsDefClass = loadClass(true, wsInfo.wsdefClass(),
+				runtimeClasses.toArray(new File[] {}));
+		Object wsDef = newWsDef(wsDefClass);
+		try {
+			Method iwantMethod = wsDefClass.getMethod("iwant", String.class);
+			iwantMethod.invoke(wsDef, wish);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Error invoking wsdef", e);
+		}
+	}
+
+	private static Object newWsDef(Class<?> wsDefClass) {
+		try {
+			return wsDefClass.newInstance();
+		} catch (Exception e) {
+			throw new IllegalStateException("Cannot instantiate wsdef", e);
+		}
+	}
+
+	private static Class<?> loadClass(boolean hideIwantClasses,
+			String className, File[] locations) {
+		try {
+			return Iwant.classLoader(hideIwantClasses, locations).loadClass(
+					className);
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
 		}
 	}
 
