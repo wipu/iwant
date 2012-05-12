@@ -7,6 +7,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 	private StringBuilder expectedStart;
 	private IwantEntry3TestArea testArea;
 
+	@Override
 	public void setUp() {
 		expectedStart = new StringBuilder();
 		testArea = new IwantEntry3TestArea();
