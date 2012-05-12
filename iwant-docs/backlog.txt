@@ -415,9 +415,10 @@
       + iwant3 delegates to wsdef
         + list-of/targets comes from wsdef
         + target/x/as-path comes from wsdef
-        - cast to interface instead of calling by reflection
-          - 2 class instances in use, find out why
-          - fix
+        + cast to interface instead of calling by reflection
+          + 2 class instances in use, find out why
+            * don't classload the api again
+          + fix
       - descript: rerun with example wsdef => "try .../list-of/targets"
       - inherit a base wsdef
       - test-drive base

@@ -2,7 +2,6 @@ package net.sf.iwant.entry;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -20,6 +19,7 @@ import java.nio.charset.Charset;
 import java.security.Permission;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -49,7 +49,7 @@ public class Iwant {
 	 */
 	public interface IwantNetwork {
 
-		File wantedUnmodifiable(URL url);
+		File cacheLocation(UnmodifiableSource<?> src);
 
 		URL svnkitUrl();
 
@@ -57,20 +57,117 @@ public class Iwant {
 
 	}
 
+	public static abstract class UnmodifiableSource<T> {
+
+		private final T location;
+
+		public UnmodifiableSource(T location) {
+			this.location = location;
+		}
+
+		public String rawLocationString() {
+			return location.toString();
+		}
+
+		@Override
+		public final String toString() {
+			return getClass().getSimpleName() + ":" + rawLocationString();
+		}
+
+		public final T location() {
+			return location;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (!getClass().equals(obj.getClass())) {
+				return false;
+			}
+			UnmodifiableSource<?> other = (UnmodifiableSource<?>) obj;
+			return location.equals(other.location());
+		}
+
+		@Override
+		public int hashCode() {
+			return location.hashCode();
+		}
+
+	}
+
+	public static class UnmodifiableUrl extends UnmodifiableSource<URL> {
+
+		public UnmodifiableUrl(URL location) {
+			super(location);
+		}
+
+	}
+
+	public static class UnmodifiableZip extends UnmodifiableSource<URL> {
+
+		public UnmodifiableZip(URL location) {
+			super(location);
+		}
+
+	}
+
+	public static class UnmodifiableIwantBootstrapperClassesFromIwantWsRoot
+			extends UnmodifiableSource<URL> {
+
+		public UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(File iwantWs) {
+			super(fileToUrl(iwantWs));
+		}
+
+	}
+
+	public static URL fileToUrl(File file) {
+		try {
+			URL url = file.toURI().toURL();
+			String urlString = url.toExternalForm();
+			url = new URL(withoutTrailingSlash(urlString));
+			return url;
+		} catch (MalformedURLException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	private static URL withTrailingSlashIfDir(URL url) {
+		try {
+			// here we trust this is only used for file urls
+			File asFile = new File(url.toURI());
+			if (!asFile.isDirectory()) {
+				return url;
+			}
+			String urlString = url.toExternalForm();
+			if (urlString.endsWith("/")) {
+				return url;
+			}
+			return new URL(urlString + "/");
+		} catch (Exception e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
 	private static class RealIwantNetwork implements IwantNetwork {
 
 		private static final File HOME = new File(
 				System.getProperty("user.home"));
 
-		public File wantedUnmodifiable(URL url) {
-			return new File(HOME, ".net.sf.iwant/wanted-unmodifiable");
+		@Override
+		public File cacheLocation(UnmodifiableSource<?> src) {
+			File cached = new File(HOME, ".net.sf.iwant/cached");
+			File cachedFromSrc = new File(cached, src.getClass()
+					.getSimpleName());
+			String fileName = toSafeFilename(src.rawLocationString());
+			return new File(cachedFromSrc, fileName);
 		}
 
+		@Override
 		public URL svnkitUrl() {
 			return url("http://www.svnkit.com/"
 					+ "org.tmatesoft.svn_1.3.5.standalone.nojna.zip");
 		}
 
+		@Override
 		public URL junitUrl() {
 			final String v = "4.8.2";
 			return url("http://mirrors.ibiblio.org/pub/mirrors/maven2"
@@ -143,6 +240,12 @@ public class Iwant {
 	}
 
 	private File iwantWsrootOfWishedVersion(File asSomeone) {
+		URL iwantLocation = iwantFrom(asSomeone);
+		File iwantWs = exportedFromSvn(iwantLocation);
+		return iwantWs;
+	}
+
+	private static URL iwantFrom(File asSomeone) {
 		try {
 			File iHave = new File(asSomeone, "i-have");
 			if (!iHave.exists()) {
@@ -158,8 +261,7 @@ public class Iwant {
 			iwantFromProps.load(new FileReader(iwantFrom));
 			URL iwantLocation = new URL(
 					iwantFromProps.getProperty("iwant-from"));
-			File iwantWs = exportedFromSvn(iwantLocation);
-			return iwantWs;
+			return iwantLocation;
 		} catch (IwantException e) {
 			throw e;
 		} catch (Exception e) {
@@ -168,8 +270,10 @@ public class Iwant {
 	}
 
 	private File iwantBootstrapperClasses(File iwantWs) {
-		return compiledClasses(new File(iwantWs, "bootstrap-classes"),
-				iwantBootstrappingJavaSources(iwantWs),
+		File classes = network
+				.cacheLocation(new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
+						iwantWs));
+		return compiledClasses(classes, iwantBootstrappingJavaSources(iwantWs),
 				Collections.<File> emptyList());
 	}
 
@@ -196,7 +300,12 @@ public class Iwant {
 
 	public File compiledClasses(File dest, List<File> src, String classpath) {
 		try {
-			debugLog("javac", "dest: " + dest, "src:  " + src);
+			fileLog("compiledClasses " + dest);
+			debugLog("javac", "dest: " + dest);
+			for (File srcFile : src) {
+				debugLog("javac", "src: " + srcFile);
+			}
+			del(dest);
 			ensureDir(dest);
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 			DiagnosticListener<? super JavaFileObject> diagnosticListener = null;
@@ -220,6 +329,8 @@ public class Iwant {
 			if (!compilerTaskResult) {
 				throw new IwantException("Compilation failed.");
 			}
+			new FileWriter(new File(dest, "compiled-by-Iwant")).append("true")
+					.close();
 			return dest;
 		} catch (RuntimeException e) {
 			throw e;
@@ -233,16 +344,16 @@ public class Iwant {
 	}
 
 	public static void debugLog(String task, Object... lines) {
-		if (!DEBUG_LOG) {
-			return;
-		}
 		StringBuilder b = new StringBuilder();
 		for (Object part : lines) {
 			b.append(String.format("(%16s    ", task));
 			b.append(part);
 			b.append(")\n");
 		}
-		System.err.print(b);
+		fileLog(b.toString());
+		if (DEBUG_LOG) {
+			System.err.print(b);
+		}
 	}
 
 	public static void log(String task, File target) {
@@ -250,6 +361,7 @@ public class Iwant {
 		b.append(String.format(":%16s -> ", task));
 		b.append(target.getName());
 		System.err.println(b);
+		fileLog(b.toString());
 	}
 
 	private static List<File> iwantBootstrappingJavaSources(File iwantWs) {
@@ -265,6 +377,9 @@ public class Iwant {
 			String... args) throws Exception {
 		debugLog("invoke", "class: " + className,
 				"args: " + Arrays.toString(args));
+		debugLog("invoke", "catchPrintsAndSystemExit="
+				+ catchPrintsAndSystemExit);
+		debugLog("invoke", "hideIwantClasses=" + hideIwantClasses);
 		for (File classLocation : classLocations) {
 			debugLog("invoke", "class-location: " + classLocation);
 		}
@@ -296,6 +411,10 @@ public class Iwant {
 						+ e.status());
 			}
 		} finally {
+			if (catchPrintsAndSystemExit) {
+				out.close();
+				fileLog("caught out/err: " + outBytes.toString());
+			}
 			// no ifs here, you never know what changes the called class did:
 			System.setOut(origOut);
 			System.setErr(origErr);
@@ -353,18 +472,35 @@ public class Iwant {
 
 	}
 
-	public static URLClassLoader classLoader(boolean hideIwantClasses,
-			File[] locations) throws MalformedURLException {
+	public static ClassLoader classLoader(boolean hideIwantClasses,
+			File[] locations) {
+		ClassLoader parent = hideIwantClasses ? new ClassLoaderThatHidesIwant()
+				: null;
+		return classLoader(parent, locations);
+	}
+
+	public static ClassLoader classLoader(ClassLoader parent, File[] locations) {
 		URL[] urls = new URL[locations.length];
 		for (int i = 0; i < locations.length; i++) {
 			File location = locations[i];
-			URL asUrl = location.toURI().toURL();
+			URL asUrl = fileToUrl(location);
+			// TODO own type so we don't need to slash back and forth
+			asUrl = withTrailingSlashIfDir(asUrl);
 			urls[i] = asUrl;
 		}
-		if (hideIwantClasses) {
-			return new URLClassLoader(urls, new ClassLoaderThatHidesIwant());
+		if (parent != null) {
+			return new URLClassLoader(urls, parent);
 		} else {
 			return new URLClassLoader(urls);
+		}
+	}
+
+	public static void fileLog(String msg) {
+		try {
+			new FileWriter("/tmp/iwant-cl", true).append(new Date().toString())
+					.append(" - ").append(msg).append("\n").close();
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
 		}
 	}
 
@@ -389,7 +525,8 @@ public class Iwant {
 		}
 	}
 
-	private static void del(File file) {
+	public static void del(File file) {
+		debugLog("del " + file);
 		if (file.isDirectory()) {
 			for (File child : file.listFiles()) {
 				del(child);
@@ -398,17 +535,13 @@ public class Iwant {
 		file.delete();
 	}
 
-	public File toCachePath(URL url) {
-		return new File(wantedUnmodifiable(url),
-				toSafeFilename(url.toExternalForm()));
-	}
-
 	public File downloaded(URL url) {
 		try {
-			File cached = toCachePath(url);
+			File cached = network.cacheLocation(new UnmodifiableUrl(url));
 			if (cached.exists()) {
 				return cached;
 			}
+			ensureDir(cached.getParentFile());
 			debugLog("downloaded", "from " + url);
 			log("downloaded", cached);
 			byte[] bytes = downloadBytes(url);
@@ -442,16 +575,15 @@ public class Iwant {
 		return body.toByteArray();
 	}
 
-	public File unmodifiableZipUnzipped(URL url, InputStream in) {
+	public File unmodifiableZipUnzipped(UnmodifiableZip src) {
 		try {
-			File dest = new File(network.wantedUnmodifiable(url), "unzipped/"
-					+ toSafeFilename(url.toExternalForm()));
+			File dest = network.cacheLocation(src);
 			if (dest.exists()) {
 				return dest;
 			}
 			log("unzipped", dest);
 			ensureDir(dest);
-			ZipInputStream zip = new ZipInputStream(in);
+			ZipInputStream zip = new ZipInputStream(src.location().openStream());
 			ZipEntry e = null;
 			byte[] buffer = new byte[32 * 1024];
 			while ((e = zip.getNextEntry()) != null) {
@@ -472,6 +604,8 @@ public class Iwant {
 			}
 			zip.close();
 			return dest;
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -481,9 +615,11 @@ public class Iwant {
 		try {
 			URL url = network.svnkitUrl();
 			File cached = downloaded(url);
-			InputStream in = new FileInputStream(cached);
-			File unzipped = unmodifiableZipUnzipped(url, in);
+			File unzipped = unmodifiableZipUnzipped(new UnmodifiableZip(
+					fileToUrl(cached)));
 			return unzipped;
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -493,15 +629,9 @@ public class Iwant {
 		return network.svnkitUrl();
 	}
 
-	private File wantedUnmodifiable(URL url) {
-		File retval = network.wantedUnmodifiable(url);
-		ensureDir(retval);
-		return retval;
-	}
-
 	public File exportedFromSvn(URL url) {
 		try {
-			File exported = toCachePath(url);
+			File exported = network.cacheLocation(new UnmodifiableUrl(url));
 			if (exported.exists()) {
 				if (isFile(url)) {
 					debugLog("svn-exported", "re-export needed,"
@@ -525,6 +655,8 @@ public class Iwant {
 					svnkitJar, svnkitCliJar }, "export", urlString,
 					exported.getCanonicalPath());
 			return exported;
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -534,4 +666,10 @@ public class Iwant {
 		return "file".equals(url.getProtocol());
 	}
 
+	public static String withoutTrailingSlash(String string) {
+		if (!string.endsWith("/")) {
+			return string;
+		}
+		return string.substring(0, string.length() - 1);
+	}
 }

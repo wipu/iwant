@@ -11,8 +11,9 @@ import java.security.Permission;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
-import net.sf.iwant.entry.Iwant3NetworkMock;
+import net.sf.iwant.entry.IwantNetworkMock;
 import net.sf.iwant.entry.WsRootFinder;
+import net.sf.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantWsRoot;
 import net.sf.iwant.testarea.TestArea;
 
 public class Iwant2Test extends TestCase {
@@ -35,12 +36,13 @@ public class Iwant2Test extends TestCase {
 
 	private String originalLineSeparator;
 
-	private Iwant3NetworkMock network;
+	private IwantNetworkMock network;
 	private Iwant2 iwant2;
 
 	/**
 	 * TODO a reusable main-method testing tools project
 	 */
+	@Override
 	public void setUp() {
 		origSecman = System.getSecurityManager();
 		System.setSecurityManager(new ExitCatcher());
@@ -51,7 +53,7 @@ public class Iwant2Test extends TestCase {
 		System.setProperty(LINE_SEPARATOR_KEY, "\n");
 		startOfOutAndErrCapture();
 		testArea = new IwantEntry2TestArea();
-		network = new Iwant3NetworkMock(testArea);
+		network = new IwantNetworkMock(testArea);
 		iwant2 = Iwant2.using(network);
 	}
 
@@ -100,6 +102,13 @@ public class Iwant2Test extends TestCase {
 		System.setProperty(LINE_SEPARATOR_KEY, originalLineSeparator);
 		System.err.print("== out:\n" + out());
 		System.err.print("== err:\n" + err());
+
+		if (!out().isEmpty()) {
+			System.err.println("=== out:\n" + out());
+		}
+		if (!err().isEmpty()) {
+			System.err.println("=== err:\n" + err());
+		}
 	}
 
 	private String out() {
@@ -165,12 +174,17 @@ public class Iwant2Test extends TestCase {
 	}
 
 	public void testIwant2CompilesIwantAndRunsTestSuiteAndFailsWhenItFails() {
+		File iwantWsRoot = WsRootFinder.mockWsRoot();
+		network.usesRealJunitUrlAndCached();
+		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
+				"all-iwant-classes");
 		mockedIwantRunnerShallFail();
+
 		try {
-			iwant2.evaluate(WsRootFinder.mockWsRoot(), "args", "to be",
-					"passed");
+			iwant2.evaluate(iwantWsRoot, "args", "to be", "passed");
 			fail();
 		} catch (RuntimeException e) {
+			System.err.println(e);
 			InvocationTargetException ite = (InvocationTargetException) e
 					.getCause();
 			AssertionFailedError afe = (AssertionFailedError) ite.getCause();
@@ -181,14 +195,18 @@ public class Iwant2Test extends TestCase {
 	}
 
 	public void testIwant2CompilesIwantAndCallsIwant3AfterTestSuiteSuccess() {
+		File iwantWsRoot = WsRootFinder.mockWsRoot();
+		network.usesRealJunitUrlAndCached();
+		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
+				"all-iwant-classes");
 		mockedIwantRunnerShallSucceed();
+
 		iwant2.evaluate(WsRootFinder.mockWsRoot(), "args", "to be", "passed");
 
 		assertEquals("Mocked net.sf.iwant.entry3.Iwant3\n"
 				+ "args: [args, to be, passed]\n", out());
-		assertTrue(err().contains(
-				"Mocked IwantTestRunner\n"
-						+ "args: [net.sf.iwant.entry3.IwantEntry3Suite]\n"));
+		// we cannot assert mocked IwantTestRunner output, because we catch it
+		// (real junit is too chatty)
 	}
 
 }

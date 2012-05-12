@@ -11,6 +11,7 @@ public class WsInfoTest extends TestCase {
 
 	private StringBuilder in;
 
+	@Override
 	public void setUp() {
 		in = new StringBuilder();
 	}

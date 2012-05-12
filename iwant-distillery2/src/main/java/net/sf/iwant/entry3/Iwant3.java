@@ -5,12 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
@@ -18,10 +18,10 @@ import net.sf.iwant.entry.WsRootFinder;
 
 public class Iwant3 {
 
-	private final IwantNetwork network;
+	private final Iwant iwant;
 
 	public Iwant3(IwantNetwork network) {
-		this.network = network;
+		this.iwant = Iwant.using(network);
 	}
 
 	public static void main(String[] args) {
@@ -57,7 +57,6 @@ public class Iwant3 {
 		File cached = cached(asSomeone);
 		File wsDefClasses = new File(cached, "wsdef-classes");
 
-		Iwant iwant = Iwant.using(network);
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefJava());
 		List<File> classLocations = Arrays.asList(iwantApiClasses());
 
@@ -65,31 +64,26 @@ public class Iwant3 {
 
 		List<File> runtimeClasses = new ArrayList<File>();
 		runtimeClasses.add(wsDefClasses);
-		runtimeClasses.addAll(classLocations);
-		Class<?> wsDefClass = loadClass(true, wsInfo.wsdefClass(),
-				runtimeClasses.toArray(new File[] {}));
-		Object wsDef = newWsDef(wsDefClass);
+		Class<?> wsDefClass = loadClass(getClass().getClassLoader(),
+				wsInfo.wsdefClass(), runtimeClasses.toArray(new File[] {}));
+
 		try {
-			Method iwantMethod = wsDefClass.getMethod("iwant", String.class);
-			iwantMethod.invoke(wsDef, wish);
+			Iwant.fileLog("Calling wsdef");
+			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
+			wsDef.iwant(wish);
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Error invoking wsdef", e);
 		}
 	}
 
-	private static Object newWsDef(Class<?> wsDefClass) {
+	private static Class<?> loadClass(ClassLoader parent, String className,
+			File[] locations) {
 		try {
-			return wsDefClass.newInstance();
-		} catch (Exception e) {
-			throw new IllegalStateException("Cannot instantiate wsdef", e);
-		}
-	}
-
-	private static Class<?> loadClass(boolean hideIwantClasses,
-			String className, File[] locations) {
-		try {
-			return Iwant.classLoader(hideIwantClasses, locations).loadClass(
-					className);
+			return Iwant.classLoader(parent, locations).loadClass(className);
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
@@ -110,7 +104,7 @@ public class Iwant3 {
 		return new File(iHave, ".cached");
 	}
 
-	private void refreshWishScripts(File asSomeone) {
+	private static void refreshWishScripts(File asSomeone) {
 		File withBashIwant = new File(asSomeone, "with/bash/iwant");
 		createWishScript(withBashIwant, "list-of/targets");
 		createWishScript(withBashIwant, "target/hello/as-path");
@@ -131,7 +125,7 @@ public class Iwant3 {
 				+ "\nPlease edit it and rerun me.");
 	}
 
-	private void createExampleWsdefJava(WsInfo wsInfo) {
+	private static void createExampleWsdefJava(WsInfo wsInfo) {
 		File iwantWsRoot = WsRootFinder.wsRoot();
 		createFile(
 				wsInfo.wsdefJava(),

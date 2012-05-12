@@ -1,12 +1,12 @@
 package net.sf.iwant.testrunner;
 
-/**
- * Mock
- */
+import java.util.Arrays;
+
 public class IwantTestRunner {
 
 	public static void main(String[] args) {
-		throw new UnsupportedOperationException("TODO test and implement");
+		System.out.println("Mocked IwantTestRunner");
+		System.out.println("args: " + Arrays.toString(args));
 	}
 
 }

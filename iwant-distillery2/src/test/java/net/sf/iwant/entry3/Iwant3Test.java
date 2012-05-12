@@ -6,15 +6,17 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.IwantWorkspace;
+import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
-import net.sf.iwant.entry.Iwant3NetworkMock;
+import net.sf.iwant.entry.IwantNetworkMock;
 
 public class Iwant3Test extends TestCase {
 
 	private static final String LINE_SEPARATOR_KEY = "line.separator";
 
 	private IwantEntry3TestArea testArea;
-	private Iwant3NetworkMock network;
+	private IwantNetworkMock network;
 	private Iwant3 iwant3;
 	private File asTest;
 	private SecurityManager origSecman;
@@ -25,9 +27,10 @@ public class Iwant3Test extends TestCase {
 	private ByteArrayOutputStream err;
 	private String originalLineSeparator;
 
-	public void setUp() {
+	@Override
+	public void setUp() throws Exception {
 		testArea = new IwantEntry3TestArea();
-		network = new Iwant3NetworkMock(testArea);
+		network = new IwantNetworkMock(testArea);
 		iwant3 = Iwant3.using(network);
 		asTest = new File(testArea.root(), "as-test");
 		originalIn = System.in;
@@ -51,6 +54,10 @@ public class Iwant3Test extends TestCase {
 
 	private String err() {
 		return err.toString();
+	}
+
+	private String errIgnoringDebugLog() {
+		return err.toString().replaceAll("\\([^\n]*\n", "");
 	}
 
 	@Override
@@ -138,13 +145,14 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testListOfTargetsOfExampleWsDef() {
+		Iwant.fileLog("jep");
 		testMissingWsdefCausesFriendlyFailureAndExampleCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "list-of/targets");
 
 		assertEquals("hello\n", out());
-		assertEquals("", err());
+		assertEquals("", errIgnoringDebugLog());
 	}
 
 	private static String modifiedExampleWsDef() {
@@ -178,7 +186,7 @@ public class Iwant3Test extends TestCase {
 		iwant3.evaluate(asTest, "list-of/targets");
 
 		assertEquals("modified-hello\n", out());
-		assertEquals("", err());
+		assertEquals("", errIgnoringDebugLog());
 	}
 
 	public void testTargetHelloAsPathOfExampleWsDef() {
@@ -188,7 +196,7 @@ public class Iwant3Test extends TestCase {
 		iwant3.evaluate(asTest, "target/hello/as-path");
 
 		assertEquals("todo path to hello\n", out());
-		assertEquals("", err());
+		assertEquals("", errIgnoringDebugLog());
 	}
 
 	public void testTargetHelloAsPathOfModifiedWsDef() {
@@ -202,7 +210,7 @@ public class Iwant3Test extends TestCase {
 		iwant3.evaluate(asTest, "target/hello/as-path");
 
 		assertEquals("todo path to modified-hello\n", out());
-		assertEquals("", err());
+		assertEquals("", errIgnoringDebugLog());
 	}
 
 	public void testListOfTargetsFailsIfWsDefDoesNotCompile() {
@@ -223,7 +231,29 @@ public class Iwant3Test extends TestCase {
 		assertEquals(testArea.root()
 				+ "/as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java"
 				+ ":1: reached end of file while parsing\n" + "crap\n" + "^\n"
-				+ "1 error\n", err());
+				+ "1 error\n", errIgnoringDebugLog());
+	}
+
+	/**
+	 * A learning test: the interface to cast to must come from the classloader
+	 * of the running class, not by loading it again.
+	 */
+	public void testToLearnThatEvenTwoInstancesOfSameClassloaderLoadIncompatibleClasses()
+			throws Exception {
+		File classes = new File(Iwant3.class.getResource(
+				"/net/sf/iwant/api/IwantWorkspace.class").toURI())
+				.getParentFile().getParentFile().getParentFile()
+				.getParentFile().getParentFile();
+
+		File[] locations = { classes };
+		String className = IwantWorkspace.class.getCanonicalName();
+		Class<?> c1 = Iwant.classLoader(true, locations).loadClass(className);
+		Class<?> c2 = Iwant.classLoader(true, locations).loadClass(className);
+		assertEquals(className, c1.getCanonicalName());
+		assertEquals(className, c2.getCanonicalName());
+		assertFalse(c1 == c2);
+		assertFalse(IwantWorkspace.class.isAssignableFrom(c1));
+		assertFalse(c1.isAssignableFrom(c2));
 	}
 
 }

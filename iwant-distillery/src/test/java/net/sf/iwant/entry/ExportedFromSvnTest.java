@@ -3,53 +3,30 @@ package net.sf.iwant.entry;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import junit.framework.TestCase;
+import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
 
 public class ExportedFromSvnTest extends TestCase {
 
 	private IwantEntryTestArea testArea;
-	private IwantNetworkMockWithRealSvnkitLocations network;
+	private IwantNetworkMock network;
 	private Iwant iwant;
 
+	@Override
 	public void setUp() {
 		testArea = new IwantEntryTestArea();
-		network = new IwantNetworkMockWithRealSvnkitLocations(testArea);
+		network = new IwantNetworkMock(testArea);
+		network.usesRealSvnkitUrlAndCacheAndUnzipped();
 		iwant = Iwant.using(network);
 	}
 
-	private static class IwantNetworkMockWithRealSvnkitLocations extends
-			Iwant3NetworkMock {
-
-		public IwantNetworkMockWithRealSvnkitLocations(
-				IwantEntryTestArea testArea) {
-			super(testArea);
-		}
-
-		@Override
-		public File wantedUnmodifiable(URL url) {
-			if (svnkitUrl().equals(url)) {
-				return Iwant.usingRealNetwork().network()
-						.wantedUnmodifiable(url);
-			} else {
-				return super.wantedUnmodifiable(url);
-			}
-		}
-
-		@Override
-		public URL svnkitUrl() {
-			// here we assume download and unzip have been tested
-			return Iwant.usingRealNetwork().svnkitUrl();
-		}
-
-	}
-
-	public void testExportReturnsDifferentFileFromSourceWithCorrectContent()
-			throws MalformedURLException {
+	public void testExportReturnsDifferentFileFromSourceWithCorrectContent() {
 		File remote = WsRootFinder.mockWsRoot();
-		URL remoteUrl = remote.toURI().toURL();
+		URL remoteUrl = Iwant.fileToUrl(remote);
+		network.usesRealSvnkitUrlAndCacheAndUnzipped();
+		network.cachesUrlAt(remoteUrl, "svn-exported");
 
 		File exported = iwant.exportedFromSvn(remoteUrl);
 
@@ -62,17 +39,17 @@ public class ExportedFromSvnTest extends TestCase {
 	}
 
 	public void testNothingIsExportedIfLocalFileExists() throws IOException {
-		// an url that most probably fails if accessed:
-		URL remote = new URL("http://localhost/"
-				+ getClass().getCanonicalName() + "/assumedly-already-exported");
-		File exported = iwant.toCachePath(remote);
-		Iwant.ensureDir(exported);
-		File exportedFile = new File(exported, "file");
+		// an url that is assumed to fail:
+		URL remoteUrl = new URL("http://nonexistent/not-to-be-accessed-by-"
+				+ getClass());
+		File exportedDir = testArea.newDir("exported");
+		File exportedFile = new File(exportedDir, "exported-file");
 		new FileWriter(exportedFile).append("exported-content").close();
+		network.cachesAt(new UnmodifiableUrl(remoteUrl), exportedDir);
 
-		File exportedAgain = iwant.exportedFromSvn(remote);
+		File exportedAgain = iwant.exportedFromSvn(remoteUrl);
 
-		assertEquals(exported.getCanonicalPath(),
+		assertEquals(exportedDir.getCanonicalPath(),
 				exportedAgain.getCanonicalPath());
 
 		assertEquals("exported-content", testArea.contentOf(exportedFile));
@@ -84,10 +61,9 @@ public class ExportedFromSvnTest extends TestCase {
 	 */
 	public void testExportIsRedoneIfUrlSchemeIsFile() throws IOException {
 		File remote = WsRootFinder.mockWsRoot();
-		URL remoteUrl = remote.toURI().toURL();
-
-		File exported = iwant.toCachePath(remoteUrl);
-		Iwant.ensureDir(exported);
+		URL remoteUrl = Iwant.fileToUrl(remote);
+		File exported = testArea.newDir("exported");
+		network.cachesAt(new UnmodifiableUrl(remoteUrl), exported);
 		File previouslyExportedFile = new File(exported, "exported-file");
 		new FileWriter(previouslyExportedFile).append("exported-content")
 				.close();

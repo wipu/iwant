@@ -2,6 +2,8 @@ package net.sf.iwant.entry3;
 
 import java.util.Arrays;
 
+import net.sf.iwant.api.IwantWorkspace;
+
 /**
  * Mock
  */
@@ -13,7 +15,8 @@ public class Iwant3 {
 	}
 
 	public static String helloFromMockedIwant3() {
-		return "Hello from mocked Iwant3";
+		return "Hello from mocked Iwant3, IwantWorkspace: "
+				+ IwantWorkspace.class.getCanonicalName();
 	}
 
 }

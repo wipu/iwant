@@ -6,21 +6,24 @@ import java.io.IOException;
 import java.net.URL;
 
 import junit.framework.TestCase;
+import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
 
 public class DownloadingTest extends TestCase {
 
 	private IwantEntryTestArea testArea;
-	private Iwant3NetworkMock network;
+	private IwantNetworkMock network;
 	private Iwant iwant;
 
+	@Override
 	public void setUp() {
 		testArea = new IwantEntryTestArea();
-		network = new Iwant3NetworkMock(testArea);
+		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 	}
 
 	private void cachedFileContains(URL url, String content) throws IOException {
-		new FileWriter(iwant.toCachePath(url)).append(content).close();
+		File cached = iwant.network().cacheLocation(new UnmodifiableUrl(url));
+		new FileWriter(cached).append(content).close();
 	}
 
 	private File remoteFileContains(String path, String content)
@@ -32,18 +35,35 @@ public class DownloadingTest extends TestCase {
 
 	public void testCachedFileIsReturnedWithoutDownloadingIfItExists()
 			throws IOException {
-		URL url = new File(testArea.root(),
-				"non-existent-so-impossible-to-download").toURI().toURL();
+		URL url = Iwant.fileToUrl(new File(testArea.root(),
+				"non-existent-so-impossible-to-download"));
+		network.cachesUrlAt(url, "url");
 		cachedFileContains(url, "cached-content");
+
 		File cached = iwant.downloaded(url);
+
 		assertEquals("cached-content", testArea.contentOf(cached));
 	}
 
-	public void testFileIsDownloadedToCacheIfItDoesNotExist()
+	public void testFileIsDownloadedToCacheDoesNotExist() throws IOException {
+		File remoteFile = remoteFileContains("remote", "remote-content");
+		URL remoteUrl = Iwant.fileToUrl(remoteFile);
+		network.cachesUrlAt(remoteUrl, "cached-remote");
+
+		File cached = iwant.downloaded(remoteUrl);
+
+		assertEquals("remote-content", testArea.contentOf(cached));
+	}
+
+	public void testFileIsSuccessfullyDownloadedEvenIfCacheParentDirDoesNotExist()
 			throws IOException {
 		File remoteFile = remoteFileContains("remote", "remote-content");
-		URL url = remoteFile.toURI().toURL();
-		File cached = iwant.downloaded(url);
+		URL remoteUrl = Iwant.fileToUrl(remoteFile);
+		network.cachesUrlAt(remoteUrl, "cached/remote");
+
+		File cached = iwant.downloaded(remoteUrl);
+
+		assertEquals(new File(testArea.root(), "cached/remote"), cached);
 		assertEquals("remote-content", testArea.contentOf(cached));
 	}
 

@@ -38,6 +38,7 @@ tested-java-classes() {
     $(find $HERE/src/test/java -name '*.java')
   cp "$HERE/src/test/java/net/sf/iwant/entry/"*.zip \
     "$CLASSES_TO_TEST/net/sf/iwant/entry/"
+  touch "$CLASSES_TO_TEST/compiled-by-refresh.sh"
 
   java -cp "$CLASSES_TO_TEST:$JUNIT" junit.textui.TestRunner net.sf.iwant.testrunner.IwantTestRunnerTest
 

@@ -9,11 +9,11 @@ public class IwantEntrySuite extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("net.sf.iwant.entry");
 		suite.addTestSuite(FilenameEscapingTest.class);
-		suite.addTestSuite(CachePathBuildingTest.class);
+		suite.addTestSuite(LocationsTest.class);
+		suite.addTestSuite(UnmodifiableSourceTest.class);
 		suite.addTestSuite(DownloadingTest.class);
 		suite.addTestSuite(UnzippingTest.class);
 		suite.addTestSuite(UnzippedSvnkitTest.class);
-		suite.addTestSuite(LocationsTest.class);
 		suite.addTestSuite(ExportedFromSvnTest.class);
 		suite.addTestSuite(IwantTest.class);
 		return suite;
