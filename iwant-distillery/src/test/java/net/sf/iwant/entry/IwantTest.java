@@ -3,7 +3,6 @@ package net.sf.iwant.entry;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URL;
@@ -108,7 +107,7 @@ public class IwantTest extends TestCase {
 		return err.toString();
 	}
 
-	public void testMainFailsAndExitsIfGivenZeroArguments() {
+	public void testMainFailsAndExitsIfGivenZeroArguments() throws Exception {
 		try {
 			Iwant.main(new String[] {});
 			fail();
@@ -121,7 +120,8 @@ public class IwantTest extends TestCase {
 				err());
 	}
 
-	public void testMainFailsAndExitsIfGivenAsSomeoneDoesNotExist() {
+	public void testMainFailsAndExitsIfGivenAsSomeoneDoesNotExist()
+			throws Exception {
 		try {
 			Iwant.main(new String[] { testArea.root() + "/as-missing" });
 			fail();
@@ -134,7 +134,7 @@ public class IwantTest extends TestCase {
 	}
 
 	public void testMainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist()
-			throws IOException {
+			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
 		try {
 			Iwant.main(new String[] { asSomeone.getCanonicalPath() });
@@ -151,7 +151,7 @@ public class IwantTest extends TestCase {
 	}
 
 	public void testMainCreatesIwantFromAndPrintsHelpIfIwantFromDoesNotExist()
-			throws IOException {
+			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
 		testArea.newDir("as-test/i-have");
 		try {

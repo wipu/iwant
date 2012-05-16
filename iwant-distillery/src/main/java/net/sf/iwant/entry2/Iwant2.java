@@ -30,7 +30,7 @@ public class Iwant2 {
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Iwant.fileLog("Iwant2: " + Arrays.toString(args));
 		File iwantWs = new File(args[0]);
 		String[] args2 = new String[args.length - 1];
@@ -48,31 +48,24 @@ public class Iwant2 {
 		return new Iwant2(network);
 	}
 
-	public void evaluate(File iwantWs, String... args) {
-		try {
-			Iwant.debugLog("evaluate", (Object[]) args);
-			File allIwantClasses = allIwantClasses(iwantWs);
+	public void evaluate(File iwantWs, String... args) throws Exception {
+		Iwant.debugLog("evaluate", (Object[]) args);
+		File allIwantClasses = allIwantClasses(iwantWs);
 
-			File testArea = new File(iwantWs,
-					"iwant-testarea/testarea-classdir");
-			File classpathMarker = new File(iwantWs,
-					"iwant-distillery/classpath-marker");
+		File testArea = new File(iwantWs, "iwant-testarea/testarea-classdir");
+		File classpathMarker = new File(iwantWs,
+				"iwant-distillery/classpath-marker");
 
-			File[] classLocations = { classpathMarker, testArea,
-					allIwantClasses, junitJar() };
+		File[] classLocations = { classpathMarker, testArea, allIwantClasses,
+				junitJar() };
 
-			Iwant.log("self-tested", allIwantClasses);
-			Iwant.runJavaMain(true, false,
-					"net.sf.iwant.testrunner.IwantTestRunner", classLocations,
-					"net.sf.iwant.entry3.IwantEntry3Suite");
+		Iwant.log("self-tested", allIwantClasses);
+		Iwant.runJavaMain(true, false,
+				"net.sf.iwant.testrunner.IwantTestRunner", classLocations,
+				"net.sf.iwant.entry3.IwantEntry3Suite");
 
-			Iwant.runJavaMain(false, false, "net.sf.iwant.entry3.Iwant3",
-					classLocations, args);
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		Iwant.runJavaMain(false, false, "net.sf.iwant.entry3.Iwant3",
+				classLocations, args);
 	}
 
 	public File allIwantClasses(File iwantWs) {

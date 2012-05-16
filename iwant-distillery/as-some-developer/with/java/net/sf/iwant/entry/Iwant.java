@@ -196,16 +196,12 @@ public class Iwant {
 		return network;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		try {
 			usingRealNetwork().evaluate(args);
 		} catch (IwantException e) {
 			System.err.println(e.getMessage());
 			System.exit(1);
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
 		}
 	}
 

@@ -7,15 +7,12 @@ import java.io.IOException;
 
 class ExampleWsDefGenerator {
 
-	private static String exampleWorkspaceJava(File iwantWsRoot) {
-		try {
-			File example = new File(iwantWsRoot,
-					"iwant-example-wsdef/src/main/java/"
-							+ "com/example/wsdef/Workspace.java");
-			return contentOf(example);
-		} catch (Exception e) {
-			throw new IllegalStateException("Failed to create example wsdef", e);
-		}
+	private static String exampleWorkspaceJava(File iwantWsRoot)
+			throws IOException {
+		File example = new File(iwantWsRoot,
+				"iwant-example-wsdef/src/main/java/"
+						+ "com/example/wsdef/Workspace.java");
+		return contentOf(example);
 	}
 
 	private static String contentOf(File file) throws IOException {
@@ -32,7 +29,8 @@ class ExampleWsDefGenerator {
 		return out.toString();
 	}
 
-	static String example(File iwantWsRoot, String newPackage, String newName) {
+	static String example(File iwantWsRoot, String newPackage, String newName)
+			throws IOException {
 		String src = exampleWorkspaceJava(iwantWsRoot);
 		return src.replaceFirst("package.*;", "package " + newPackage + ";")
 				.replaceFirst("class Workspace ", "class " + newName + " ");

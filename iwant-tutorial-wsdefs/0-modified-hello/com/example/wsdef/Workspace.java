@@ -9,7 +9,7 @@ public class Workspace extends BaseIwantWorkspace {
 
 	@Override
 	protected Collection<?> targets() {
-		return Arrays.asList("hello");
+		return Arrays.asList("hello", "hello2");
 	}
 
 }

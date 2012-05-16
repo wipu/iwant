@@ -223,7 +223,7 @@
   * marked done afterwards
 
 + As @developer I want help.sh (bash bootstrapper phase1) to delegate most work to the ant script so I can start gettin rid of a lot of legacy scripts
-  - new bootstrap tutorial for driving
+  + new bootstrap tutorial for driving
     * the tutorial wish script creation is very redundant but will be replaced with real iwant target later so it's ok
     + source the ant tutorial
     + hello from help.sh
@@ -371,7 +371,7 @@
         + impl: compile and run
   + descript bootstrap call: call help.sh to show real iwant2 output
     + implement failing iwant2
-  - iwant2
+  + iwant2
     * now just KISS: don't use iwant (workspace, targets), just raw
       download+compilation using entry 1. Later we can eat the dogfood,
       when we have it
@@ -389,7 +389,7 @@
         + cat the example ws-info
     + delegate to actual (distilling) iwant
       + Iwant3 and its test to do what Iwant2 does now
-      - Iwant2's new role
+      + Iwant2's new role
         + compile iwant (distillery2) main
         + run main suite
           + compile tests, too
@@ -400,7 +400,7 @@
   + debug log disabled
   + run junit silently and only print after failure
     (failure tested only manually with temporarily broken test)
-  - iwant3
+  + iwant3
     + invalid wsinfo => failure
     + valid wsinfo => create example wsdef java
     + descript: rerun with example ws-info => fail with message, example wsdef java created
@@ -408,7 +408,7 @@
     + create wish scripts, not only example wsdef
     + wish scripts call help.sh with own relpath as arg
     + descript: iwant3 prints hardcoded output for list-of/targets and hello
-    - functional example wsdef
+    + functional example wsdef
       + copy example java from actual source directory
         + use WsRootFinder to find it
       + iwant3 compiles wsdef
@@ -419,9 +419,11 @@
           + 2 class instances in use, find out why
             * don't classload the api again
           + fix
-      - descript: rerun with example wsdef => "try .../list-of/targets"
-      - inherit a base wsdef
-      - test-drive base
+      + descript: rerun with example wsdef => "try .../list-of/targets"
+  + inherit base in example wsdef and tdd example behaviour
+  + descript: modify wsdef and rerun
+  + unit test: list-of/targets and target/x/as-path with dumb behaviour, to get going with tdd for it
+  - descript: modification of wsdef causes different output
   - move WsRootFinder to main src from test
   - dedicated module for WsRootFinder, replace other classpath markers (in testarea at least) with this
   + compile iwant to separate dir, not a subdir of exported wsroot

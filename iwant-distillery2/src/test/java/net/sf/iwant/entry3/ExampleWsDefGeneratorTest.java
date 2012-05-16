@@ -1,5 +1,7 @@
 package net.sf.iwant.entry3;
 
+import java.io.IOException;
+
 import junit.framework.TestCase;
 
 public class ExampleWsDefGeneratorTest extends TestCase {
@@ -13,7 +15,8 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		testArea = new IwantEntry3TestArea();
 	}
 
-	private void assertChangeTo(String newPackage, String newName) {
+	private void assertChangeTo(String newPackage, String newName)
+			throws IOException {
 		testArea.hasFile("iwant-example-wsdef/src/main/java/"
 				+ "com/example/wsdef/Workspace.java",
 				"package com.example.wsdef;\n"
@@ -25,14 +28,14 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		assertTrue("actual:\n" + actualOut, actualOut.endsWith("\n}\n"));
 	}
 
-	public void testName1() {
+	public void testName1() throws IOException {
 		expectedStart.append("package new.package1;\n");
 		expectedStart.append("public class Ws1 ");
 
 		assertChangeTo("new.package1", "Ws1");
 	}
 
-	public void testName2() {
+	public void testName2() throws IOException {
 		expectedStart.append("package new.package2;\n");
 		expectedStart.append("public class Ws2 ");
 

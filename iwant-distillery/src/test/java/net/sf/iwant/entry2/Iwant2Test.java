@@ -9,7 +9,6 @@ import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.security.Permission;
 
-import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import net.sf.iwant.entry.IwantNetworkMock;
 import net.sf.iwant.entry.WsRootFinder;
@@ -143,7 +142,7 @@ public class Iwant2Test extends TestCase {
 		b.append("public class IwantTestRunner {\n");
 		b.append("\n");
 		b.append("  public static void main(String[] args) {\n");
-		b.append("    junit.framework.Assert.fail(\"Simulated failure.\");");
+		b.append("    throw new IllegalStateException(\"Simulated failure.\");");
 		b.append("  }\n");
 		b.append("\n");
 		b.append("}\n");
@@ -173,7 +172,8 @@ public class Iwant2Test extends TestCase {
 		}
 	}
 
-	public void testIwant2CompilesIwantAndRunsTestSuiteAndFailsWhenItFails() {
+	public void testIwant2CompilesIwantAndRunsTestSuiteAndFailsWhenItFails()
+			throws Exception {
 		File iwantWsRoot = WsRootFinder.mockWsRoot();
 		network.usesRealJunitUrlAndCached();
 		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
@@ -183,18 +183,17 @@ public class Iwant2Test extends TestCase {
 		try {
 			iwant2.evaluate(iwantWsRoot, "args", "to be", "passed");
 			fail();
-		} catch (RuntimeException e) {
+		} catch (InvocationTargetException e) {
 			System.err.println(e);
-			InvocationTargetException ite = (InvocationTargetException) e
-					.getCause();
-			AssertionFailedError afe = (AssertionFailedError) ite.getCause();
-			assertEquals("Simulated failure.", afe.getMessage());
+			IllegalStateException ise = (IllegalStateException) e.getCause();
+			assertEquals("Simulated failure.", ise.getMessage());
 		}
 
 		assertEquals("", out());
 	}
 
-	public void testIwant2CompilesIwantAndCallsIwant3AfterTestSuiteSuccess() {
+	public void testIwant2CompilesIwantAndCallsIwant3AfterTestSuiteSuccess()
+			throws Exception {
 		File iwantWsRoot = WsRootFinder.mockWsRoot();
 		network.usesRealJunitUrlAndCached();
 		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),

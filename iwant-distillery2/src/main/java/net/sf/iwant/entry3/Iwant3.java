@@ -24,7 +24,7 @@ public class Iwant3 {
 		this.iwant = Iwant.using(network);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		File asSomeone = new File(args[0]);
 		String[] args2 = new String[args.length - 1];
 		System.arraycopy(args, 1, args2, 0, args2.length);
@@ -41,7 +41,7 @@ public class Iwant3 {
 		return new Iwant3(network);
 	}
 
-	public void evaluate(File asSomeone, String... args) {
+	public void evaluate(File asSomeone, String... args) throws Exception {
 		File iHave = new File(asSomeone, "i-have");
 		Iwant.ensureDir(iHave);
 		File wsInfoFile = wsInfoFile(iHave);
@@ -51,6 +51,10 @@ public class Iwant3 {
 			refreshWishScripts(asSomeone);
 			throw new IwantException("I created " + wsInfo.wsdefJava()
 					+ "\nPlease edit it and rerun me.");
+		}
+		if (args.length == 0) {
+			throw new IwantException("Try "
+					+ new File(asSomeone, "with/bash/iwant/list-of/targets"));
 		}
 		String wish = args[0];
 
@@ -70,7 +74,7 @@ public class Iwant3 {
 		try {
 			Iwant.fileLog("Calling wsdef");
 			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
-			wsDef.iwant(wish);
+			wsDef.iwant(wish, System.out);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -125,7 +129,8 @@ public class Iwant3 {
 				+ "\nPlease edit it and rerun me.");
 	}
 
-	private static void createExampleWsdefJava(WsInfo wsInfo) {
+	private static void createExampleWsdefJava(WsInfo wsInfo)
+			throws IOException {
 		File iwantWsRoot = WsRootFinder.wsRoot();
 		createFile(
 				wsInfo.wsdefJava(),
