@@ -423,17 +423,17 @@
   + inherit base in example wsdef and tdd example behaviour
   + descript: modify wsdef and rerun
   + unit test: list-of/targets and target/x/as-path with dumb behaviour, to get going with tdd for it
-  - descript: modification of wsdef causes different output
-  - move WsRootFinder to main src from test
-  - dedicated module for WsRootFinder, replace other classpath markers (in testarea at least) with this
   + compile iwant to separate dir, not a subdir of exported wsroot
     * it was already like this, the dir was a leftover of some work in progress testrun
   + svn export laziness/eagerness
     + no export when cached iwant exists
     + except when remote is a file: changes in entry2 are effective immediately when developing, if local dir is deleted and re-exported
   + slighty nicer stderr: ":task -> destfile" and "(task debug message)*"
+  + laziness of svn export: done at some point
+  - descript: modification of wsdef causes different output
+  - move WsRootFinder to main src from test
+  - dedicated module for WsRootFinder, replace other classpath markers (in testarea at least) with this
   - laziness of compilation of unmodifiable
-  - laziness of svn export
   - remove the zip tests using versioned zip files now that we have the svnkit unzip test
   - checksum after download
      - test download of incorrect content causes failure (sha check)
