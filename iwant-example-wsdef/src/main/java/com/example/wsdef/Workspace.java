@@ -8,7 +8,7 @@ import net.sf.iwant.api.BaseIwantWorkspace;
 public class Workspace extends BaseIwantWorkspace {
 
 	@Override
-	protected Collection<?> targets() {
+	public Collection<?> targets() {
 		return Arrays.asList("hello");
 	}
 

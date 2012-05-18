@@ -18,7 +18,7 @@ public class BaseIwantWorkspaceTest extends TestCase {
 	private class Hello extends BaseIwantWorkspace {
 
 		@Override
-		protected Collection<?> targets() {
+		public Collection<?> targets() {
 			return Arrays.asList("hello");
 		}
 
@@ -27,7 +27,7 @@ public class BaseIwantWorkspaceTest extends TestCase {
 	private class TwoHellos extends BaseIwantWorkspace {
 
 		@Override
-		protected Collection<?> targets() {
+		public Collection<?> targets() {
 			return Arrays.asList("hello1", "hello2");
 		}
 

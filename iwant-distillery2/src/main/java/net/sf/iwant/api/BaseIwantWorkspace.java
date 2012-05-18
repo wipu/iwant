@@ -29,6 +29,6 @@ public abstract class BaseIwantWorkspace implements IwantWorkspace {
 		}
 	}
 
-	abstract protected Collection<?> targets();
+	abstract public Collection<?> targets();
 
 }

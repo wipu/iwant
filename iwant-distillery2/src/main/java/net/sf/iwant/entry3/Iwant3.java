@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.BaseIwantWorkspace;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
@@ -48,7 +50,7 @@ public class Iwant3 {
 		WsInfo wsInfo = parseWsInfo(wsInfoFile);
 		if (!wsInfo.wsdefJava().exists()) {
 			createExampleWsdefJava(wsInfo);
-			refreshWishScripts(asSomeone);
+			refreshWishScripts(asSomeone, Arrays.asList("hello"));
 			throw new IwantException("I created " + wsInfo.wsdefJava()
 					+ "\nPlease edit it and rerun me.");
 		}
@@ -74,12 +76,19 @@ public class Iwant3 {
 		try {
 			Iwant.fileLog("Calling wsdef");
 			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
+			refreshWishScripts(asSomeone, wsDef);
 			wsDef.iwant(wish, System.out);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Error invoking wsdef", e);
 		}
+	}
+
+	private static void refreshWishScripts(File asSomeone, IwantWorkspace wsDef) {
+		// TODO cleaner api, now we are forcing a superclass:
+		BaseIwantWorkspace bwd = (BaseIwantWorkspace) wsDef;
+		refreshWishScripts(asSomeone, bwd.targets());
 	}
 
 	private static Class<?> loadClass(ClassLoader parent, String className,
@@ -108,10 +117,12 @@ public class Iwant3 {
 		return new File(iHave, ".cached");
 	}
 
-	private static void refreshWishScripts(File asSomeone) {
+	private static void refreshWishScripts(File asSomeone, Collection<?> targets) {
 		File withBashIwant = new File(asSomeone, "with/bash/iwant");
 		createWishScript(withBashIwant, "list-of/targets");
-		createWishScript(withBashIwant, "target/hello/as-path");
+		for (Object target : targets) {
+			createWishScript(withBashIwant, "target/" + target + "/as-path");
+		}
 	}
 
 	private static void createWishScript(File withBashIwant, String wish) {

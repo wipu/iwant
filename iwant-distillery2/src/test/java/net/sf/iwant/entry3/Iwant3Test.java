@@ -166,16 +166,15 @@ public class Iwant3Test extends TestCase {
 		wsdef.append("package com.example.wsdef;\n");
 		wsdef.append("\n");
 		wsdef.append("import java.io.OutputStream;\n");
-		wsdef.append("import net.sf.iwant.api.IwantWorkspace;\n");
+		wsdef.append("import java.util.Arrays;\n");
+		wsdef.append("import java.util.Collection;\n");
+		wsdef.append("import net.sf.iwant.api.BaseIwantWorkspace;\n");
 		wsdef.append("\n");
-		wsdef.append("public class ExampleWs implements IwantWorkspace {\n");
+		wsdef.append("public class ExampleWs extends BaseIwantWorkspace {\n");
 		wsdef.append("\n");
-		wsdef.append("	public void iwant(String wish, OutputStream out) {\n");
-		wsdef.append("		if (\"list-of/targets\".equals(wish)) {\n");
-		wsdef.append("			System.out.println(\"modified-hello\");\n");
-		wsdef.append("		} else {\n");
-		wsdef.append("			System.out.println(\"todo path to modified-hello\");\n");
-		wsdef.append("		}\n");
+		wsdef.append("  @Override\n");
+		wsdef.append("	public Collection<?> targets() {\n");
+		wsdef.append("		return Arrays.asList(\"modified-hello\", \"hello2\");\n");
 		wsdef.append("	}\n");
 		wsdef.append("\n");
 		wsdef.append("}\n");
@@ -192,8 +191,26 @@ public class Iwant3Test extends TestCase {
 
 		iwant3.evaluate(asTest, "list-of/targets");
 
-		assertEquals("modified-hello\n", out());
+		assertEquals("modified-hello\nhello2\n", out());
 		assertEquals("", errIgnoringDebugLog());
+	}
+
+	public void testListOfTargetsOfModifiedWsDefAlsoCreatesWishScripts()
+			throws Exception {
+		testListOfTargetsOfModifiedWsDef();
+
+		assertTrue(testArea
+				.contentOf("as-test/with/bash/iwant/list-of/targets")
+				.startsWith("#!/bin/bash\n"));
+		assertTrue(testArea.contentOf(
+				"as-test/with/bash/iwant/target/modified-hello/as-path")
+				.startsWith("#!/bin/bash\n"));
+		assertTrue(testArea.contentOf(
+				"as-test/with/bash/iwant/target/hello2/as-path").startsWith(
+				"#!/bin/bash\n"));
+
+		assertFalse(new File(testArea.root(),
+				"as-test/with/bash/iwant/target/hello/as-path").exists());
 	}
 
 	public void testTargetHelloAsPathOfExampleWsDef() throws Exception {
@@ -206,7 +223,7 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", errIgnoringDebugLog());
 	}
 
-	public void testTargetHelloAsPathOfModifiedWsDef() throws Exception {
+	public void testTargetModifiedHelloAsPathOfModifiedWsDef() throws Exception {
 		testArea.hasFile("as-test/i-have/ws-info", "WSNAME=example\n"
 				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdef\n"
 				+ "WSDEF_CLASS=com.example.wsdef.ExampleWs\n");
@@ -214,7 +231,7 @@ public class Iwant3Test extends TestCase {
 				"as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java",
 				modifiedExampleWsDef());
 
-		iwant3.evaluate(asTest, "target/hello/as-path");
+		iwant3.evaluate(asTest, "target/modified-hello/as-path");
 
 		assertEquals("todo path to modified-hello\n", out());
 		assertEquals("", errIgnoringDebugLog());
