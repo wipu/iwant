@@ -1,9 +1,12 @@
 package net.sf.iwant.api;
 
-import java.io.OutputStream;
+import java.util.List;
 
 public interface IwantWorkspace {
 
-	void iwant(String wish, OutputStream out);
+	/**
+	 * TODO SortedSet
+	 */
+	List<? extends Target> targets();
 
 }

@@ -432,6 +432,11 @@
   + laziness of svn export: done at some point
   + list-of/targets creates wish scripts
   + descript: new target as path after "creating" it in the wsdef
+  + refactor: WishEvaluator contains refresh logic, not wsdef base class
+  + target produces content as stream (HelloTarget)
+  + refactor: StreamUtil for prod and test
+  + iwant2 tests the whole suite, not only Iwant3Test
+  + descript & tdd: HelloTarget.refreshTo, so now either stream or file content
   - delete old wish scripts at refresh
   - descript: modification of wsdef causes different output
   - move WsRootFinder to main src from test

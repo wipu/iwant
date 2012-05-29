@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import net.sf.iwant.api.BaseIwantWorkspace;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
@@ -77,7 +76,7 @@ public class Iwant3 {
 			Iwant.fileLog("Calling wsdef");
 			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
 			refreshWishScripts(asSomeone, wsDef);
-			wsDef.iwant(wish, System.out);
+			new WishEvaluator(System.out, asSomeone).iwant(wish, wsDef);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -86,9 +85,7 @@ public class Iwant3 {
 	}
 
 	private static void refreshWishScripts(File asSomeone, IwantWorkspace wsDef) {
-		// TODO cleaner api, now we are forcing a superclass:
-		BaseIwantWorkspace bwd = (BaseIwantWorkspace) wsDef;
-		refreshWishScripts(asSomeone, bwd.targets());
+		refreshWishScripts(asSomeone, wsDef.targets());
 	}
 
 	private static Class<?> loadClass(ClassLoader parent, String className,

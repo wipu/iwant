@@ -1,15 +1,18 @@
 package com.example.wsdef;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
-import net.sf.iwant.api.BaseIwantWorkspace;
+import net.sf.iwant.api.HelloTarget;
+import net.sf.iwant.api.IwantWorkspace;
+import net.sf.iwant.api.Target;
 
-public class Workspace extends BaseIwantWorkspace {
+public class Workspace implements IwantWorkspace {
 
 	@Override
-	public Collection<?> targets() {
-		return Arrays.asList("hello", "hello2");
+	public List<? extends Target> targets() {
+		return Arrays.asList(new HelloTarget("hello", "hello from iwant"),
+				new HelloTarget("hello2", "another target"));
 	}
 
 }

@@ -62,7 +62,7 @@ public class Iwant2 {
 		Iwant.log("self-tested", allIwantClasses);
 		Iwant.runJavaMain(true, false,
 				"net.sf.iwant.testrunner.IwantTestRunner", classLocations,
-				"net.sf.iwant.entry3.IwantEntry3Suite");
+				"net.sf.iwant.IwantDistillery2Suite");
 
 		Iwant.runJavaMain(false, false, "net.sf.iwant.entry3.Iwant3",
 				classLocations, args);
@@ -88,11 +88,19 @@ public class Iwant2 {
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
 				+ "src/test/java/" + "net/sf/iwant/entry"));
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
+				+ "src/test/java/" + "net/sf/iwant"));
+		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
+				+ "src/test/java/" + "net/sf/iwant/api"));
+		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
 				+ "src/main/java/" + "net/sf/iwant/api"));
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
 				+ "src/main/java/" + "net/sf/iwant/entry3"));
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
 				+ "src/test/java/" + "net/sf/iwant/entry3"));
+		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
+				+ "src/test/java/" + "net/sf/iwant/io"));
+		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
+				+ "src/main/java/" + "net/sf/iwant/io"));
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-testarea/"
 				+ "src/main/java/" + "net/sf/iwant/testarea"));
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-testrunner/"

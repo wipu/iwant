@@ -165,16 +165,18 @@ public class Iwant3Test extends TestCase {
 		StringBuilder wsdef = new StringBuilder();
 		wsdef.append("package com.example.wsdef;\n");
 		wsdef.append("\n");
-		wsdef.append("import java.io.OutputStream;\n");
 		wsdef.append("import java.util.Arrays;\n");
-		wsdef.append("import java.util.Collection;\n");
-		wsdef.append("import net.sf.iwant.api.BaseIwantWorkspace;\n");
+		wsdef.append("import java.util.List;\n");
+		wsdef.append("import net.sf.iwant.api.HelloTarget;\n");
+		wsdef.append("import net.sf.iwant.api.IwantWorkspace;\n");
+		wsdef.append("import net.sf.iwant.api.Target;\n");
 		wsdef.append("\n");
-		wsdef.append("public class ExampleWs extends BaseIwantWorkspace {\n");
+		wsdef.append("public class ExampleWs implements IwantWorkspace {\n");
 		wsdef.append("\n");
 		wsdef.append("  @Override\n");
-		wsdef.append("	public Collection<?> targets() {\n");
-		wsdef.append("		return Arrays.asList(\"modified-hello\", \"hello2\");\n");
+		wsdef.append("	public List<? extends Target> targets() {\n");
+		wsdef.append("		return Arrays.asList(new HelloTarget(\"modified-hello\", \"content 1\"),\n");
+		wsdef.append("			new HelloTarget(\"hello2\", \"content 2\"));\n");
 		wsdef.append("	}\n");
 		wsdef.append("\n");
 		wsdef.append("}\n");
@@ -219,8 +221,11 @@ public class Iwant3Test extends TestCase {
 
 		iwant3.evaluate(asTest, "target/hello/as-path");
 
-		assertEquals("todo path to hello\n", out());
+		File cached = new File(asTest, ".todo-cached/target/hello/content");
+		assertEquals(cached + "\n", out());
 		assertEquals("", errIgnoringDebugLog());
+
+		assertEquals("hello from iwant", testArea.contentOf(cached));
 	}
 
 	public void testTargetModifiedHelloAsPathOfModifiedWsDef() throws Exception {
@@ -233,8 +238,12 @@ public class Iwant3Test extends TestCase {
 
 		iwant3.evaluate(asTest, "target/modified-hello/as-path");
 
-		assertEquals("todo path to modified-hello\n", out());
+		File cached = new File(asTest,
+				".todo-cached/target/modified-hello/content");
+		assertEquals(cached + "\n", out());
 		assertEquals("", errIgnoringDebugLog());
+
+		assertEquals("content 1", testArea.contentOf(cached));
 	}
 
 	public void testListOfTargetsFailsIfWsDefDoesNotCompile() throws Exception {

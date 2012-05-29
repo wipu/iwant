@@ -20,5 +20,6 @@ edit as-distillery-developer/i-have/wsdef/com/example/wsdef/Workspace.java "1st-
   "$LOCAL_IWANT_WSROOT/iwant-tutorial-wsdefs/0-modified-hello/com/example/wsdef/Workspace.java"
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
 cmde "0" "as-distillery-developer/with/bash/iwant/target/hello2/as-path"
+cmde "0" 'cat ""$(as-distillery-developer/with/bash/iwant/target/hello2/as-path)'
 
 }
