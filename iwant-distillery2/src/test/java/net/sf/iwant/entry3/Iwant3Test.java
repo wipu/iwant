@@ -221,7 +221,7 @@ public class Iwant3Test extends TestCase {
 
 		iwant3.evaluate(asTest, "target/hello/as-path");
 
-		File cached = new File(asTest, ".todo-cached/target/hello/content");
+		File cached = new File(asTest, ".todo-cached/target/hello");
 		assertEquals(cached + "\n", out());
 		assertEquals("", errIgnoringDebugLog());
 
@@ -238,8 +238,7 @@ public class Iwant3Test extends TestCase {
 
 		iwant3.evaluate(asTest, "target/modified-hello/as-path");
 
-		File cached = new File(asTest,
-				".todo-cached/target/modified-hello/content");
+		File cached = new File(asTest, ".todo-cached/target/modified-hello");
 		assertEquals(cached + "\n", out());
 		assertEquals("", errIgnoringDebugLog());
 

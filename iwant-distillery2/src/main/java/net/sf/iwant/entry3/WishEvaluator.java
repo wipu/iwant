@@ -6,17 +6,20 @@ import java.io.PrintWriter;
 
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.Target;
+import net.sf.iwant.api.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.io.StreamUtil;
 
-public class WishEvaluator {
+public class WishEvaluator implements TargetEvaluationContext {
 
 	private final OutputStream out;
 	private final File asSomeone;
+	private final File wsRoot;
 
-	public WishEvaluator(OutputStream out, File asSomeone) {
+	public WishEvaluator(OutputStream out, File asSomeone, File wsRoot) {
 		this.out = out;
 		this.asSomeone = asSomeone;
+		this.wsRoot = wsRoot;
 	}
 
 	public void iwant(String wish, IwantWorkspace ws) {
@@ -43,22 +46,54 @@ public class WishEvaluator {
 	}
 
 	public void content(Target target) {
-		StreamUtil.pipe(target.content(), out);
+		try {
+			refreshIngredients(target);
+			StreamUtil.pipe(target.content(this), out);
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException("Piping content failed", e);
+		}
 	}
 
-	public void asPath(Target target) {
-		File cachedTarget = new File(asSomeone, ".todo-cached/target/"
-				+ target.name());
-		Iwant.ensureDir(cachedTarget);
-		File cachedContent = new File(cachedTarget, "content");
+	private void refreshIngredients(Target target) {
+		for (Target ingredient : target.ingredients()) {
+			refreshCache(ingredient);
+		}
+	}
+
+	private File refreshCache(Target target) {
+		File cachedTarget = cacheLocation(target);
+		Iwant.ensureDir(cachedTarget.getParentFile());
 		try {
-			target.refreshTo(cachedContent);
+			return target.path(this);
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException("Refresh failed", e);
 		}
+	}
+
+	public void asPath(Target target) {
+		refreshIngredients(target);
+		File cachedContent = refreshCache(target);
 		PrintWriter wr = new PrintWriter(out);
 		wr.println(cachedContent);
 		wr.close();
+	}
+
+	private File cacheLocation(Target target) {
+		return new File(asSomeone, ".todo-cached/target/" + target.name());
+	}
+
+	@Override
+	public File freshPathTo(Target target) {
+		return cacheLocation(target);
+	}
+
+	@Override
+	public File wsRoot() {
+		return wsRoot;
 	}
 
 }

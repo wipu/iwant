@@ -9,18 +9,18 @@ import net.sf.iwant.io.StreamUtil;
 public class HelloTargetTest extends TestCase {
 
 	private IwantEntry3TestArea testArea;
-	private File cachedContent;
+	private TargetEvaluationContext ctx;
 
 	@Override
 	public void setUp() {
 		testArea = new IwantEntry3TestArea();
-		cachedContent = new File(testArea.root(), "content");
+		ctx = new TargetEvaluationContextMock(testArea);
 	}
 
-	public void testNullMessageContent() {
+	public void testNullMessageContent() throws Exception {
 		Target t = new HelloTarget("null", null);
 		try {
-			t.content();
+			t.content(ctx);
 			fail();
 		} catch (NullPointerException e) {
 			// expected
@@ -30,22 +30,22 @@ public class HelloTargetTest extends TestCase {
 	public void testNullMessageRefreshTo() throws Exception {
 		Target t = new HelloTarget("null", null);
 		try {
-			t.refreshTo(cachedContent);
+			t.path(ctx);
 			fail();
 		} catch (NullPointerException e) {
 			// expected
 		}
 	}
 
-	public void testNonNullMessageContent() {
+	public void testNonNullMessageContent() throws Exception {
 		Target t = new HelloTarget("non-null", "hello content");
-		assertEquals("hello content", StreamUtil.toString(t.content()));
+		assertEquals("hello content", StreamUtil.toString(t.content(ctx)));
 	}
 
-	public void testNonNullMessageRefreshTo() throws Exception {
+	public void testNonNullMessagePath() throws Exception {
 		Target t = new HelloTarget("non-null", "hello content");
 
-		t.refreshTo(cachedContent);
+		File cachedContent = t.path(ctx);
 
 		assertEquals("hello content", testArea.contentOf(cachedContent));
 	}

@@ -8,19 +8,24 @@ import java.util.List;
 import junit.framework.TestCase;
 import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
+import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
 
 public class WishEvaluatorTest extends TestCase {
 
 	private IwantEntry3TestArea testArea;
+	private File asSomeone;
+	private File wsRoot;
 	private ByteArrayOutputStream out;
 	private WishEvaluator evaluator;
 
 	@Override
 	public void setUp() {
 		testArea = new IwantEntry3TestArea();
+		asSomeone = testArea.newDir("as-" + getClass().getSimpleName());
+		wsRoot = testArea.newDir("wsroot");
 		out = new ByteArrayOutputStream();
-		evaluator = new WishEvaluator(out, testArea.root());
+		evaluator = new WishEvaluator(out, asSomeone, wsRoot);
 	}
 
 	private class Hello implements IwantWorkspace {
@@ -65,8 +70,7 @@ public class WishEvaluatorTest extends TestCase {
 
 		evaluator.iwant("target/hello/as-path", hello);
 
-		File cached = new File(testArea.root(),
-				".todo-cached/target/hello/content");
+		File cached = new File(asSomeone, ".todo-cached/target/hello");
 		assertEquals(cached + "\n", out.toString());
 		assertEquals("hello content", testArea.contentOf(cached));
 	}
@@ -88,8 +92,7 @@ public class WishEvaluatorTest extends TestCase {
 
 		evaluator.iwant("target/hello1/as-path", hellos);
 
-		File cached = new File(testArea.root(),
-				".todo-cached/target/hello1/content");
+		File cached = new File(asSomeone, ".todo-cached/target/hello1");
 		assertEquals(cached + "\n", out.toString());
 		assertEquals("content 1", testArea.contentOf(cached));
 	}
@@ -105,8 +108,7 @@ public class WishEvaluatorTest extends TestCase {
 
 		evaluator.iwant("target/hello2/as-path", hellos);
 
-		File cached = new File(testArea.root(),
-				".todo-cached/target/hello2/content");
+		File cached = new File(asSomeone, ".todo-cached/target/hello2");
 		assertEquals(cached + "\n", out.toString());
 		assertEquals("content 2", testArea.contentOf(cached));
 	}
@@ -124,6 +126,66 @@ public class WishEvaluatorTest extends TestCase {
 				"Hello from standalone target\n");
 		evaluator.content(target);
 		assertEquals("Hello from standalone target\n", out.toString());
+	}
+
+	// another target as ingredient
+
+	public void testStreamOfTargetThatUsesAnotherTargetStreamAsIngredient() {
+		Target ingredient = new HelloTarget("ingredient", "ingredient content");
+		Target target = new TargetThatNeedsAnotherAsStream("target", ingredient);
+		evaluator.content(target);
+		assertEquals("Stream using 'ingredient content' as ingredient",
+				out.toString());
+	}
+
+	public void testPathToTargetThatUsesAnotherTargetStreamAsIngredient() {
+		Target ingredient = new HelloTarget("ingredient", "ingredient content");
+		Target target = new TargetThatNeedsAnotherAsStream("target", ingredient);
+
+		evaluator.asPath(target);
+
+		File cached = new File(asSomeone, ".todo-cached/target/target");
+		assertEquals(cached + "\n", out.toString());
+		assertEquals("Stream using 'ingredient content' as ingredient",
+				testArea.contentOf(cached));
+	}
+
+	public void testStreamOfTargetThatUsesAnotherTargetPathAsIngredient() {
+		Target ingredient = new HelloTarget("ingredient", "ingredient content");
+		Target target = new TargetThatNeedsAnotherAsPath("target", ingredient);
+		evaluator.content(target);
+		assertEquals("Stream using 'ingredient content' as ingredient",
+				out.toString());
+	}
+
+	public void testPathToTargetThatUsesAnotherTargetPathAsIngredient() {
+		Target ingredient = new HelloTarget("ingredient", "ingredient content");
+		Target target = new TargetThatNeedsAnotherAsPath("target", ingredient);
+
+		evaluator.asPath(target);
+
+		File cached = new File(asSomeone, ".todo-cached/target/target");
+		assertEquals(cached + "\n", out.toString());
+		assertEquals("Stream using 'ingredient content' as ingredient",
+				testArea.contentOf(cached));
+	}
+
+	// source as ingredient
+
+	public void testStreamOfTargetThatUsesASourceStreamAsIngredient() {
+		testArea.hasFile("wsroot/src", "src content");
+		Target ingredient = Source.underWsroot("src");
+		Target target = new TargetThatNeedsAnotherAsStream("target", ingredient);
+		evaluator.content(target);
+		assertEquals("Stream using 'src content' as ingredient", out.toString());
+	}
+
+	public void testStreamOfTargetThatUsesASourcePathAsIngredient() {
+		testArea.hasFile("wsroot/src", "src content");
+		Target ingredient = Source.underWsroot("src");
+		Target target = new TargetThatNeedsAnotherAsPath("target", ingredient);
+		evaluator.content(target);
+		assertEquals("Stream using 'src content' as ingredient", out.toString());
 	}
 
 }

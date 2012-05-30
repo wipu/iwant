@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.List;
 
 import net.sf.iwant.io.StreamUtil;
 
@@ -28,15 +30,22 @@ public class HelloTarget implements Target {
 	}
 
 	@Override
-	public InputStream content() {
+	public List<Target> ingredients() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public InputStream content(TargetEvaluationContext ctx) {
 		return new ByteArrayInputStream(message.getBytes());
 	}
 
 	@Override
-	public void refreshTo(File cachedContent) throws Exception {
+	public File path(TargetEvaluationContext ctx) throws Exception {
+		File cachedContent = ctx.freshPathTo(this);
 		FileOutputStream out = new FileOutputStream(cachedContent);
-		StreamUtil.pipe(content(), out);
+		StreamUtil.pipe(content(ctx), out);
 		out.close();
+		return cachedContent;
 	}
 
 }

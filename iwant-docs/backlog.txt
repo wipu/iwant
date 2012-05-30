@@ -437,6 +437,21 @@
   + refactor: StreamUtil for prod and test
   + iwant2 tests the whole suite, not only Iwant3Test
   + descript & tdd: HelloTarget.refreshTo, so now either stream or file content
+  + get content of target that uses another target's stream
+    * green withouth changes!
+  + get content of target that uses another target's file
+    * reintroducing the concept of ingredients
+  + paths to the 2 previous targets
+  + target that uses source stream as ingredient
+  + target that uses source file as ingredient
+  - laziness: source is never cached
+  - laziness: file ingredient: if a file ingredient exists, refresh iff its descriptor matches
+  - laziness: handling of cached file if stream requested
+    - if ingredient says it's cheaper to regenerate stream and nobody needs file => delete file (saving uptodate check)
+    - if uptodate cached file exists, use it
+    - if oudated cached file exists
+      - only stream requested => delete cached file
+      - someone else needs as file => tee to file while streaming
   - delete old wish scripts at refresh
   - descript: modification of wsdef causes different output
   - move WsRootFinder to main src from test

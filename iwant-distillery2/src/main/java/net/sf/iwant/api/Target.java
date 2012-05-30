@@ -2,13 +2,19 @@ package net.sf.iwant.api;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 public interface Target {
 
 	String name();
 
-	InputStream content();
+	InputStream content(TargetEvaluationContext ctx) throws Exception;
 
-	void refreshTo(File cachedContent) throws Exception;
+	File path(TargetEvaluationContext ctx) throws Exception;
+
+	/**
+	 * TODO SortedSet
+	 */
+	List<Target> ingredients();
 
 }
