@@ -3,22 +3,31 @@ package net.sf.iwant.api;
 import java.io.File;
 
 import junit.framework.TestCase;
+import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.IwantNetworkMock;
 import net.sf.iwant.entry3.IwantEntry3TestArea;
 import net.sf.iwant.io.StreamUtil;
 
 public class HelloTargetTest extends TestCase {
 
 	private IwantEntry3TestArea testArea;
-	private TargetEvaluationContext ctx;
+	private TargetEvaluationContextMock ctx;
+	private IwantNetworkMock network;
+	private Iwant iwant;
+	private File cached;
 
 	@Override
 	public void setUp() {
 		testArea = new IwantEntry3TestArea();
-		ctx = new TargetEvaluationContextMock(testArea);
+		network = new IwantNetworkMock(testArea);
+		iwant = Iwant.using(network);
+		ctx = new TargetEvaluationContextMock(iwant);
+		cached = new File(testArea.root(), "cached");
 	}
 
 	public void testNullMessageContent() throws Exception {
 		Target t = new HelloTarget("null", null);
+		ctx.cachesAt(t, cached);
 		try {
 			t.content(ctx);
 			fail();
@@ -29,6 +38,7 @@ public class HelloTargetTest extends TestCase {
 
 	public void testNullMessageRefreshTo() throws Exception {
 		Target t = new HelloTarget("null", null);
+		ctx.cachesAt(t, cached);
 		try {
 			t.path(ctx);
 			fail();
@@ -44,10 +54,12 @@ public class HelloTargetTest extends TestCase {
 
 	public void testNonNullMessagePath() throws Exception {
 		Target t = new HelloTarget("non-null", "hello content");
+		ctx.cachesAt(t, cached);
 
-		File cachedContent = t.path(ctx);
+		File cachedAgain = t.path(ctx);
+		assertEquals(cached, cachedAgain);
 
-		assertEquals("hello content", testArea.contentOf(cachedContent));
+		assertEquals("hello content", testArea.contentOf(cachedAgain));
 	}
 
 }

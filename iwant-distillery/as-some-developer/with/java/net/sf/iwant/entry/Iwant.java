@@ -2,6 +2,7 @@ package net.sf.iwant.entry;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -235,34 +236,37 @@ public class Iwant {
 				new File[] { iwantBootstrapClasses }, iwant2Args);
 	}
 
-	private File iwantWsrootOfWishedVersion(File asSomeone) {
-		URL iwantLocation = iwantFrom(asSomeone);
-		File iwantWs = exportedFromSvn(iwantLocation);
-		return iwantWs;
-	}
-
-	private static URL iwantFrom(File asSomeone) {
+	File iwantWsrootOfWishedVersion(File asSomeone) {
 		try {
-			File iHave = new File(asSomeone, "i-have");
-			if (!iHave.exists()) {
-				iHave.mkdir();
-			}
-			File iwantFrom = new File(iHave, "iwant-from");
-			if (!iwantFrom.exists()) {
-				new FileWriter(iwantFrom).append("iwant-from=TODO\n").close();
-				throw new IwantException("I created " + iwantFrom
-						+ "\nPlease edit it and rerun me.");
-			}
-			Properties iwantFromProps = new Properties();
-			iwantFromProps.load(new FileReader(iwantFrom));
+			Properties iwantFromProps = iwantFromProperties(asSomeone);
 			URL iwantLocation = new URL(
 					iwantFromProps.getProperty("iwant-from"));
-			return iwantLocation;
+			boolean reExportNotNeeded = "false".equals(iwantFromProps
+					.getProperty("re-export"));
+			File iwantWs = exportedFromSvn(iwantLocation, !reExportNotNeeded);
+			return iwantWs;
 		} catch (IwantException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static Properties iwantFromProperties(File asSomeone)
+			throws IOException, FileNotFoundException {
+		File iHave = new File(asSomeone, "i-have");
+		if (!iHave.exists()) {
+			iHave.mkdir();
+		}
+		File iwantFrom = new File(iHave, "iwant-from");
+		if (!iwantFrom.exists()) {
+			new FileWriter(iwantFrom).append("iwant-from=TODO\n").close();
+			throw new IwantException("I created " + iwantFrom
+					+ "\nPlease edit it and rerun me.");
+		}
+		Properties iwantFromProps = new Properties();
+		iwantFromProps.load(new FileReader(iwantFrom));
+		return iwantFromProps;
 	}
 
 	private File iwantBootstrapperClasses(File iwantWs) {
@@ -511,7 +515,7 @@ public class Iwant {
 	/**
 	 * TODO create and reuse a fluent reusable file declaration library
 	 */
-	public static void ensureDir(File dir) {
+	public static File ensureDir(File dir) {
 		File parent = dir.getParentFile();
 		if (!parent.exists()) {
 			ensureDir(parent);
@@ -519,6 +523,7 @@ public class Iwant {
 		if (!dir.exists()) {
 			dir.mkdir();
 		}
+		return dir;
 	}
 
 	public static void del(File file) {
@@ -625,11 +630,17 @@ public class Iwant {
 		return network.svnkitUrl();
 	}
 
-	public File exportedFromSvn(URL url) {
+	public File exportedFromSvn(URL url, boolean reExportIfFile) {
 		try {
 			File exported = network.cacheLocation(new UnmodifiableUrl(url));
 			if (exported.exists()) {
 				if (isFile(url)) {
+					if (!reExportIfFile) {
+						debugLog("svn-exported",
+								"re-export disabled, skipping even though"
+										+ " remote is a file.");
+						return exported;
+					}
 					debugLog("svn-exported", "re-export needed,"
 							+ " remote is a file.");
 					del(exported);

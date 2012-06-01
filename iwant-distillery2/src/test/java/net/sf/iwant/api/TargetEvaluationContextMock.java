@@ -1,25 +1,50 @@
 package net.sf.iwant.api;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
-import net.sf.iwant.entry3.IwantEntry3TestArea;
+import net.sf.iwant.entry.Iwant;
 
 public class TargetEvaluationContextMock implements TargetEvaluationContext {
 
-	private final File cached;
+	private final Iwant iwant;
+	private File wsRoot;
+	private final Map<Target, File> cachedTargets = new HashMap<Target, File>();
 
-	public TargetEvaluationContextMock(IwantEntry3TestArea testArea) {
-		cached = testArea.newDir("mock-cached/target");
+	public TargetEvaluationContextMock(Iwant iwant) {
+		this.iwant = iwant;
+	}
+
+	private <T> T nonNull(T value, Object request) {
+		if (value == null) {
+			throw new IllegalStateException("You forgot to teach " + request
+					+ "\nto " + this);
+		}
+		return value;
 	}
 
 	@Override
 	public File wsRoot() {
-		throw new UnsupportedOperationException("TODO test and implement");
+		return nonNull(wsRoot, "wsRoot");
+	}
+
+	public void hasWsRoot(File wsRoot) {
+		this.wsRoot = wsRoot;
 	}
 
 	@Override
 	public File freshPathTo(Target target) {
-		return new File(cached, target.name());
+		return nonNull(cachedTargets.get(target), target);
+	}
+
+	public void cachesAt(Target target, File cachedTarget) {
+		cachedTargets.put(target, cachedTarget);
+	}
+
+	@Override
+	public Iwant iwant() {
+		return iwant;
 	}
 
 }

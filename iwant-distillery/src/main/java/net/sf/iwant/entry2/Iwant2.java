@@ -111,9 +111,13 @@ public class Iwant2 {
 
 	private static List<File> srcFilesOfPackageDir(File iwantWs,
 			String packagePath) {
-		List<File> srcFiles = new ArrayList<File>();
 		File packageDir = new File(iwantWs, packagePath);
-		File[] files = packageDir.listFiles();
+		return javaFilesUnder(packageDir);
+	}
+
+	public static List<File> javaFilesUnder(File dir) {
+		List<File> srcFiles = new ArrayList<File>();
+		File[] files = dir.listFiles();
 		Arrays.sort(files);
 		for (File file : files) {
 			if (isJavaSourceFile(file)) {

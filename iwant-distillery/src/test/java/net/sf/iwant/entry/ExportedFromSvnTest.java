@@ -28,7 +28,23 @@ public class ExportedFromSvnTest extends TestCase {
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
 		network.cachesUrlAt(remoteUrl, "svn-exported");
 
-		File exported = iwant.exportedFromSvn(remoteUrl);
+		File exported = iwant.exportedFromSvn(remoteUrl, true);
+
+		assertFalse(exported.equals(remote));
+		assertTrue(new File(exported, "iwant-distillery/src/main/java/"
+				+ "net/sf/iwant/entry2/Iwant2.java").exists());
+		assertTrue(new File(exported,
+				"iwant-distillery/as-some-developer/with/java/"
+						+ "net/sf/iwant/entry/Iwant.java").exists());
+	}
+
+	public void testExportIsDoneFromFileEvenWithoutReExportPermissionWhenLocalDoesNotExist() {
+		File remote = WsRootFinder.mockWsRoot();
+		URL remoteUrl = Iwant.fileToUrl(remote);
+		network.usesRealSvnkitUrlAndCacheAndUnzipped();
+		network.cachesUrlAt(remoteUrl, "svn-exported");
+
+		File exported = iwant.exportedFromSvn(remoteUrl, false);
 
 		assertFalse(exported.equals(remote));
 		assertTrue(new File(exported, "iwant-distillery/src/main/java/"
@@ -47,7 +63,25 @@ public class ExportedFromSvnTest extends TestCase {
 		new FileWriter(exportedFile).append("exported-content").close();
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exportedDir);
 
-		File exportedAgain = iwant.exportedFromSvn(remoteUrl);
+		File exportedAgain = iwant.exportedFromSvn(remoteUrl, true);
+
+		assertEquals(exportedDir.getCanonicalPath(),
+				exportedAgain.getCanonicalPath());
+
+		assertEquals("exported-content", testArea.contentOf(exportedFile));
+	}
+
+	public void testNothingIsExportedIfLocalFileExistsEvenWithReExportDisabled()
+			throws IOException {
+		// an url that is assumed to fail:
+		URL remoteUrl = new URL("http://nonexistent/not-to-be-accessed-by-"
+				+ getClass());
+		File exportedDir = testArea.newDir("exported");
+		File exportedFile = new File(exportedDir, "exported-file");
+		new FileWriter(exportedFile).append("exported-content").close();
+		network.cachesAt(new UnmodifiableUrl(remoteUrl), exportedDir);
+
+		File exportedAgain = iwant.exportedFromSvn(remoteUrl, false);
 
 		assertEquals(exportedDir.getCanonicalPath(),
 				exportedAgain.getCanonicalPath());
@@ -68,13 +102,37 @@ public class ExportedFromSvnTest extends TestCase {
 		new FileWriter(previouslyExportedFile).append("exported-content")
 				.close();
 
-		File exportedAgain = iwant.exportedFromSvn(remoteUrl);
+		File exportedAgain = iwant.exportedFromSvn(remoteUrl, true);
 
 		assertEquals(exported.getCanonicalPath(),
 				exportedAgain.getCanonicalPath());
 
 		assertFalse(previouslyExportedFile.exists());
 		assertTrue(new File(exportedAgain, "iwant-distillery/src/main/java/"
+				+ "net/sf/iwant/entry2/Iwant2.java").exists());
+	}
+
+	/**
+	 * Optimization for cases where the user knows what he's doing, like in
+	 * iwant descript
+	 */
+	public void testExportIsNotRedoneEvenIfUrlSchemeIsFileWhenReExportDisabled()
+			throws IOException {
+		File remote = WsRootFinder.mockWsRoot();
+		URL remoteUrl = Iwant.fileToUrl(remote);
+		File exported = testArea.newDir("exported");
+		network.cachesAt(new UnmodifiableUrl(remoteUrl), exported);
+		File previouslyExportedFile = new File(exported, "exported-file");
+		new FileWriter(previouslyExportedFile).append("exported-content")
+				.close();
+
+		File exportedAgain = iwant.exportedFromSvn(remoteUrl, false);
+
+		assertEquals(exported.getCanonicalPath(),
+				exportedAgain.getCanonicalPath());
+
+		assertTrue(previouslyExportedFile.exists());
+		assertFalse(new File(exportedAgain, "iwant-distillery/src/main/java/"
 				+ "net/sf/iwant/entry2/Iwant2.java").exists());
 	}
 

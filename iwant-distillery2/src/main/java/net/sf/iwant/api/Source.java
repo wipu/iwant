@@ -13,7 +13,7 @@ public class Source implements Target {
 		this.path = path;
 	}
 
-	public static Target underWsroot(String path) {
+	public static Source underWsroot(String path) {
 		return new Source(path);
 	}
 

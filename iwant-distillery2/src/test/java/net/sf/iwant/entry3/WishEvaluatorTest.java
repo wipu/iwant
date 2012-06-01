@@ -10,6 +10,8 @@ import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
+import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.IwantNetworkMock;
 
 public class WishEvaluatorTest extends TestCase {
 
@@ -18,14 +20,18 @@ public class WishEvaluatorTest extends TestCase {
 	private File wsRoot;
 	private ByteArrayOutputStream out;
 	private WishEvaluator evaluator;
+	private IwantNetworkMock network;
+	private Iwant iwant;
 
 	@Override
 	public void setUp() {
 		testArea = new IwantEntry3TestArea();
+		network = new IwantNetworkMock(testArea);
+		iwant = Iwant.using(network);
 		asSomeone = testArea.newDir("as-" + getClass().getSimpleName());
 		wsRoot = testArea.newDir("wsroot");
 		out = new ByteArrayOutputStream();
-		evaluator = new WishEvaluator(out, asSomeone, wsRoot);
+		evaluator = new WishEvaluator(out, asSomeone, wsRoot, iwant);
 	}
 
 	private class Hello implements IwantWorkspace {

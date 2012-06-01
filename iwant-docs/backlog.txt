@@ -444,6 +444,9 @@
   + paths to the 2 previous targets
   + target that uses source stream as ingredient
   + target that uses source file as ingredient
+  + JavaClasses
+  + optimization for descript: don't re-export file url if iwant-from contains re-export=false
+  - refactor: refresh ctx mock needs a lot of teaching in target tests
   - laziness: source is never cached
   - laziness: file ingredient: if a file ingredient exists, refresh iff its descriptor matches
   - laziness: handling of cached file if stream requested

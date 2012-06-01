@@ -168,6 +168,75 @@ public class IwantTest extends TestCase {
 				testArea.contentOf("as-test/i-have/iwant-from"));
 	}
 
+	public void testIwantIsSvnExportedWhenNotExported() throws Exception {
+		File asSomeone = testArea.newDir("as-test");
+		File iHave = testArea.newDir("as-test/i-have");
+		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
+		new FileWriter(new File(iHave, "iwant-from")).append(
+				"iwant-from=" + iwantFrom + "\n").close();
+
+		IwantNetworkMock network = new IwantNetworkMock(testArea);
+		network.usesRealSvnkitUrlAndCacheAndUnzipped();
+		File exportedWsRoot = network.cachesUrlAt(iwantFrom,
+				"exported-iwant-wsroot");
+
+		File exportedWsRootAgain = Iwant.using(network)
+				.iwantWsrootOfWishedVersion(asSomeone);
+		assertEquals(exportedWsRoot, exportedWsRootAgain);
+		assertTrue(new File(exportedWsRoot, "iwant-testrunner").exists());
+	}
+
+	/**
+	 * See the svn export test
+	 */
+	public void testExistingIwantIsSvnReExportedFromFile() throws Exception {
+		File asSomeone = testArea.newDir("as-test");
+		File iHave = testArea.newDir("as-test/i-have");
+		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
+		new FileWriter(new File(iHave, "iwant-from")).append(
+				"iwant-from=" + iwantFrom + "\n").close();
+
+		IwantNetworkMock network = new IwantNetworkMock(testArea);
+		network.usesRealSvnkitUrlAndCacheAndUnzipped();
+		File exportedWsRoot = network.cachesUrlAt(iwantFrom,
+				"exported-iwant-wsroot");
+		File preExisting = new File(exportedWsRoot, "existing");
+		preExisting.mkdirs();
+
+		File exportedWsRootAgain = Iwant.using(network)
+				.iwantWsrootOfWishedVersion(asSomeone);
+		assertEquals(exportedWsRoot, exportedWsRootAgain);
+
+		assertTrue(new File(exportedWsRoot, "iwant-testrunner").exists());
+		assertFalse(preExisting.exists());
+	}
+
+	/**
+	 * See the svn export test
+	 */
+	public void testExistingIwantIsNotSvnReExportedFromFileWhenToldNotTo()
+			throws Exception {
+		File asSomeone = testArea.newDir("as-test");
+		File iHave = testArea.newDir("as-test/i-have");
+		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
+		new FileWriter(new File(iHave, "iwant-from")).append(
+				"iwant-from=" + iwantFrom + "\nre-export=false\n").close();
+
+		IwantNetworkMock network = new IwantNetworkMock(testArea);
+		network.usesRealSvnkitUrlAndCacheAndUnzipped();
+		File exportedWsRoot = network.cachesUrlAt(iwantFrom,
+				"exported-iwant-wsroot");
+		File preExisting = new File(exportedWsRoot, "existing");
+		preExisting.mkdirs();
+
+		File exportedWsRootAgain = Iwant.using(network)
+				.iwantWsrootOfWishedVersion(asSomeone);
+		assertEquals(exportedWsRoot, exportedWsRootAgain);
+
+		assertFalse(new File(exportedWsRoot, "iwant-testrunner").exists());
+		assertTrue(preExisting.exists());
+	}
+
 	public void testIwantBootstrapsWhenNothingHasBeenDownloadedAndJustIwantFromIsGiven()
 			throws Exception {
 		File asSomeone = testArea.newDir("as-test");

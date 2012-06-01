@@ -15,11 +15,14 @@ public class WishEvaluator implements TargetEvaluationContext {
 	private final OutputStream out;
 	private final File asSomeone;
 	private final File wsRoot;
+	private final Iwant iwant;
 
-	public WishEvaluator(OutputStream out, File asSomeone, File wsRoot) {
+	public WishEvaluator(OutputStream out, File asSomeone, File wsRoot,
+			Iwant iwant) {
 		this.out = out;
 		this.asSomeone = asSomeone;
 		this.wsRoot = wsRoot;
+		this.iwant = iwant;
 	}
 
 	public void iwant(String wish, IwantWorkspace ws) {
@@ -94,6 +97,11 @@ public class WishEvaluator implements TargetEvaluationContext {
 	@Override
 	public File wsRoot() {
 		return wsRoot;
+	}
+
+	@Override
+	public Iwant iwant() {
+		return iwant;
 	}
 
 }
