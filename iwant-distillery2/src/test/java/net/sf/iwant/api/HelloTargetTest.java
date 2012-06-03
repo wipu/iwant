@@ -22,12 +22,12 @@ public class HelloTargetTest extends TestCase {
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		ctx = new TargetEvaluationContextMock(iwant);
-		cached = new File(testArea.root(), "cached");
+		cached = testArea.newDir("cached");
+		ctx.cachesModifiableTargetsAt(cached);
 	}
 
 	public void testNullMessageContent() throws Exception {
 		Target t = new HelloTarget("null", null);
-		ctx.cachesAt(t, cached);
 		try {
 			t.content(ctx);
 			fail();
@@ -38,7 +38,6 @@ public class HelloTargetTest extends TestCase {
 
 	public void testNullMessageRefreshTo() throws Exception {
 		Target t = new HelloTarget("null", null);
-		ctx.cachesAt(t, cached);
 		try {
 			t.path(ctx);
 			fail();
@@ -53,13 +52,11 @@ public class HelloTargetTest extends TestCase {
 	}
 
 	public void testNonNullMessagePath() throws Exception {
-		Target t = new HelloTarget("non-null", "hello content");
-		ctx.cachesAt(t, cached);
+		Target target = new HelloTarget("non-null", "hello content");
 
-		File cachedAgain = t.path(ctx);
-		assertEquals(cached, cachedAgain);
+		target.path(ctx);
 
-		assertEquals("hello content", testArea.contentOf(cachedAgain));
+		assertEquals("hello content", testArea.contentOf("cached/non-null"));
 	}
 
 }

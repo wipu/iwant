@@ -1,20 +1,26 @@
 package net.sf.iwant.api;
 
 import java.io.File;
-import java.io.InputStream;
-import java.util.List;
 
-public interface Target {
+public abstract class Target implements Path {
 
-	String name();
+	private final String name;
 
-	InputStream content(TargetEvaluationContext ctx) throws Exception;
+	public Target(String name) {
+		this.name = name;
+	}
 
-	File path(TargetEvaluationContext ctx) throws Exception;
+	@Override
+	public final String name() {
+		return name;
+	}
 
 	/**
-	 * TODO SortedSet
+	 * Override if really needed
 	 */
-	List<Target> ingredients();
+	@Override
+	public File cachedAt(CacheLocations cached) {
+		return new File(cached.modifiableTargets(), name());
+	}
 
 }

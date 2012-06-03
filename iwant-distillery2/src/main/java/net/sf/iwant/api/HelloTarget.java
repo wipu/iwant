@@ -9,19 +9,13 @@ import java.util.List;
 
 import net.sf.iwant.io.StreamUtil;
 
-public class HelloTarget implements Target {
+public class HelloTarget extends Target {
 
-	private final String name;
 	private final String message;
 
 	public HelloTarget(String name, String message) {
-		this.name = name;
+		super(name);
 		this.message = message;
-	}
-
-	@Override
-	public String name() {
-		return name;
 	}
 
 	@Override
@@ -30,7 +24,7 @@ public class HelloTarget implements Target {
 	}
 
 	@Override
-	public List<Target> ingredients() {
+	public List<Path> ingredients() {
 		return Collections.emptyList();
 	}
 
@@ -40,12 +34,11 @@ public class HelloTarget implements Target {
 	}
 
 	@Override
-	public File path(TargetEvaluationContext ctx) throws Exception {
+	public void path(TargetEvaluationContext ctx) throws Exception {
 		File cachedContent = ctx.freshPathTo(this);
 		FileOutputStream out = new FileOutputStream(cachedContent);
 		StreamUtil.pipe(content(ctx), out);
 		out.close();
-		return cachedContent;
 	}
 
 }

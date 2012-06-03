@@ -27,23 +27,22 @@ public class JavaClassesTargetTest extends TestCase {
 		ctx = new TargetEvaluationContextMock(iwant);
 		wsRoot = new File(testArea.root(), "wsRoot");
 		ctx.hasWsRoot(wsRoot);
-		cached = new File(testArea.root(), "classes");
+		cached = new File(testArea.root(), "cached");
+		ctx.cachesModifiableTargetsAt(cached);
 	}
 
 	public void testSrcDirIsAnIgredient() throws Exception {
-		Target src = Source.underWsroot("src");
+		Path src = Source.underWsroot("src");
 		Target target = new JavaClasses("classes", src);
 
 		assertTrue(target.ingredients().contains(src));
 	}
 
 	public void testCrapToPathFails() throws Exception {
-		File srcDir = Iwant.ensureDir(new File(ctx.wsRoot(), "src"));
+		File srcDir = Iwant.ensureDir(new File(wsRoot, "src"));
 		new FileWriter(new File(srcDir, "Crap.java")).append("crap").close();
 		Source src = Source.underWsroot("src");
-		ctx.cachesAt(src, srcDir);
 		Target target = new JavaClasses("crap", src);
-		ctx.cachesAt(target, cached);
 
 		try {
 			target.path(ctx);
@@ -54,17 +53,15 @@ public class JavaClassesTargetTest extends TestCase {
 	}
 
 	public void testValidToPathCompiles() throws Exception {
-		File srcDir = Iwant.ensureDir(new File(ctx.wsRoot(), "src"));
+		File srcDir = Iwant.ensureDir(new File(wsRoot, "src"));
 		new FileWriter(new File(srcDir, "Valid.java")).append("class Valid {}")
 				.close();
 		Source src = Source.underWsroot("src");
-		ctx.cachesAt(src, srcDir);
 		Target target = new JavaClasses("valid", src);
-		ctx.cachesAt(target, cached);
 
-		File classes = target.path(ctx);
-		assertEquals(ctx.freshPathTo(target), classes);
-		assertTrue(new File(classes, "Valid.class").exists());
+		target.path(ctx);
+
+		assertTrue(new File(cached, "valid/Valid.class").exists());
 	}
 
 }

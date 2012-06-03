@@ -6,9 +6,9 @@ import net.sf.iwant.entry.Iwant;
 
 public interface TargetEvaluationContext {
 
-	File wsRoot();
+	CacheLocations cached();
 
-	File freshPathTo(Target target);
+	File freshPathTo(Path path);
 
 	Iwant iwant();
 

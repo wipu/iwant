@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 
-public class Source implements Target {
+public class Source implements Path {
 
 	private final String path;
 
@@ -23,17 +23,22 @@ public class Source implements Target {
 	}
 
 	@Override
+	public File cachedAt(CacheLocations cached) {
+		return new File(cached.wsRoot(), name());
+	}
+
+	@Override
 	public InputStream content(TargetEvaluationContext ctx) throws Exception {
-		return new FileInputStream(path(ctx));
+		return new FileInputStream(ctx.freshPathTo(this));
 	}
 
 	@Override
-	public File path(TargetEvaluationContext ctx) throws Exception {
-		return new File(ctx.wsRoot(), path);
+	public void path(TargetEvaluationContext ctx) throws Exception {
+		// nothing to build for source
 	}
 
 	@Override
-	public List<Target> ingredients() {
+	public List<Path> ingredients() {
 		throw new UnsupportedOperationException("TODO test and implement");
 	}
 

@@ -1,16 +1,15 @@
 package net.sf.iwant.api;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.sf.iwant.entry.Iwant;
 
-public class TargetEvaluationContextMock implements TargetEvaluationContext {
+public class TargetEvaluationContextMock implements TargetEvaluationContext,
+		CacheLocations {
 
 	private final Iwant iwant;
 	private File wsRoot;
-	private final Map<Target, File> cachedTargets = new HashMap<Target, File>();
+	private File cachedModifiableTarget;
 
 	public TargetEvaluationContextMock(Iwant iwant) {
 		this.iwant = iwant;
@@ -33,18 +32,28 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext {
 		this.wsRoot = wsRoot;
 	}
 
-	@Override
-	public File freshPathTo(Target target) {
-		return nonNull(cachedTargets.get(target), target);
-	}
-
-	public void cachesAt(Target target, File cachedTarget) {
-		cachedTargets.put(target, cachedTarget);
+	public void cachesModifiableTargetsAt(File cachedTarget) {
+		this.cachedModifiableTarget = cachedTarget;
 	}
 
 	@Override
 	public Iwant iwant() {
 		return iwant;
+	}
+
+	@Override
+	public CacheLocations cached() {
+		return this;
+	}
+
+	@Override
+	public File modifiableTargets() {
+		return nonNull(cachedModifiableTarget, "cachedModifiableTarget");
+	}
+
+	@Override
+	public File freshPathTo(Path path) {
+		return path.cachedAt(this);
 	}
 
 }

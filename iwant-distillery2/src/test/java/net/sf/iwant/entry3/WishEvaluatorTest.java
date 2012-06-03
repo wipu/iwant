@@ -8,6 +8,7 @@ import java.util.List;
 import junit.framework.TestCase;
 import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
+import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.entry.Iwant;
@@ -180,7 +181,7 @@ public class WishEvaluatorTest extends TestCase {
 
 	public void testStreamOfTargetThatUsesASourceStreamAsIngredient() {
 		testArea.hasFile("wsroot/src", "src content");
-		Target ingredient = Source.underWsroot("src");
+		Path ingredient = Source.underWsroot("src");
 		Target target = new TargetThatNeedsAnotherAsStream("target", ingredient);
 		evaluator.content(target);
 		assertEquals("Stream using 'src content' as ingredient", out.toString());
@@ -188,7 +189,7 @@ public class WishEvaluatorTest extends TestCase {
 
 	public void testStreamOfTargetThatUsesASourcePathAsIngredient() {
 		testArea.hasFile("wsroot/src", "src content");
-		Target ingredient = Source.underWsroot("src");
+		Path ingredient = Source.underWsroot("src");
 		Target target = new TargetThatNeedsAnotherAsPath("target", ingredient);
 		evaluator.content(target);
 		assertEquals("Stream using 'src content' as ingredient", out.toString());

@@ -8,27 +8,22 @@ import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 
+import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TargetEvaluationContext;
 import net.sf.iwant.io.StreamUtil;
 
-class TargetThatNeedsAnotherAsStream implements Target {
+class TargetThatNeedsAnotherAsStream extends Target {
 
-	private final String name;
-	private final Target ingredient;
+	private final Path ingredient;
 
-	public TargetThatNeedsAnotherAsStream(String name, Target ingredient) {
-		this.name = name;
+	public TargetThatNeedsAnotherAsStream(String name, Path ingredient) {
+		super(name);
 		this.ingredient = ingredient;
 	}
 
 	@Override
-	public String name() {
-		return name;
-	}
-
-	@Override
-	public List<Target> ingredients() {
+	public List<Path> ingredients() {
 		return Collections.singletonList(ingredient);
 	}
 
@@ -42,12 +37,11 @@ class TargetThatNeedsAnotherAsStream implements Target {
 	}
 
 	@Override
-	public File path(TargetEvaluationContext ctx) throws Exception {
+	public void path(TargetEvaluationContext ctx) throws Exception {
 		File path = ctx.freshPathTo(this);
 		OutputStream out = new FileOutputStream(path);
 		StreamUtil.pipe(content(ctx), out);
 		out.close();
-		return path;
 	}
 
 }

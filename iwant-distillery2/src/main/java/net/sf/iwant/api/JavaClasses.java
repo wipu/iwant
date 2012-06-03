@@ -8,21 +8,15 @@ import java.util.List;
 
 import net.sf.iwant.entry2.Iwant2;
 
-public class JavaClasses implements Target {
+public class JavaClasses extends Target {
 
-	private final String name;
-	private final List<Target> ingredients;
-	private final Target srcDir;
+	private final List<Path> ingredients;
+	private final Path srcDir;
 
-	public JavaClasses(String name, Target srcDir) {
-		this.name = name;
+	public JavaClasses(String name, Path srcDir) {
+		super(name);
 		this.srcDir = srcDir;
 		this.ingredients = Arrays.asList(srcDir);
-	}
-
-	@Override
-	public String name() {
-		return name;
 	}
 
 	@Override
@@ -31,15 +25,15 @@ public class JavaClasses implements Target {
 	}
 
 	@Override
-	public File path(TargetEvaluationContext ctx) throws Exception {
+	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.freshPathTo(this);
 		List<File> javaFiles = Iwant2.javaFilesUnder(ctx.freshPathTo(srcDir));
 		List<File> classLocations = Collections.emptyList();
-		return ctx.iwant().compiledClasses(dest, javaFiles, classLocations);
+		ctx.iwant().compiledClasses(dest, javaFiles, classLocations);
 	}
 
 	@Override
-	public List<Target> ingredients() {
+	public List<Path> ingredients() {
 		return ingredients;
 	}
 

@@ -4,13 +4,15 @@ import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import net.sf.iwant.api.CacheLocations;
 import net.sf.iwant.api.IwantWorkspace;
+import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.io.StreamUtil;
 
-public class WishEvaluator implements TargetEvaluationContext {
+public class WishEvaluator {
 
 	private final OutputStream out;
 	private final File asSomeone;
@@ -51,7 +53,7 @@ public class WishEvaluator implements TargetEvaluationContext {
 	public void content(Target target) {
 		try {
 			refreshIngredients(target);
-			StreamUtil.pipe(target.content(this), out);
+			StreamUtil.pipe(target.content(new Ctx()), out);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -59,22 +61,23 @@ public class WishEvaluator implements TargetEvaluationContext {
 		}
 	}
 
-	private void refreshIngredients(Target target) {
-		for (Target ingredient : target.ingredients()) {
+	private void refreshIngredients(Path path) {
+		for (Path ingredient : path.ingredients()) {
 			refreshCache(ingredient);
 		}
 	}
 
-	private File refreshCache(Target target) {
-		File cachedTarget = cacheLocation(target);
+	private File refreshCache(Path path) {
+		File cachedTarget = path.cachedAt(new Ctx());
 		Iwant.ensureDir(cachedTarget.getParentFile());
 		try {
-			return target.path(this);
+			path.path(new Ctx());
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException("Refresh failed", e);
 		}
+		return cachedTarget;
 	}
 
 	public void asPath(Target target) {
@@ -85,23 +88,37 @@ public class WishEvaluator implements TargetEvaluationContext {
 		wr.close();
 	}
 
-	private File cacheLocation(Target target) {
-		return new File(asSomeone, ".todo-cached/target/" + target.name());
+	private File cachedModifiable() {
+		return new File(asSomeone, ".todo-cached/target");
 	}
 
-	@Override
-	public File freshPathTo(Target target) {
-		return cacheLocation(target);
-	}
+	private class Ctx implements TargetEvaluationContext, CacheLocations {
 
-	@Override
-	public File wsRoot() {
-		return wsRoot;
-	}
+		@Override
+		public CacheLocations cached() {
+			return this;
+		}
 
-	@Override
-	public Iwant iwant() {
-		return iwant;
+		@Override
+		public Iwant iwant() {
+			return iwant;
+		}
+
+		@Override
+		public File modifiableTargets() {
+			return cachedModifiable();
+		}
+
+		@Override
+		public File wsRoot() {
+			return wsRoot;
+		}
+
+		@Override
+		public File freshPathTo(Path path) {
+			return path.cachedAt(this);
+		}
+
 	}
 
 }
