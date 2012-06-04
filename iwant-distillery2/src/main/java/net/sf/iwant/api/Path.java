@@ -19,4 +19,6 @@ public interface Path {
 	 */
 	List<Path> ingredients();
 
+	String contentDescriptor();
+
 }

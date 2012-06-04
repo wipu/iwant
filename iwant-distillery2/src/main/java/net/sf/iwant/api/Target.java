@@ -23,4 +23,9 @@ public abstract class Target implements Path {
 		return new File(cached.modifiableTargets(), name());
 	}
 
+	@Override
+	public final String toString() {
+		return name();
+	}
+
 }

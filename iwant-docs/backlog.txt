@@ -452,7 +452,14 @@
   (+ laziness: source is never cached)
   + refactor: interface Target->Path, Path is a superclass for targets, provides name
   + refactor: target superclass provides cache location
-  - laziness: file ingredient: if a file ingredient exists, refresh iff its descriptor matches
+  - laziness of file refresh
+    + as path twice => second causes no refresh
+    + descriptor changes, no other changes => refresh
+    - ingredient changed => refresh
+  - optimization: don't even write descriptor for source
+  - unmodifiable target is cached under user-global cache
+  - unmodifiable target descriptor is also under user-global cache
+  - wishevaluator aspath returns File, not prints
   - laziness: handling of cached file if stream requested
     - if ingredient says it's cheaper to regenerate stream and nobody needs file => delete file (saving uptodate check)
     - if uptodate cached file exists, use it

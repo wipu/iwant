@@ -19,11 +19,6 @@ public class HelloTarget extends Target {
 	}
 
 	@Override
-	public String toString() {
-		return name();
-	}
-
-	@Override
 	public List<Path> ingredients() {
 		return Collections.emptyList();
 	}
@@ -39,6 +34,11 @@ public class HelloTarget extends Target {
 		FileOutputStream out = new FileOutputStream(cachedContent);
 		StreamUtil.pipe(content(ctx), out);
 		out.close();
+	}
+
+	@Override
+	public String contentDescriptor() {
+		return getClass().getCanonicalName() + ":" + message;
 	}
 
 }

@@ -1,6 +1,9 @@
 package net.sf.iwant.entry3;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
@@ -18,6 +21,7 @@ public class WishEvaluator {
 	private final File asSomeone;
 	private final File wsRoot;
 	private final Iwant iwant;
+	private final Ctx ctx;
 
 	public WishEvaluator(OutputStream out, File asSomeone, File wsRoot,
 			Iwant iwant) {
@@ -25,6 +29,7 @@ public class WishEvaluator {
 		this.asSomeone = asSomeone;
 		this.wsRoot = wsRoot;
 		this.iwant = iwant;
+		this.ctx = new Ctx();
 	}
 
 	public void iwant(String wish, IwantWorkspace ws) {
@@ -53,7 +58,7 @@ public class WishEvaluator {
 	public void content(Target target) {
 		try {
 			refreshIngredients(target);
-			StreamUtil.pipe(target.content(new Ctx()), out);
+			StreamUtil.pipe(target.content(ctx), out);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -68,10 +73,15 @@ public class WishEvaluator {
 	}
 
 	private File refreshCache(Path path) {
-		File cachedTarget = path.cachedAt(new Ctx());
+		File cachedTarget = path.cachedAt(ctx);
+		if (!needsRefreshing(path)) {
+			return cachedTarget;
+		}
 		Iwant.ensureDir(cachedTarget.getParentFile());
 		try {
-			path.path(new Ctx());
+			path.path(ctx);
+			String newDescriptor = path.contentDescriptor();
+			new FileWriter(descriptorFile(path)).append(newDescriptor).close();
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -80,7 +90,40 @@ public class WishEvaluator {
 		return cachedTarget;
 	}
 
-	public void asPath(Target target) {
+	boolean needsRefreshing(Path path) {
+		try {
+			File cachedTarget = path.cachedAt(ctx);
+			if (!cachedTarget.exists()) {
+				return true;
+			}
+			// TODO how to handle Source here
+			File descriptorFile = descriptorFile(path);
+			if (!descriptorFile.exists()) {
+				return true;
+			}
+			String cachedDescriptor = StreamUtil.toString(new FileInputStream(
+					descriptorFile));
+			String currentDescriptor = path.contentDescriptor();
+			if (!cachedDescriptor.equals(currentDescriptor)) {
+				return true;
+			}
+			return false;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private File descriptorFile(Path path) {
+		return new File(cachedDescriptors(), path.name());
+	}
+
+	private File cachedDescriptors() {
+		File descriptors = new File(asSomeone, ".todo-cached/descriptor");
+		Iwant.ensureDir(descriptors);
+		return descriptors;
+	}
+
+	public void asPath(Path target) {
 		refreshIngredients(target);
 		File cachedContent = refreshCache(target);
 		PrintWriter wr = new PrintWriter(out);

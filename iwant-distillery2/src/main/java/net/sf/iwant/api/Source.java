@@ -42,4 +42,9 @@ public class Source implements Path {
 		throw new UnsupportedOperationException("TODO test and implement");
 	}
 
+	@Override
+	public String contentDescriptor() {
+		return null;
+	}
+
 }

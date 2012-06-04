@@ -37,4 +37,9 @@ public class JavaClasses extends Target {
 		return ingredients;
 	}
 
+	@Override
+	public String contentDescriptor() {
+		throw new UnsupportedOperationException("TODO test and implement");
+	}
+
 }

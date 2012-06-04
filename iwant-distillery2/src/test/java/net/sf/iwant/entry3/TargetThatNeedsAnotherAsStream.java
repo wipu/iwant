@@ -44,4 +44,9 @@ class TargetThatNeedsAnotherAsStream extends Target {
 		out.close();
 	}
 
+	@Override
+	public String contentDescriptor() {
+		return getClass().getCanonicalName() + ":" + ingredient;
+	}
+
 }
