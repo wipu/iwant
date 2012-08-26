@@ -211,10 +211,28 @@
     - modify bootstrapping tutorials
     - clean up the other bootstrapper story
 
+- As @buildscriptauthor I want to make iwant generate eclipse settings so it will be easier for me to modify workspacedef
+  * new concept: side-effect
+  - descript: before editing wsdef issue iwant/side-effect/eclipse-settings/effective
+  - generate the wish script
+  - descript: ls .../wsdef/...{.project,.classpath}
+  - iwant obeys the wish by touching the files (descript green here)
+  - tdd it to work properly
+    - wish scripts for side-effects, not only targets
+    - example wsdef provides eclipse-settings side-effect
+    - remove hard-coded wish script generation
+    - eclipse-settings delegates to a generator
+    - new module for generator
+    - wish script calls iwant, which calls side-effect, which calls generator
+  - manually try the settings work in real eclipse, in a proto project
 
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptauthor and @buildscriptuser I want to declare to iwant I use eclipse so it will automatically make the side-effect of fresh eclipse settings effective when running anything
+  - design good ui
+  * don't do this if it's possible to break compilation in eclipse so it's difficult to fix it back
 
 - As @developer I want stories from the "in progress" section of the old backlog so I don't lose good ideas
 
