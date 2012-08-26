@@ -233,6 +233,7 @@
 - As @buildscriptauthor and @buildscriptuser I want to declare to iwant I use eclipse so it will automatically make the side-effect of fresh eclipse settings effective when running anything
   - design good ui
   * don't do this if it's possible to break compilation in eclipse so it's difficult to fix it back
+    - option: just do it after successful refreshes
 
 - As @developer I want stories from the "in progress" section of the old backlog so I don't lose good ideas
 
