@@ -214,8 +214,8 @@
 - As @buildscriptauthor I want to make iwant generate eclipse settings so it will be easier for me to modify workspacedef
   * new concept: side-effect
   + descript: before editing wsdef issue iwant/side-effect/eclipse-settings/effective
-  - generate the wish script
-  - descript: ls .../wsdef/...{.project,.classpath}
+  + generate the wish script (and list-of)
+  + descript: ls .../wsdef/...{.project,.classpath}
   - iwant obeys the wish by touching the files (descript green here)
   - tdd it to work properly
     - wish scripts for side-effects, not only targets

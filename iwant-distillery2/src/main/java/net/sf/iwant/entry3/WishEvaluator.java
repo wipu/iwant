@@ -41,6 +41,12 @@ public class WishEvaluator {
 			wr.close();
 			return;
 		}
+		if ("list-of/side-effects".equals(wish)) {
+			PrintWriter wr = new PrintWriter(out);
+			wr.println("eclipse-settings");
+			wr.close();
+			return;
+		}
 		for (Target target : ws.targets()) {
 			if (wish.equals("target/" + target.name() + "/as-path")) {
 				asPath(target);
@@ -50,6 +56,12 @@ public class WishEvaluator {
 				content(target);
 				return;
 			}
+		}
+		if ("side-effect/eclipse-settings/effective".equals(wish)) {
+			PrintWriter wr = new PrintWriter(out);
+			wr.println("todo implement");
+			wr.close();
+			return;
 		}
 		throw new IllegalArgumentException("Illegal wish: " + wish
 				+ "\nlegal targets:" + ws.targets());

@@ -142,12 +142,21 @@ public class Iwant3Test extends TestCase {
 	public void testIwant3AlsoCreatesWishScriptsForExampleWsDef()
 			throws Exception {
 		testMissingWsdefCausesFriendlyFailureAndExampleCreation();
+		// targets:
 		assertTrue(testArea
 				.contentOf("as-test/with/bash/iwant/list-of/targets")
 				.startsWith("#!/bin/bash\n"));
 		assertTrue(testArea.contentOf(
 				"as-test/with/bash/iwant/target/hello/as-path").startsWith(
 				"#!/bin/bash\n"));
+		// side-effects:
+		assertTrue(testArea.contentOf(
+				"as-test/with/bash/iwant/list-of/side-effects").startsWith(
+				"#!/bin/bash\n"));
+		assertTrue(testArea
+				.contentOf(
+						"as-test/with/bash/iwant/side-effect/eclipse-settings/effective")
+				.startsWith("#!/bin/bash\n"));
 	}
 
 	public void testListOfTargetsOfExampleWsDef() throws Exception {
@@ -158,6 +167,17 @@ public class Iwant3Test extends TestCase {
 		iwant3.evaluate(asTest, "list-of/targets");
 
 		assertEquals("hello\n", out());
+		assertEquals("", errIgnoringDebugLog());
+	}
+
+	public void testListOfSideEffectsOfExampleWsDef() throws Exception {
+		Iwant.fileLog("jep");
+		testMissingWsdefCausesFriendlyFailureAndExampleCreation();
+		startOfOutAndErrCapture();
+
+		iwant3.evaluate(asTest, "list-of/side-effects");
+
+		assertEquals("eclipse-settings\n", out());
 		assertEquals("", errIgnoringDebugLog());
 	}
 
@@ -226,6 +246,18 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", errIgnoringDebugLog());
 
 		assertEquals("hello from iwant", testArea.contentOf(cached));
+	}
+
+	public void testSideEffectEclipseSettingsEffectiveOfExampleWsDef()
+			throws Exception {
+		testMissingWsdefCausesFriendlyFailureAndExampleCreation();
+		startOfOutAndErrCapture();
+
+		iwant3.evaluate(asTest, "side-effect/eclipse-settings/effective");
+
+		assertEquals("todo implement\n", out());
+		assertEquals("", errIgnoringDebugLog());
+		// TODO assert file get created
 	}
 
 	public void testTargetModifiedHelloAsPathOfModifiedWsDef() throws Exception {

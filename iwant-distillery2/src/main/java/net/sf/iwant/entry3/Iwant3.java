@@ -49,7 +49,8 @@ public class Iwant3 {
 		WsInfo wsInfo = parseWsInfo(wsInfoFile);
 		if (!wsInfo.wsdefJava().exists()) {
 			createExampleWsdefJava(wsInfo);
-			refreshWishScripts(asSomeone, Arrays.asList("hello"));
+			refreshWishScripts(asSomeone, Arrays.asList("hello"),
+					Arrays.asList("eclipse-settings"));
 			throw new IwantException("I created " + wsInfo.wsdefJava()
 					+ "\nPlease edit it and rerun me.");
 		}
@@ -86,7 +87,8 @@ public class Iwant3 {
 	}
 
 	private static void refreshWishScripts(File asSomeone, IwantWorkspace wsDef) {
-		refreshWishScripts(asSomeone, wsDef.targets());
+		refreshWishScripts(asSomeone, wsDef.targets(),
+				Arrays.asList("eclipse-settings"));
 	}
 
 	private static Class<?> loadClass(ClassLoader parent, String className,
@@ -115,11 +117,17 @@ public class Iwant3 {
 		return new File(iHave, ".cached");
 	}
 
-	private static void refreshWishScripts(File asSomeone, Collection<?> targets) {
+	private static void refreshWishScripts(File asSomeone,
+			Collection<?> targets, Collection<?> sideEffects) {
 		File withBashIwant = new File(asSomeone, "with/bash/iwant");
 		createWishScript(withBashIwant, "list-of/targets");
 		for (Object target : targets) {
 			createWishScript(withBashIwant, "target/" + target + "/as-path");
+		}
+		createWishScript(withBashIwant, "list-of/side-effects");
+		for (Object sideEffect : sideEffects) {
+			createWishScript(withBashIwant, "side-effect/" + sideEffect
+					+ "/effective");
 		}
 	}
 
