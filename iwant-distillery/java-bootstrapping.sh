@@ -20,7 +20,13 @@ cmde "1" "as-distillery-developer/with/bash/iwant/help.sh"
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
 cmde "0" "as-distillery-developer/with/bash/iwant/target/hello/as-path"
 
-p "First edit of ws"
+p "Before we try editing the wsdef, we'll tell iwant to generate eclipse settings."
+
+cmde 127 "as-distillery-developer/with/bash/iwant/list-of/side-effects"
+cmde 127 "as-distillery-developer/with/bash/iwant/side-effect/eclipse-settings/effective"
+cmde 2 "ls as-distillery-developer/{.project,.classpath}"
+
+p "Now we can import the project to eclipse (don't copy it to the workspace!) and try our first edit."
 edit as-distillery-developer/i-have/wsdef/com/example/wsdef/Workspace.java "1st-edit" < \
   "$LOCAL_IWANT_WSROOT/iwant-tutorial-wsdefs/0-modified-hello/com/example/wsdef/Workspace.java"
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
