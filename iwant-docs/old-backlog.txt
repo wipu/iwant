@@ -1,0 +1,399 @@
+#################################################################
+= Done
+#################################################################
+
++ As a @developer I want this backlog on the @website so it serves as a simple status, feature and plan documentation
+
++ As a @developer I want to start using iwant as soon as possible on the @cli level
+  + stage 0: "as shell user i want to use iwant"
+  + stage 1: "as iwant user i want to use iwant on iwant"
+  + website (static) refresh, deploy and tag
+  + implement the simplest possible bootstrap for generating a descript document
+  * possibly no java needed at this stage
+
++ As a @developer I want to be able to drive the @cli by documentation, starting from step zero
+  + use descript
+  + publish
+
++ As a @developer I want all error lines shown in the descript document
+  * Only the second line of the error message about missing MAGICHEADER is shown
+  + don't echo > /dev/stderr but >> /dev/stderr, because descript redirects to a _file_
+
++ As a @buildscriptauthor I want an error message if and only if I try to start using iwant on an invalid workspace definition
+
++ As a @buildscriptuser I want a list of targets defined in the workspace
+  * iwant/as-X-developer/list-of/targets
+  * flat target namespace
+
++ As a @buildscriptuser I want the shell target scripts updated when I request a list of targets
+
++ As a @buildscriptauthor I want to define a target file with constant string content and get a path to it
+
++ As a @buildscriptauthor I want that my changes to the workspace definition are effective automatically (automatic compilation)
+  + this not only works during as-iwant-user/to-use-iwant-on
+
++ As a @buildscriptuser I want a fresh java classes directory even if its sources have been touched
+
++ As a @buildscriptauthor and @buildscriptuser I want fresh java classes even if its dependencies have been touched
+
++ As a @buildscriptauthor and @buildscriptuser I want to get a junit test result as path, be it failure or success
+  + path to stdout always, error notification to stderr
+  + exit status is zero even if tests fail
+
++ As a @buildscriptuser I don't want a target refreshed if it sources are not newer than it
+  * missing src <=> sources modified
+  * directories are always treated as single entitites: their modification
+    time is always the max of their content
+
++ As a @buildscriptuser I want a target refreshed if its content definition has changed, even if its sources have not been touched
+
++ As a @buildscriptauthor and @buildscriptuser I want to use slashes in my target names so I can organize and find them easier
+  + create cache and content descriptor directories before refreshing
+  + target detection is now dedicated to a unittested PathDigger
+  + a target is now referred by its name (without cache dir), not the
+    name of the method that defines it
+  * only JUnit-tested, not descripted
+
++ As a @developer I want to use a different path to descript for tutorial generation
+  * currently it's too expensive to robustly depend on it, maybe later, after full bootstrapping,
+    this can easily be done properly
+  + just change the hardcoded path from $wsroot/../../svn/trunk -> $wsroot/../ngrease
+
++ As a @buildscriptauthor I want a target content downloaded from an url and verified by md5
+  + download if and only if cached copy missing
+  + fail after download if and only if md5 mismatches
+  + test that download is tried again after a failed effort (automatic cache invalidation)
+  + test that cache md5 is not verified afterwards, this is different from many shell scripts
+    (of mine and others) but consistent with the way iwant handles other types of targets
+  + descript depending to a downloaded library from java classes
+
++ As @developer I want iwant tests to at least sleep a shorter time to test timestamp-based features, if ant tasks make it impossible to mock time
+  * 2000ms -> 10ms, seems to work
+
++ As a @buildscriptauthor I want to svn export an iwant bootstrapper that will guide me to bootstrap iwant from a given source (src-url or svn revision) and form the wishdir root for the ws
+  * the bootstrapper will be named iwant/help.sh (under as-x-developer)
+  * help.sh=>iwant-version.conf created; edit it and rerun help.sh=>bootstrap
+  + local descript tutorial
+    + copy bootstrapper from local dir instead of svn exporting
+      * don't copy its cache
+    + descript bootstrapping by using the local iwant
+  + real svn export
+    + temporarily run local descript with real svn export
+  + after commiting bootstrapper: real descript tutorial
+    + svn export bootstrapper
+    + descript bootstrapper
+  + clean descript outputs and assert them
+
++ As a @developer I want the long sleep back, since the shorter sleep causes a test failure occasionally (WorkspaceBuilderTest.java line 376)
+
++ As a @buildscriptuser I want a target "eclipse-projects" in the stub that generates eclipse .project and .classpath for the wsdef project
+  + descript
+    + existence of the target
+    + that it creates the correct files
+  + content EclipseProjects, using .classpath and .project content from EclipseProject
+    + use absolute paths to link to the actual project sources,
+      eclipse requires this since it's outside the project dir
+    + absolute paths for libs
+    * these are not properly tested, since the test gives WorkspaceBuilder absolute paths, but these things will be improved by future stories about absolute/relative
+  + real use (in the gluent project) and publish
+    + fix wsdef src path
+    + publish
+
++ As a @buildscriptauthor I want to delegate actual workspace definition to a second phase so I can use 3rd party code in its own definition.
+  + descript
+  + test
+  + impl  
+
++ As a @buildscriptauthor I want to use SHA to verify integrity of downloaded files
+      
++ As a @buildscriptauthor I want iwant to automatically rebootstrap itself when I make any wish after I have changed iwant-version.conf
+  * descript by upgrading after demoing that some new feature doesn't work with an older iwant version
+  ? how to do in local tutorial?
+    * svn co an older revision in local cache just for this?
+  + make bootstrapper help.sh cache the iwant-from.conf and compare it to see
+    if fetch is needed
+  + make normal wish scripts do the same check
+    + implement (test later, since requires real commits)
+      * kiss: just call iwant/help.sh, redirecting output
+      + handle abs/relative paths (a bit) better in help.sh
+    + descript with the non-local tutorial
+      + first bootstrap an older version
+      + try to use a new feature (Downloaded.sha), expect failure
+      + upgrade iwant version, retry and expect success
+
++ As a @buildscriptauthor I want my eclipse settings automatically updated when I touch the workspace definition
+  + prototype eclipse ant builder in the gluent project
+  + test and implement generation of it
+  + ant targets for selected public iwant targets
+  + use in gluent to verify
+
++ As a @buildscriptuser I want target paths to be output as absolute, to make them more useful externally
+  * when using "target/X/as-path", not ".../as-rel-path"
+
++ As a @buildscriptauthor I want to define a target content with a shell script so I can utilize tools that are not available for the JVM
+  + descript and test
+  + make iwant provide a RefreshEnvironment that not only provides the destination File but also a temporary directory, if needed
+  + run the script in the temporary directory
+  + print summary of the script's stdout and stderr to stderr
+
++ As a @contentauthor I want the misleading sources/dependencies separation replaced with a simpler concept: ingredients
+  * sources doesn't mean the paths are necessarily of type Source
+  * instead they mean their timestamps determine needsRefreshing
+  * this is unnecessary (until proven otherwise): a target needs refreshing when any of its
+    ingredients (paths it refers or _may_ refer to during refresh) has been touched
+  * dependencies are just ingredients of type Target i.e. possibly needing refreshing
+  + do it
+  + fix tutorial
+
++ As a @buildscriptdeveloper I want the Target class parameterized by its Content so I can use methods from the content, like classpath from JavaClasses
+  + add generics to
+    + Target
+    + builder for it
+  + tutorial to use generics
+  + stub workspace to use generics
+    + impl
+    (- test/fix tutorial after commit)
+       * local bootstrapper was used, after all; it was
+         a descript bug (unescaped < in the command output)
+
++ As a @buildscriptauthor I want content concatenated from content of other Paths or String or byte[] literals
+  * this is important for dynamic scripts that use other paths as ingredients
+  + test and implement
+  * not descripting in tutorial, this is really nothing new
+
++ As a @developer I want Locations out of Paths so they will be easier to use embedded, for example in tests
+  * name returns the relative path, asAbsolutePath is abstract and takes Locations as parameter 
+
++ As a @developer I want even the strictest generics-related eclipse warnings fixed so I can use generics more efficiently
+
++ As a @developer I want to replace the ngrease-based descript with the new standalone descript so I can start document-driving ant bootstrapping more easily
+
++ As a @buildscriptauthor I want to use ant to bootstrap iwant so I can take it into use in a project where not everybody chooses bash
+  * delegate as much as possible to "phase 2" exported from actual iwant
+  + empty descript article "Bootstrapping with ant"
+  + local version
+    + copy bootstrap phase 1
+    + run to generate iwant-from
+    + run to read incorrect iwant-from
+    + run to read correct iwant-from
+    + download svnkit if not downloaded
+    + make the caller cache it and copy to place to avoid downloading
+    + modify dir structure so ant and bash users will share iwant/cached
+      * as-example-developer/{iw,iwant,i-have}
+    + svn export (ignoring rev) iwant-src
+    + delegate to phase2
+    + download jars
+    + share "cached unmodifiable" (use the same for the optimization above)
+      and use it to optimize jars
+      + phase1 uses default when not set
+      + phase2 requires it from phase1
+    + compile iwant-classes and test-classes
+    + write and delegate to "Phase3.class"
+      (- run tests: not yet, see a dedicated story)
+      * it's called Iwant.class
+      + create bin: just an ant path for ext-jars at this stage
+      + call bin to continue bootstrapping
+      + create wsdef-info from Iwant.class
+        + fix file content assertion: don't use BufferedReader.readLine, it
+          won't detect missing trailing newline
+      + don't print stacktrace but still fail
+        * System.exit probably needed
+      + read wsdef-into
+      + generate example Workspace
+      + work from then on
+        + print usage help when target wish is missing
+        + refresh wished target
+          + create and refresh wsDefClasses Target
+            + use builtins in classpath
+              + build iwant-lib
+              + pass iwant-lib to Iwant.class
+              + put it and all relevant paths to Locations
+          + refresh as NextPhase
+          + missing target => make NextPhase forked java throw
+        + list-of/targets
+          * just set the wish in phase1.xml
+
++ As @developer I want sleep forged by moving testarea timestamps back so tests are faster
+
++ As eclipse user I want my eclipse environment creator script shared as part of iwant so I and my colleagues can use it anywhere and I can later integrate it with iwant
+
++ As a @developer I want a fixed version of descript that escapes "<" correctly in editor and console divs
+  + first just a workaround sed hack in the script that generates the tutorial
+  + then the real thing
+  * marked done afterwards
+
++ As @developer I want help.sh (bash bootstrapper phase1) to delegate most work to the ant script so I can start gettin rid of a lot of legacy scripts
+  + new bootstrap tutorial for driving
+    * the tutorial wish script creation is very redundant but will be replaced with real iwant target later so it's ok
+    + source the ant tutorial
+    + hello from help.sh
+  + first just use os-provided ant
+  + abstract descripted cli so bash tutorial can override ant tutorial
+  + simply cd to iw and call ant
+    + first two calls
+    + all calls
+  + document both clis in both bootstrapping tutorials
+  + "abusing internals" cli for bash
+    + pass -D/target/... to ant
+    + when refreshing targets, make sure only path to cached goes to stdout
+      + hack: use sysprop to tell java layer to prefix all relevant output so the bash cli can filter non-prefixes output and redirect by prefix (out/err)
+  + (don't clear the "optimization cache" in the old deprecated "paranoia build" refresh.sh)
+  + generate wish scripts in "Phase3" to make bash cli work again properly
+    + bootstrap descript: list and use them
+    + tests (also for scenarios where the scripts are not touched)
+    + refresh list-of/targets, use it
+    + use print prefix in tests to make sure they don't break the list of targets
+  + mention both clis in the help output
+    + bugfix: colon broke the old awk script in help.sh, replaced with more robust stream splitting
+
++ As @buildscriptauthor (especially iwant @developer wanting to bootstrap) I want bootstrapping cli's in a different directory than i-have so that I can svn:external the former and version the latter
+  * as-someone/with/{ant,bash}
+
++ As eclipse user I want new-eclipse-env.sh to use the "r=1" trick (documented in eclise bug #359826) for load balancing of downloads
+
++ As @buildscriptuser I want iwant to stream stderr in realtime when refreshing a target (e.g. script running descript) so I can track its progress and debug the script
+  + implement for ScriptGeneratedContent and change tests (merge out and err and no more headers in output)
+  + implement for NextPhase etc
+  + test manually to make sure it really streams (tests don't test that)
+    * exec seems to buffer and output the stream in bursts, see a later story
+
++ bugfix: As @developer I want internal errors prefixed too, so users can report them
+  + catch Exception, not only IwantException, and print prefixed
+
++ As a @buildscriptauthor I want the bootstrapper to svn:ignore all directories it generates so I won't see any local changes there
+  + as-iwant-user target cached list-of
+  + test in a real project this is enough
+
++ bugfix: delete java classes dir before compilation, otherwise some timestamps are not touched and the dir is always not fresh
+  + test with a script that just mkdirs
+    because currently localWebsite fails on 2nd run because it does not rm the dir first
+    => seems that this is a universally desirable feature => let iwant do it for
+       all targets before refreshing
+  (- replace mkdir with FileUtils.ensureEmpty)
+
++ As @buildscriptauthor I don't want to use iwant-rev in i-have/iwant-from.conf but just point iwant-url to a published tag so I can more easily point to a stable publication instead of a "random" rev
+  * also easier to implement: it's always just iwant-url
+  + don't require it
+  + remove from generated i-have/iwant-from.conf
+  + update descript tests and run local ones
+  + commit and run remote ones
+    + aaand fix error in locals, too, caused by:
+      * I wished the targets by evaluating a script without set -eu => failures were not detected on run #1
+      * story about deleting cached target after failure is not implemented => run #2 didn't even refresh
+      * and the error itself: iwant-r$REV references here and there, cached iwant is now "iwant"
+    + update bootstrapper rev in tutorials
+
++ As @developer I want stderr coloured so I can see which build failures are printed by descript scripts and which are read failures
+  + copy logcolor function from descript and use
+
++ bugfix: 1st script of ScriptGeneratedContent is not replaced for further targets
+  * ant copy does not overwrite
+  + fix by clearing the whole temp area when user requests for it
+  + don't call the clearing method when copying the temp area to a new RefreshEnvironment instance
+
++ As @buildscriptauthor I want to create Target collection programmatically instead of declaring them as public methods for reflection so I can generate dynamic targets
+  + ask targets directly from ContainerPath and make it use reflection by default, users can override
+
++ As @developer I want to end developing this version of iwant and this backlog so that I can create a better and cleaner version based on java bootstrapping instead of a hassle of ant and shell.
+
+#################################################################
+= In progress (was left unfinished in this version)
+#################################################################
+
+- As @buildscriptauthor I want a java API for iwant so I can easily build things embedded in a java program, without having to operate on file and cli level
+  + reusable TestArea for testing
+  - Targets
+    + interface for declaring Target collection
+    - many Targets with dependency
+  - NextPhase
+
+- bugfix: as @buildscriptauthor I want to append Paths explicitly as Paths to Concatenated content so the target will be refreshed when the paths have been touched
+  + test
+  + implement path(Path path)
+  + use in the descript script content target
+  - use in the gluent project
+
+- As @developer I want iwant to bootstrap itself properly so I can get rid of the first generation bootstrapping hack scripts that are no more fun to maintain
+  + bootstrapper as svn:externals, mainly for "real-life testing"
+  * we could put the whole bootstrapper under as-iwant-developer, but that would look silly in the url users use, symlink/external/whatever more explicitly documents that iwant _uses_ itself for bootstrapping
+  + define and commit "default-wsroot" in phase1 build.xml, because svn export does not like "file://${i-have}/../.."
+  + use "file://${default-wsroot} as iwant-url
+    * we might not be able to bootstrap iwant for user, because user's own build already set default-wsroot to elsewhere!
+  + bootstrap
+    + run help.sh many times to generate the i-have
+    + hand-modify and version wsdef source eclipse settings (active generation later, when eclipse generation is more robust and easier)
+    + import as-iwant-developer to eclipse
+  + svn:ignore in bootstrapper: with/bash/iwant/{target,cached,list-of}: they'll appear when used
+  + development-time targets in wsdef
+    + iwant main classes
+    + local tutorial
+      + target
+      + use new bootstrapping, tersely (alreay covered in bs tutorials)
+        + path fixes, we are now under as.../with/bash, not as...
+        + bugfix: eclipse settings project directory is as-\$WSNAME"-developer instead of as-iwant-developer
+        + bugfix: JunitResult must prefix message about test failure
+        + bugfix: add >> /dev/stdout in help.sh to see all output
+        + don't generate wsDefClasses to where user targets are, polluting namespace
+          and breaking laziness tutorial
+        + fix path to builtin cpitems
+        + pass iwant wsroot as LOCAL_IWANT_WSROOT to descript scripts instead of
+          passing iwant-iwant as LOCAL_IWANT
+    + local ant bootstrapping
+    + local bash bootstrapping
+    + local website
+      (not yet: - new Content: directory with files
+        - svn:extern from gluent
+        - test and implement Content around it)
+      - for now just use ScriptGeneratedContent
+        + impl bugfix story about correctly depending on Path ingredients, otherwise website won't be
+          refreshed when a tutorial has changed
+        + dir with three tutorials and iwant-docs/src/main/html/website/*
+  + online tutorial targets
+    - fix static html links to tutorials: mention the alternatives first, then the rest in tutorial
+    + ant bootstrapping
+      + target
+      + use remote urls if no local set
+        * for now, just use HEAD
+      + add -mindepth 1 to Laziness find cmd, because once it found the cached dir itsef
+      + in ant bootstrapping (and not in bash) filter out iwant src svn export messages
+        to shorten the article
+    + bash bootstrapping
+    + tutorial
+      + target
+      + make sure new bootstrapping works
+        * for now, just use HEAD
+      + remove the automatic iwant upgrade part
+        * will be replace in a future story
+    + website
+  + targets for website publication and tagging scripts
+    + copypaste content from iwant-iwant
+    + diff results
+  + remove iwant-iwant (the old self-bootstrapper)
+    + iwant-iwant dir
+    + iwant-core/src/main/bash: all but new-eclipse-env
+    + delete all caches and want all targets to verify
+      * note: can't use find as-iwant-developer/with/bash/iwant/target/ -name as-path | bash
+        because the two processes will have a race condition because atm iwant refreshes
+        wish scripts on all runs
+    + make sure nothing gets written to iwant-iwant
+      + don't use it for optimization cache
+  + symbolic link to bootstrapper so we use latest and to reduce network traffic for users
+    (- remove ".." from paths with something else than "File.getCanonicalPath()" and "readlink -f", because they both break symlinks (resolve away)
+      - for dirs, use the old (cd DIR && pwd) trick
+      - find or write the java solution)
+    * canonical might be a good idea, after all: cached data should be shared even if we have
+      several symlinks to a workspace
+    * besides, ant seems to use canonicalPath so it doesn't work with symlinks (it created i-have under
+      iwant-bootstrapper)
+    + so instead: just symlink the individual boostrap phase1 files (help.sh, build.xml) under
+      versioned with/{ant/iw,bash/iwant} dirs
+  + rebuild iwant-bin iff sources have been touched so we get latest functionality in use
+    + the normal depends=...status unless=...-uptodate for classes and bin
+    + also phase1 svn export needs to be redone iff i-have/iwant-from.conf states the iwant-url
+      is a dir and its content might change (and in iwant we do state that)
+  - publish website and mark this story done
+    - impl the iwant-rev removal story: let's not confuse users
+    - make a tag
+    - make remote tutorials point to the tag instead of HEAD
+    - then publish
+
