@@ -218,13 +218,17 @@
   + descript: ls .../wsdef/...{.project,.classpath}
   * here we keep things hard-coded as much as possible: genuine support for
     side-effects will be added later
-  - new module for eclipse settings content generation
-  - iwant uses the generator to create the wsdef files
-  - manually try the settings work in real eclipse, in a proto project
+  + new module (only package for now) for eclipse settings content generation
+  + iwant uses the generator to create the wsdef files
+    * very hard-coded content
+  - fix classpath, manually trying the settings in a proto project
 
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptauthor I want the eclipse-settings side-effect to generate settings for other projects, not only as-someone
+  * here we need to fix the many hardcoded values
 
 - As @buildscriptauthor I want iwant to generate working wishscripts for my own side-effects so I can use iwant for scripting, not only defining and refreshing artifacts in the cache
   * maybe a more concrete story needed here, to make sure this really helps

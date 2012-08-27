@@ -255,9 +255,19 @@ public class Iwant3Test extends TestCase {
 
 		iwant3.evaluate(asTest, "side-effect/eclipse-settings/effective");
 
-		assertEquals("todo implement\n", out());
+		assertEquals("", out());
 		assertEquals("", errIgnoringDebugLog());
-		// TODO assert file get created
+
+		assertTrue(testArea.contentOf("as-test/.project").contains(
+				"<projectDescription>"));
+		assertTrue(testArea.contentOf("as-test/.classpath").contains(
+				"<classpath>"));
+		assertTrue(testArea.contentOf(
+				"as-test/.settings/org.eclipse.jdt.core.prefs").contains(
+				"org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6\n"));
+		assertTrue(testArea.contentOf(
+				"as-test/.settings/org.eclipse.jdt.ui.prefs").contains(
+				"formatter_profile=_iwant-generated\n"));
 	}
 
 	public void testTargetModifiedHelloAsPathOfModifiedWsDef() throws Exception {

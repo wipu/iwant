@@ -24,7 +24,7 @@ p "Before we try editing the wsdef, we'll tell iwant to generate eclipse setting
 
 cmd "as-distillery-developer/with/bash/iwant/list-of/side-effects"
 cmd "as-distillery-developer/with/bash/iwant/side-effect/eclipse-settings/effective"
-cmde 2 "ls as-distillery-developer/{.project,.classpath}"
+cmd "ls as-distillery-developer/{.project,.classpath,.settings}"
 
 p "Now we can import the project to eclipse (don't copy it to the workspace!) and try our first edit."
 edit as-distillery-developer/i-have/wsdef/com/example/wsdef/Workspace.java "1st-edit" < \

@@ -94,6 +94,10 @@ public class Iwant2 {
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
 				+ "src/main/java/" + "net/sf/iwant/api"));
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
+				+ "src/test/java/" + "net/sf/iwant/eclipsesettings"));
+		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
+				+ "src/main/java/" + "net/sf/iwant/eclipsesettings"));
+		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
 				+ "src/main/java/" + "net/sf/iwant/entry3"));
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
 				+ "src/test/java/" + "net/sf/iwant/entry3"));

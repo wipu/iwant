@@ -12,6 +12,10 @@ import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TargetEvaluationContext;
+import net.sf.iwant.eclipsesettings.DotClasspath;
+import net.sf.iwant.eclipsesettings.DotProject;
+import net.sf.iwant.eclipsesettings.OrgEclipseJdtCorePrefs;
+import net.sf.iwant.eclipsesettings.OrgEclipseJdtUiPrefs;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.io.StreamUtil;
 
@@ -58,13 +62,44 @@ public class WishEvaluator {
 			}
 		}
 		if ("side-effect/eclipse-settings/effective".equals(wish)) {
-			PrintWriter wr = new PrintWriter(out);
-			wr.println("todo implement");
-			wr.close();
+			generateEclipseSettings();
 			return;
 		}
 		throw new IllegalArgumentException("Illegal wish: " + wish
 				+ "\nlegal targets:" + ws.targets());
+	}
+
+	/**
+	 * TODO delegate to a side-effect that really reads wsdef
+	 */
+	private void generateEclipseSettings() {
+		try {
+
+			DotProject dotProject = DotProject.named(asSomeone.getName()).end();
+			new FileWriter(new File(asSomeone, ".project")).append(
+					dotProject.asFileContent()).close();
+
+			// TODO read wsdef from WsInfo (needs modifications):
+			DotClasspath dotClasspath = DotClasspath.with().src("i-have/wsdef")
+					.end();
+			new FileWriter(new File(asSomeone, ".classpath")).append(
+					dotClasspath.asFileContent()).close();
+
+			Iwant.ensureDir(new File(asSomeone, ".settings"));
+			new FileWriter(new File(asSomeone,
+					".settings/org.eclipse.jdt.core.prefs")).append(
+					OrgEclipseJdtCorePrefs.withDefaultValues().asFileContent())
+					.close();
+
+			new FileWriter(new File(asSomeone,
+					".settings/org.eclipse.jdt.ui.prefs")).append(
+					OrgEclipseJdtUiPrefs.withDefaultValues().asFileContent())
+					.close();
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException("Eclipse settings generation failed.", e);
+		}
 	}
 
 	public void content(Target target) {
