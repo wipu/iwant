@@ -216,19 +216,24 @@
   + descript: before editing wsdef issue iwant/side-effect/eclipse-settings/effective
   + generate the wish script (and list-of)
   + descript: ls .../wsdef/...{.project,.classpath}
-  - iwant obeys the wish by touching the files (descript green here)
-  - tdd it to work properly
-    - wish scripts for side-effects, not only targets
-    - example wsdef provides eclipse-settings side-effect
-    - remove hard-coded wish script generation
-    - eclipse-settings delegates to a generator
-    - new module for generator
-    - wish script calls iwant, which calls side-effect, which calls generator
+  * here we keep things hard-coded as much as possible: genuine support for
+    side-effects will be added later
+  - new module for eclipse settings content generation
+  - iwant uses the generator to create the wsdef files
   - manually try the settings work in real eclipse, in a proto project
 
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptauthor I want iwant to generate working wishscripts for my own side-effects so I can use iwant for scripting, not only defining and refreshing artifacts in the cache
+  * maybe a more concrete story needed here, to make sure this really helps
+    in real life
+  - example wsdef provides eclipse-settings side-effect
+  - test removing side-effects => no wish scripts
+  - test adding custom hello side-effect
+    - wish scripts are generated
+    - they delegate to the side-effect
 
 - As @buildscriptauthor and @buildscriptuser I want to declare to iwant I use eclipse so it will automatically make the side-effect of fresh eclipse settings effective when running anything
   - design good ui
