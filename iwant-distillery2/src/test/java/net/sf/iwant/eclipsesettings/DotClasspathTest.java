@@ -6,6 +6,7 @@ public class DotClasspathTest extends TestCase {
 
 	private StringBuilder out;
 
+	@Override
 	public void setUp() {
 		out = new StringBuilder();
 	}
@@ -34,7 +35,7 @@ public class DotClasspathTest extends TestCase {
 	public void test2SourceDirsAndProjectDepAndLibraryDep() {
 		DotClasspath dp = DotClasspath.with().src("src/main/java")
 				.src("src/test/java").srcDep("another-project")
-				.binDep("libs/library.jar").end();
+				.binDep("/libs/library.jar").end();
 		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		out.append("<classpath>\n");
 		out.append("        <classpathentry kind=\"src\" path=\"src/main/java\"/>\n");
@@ -54,7 +55,7 @@ public class DotClasspathTest extends TestCase {
 		out.append("<classpath>\n");
 		out.append("        <classpathentry kind=\"src\" path=\"src\"/>\n");
 		out.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
-		out.append("        <classpathentry kind=\"lib\" path=\"/a.jar\" sourcepath=\"/a-src.zip\"/>\n");
+		out.append("        <classpathentry kind=\"lib\" path=\"a.jar\" sourcepath=\"a-src.zip\"/>\n");
 		out.append("        <classpathentry kind=\"output\" path=\"classes\"/>\n");
 		out.append("</classpath>\n");
 		assertEquals(out.toString(), dp.asFileContent());

@@ -12,6 +12,10 @@ public class DotProject {
 		return new DotProjectSpex(name);
 	}
 
+	public String name() {
+		return name;
+	}
+
 	public String asFileContent() {
 		StringBuilder b = new StringBuilder();
 		b.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");

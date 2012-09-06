@@ -10,6 +10,7 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext,
 	private final Iwant iwant;
 	private File wsRoot;
 	private File cachedModifiableTarget;
+	private File cachedDescriptors;
 
 	public TargetEvaluationContextMock(Iwant iwant) {
 		this.iwant = iwant;
@@ -36,6 +37,10 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext,
 		this.cachedModifiableTarget = cachedTarget;
 	}
 
+	public void cachesDesciptorsAt(File cachedDescriptors) {
+		this.cachedDescriptors = cachedDescriptors;
+	}
+
 	@Override
 	public Iwant iwant() {
 		return iwant;
@@ -49,6 +54,11 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext,
 	@Override
 	public File modifiableTargets() {
 		return nonNull(cachedModifiableTarget, "cachedModifiableTarget");
+	}
+
+	@Override
+	public File cachedDescriptors() {
+		return nonNull(cachedDescriptors, "cachedDescriptorsDir");
 	}
 
 	@Override

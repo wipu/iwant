@@ -18,6 +18,7 @@ public class WishEvaluatorTest extends TestCase {
 
 	private IwantEntry3TestArea testArea;
 	private File asSomeone;
+	private File iwantApiClasses;
 	private File wsRoot;
 	private ByteArrayOutputStream out;
 	private WishEvaluator evaluator;
@@ -30,9 +31,11 @@ public class WishEvaluatorTest extends TestCase {
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		asSomeone = testArea.newDir("as-" + getClass().getSimpleName());
+		iwantApiClasses = testArea.newDir("iwant-api-classes");
 		wsRoot = testArea.newDir("wsroot");
 		out = new ByteArrayOutputStream();
-		evaluator = new WishEvaluator(out, asSomeone, wsRoot, iwant);
+		evaluator = new WishEvaluator(out, asSomeone, wsRoot, iwantApiClasses,
+				iwant);
 	}
 
 	private class Hello implements IwantWorkspace {
@@ -238,6 +241,32 @@ public class WishEvaluatorTest extends TestCase {
 
 		assertEquals("content 2", testArea.contentOf(new File(asSomeone,
 				".todo-cached/target/ingredientless")));
+	}
+
+	public void testTargetIsRefreshedIfDescriptorOfIngredientsIngredientChanged() {
+		TargetMock t1 = new TargetMock("t1");
+		t1.hasNoIngredients();
+		t1.hasContent("t1 content 1");
+		t1.hasContentDescriptor("t1 descr 1");
+
+		Target t2 = new TargetThatNeedsAnotherAsStream("t2", t1);
+		Target t3 = new TargetThatNeedsAnotherAsStream("t3", t2);
+
+		evaluator.asPath(t3);
+
+		assertEquals("Stream using 'Stream using 't1 content 1'"
+				+ " as ingredient' as ingredient", testArea.contentOf(new File(
+				asSomeone, ".todo-cached/target/t3")));
+
+		// modification:
+		t1.hasContent("t1 content 2");
+		t1.hasContentDescriptor("t1 descr 2");
+
+		evaluator.asPath(t3);
+
+		assertEquals("Stream using 'Stream using 't1 content 2'"
+				+ " as ingredient' as ingredient", testArea.contentOf(new File(
+				asSomeone, ".todo-cached/target/t3")));
 	}
 
 }

@@ -36,11 +36,8 @@
 
 + As @developer I want Iwant main to fail if as-someone arg or dir missing so I get friendly message if I break its caller
 
-#################################################################
-= In progress
-#################################################################
-
-- As @developer I want this long and deep text broken into a readable list of stories (not too detailed), both to done and planned, so I can analyze how I proceeded and also see what has been done and what not:
++ As @buildscriptauthor I want iwant bootstrapper (help.sh) to generate an example wsdef using a local url to iwant so I can start developing
+  * this is one huge epic, because earlier I made the mistake of trying to handle it as one story in the backlog of the _previous_ iwant version.
   + iwant-from points to local iwant wsroot, run
     + descript a bit
       + edit iwant-from
@@ -170,10 +167,38 @@
   (+ laziness: source is never cached)
   + refactor: interface Target->Path, Path is a superclass for targets, provides name
   + refactor: target superclass provides cache location
-  - laziness of file refresh
-    + as path twice => second causes no refresh
-    + descriptor changes, no other changes => refresh
-    - ingredient changed => refresh
+
++ As @buildscriptauthor I want to make iwant generate eclipse settings so it will be easier for me to modify workspacedef
+  * new concept: side-effect
+  + descript: before editing wsdef issue iwant/side-effect/eclipse-settings/effective
+  + generate the wish script (and list-of)
+  + descript: ls .../wsdef/...{.project,.classpath}
+  * here we keep things hard-coded as much as possible: genuine support for
+    side-effects will be added later
+  + new module (only package for now) for eclipse settings content generation
+  + iwant uses the generator to create the wsdef files
+    * very hard-coded content
+  + manually trying the settings in a proto project
+    + fix classpath so wsdef compiles in eclipse
+
++ As @buildscriptuser I want iwant to refresh targets lazily i.e. iff for target or any of its ingredients cached is missing or descriptor has changed
+  + as path twice => second causes no refresh
+  + descriptor changes, no other changes => refresh
+  - ingredient changed => refresh
+    + test that the simple impl is broken
+    + develop a separate module for lazy task execution (multi-threaded even)
+      * sorry, this happened in isolation, no log for it
+    + add to iwant (name here is "planner")
+    + integrate
+
+#################################################################
+= In progress
+#################################################################
+
+- As @developer I want cached content descriptor logic behind an interface and use real impl only in one integration test that just tests features here and there, mock in current tests.
+  * also, do the same to cached content and maybe other file functionality
+
+- As @developer I want this long and deep text broken into a readable list of stories (not too detailed), both to done and planned, so I can analyze how I proceeded and also see what has been done and what not:
   - optimization: don't even write descriptor for source
   - unmodifiable target is cached under user-global cache
   - unmodifiable target descriptor is also under user-global cache
@@ -211,24 +236,25 @@
     - modify bootstrapping tutorials
     - clean up the other bootstrapper story
 
-- As @buildscriptauthor I want to make iwant generate eclipse settings so it will be easier for me to modify workspacedef
-  * new concept: side-effect
-  + descript: before editing wsdef issue iwant/side-effect/eclipse-settings/effective
-  + generate the wish script (and list-of)
-  + descript: ls .../wsdef/...{.project,.classpath}
-  * here we keep things hard-coded as much as possible: genuine support for
-    side-effects will be added later
-  + new module (only package for now) for eclipse settings content generation
-  + iwant uses the generator to create the wsdef files
-    * very hard-coded content
-  - fix classpath, manually trying the settings in a proto project
-
 #################################################################
 = Planned
 #################################################################
 
+- As @buildscriptauthor I want iwant wizard to generate, or at least tell me to generate, eclipse settings and also to import to eclipse before telling to edit the wsdef java
+
+- @bugfix As @buildscriptuser I want iwant to generate wish scripts even when I only have the help.sh wish available, after having checked out the ws
+  * Iwant3 doesn't refresh wish scripts, if help.sh is called when wsdef java already exists
+
 - As @buildscriptauthor I want the eclipse-settings side-effect to generate settings for other projects, not only as-someone
   * here we need to fix the many hardcoded values
+
+- As git user I want an easy way to get a bootstrap, because I cannot use svn:externals
+  * option: a script to svn export and delegate to help.sh
+  * option: downloadable package, to be commited
+
+- As git user I want an easy way to ignore generated iwant stuff
+  * either restructure so commited stuff is in different dir than generated
+  * or a helper side-effect/script or something
 
 - As @buildscriptauthor I want iwant to generate working wishscripts for my own side-effects so I can use iwant for scripting, not only defining and refreshing artifacts in the cache
   * maybe a more concrete story needed here, to make sure this really helps
@@ -243,6 +269,8 @@
   - design good ui
   * don't do this if it's possible to break compilation in eclipse so it's difficult to fix it back
     - option: just do it after successful refreshes
+
+- @anticipated As @buildscriptauthor I want to declare that I use IntelliJ IDEA so iwant will generate idea settings instead of eclipse settings
 
 - As @developer I want stories from the "in progress" section of the old backlog so I don't lose good ideas
 

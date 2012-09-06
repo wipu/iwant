@@ -1,9 +1,7 @@
 package net.sf.iwant.entry3;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
@@ -18,20 +16,23 @@ import net.sf.iwant.eclipsesettings.OrgEclipseJdtCorePrefs;
 import net.sf.iwant.eclipsesettings.OrgEclipseJdtUiPrefs;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.io.StreamUtil;
+import net.sf.iwant.planner.Planner;
 
 public class WishEvaluator {
 
 	private final OutputStream out;
 	private final File asSomeone;
 	private final File wsRoot;
+	private final File iwantApiClasses;
 	private final Iwant iwant;
 	private final Ctx ctx;
 
 	public WishEvaluator(OutputStream out, File asSomeone, File wsRoot,
-			Iwant iwant) {
+			File iwantApiClasses, Iwant iwant) {
 		this.out = out;
 		this.asSomeone = asSomeone;
 		this.wsRoot = wsRoot;
+		this.iwantApiClasses = iwantApiClasses;
 		this.iwant = iwant;
 		this.ctx = new Ctx();
 	}
@@ -74,14 +75,14 @@ public class WishEvaluator {
 	 */
 	private void generateEclipseSettings() {
 		try {
-
-			DotProject dotProject = DotProject.named(asSomeone.getName()).end();
+			// TODO read wsdef from WsInfo (needs modifications):
+			WsDefEclipseProject proj = new WsDefEclipseProject(
+					asSomeone.getName(), "i-have/wsdef", iwantApiClasses);
+			DotProject dotProject = proj.dotProject();
 			new FileWriter(new File(asSomeone, ".project")).append(
 					dotProject.asFileContent()).close();
 
-			// TODO read wsdef from WsInfo (needs modifications):
-			DotClasspath dotClasspath = DotClasspath.with().src("i-have/wsdef")
-					.end();
+			DotClasspath dotClasspath = proj.dotClasspath();
 			new FileWriter(new File(asSomeone, ".classpath")).append(
 					dotClasspath.asFileContent()).close();
 
@@ -102,9 +103,27 @@ public class WishEvaluator {
 		}
 	}
 
+	private File freshCachedContent(Path path) {
+		File cachedContent = path.cachedAt(ctx);
+		if (path instanceof Target) {
+			Target target = (Target) path;
+			try {
+				Planner planner = new Planner(
+						new TargetRefreshTask(target, ctx), 1);
+				planner.start();
+				planner.join();
+			} catch (RuntimeException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new RuntimeException("Piping content failed", e);
+			}
+		}
+		return cachedContent;
+	}
+
 	public void content(Target target) {
 		try {
-			refreshIngredients(target);
+			freshCachedContent(target);
 			StreamUtil.pipe(target.content(ctx), out);
 		} catch (RuntimeException e) {
 			throw e;
@@ -113,55 +132,12 @@ public class WishEvaluator {
 		}
 	}
 
-	private void refreshIngredients(Path path) {
-		for (Path ingredient : path.ingredients()) {
-			refreshCache(ingredient);
-		}
-	}
-
-	private File refreshCache(Path path) {
-		File cachedTarget = path.cachedAt(ctx);
-		if (!needsRefreshing(path)) {
-			return cachedTarget;
-		}
-		Iwant.ensureDir(cachedTarget.getParentFile());
-		try {
-			path.path(ctx);
-			String newDescriptor = path.contentDescriptor();
-			new FileWriter(descriptorFile(path)).append(newDescriptor).close();
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException("Refresh failed", e);
-		}
-		return cachedTarget;
-	}
-
 	boolean needsRefreshing(Path path) {
-		try {
-			File cachedTarget = path.cachedAt(ctx);
-			if (!cachedTarget.exists()) {
-				return true;
-			}
-			// TODO how to handle Source here
-			File descriptorFile = descriptorFile(path);
-			if (!descriptorFile.exists()) {
-				return true;
-			}
-			String cachedDescriptor = StreamUtil.toString(new FileInputStream(
-					descriptorFile));
-			String currentDescriptor = path.contentDescriptor();
-			if (!cachedDescriptor.equals(currentDescriptor)) {
-				return true;
-			}
+		if (!(path instanceof Target)) {
 			return false;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
 		}
-	}
-
-	private File descriptorFile(Path path) {
-		return new File(cachedDescriptors(), path.name());
+		Target target = (Target) path;
+		return new TargetRefreshTask(target, ctx).isDirty();
 	}
 
 	private File cachedDescriptors() {
@@ -170,9 +146,8 @@ public class WishEvaluator {
 		return descriptors;
 	}
 
-	public void asPath(Path target) {
-		refreshIngredients(target);
-		File cachedContent = refreshCache(target);
+	public void asPath(Path path) {
+		File cachedContent = freshCachedContent(path);
 		PrintWriter wr = new PrintWriter(out);
 		wr.println(cachedContent);
 		wr.close();
@@ -207,6 +182,11 @@ public class WishEvaluator {
 		@Override
 		public File freshPathTo(Path path) {
 			return path.cachedAt(this);
+		}
+
+		@Override
+		public File cachedDescriptors() {
+			return WishEvaluator.this.cachedDescriptors();
 		}
 
 	}

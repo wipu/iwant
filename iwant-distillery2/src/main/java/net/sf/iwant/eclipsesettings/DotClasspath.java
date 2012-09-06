@@ -1,6 +1,7 @@
 package net.sf.iwant.eclipsesettings;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DotClasspath {
@@ -11,6 +12,14 @@ public class DotClasspath {
 	public DotClasspath(List<String> srcs, List<String> deps) {
 		this.srcs = srcs;
 		this.deps = deps;
+	}
+
+	public List<String> srcs() {
+		return Collections.unmodifiableList(srcs);
+	}
+
+	public List<String> deps() {
+		return Collections.unmodifiableList(deps);
 	}
 
 	public static DotClasspathSpex with() {
@@ -55,14 +64,14 @@ public class DotClasspath {
 		}
 
 		public DotClasspathSpex binDep(String jarPath) {
-			deps.add("        <classpathentry kind=\"lib\" path=\"/" + jarPath
+			deps.add("        <classpathentry kind=\"lib\" path=\"" + jarPath
 					+ "\"/>\n");
 			return this;
 		}
 
 		public DotClasspathSpex binDep(String jarPath, String srcZipPath) {
-			deps.add("        <classpathentry kind=\"lib\" path=\"/" + jarPath
-					+ "\" sourcepath=\"/" + srcZipPath + "\"/>\n");
+			deps.add("        <classpathentry kind=\"lib\" path=\"" + jarPath
+					+ "\" sourcepath=\"" + srcZipPath + "\"/>\n");
 			return this;
 		}
 

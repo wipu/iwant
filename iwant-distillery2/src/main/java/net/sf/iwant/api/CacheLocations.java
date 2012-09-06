@@ -8,4 +8,6 @@ public interface CacheLocations {
 
 	File wsRoot();
 
+	File cachedDescriptors();
+
 }

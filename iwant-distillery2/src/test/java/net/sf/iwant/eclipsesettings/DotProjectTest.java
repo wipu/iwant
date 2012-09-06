@@ -6,6 +6,7 @@ public class DotProjectTest extends TestCase {
 
 	private StringBuilder expected;
 
+	@Override
 	public void setUp() {
 		expected = new StringBuilder();
 	}

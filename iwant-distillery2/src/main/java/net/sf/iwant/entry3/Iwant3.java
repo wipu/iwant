@@ -64,9 +64,9 @@ public class Iwant3 {
 		File wsDefClasses = new File(cached, "wsdef-classes");
 
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefJava());
-		List<File> classLocations = Arrays.asList(iwantApiClasses());
-
-		iwant.compiledClasses(wsDefClasses, srcFiles, classLocations);
+		File iwantApiClasses = iwantApiClasses();
+		iwant.compiledClasses(wsDefClasses, srcFiles,
+				Arrays.asList(iwantApiClasses));
 
 		List<File> runtimeClasses = new ArrayList<File>();
 		runtimeClasses.add(wsDefClasses);
@@ -77,8 +77,8 @@ public class Iwant3 {
 			Iwant.fileLog("Calling wsdef");
 			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
 			refreshWishScripts(asSomeone, wsDef);
-			new WishEvaluator(System.out, asSomeone, wsInfo.wsRoot(), iwant)
-					.iwant(wish, wsDef);
+			new WishEvaluator(System.out, asSomeone, wsInfo.wsRoot(),
+					iwantApiClasses, iwant).iwant(wish, wsDef);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {

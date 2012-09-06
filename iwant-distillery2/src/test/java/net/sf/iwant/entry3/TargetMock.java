@@ -31,16 +31,17 @@ public class TargetMock extends Target {
 	}
 
 	@Override
-	public InputStream content(TargetEvaluationContext ctx) throws Exception {
+	public synchronized InputStream content(TargetEvaluationContext ctx)
+			throws Exception {
 		return new ByteArrayInputStream(nonNull(content, "content").getBytes());
 	}
 
-	public void hasContent(String content) {
+	public synchronized void hasContent(String content) {
 		this.content = content;
 	}
 
 	@Override
-	public void path(TargetEvaluationContext ctx) throws Exception {
+	public synchronized void path(TargetEvaluationContext ctx) throws Exception {
 		if (shallNotBeToldToWriteFile) {
 			throw new IllegalStateException(
 					"Should not have been told to write to file.");
@@ -49,16 +50,16 @@ public class TargetMock extends Target {
 				new FileOutputStream(ctx.freshPathTo(this)));
 	}
 
-	public void shallNotBeToldToWriteFile() {
+	public synchronized void shallNotBeToldToWriteFile() {
 		this.shallNotBeToldToWriteFile = true;
 	}
 
 	@Override
-	public List<Path> ingredients() {
+	public synchronized List<Path> ingredients() {
 		return nonNull(ingredients, "ingredients");
 	}
 
-	public void hasIngredients(List<Path> ingredients) {
+	public synchronized void hasIngredients(List<Path> ingredients) {
 		this.ingredients = ingredients;
 	}
 
@@ -67,11 +68,11 @@ public class TargetMock extends Target {
 	}
 
 	@Override
-	public String contentDescriptor() {
+	public synchronized String contentDescriptor() {
 		return nonNull(contentDescriptor, "contentDescriptor");
 	}
 
-	public void hasContentDescriptor(String contentDescriptor) {
+	public synchronized void hasContentDescriptor(String contentDescriptor) {
 		this.contentDescriptor = contentDescriptor;
 	}
 

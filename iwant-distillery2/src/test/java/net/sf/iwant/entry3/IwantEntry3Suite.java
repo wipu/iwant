@@ -10,6 +10,8 @@ public class IwantEntry3Suite {
 		suite.addTestSuite(WsInfoTest.class);
 		suite.addTestSuite(ExampleWsDefGeneratorTest.class);
 		suite.addTestSuite(WishScriptGeneratorTest.class);
+		suite.addTestSuite(WsDefEclipseProjectTest.class);
+		suite.addTestSuite(TargetRefreshTaskTest.class);
 		suite.addTestSuite(WishEvaluatorTest.class);
 		suite.addTestSuite(Iwant3Test.class);
 		return suite;

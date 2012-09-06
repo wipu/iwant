@@ -105,6 +105,10 @@ public class Iwant2 {
 				+ "src/test/java/" + "net/sf/iwant/io"));
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
 				+ "src/main/java/" + "net/sf/iwant/io"));
+		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
+				+ "src/test/java/" + "net/sf/iwant/planner"));
+		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
+				+ "src/main/java/" + "net/sf/iwant/planner"));
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-testarea/"
 				+ "src/main/java/" + "net/sf/iwant/testarea"));
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-testrunner/"
