@@ -1,6 +1,5 @@
 package net.sf.iwant.entry;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -41,13 +40,14 @@ public class LocationsTest extends TestCase {
 	}
 
 	public void testRealCacheLocationEscapesUrl() throws MalformedURLException {
-		URL nastyUrl = new URL("http://very/nasty?url&needs=\"escaping");
+		URL nastyUrl = new URL("http://very/../nasty?url&needs=\"escaping");
 		assertEquals(
-				new File(System.getProperty("user.home")
+				System.getProperty("user.home")
 						+ "/.net.sf.iwant/cached/UnmodifiableUrl/"
-						+ "http%3A%2F%2Fvery%2Fnasty%3Furl%26"
-						+ "needs%3D%22escaping"), Iwant.usingRealNetwork()
-						.network().cacheLocation(new UnmodifiableUrl(nastyUrl)));
+						+ "http%3A/%2Fvery%2F..%2Fnasty?url%26"
+						+ "needs%3D%22escaping", Iwant.usingRealNetwork()
+						.network().cacheLocation(new UnmodifiableUrl(nastyUrl))
+						.getAbsolutePath());
 	}
 
 }

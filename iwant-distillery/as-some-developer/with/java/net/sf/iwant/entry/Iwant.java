@@ -504,7 +504,25 @@ public class Iwant {
 		}
 	}
 
-	public static String toSafeFilename(String s) {
+	private static final String encSlash = urlEncode("/");
+	private static final String encQuestion = urlEncode("?");
+
+	public static String toSafeFilename(String from) {
+		String to = urlEncode(from);
+		to = to.replaceAll(encSlash, "/");
+		// starting slash
+		to = to.replaceAll("^/", encSlash);
+		// parent dir refs
+		to = to.replaceAll("/\\.\\.", encSlash + "..");
+		to = to.replaceAll("\\.\\./", ".." + encSlash);
+		// repeating slashes
+		to = to.replaceAll("//", "/" + encSlash);
+		// url query
+		to = to.replaceAll(encQuestion, "?");
+		return to;
+	}
+
+	private static String urlEncode(String s) {
 		try {
 			return URLEncoder.encode(s, "UTF-8");
 		} catch (Exception e) {

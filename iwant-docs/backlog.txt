@@ -191,6 +191,10 @@
     + add to iwant (name here is "planner")
     + integrate
 
++ As @developer I want slashes in cached paths and some more exceptions to url encoding so the paths will be shorter and less files per directory
+  * this introduces a risk, but since build tools are anyway capable of doing great harm, the only real risk is that of accidents and bugs, so let's proceed
+  + allow slashes, just prevent parent dir refs (..), preserve repeated slashes etc
+
 #################################################################
 = In progress
 #################################################################

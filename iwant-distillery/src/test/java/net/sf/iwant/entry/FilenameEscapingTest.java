@@ -16,12 +16,45 @@ public class FilenameEscapingTest extends TestCase {
 
 	public void testCharsThatDefinitelyNeedEscaping() {
 		escapeCase("a:b", "a%3Ab");
-		escapeCase("a/b", "a%2Fb");
-		escapeCase("a?b", "a%3Fb");
+	}
+
+	public void testCharsThatAreMoreRobustEscaped() {
+		escapeCase("a b", "a+b");
+		escapeCase("a+b", "a%2Bb");
+		escapeCase("a'b", "a%27b");
+		escapeCase("a\"b", "a%22b");
+		escapeCase("a\\b", "a%5Cb");
+	}
+
+	public void testLoneSlashWithoutParentDirRefIsNotEscaped() {
+		escapeCase("a/b", "a/b");
+		escapeCase("abc/def/gef", "abc/def/gef");
+	}
+
+	/**
+	 * Some safety agains accidents (build tools are omnipotent so no real
+	 * security tried here)
+	 */
+	public void testParentDirRefIsEscaped() {
+		escapeCase("../b", "..%2Fb");
+		escapeCase("a/..", "a%2F..");
+		escapeCase("a/../b", "a%2F..%2Fb");
+	}
+
+	public void testStartingSlashIsEscaped() {
+		escapeCase("/a", "%2Fa");
+		escapeCase("//a", "%2F/a");
+	}
+
+	public void testTwoOrMoreSlashesAreEscaped() {
+		escapeCase("a//b", "a/%2Fb");
+		escapeCase("a///b", "a/%2F/b");
+		escapeCase("a////b", "a/%2F/%2Fb");
 	}
 
 	public void testNontrivialCharsThatAreSafeAndMoreReadableToLeaveUnescaped() {
 		escapeCase("a-b", "a-b");
+		escapeCase("a?b", "a?b");
 	}
 
 }
