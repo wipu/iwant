@@ -78,7 +78,7 @@ public class Iwant2 {
 			System.err.println("TODO laziness, and for testing, too");
 			Iwant.del(allIwantClasses);
 		}
-		Iwant.ensureDir(allIwantClasses);
+		allIwantClasses.mkdirs();
 
 		List<File> src = new ArrayList<File>();
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"

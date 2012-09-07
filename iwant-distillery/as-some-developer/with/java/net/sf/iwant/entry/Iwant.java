@@ -306,7 +306,7 @@ public class Iwant {
 				debugLog("javac", "src: " + srcFile);
 			}
 			del(dest);
-			ensureDir(dest);
+			dest.mkdirs();
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 			DiagnosticListener<? super JavaFileObject> diagnosticListener = null;
 			Locale locale = null;
@@ -530,20 +530,6 @@ public class Iwant {
 		}
 	}
 
-	/**
-	 * TODO create and reuse a fluent reusable file declaration library
-	 */
-	public static File ensureDir(File dir) {
-		File parent = dir.getParentFile();
-		if (!parent.exists()) {
-			ensureDir(parent);
-		}
-		if (!dir.exists()) {
-			dir.mkdir();
-		}
-		return dir;
-	}
-
 	public static void del(File file) {
 		debugLog("del " + file);
 		if (file.isDirectory()) {
@@ -560,7 +546,7 @@ public class Iwant {
 			if (cached.exists()) {
 				return cached;
 			}
-			ensureDir(cached.getParentFile());
+			cached.getParentFile().mkdirs();
 			debugLog("downloaded", "from " + url);
 			log("downloaded", cached);
 			byte[] bytes = downloadBytes(url);
@@ -601,14 +587,14 @@ public class Iwant {
 				return dest;
 			}
 			log("unzipped", dest);
-			ensureDir(dest);
+			dest.mkdirs();
 			ZipInputStream zip = new ZipInputStream(src.location().openStream());
 			ZipEntry e = null;
 			byte[] buffer = new byte[32 * 1024];
 			while ((e = zip.getNextEntry()) != null) {
 				File entryFile = new File(dest, e.getName());
 				if (e.isDirectory()) {
-					ensureDir(entryFile);
+					entryFile.mkdirs();
 					continue;
 				}
 				OutputStream out = new FileOutputStream(entryFile);

@@ -13,7 +13,6 @@ import java.util.Map;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TargetEvaluationContext;
-import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.io.StreamUtil;
 import net.sf.iwant.planner.Resource;
 import net.sf.iwant.planner.ResourcePool;
@@ -40,9 +39,9 @@ public class TargetRefreshTask implements Task {
 	public synchronized void refresh(
 			Map<ResourcePool, Resource> allocatedResources) {
 		File cachedDescriptor = cachedDescriptorFile();
-		Iwant.ensureDir(cachedDescriptor.getParentFile());
+		cachedDescriptor.getParentFile().mkdirs();
 		File cachedTarget = target.cachedAt(ctx.cached());
-		Iwant.ensureDir(cachedTarget.getParentFile());
+		cachedTarget.getParentFile().mkdirs();
 		try {
 			target.path(ctx);
 			new FileWriter(cachedDescriptor).append(target.contentDescriptor())

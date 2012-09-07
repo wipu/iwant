@@ -44,7 +44,7 @@ public class Iwant3 {
 
 	public void evaluate(File asSomeone, String... args) throws Exception {
 		File iHave = new File(asSomeone, "i-have");
-		Iwant.ensureDir(iHave);
+		iHave.mkdirs();
 		File wsInfoFile = wsInfoFile(iHave);
 		WsInfo wsInfo = parseWsInfo(wsInfoFile);
 		if (!wsInfo.wsdefJava().exists()) {
@@ -177,7 +177,7 @@ public class Iwant3 {
 
 	private static void createFile(File file, String content) {
 		try {
-			Iwant.ensureDir(file.getParentFile());
+			file.getParentFile().mkdirs();
 			new FileWriter(file).append(content).close();
 		} catch (IOException e) {
 			throw new RuntimeException(e);

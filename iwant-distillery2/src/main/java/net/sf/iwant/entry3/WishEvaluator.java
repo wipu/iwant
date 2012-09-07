@@ -86,7 +86,7 @@ public class WishEvaluator {
 			new FileWriter(new File(asSomeone, ".classpath")).append(
 					dotClasspath.asFileContent()).close();
 
-			Iwant.ensureDir(new File(asSomeone, ".settings"));
+			new File(asSomeone, ".settings").mkdirs();
 			new FileWriter(new File(asSomeone,
 					".settings/org.eclipse.jdt.core.prefs")).append(
 					OrgEclipseJdtCorePrefs.withDefaultValues().asFileContent())
@@ -142,7 +142,7 @@ public class WishEvaluator {
 
 	private File cachedDescriptors() {
 		File descriptors = new File(asSomeone, ".todo-cached/descriptor");
-		Iwant.ensureDir(descriptors);
+		descriptors.mkdirs();
 		return descriptors;
 	}
 

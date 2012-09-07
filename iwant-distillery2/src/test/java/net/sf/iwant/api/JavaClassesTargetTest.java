@@ -39,7 +39,8 @@ public class JavaClassesTargetTest extends TestCase {
 	}
 
 	public void testCrapToPathFails() throws Exception {
-		File srcDir = Iwant.ensureDir(new File(wsRoot, "src"));
+		File srcDir = new File(wsRoot, "src");
+		srcDir.mkdirs();
 		new FileWriter(new File(srcDir, "Crap.java")).append("crap").close();
 		Source src = Source.underWsroot("src");
 		Target target = new JavaClasses("crap", src);
@@ -53,7 +54,8 @@ public class JavaClassesTargetTest extends TestCase {
 	}
 
 	public void testValidToPathCompiles() throws Exception {
-		File srcDir = Iwant.ensureDir(new File(wsRoot, "src"));
+		File srcDir = new File(wsRoot, "src");
+		srcDir.mkdirs();
 		new FileWriter(new File(srcDir, "Valid.java")).append("class Valid {}")
 				.close();
 		Source src = Source.underWsroot("src");
