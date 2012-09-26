@@ -25,15 +25,17 @@ public class WishEvaluator {
 	private final File wsRoot;
 	private final File iwantApiClasses;
 	private final Iwant iwant;
+	private final WsInfo wsInfo;
 	private final Ctx ctx;
 
 	public WishEvaluator(OutputStream out, File asSomeone, File wsRoot,
-			File iwantApiClasses, Iwant iwant) {
+			File iwantApiClasses, Iwant iwant, WsInfo wsInfo) {
 		this.out = out;
 		this.asSomeone = asSomeone;
 		this.wsRoot = wsRoot;
 		this.iwantApiClasses = iwantApiClasses;
 		this.iwant = iwant;
+		this.wsInfo = wsInfo;
 		this.ctx = new Ctx();
 	}
 
@@ -72,27 +74,35 @@ public class WishEvaluator {
 
 	/**
 	 * TODO delegate to a side-effect that really reads wsdef
+	 * 
+	 * TODO that s.e. uses the real wsdef src
 	 */
 	private void generateEclipseSettings() {
 		try {
-			// TODO read wsdef from WsInfo (needs modifications):
-			WsDefEclipseProject proj = new WsDefEclipseProject(
-					asSomeone.getName(), "i-have/wsdef", iwantApiClasses);
+			String relativeWsdefdefSrc = FileUtil
+					.relativePathOfFileUnderParent(wsInfo.wsdefdefSrc(), wsRoot);
+			String relativeWsdef = FileUtil.relativePathOfFileUnderParent(
+					new File(asSomeone, "i-have/wsdef"), wsRoot);
+
+			WorkspaceEclipseProject proj = new WorkspaceEclipseProject(
+					wsInfo.wsName(), relativeWsdefdefSrc, relativeWsdef,
+					iwantApiClasses);
 			DotProject dotProject = proj.dotProject();
-			new FileWriter(new File(asSomeone, ".project")).append(
+			new FileWriter(new File(wsRoot, ".project")).append(
 					dotProject.asFileContent()).close();
 
 			DotClasspath dotClasspath = proj.dotClasspath();
-			new FileWriter(new File(asSomeone, ".classpath")).append(
+			new FileWriter(new File(wsRoot, ".classpath")).append(
 					dotClasspath.asFileContent()).close();
 
-			new File(asSomeone, ".settings").mkdirs();
-			new FileWriter(new File(asSomeone,
+			new File(wsRoot, ".settings").mkdirs();
+
+			new FileWriter(new File(wsRoot,
 					".settings/org.eclipse.jdt.core.prefs")).append(
 					OrgEclipseJdtCorePrefs.withDefaultValues().asFileContent())
 					.close();
 
-			new FileWriter(new File(asSomeone,
+			new FileWriter(new File(wsRoot,
 					".settings/org.eclipse.jdt.ui.prefs")).append(
 					OrgEclipseJdtUiPrefs.withDefaultValues().asFileContent())
 					.close();
@@ -103,7 +113,7 @@ public class WishEvaluator {
 		}
 	}
 
-	private File freshCachedContent(Path path) {
+	File freshCachedContent(Path path) {
 		File cachedContent = path.cachedAt(ctx);
 		if (path instanceof Target) {
 			Target target = (Target) path;

@@ -2,6 +2,7 @@ package net.sf.iwant.entry3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,9 +25,10 @@ public class WishEvaluatorTest extends TestCase {
 	private WishEvaluator evaluator;
 	private IwantNetworkMock network;
 	private Iwant iwant;
+	private WsInfo wsInfo;
 
 	@Override
-	public void setUp() {
+	public void setUp() throws IOException {
 		testArea = new IwantEntry3TestArea();
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
@@ -34,8 +36,9 @@ public class WishEvaluatorTest extends TestCase {
 		iwantApiClasses = testArea.newDir("iwant-api-classes");
 		wsRoot = testArea.newDir("wsroot");
 		out = new ByteArrayOutputStream();
+		wsInfo = new WsInfoMock();
 		evaluator = new WishEvaluator(out, asSomeone, wsRoot, iwantApiClasses,
-				iwant);
+				iwant, wsInfo);
 	}
 
 	private class Hello implements IwantWorkspace {

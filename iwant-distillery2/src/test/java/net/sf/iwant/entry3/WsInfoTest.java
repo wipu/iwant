@@ -16,12 +16,12 @@ public class WsInfoTest extends TestCase {
 		in = new StringBuilder();
 	}
 
-	private WsInfo newWsInfo() {
+	private WsInfo newWsInfo() throws IOException {
 		return new WsInfo(new StringReader(in.toString()), new File(
 				"/project/as-test/i-have/wsinfo"));
 	}
 
-	public void testEmpty() {
+	public void testEmpty() throws IOException {
 		// empty in
 
 		try {
@@ -35,7 +35,7 @@ public class WsInfoTest extends TestCase {
 
 	}
 
-	public void testMissingWsname() {
+	public void testMissingWsname() throws IOException {
 		in.append("WSROOT=../..\n");
 		in.append("WSDEF_SRC=wsdef\n");
 		in.append("WSDEF_CLASS=com.example.wsdef.Workspace\n");
@@ -51,7 +51,7 @@ public class WsInfoTest extends TestCase {
 
 	}
 
-	public void testMissingWsroot() {
+	public void testMissingWsroot() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSDEF_SRC=wsdef\n");
 		in.append("WSDEF_CLASS=com.example.wsdef.Workspace\n");
@@ -67,7 +67,7 @@ public class WsInfoTest extends TestCase {
 
 	}
 
-	public void testMissingWsdefSrc() {
+	public void testMissingWsdefSrc() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../..\n");
 		in.append("WSDEF_CLASS=com.example.wsdef.Workspace\n");
@@ -83,7 +83,7 @@ public class WsInfoTest extends TestCase {
 
 	}
 
-	public void testMissingWsdefClass() {
+	public void testMissingWsdefClass() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../..\n");
 		in.append("WSDEF_SRC=wsdef-src\n");
@@ -109,14 +109,14 @@ public class WsInfoTest extends TestCase {
 
 		assertEquals("example", wsInfo.wsName());
 		assertEquals("/project", wsInfo.wsRoot().getCanonicalPath());
-		assertEquals("/project/as-test/i-have/wsdef", wsInfo.wsdefSrc()
+		assertEquals("/project/as-test/i-have/wsdef", wsInfo.wsdefdefSrc()
 				.getCanonicalPath());
 		assertEquals("com.example.wsdef.Workspace", wsInfo.wsdefClass());
 		assertEquals(
 				"/project/as-test/i-have/wsdef/com/example/wsdef/Workspace.java",
-				wsInfo.wsdefJava().getCanonicalPath());
-		assertEquals("com.example.wsdef", wsInfo.wsdefPackage());
-		assertEquals("Workspace", wsInfo.wsdefClassSimpleName());
+				wsInfo.wsdefdefJava().getCanonicalPath());
+		assertEquals("com.example.wsdef", wsInfo.wsdefdefPackage());
+		assertEquals("Workspace", wsInfo.wsdefdefClassSimpleName());
 	}
 
 	public void testValidWithDifferentValues() throws IOException {
@@ -129,14 +129,14 @@ public class WsInfoTest extends TestCase {
 
 		assertEquals("example2", wsInfo.wsName());
 		assertEquals("/project/wsroot", wsInfo.wsRoot().getCanonicalPath());
-		assertEquals("/project/wsroot/wsdefinition", wsInfo.wsdefSrc()
+		assertEquals("/project/wsroot/wsdefinition", wsInfo.wsdefdefSrc()
 				.getCanonicalPath());
 		assertEquals("com.example2.wsdef.Workspace2", wsInfo.wsdefClass());
 		assertEquals(
 				"/project/wsroot/wsdefinition/com/example2/wsdef/Workspace2.java",
-				wsInfo.wsdefJava().getCanonicalPath());
-		assertEquals("com.example2.wsdef", wsInfo.wsdefPackage());
-		assertEquals("Workspace2", wsInfo.wsdefClassSimpleName());
+				wsInfo.wsdefdefJava().getCanonicalPath());
+		assertEquals("com.example2.wsdef", wsInfo.wsdefdefPackage());
+		assertEquals("Workspace2", wsInfo.wsdefdefClassSimpleName());
 	}
 
 }

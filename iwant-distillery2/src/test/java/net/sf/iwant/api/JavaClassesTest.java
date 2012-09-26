@@ -1,0 +1,126 @@
+package net.sf.iwant.api;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.util.Arrays;
+import java.util.Collections;
+
+import junit.framework.TestCase;
+import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.Iwant.IwantException;
+import net.sf.iwant.entry.Iwant.IwantNetwork;
+import net.sf.iwant.entry.IwantNetworkMock;
+import net.sf.iwant.entry3.IwantEntry3TestArea;
+import net.sf.iwant.entry3.TargetMock;
+
+public class JavaClassesTest extends TestCase {
+
+	private IwantEntry3TestArea testArea;
+	private TargetEvaluationContextMock ctx;
+	private IwantNetwork network;
+	private Iwant iwant;
+	private File wsRoot;
+	private File cached;
+
+	@Override
+	public void setUp() {
+		testArea = new IwantEntry3TestArea();
+		network = new IwantNetworkMock(testArea);
+		iwant = Iwant.using(network);
+		ctx = new TargetEvaluationContextMock(iwant);
+		wsRoot = new File(testArea.root(), "wsRoot");
+		ctx.hasWsRoot(wsRoot);
+		cached = new File(testArea.root(), "cached");
+		ctx.cachesModifiableTargetsAt(cached);
+	}
+
+	public void testSrcDirIsAnIgredient() throws Exception {
+		Path src = Source.underWsroot("src");
+		Target target = new JavaClasses("classes", src,
+				Collections.<Path> emptyList());
+
+		assertTrue(target.ingredients().contains(src));
+	}
+
+	public void testSrcDirIsInContentDescriptor() throws Exception {
+		assertEquals("net.sf.iwant.api.JavaClasses {\n  src:src\n}",
+				new JavaClasses("classes", Source.underWsroot("src"),
+						Collections.<Path> emptyList()).contentDescriptor());
+		assertEquals("net.sf.iwant.api.JavaClasses {\n  src:src2\n}",
+				new JavaClasses("classes2", Source.underWsroot("src2"),
+						Collections.<Path> emptyList()).contentDescriptor());
+	}
+
+	public void testCrapToPathFails() throws Exception {
+		File srcDir = new File(wsRoot, "src");
+		srcDir.mkdirs();
+		new FileWriter(new File(srcDir, "Crap.java")).append("crap").close();
+		Source src = Source.underWsroot("src");
+		Target target = new JavaClasses("crap", src,
+				Collections.<Path> emptyList());
+
+		try {
+			target.path(ctx);
+			fail();
+		} catch (IwantException e) {
+			assertEquals("Compilation failed.", e.getMessage());
+		}
+	}
+
+	public void testValidToPathCompiles() throws Exception {
+		File srcDir = new File(wsRoot, "src");
+		srcDir.mkdirs();
+		new FileWriter(new File(srcDir, "Valid.java")).append("class Valid {}")
+				.close();
+		Source src = Source.underWsroot("src");
+		Target target = new JavaClasses("valid", src,
+				Collections.<Path> emptyList());
+
+		target.path(ctx);
+
+		assertTrue(new File(cached, "valid/Valid.class").exists());
+	}
+
+	public void testClassWithDepToClassesCompiles() throws Exception {
+		File superClassFile = new File(getClass().getResource(
+				"SuperClassForJavaClassesTest.class").toURI());
+		File srcDir = new File(wsRoot, "src");
+		srcDir.mkdirs();
+		new FileWriter(new File(srcDir, "Subclass.java")).append(
+				"class Subclass extends "
+						+ SuperClassForJavaClassesTest.class.getCanonicalName()
+						+ "{}").close();
+		Source src = Source.underWsroot("src");
+		File superClassClasses = superClassFile.getParentFile().getParentFile()
+				.getParentFile().getParentFile().getParentFile()
+				.getAbsoluteFile();
+		Target target = new JavaClasses("valid", src,
+				Arrays.asList(new ExternalSource(superClassClasses)));
+
+		target.path(ctx);
+
+		assertTrue(new File(cached, "valid/Subclass.class").exists());
+	}
+
+	public void testDependenciesAreIgredients() {
+		Target dep1 = new TargetMock("dep1");
+		Target dep2 = new TargetMock("dep2");
+		Target target = new JavaClasses("valid", Source.underWsroot("src"),
+				Arrays.asList(dep1, dep2));
+
+		assertTrue(target.ingredients().contains(dep1));
+		assertTrue(target.ingredients().contains(dep2));
+	}
+
+	public void testDependenciesAreInContentDescriptor() {
+		Target dep1 = new TargetMock("dep1");
+		Target dep2 = new TargetMock("dep2");
+		Target target = new JavaClasses("valid", Source.underWsroot("src"),
+				Arrays.asList(dep1, dep2));
+
+		assertEquals("net.sf.iwant.api.JavaClasses {\n  src:src\n"
+				+ "  classes:dep1\n  classes:dep2\n" + "}",
+				target.contentDescriptor());
+	}
+
+}

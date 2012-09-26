@@ -47,4 +47,9 @@ public class Source implements Path {
 		return null;
 	}
 
+	@Override
+	public String toString() {
+		return path;
+	}
+
 }

@@ -11,11 +11,11 @@ public class WsInfo {
 
 	private final String wsName;
 	private final File wsRoot;
-	private final File wsdefSrc;
-	private final File wsdefJava;
-	private final String wsdefClass;
+	private final File wsdefdefSrc;
+	private final File wsdefdefJava;
+	private final String wsdefdefClass;
 
-	public WsInfo(Reader in, File wsInfo) {
+	public WsInfo(Reader in, File wsInfo) throws IOException {
 		Properties p = new Properties();
 		try {
 			p.load(in);
@@ -24,13 +24,14 @@ public class WsInfo {
 		}
 		File iHave = wsInfo.getParentFile();
 		wsName = property(p, wsInfo, "WSNAME");
-		wsRoot = new File(iHave, property(p, wsInfo, "WSROOT"));
-		wsdefSrc = new File(iHave, property(p, wsInfo, "WSDEF_SRC"));
-		wsdefClass = property(p, wsInfo, "WSDEF_CLASS");
-		wsdefJava = wsdefJava(wsdefSrc, wsdefClass);
+		wsRoot = new File(iHave, property(p, wsInfo, "WSROOT"))
+				.getCanonicalFile();
+		wsdefdefSrc = new File(iHave, property(p, wsInfo, "WSDEF_SRC"));
+		wsdefdefClass = property(p, wsInfo, "WSDEF_CLASS");
+		wsdefdefJava = wsdefdefJava(wsdefdefSrc, wsdefdefClass);
 	}
 
-	private static File wsdefJava(File wsdefSrc, String wsdefClass) {
+	private static File wsdefdefJava(File wsdefSrc, String wsdefClass) {
 		String java = wsdefClass.replaceAll("\\.", "/") + ".java";
 		return new File(wsdefSrc, java);
 	}
@@ -51,24 +52,24 @@ public class WsInfo {
 		return wsRoot;
 	}
 
-	public File wsdefSrc() {
-		return wsdefSrc;
+	public File wsdefdefSrc() {
+		return wsdefdefSrc;
 	}
 
 	public String wsdefClass() {
-		return wsdefClass;
+		return wsdefdefClass;
 	}
 
-	public File wsdefJava() {
-		return wsdefJava;
+	public File wsdefdefJava() {
+		return wsdefdefJava;
 	}
 
-	public String wsdefPackage() {
-		return wsdefClass.substring(0, wsdefClass.lastIndexOf('.'));
+	public String wsdefdefPackage() {
+		return wsdefdefClass.substring(0, wsdefdefClass.lastIndexOf('.'));
 	}
 
-	public String wsdefClassSimpleName() {
-		return wsdefClass.substring(wsdefClass.lastIndexOf('.') + 1);
+	public String wsdefdefClassSimpleName() {
+		return wsdefdefClass.substring(wsdefdefClass.lastIndexOf('.') + 1);
 	}
 
 }

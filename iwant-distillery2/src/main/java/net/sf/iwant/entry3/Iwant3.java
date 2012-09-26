@@ -11,7 +11,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.ExternalSource;
 import net.sf.iwant.api.IwantWorkspace;
+import net.sf.iwant.api.IwantWorkspaceProvider;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
@@ -47,12 +49,25 @@ public class Iwant3 {
 		iHave.mkdirs();
 		File wsInfoFile = wsInfoFile(iHave);
 		WsInfo wsInfo = parseWsInfo(wsInfoFile);
-		if (!wsInfo.wsdefJava().exists()) {
-			createExampleWsdefJava(wsInfo);
+		if (!wsInfo.wsdefdefJava().exists()) {
+			File iwantWsRoot = WsRootFinder.wsRoot();
+			String iHaveRelativeToWsroot = FileUtil
+					.relativePathOfFileUnderParent(iHave, wsInfo.wsRoot());
+			String wsdefSrcRelativeToWsRoot = iHaveRelativeToWsroot + "/wsdef";
+			createFile(wsInfo.wsdefdefJava(),
+					ExampleWsDefGenerator.exampleWsdefdef(iwantWsRoot,
+							wsInfo.wsdefdefPackage(),
+							wsInfo.wsdefdefClassSimpleName(),
+							wsdefSrcRelativeToWsRoot));
+			File wsDefJava = new File(wsInfo.wsRoot(), wsdefSrcRelativeToWsRoot
+					+ "/com/example/wsdef/Workspace.java");
+			createFile(wsDefJava, ExampleWsDefGenerator.exampleWsdef(
+					iwantWsRoot, "com.example.wsdef", "Workspace"));
 			refreshWishScripts(asSomeone, Arrays.asList("hello"),
 					Arrays.asList("eclipse-settings"));
-			throw new IwantException("I created " + wsInfo.wsdefJava()
-					+ "\nPlease edit it and rerun me.");
+			throw new IwantException("I created\n" + wsInfo.wsdefdefJava()
+					+ "\nand\n" + wsDefJava
+					+ "\nPlease edit them and rerun me.");
 		}
 		if (args.length == 0) {
 			throw new IwantException("Try "
@@ -61,28 +76,42 @@ public class Iwant3 {
 		String wish = args[0];
 
 		File cached = cached(asSomeone);
-		File wsDefClasses = new File(cached, "wsdef-classes");
+		File wsDefdefClasses = new File(cached, "wsdef-classes");
 
-		List<File> srcFiles = Arrays.asList(wsInfo.wsdefJava());
+		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
 		File iwantApiClasses = iwantApiClasses();
-		iwant.compiledClasses(wsDefClasses, srcFiles,
+		iwant.compiledClasses(wsDefdefClasses, srcFiles,
 				Arrays.asList(iwantApiClasses));
 
+		// TODO use Arrays.asList
 		List<File> runtimeClasses = new ArrayList<File>();
-		runtimeClasses.add(wsDefClasses);
-		Class<?> wsDefClass = loadClass(getClass().getClassLoader(),
+		runtimeClasses.add(wsDefdefClasses);
+		Class<?> wsDefdefClass = loadClass(getClass().getClassLoader(),
 				wsInfo.wsdefClass(), runtimeClasses.toArray(new File[] {}));
 
 		try {
+			Iwant.fileLog("Calling wsdefdef");
+			IwantWorkspaceProvider wsDefdef = (IwantWorkspaceProvider) wsDefdefClass
+					.newInstance();
+
+			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
+					asSomeone, wsInfo.wsRoot(), iwantApiClasses, iwant, wsInfo);
+
+			Iwant.fileLog("Refreshing wsdef classes");
+			File wsDefClasses = wishEvaluator.freshCachedContent(wsDefdef
+					.workspaceClasses(new ExternalSource(iwantApiClasses)));
+
 			Iwant.fileLog("Calling wsdef");
+			Class<?> wsDefClass = loadClass(getClass().getClassLoader(),
+					wsDefdef.workspaceClassname(), new File[] {
+							wsDefdefClasses, wsDefClasses });
 			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
 			refreshWishScripts(asSomeone, wsDef);
-			new WishEvaluator(System.out, asSomeone, wsInfo.wsRoot(),
-					iwantApiClasses, iwant).iwant(wish, wsDef);
+			wishEvaluator.iwant(wish, wsDef);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Error invoking wsdef", e);
+			throw new IllegalArgumentException("Error invoking user code.", e);
 		}
 	}
 
@@ -146,16 +175,7 @@ public class Iwant3 {
 				+ "\nPlease edit it and rerun me.");
 	}
 
-	private static void createExampleWsdefJava(WsInfo wsInfo)
-			throws IOException {
-		File iwantWsRoot = WsRootFinder.wsRoot();
-		createFile(
-				wsInfo.wsdefJava(),
-				ExampleWsDefGenerator.example(iwantWsRoot,
-						wsInfo.wsdefPackage(), wsInfo.wsdefClassSimpleName()));
-	}
-
-	private static WsInfo parseWsInfo(File wsInfoFile) {
+	private static WsInfo parseWsInfo(File wsInfoFile) throws IOException {
 		try {
 			return new WsInfo(new FileReader(wsInfoFile), wsInfoFile);
 		} catch (FileNotFoundException e) {
@@ -166,8 +186,9 @@ public class Iwant3 {
 
 	private static void createExampleWsInfo(File wsInfo) {
 		createFile(wsInfo, "# paths are relative to this file's directory\n"
-				+ "WSNAME=example\n" + "WSROOT=../..\n" + "WSDEF_SRC=wsdef\n"
-				+ "WSDEF_CLASS=com.example.wsdef.Workspace\n");
+				+ "WSNAME=example\n" + "WSROOT=../..\n"
+				+ "WSDEF_SRC=wsdefdef\n"
+				+ "WSDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n");
 	}
 
 	private static void createScript(File file, String content) {

@@ -195,12 +195,21 @@
   * this introduces a risk, but since build tools are anyway capable of doing great harm, the only real risk is that of accidents and bugs, so let's proceed
   + allow slashes, just prevent parent dir refs (..), preserve repeated slashes etc
 
++ As @buildscriptauthor I want my wsdef to be 2-phased i.e. I can define the compilation of wsdef in "wsdefdef" so I can define custom and 3rd party code in my build
+  * for now the names are wsdefdef=IwantWorkspaceProvider and wsdef=IwantWorkspace. These names suck, see later story
+  + make Iwant3 load wsdefdef instead of wsdef
+  + write/modify tests to test Iwant3 compiles & classloads wsdef defined in wsdefdef
+  + update example generator to generate both wsdefdef and wsdef
+  (- update descript: no need, it was good)
+  + fix i-have/wsinfo example
+  + update hard-coded eclipse-settings generator
+    + KISS: for now: just one eclipse project for the whole workspace!
+    + manually test with a dummy ws using iwant
+    + update descript to ls eclipse files from the ws root
+
 #################################################################
 = In progress
 #################################################################
-
-- As @developer I want cached content descriptor logic behind an interface and use real impl only in one integration test that just tests features here and there, mock in current tests.
-  * also, do the same to cached content and maybe other file functionality
 
 - As @developer I want this long and deep text broken into a readable list of stories (not too detailed), both to done and planned, so I can analyze how I proceeded and also see what has been done and what not:
   - optimization: don't even write descriptor for source
@@ -243,6 +252,24 @@
 #################################################################
 = Planned
 #################################################################
+
+- @bugfix As @developer I want no cached content under any .todo-cached dirs
+  * currently these dirs exist in several locations
+
+- As @developer I want WsInfo extracted to interface so I can in a more robust way mock it in tests
+
+- As @buildscriptauthor I want iwant not to overwrite my wsdef even if I delete wsdefdef and iwant regenerates it and it points to my existing wsdef so that I don't lose my work
+
+- As @buildscriptauthor I want to declare separate eclipse settings for each module instead of the default one per workspace
+  * utilize the now unused but tested WsDefEclipseProject class.
+
+- As @developer I want better names for wsdef and wsdefdef (IwantWorkspaceProvider and IwantWorkspace) and also for their eclipse projects
+  - rename interfaces
+  - rename java references
+  - rename non-java refs, like in i-have
+
+- As @developer I want cached content descriptor logic behind an interface and use real impl only in one integration test that just tests features here and there, mock in current tests.
+  * also, do the same to cached content and maybe other file functionality
 
 - As @buildscriptauthor I want iwant wizard to generate, or at least tell me to generate, eclipse settings and also to import to eclipse before telling to edit the wsdef java
 

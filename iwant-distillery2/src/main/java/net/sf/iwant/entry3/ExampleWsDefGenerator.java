@@ -7,11 +7,10 @@ import java.io.IOException;
 
 class ExampleWsDefGenerator {
 
-	private static String exampleWorkspaceJava(File iwantWsRoot)
+	private static String exampleJava(File iwantWsRoot, String javaPath)
 			throws IOException {
 		File example = new File(iwantWsRoot,
-				"iwant-example-wsdef/src/main/java/"
-						+ "com/example/wsdef/Workspace.java");
+				"iwant-example-wsdef/src/main/java/" + javaPath);
 		return contentOf(example);
 	}
 
@@ -29,9 +28,25 @@ class ExampleWsDefGenerator {
 		return out.toString();
 	}
 
-	static String example(File iwantWsRoot, String newPackage, String newName)
-			throws IOException {
-		String src = exampleWorkspaceJava(iwantWsRoot);
+	static String exampleWsdefdef(File iwantWsRoot, String newPackage,
+			String newName, String relativeWsdefSrc) throws IOException {
+		String src = exampleJava(iwantWsRoot,
+				"com/example/wsdefdef/WorkspaceProvider.java");
+		String out = src.replaceFirst("package.*;", "package " + newPackage
+				+ ";");
+		out = out.replaceFirst("class WorkspaceProvider ", "class " + newName
+				+ " ");
+		out = out
+				.replaceAll(
+						"return Source\\.underWsroot\\(\"AS_EXAMPLE_DEVELOPER/i-have/wsdef",
+						"return Source.underWsroot(\"" + relativeWsdefSrc);
+		return out;
+	}
+
+	public static String exampleWsdef(File iwantWsRoot, String newPackage,
+			String newName) throws IOException {
+		String src = exampleJava(iwantWsRoot,
+				"com/example/wsdef/Workspace.java");
 		return src.replaceFirst("package.*;", "package " + newPackage + ";")
 				.replaceFirst("class Workspace ", "class " + newName + " ");
 	}

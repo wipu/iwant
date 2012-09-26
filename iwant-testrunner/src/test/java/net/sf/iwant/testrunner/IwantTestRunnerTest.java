@@ -10,12 +10,14 @@ public class IwantTestRunnerTest extends TestCase {
 	private PrintStream origOut;
 	private ByteArrayOutputStream out;
 
+	@Override
 	public void setUp() {
 		out = new ByteArrayOutputStream();
 		origOut = System.out;
 		System.setOut(new PrintStream(out));
 	}
 
+	@Override
 	public void tearDown() {
 		System.setOut(origOut);
 	}
