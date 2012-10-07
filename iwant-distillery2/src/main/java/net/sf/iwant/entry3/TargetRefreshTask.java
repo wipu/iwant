@@ -40,7 +40,7 @@ public class TargetRefreshTask implements Task {
 			Map<ResourcePool, Resource> allocatedResources) {
 		File cachedDescriptor = cachedDescriptorFile();
 		cachedDescriptor.getParentFile().mkdirs();
-		File cachedTarget = target.cachedAt(ctx.cached());
+		File cachedTarget = target.cachedAt(ctx);
 		cachedTarget.getParentFile().mkdirs();
 		try {
 			target.path(ctx);
@@ -52,7 +52,7 @@ public class TargetRefreshTask implements Task {
 	}
 
 	private File cachedDescriptorFile() {
-		return new File(ctx.cached().cachedDescriptors(), target.name());
+		return new File(ctx.cachedDescriptors(), target.name());
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class TargetRefreshTask implements Task {
 				|| !cachedDescriptor.equals(target.contentDescriptor())) {
 			return true;
 		}
-		File cachedContent = target.cachedAt(ctx.cached());
+		File cachedContent = target.cachedAt(ctx);
 		if (!cachedContent.exists()) {
 			return true;
 		}

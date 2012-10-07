@@ -4,8 +4,7 @@ import java.io.File;
 
 import net.sf.iwant.entry.Iwant;
 
-public class TargetEvaluationContextMock implements TargetEvaluationContext,
-		CacheLocations {
+public class TargetEvaluationContextMock implements TargetEvaluationContext {
 
 	private final Iwant iwant;
 	private File wsRoot;
@@ -44,11 +43,6 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext,
 	@Override
 	public Iwant iwant() {
 		return iwant;
-	}
-
-	@Override
-	public CacheLocations cached() {
-		return this;
 	}
 
 	@Override

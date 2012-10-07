@@ -26,6 +26,10 @@ public class JavaClasses extends Target {
 		}
 	}
 
+	public Collection<? extends Path> classLocations() {
+		return classLocations;
+	}
+
 	@Override
 	public InputStream content(TargetEvaluationContext ctx) throws Exception {
 		throw new UnsupportedOperationException("TODO test and implement");
@@ -37,7 +41,7 @@ public class JavaClasses extends Target {
 		List<File> javaFiles = Iwant2.javaFilesUnder(ctx.freshPathTo(srcDir));
 		List<File> classLocationDirs = new ArrayList<File>();
 		for (Path classLocation : classLocations) {
-			File classLocationDir = classLocation.cachedAt(ctx.cached());
+			File classLocationDir = classLocation.cachedAt(ctx);
 			classLocationDirs.add(classLocationDir);
 		}
 		ctx.iwant().compiledClasses(dest, javaFiles, classLocationDirs);

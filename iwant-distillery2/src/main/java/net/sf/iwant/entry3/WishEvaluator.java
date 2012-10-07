@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import net.sf.iwant.api.CacheLocations;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Target;
@@ -37,6 +36,10 @@ public class WishEvaluator {
 		this.iwant = iwant;
 		this.wsInfo = wsInfo;
 		this.ctx = new Ctx();
+	}
+
+	public TargetEvaluationContext targetEvaluationContext() {
+		return ctx;
 	}
 
 	public void iwant(String wish, IwantWorkspace ws) {
@@ -167,12 +170,7 @@ public class WishEvaluator {
 		return new File(asSomeone, ".todo-cached/target");
 	}
 
-	private class Ctx implements TargetEvaluationContext, CacheLocations {
-
-		@Override
-		public CacheLocations cached() {
-			return this;
-		}
+	private class Ctx implements TargetEvaluationContext {
 
 		@Override
 		public Iwant iwant() {

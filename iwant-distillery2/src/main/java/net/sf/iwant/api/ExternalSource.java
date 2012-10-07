@@ -27,7 +27,7 @@ public class ExternalSource implements Path {
 	}
 
 	@Override
-	public File cachedAt(CacheLocations cached) {
+	public File cachedAt(TargetEvaluationContext ctx) {
 		return file;
 	}
 

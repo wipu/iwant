@@ -166,5 +166,89 @@ h<img width="0" />e<img width="0" />l<img width="0" />l<img width="0" />o<img wi
 <div class='console output'>T<img width="0" />O<img width="0" />D<img width="0" />O<img width="0" /> <img width="0" />l<img width="0" />a<img width="0" />z<img width="0" />i<img width="0" />n<img width="0" />e<img width="0" />s<img width="0" />s<img width="0" />,<img width="0" /> <img width="0" />a<img width="0" />n<img width="0" />d<img width="0" /> <img width="0" />f<img width="0" />o<img width="0" />r<img width="0" /> <img width="0" />t<img width="0" />e<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />n<img width="0" />g<img width="0" />,<img width="0" /> <img width="0" />t<img width="0" />o<img width="0" />o<img width="0" /><br/>
 :<img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" />s<img width="0" />e<img width="0" />l<img width="0" />f<img width="0" />-<img width="0" />t<img width="0" />e<img width="0" />s<img width="0" />t<img width="0" />e<img width="0" />d<img width="0" /> <img width="0" />-<img width="0" />><img width="0" /> <img width="0" />i<img width="0" />w<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" /><br/>
 a<img width="0" />n<img width="0" />o<img width="0" />t<img width="0" />h<img width="0" />e<img width="0" />r<img width="0" /> <img width="0" />t<img width="0" />a<img width="0" />r<img width="0" />g<img width="0" />e<img width="0" />t<img width="0" /></div>
+<p class='text'>
+Next we add downloaded classes to be used in the workspace definition.
+</p>
+<div class='console'><span class='prompt'>~<img width="0" /> $ </span><span class='cmd'>$<img width="0" />E<img width="0" />D<img width="0" />I<img width="0" />T<img width="0" />O<img width="0" />R<img width="0" /> <img width="0" />"<img width="0" />a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />i<img width="0" />-<img width="0" />h<img width="0" />a<img width="0" />v<img width="0" />e<img width="0" />/<img width="0" />w<img width="0" />s<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />/<img width="0" />c<img width="0" />o<img width="0" />m<img width="0" />/<img width="0" />e<img width="0" />x<img width="0" />a<img width="0" />m<img width="0" />p<img width="0" />l<img width="0" />e<img width="0" />/<img width="0" />w<img width="0" />s<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />/<img width="0" />W<img width="0" />o<img width="0" />r<img width="0" />k<img width="0" />s<img width="0" />p<img width="0" />a<img width="0" />c<img width="0" />e<img width="0" />P<img width="0" />r<img width="0" />o<img width="0" />v<img width="0" />i<img width="0" />d<img width="0" />e<img width="0" />r<img width="0" />.<img width="0" />j<img width="0" />a<img width="0" />v<img width="0" />a<img width="0" />"<img width="0" />
+</span></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdefdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'></div>
+<div class='add line'>import net.sf.iwant.api.Downloaded;</div>
+<div class='keep line'>import net.sf.iwant.api.IwantWorkspaceProvider;</div>
+<div class='keep line'>import net.sf.iwant.api.JavaClasses;</div>
+<div class='keep line'>import net.sf.iwant.api.Path;</div>
+<div class='keep line'>import net.sf.iwant.api.Source;</div>
+<div class='add line'>import net.sf.iwant.api.Target;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class WorkspaceProvider implements IwantWorkspaceProvider {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public JavaClasses workspaceClasses(Path iwantApiClasses) {</div>
+<div class='keep line'>		return new JavaClasses("workspaceClasses", workspaceSrc(),</div>
+<div class='del line'>				Arrays.asList(iwantApiClasses));</div>
+<div class='add line'>				Arrays.asList(iwantApiClasses, antJar()));</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	private static Source workspaceSrc() {</div>
+<div class='keep line'>		return Source.underWsroot("as-distillery-developer/i-have/wsdef"</div>
+<div class='keep line'>				+ "/com/example/wsdef");</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public String workspaceClassname() {</div>
+<div class='keep line'>		return "com.example.wsdef.Workspace";</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='add line'>	private static Target antJar() {</div>
+<div class='add line'>		final String v = "1.7.1";</div>
+<div class='add line'>		return Downloaded</div>
+<div class='add line'>				.withName("antJar")</div>
+<div class='add line'>				.url("http://mirrors.ibiblio.org/maven2/org/apache/ant/ant/"</div>
+<div class='add line'>						+ v + "/ant-" + v + ".jar")</div>
+<div class='add line'>				.md5("ef62988c744551fb51f330eaa311bfc0");</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+TODO: document regenerating eclipse settings and refresing Eclipse.
+</p>
+<p class='text'>
+Now we can use ant classes in the workspace definition.
+</p>
+<div class='console'><span class='prompt'>~<img width="0" /> $ </span><span class='cmd'>$<img width="0" />E<img width="0" />D<img width="0" />I<img width="0" />T<img width="0" />O<img width="0" />R<img width="0" /> <img width="0" />"<img width="0" />a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />i<img width="0" />-<img width="0" />h<img width="0" />a<img width="0" />v<img width="0" />e<img width="0" />/<img width="0" />w<img width="0" />s<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />/<img width="0" />c<img width="0" />o<img width="0" />m<img width="0" />/<img width="0" />e<img width="0" />x<img width="0" />a<img width="0" />m<img width="0" />p<img width="0" />l<img width="0" />e<img width="0" />/<img width="0" />w<img width="0" />s<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />/<img width="0" />W<img width="0" />o<img width="0" />r<img width="0" />k<img width="0" />s<img width="0" />p<img width="0" />a<img width="0" />c<img width="0" />e<img width="0" />.<img width="0" />j<img width="0" />a<img width="0" />v<img width="0" />a<img width="0" />"<img width="0" />
+</span></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.IwantWorkspace;</div>
+<div class='keep line'>import net.sf.iwant.api.Target;</div>
+<div class='keep line'></div>
+<div class='add line'>import org.apache.tools.ant.taskdefs.Echo;</div>
+<div class='add line'></div>
+<div class='keep line'>public class Workspace implements IwantWorkspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets() {</div>
+<div class='keep line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant"),</div>
+<div class='del line'>				new HelloTarget("hello2", "another target"));</div>
+<div class='add line'>				new HelloTarget("hello2", new Echo().getClass()</div>
+<div class='add line'>						.getCanonicalName()));</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><span class='prompt'>~<img width="0" /> $ </span><span class='cmd'>a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />w<img width="0" />i<img width="0" />t<img width="0" />h<img width="0" />/<img width="0" />b<img width="0" />a<img width="0" />s<img width="0" />h<img width="0" />/<img width="0" />i<img width="0" />w<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />/<img width="0" />t<img width="0" />a<img width="0" />r<img width="0" />g<img width="0" />e<img width="0" />t<img width="0" />/<img width="0" />h<img width="0" />e<img width="0" />l<img width="0" />l<img width="0" />o<img width="0" />2<img width="0" />/<img width="0" />a<img width="0" />s<img width="0" />-<img width="0" />p<img width="0" />a<img width="0" />t<img width="0" />h<img width="0" /> <img width="0" />|<img width="0" /> <img width="0" />x<img width="0" />a<img width="0" />r<img width="0" />g<img width="0" />s<img width="0" /> <img width="0" />c<img width="0" />a<img width="0" />t<img width="0" /> <img width="0" />
+</span></div>
+<div class='console output'>T<img width="0" />O<img width="0" />D<img width="0" />O<img width="0" /> <img width="0" />l<img width="0" />a<img width="0" />z<img width="0" />i<img width="0" />n<img width="0" />e<img width="0" />s<img width="0" />s<img width="0" />,<img width="0" /> <img width="0" />a<img width="0" />n<img width="0" />d<img width="0" /> <img width="0" />f<img width="0" />o<img width="0" />r<img width="0" /> <img width="0" />t<img width="0" />e<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />n<img width="0" />g<img width="0" />,<img width="0" /> <img width="0" />t<img width="0" />o<img width="0" />o<img width="0" /><br/>
+:<img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" />s<img width="0" />e<img width="0" />l<img width="0" />f<img width="0" />-<img width="0" />t<img width="0" />e<img width="0" />s<img width="0" />t<img width="0" />e<img width="0" />d<img width="0" /> <img width="0" />-<img width="0" />><img width="0" /> <img width="0" />i<img width="0" />w<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" /><br/>
+o<img width="0" />r<img width="0" />g<img width="0" />.<img width="0" />a<img width="0" />p<img width="0" />a<img width="0" />c<img width="0" />h<img width="0" />e<img width="0" />.<img width="0" />t<img width="0" />o<img width="0" />o<img width="0" />l<img width="0" />s<img width="0" />.<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />.<img width="0" />t<img width="0" />a<img width="0" />s<img width="0" />k<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />s<img width="0" />.<img width="0" />E<img width="0" />c<img width="0" />h<img width="0" />o<img width="0" /></div>
 </body>
 </html>

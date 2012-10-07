@@ -23,8 +23,8 @@ public class Source implements Path {
 	}
 
 	@Override
-	public File cachedAt(CacheLocations cached) {
-		return new File(cached.wsRoot(), name());
+	public File cachedAt(TargetEvaluationContext ctx) {
+		return new File(ctx.wsRoot(), name());
 	}
 
 	@Override

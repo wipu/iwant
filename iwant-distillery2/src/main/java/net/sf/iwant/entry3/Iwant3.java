@@ -14,6 +14,9 @@ import java.util.List;
 import net.sf.iwant.api.ExternalSource;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.IwantWorkspaceProvider;
+import net.sf.iwant.api.JavaClasses;
+import net.sf.iwant.api.Path;
+import net.sf.iwant.api.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
@@ -98,13 +101,18 @@ public class Iwant3 {
 					asSomeone, wsInfo.wsRoot(), iwantApiClasses, iwant, wsInfo);
 
 			Iwant.fileLog("Refreshing wsdef classes");
-			File wsDefClasses = wishEvaluator.freshCachedContent(wsDefdef
-					.workspaceClasses(new ExternalSource(iwantApiClasses)));
+			JavaClasses wsdDefClassesTarget = wsDefdef
+					.workspaceClasses(new ExternalSource(iwantApiClasses));
+			File wsDefClasses = wishEvaluator
+					.freshCachedContent(wsdDefClassesTarget);
 
 			Iwant.fileLog("Calling wsdef");
-			Class<?> wsDefClass = loadClass(getClass().getClassLoader(),
-					wsDefdef.workspaceClassname(), new File[] {
-							wsDefdefClasses, wsDefClasses });
+			Class<?> wsDefClass = loadClass(
+					getClass().getClassLoader(),
+					wsDefdef.workspaceClassname(),
+					wsdefRuntimeClasspath(
+							wishEvaluator.targetEvaluationContext(),
+							wsdDefClassesTarget, wsDefdefClasses, wsDefClasses));
 			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
 			refreshWishScripts(asSomeone, wsDef);
 			wishEvaluator.iwant(wish, wsDef);
@@ -113,6 +121,18 @@ public class Iwant3 {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Error invoking user code.", e);
 		}
+	}
+
+	static File[] wsdefRuntimeClasspath(TargetEvaluationContext ctx,
+			JavaClasses wsdDefClassesTarget, File wsDefdefClasses,
+			File wsDefClasses) {
+		List<File> cp = new ArrayList<File>();
+		cp.add(wsDefdefClasses);
+		cp.add(wsDefClasses);
+		for (Path extra : wsdDefClassesTarget.classLocations()) {
+			cp.add(extra.cachedAt(ctx));
+		}
+		return cp.toArray(new File[0]);
 	}
 
 	private static void refreshWishScripts(File asSomeone, IwantWorkspace wsDef) {

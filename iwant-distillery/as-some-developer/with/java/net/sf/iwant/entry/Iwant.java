@@ -41,7 +41,7 @@ public class Iwant {
 
 	private final IwantNetwork network;
 
-	private Iwant(IwantNetwork network) {
+	protected Iwant(IwantNetwork network) {
 		this.network = network;
 	}
 

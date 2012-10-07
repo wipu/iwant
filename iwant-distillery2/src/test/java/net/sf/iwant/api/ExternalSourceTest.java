@@ -10,8 +10,8 @@ public class ExternalSourceTest extends TestCase {
 	public void testCachedAtIsFileAsSuch() throws IOException {
 		File file = new File("/any/file");
 		ExternalSource es = new ExternalSource(file);
-		CacheLocations locations = null; // any
-		assertSame(file, es.cachedAt(locations));
+		TargetEvaluationContext ctx = null; // any
+		assertSame(file, es.cachedAt(ctx));
 	}
 
 }

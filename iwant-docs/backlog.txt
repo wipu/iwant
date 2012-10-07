@@ -207,9 +207,18 @@
     + manually test with a dummy ws using iwant
     + update descript to ls eclipse files from the ws root
 
++ As @buildscriptauthor I want to define a file downloaded from a url
+  + descript in wsdefdef, because this is most probably the first place it's needed in, to make it possible to use ext code in wsdef
+  + ingredients and descriptor basics
+  + delegates to Iwant.downloaded
+  + manually test with emptied cache and working net connection
+  + descript using of downloaded code
+
 #################################################################
 = In progress
 #################################################################
+
+- eclipse settings with custom jar for wsdef
 
 - As @developer I want this long and deep text broken into a readable list of stories (not too detailed), both to done and planned, so I can analyze how I proceeded and also see what has been done and what not:
   - optimization: don't even write descriptor for source

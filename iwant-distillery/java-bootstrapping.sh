@@ -27,10 +27,38 @@ cmd "as-distillery-developer/with/bash/iwant/side-effect/eclipse-settings/effect
 cmd "ls .project .classpath .settings"
 
 p "Now we can import the project to eclipse (don't copy it to the workspace!) and try our first edit."
-edit as-distillery-developer/i-have/wsdef/com/example/wsdef/Workspace.java "1st-edit" < \
-  "$LOCAL_IWANT_WSROOT/iwant-tutorial-wsdefs/0-modified-hello/com/example/wsdef/Workspace.java"
+wsdef-edit v00modifiedhello
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
 cmde "0" "as-distillery-developer/with/bash/iwant/target/hello2/as-path"
 cmde "0" 'cat ""$(as-distillery-developer/with/bash/iwant/target/hello2/as-path)'
 
+p "Next we add downloaded classes to be used in the workspace definition."
+wsdefdef-edit v00antjar
+
+p "TODO: document regenerating eclipse settings and refresing Eclipse."
+
+p "Now we can use ant classes in the workspace definition."
+wsdef-edit v01antjar
+cmde "0 0" "as-distillery-developer/with/bash/iwant/target/hello2/as-path | xargs cat "
+
+}
+
+wsdef-edit() {
+  local NAME=$1
+  def-edit wsdef "$NAME" Workspace
+}
+
+wsdefdef-edit() {
+  local NAME=$1
+  def-edit wsdefdef "$NAME" WorkspaceProvider
+}
+
+def-edit() {
+  local TYPE=$1
+  local NAME=$2
+  local CLASS=$3
+  log "def-edit $TYPE $NAME $CLASS"
+  cat "$LOCAL_IWANT_WSROOT/iwant-tutorial-wsdefs/src/com/example/$TYPE/$NAME/${CLASS}.java" |
+    sed "s/^package .*;/package com.example.${TYPE};/" |
+    edit as-distillery-developer/i-have/${TYPE}/com/example/$TYPE/${CLASS}.java "$TYPE-$NAME"
 }

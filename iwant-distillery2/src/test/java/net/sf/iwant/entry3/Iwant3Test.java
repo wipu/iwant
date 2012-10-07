@@ -4,9 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.IwantWorkspace;
+import net.sf.iwant.api.JavaClasses;
+import net.sf.iwant.api.Source;
+import net.sf.iwant.api.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.IwantNetworkMock;
@@ -225,12 +229,11 @@ public class Iwant3Test extends TestCase {
 		b.append("import net.sf.iwant.api.JavaClasses;\n");
 		b.append("import net.sf.iwant.api.Path;\n");
 		b.append("import net.sf.iwant.api.Source;\n");
-		b.append("import net.sf.iwant.api.Target;\n");
 		b.append("\n");
 		b.append("public class ExampleWsProvider implements IwantWorkspaceProvider {\n");
 		b.append("\n");
 		b.append("      @Override\n");
-		b.append("      public Target workspaceClasses(Path iwantApiClasses) {\n");
+		b.append("      public JavaClasses workspaceClasses(Path iwantApiClasses) {\n");
 		b.append("              return new JavaClasses(\"workspaceClasses\", workspaceSrc(), Arrays.asList(iwantApiClasses));\n");
 		b.append("      }\n");
 		b.append("\n");
@@ -405,6 +408,49 @@ public class Iwant3Test extends TestCase {
 		}
 
 		assertEquals("", out());
+	}
+
+	/**
+	 * TODO extract class for this functionality and move these to its test, the
+	 * setup is very different from other tests here.
+	 */
+	public void testWsdefRuntimeClasspathWhenWsdefClassesTargetDefinesNoExtra() {
+		TargetEvaluationContextMock ctx = new TargetEvaluationContextMock(
+				Iwant.using(network));
+		ctx.cachesModifiableTargetsAt(new File("cached"));
+
+		JavaClasses wsdDefClassesTarget = new JavaClasses("wsdef",
+				Source.underWsroot("wsdef"), Arrays.asList(new TargetMock(
+						"iwant-api-classes")));
+
+		File wsDefdefClasses = new File("wsDefdefClasses");
+		File wsDefClasses = new File("wsDefClasses");
+		File[] cp = Iwant3.wsdefRuntimeClasspath(ctx, wsdDefClassesTarget,
+				wsDefdefClasses, wsDefClasses);
+
+		assertEquals(
+				"[wsDefdefClasses, wsDefClasses, cached/iwant-api-classes]",
+				Arrays.toString(cp));
+	}
+
+	public void testWsdefRuntimeClasspathWhenWsdefClassesTargetDefinesAnExternalLibrary() {
+		TargetEvaluationContextMock ctx = new TargetEvaluationContextMock(
+				Iwant.using(network));
+		ctx.cachesModifiableTargetsAt(new File("cached"));
+
+		JavaClasses wsdDefClassesTarget = new JavaClasses("wsdef",
+				Source.underWsroot("wsdef"), Arrays.asList(new TargetMock(
+						"iwant-api-classes"),
+						new TargetMock("external-library")));
+
+		File wsDefdefClasses = new File("wsDefdefClasses");
+		File wsDefClasses = new File("wsDefClasses");
+		File[] cp = Iwant3.wsdefRuntimeClasspath(ctx, wsdDefClassesTarget,
+				wsDefdefClasses, wsDefClasses);
+
+		assertEquals("[wsDefdefClasses, wsDefClasses,"
+				+ " cached/iwant-api-classes, cached/external-library]",
+				Arrays.toString(cp));
 	}
 
 }
