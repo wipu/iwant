@@ -4,14 +4,22 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.EclipseSettings;
+import net.sf.iwant.api.ExternalSource;
+import net.sf.iwant.api.HelloSideEffect;
 import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
+import net.sf.iwant.api.JavaClasses;
 import net.sf.iwant.api.Path;
+import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
+import net.sf.iwant.api.WsInfo;
+import net.sf.iwant.api.WsInfoMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.IwantNetworkMock;
 
@@ -22,10 +30,12 @@ public class WishEvaluatorTest extends TestCase {
 	private File iwantApiClasses;
 	private File wsRoot;
 	private ByteArrayOutputStream out;
+	private ByteArrayOutputStream err;
 	private WishEvaluator evaluator;
 	private IwantNetworkMock network;
 	private Iwant iwant;
 	private WsInfo wsInfo;
+	private JavaClasses wsdDefClassesTarget;
 
 	@Override
 	public void setUp() throws IOException {
@@ -36,9 +46,13 @@ public class WishEvaluatorTest extends TestCase {
 		iwantApiClasses = testArea.newDir("iwant-api-classes");
 		wsRoot = testArea.newDir("wsroot");
 		out = new ByteArrayOutputStream();
+		err = new ByteArrayOutputStream();
 		wsInfo = new WsInfoMock();
-		evaluator = new WishEvaluator(out, asSomeone, wsRoot, iwantApiClasses,
-				iwant, wsInfo);
+		wsdDefClassesTarget = new JavaClasses("wsdef-classes",
+				new ExternalSource(testArea.newDir("wsdef")),
+				Collections.<Path> emptyList());
+		evaluator = new WishEvaluator(out, err, asSomeone, wsRoot,
+				iwantApiClasses, iwant, wsInfo, wsdDefClassesTarget);
 	}
 
 	private class Hello implements IwantWorkspace {
@@ -46,6 +60,11 @@ public class WishEvaluatorTest extends TestCase {
 		@Override
 		public List<? extends Target> targets() {
 			return Arrays.asList(new HelloTarget("hello", "hello content"));
+		}
+
+		@Override
+		public List<? extends SideEffect> sideEffects() {
+			return Collections.emptyList();
 		}
 
 	}
@@ -56,6 +75,11 @@ public class WishEvaluatorTest extends TestCase {
 		public List<? extends Target> targets() {
 			return Arrays.asList(new HelloTarget("hello1", "content 1"),
 					new HelloTarget("hello2", "content 2"));
+		}
+
+		@Override
+		public List<? extends SideEffect> sideEffects() {
+			return Collections.emptyList();
 		}
 
 	}
@@ -270,6 +294,72 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals("Stream using 'Stream using 't1 content 2'"
 				+ " as ingredient' as ingredient", testArea.contentOf(new File(
 				asSomeone, ".todo-cached/target/t3")));
+	}
+
+	// side-effects
+
+	private class OnlyEclipseSettingsAsSideEffect implements IwantWorkspace {
+
+		@Override
+		public List<? extends Target> targets() {
+			return Arrays.asList(new HelloTarget("hello", "content"));
+		}
+
+		@Override
+		public List<? extends SideEffect> sideEffects() {
+			return Arrays.asList(EclipseSettings.with()
+					.name("eclipse-settings").end());
+		}
+
+	}
+
+	private class TwoSideEffects implements IwantWorkspace {
+
+		@Override
+		public List<? extends Target> targets() {
+			return Arrays.asList(new HelloTarget("hello", "content"));
+		}
+
+		@Override
+		public List<? extends SideEffect> sideEffects() {
+			return Arrays.asList(new HelloSideEffect("hello-1"),
+					new HelloSideEffect("hello-2"));
+		}
+
+	}
+
+	public void testEmptyListOfSideEffects() {
+		IwantWorkspace hellos = new TwoHellos();
+		evaluator.iwant("list-of/side-effects", hellos);
+		assertEquals("", out.toString());
+	}
+
+	public void testListOfSideEffectsOfOnlyEclipseSettingsAsSideEffect() {
+		IwantWorkspace hellos = new OnlyEclipseSettingsAsSideEffect();
+		evaluator.iwant("list-of/side-effects", hellos);
+		assertEquals("eclipse-settings\n", out.toString());
+	}
+
+	public void testListOfSideEffectsOfTwoSideEffects() {
+		IwantWorkspace hellos = new TwoSideEffects();
+		evaluator.iwant("list-of/side-effects", hellos);
+		assertEquals("hello-1\nhello-2\n", out.toString());
+	}
+
+	public void testHello1EffectiveOfTwoSideEffects() {
+		IwantWorkspace hellos = new TwoSideEffects();
+
+		evaluator.iwant("side-effect/hello-1/effective", hellos);
+
+		assertEquals("hello-1 mutating.\n", err.toString());
+	}
+
+	public void testHello2EffectiveOfTwoSideEffects() {
+		IwantWorkspace hellos = new TwoSideEffects();
+
+		evaluator.iwant("side-effect/hello-2/effective", hellos);
+
+		assertEquals("hello-2 mutating.\n", err.toString());
 	}
 
 }

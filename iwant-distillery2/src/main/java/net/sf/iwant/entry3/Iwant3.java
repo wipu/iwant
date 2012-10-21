@@ -17,6 +17,7 @@ import net.sf.iwant.api.IwantWorkspaceProvider;
 import net.sf.iwant.api.JavaClasses;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.TargetEvaluationContext;
+import net.sf.iwant.api.WsInfo;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
@@ -79,7 +80,7 @@ public class Iwant3 {
 		String wish = args[0];
 
 		File cached = cached(asSomeone);
-		File wsDefdefClasses = new File(cached, "wsdef-classes");
+		File wsDefdefClasses = new File(cached, "wsdefdef-classes");
 
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
 		File iwantApiClasses = iwantApiClasses();
@@ -97,12 +98,14 @@ public class Iwant3 {
 			IwantWorkspaceProvider wsDefdef = (IwantWorkspaceProvider) wsDefdefClass
 					.newInstance();
 
-			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
-					asSomeone, wsInfo.wsRoot(), iwantApiClasses, iwant, wsInfo);
-
 			Iwant.fileLog("Refreshing wsdef classes");
 			JavaClasses wsdDefClassesTarget = wsDefdef
 					.workspaceClasses(new ExternalSource(iwantApiClasses));
+
+			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
+					System.err, asSomeone, wsInfo.wsRoot(), iwantApiClasses,
+					iwant, wsInfo, wsdDefClassesTarget);
+
 			File wsDefClasses = wishEvaluator
 					.freshCachedContent(wsdDefClassesTarget);
 
@@ -197,7 +200,7 @@ public class Iwant3 {
 
 	private static WsInfo parseWsInfo(File wsInfoFile) throws IOException {
 		try {
-			return new WsInfo(new FileReader(wsInfoFile), wsInfoFile);
+			return new WsInfoFileImpl(new FileReader(wsInfoFile), wsInfoFile);
 		} catch (FileNotFoundException e) {
 			throw new IllegalStateException("Sorry, for a while I thought "
 					+ wsInfoFile + " exists.");

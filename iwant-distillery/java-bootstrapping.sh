@@ -29,6 +29,10 @@ cmd "ls .project .classpath .settings"
 p "Now we can import the project to eclipse (don't copy it to the workspace!) and try our first edit."
 wsdef-edit v00modifiedhello
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
+out-was <<EOF
+hello
+hello2
+EOF
 cmde "0" "as-distillery-developer/with/bash/iwant/target/hello2/as-path"
 cmde "0" 'cat ""$(as-distillery-developer/with/bash/iwant/target/hello2/as-path)'
 

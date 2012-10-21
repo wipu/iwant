@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.WsInfo;
 import net.sf.iwant.entry.Iwant.IwantException;
 
 public class WsInfoTest extends TestCase {
@@ -17,7 +18,7 @@ public class WsInfoTest extends TestCase {
 	}
 
 	private WsInfo newWsInfo() throws IOException {
-		return new WsInfo(new StringReader(in.toString()), new File(
+		return new WsInfoFileImpl(new StringReader(in.toString()), new File(
 				"/project/as-test/i-have/wsinfo"));
 	}
 

@@ -81,6 +81,28 @@ public class JavaClassesTest extends TestCase {
 		assertTrue(new File(cached, "valid/Valid.class").exists());
 	}
 
+	public void testToPathCompilesFromMultiplePackages() throws Exception {
+		File srcDir = new File(wsRoot, "src");
+		new File(srcDir, "pak1").mkdirs();
+		new File(srcDir, "pak2").mkdirs();
+		new FileWriter(new File(srcDir, "Caller.java")).append(
+				"class Caller {pak1.Callee1 callee1;pak2.Callee2 callee2;}")
+				.close();
+		new FileWriter(new File(srcDir, "pak1/Callee1.java")).append(
+				"package pak1;\npublic class Callee1 {}").close();
+		new FileWriter(new File(srcDir, "pak2/Callee2.java")).append(
+				"package pak2;\npublic class Callee2 {}").close();
+		Source src = Source.underWsroot("src");
+		Target target = new JavaClasses("multiple", src,
+				Collections.<Path> emptyList());
+
+		target.path(ctx);
+
+		assertTrue(new File(cached, "multiple/Caller.class").exists());
+		assertTrue(new File(cached, "multiple/pak1/Callee1.class").exists());
+		assertTrue(new File(cached, "multiple/pak2/Callee2.class").exists());
+	}
+
 	public void testClassWithDepToClassesCompiles() throws Exception {
 		File superClassFile = new File(getClass().getResource(
 				"SuperClassForJavaClassesTest.class").toURI());

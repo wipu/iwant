@@ -3,10 +3,9 @@ package net.sf.iwant.api;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import net.sf.iwant.entry2.Iwant2;
 
 public class JavaClasses extends Target {
 
@@ -30,6 +29,10 @@ public class JavaClasses extends Target {
 		return classLocations;
 	}
 
+	public Path srcDir() {
+		return srcDir;
+	}
+
 	@Override
 	public InputStream content(TargetEvaluationContext ctx) throws Exception {
 		throw new UnsupportedOperationException("TODO test and implement");
@@ -38,13 +41,29 @@ public class JavaClasses extends Target {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.freshPathTo(this);
-		List<File> javaFiles = Iwant2.javaFilesUnder(ctx.freshPathTo(srcDir));
+		List<File> javaFiles = javaFilesUnder(ctx.freshPathTo(srcDir));
 		List<File> classLocationDirs = new ArrayList<File>();
 		for (Path classLocation : classLocations) {
 			File classLocationDir = classLocation.cachedAt(ctx);
 			classLocationDirs.add(classLocationDir);
 		}
 		ctx.iwant().compiledClasses(dest, javaFiles, classLocationDirs);
+	}
+
+	private static List<File> javaFilesUnder(File dir) {
+		List<File> srcFiles = new ArrayList<File>();
+		File[] files = dir.listFiles();
+		Arrays.sort(files);
+		for (File file : files) {
+			if (file.isDirectory()) {
+				srcFiles.addAll(javaFilesUnder(file));
+			} else {
+				if (file.getAbsolutePath().endsWith(".java")) {
+					srcFiles.add(file);
+				}
+			}
+		}
+		return srcFiles;
 	}
 
 	@Override

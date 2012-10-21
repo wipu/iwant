@@ -214,11 +214,32 @@
   + manually test with emptied cache and working net connection
   + descript using of downloaded code
 
++ @bugfix: as @buildscriptuser I want a target refreshed when a source has been modified
+  + make TargetRefreshTask.isDirty compare src recursively to timestamp of contentdescr 
+
++ As @buildscriptuser I want lazy compilation and testing during bootstrap so I don't have to wait for them when I haven't changed iwant-from
+  + simple timestamp and source descriptor logic
+  + remove some redundancy in text file reads
+  + cleanup (more needed later)
+
++ As @buildscriptauthor I want eclipse settings to contain classpath additions of wsdef classes so Eclipse can also compile wsdef
+  + new concept: SideEffect
+  + list-of/side-effects consults wsdef
+  + side-effect/x/effective delegates to the s.e.
+    * and EclipseSettings does the thing
+  + unit test for EclipseSettings
+  + move WsInfo to api, it's needed by eclipse settings s.e.
+    + actually: extract interface: only parsing is part of impl and if belongs to api
+  + EclipseSettings takes wsdef as JavaClasses from context
+  + EclipseSettings puts wsdef src to .classpath
+  + JavaClasses accepts srcdir instead of package dir
+  + EclipseSettings puts wsdef deps to .classpath
+  + manually test with a dummy project
+    + fix: iwant classes only once, as normal dep
+
 #################################################################
 = In progress
 #################################################################
-
-- eclipse settings with custom jar for wsdef
 
 - As @developer I want this long and deep text broken into a readable list of stories (not too detailed), both to done and planned, so I can analyze how I proceeded and also see what has been done and what not:
   - optimization: don't even write descriptor for source
@@ -261,6 +282,14 @@
 #################################################################
 = Planned
 #################################################################
+
+- @bugfix: as @buildscriptuser I want a target refreshed when a source has been DELETED
+  - use same TimestampHandler than Iwant2
+  - a dedicated cache dir for source dir listings
+
+- only one place for reading bytes/string from stream
+  * currently Iwant, Iwant2 and StreamUtil
+  * maybe just keep StreamUtil as facade
 
 - @bugfix As @developer I want no cached content under any .todo-cached dirs
   * currently these dirs exist in several locations

@@ -1,10 +1,20 @@
 package net.sf.iwant.entry2;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
@@ -59,10 +69,20 @@ public class Iwant2 {
 		File[] classLocations = { classpathMarker, testArea, allIwantClasses,
 				junitJar() };
 
-		Iwant.log("self-tested", allIwantClasses);
-		Iwant.runJavaMain(true, false,
-				"net.sf.iwant.testrunner.IwantTestRunner", classLocations,
-				"net.sf.iwant.IwantDistillery2Suite");
+		// no file results from test run:
+		File cachedTestResult = null;
+		TimestampHandler timestampHandler = new TimestampHandler(
+				cachedTestResult, new File(allIwantClasses.getAbsolutePath()
+						+ ".srcdescr-of-testrun"),
+				plainFilesRecursivelyUnder(Collections
+						.singleton(allIwantClasses)));
+		if (timestampHandler.needsRefresh()) {
+			Iwant.log("self-tested", allIwantClasses);
+			Iwant.runJavaMain(true, false,
+					"net.sf.iwant.testrunner.IwantTestRunner", classLocations,
+					"net.sf.iwant.IwantDistillery2Suite");
+			timestampHandler.markFresh();
+		}
 
 		Iwant.runJavaMain(false, false, "net.sf.iwant.entry3.Iwant3",
 				classLocations, args);
@@ -73,12 +93,6 @@ public class Iwant2 {
 		File allIwantClasses = network
 				.cacheLocation(new ClassesFromUnmodifiableIwantWsRoot(iwantWs));
 		Iwant.fileLog("allIwantClasses, dest=" + allIwantClasses);
-		// TODO need for laziness?
-		if (allIwantClasses.exists()) {
-			System.err.println("TODO laziness, and for testing, too");
-			Iwant.del(allIwantClasses);
-		}
-		allIwantClasses.mkdirs();
 
 		List<File> src = new ArrayList<File>();
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
@@ -113,7 +127,23 @@ public class Iwant2 {
 				+ "src/main/java/" + "net/sf/iwant/testarea"));
 		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-testrunner/"
 				+ "src/main/java/" + "net/sf/iwant/testrunner"));
+
+		TimestampHandler timestampHandler = new TimestampHandler(
+				allIwantClasses, new File(allIwantClasses.getAbsolutePath()
+						+ ".srcdescr"), new TreeSet<File>(src));
+		if (!timestampHandler.needsRefresh()) {
+			Iwant.fileLog("allIwantClasses does not need refresh.");
+			return allIwantClasses;
+		}
+
+		Iwant.log("compiled", allIwantClasses);
+		if (allIwantClasses.exists()) {
+			Iwant.del(allIwantClasses);
+		}
+		allIwantClasses.mkdirs();
+
 		iwant.compiledClasses(allIwantClasses, src, Arrays.asList(junitJar()));
+		timestampHandler.markFresh();
 		return allIwantClasses;
 	}
 
@@ -123,7 +153,7 @@ public class Iwant2 {
 		return javaFilesUnder(packageDir);
 	}
 
-	public static List<File> javaFilesUnder(File dir) {
+	private static List<File> javaFilesUnder(File dir) {
 		List<File> srcFiles = new ArrayList<File>();
 		File[] files = dir.listFiles();
 		Arrays.sort(files);
@@ -146,6 +176,145 @@ public class Iwant2 {
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
+	}
+
+	static class TimestampHandler {
+
+		private final File cachedTarget;
+		private final File sourceDescriptor;
+		private final SortedSet<File> sources;
+
+		public TimestampHandler(File cachedTarget, File sourceDescriptor,
+				SortedSet<File> sources) {
+			this.cachedTarget = cachedTarget;
+			this.sourceDescriptor = sourceDescriptor;
+			this.sources = sources;
+		}
+
+		void markFresh() {
+			Iwant.fileLog("Writing " + sourceDescriptor);
+			try {
+				new FileWriter(sourceDescriptor).append(
+						currentSourceDescriptorContent()).close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		boolean needsRefresh() {
+			boolean needsRefresh = checkIfNeedsToRefresh();
+			if (needsRefresh) {
+				Iwant.fileLog("Deleting " + sourceDescriptor);
+				sourceDescriptor.delete();
+			}
+			return needsRefresh;
+		}
+
+		private boolean checkIfNeedsToRefresh() {
+			if (cachedTarget != null && !cachedTarget.exists()) {
+				return true;
+			}
+			if (!sourceDescriptor.exists()) {
+				return true;
+			}
+			long sourceDescriptorTimestamp = sourceDescriptor.lastModified();
+			for (File source : sources) {
+				if (source.lastModified() >= sourceDescriptorTimestamp) {
+					return true;
+				}
+			}
+			String lastSources = readFileAsString(sourceDescriptor);
+			String currentSources = currentSourceDescriptorContent();
+			if (!currentSources.equals(lastSources)) {
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		 * TODO canonical?
+		 */
+		private String currentSourceDescriptorContent() {
+			StringBuilder b = new StringBuilder();
+			for (File source : sources) {
+				b.append(source.getAbsolutePath()).append("\n");
+			}
+			return b.toString();
+		}
+
+	}
+
+	private static String readFileAsString(File file) {
+		InputStream in = null;
+		try {
+			in = new FileInputStream(file);
+			return toString(in);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	public static String toString(InputStream in) {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		pipe(in, out);
+		return out.toString();
+	}
+
+	/**
+	 * TODO use nio transfer?
+	 */
+	public static void pipe(InputStream in, OutputStream out) {
+		try {
+			byte[] buf = new byte[8192];
+			while (true) {
+				int bytesRead = in.read(buf);
+				if (bytesRead < 0) {
+					return;
+				}
+				out.write(buf, 0, bytesRead);
+			}
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	static SortedSet<File> plainFilesRecursivelyUnder(Collection<File> in) {
+		SortedSet<File> retval = new TreeSet<File>();
+		for (File f : in) {
+			plainFilesRecursivelyUnder(retval, f);
+		}
+		return retval;
+	}
+
+	private static void plainFilesRecursivelyUnder(Collection<File> retval,
+			File f) {
+		if (!f.isDirectory()) {
+			retval.add(f);
+			return;
+		}
+		for (File child : f.listFiles()) {
+			plainFilesRecursivelyUnder(retval, child);
+		}
+	}
+
+	static SortedSet<File> filesByNameSuffix(Collection<File> in, String suffix) {
+		SortedSet<File> out = new TreeSet<File>();
+		for (File candidate : in) {
+			if (candidate.getName().endsWith(suffix)) {
+				out.add(candidate);
+			}
+		}
+		return out;
 	}
 
 }

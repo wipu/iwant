@@ -176,7 +176,6 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testListOfTargetsOfExampleWsDef() throws Exception {
-		Iwant.fileLog("jep");
 		testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
 		startOfOutAndErrCapture();
 
@@ -187,7 +186,6 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testListOfSideEffectsOfExampleWsDef() throws Exception {
-		Iwant.fileLog("jep");
 		testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
 		startOfOutAndErrCapture();
 
@@ -203,8 +201,10 @@ public class Iwant3Test extends TestCase {
 		wsdef.append("\n");
 		wsdef.append("import java.util.Arrays;\n");
 		wsdef.append("import java.util.List;\n");
+		wsdef.append("import net.sf.iwant.api.EclipseSettings;\n");
 		wsdef.append("import net.sf.iwant.api.HelloTarget;\n");
 		wsdef.append("import net.sf.iwant.api.IwantWorkspace;\n");
+		wsdef.append("import net.sf.iwant.api.SideEffect;\n");
 		wsdef.append("import net.sf.iwant.api.Target;\n");
 		wsdef.append("\n");
 		wsdef.append("public class ExampleWs implements IwantWorkspace {\n");
@@ -214,6 +214,11 @@ public class Iwant3Test extends TestCase {
 		wsdef.append("		return Arrays.asList(new HelloTarget(\"modified-hello\", \"content 1\"),\n");
 		wsdef.append("			new HelloTarget(\"hello2\", \"content 2\"));\n");
 		wsdef.append("	}\n");
+		wsdef.append("\n");
+		wsdef.append("  @Override\n");
+		wsdef.append("  public List<? extends SideEffect> sideEffects() {\n");
+		wsdef.append("		return Arrays.asList(EclipseSettings.with().name(\"eclipse-settings\").end());");
+		wsdef.append("  }\n");
 		wsdef.append("\n");
 		wsdef.append("}\n");
 		return wsdef.toString();
@@ -238,8 +243,7 @@ public class Iwant3Test extends TestCase {
 		b.append("      }\n");
 		b.append("\n");
 		b.append("      private static Source workspaceSrc() {\n");
-		b.append("              return Source.underWsroot(\"as-test/i-have/wsdef\"\n");
-		b.append("                              + \"/com/example/wsdef\");\n");
+		b.append("              return Source.underWsroot(\"as-test/i-have/wsdef\");\n");
 		b.append("      }\n");
 		b.append("\n");
 		b.append("      @Override\n");

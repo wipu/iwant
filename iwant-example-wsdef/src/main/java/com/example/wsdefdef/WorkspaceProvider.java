@@ -16,8 +16,7 @@ public class WorkspaceProvider implements IwantWorkspaceProvider {
 	}
 
 	private static Source workspaceSrc() {
-		return Source.underWsroot("AS_EXAMPLE_DEVELOPER/i-have/wsdef"
-				+ "/com/example/wsdef");
+		return Source.underWsroot("AS_EXAMPLE_DEVELOPER/i-have/wsdef");
 	}
 
 	@Override

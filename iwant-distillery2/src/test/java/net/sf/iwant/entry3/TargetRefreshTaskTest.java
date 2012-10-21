@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.ExternalSource;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
@@ -179,6 +180,42 @@ public class TargetRefreshTaskTest extends TestCase {
 	public void testTaskIsNotDirtyIfDescriptorNotChanged() {
 		TargetMock target = new TargetMock("target");
 		target.hasNoIngredients();
+		target.hasContentDescriptor("current");
+		cacheContainsContentOf(target);
+		cacheContainsDescriptor(target, "current");
+
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+
+		assertFalse(task.isDirty());
+	}
+
+	public void testTaskIsDirtyIfFileUnderSourceDirWasModifiedAfterDescriptor()
+			throws IOException {
+		File srcDir = testArea.newDir("src");
+		File srcFile = testArea.hasFile("src/src-file", "src-content");
+		srcFile.setLastModified(System.currentTimeMillis() + 2000);
+		// srcDir itself hasn't been modified, only the file under it:
+		srcDir.setLastModified(System.currentTimeMillis() - 2000);
+
+		TargetMock target = new TargetMock("target");
+		target.hasIngredients(new ExternalSource(srcDir));
+		target.hasContentDescriptor("current");
+		cacheContainsContentOf(target);
+		cacheContainsDescriptor(target, "current");
+
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+
+		assertTrue(task.isDirty());
+	}
+
+	public void testCleanTaskWithSourceIngredient() throws IOException {
+		File srcDir = testArea.newDir("src");
+		File srcFile = testArea.hasFile("src/src-file", "src-content");
+		srcFile.setLastModified(System.currentTimeMillis() - 2000);
+		srcDir.setLastModified(System.currentTimeMillis() - 2000);
+
+		TargetMock target = new TargetMock("target");
+		target.hasIngredients(new ExternalSource(srcDir));
 		target.hasContentDescriptor("current");
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");

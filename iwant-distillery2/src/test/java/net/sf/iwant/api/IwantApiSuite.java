@@ -13,6 +13,7 @@ public class IwantApiSuite extends TestCase {
 		suite.addTestSuite(HelloTargetTest.class);
 		suite.addTestSuite(JavaClassesTest.class);
 		suite.addTestSuite(DownloadedTest.class);
+		suite.addTestSuite(EclipseSettingsTest.class);
 		return suite;
 	}
 

@@ -8,11 +8,12 @@ import net.sf.iwant.testarea.TestArea;
 
 public class IwantEntry3TestArea extends TestArea {
 
-	public void hasFile(String path, String content) {
+	public File hasFile(String path, String content) {
 		try {
 			File file = new File(root(), path);
 			file.getParentFile().mkdirs();
 			new FileWriter(file).append(content).close();
+			return file;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

@@ -3,6 +3,7 @@ package net.sf.iwant.entry3;
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,6 +62,10 @@ public class TargetMock extends Target {
 
 	public synchronized void hasIngredients(List<Path> ingredients) {
 		this.ingredients = ingredients;
+	}
+
+	public synchronized void hasIngredients(Path... ingredients) {
+		hasIngredients(Arrays.asList(ingredients));
 	}
 
 	public void hasNoIngredients() {

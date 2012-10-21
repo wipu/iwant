@@ -13,6 +13,7 @@ import java.util.Map;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TargetEvaluationContext;
+import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.io.StreamUtil;
 import net.sf.iwant.planner.Resource;
 import net.sf.iwant.planner.ResourcePool;
@@ -46,6 +47,8 @@ public class TargetRefreshTask implements Task {
 			target.path(ctx);
 			new FileWriter(cachedDescriptor).append(target.contentDescriptor())
 					.close();
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -55,17 +58,28 @@ public class TargetRefreshTask implements Task {
 		return new File(ctx.cachedDescriptors(), target.name());
 	}
 
+	private void debugLog(Object... lines) {
+		Iwant.debugLog(getClass().getSimpleName(), lines);
+	}
+
 	@Override
 	public synchronized boolean isDirty() {
 		String cachedDescriptor = cachedDescriptor();
 		if (cachedDescriptor == null
 				|| !cachedDescriptor.equals(target.contentDescriptor())) {
+			debugLog(target + " is dirty because descriptor chanced.");
 			return true;
 		}
 		File cachedContent = target.cachedAt(ctx);
 		if (!cachedContent.exists()) {
+			debugLog(target + " is dirty because cached content missing.");
 			return true;
 		}
+		if (isSourceModifiedSince(cachedDescriptorFile().lastModified())) {
+			Iwant.fileLog(target + " is dirty because a source was modified.");
+			return true;
+		}
+		debugLog(target + " is not dirty.");
 		return false;
 	}
 
@@ -80,6 +94,38 @@ public class TargetRefreshTask implements Task {
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
+	}
+
+	private boolean isSourceModifiedSince(long time) {
+		for (Path ingredient : target.ingredients()) {
+			if (ingredient instanceof Target) {
+				// targets are handled as dependency tasks
+				continue;
+			}
+			File src = ingredient.cachedAt(ctx);
+			if (isModifiedSince(src, time)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * TODO put all this time stamp logic to one place
+	 */
+	private boolean isModifiedSince(File src, long time) {
+		if (src.lastModified() >= time) {
+			Iwant.fileLog("File was modified since " + time + ": " + src);
+			return true;
+		}
+		if (src.isDirectory()) {
+			for (File child : src.listFiles()) {
+				if (isModifiedSince(child, time)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

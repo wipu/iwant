@@ -1,18 +1,17 @@
 package net.sf.iwant.entry3;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import net.sf.iwant.api.IwantWorkspace;
+import net.sf.iwant.api.JavaClasses;
 import net.sf.iwant.api.Path;
+import net.sf.iwant.api.SideEffect;
+import net.sf.iwant.api.SideEffectContext;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TargetEvaluationContext;
-import net.sf.iwant.eclipsesettings.DotClasspath;
-import net.sf.iwant.eclipsesettings.DotProject;
-import net.sf.iwant.eclipsesettings.OrgEclipseJdtCorePrefs;
-import net.sf.iwant.eclipsesettings.OrgEclipseJdtUiPrefs;
+import net.sf.iwant.api.WsInfo;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.io.StreamUtil;
 import net.sf.iwant.planner.Planner;
@@ -20,21 +19,26 @@ import net.sf.iwant.planner.Planner;
 public class WishEvaluator {
 
 	private final OutputStream out;
+	private final OutputStream err;
 	private final File asSomeone;
 	private final File wsRoot;
 	private final File iwantApiClasses;
 	private final Iwant iwant;
 	private final WsInfo wsInfo;
 	private final Ctx ctx;
+	private final JavaClasses wsdDefClassesTarget;
 
-	public WishEvaluator(OutputStream out, File asSomeone, File wsRoot,
-			File iwantApiClasses, Iwant iwant, WsInfo wsInfo) {
+	public WishEvaluator(OutputStream out, OutputStream err, File asSomeone,
+			File wsRoot, File iwantApiClasses, Iwant iwant, WsInfo wsInfo,
+			JavaClasses wsdDefClassesTarget) {
 		this.out = out;
+		this.err = err;
 		this.asSomeone = asSomeone;
 		this.wsRoot = wsRoot;
 		this.iwantApiClasses = iwantApiClasses;
 		this.iwant = iwant;
 		this.wsInfo = wsInfo;
+		this.wsdDefClassesTarget = wsdDefClassesTarget;
 		this.ctx = new Ctx();
 	}
 
@@ -53,7 +57,9 @@ public class WishEvaluator {
 		}
 		if ("list-of/side-effects".equals(wish)) {
 			PrintWriter wr = new PrintWriter(out);
-			wr.println("eclipse-settings");
+			for (SideEffect se : ws.sideEffects()) {
+				wr.println(se.name());
+			}
 			wr.close();
 			return;
 		}
@@ -67,56 +73,24 @@ public class WishEvaluator {
 				return;
 			}
 		}
-		if ("side-effect/eclipse-settings/effective".equals(wish)) {
-			generateEclipseSettings();
-			return;
+		for (SideEffect se : ws.sideEffects()) {
+			if (("side-effect/" + se.name() + "/effective").equals(wish)) {
+				try {
+					se.mutate(ctx);
+				} catch (RuntimeException e) {
+					throw e;
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+				return;
+			}
 		}
 		throw new IllegalArgumentException("Illegal wish: " + wish
 				+ "\nlegal targets:" + ws.targets());
 	}
 
-	/**
-	 * TODO delegate to a side-effect that really reads wsdef
-	 * 
-	 * TODO that s.e. uses the real wsdef src
-	 */
-	private void generateEclipseSettings() {
-		try {
-			String relativeWsdefdefSrc = FileUtil
-					.relativePathOfFileUnderParent(wsInfo.wsdefdefSrc(), wsRoot);
-			String relativeWsdef = FileUtil.relativePathOfFileUnderParent(
-					new File(asSomeone, "i-have/wsdef"), wsRoot);
-
-			WorkspaceEclipseProject proj = new WorkspaceEclipseProject(
-					wsInfo.wsName(), relativeWsdefdefSrc, relativeWsdef,
-					iwantApiClasses);
-			DotProject dotProject = proj.dotProject();
-			new FileWriter(new File(wsRoot, ".project")).append(
-					dotProject.asFileContent()).close();
-
-			DotClasspath dotClasspath = proj.dotClasspath();
-			new FileWriter(new File(wsRoot, ".classpath")).append(
-					dotClasspath.asFileContent()).close();
-
-			new File(wsRoot, ".settings").mkdirs();
-
-			new FileWriter(new File(wsRoot,
-					".settings/org.eclipse.jdt.core.prefs")).append(
-					OrgEclipseJdtCorePrefs.withDefaultValues().asFileContent())
-					.close();
-
-			new FileWriter(new File(wsRoot,
-					".settings/org.eclipse.jdt.ui.prefs")).append(
-					OrgEclipseJdtUiPrefs.withDefaultValues().asFileContent())
-					.close();
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException("Eclipse settings generation failed.", e);
-		}
-	}
-
 	File freshCachedContent(Path path) {
+		Iwant.debugLog("freshCachedContent", path);
 		File cachedContent = path.cachedAt(ctx);
 		if (path instanceof Target) {
 			Target target = (Target) path;
@@ -170,7 +144,7 @@ public class WishEvaluator {
 		return new File(asSomeone, ".todo-cached/target");
 	}
 
-	private class Ctx implements TargetEvaluationContext {
+	private class Ctx implements TargetEvaluationContext, SideEffectContext {
 
 		@Override
 		public Iwant iwant() {
@@ -195,6 +169,36 @@ public class WishEvaluator {
 		@Override
 		public File cachedDescriptors() {
 			return WishEvaluator.this.cachedDescriptors();
+		}
+
+		@Override
+		public File asSomeone() {
+			return asSomeone;
+		}
+
+		@Override
+		public File iwantApiClasses() {
+			return iwantApiClasses;
+		}
+
+		@Override
+		public WsInfo wsInfo() {
+			return wsInfo;
+		}
+
+		@Override
+		public OutputStream err() {
+			return err;
+		}
+
+		@Override
+		public JavaClasses wsdDefClassesTarget() {
+			return wsdDefClassesTarget;
+		}
+
+		@Override
+		public TargetEvaluationContext targetEvaluationContext() {
+			return this;
 		}
 
 	}

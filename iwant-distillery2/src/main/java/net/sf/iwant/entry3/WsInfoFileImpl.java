@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Properties;
 
+import net.sf.iwant.api.WsInfo;
 import net.sf.iwant.entry.Iwant.IwantException;
 
-public class WsInfo {
+public class WsInfoFileImpl implements WsInfo {
 
 	private final String wsName;
 	private final File wsRoot;
@@ -15,7 +16,7 @@ public class WsInfo {
 	private final File wsdefdefJava;
 	private final String wsdefdefClass;
 
-	public WsInfo(Reader in, File wsInfo) throws IOException {
+	public WsInfoFileImpl(Reader in, File wsInfo) throws IOException {
 		Properties p = new Properties();
 		try {
 			p.load(in);
@@ -44,30 +45,72 @@ public class WsInfo {
 		return value;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sf.iwant.entry3.WsInfo#wsName()
+	 */
+	@Override
 	public String wsName() {
 		return wsName;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sf.iwant.entry3.WsInfo#wsRoot()
+	 */
+	@Override
 	public File wsRoot() {
 		return wsRoot;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sf.iwant.entry3.WsInfo#wsdefdefSrc()
+	 */
+	@Override
 	public File wsdefdefSrc() {
 		return wsdefdefSrc;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sf.iwant.entry3.WsInfo#wsdefClass()
+	 */
+	@Override
 	public String wsdefClass() {
 		return wsdefdefClass;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sf.iwant.entry3.WsInfo#wsdefdefJava()
+	 */
+	@Override
 	public File wsdefdefJava() {
 		return wsdefdefJava;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sf.iwant.entry3.WsInfo#wsdefdefPackage()
+	 */
+	@Override
 	public String wsdefdefPackage() {
 		return wsdefdefClass.substring(0, wsdefdefClass.lastIndexOf('.'));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sf.iwant.entry3.WsInfo#wsdefdefClassSimpleName()
+	 */
+	@Override
 	public String wsdefdefClassSimpleName() {
 		return wsdefdefClass.substring(wsdefdefClass.lastIndexOf('.') + 1);
 	}

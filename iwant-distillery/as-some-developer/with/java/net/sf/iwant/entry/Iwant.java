@@ -348,11 +348,11 @@ public class Iwant {
 		for (Object part : lines) {
 			b.append(String.format("(%16s    ", task));
 			b.append(part);
-			b.append(")\n");
+			b.append(")");
 		}
 		fileLog(b.toString());
 		if (DEBUG_LOG) {
-			System.err.print(b);
+			System.err.println(b);
 		}
 	}
 
