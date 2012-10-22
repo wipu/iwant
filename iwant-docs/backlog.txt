@@ -257,6 +257,21 @@
 = Planned
 #################################################################
 
+- As @buildscriptauthor I want to declare a target to use the singleton resource "computer" so it runs alone even when it's the only one explicitly using the resource
+  * so e.g. a performance test can be run reliably with minimal effort
+  - make worker count 2 by default so we have some parallelization always
+  - first do in planner module in isolation
+  - then adapt to a Target
+
+- As a @buildscriptuser I want to define the number of threads to use
+  - TODO on commandline, in a conf file, something else or all of them?
+  - TODO automatic detection of cpu count and using it for a good default?
+
+- As a @buildscriptauthor I want to declare some targets single-threaded so targets depending on it get never refreshed in parallel
+  * e.g. for tests that need the display, a certain shared sql table area or some other shared resource
+
+- @bugfix: delete cached file (or content descriptor) if refresh fails, otherwise partially created file will make next run think it's uptodate
+
 - @bugfix: as @buildscriptuser with @wintoys I want a target refreshed when a source has been DELETED
   * I remember having the problem with Windows that it doesn't touch timestamp of parent
     when deleting a file, so IF this is really the case and a wuser demands:
@@ -307,11 +322,6 @@
   * currently Iwant, Iwant2 and StreamUtil
   * maybe just keep StreamUtil as facade
 
-- @bugfix As @developer I want no cached content under any .todo-cached dirs
-  * currently these dirs exist in several locations
-
-- As @developer I want WsInfo extracted to interface so I can in a more robust way mock it in tests
-
 - As @buildscriptauthor I want iwant not to overwrite my wsdef even if I delete wsdefdef and iwant regenerates it and it points to my existing wsdef so that I don't lose my work
 
 - As @buildscriptauthor I want to declare separate eclipse settings for each module instead of the default one per workspace
@@ -324,8 +334,6 @@
 
 - As @developer I want cached content descriptor logic behind an interface and use real impl only in one integration test that just tests features here and there, mock in current tests.
   * also, do the same to cached content and maybe other file functionality
-
-- As @buildscriptauthor I want iwant wizard to generate, or at least tell me to generate, eclipse settings and also to import to eclipse before telling to edit the wsdef java
 
 - @bugfix As @buildscriptuser I want iwant to generate wish scripts even when I only have the help.sh wish available, after having checked out the ws
   * Iwant3 doesn't refresh wish scripts, if help.sh is called when wsdef java already exists
@@ -366,10 +374,6 @@
 
 - security guard: whenever opening file for writing, make sure the canonical path (what about symlink resolving?) points to an allowed directory
   * important when building a path from url for example
-
-- bugfix: show javac error messages in bash cli (using iwant-prefix)
-
-- bugfix: delete cached file if refresh fails, otherwise partially created file will make next run think it's uptodate
 
 - As @developer I want new tests for automatic rebootstrap after editing iwant-from.conf now that sha verification support cannot be used for that in tutorial
   * new bootstrapper has to use a rev that already implements sha so another way is needed
@@ -419,13 +423,7 @@
   * TODO more stories: what if 3rd party binary dep could declare version constraints like
     "at least 2.x"
 
-- "reactive" bugfix: print prefix in an ant message (how is this possible?) won't cause that line to be printed when using bash
-
-- enhancement: As @developer I want internal error stacktraces printed prefixed so I can debug more easily
-
 - As @buildscriptuser I want script generated content (e.g. iwant descripts) to refresh stderr more frequently, if java exec allows this, so it will be easier and more reliable to track script progress
-
-- As @buildscriptauthor I want bootstrapper to help generate eclipse settings before telling to edit the workspace definition, because I want to use eclipse for editing it
 
 - As @developer I want generated eclipse settings so no more duplicate classpaths
   - define all eclipse projects using iwant
@@ -433,34 +431,14 @@
     OR: see story about side-effects
   - refine eclipse stories and implement to make it more usable
 
-- As @buildscriptauthor I want to define side-effects, not only targets, so that I can e.g. put eclipse settings in place
-  * clear separation: iwant/target/.../as-path and iwant/side-effect/.../effective
-  * technically probably much like target
-
-- If needed for performance, as @buildscriptuser I don't want iwant bootstrapper to check timestamps but instead trust that iwant-bin is unmodifiable
-
 - As eclipse user I want jar classpaths to point to the workspace-relative as-WSNAME-developer/with/bash/iwant/cached/... instead of absolute paths so the workspace is easier to move (maybe) and so I can choose to version them when it's a pragmatic choise.
 
 - bugfix: as @buildscriptauthor I want iwant to fail if I define two paths with the same name instead of just overwriting
   * note: even src cannot have same name as target, because content descriptors mention paths by name
   * so, if a src is replaced with target, descriptor needs to change
 
-- bugfix: As @buildscriptauthor I want the generated wsdef class to compile without warnings (add missing @Override annotation)
-
-- As a bash user I want the bootstrapper to download and use an ant distro so I don't need to install ant
-  * also better control over ant features
-  - bash bootstrapper phase1: download and extract ant distro
-  - ant phase1: download the same ant distro (to the same location) and take the jar deps from it instead of downloading them separately
-
-- As @developer I want the timestamp hack to be invisible to tests so I don't need to assert a file hasn't been touched by asserting its timestamp has moved back 2 seconds.
-
 - As a @buildscriptauthor I don't want to see iwant tests in my classpath so I don't accidentally use them
   - separate iwant-main-classes and iwant-test-classes in phase2.xml
-
-- As a @buildscriptauthor I want iwant to test itself during bootstrap when the tests are fast
-  - make sure nothing is downloaded from network
-  * note: run _only_ during bootstrap
-  - _if_ testarea still needed, create one
 
 - @maybe as a @buildscriptauthor I want bootstrapper to generate example files that need editing before it agrees to continue so I won't screw things up by running the bootstrapper again before really editing the confs
   - descript all
@@ -471,24 +449,9 @@
 
 - As a @buildscriptauthor I want the bootstrapper to use an ".unverified" temp dir for classes (like svnkit download does before md5 check) so compilation failure won't leave the system in a broken state
 
-- As a @developer I want to clean up the code here and there to get ready for adding lots of features and to make things easier otherwise
-  + rename Suite to IwantSuite to differentiate it from other projects
-  - split WorkspaceBuilderTest
-    - reusable utilities in base class or driver
-      + methods in base class
-      - helpers for src content declaration
-      - use all helpers
-    - split by feature
-
 - As @buildscriptauthor I want to use some simpler syntax for the whole buildscript so iwant will be more ergonomic for really small projects that don't need java and IDE for anything
   * ngr or even simpler?
   * if custom content or anything fancier is needed, I guess it's ok to require java
-
-- As a @buildscriptuser I want the generated eclipse project to use normal src, because subclipse doesn't show local changes in linked sources
-  + implement
-  - test in real project (gluent)
-  - descript that now the project files need to be copied in place, the projects don't
-    work if imported from the cache
 
 - As a @buildscriptuser I want several srcs in an eclipse project
   + implement
@@ -504,18 +467,6 @@
   - distinction between targets and nontargets is clumsy: why not just declare all needed paths as dependencies? would make it easier to build eclipseprojects from javaclasses
   - somehow make it unnecessary to get content from target and cast it
 
-- As a @buildscriptauthor I want the bootstrapper to guide me to configure the workspace and its wsdef and generate the wsdef stub
-  * help.sh=>ws-info.conf created; edit it and rerun help.sh=>a working ws and list-of/targets for it
-  * make the functions work with the new as-x-developer/iwant wording instead of the old "centralized iwant" iwant/as-x-developer wording
-  + modify the bootstrap section of tutorial
-  + make it pass
-    + use paths relative to iwant (wishdir)
-    + etc
-    + improve descript (ext ngrease) to support relative in and out and explicit file creation content path
-  - clean up dots<->slashes conversions (java package) in the bootstrapper
-  + fix: some script puts and extra "/iwant" in a path (the iwant test during bootstrapping?), generating an extra local change when running refresh.sh
-  + upgrade tutorial revisions and publish
-
 - As a @buildscriptauthor I want iwant the JavaClasses content to remember the order of "using" calls so I can control the actual classpath in the unfortunate case I need classpath items that contain the same fqcn's with different semantics (a real problem in the real world, especially in the enterprise/xml world)
   - save the cpitems internally in a list, even though publishing them as an alphabetical sortedset for depencency management
   - use the list during compilation
@@ -526,30 +477,8 @@
   * should be mostly done, but
   - descript and fix possible problems
 
-- As a @buildscriptuser I want any output relative paths in a minimal form, without extra ".."s
-  - mostly the bootstrapper outputs these, find out where else
-  + the "target/X/as-rel-path" now works nicely
-
-- As a @developer I want to move shell functionality into sourcable functions so that it will be easier to create different wrapper scripts and to restructure the scripts
-  + bootstrap functions
-  + as-iwant-user targetscript generation
-  + separate step for using iwant on iwant (creating the as-iwant-developer dir)
-  + replace the internal scripts with functions
-    + remove the unneeded iwant-path.sh
-    + make to-use-iwant-on use just one sourced function call
-  - use only relative paths to source functions in all wrappers scripts
-  - mark this story done when it has proven itself by making the "as-x-developer/iwant" structure possible
-    + that's done but
-    - the final proof will be that relocating the whole workspace won't break anything (another story)
-
 - As a @buildscriptauthor I want all cached targets invalidated when iwant is rebootstrapping itself because I changed its version
   * even downloaded files, for now (the "don't do it" rule of optimization)
-
-- As a @buildscriptauthor I want to define my targets in a tree of ContainerPaths for even easier organization
-  - descript
-  - PathDigger must detect and dive into methods that return a child ContainerPath
-  - maybe there is no reason *not* to keep on prepending path names with their
-    parent (container) path name
 
 - As a @buildscriptauthor I want to be able to define tests for my workspace definition so if I break it iwant won't use it
   * this is essential for bootstrapping
@@ -586,13 +515,6 @@
 - As a @buildscriptuser I want to see a refresh plan for any target so I know if I really have time to refresh it yet
 
 - As a @buildscriptuser I want to see a time estimate in a refresh plan, based on previous refresh(es)
-
-- As a @buildscriptuser I want iwant to refresh targets automatically in parallel and letting me define the number of threads to use
-  - TODO on commandline, in a conf file, something else or all of them?
-  - TODO automatic detection of cpu count and using it for a good default?
-
-- As a @buildscriptauthor I want to declare some targets single-threaded so targets depending on it get never refreshed in parallel
-  * e.g. for tests that need the display, a certain shared sql table area or some other shared resource
 
 - As a @buildscriptuser I want targets refreshed in an order that tries to find cumulative problems as early as possible
   * meaning targets that are most depended on are built first
