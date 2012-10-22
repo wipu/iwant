@@ -5,8 +5,8 @@ set -eu
 AS_SOMEONE=$(dirname "$0")/../../..
 AS_SOMEONE=$(cd "$AS_SOMEONE" && pwd)
 
-# TODO what's a good path, how to define this only once:
-CACHED=$AS_SOMEONE/with/bash/iwant/.cached
+# TODO how to define this only once:
+CACHED=$AS_SOMEONE/.i-cached
 
 CLASSES=$CACHED/.internal/entry-classes
 mkdir -p "$CLASSES"

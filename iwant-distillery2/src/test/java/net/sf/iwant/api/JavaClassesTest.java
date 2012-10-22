@@ -10,6 +10,7 @@ import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.IwantNetworkMock;
+import net.sf.iwant.entry3.CachesMock;
 import net.sf.iwant.entry3.IwantEntry3TestArea;
 import net.sf.iwant.entry3.TargetMock;
 
@@ -21,17 +22,19 @@ public class JavaClassesTest extends TestCase {
 	private Iwant iwant;
 	private File wsRoot;
 	private File cached;
+	private CachesMock caches;
 
 	@Override
 	public void setUp() {
 		testArea = new IwantEntry3TestArea();
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
-		ctx = new TargetEvaluationContextMock(iwant);
 		wsRoot = new File(testArea.root(), "wsRoot");
+		caches = new CachesMock(wsRoot);
+		ctx = new TargetEvaluationContextMock(iwant, caches);
 		ctx.hasWsRoot(wsRoot);
 		cached = new File(testArea.root(), "cached");
-		ctx.cachesModifiableTargetsAt(cached);
+		caches.cachesModifiableTargetsAt(cached);
 	}
 
 	public void testSrcDirIsAnIgredient() throws Exception {

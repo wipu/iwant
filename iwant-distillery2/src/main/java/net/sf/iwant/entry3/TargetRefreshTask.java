@@ -24,15 +24,18 @@ public class TargetRefreshTask implements Task {
 	private final Target target;
 	private final TargetEvaluationContext ctx;
 	private final Collection<Task> deps = new ArrayList<Task>();
+	private final Caches caches;
 
-	public TargetRefreshTask(Target target, TargetEvaluationContext ctx) {
+	public TargetRefreshTask(Target target, TargetEvaluationContext ctx,
+			Caches caches) {
 		this.target = target;
 		this.ctx = ctx;
+		this.caches = caches;
 		for (Path ingredient : target.ingredients()) {
 			if (!(ingredient instanceof Target)) {
 				continue;
 			}
-			deps.add(new TargetRefreshTask((Target) ingredient, ctx));
+			deps.add(new TargetRefreshTask((Target) ingredient, ctx, caches));
 		}
 	}
 
@@ -41,7 +44,7 @@ public class TargetRefreshTask implements Task {
 			Map<ResourcePool, Resource> allocatedResources) {
 		File cachedDescriptor = cachedDescriptorFile();
 		cachedDescriptor.getParentFile().mkdirs();
-		File cachedTarget = target.cachedAt(ctx);
+		File cachedTarget = ctx.cached(target);
 		cachedTarget.getParentFile().mkdirs();
 		try {
 			target.path(ctx);
@@ -55,7 +58,7 @@ public class TargetRefreshTask implements Task {
 	}
 
 	private File cachedDescriptorFile() {
-		return new File(ctx.cachedDescriptors(), target.name());
+		return caches.contentDescriptorOf(target);
 	}
 
 	private void debugLog(Object... lines) {
@@ -70,7 +73,7 @@ public class TargetRefreshTask implements Task {
 			debugLog(target + " is dirty because descriptor chanced.");
 			return true;
 		}
-		File cachedContent = target.cachedAt(ctx);
+		File cachedContent = ctx.cached(target);
 		if (!cachedContent.exists()) {
 			debugLog(target + " is dirty because cached content missing.");
 			return true;
@@ -102,7 +105,7 @@ public class TargetRefreshTask implements Task {
 				// targets are handled as dependency tasks
 				continue;
 			}
-			File src = ingredient.cachedAt(ctx);
+			File src = ctx.cached(ingredient);
 			if (isModifiedSince(src, time)) {
 				return true;
 			}

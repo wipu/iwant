@@ -30,7 +30,7 @@ public class HelloTarget extends Target {
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
-		File cachedContent = ctx.freshPathTo(this);
+		File cachedContent = ctx.cached(this);
 		FileOutputStream out = new FileOutputStream(cachedContent);
 		StreamUtil.pipe(content(ctx), out);
 		out.close();

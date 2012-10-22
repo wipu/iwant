@@ -26,21 +26,25 @@ public class TargetRefreshTaskTest extends TestCase {
 	private TargetEvaluationContextMock ctx;
 	private File cachedTarget;
 	private File cachedDescriptors;
+	private CachesMock caches;
+	private File wsRoot;
 
 	@Override
 	public void setUp() {
 		testArea = new IwantEntry3TestArea();
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
-		ctx = new TargetEvaluationContextMock(iwant);
+		wsRoot = testArea.newDir("wsroot");
+		caches = new CachesMock(wsRoot);
+		ctx = new TargetEvaluationContextMock(iwant, caches);
 		cachedTarget = testArea.newDir("cached");
-		ctx.cachesModifiableTargetsAt(cachedTarget);
+		caches.cachesModifiableTargetsAt(cachedTarget);
 		cachedDescriptors = testArea.newDir("cached-descriptor");
-		ctx.cachesDesciptorsAt(cachedDescriptors);
+		caches.cachesDesciptorsAt(cachedDescriptors);
 	}
 
 	private void cacheContainsContentOf(Target target) {
-		target.cachedAt(ctx).mkdir();
+		ctx.cached(target).mkdir();
 	}
 
 	private void cacheContainsFreshDescriptor(Target target) {
@@ -62,15 +66,15 @@ public class TargetRefreshTaskTest extends TestCase {
 		TargetMock t2 = new TargetMock("t2");
 		t2.hasNoIngredients();
 
-		assertEquals("t1", new TargetRefreshTask(t1, ctx).name());
-		assertEquals("t2", new TargetRefreshTask(t2, ctx).name());
+		assertEquals("t1", new TargetRefreshTask(t1, ctx, caches).name());
+		assertEquals("t2", new TargetRefreshTask(t2, ctx, caches).name());
 	}
 
 	public void testTaskGetter() {
 		TargetMock target = new TargetMock("target");
 		target.hasNoIngredients();
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
 
 		assertSame(target, task.target());
 	}
@@ -79,7 +83,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		TargetMock target = new TargetMock("target");
 		target.hasNoIngredients();
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
 
 		assertTrue(task.dependencies().isEmpty());
 	}
@@ -92,7 +96,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		TargetMock target = new TargetMock("target");
 		target.hasIngredients(Arrays.asList(srcIngredient, targetIngredient));
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
 
 		assertEquals(1, task.dependencies().size());
 		TargetRefreshTask depTask = (TargetRefreshTask) task.dependencies()
@@ -107,7 +111,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		// no cached content
 		cacheContainsFreshDescriptor(target);
 
-		assertTrue(new TargetRefreshTask(target, ctx).isDirty());
+		assertTrue(new TargetRefreshTask(target, ctx, caches).isDirty());
 	}
 
 	public void testIngredientlessTaskIsNotDirtyIfCachedTargetContentAndDescriptorExist() {
@@ -117,15 +121,15 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsFreshDescriptor(target);
 
-		assertFalse(new TargetRefreshTask(target, ctx).isDirty());
+		assertFalse(new TargetRefreshTask(target, ctx, caches).isDirty());
 	}
 
 	public void testNoResourcesRequiredIfTargetDoesNotRequireThem() {
 		TargetMock target = new TargetMock("target");
 		target.hasNoIngredients();
 
-		assertTrue(new TargetRefreshTask(target, ctx).requiredResources()
-				.isEmpty());
+		assertTrue(new TargetRefreshTask(target, ctx, caches)
+				.requiredResources().isEmpty());
 	}
 
 	public void testRefreshWritesCachedContent() {
@@ -134,7 +138,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		target.hasContent("target content");
 		target.hasContentDescriptor("target descriptor");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
 		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
 
 		assertEquals("target content", testArea.contentOf("cached/target"));
@@ -146,7 +150,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		target.hasContent("target content");
 		target.hasContentDescriptor("target descriptor");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
 		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
 
 		assertEquals("target descriptor",
@@ -160,7 +164,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "old-descriptor");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
 
 		assertTrue(task.isDirty());
 	}
@@ -172,7 +176,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		// no cached descriptor
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
 
 		assertTrue(task.isDirty());
 	}
@@ -184,7 +188,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
 
 		assertFalse(task.isDirty());
 	}
@@ -203,7 +207,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
 
 		assertTrue(task.isDirty());
 	}
@@ -220,7 +224,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx);
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
 
 		assertFalse(task.isDirty());
 	}

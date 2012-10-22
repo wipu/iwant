@@ -6,6 +6,7 @@ public class WsInfoMock implements WsInfo {
 
 	private File wsdefdefSrc;
 	private String wsName;
+	private File wsRoot;
 
 	private <T> T nonNull(T value, Object request) {
 		if (value == null) {
@@ -26,7 +27,11 @@ public class WsInfoMock implements WsInfo {
 
 	@Override
 	public File wsRoot() {
-		throw new UnsupportedOperationException("TODO test and implement");
+		return nonNull(wsRoot, "wsRoot");
+	}
+
+	public void hasWsRoot(File wsRoot) {
+		this.wsRoot = wsRoot;
 	}
 
 	@Override

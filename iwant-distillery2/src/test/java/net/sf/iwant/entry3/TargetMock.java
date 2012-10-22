@@ -47,8 +47,7 @@ public class TargetMock extends Target {
 			throw new IllegalStateException(
 					"Should not have been told to write to file.");
 		}
-		StreamUtil.pipe(content(ctx),
-				new FileOutputStream(ctx.freshPathTo(this)));
+		StreamUtil.pipe(content(ctx), new FileOutputStream(ctx.cached(this)));
 	}
 
 	public synchronized void shallNotBeToldToWriteFile() {

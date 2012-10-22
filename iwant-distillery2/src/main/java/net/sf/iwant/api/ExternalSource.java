@@ -27,7 +27,7 @@ public class ExternalSource implements Path {
 	}
 
 	@Override
-	public File cachedAt(TargetEvaluationContext ctx) {
+	public File cachedAt(CacheScopeChoices cachedAt) {
 		return file;
 	}
 
@@ -47,6 +47,11 @@ public class ExternalSource implements Path {
 	public String contentDescriptor() {
 		System.err.println("TODO contentDescriptor");
 		throw new UnsupportedOperationException("TODO test and implement");
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 
 }

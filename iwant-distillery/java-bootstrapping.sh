@@ -14,7 +14,7 @@ iwant-from=file://$LOCAL_IWANT_WSROOT
 re-export=false
 EOF
 cmde "1" "as-distillery-developer/with/bash/iwant/help.sh 2>&1"
-cmde "0 0" 'find as-distillery-developer -type f | grep -v ".cached"'
+cmde "0 0" 'find as-distillery-developer -type f | grep -v ".i-cached"'
 p "End of wizard, everything is set for the final usage help message:"
 cmde "1" "as-distillery-developer/with/bash/iwant/help.sh"
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"

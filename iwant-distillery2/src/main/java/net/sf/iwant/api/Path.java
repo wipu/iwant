@@ -10,7 +10,7 @@ public interface Path {
 
 	InputStream content(TargetEvaluationContext ctx) throws Exception;
 
-	File cachedAt(TargetEvaluationContext ctx);
+	File cachedAt(CacheScopeChoices cachedAt);
 
 	void path(TargetEvaluationContext ctx) throws Exception;
 

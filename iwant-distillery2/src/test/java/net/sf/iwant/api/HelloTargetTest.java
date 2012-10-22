@@ -5,6 +5,7 @@ import java.io.File;
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.IwantNetworkMock;
+import net.sf.iwant.entry3.CachesMock;
 import net.sf.iwant.entry3.IwantEntry3TestArea;
 import net.sf.iwant.io.StreamUtil;
 
@@ -15,15 +16,19 @@ public class HelloTargetTest extends TestCase {
 	private IwantNetworkMock network;
 	private Iwant iwant;
 	private File cached;
+	private CachesMock caches;
+	private File wsRoot;
 
 	@Override
 	public void setUp() {
 		testArea = new IwantEntry3TestArea();
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
-		ctx = new TargetEvaluationContextMock(iwant);
+		wsRoot = testArea.newDir("wsroot");
+		caches = new CachesMock(wsRoot);
+		ctx = new TargetEvaluationContextMock(iwant, caches);
 		cached = testArea.newDir("cached");
-		ctx.cachesModifiableTargetsAt(cached);
+		caches.cachesModifiableTargetsAt(cached);
 	}
 
 	public void testNullMessageContent() throws Exception {

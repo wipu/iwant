@@ -33,8 +33,8 @@ public class EclipseSettings implements SideEffect {
 	private static void generateEclipseSettings(SideEffectContext ctx) {
 		WsInfo wsInfo = ctx.wsInfo();
 		File wsRoot = ctx.wsRoot();
-		File wsdefSrc = ctx.wsdDefClassesTarget().srcDir()
-				.cachedAt(ctx.targetEvaluationContext());
+		File wsdefSrc = ctx.targetEvaluationContext().cached(
+				ctx.wsdDefClassesTarget().srcDir());
 		try {
 			String relativeWsdefdefSrc = FileUtil
 					.relativePathOfFileUnderParent(wsInfo.wsdefdefSrc(), wsRoot);
@@ -42,8 +42,8 @@ public class EclipseSettings implements SideEffect {
 					wsdefSrc, wsRoot);
 			SortedSet<String> relativeWsdefDeps = new TreeSet<String>();
 			for (Path wsdefDep : ctx.wsdDefClassesTarget().classLocations()) {
-				File wsdefDepFile = wsdefDep.cachedAt(ctx
-						.targetEvaluationContext());
+				File wsdefDepFile = ctx.targetEvaluationContext().cached(
+						wsdefDep);
 				String asString = wsdefDepFile.getAbsolutePath();
 				if (asString.startsWith(wsRoot.getAbsolutePath())) {
 					asString = FileUtil.relativePathOfFileUnderParent(

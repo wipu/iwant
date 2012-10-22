@@ -3,16 +3,17 @@ package net.sf.iwant.api;
 import java.io.File;
 
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry3.CachesMock;
 
 public class TargetEvaluationContextMock implements TargetEvaluationContext {
 
 	private final Iwant iwant;
 	private File wsRoot;
-	private File cachedModifiableTarget;
-	private File cachedDescriptors;
+	private final CachesMock caches;
 
-	public TargetEvaluationContextMock(Iwant iwant) {
+	public TargetEvaluationContextMock(Iwant iwant, CachesMock caches) {
 		this.iwant = iwant;
+		this.caches = caches;
 	}
 
 	private <T> T nonNull(T value, Object request) {
@@ -32,32 +33,14 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext {
 		this.wsRoot = wsRoot;
 	}
 
-	public void cachesModifiableTargetsAt(File cachedTarget) {
-		this.cachedModifiableTarget = cachedTarget;
-	}
-
-	public void cachesDesciptorsAt(File cachedDescriptors) {
-		this.cachedDescriptors = cachedDescriptors;
-	}
-
 	@Override
 	public Iwant iwant() {
 		return iwant;
 	}
 
 	@Override
-	public File modifiableTargets() {
-		return nonNull(cachedModifiableTarget, "cachedModifiableTarget");
-	}
-
-	@Override
-	public File cachedDescriptors() {
-		return nonNull(cachedDescriptors, "cachedDescriptorsDir");
-	}
-
-	@Override
-	public File freshPathTo(Path path) {
-		return path.cachedAt(this);
+	public File cached(Path path) {
+		return caches.contentOf(path);
 	}
 
 }

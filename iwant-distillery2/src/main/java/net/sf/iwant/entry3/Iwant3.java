@@ -62,8 +62,9 @@ public class Iwant3 {
 		}
 		String wish = args[0];
 
-		File cached = cached(asSomeone);
-		File wsDefdefClasses = new File(cached, "wsdefdef-classes");
+		CachesImpl caches = new CachesImpl(asSomeone, wsInfo.wsRoot(),
+				iwant.network());
+		File wsDefdefClasses = new File(caches.wsCache(), "wsdefdef-classes");
 
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
 		File iwantApiClasses = iwantApiClasses();
@@ -85,7 +86,7 @@ public class Iwant3 {
 
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
 					System.err, asSomeone, wsInfo.wsRoot(), iwantApiClasses,
-					iwant, wsInfo, wsdDefClassesTarget);
+					iwant, wsInfo, wsdDefClassesTarget, caches);
 
 			File wsDefClasses = wishEvaluator
 					.freshCachedContent(wsdDefClassesTarget);
@@ -137,7 +138,7 @@ public class Iwant3 {
 		cp.add(wsDefdefClasses);
 		cp.add(wsDefClasses);
 		for (Path extra : wsdDefClassesTarget.classLocations()) {
-			cp.add(extra.cachedAt(ctx));
+			cp.add(ctx.cached(extra));
 		}
 		return cp;
 	}
@@ -167,10 +168,6 @@ public class Iwant3 {
 		} catch (Exception e) {
 			throw new IllegalStateException("Cannot find classes.", e);
 		}
-	}
-
-	private static File cached(File iHave) {
-		return new File(iHave, ".cached");
 	}
 
 	private static void refreshWishScripts(File asSomeone,

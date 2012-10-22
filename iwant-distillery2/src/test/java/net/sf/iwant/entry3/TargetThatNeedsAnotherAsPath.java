@@ -32,7 +32,7 @@ class TargetThatNeedsAnotherAsPath extends Target {
 	public InputStream content(TargetEvaluationContext ctx) throws Exception {
 		StringBuilder content = new StringBuilder();
 		String ingredientContent = StreamUtil.toString(new FileInputStream(ctx
-				.freshPathTo(ingredient)));
+				.cached(ingredient)));
 		content.append("Stream using '");
 		content.append(ingredientContent);
 		content.append("' as ingredient");
@@ -41,7 +41,7 @@ class TargetThatNeedsAnotherAsPath extends Target {
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
-		File path = ctx.freshPathTo(this);
+		File path = ctx.cached(this);
 		OutputStream out = new FileOutputStream(path);
 		StreamUtil.pipe(content(ctx), out);
 		out.close();

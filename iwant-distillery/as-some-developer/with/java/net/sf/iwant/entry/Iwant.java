@@ -541,23 +541,27 @@ public class Iwant {
 		file.delete();
 	}
 
-	public File downloaded(URL url) {
+	public void downloaded(URL from, File to) {
 		try {
-			File cached = network.cacheLocation(new UnmodifiableUrl(url));
-			if (cached.exists()) {
-				return cached;
+			if (to.exists()) {
+				return;
 			}
-			cached.getParentFile().mkdirs();
-			debugLog("downloaded", "from " + url);
-			log("downloaded", cached);
-			byte[] bytes = downloadBytes(url);
-			FileOutputStream cachedOut = new FileOutputStream(cached);
+			to.getParentFile().mkdirs();
+			debugLog("downloaded", "from " + from);
+			log("downloaded", to);
+			byte[] bytes = downloadBytes(from);
+			FileOutputStream cachedOut = new FileOutputStream(to);
 			cachedOut.write(bytes);
 			cachedOut.close();
-			return cached;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public File downloaded(URL from) {
+		File to = network.cacheLocation(new UnmodifiableUrl(from));
+		downloaded(from, to);
+		return to;
 	}
 
 	private static byte[] downloadBytes(URL url) throws MalformedURLException,

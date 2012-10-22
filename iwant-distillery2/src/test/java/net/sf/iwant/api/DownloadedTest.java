@@ -2,15 +2,26 @@ package net.sf.iwant.api;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry3.CachesMock;
+import net.sf.iwant.entry3.IwantEntry3TestArea;
 
 public class DownloadedTest extends TestCase {
+
+	private IwantEntry3TestArea testArea;
+	private CachesMock caches;
+	private File wsRoot;
+
+	@Override
+	public void setUp() {
+		testArea = new IwantEntry3TestArea();
+		wsRoot = testArea.newDir("wsroot");
+		caches = new CachesMock(wsRoot);
+	}
 
 	public void testThereAreNowIngredients() {
 		assertTrue(Downloaded.withName("any").url("http://any").md5("any")
@@ -26,38 +37,25 @@ public class DownloadedTest extends TestCase {
 						.contentDescriptor());
 	}
 
-	public void testCachedAtDelegatesToGivenIwant() throws Exception {
-		Downloaded target = Downloaded.withName("any").url("http://an-url")
-				.md5("any");
-		IwantMock iwant = new IwantMock();
-		iwant.cachesUrlAt("http://an-url", "downloaded");
-
-		File actual = target.cachedAt(new TargetEvaluationContextMock(iwant));
-
-		assertEquals(new File("downloaded"), actual);
-	}
-
 	public void testPathDelegatesDownloadingToGivenIwant() throws Exception {
-		Downloaded target = Downloaded.withName("any").url("http://an-url")
-				.md5("any");
+		String url = "http://an-url";
 		IwantMock iwant = new IwantMock();
+		File cached = testArea.newDir("downloaded");
+		caches.cachesUrlAt(Iwant.url(url), cached);
 
-		target.path(new TargetEvaluationContextMock(iwant));
+		Downloaded target = Downloaded.withName("any").url(url).md5("any");
+		target.path(new TargetEvaluationContextMock(iwant, caches));
 
-		assertEquals("[http://an-url]", iwant.downloadedUrls.toString());
+		assertEquals("{http://an-url=" + cached + "}",
+				iwant.executedDownloads.toString());
 	}
 
 	private static class IwantMock extends Iwant {
 
-		private final Map<URL, File> taughtDownloads = new HashMap<URL, File>();
-		private final List<URL> downloadedUrls = new ArrayList<URL>();
+		private final Map<URL, File> executedDownloads = new LinkedHashMap<URL, File>();
 
 		IwantMock() {
 			super(null);
-		}
-
-		public void cachesUrlAt(String url, String cached) {
-			taughtDownloads.put(Iwant.url(url), new File(cached));
 		}
 
 		@Override
@@ -78,15 +76,21 @@ public class DownloadedTest extends TestCase {
 
 				@Override
 				public File cacheLocation(UnmodifiableSource<?> src) {
-					return taughtDownloads.get(src.location());
+					throw new UnsupportedOperationException(
+							"TODO test and implement");
 				}
 
 			};
 		}
 
 		@Override
-		public File downloaded(URL url) {
-			downloadedUrls.add(url);
+		public void downloaded(URL from, File to) {
+			executedDownloads.put(from, to);
+		}
+
+		@Override
+		public File downloaded(URL from) {
+			fail("Not to be called");
 			return null;
 		}
 

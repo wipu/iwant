@@ -15,12 +15,9 @@ public abstract class Target implements Path {
 		return name;
 	}
 
-	/**
-	 * Override if really needed
-	 */
 	@Override
-	public File cachedAt(TargetEvaluationContext ctx) {
-		return new File(ctx.modifiableTargets(), name());
+	public File cachedAt(CacheScopeChoices cachedAt) {
+		return cachedAt.target(this);
 	}
 
 	@Override

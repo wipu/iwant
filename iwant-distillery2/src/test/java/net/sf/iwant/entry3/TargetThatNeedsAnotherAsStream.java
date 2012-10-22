@@ -38,7 +38,7 @@ class TargetThatNeedsAnotherAsStream extends Target {
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
-		File path = ctx.freshPathTo(this);
+		File path = ctx.cached(this);
 		OutputStream out = new FileOutputStream(path);
 		StreamUtil.pipe(content(ctx), out);
 		out.close();

@@ -18,7 +18,6 @@ import net.sf.iwant.api.Path;
 import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
-import net.sf.iwant.api.WsInfo;
 import net.sf.iwant.api.WsInfoMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.IwantNetworkMock;
@@ -34,8 +33,9 @@ public class WishEvaluatorTest extends TestCase {
 	private WishEvaluator evaluator;
 	private IwantNetworkMock network;
 	private Iwant iwant;
-	private WsInfo wsInfo;
+	private WsInfoMock wsInfo;
 	private JavaClasses wsdDefClassesTarget;
+	private Caches caches;
 
 	@Override
 	public void setUp() throws IOException {
@@ -48,11 +48,13 @@ public class WishEvaluatorTest extends TestCase {
 		out = new ByteArrayOutputStream();
 		err = new ByteArrayOutputStream();
 		wsInfo = new WsInfoMock();
+		wsInfo.hasWsRoot(wsRoot);
 		wsdDefClassesTarget = new JavaClasses("wsdef-classes",
 				new ExternalSource(testArea.newDir("wsdef")),
 				Collections.<Path> emptyList());
+		caches = new CachesImpl(asSomeone, wsInfo.wsRoot(), network);
 		evaluator = new WishEvaluator(out, err, asSomeone, wsRoot,
-				iwantApiClasses, iwant, wsInfo, wsdDefClassesTarget);
+				iwantApiClasses, iwant, wsInfo, wsdDefClassesTarget, caches);
 	}
 
 	private class Hello implements IwantWorkspace {
@@ -107,7 +109,7 @@ public class WishEvaluatorTest extends TestCase {
 
 		evaluator.iwant("target/hello/as-path", hello);
 
-		File cached = new File(asSomeone, ".todo-cached/target/hello");
+		File cached = new File(asSomeone, ".i-cached/target/hello");
 		assertEquals(cached + "\n", out.toString());
 		assertEquals("hello content", testArea.contentOf(cached));
 	}
@@ -129,7 +131,7 @@ public class WishEvaluatorTest extends TestCase {
 
 		evaluator.iwant("target/hello1/as-path", hellos);
 
-		File cached = new File(asSomeone, ".todo-cached/target/hello1");
+		File cached = new File(asSomeone, ".i-cached/target/hello1");
 		assertEquals(cached + "\n", out.toString());
 		assertEquals("content 1", testArea.contentOf(cached));
 	}
@@ -145,7 +147,7 @@ public class WishEvaluatorTest extends TestCase {
 
 		evaluator.iwant("target/hello2/as-path", hellos);
 
-		File cached = new File(asSomeone, ".todo-cached/target/hello2");
+		File cached = new File(asSomeone, ".i-cached/target/hello2");
 		assertEquals(cached + "\n", out.toString());
 		assertEquals("content 2", testArea.contentOf(cached));
 	}
@@ -181,7 +183,7 @@ public class WishEvaluatorTest extends TestCase {
 
 		evaluator.asPath(target);
 
-		File cached = new File(asSomeone, ".todo-cached/target/target");
+		File cached = new File(asSomeone, ".i-cached/target/target");
 		assertEquals(cached + "\n", out.toString());
 		assertEquals("Stream using 'ingredient content' as ingredient",
 				testArea.contentOf(cached));
@@ -201,7 +203,7 @@ public class WishEvaluatorTest extends TestCase {
 
 		evaluator.asPath(target);
 
-		File cached = new File(asSomeone, ".todo-cached/target/target");
+		File cached = new File(asSomeone, ".i-cached/target/target");
 		assertEquals(cached + "\n", out.toString());
 		assertEquals("Stream using 'ingredient content' as ingredient",
 				testArea.contentOf(cached));
@@ -250,7 +252,7 @@ public class WishEvaluatorTest extends TestCase {
 		evaluator.asPath(target);
 
 		assertEquals("ingredientless content", testArea.contentOf(new File(
-				asSomeone, ".todo-cached/target/ingredientless")));
+				asSomeone, ".i-cached/target/ingredientless")));
 	}
 
 	public void testSecondAsPathCausesRefreshWhenDescriptorChanges() {
@@ -267,7 +269,7 @@ public class WishEvaluatorTest extends TestCase {
 		evaluator.asPath(target);
 
 		assertEquals("content 2", testArea.contentOf(new File(asSomeone,
-				".todo-cached/target/ingredientless")));
+				".i-cached/target/ingredientless")));
 	}
 
 	public void testTargetIsRefreshedIfDescriptorOfIngredientsIngredientChanged() {
@@ -282,8 +284,8 @@ public class WishEvaluatorTest extends TestCase {
 		evaluator.asPath(t3);
 
 		assertEquals("Stream using 'Stream using 't1 content 1'"
-				+ " as ingredient' as ingredient", testArea.contentOf(new File(
-				asSomeone, ".todo-cached/target/t3")));
+				+ " as ingredient' as ingredient",
+				testArea.contentOf(new File(asSomeone, ".i-cached/target/t3")));
 
 		// modification:
 		t1.hasContent("t1 content 2");
@@ -292,8 +294,8 @@ public class WishEvaluatorTest extends TestCase {
 		evaluator.asPath(t3);
 
 		assertEquals("Stream using 'Stream using 't1 content 2'"
-				+ " as ingredient' as ingredient", testArea.contentOf(new File(
-				asSomeone, ".todo-cached/target/t3")));
+				+ " as ingredient' as ingredient",
+				testArea.contentOf(new File(asSomeone, ".i-cached/target/t3")));
 	}
 
 	// side-effects

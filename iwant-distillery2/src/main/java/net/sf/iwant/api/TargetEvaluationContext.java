@@ -6,13 +6,9 @@ import net.sf.iwant.entry.Iwant;
 
 public interface TargetEvaluationContext {
 
-	File modifiableTargets();
-
 	File wsRoot();
 
-	File cachedDescriptors();
-
-	File freshPathTo(Path path);
+	File cached(Path path);
 
 	Iwant iwant();
 

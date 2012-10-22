@@ -40,11 +40,11 @@ public class JavaClasses extends Target {
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
-		File dest = ctx.freshPathTo(this);
-		List<File> javaFiles = javaFilesUnder(ctx.freshPathTo(srcDir));
+		File dest = ctx.cached(this);
+		List<File> javaFiles = javaFilesUnder(ctx.cached(srcDir));
 		List<File> classLocationDirs = new ArrayList<File>();
 		for (Path classLocation : classLocations) {
-			File classLocationDir = classLocation.cachedAt(ctx);
+			File classLocationDir = ctx.cached(classLocation);
 			classLocationDirs.add(classLocationDir);
 		}
 		ctx.iwant().compiledClasses(dest, javaFiles, classLocationDirs);

@@ -7,11 +7,18 @@ import junit.framework.TestCase;
 
 public class ExternalSourceTest extends TestCase {
 
-	public void testCachedAtIsFileAsSuch() throws IOException {
-		File file = new File("/any/file");
-		ExternalSource es = new ExternalSource(file);
-		TargetEvaluationContext ctx = null; // any
-		assertSame(file, es.cachedAt(ctx));
+	public void testAbsolutePathToString() throws IOException {
+		assertEquals("/an/absolute/path", new ExternalSource(new File(
+				"/an/absolute/path")).toString());
+	}
+
+	/**
+	 * Relative paths shouldn't be used but this is how they work
+	 */
+	public void testRelativePathToString() throws IOException {
+		String cwd = System.getProperty("user.dir");
+		assertEquals(cwd + "/relative/path", new ExternalSource(new File(
+				"relative/path")).toString());
 	}
 
 }

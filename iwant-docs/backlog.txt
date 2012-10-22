@@ -237,6 +237,14 @@
   + manually test with a dummy project
     + fix: iwant classes only once, as normal dep
 
++ @refactor: As @developer I want cleaner and centralized cache location logic and also all ws caches under same dir so that...
+  * there is only one place to ask cache location for path (the ctx)
+  * paths cannot access non-cache related stuff when telling their cache location
+  * one cache dir => easier to wipe
+  + do refactoring
+  + manually test and also see there is only 1 cache
+  + fix help.sh to use same cache
+
 #################################################################
 = In progress
 #################################################################
@@ -425,7 +433,9 @@
 
 - As eclipse user I want jar classpaths to point to the workspace-relative as-WSNAME-developer/with/bash/iwant/cached/... instead of absolute paths so the workspace is easier to move (maybe) and so I can choose to version them when it's a pragmatic choise.
 
-- bugfix: as @buildscriptauthor I want iwant to fail if I define two targets with the same name instead of just overwriting
+- bugfix: as @buildscriptauthor I want iwant to fail if I define two paths with the same name instead of just overwriting
+  * note: even src cannot have same name as target, because content descriptors mention paths by name
+  * so, if a src is replaced with target, descriptor needs to change
 
 - bugfix: As @buildscriptauthor I want the generated wsdef class to compile without warnings (add missing @Override annotation)
 

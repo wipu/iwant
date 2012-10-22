@@ -27,10 +27,11 @@ public class WishEvaluator {
 	private final WsInfo wsInfo;
 	private final Ctx ctx;
 	private final JavaClasses wsdDefClassesTarget;
+	private final Caches caches;
 
 	public WishEvaluator(OutputStream out, OutputStream err, File asSomeone,
 			File wsRoot, File iwantApiClasses, Iwant iwant, WsInfo wsInfo,
-			JavaClasses wsdDefClassesTarget) {
+			JavaClasses wsdDefClassesTarget, Caches caches) {
 		this.out = out;
 		this.err = err;
 		this.asSomeone = asSomeone;
@@ -39,6 +40,7 @@ public class WishEvaluator {
 		this.iwant = iwant;
 		this.wsInfo = wsInfo;
 		this.wsdDefClassesTarget = wsdDefClassesTarget;
+		this.caches = caches;
 		this.ctx = new Ctx();
 	}
 
@@ -91,12 +93,12 @@ public class WishEvaluator {
 
 	File freshCachedContent(Path path) {
 		Iwant.debugLog("freshCachedContent", path);
-		File cachedContent = path.cachedAt(ctx);
+		File cachedContent = ctx.cached(path);
 		if (path instanceof Target) {
 			Target target = (Target) path;
 			try {
-				Planner planner = new Planner(
-						new TargetRefreshTask(target, ctx), 1);
+				Planner planner = new Planner(new TargetRefreshTask(target,
+						ctx, caches), 1);
 				planner.start();
 				planner.join();
 			} catch (RuntimeException e) {
@@ -124,13 +126,7 @@ public class WishEvaluator {
 			return false;
 		}
 		Target target = (Target) path;
-		return new TargetRefreshTask(target, ctx).isDirty();
-	}
-
-	private File cachedDescriptors() {
-		File descriptors = new File(asSomeone, ".todo-cached/descriptor");
-		descriptors.mkdirs();
-		return descriptors;
+		return new TargetRefreshTask(target, ctx, caches).isDirty();
 	}
 
 	public void asPath(Path path) {
@@ -138,10 +134,6 @@ public class WishEvaluator {
 		PrintWriter wr = new PrintWriter(out);
 		wr.println(cachedContent);
 		wr.close();
-	}
-
-	private File cachedModifiable() {
-		return new File(asSomeone, ".todo-cached/target");
 	}
 
 	private class Ctx implements TargetEvaluationContext, SideEffectContext {
@@ -152,23 +144,13 @@ public class WishEvaluator {
 		}
 
 		@Override
-		public File modifiableTargets() {
-			return cachedModifiable();
-		}
-
-		@Override
 		public File wsRoot() {
 			return wsRoot;
 		}
 
 		@Override
-		public File freshPathTo(Path path) {
-			return path.cachedAt(this);
-		}
-
-		@Override
-		public File cachedDescriptors() {
-			return WishEvaluator.this.cachedDescriptors();
+		public File cached(Path path) {
+			return caches.contentOf(path);
 		}
 
 		@Override

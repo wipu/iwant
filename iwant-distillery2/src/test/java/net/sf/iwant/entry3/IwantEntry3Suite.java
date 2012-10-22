@@ -8,6 +8,7 @@ public class IwantEntry3Suite {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("net.sf.iwant.entry3");
 		suite.addTestSuite(WsInfoTest.class);
+		suite.addTestSuite(CachesImplTest.class);
 		suite.addTestSuite(FileUtilTest.class);
 		suite.addTestSuite(ExampleWsDefGeneratorTest.class);
 		suite.addTestSuite(WishScriptGeneratorTest.class);

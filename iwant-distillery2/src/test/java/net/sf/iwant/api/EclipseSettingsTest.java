@@ -1,11 +1,13 @@
 package net.sf.iwant.api;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.IwantNetworkMock;
+import net.sf.iwant.entry3.CachesMock;
 import net.sf.iwant.entry3.IwantEntry3TestArea;
 import net.sf.iwant.entry3.TargetMock;
 
@@ -15,14 +17,18 @@ public class EclipseSettingsTest extends TestCase {
 	private SideEffectContextMock ctx;
 	private Iwant iwant;
 	private IwantNetworkMock network;
+	private CachesMock caches;
+	private File wsRoot;
 
 	@Override
 	public void setUp() {
 		testArea = new IwantEntry3TestArea();
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
+		wsRoot = testArea.root();
+		caches = new CachesMock(wsRoot);
 		ctx = new SideEffectContextMock(testArea,
-				new TargetEvaluationContextMock(iwant));
+				new TargetEvaluationContextMock(iwant, caches));
 		ctx.hasWsRoot(testArea.root());
 		ctx.hasAsSomeone(testArea.newDir("as-someone"));
 		ctx.hasIwantApiClasses(testArea.newDir("iwant-api-classes"));
@@ -32,8 +38,7 @@ public class EclipseSettingsTest extends TestCase {
 		ctx.hasWsdefClassesTarget(new JavaClasses("wsdef-classes", Source
 				.underWsroot("as-someone/i-have/wsdef"), Collections
 				.<Path> emptyList()));
-		ctx.targetEvaluationContext().cachesModifiableTargetsAt(
-				testArea.newDir("cached-modifiable"));
+		caches.cachesModifiableTargetsAt(testArea.newDir("cached-modifiable"));
 	}
 
 	private void assertDotClasspathContains(String fragment) {

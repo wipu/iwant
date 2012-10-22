@@ -23,13 +23,13 @@ public class Source implements Path {
 	}
 
 	@Override
-	public File cachedAt(TargetEvaluationContext ctx) {
-		return new File(ctx.wsRoot(), name());
+	public File cachedAt(CacheScopeChoices cachedAt) {
+		return cachedAt.source(this);
 	}
 
 	@Override
 	public InputStream content(TargetEvaluationContext ctx) throws Exception {
-		return new FileInputStream(ctx.freshPathTo(this));
+		return new FileInputStream(ctx.cached(this));
 	}
 
 	@Override

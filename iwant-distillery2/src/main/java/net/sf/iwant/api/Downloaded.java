@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
 
 public class Downloaded extends Target {
 
@@ -51,13 +50,12 @@ public class Downloaded extends Target {
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
-		ctx.iwant().downloaded(url);
+		ctx.iwant().downloaded(url, ctx.cached(this));
 	}
 
 	@Override
-	public File cachedAt(TargetEvaluationContext ctx) {
-		UnmodifiableUrl src = new UnmodifiableUrl(url);
-		return ctx.iwant().network().cacheLocation(src);
+	public File cachedAt(CacheScopeChoices cachedAt) {
+		return cachedAt.unmodifiableUrl(url);
 	}
 
 	@Override

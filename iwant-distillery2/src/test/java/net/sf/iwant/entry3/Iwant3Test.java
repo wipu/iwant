@@ -297,7 +297,7 @@ public class Iwant3Test extends TestCase {
 
 		iwant3.evaluate(asTest, "target/hello/as-path");
 
-		File cached = new File(asTest, ".todo-cached/target/hello");
+		File cached = new File(asTest, ".i-cached/target/hello");
 		assertEquals(cached + "\n", out());
 		assertEquals("", errIgnoringDebugLog());
 
@@ -347,7 +347,7 @@ public class Iwant3Test extends TestCase {
 
 		iwant3.evaluate(asTest, "target/modified-hello/as-path");
 
-		File cached = new File(asTest, ".todo-cached/target/modified-hello");
+		File cached = new File(asTest, ".i-cached/target/modified-hello");
 		assertEquals(cached + "\n", out());
 		assertEquals("", errIgnoringDebugLog());
 
@@ -420,9 +420,11 @@ public class Iwant3Test extends TestCase {
 	 * setup is very different from other tests here.
 	 */
 	public void testWsdefRuntimeClasspathWhenWsdefClassesTargetDefinesNoExtra() {
+		File wsRoot = testArea.newDir("wsroot");
+		CachesMock caches = new CachesMock(wsRoot);
 		TargetEvaluationContextMock ctx = new TargetEvaluationContextMock(
-				Iwant.using(network));
-		ctx.cachesModifiableTargetsAt(new File("cached"));
+				Iwant.using(network), caches);
+		caches.cachesModifiableTargetsAt(new File("cached"));
 
 		JavaClasses wsdDefClassesTarget = new JavaClasses("wsdef",
 				Source.underWsroot("wsdef"), Arrays.asList(new TargetMock(
@@ -439,9 +441,11 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testWsdefRuntimeClasspathWhenWsdefClassesTargetDefinesAnExternalLibrary() {
+		File wsRoot = testArea.newDir("wsroot");
+		CachesMock caches = new CachesMock(wsRoot);
 		TargetEvaluationContextMock ctx = new TargetEvaluationContextMock(
-				Iwant.using(network));
-		ctx.cachesModifiableTargetsAt(new File("cached"));
+				Iwant.using(network), caches);
+		caches.cachesModifiableTargetsAt(new File("cached"));
 
 		JavaClasses wsdDefClassesTarget = new JavaClasses("wsdef",
 				Source.underWsroot("wsdef"), Arrays.asList(new TargetMock(
