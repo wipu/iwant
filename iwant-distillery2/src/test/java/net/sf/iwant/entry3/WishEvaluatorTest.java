@@ -2,6 +2,7 @@ package net.sf.iwant.entry3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -362,6 +363,44 @@ public class WishEvaluatorTest extends TestCase {
 		evaluator.iwant("side-effect/hello-2/effective", hellos);
 
 		assertEquals("hello-2 mutating.\n", err.toString());
+	}
+
+	public void testDeletionOfJavaFileIsDetectedAndCompilationIsRetriedAndFailed()
+			throws Exception {
+		File srcDir = new File(wsRoot, "src");
+		new File(srcDir, "pak1").mkdirs();
+		new File(srcDir, "pak2").mkdirs();
+		new FileWriter(new File(srcDir, "pak1/Caller.java")).append(
+				"package pak1;\npublic class Caller {pak2.Callee callee;}")
+				.close();
+		File calleeJava = new File(srcDir, "pak2/Callee.java");
+		new FileWriter(calleeJava).append(
+				"package pak2;\npublic class Callee {}").close();
+		Source src = Source.underWsroot("src");
+		Target target = new JavaClasses("multiple", src,
+				Collections.<Path> emptyList());
+
+		evaluator.asPath(target);
+
+		assertTrue(new File(caches.contentOf(target), "pak1/Caller.class")
+				.exists());
+		assertTrue(new File(caches.contentOf(target), "pak2/Callee.class")
+				.exists());
+
+		// no retry with Callee.java missing
+		calleeJava.delete();
+
+		try {
+			evaluator.asPath(target);
+			fail();
+		} catch (IllegalStateException e) {
+			assertEquals("Compilation failed.", e.getCause().getMessage());
+		}
+
+		assertFalse(new File(caches.contentOf(target), "pak1/Caller.class")
+				.exists());
+		assertFalse(new File(caches.contentOf(target), "pak2/Callee.class")
+				.exists());
 	}
 
 }

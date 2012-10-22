@@ -249,15 +249,21 @@
 = In progress
 #################################################################
 
-- @bugfix: as @buildscriptuser I want a target refreshed when a source has been DELETED
-  - test it's broken
-  - use same TimestampHandler than Iwant2
-  - a dedicated cache dir for source dir listings
-  - refactor: common supertype for Source and ExternalSource
++ @bugfix: as @buildscriptuser I want a target refreshed when a source has been DELETED
+  + test it's broken, using WishEvaluator test because it tests laziness
+  + ha, it works on linux, because parent dir gets modified, so split the story
 
 #################################################################
 = Planned
 #################################################################
+
+- @bugfix: as @buildscriptuser with @wintoys I want a target refreshed when a source has been DELETED
+  * I remember having the problem with Windows that it doesn't touch timestamp of parent
+    when deleting a file, so IF this is really the case and a wuser demands:
+  - update the test to touch parent timestamp back after deleting the file to prove need for the fix
+  - use same TimestampHandler than Iwant2
+  - a dedicated cache dir for source dir listings
+  - refactor: common supertype for Source and ExternalSource
 
 - As @developer I want this long and deep text broken into a readable list of stories (not too detailed), both to done and planned, so I can analyze how I proceeded and also see what has been done and what not:
   - optimization: don't even write descriptor for source
