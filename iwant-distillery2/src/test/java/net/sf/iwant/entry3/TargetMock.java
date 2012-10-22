@@ -18,6 +18,7 @@ public class TargetMock extends Target {
 	private String content;
 	private boolean shallNotBeToldToWriteFile;
 	private String contentDescriptor;
+	private boolean supportsParallelism = true;
 
 	public TargetMock(String name) {
 		super(name);
@@ -78,6 +79,15 @@ public class TargetMock extends Target {
 
 	public synchronized void hasContentDescriptor(String contentDescriptor) {
 		this.contentDescriptor = contentDescriptor;
+	}
+
+	@Override
+	public boolean supportsParallelism() {
+		return supportsParallelism;
+	}
+
+	public void doesNotSupportParallelism() {
+		supportsParallelism = false;
 	}
 
 }

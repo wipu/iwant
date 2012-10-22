@@ -151,4 +151,49 @@ public class TaskQueueTest extends TestCase {
 		nextIs(root, pool1res, pool2res);
 		// and so on ...
 	}
+
+	// non-parallel task
+
+	public void testNonParallelTaskDoesNotStartRefreshIfAnotherIsRunning() {
+		TaskMock dep1 = TaskMock.named("dep1").dirty()
+				.doesNotSupportParallelism().noDeps();
+		TaskMock dep2 = TaskMock.named("dep2").dirty().noDeps();
+		TaskMock root = TaskMock.named("root").clean().deps(dep1, dep2);
+		queue = new TaskQueue(root);
+
+		TaskAllocation dep1A = nextIs(dep1);
+		nextIsNull();
+
+		done(dep1A);
+		TaskAllocation dep2A = nextIs(dep2);
+
+		done(dep2A);
+		TaskAllocation rootA = nextIs(root);
+
+		done(rootA);
+
+		queueIsEmpty();
+	}
+
+	public void testNormalTaskDoesNotStartRefreshIfNonParallelTaskIsRunning() {
+		TaskMock dep1 = TaskMock.named("dep1").dirty().noDeps();
+		TaskMock dep2 = TaskMock.named("dep2").dirty()
+				.doesNotSupportParallelism().noDeps();
+		TaskMock root = TaskMock.named("root").clean().deps(dep1, dep2);
+		queue = new TaskQueue(root);
+
+		TaskAllocation dep1A = nextIs(dep1);
+		nextIsNull();
+
+		done(dep1A);
+		TaskAllocation dep2A = nextIs(dep2);
+
+		done(dep2A);
+		TaskAllocation rootA = nextIs(root);
+
+		done(rootA);
+
+		queueIsEmpty();
+	}
+
 }

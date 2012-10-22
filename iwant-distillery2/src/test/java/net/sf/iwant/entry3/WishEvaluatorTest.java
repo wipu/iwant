@@ -54,8 +54,10 @@ public class WishEvaluatorTest extends TestCase {
 				new ExternalSource(testArea.newDir("wsdef")),
 				Collections.<Path> emptyList());
 		caches = new CachesImpl(asSomeone, wsInfo.wsRoot(), network);
+		int workerCount = 1;
 		evaluator = new WishEvaluator(out, err, asSomeone, wsRoot,
-				iwantApiClasses, iwant, wsInfo, wsdDefClassesTarget, caches);
+				iwantApiClasses, iwant, wsInfo, wsdDefClassesTarget, caches,
+				workerCount);
 	}
 
 	private class Hello implements IwantWorkspace {

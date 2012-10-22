@@ -84,9 +84,10 @@ public class Iwant3 {
 			JavaClasses wsdDefClassesTarget = wsDefdef
 					.workspaceClasses(new ExternalSource(iwantApiClasses));
 
+			int workerCount = 2;
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
 					System.err, asSomeone, wsInfo.wsRoot(), iwantApiClasses,
-					iwant, wsInfo, wsdDefClassesTarget, caches);
+					iwant, wsInfo, wsdDefClassesTarget, caches, workerCount);
 
 			File wsDefClasses = wishEvaluator
 					.freshCachedContent(wsdDefClassesTarget);

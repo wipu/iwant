@@ -229,4 +229,18 @@ public class TargetRefreshTaskTest extends TestCase {
 		assertFalse(task.isDirty());
 	}
 
+	public void testTaskSupportsParallelismIffTargetSupportsIt() {
+		TargetMock nonPar = new TargetMock("nonpar");
+		nonPar.hasNoIngredients();
+		nonPar.doesNotSupportParallelism();
+
+		TargetMock par = new TargetMock("par");
+		par.hasNoIngredients();
+
+		assertFalse(new TargetRefreshTask(nonPar, ctx, caches)
+				.supportsParallelism());
+		assertTrue(new TargetRefreshTask(par, ctx, caches)
+				.supportsParallelism());
+	}
+
 }

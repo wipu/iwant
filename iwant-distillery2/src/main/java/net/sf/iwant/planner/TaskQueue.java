@@ -19,6 +19,7 @@ public class TaskQueue {
 	private final Set<Task> refreshable = new HashSet<Task>();
 	private final Set<Task> refreshing = new HashSet<Task>();
 	private final Task rootTask;
+	private boolean isNonParallelRefreshing = false;
 
 	public TaskQueue(Task rootTask) {
 		this.rootTask = rootTask;
@@ -95,6 +96,14 @@ public class TaskQueue {
 			if (refreshing.contains(task)) {
 				return null;
 			}
+			if (!task.supportsParallelism() && !refreshing.isEmpty()) {
+				// the task cannot run with others:
+				return null;
+			}
+			if (isNonParallelRefreshing) {
+				// a non-parallel task does not want disturbances:
+				return null;
+			}
 			Collection<ResourcePool> resourcePools = task.requiredResources();
 			for (ResourcePool resourcePool : resourcePools) {
 				if (!resourcePool.hasFreeResources()) {
@@ -130,6 +139,9 @@ public class TaskQueue {
 				// TODO what if a task declares the same pool many times?
 				allocations.put(resourcePool, resource);
 			}
+			if (!task.supportsParallelism()) {
+				isNonParallelRefreshing = true;
+			}
 		}
 
 		@Override
@@ -159,6 +171,9 @@ public class TaskQueue {
 				ResourcePool resourcePool = allocation.getKey();
 				Resource resource = allocation.getValue();
 				resourcePool.release(resource);
+			}
+			if (!task.supportsParallelism()) {
+				isNonParallelRefreshing = false;
 			}
 		}
 

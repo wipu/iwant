@@ -28,10 +28,11 @@ public class WishEvaluator {
 	private final Ctx ctx;
 	private final JavaClasses wsdDefClassesTarget;
 	private final Caches caches;
+	private final int workerCount;
 
 	public WishEvaluator(OutputStream out, OutputStream err, File asSomeone,
 			File wsRoot, File iwantApiClasses, Iwant iwant, WsInfo wsInfo,
-			JavaClasses wsdDefClassesTarget, Caches caches) {
+			JavaClasses wsdDefClassesTarget, Caches caches, int workerCount) {
 		this.out = out;
 		this.err = err;
 		this.asSomeone = asSomeone;
@@ -41,6 +42,7 @@ public class WishEvaluator {
 		this.wsInfo = wsInfo;
 		this.wsdDefClassesTarget = wsdDefClassesTarget;
 		this.caches = caches;
+		this.workerCount = workerCount;
 		this.ctx = new Ctx();
 	}
 
@@ -98,7 +100,7 @@ public class WishEvaluator {
 			Target target = (Target) path;
 			try {
 				Planner planner = new Planner(new TargetRefreshTask(target,
-						ctx, caches), 1);
+						ctx, caches), workerCount);
 				planner.start();
 				planner.join();
 			} catch (RuntimeException e) {

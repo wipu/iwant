@@ -15,4 +15,6 @@ public interface Task {
 
 	Collection<ResourcePool> requiredResources();
 
+	boolean supportsParallelism();
+
 }

@@ -25,4 +25,11 @@ public abstract class Target implements Path {
 		return name();
 	}
 
+	/**
+	 * Override if needed
+	 */
+	public boolean supportsParallelism() {
+		return true;
+	}
+
 }

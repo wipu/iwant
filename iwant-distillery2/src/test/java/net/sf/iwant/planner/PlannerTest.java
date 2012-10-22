@@ -174,4 +174,48 @@ public class PlannerTest extends TestCase {
 		buildEndsSuccessfully();
 	}
 
+	public void testNonParallelTaskDoesNotStartRefreshIfAnotherIsRunning() {
+		TaskMock dep1 = TaskMock.named("dep1").dirty()
+				.doesNotSupportParallelism().noDeps();
+		TaskMock dep2 = TaskMock.named("dep2").dirty().noDeps();
+		TaskMock root = TaskMock.named("root").clean().deps(dep1, dep2);
+
+		ensureFresh(root, 2);
+
+		dep1.shallEventuallyStartRefresh();
+		dep2.shallNotStartRefresh();
+		root.shallNotStartRefresh();
+
+		dep1.finishesRefresh();
+		dep2.shallEventuallyStartRefresh();
+		root.shallNotStartRefresh();
+
+		dep2.finishesRefresh();
+		root.shallEventuallyStartRefresh();
+		root.finishesRefresh();
+		buildEndsSuccessfully();
+	}
+
+	public void testNormalTaskDoesNotStartRefreshIfNonParallelTaskIsRunning() {
+		TaskMock dep1 = TaskMock.named("dep1").dirty().noDeps();
+		TaskMock dep2 = TaskMock.named("dep2").dirty()
+				.doesNotSupportParallelism().noDeps();
+		TaskMock root = TaskMock.named("root").clean().deps(dep1, dep2);
+
+		ensureFresh(root, 2);
+
+		dep1.shallEventuallyStartRefresh();
+		dep2.shallNotStartRefresh();
+		root.shallNotStartRefresh();
+
+		dep1.finishesRefresh();
+		dep2.shallEventuallyStartRefresh();
+		root.shallNotStartRefresh();
+
+		dep2.finishesRefresh();
+		root.shallEventuallyStartRefresh();
+		root.finishesRefresh();
+		buildEndsSuccessfully();
+	}
+
 }

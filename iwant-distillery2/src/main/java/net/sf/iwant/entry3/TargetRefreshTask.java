@@ -150,4 +150,9 @@ public class TargetRefreshTask implements Task {
 		return target;
 	}
 
+	@Override
+	public boolean supportsParallelism() {
+		return target.supportsParallelism();
+	}
+
 }

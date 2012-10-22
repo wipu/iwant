@@ -21,12 +21,15 @@ public class TaskMock implements Task {
 	private String refreshFailure;
 	private final List<ResourcePool> resourcePools;
 	private Map<ResourcePool, Resource> allocatedResources;
+	private final boolean supportsParallelism;
 
 	public TaskMock(String name, boolean isDirty,
-			List<ResourcePool> resourcePools, Task... deps) {
+			List<ResourcePool> resourcePools, boolean supportsParallelism,
+			Task... deps) {
 		this.name = name;
 		this.isDirty = isDirty;
 		this.resourcePools = resourcePools;
+		this.supportsParallelism = supportsParallelism;
 		this.deps = Arrays.asList(deps);
 	}
 
@@ -43,6 +46,7 @@ public class TaskMock implements Task {
 		private boolean isDirty;
 		private final String name;
 		private List<ResourcePool> resourcePools = new ArrayList<ResourcePool>();
+		private boolean supportsParallelism = true;
 
 		public TaskMockSpex(String name) {
 			this.name = name;
@@ -63,11 +67,17 @@ public class TaskMock implements Task {
 		}
 
 		public TaskMock deps(TaskMock... deps) {
-			return new TaskMock(name, isDirty, resourcePools, deps);
+			return new TaskMock(name, isDirty, resourcePools,
+					supportsParallelism, deps);
 		}
 
 		public TaskMockSpex uses(ResourcePool... resourcePool) {
 			resourcePools.addAll(Arrays.asList(resourcePool));
+			return this;
+		}
+
+		public TaskMockSpex doesNotSupportParallelism() {
+			supportsParallelism = false;
 			return this;
 		}
 
@@ -166,6 +176,11 @@ public class TaskMock implements Task {
 	@Override
 	public Collection<ResourcePool> requiredResources() {
 		return resourcePools;
+	}
+
+	@Override
+	public boolean supportsParallelism() {
+		return supportsParallelism;
 	}
 
 }

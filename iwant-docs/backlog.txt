@@ -259,13 +259,16 @@
 
 - As @buildscriptauthor I want to declare a target to use the singleton resource "computer" so it runs alone even when it's the only one explicitly using the resource
   * so e.g. a performance test can be run reliably with minimal effort
-  - make worker count 2 by default so we have some parallelization always
-  - first do in planner module in isolation
-  - then adapt to a Target
+  + make worker count 2 by default so we have some parallelization always
+  * actually it's not a resource but a boolean "supportsParallelism"
+  + first do in planner module in isolation
+  + then adapt to a Target
+  - log target refresh with worker number for "manual reassurance"
 
 - As a @buildscriptuser I want to define the number of threads to use
   - TODO on commandline, in a conf file, something else or all of them?
   - TODO automatic detection of cpu count and using it for a good default?
+  - use 1 in descript for reliable output
 
 - As a @buildscriptauthor I want to declare some targets single-threaded so targets depending on it get never refreshed in parallel
   * e.g. for tests that need the display, a certain shared sql table area or some other shared resource
