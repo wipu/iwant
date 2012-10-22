@@ -249,6 +249,16 @@
 = In progress
 #################################################################
 
+- @bugfix: as @buildscriptuser I want a target refreshed when a source has been DELETED
+  - test it's broken
+  - use same TimestampHandler than Iwant2
+  - a dedicated cache dir for source dir listings
+  - refactor: common supertype for Source and ExternalSource
+
+#################################################################
+= Planned
+#################################################################
+
 - As @developer I want this long and deep text broken into a readable list of stories (not too detailed), both to done and planned, so I can analyze how I proceeded and also see what has been done and what not:
   - optimization: don't even write descriptor for source
   - unmodifiable target is cached under user-global cache
@@ -286,14 +296,6 @@
   - publish
     - modify bootstrapping tutorials
     - clean up the other bootstrapper story
-
-#################################################################
-= Planned
-#################################################################
-
-- @bugfix: as @buildscriptuser I want a target refreshed when a source has been DELETED
-  - use same TimestampHandler than Iwant2
-  - a dedicated cache dir for source dir listings
 
 - only one place for reading bytes/string from stream
   * currently Iwant, Iwant2 and StreamUtil
