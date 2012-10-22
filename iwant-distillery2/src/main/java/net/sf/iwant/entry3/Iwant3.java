@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 import net.sf.iwant.api.ExternalSource;
 import net.sf.iwant.api.IwantWorkspace;
@@ -56,8 +57,9 @@ public class Iwant3 {
 		if (!wsInfo.wsdefdefJava().exists()) {
 			throw createExampleWsdefdefAndWsdef(asSomeone, iHave, wsInfo);
 		}
+		UserPrefs userPrefs = parseUserPrefs(iHave);
 		if (args.length == 0) {
-			throw new IwantException("Try "
+			throw new IwantException("(Using " + userPrefs + ")\nTry "
 					+ new File(asSomeone, "with/bash/iwant/list-of/targets"));
 		}
 		String wish = args[0];
@@ -84,10 +86,10 @@ public class Iwant3 {
 			JavaClasses wsdDefClassesTarget = wsDefdef
 					.workspaceClasses(new ExternalSource(iwantApiClasses));
 
-			int workerCount = 2;
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
 					System.err, asSomeone, wsInfo.wsRoot(), iwantApiClasses,
-					iwant, wsInfo, wsdDefClassesTarget, caches, workerCount);
+					iwant, wsInfo, wsdDefClassesTarget, caches,
+					userPrefs.workerCount());
 
 			File wsDefClasses = wishEvaluator
 					.freshCachedContent(wsdDefClassesTarget);
@@ -106,6 +108,21 @@ public class Iwant3 {
 			throw e;
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Error invoking user code.", e);
+		}
+	}
+
+	private static UserPrefs parseUserPrefs(File iHave) throws IOException {
+		File userPrefsFile = new File(iHave, "user-preferences");
+		if (!userPrefsFile.exists()) {
+			return new DefaultUserPrefs(userPrefsFile);
+		}
+		FileReader reader = new FileReader(userPrefsFile);
+		try {
+			Properties props = new Properties();
+			props.load(reader);
+			return new UserPrefsImpl(props, userPrefsFile);
+		} finally {
+			reader.close();
 		}
 	}
 

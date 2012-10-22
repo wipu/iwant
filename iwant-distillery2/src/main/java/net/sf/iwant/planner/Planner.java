@@ -72,6 +72,12 @@ public class Planner {
 			this.id = id;
 		}
 
+		private void consoleLog(String msg) {
+			String fullMsg = "(" + id + " " + msg + ")";
+			System.err.println(fullMsg);
+			log(fullMsg);
+		}
+
 		@Override
 		public void run() {
 			log(this, " starts.");
@@ -83,18 +89,18 @@ public class Planner {
 						log(this, " stops, no more tasks.");
 						return;
 					}
-					log(this, " executes ", allocation);
+					consoleLog("" + allocation.task());
 					try {
 						Task task = allocation.task();
 						Map<ResourcePool, Resource> resources = allocation
 								.allocatedResources();
 						task.refresh(resources);
 					} catch (Throwable e) {
-						log(this, " failed: ", e);
+						consoleLog("failed    " + allocation.task());
 						refreshFailed(e);
 						return;
 					}
-					log(this, " marks done: ", allocation);
+					log(this, " finished ", allocation);
 					markDone(allocation);
 				}
 			} finally {

@@ -155,4 +155,9 @@ public class TargetRefreshTask implements Task {
 		return target.supportsParallelism();
 	}
 
+	@Override
+	public String toString() {
+		return name();
+	}
+
 }

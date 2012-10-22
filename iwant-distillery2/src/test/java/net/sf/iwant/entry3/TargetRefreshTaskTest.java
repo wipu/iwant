@@ -70,6 +70,16 @@ public class TargetRefreshTaskTest extends TestCase {
 		assertEquals("t2", new TargetRefreshTask(t2, ctx, caches).name());
 	}
 
+	public void testTaskToStringMentionsTargetsName() {
+		TargetMock t1 = new TargetMock("t1");
+		t1.hasNoIngredients();
+		TargetMock t2 = new TargetMock("t2");
+		t2.hasNoIngredients();
+
+		assertEquals("t1", new TargetRefreshTask(t1, ctx, caches).toString());
+		assertEquals("t2", new TargetRefreshTask(t2, ctx, caches).toString());
+	}
+
 	public void testTaskGetter() {
 		TargetMock target = new TargetMock("target");
 		target.hasNoIngredients();

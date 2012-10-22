@@ -249,26 +249,33 @@
   + test it's broken, using WishEvaluator test because it tests laziness
   + ha, it works on linux, because parent dir gets modified, so split the story
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I want to declare a target to use the singleton resource "computer" so it runs alone even when it's the only one explicitly using the resource
++ As @buildscriptauthor I want to declare a target to use the singleton resource "computer" so it runs alone even when it's the only one explicitly using the resource
   * so e.g. a performance test can be run reliably with minimal effort
   + make worker count 2 by default so we have some parallelization always
   * actually it's not a resource but a boolean "supportsParallelism"
   + first do in planner module in isolation
   + then adapt to a Target
-  - log target refresh with worker number for "manual reassurance"
 
-- As a @buildscriptuser I want to define the number of threads to use
-  - TODO on commandline, in a conf file, something else or all of them?
-  - TODO automatic detection of cpu count and using it for a good default?
-  - use 1 in descript for reliable output
++ As a @buildscriptuser I want to define the number of threads to use so I get performance from my machine
+  * also as descript generator I want reliable output
+  (- TODO on commandline, in a conf file, something else or all of them?)
+  (- TODO automatic detection of cpu count and using it for a good default?)
+  + parse user-preferences and output it in help.sh when all setup, mentioning that
+    defaults are used because file is missing
+  + test same output with existing file
+  + properties impl for user prefs
+  + descript: write workercount=1 to the file and rerun help.sh
+  + log target refresh with worker number for "manual reassurance"
+
+#################################################################
+= In progress
+#################################################################
 
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptuser I want to declare worker count once for my OS user so I don't need to create and maintain ws-specific files
 
 - As a @buildscriptauthor I want to declare some targets single-threaded so targets depending on it get never refreshed in parallel
   * e.g. for tests that need the display, a certain shared sql table area or some other shared resource

@@ -16,6 +16,7 @@ public class IwantEntry3Suite {
 		suite.addTestSuite(WsDefEclipseProjectTest.class);
 		suite.addTestSuite(TargetRefreshTaskTest.class);
 		suite.addTestSuite(WishEvaluatorTest.class);
+		suite.addTestSuite(UserPrefsImplTest.class);
 		suite.addTestSuite(Iwant3Test.class);
 		return suite;
 	}

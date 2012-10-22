@@ -17,6 +17,11 @@ cmde "1" "as-distillery-developer/with/bash/iwant/help.sh 2>&1"
 cmde "0 0" 'find as-distillery-developer -type f | grep -v ".i-cached"'
 p "End of wizard, everything is set for the final usage help message:"
 cmde "1" "as-distillery-developer/with/bash/iwant/help.sh"
+
+p "In this tutorial we'll use only one worker thread to keep the output deterministic. You should probably use bigger number, depending on your machine."
+cmd 'echo workerCount=1 > as-distillery-developer/i-have/user-preferences'
+cmde "1" "as-distillery-developer/with/bash/iwant/help.sh"
+
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
 cmde "0" "as-distillery-developer/with/bash/iwant/target/hello/as-path"
 
@@ -30,6 +35,7 @@ p "Now we can import the project to eclipse (don't copy it to the workspace!) an
 wsdef-edit v00modifiedhello
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
 out-was <<EOF
+(0 workspaceClasses)
 hello
 hello2
 EOF

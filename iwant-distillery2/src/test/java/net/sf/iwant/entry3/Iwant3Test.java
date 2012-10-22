@@ -2,6 +2,7 @@ package net.sf.iwant.entry3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -408,7 +409,33 @@ public class Iwant3Test extends TestCase {
 			iwant3.evaluate(asTest);
 			fail();
 		} catch (IwantException e) {
-			assertEquals("Try " + asTest + "/with/bash/iwant/list-of/targets",
+			assertEquals("(Using default user preferences (file " + asTest
+					+ "/i-have/user-preferences is missing):\n"
+					+ "[workerCount=2])\n" + "Try " + asTest
+					+ "/with/bash/iwant/list-of/targets", e.getMessage());
+		}
+
+		assertEquals("", out());
+	}
+
+	/**
+	 * Corresponds to calling help.sh once more
+	 */
+	public void testEmptyWishAfterCreationOfUserPreferencesFiles()
+			throws Exception {
+		testEmptyWishAfterCreationOfExampleWsDef();
+		startOfOutAndErrCapture();
+
+		new FileWriter(new File(asTest, "i-have/user-preferences")).append(
+				"workerCount=1").close();
+
+		try {
+			iwant3.evaluate(asTest);
+			fail();
+		} catch (IwantException e) {
+			assertEquals("(Using user preferences from file " + asTest
+					+ "/i-have/user-preferences:\n" + "[workerCount=1])\n"
+					+ "Try " + asTest + "/with/bash/iwant/list-of/targets",
 					e.getMessage());
 		}
 
