@@ -66,8 +66,8 @@ public class Iwant2 {
 		File classpathMarker = new File(iwantWs,
 				"iwant-distillery/classpath-marker");
 
-		File[] classLocations = { classpathMarker, testArea, allIwantClasses,
-				junitJar() };
+		List<File> classLocations = Arrays.asList(classpathMarker, testArea,
+				allIwantClasses, junitJar());
 
 		// no file results from test run:
 		File cachedTestResult = null;

@@ -87,11 +87,9 @@ public class Iwant3 {
 		iwant.compiledClasses(wsDefdefClasses, srcFiles,
 				Arrays.asList(iwantApiClasses));
 
-		// TODO use Arrays.asList
-		List<File> runtimeClasses = new ArrayList<File>();
-		runtimeClasses.add(wsDefdefClasses);
+		List<File> runtimeClasses = Arrays.asList(wsDefdefClasses);
 		Class<?> wsDefdefClass = loadClass(getClass().getClassLoader(),
-				wsInfo.wsdefClass(), runtimeClasses.toArray(new File[] {}));
+				wsInfo.wsdefClass(), runtimeClasses);
 
 		try {
 			Iwant.fileLog("Calling wsdefdef");
@@ -126,7 +124,7 @@ public class Iwant3 {
 		}
 	}
 
-	static File[] wsdefRuntimeClasspath(TargetEvaluationContext ctx,
+	static List<File> wsdefRuntimeClasspath(TargetEvaluationContext ctx,
 			JavaClasses wsdDefClassesTarget, File wsDefdefClasses,
 			File wsDefClasses) {
 		List<File> cp = new ArrayList<File>();
@@ -135,7 +133,7 @@ public class Iwant3 {
 		for (Path extra : wsdDefClassesTarget.classLocations()) {
 			cp.add(extra.cachedAt(ctx));
 		}
-		return cp.toArray(new File[0]);
+		return cp;
 	}
 
 	private static void refreshWishScripts(File asSomeone, IwantWorkspace wsDef) {
@@ -144,7 +142,7 @@ public class Iwant3 {
 	}
 
 	private static Class<?> loadClass(ClassLoader parent, String className,
-			File[] locations) {
+			List<File> locations) {
 		try {
 			return Iwant.classLoader(parent, locations).loadClass(className);
 		} catch (RuntimeException e) {

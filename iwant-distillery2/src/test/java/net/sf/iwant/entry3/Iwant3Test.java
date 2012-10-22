@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.List;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.IwantWorkspace;
@@ -385,7 +386,7 @@ public class Iwant3Test extends TestCase {
 				.getParentFile().getParentFile().getParentFile()
 				.getParentFile().getParentFile();
 
-		File[] locations = { classes };
+		List<File> locations = Arrays.asList(classes);
 		String className = IwantWorkspace.class.getCanonicalName();
 		Class<?> c1 = Iwant.classLoader(true, locations).loadClass(className);
 		Class<?> c2 = Iwant.classLoader(true, locations).loadClass(className);
@@ -429,12 +430,12 @@ public class Iwant3Test extends TestCase {
 
 		File wsDefdefClasses = new File("wsDefdefClasses");
 		File wsDefClasses = new File("wsDefClasses");
-		File[] cp = Iwant3.wsdefRuntimeClasspath(ctx, wsdDefClassesTarget,
+		List<File> cp = Iwant3.wsdefRuntimeClasspath(ctx, wsdDefClassesTarget,
 				wsDefdefClasses, wsDefClasses);
 
 		assertEquals(
 				"[wsDefdefClasses, wsDefClasses, cached/iwant-api-classes]",
-				Arrays.toString(cp));
+				cp.toString());
 	}
 
 	public void testWsdefRuntimeClasspathWhenWsdefClassesTargetDefinesAnExternalLibrary() {
@@ -449,12 +450,12 @@ public class Iwant3Test extends TestCase {
 
 		File wsDefdefClasses = new File("wsDefdefClasses");
 		File wsDefClasses = new File("wsDefClasses");
-		File[] cp = Iwant3.wsdefRuntimeClasspath(ctx, wsdDefClassesTarget,
+		List<File> cp = Iwant3.wsdefRuntimeClasspath(ctx, wsdDefClassesTarget,
 				wsDefdefClasses, wsDefClasses);
 
 		assertEquals("[wsDefdefClasses, wsDefClasses,"
 				+ " cached/iwant-api-classes, cached/external-library]",
-				Arrays.toString(cp));
+				cp.toString());
 	}
 
 }

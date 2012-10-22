@@ -233,7 +233,7 @@ public class Iwant {
 		System.arraycopy(args, 0, iwant2Args, 1, args.length);
 
 		runJavaMain(false, true, "net.sf.iwant.entry2.Iwant2",
-				new File[] { iwantBootstrapClasses }, iwant2Args);
+				Arrays.asList(iwantBootstrapClasses), iwant2Args);
 	}
 
 	File iwantWsrootOfWishedVersion(File asSomeone) {
@@ -373,8 +373,8 @@ public class Iwant {
 	}
 
 	public static void runJavaMain(boolean catchPrintsAndSystemExit,
-			boolean hideIwantClasses, String className, File[] classLocations,
-			String... args) throws Exception {
+			boolean hideIwantClasses, String className,
+			List<File> classLocations, String... args) throws Exception {
 		debugLog("invoke", "class: " + className,
 				"args: " + Arrays.toString(args));
 		debugLog("invoke", "catchPrintsAndSystemExit="
@@ -473,16 +473,17 @@ public class Iwant {
 	}
 
 	public static ClassLoader classLoader(boolean hideIwantClasses,
-			File[] locations) {
+			List<File> locations) {
 		ClassLoader parent = hideIwantClasses ? new ClassLoaderThatHidesIwant()
 				: null;
 		return classLoader(parent, locations);
 	}
 
-	public static ClassLoader classLoader(ClassLoader parent, File[] locations) {
-		URL[] urls = new URL[locations.length];
-		for (int i = 0; i < locations.length; i++) {
-			File location = locations[i];
+	public static ClassLoader classLoader(ClassLoader parent,
+			List<File> locations) {
+		URL[] urls = new URL[locations.size()];
+		for (int i = 0; i < locations.size(); i++) {
+			File location = locations.get(i);
 			URL asUrl = fileToUrl(location);
 			// TODO own type so we don't need to slash back and forth
 			asUrl = withTrailingSlashIfDir(asUrl);
@@ -662,9 +663,9 @@ public class Iwant {
 			File svnkitJar = new File(svnkit, "svnkit-1.3.5.7406/svnkit.jar");
 			File svnkitCliJar = new File(svnkit,
 					"svnkit-1.3.5.7406/svnkit-cli.jar");
-			runJavaMain(true, false, "org.tmatesoft.svn.cli.SVN", new File[] {
-					svnkitJar, svnkitCliJar }, "export", urlString,
-					exported.getCanonicalPath());
+			runJavaMain(true, false, "org.tmatesoft.svn.cli.SVN",
+					Arrays.asList(svnkitJar, svnkitCliJar), "export",
+					urlString, exported.getCanonicalPath());
 			return exported;
 		} catch (RuntimeException e) {
 			throw e;
