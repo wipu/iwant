@@ -203,11 +203,17 @@ public class Iwant3 {
 	}
 
 	private static WsInfo parseWsInfo(File wsInfoFile) throws IOException {
+		FileReader in = null;
 		try {
-			return new WsInfoFileImpl(new FileReader(wsInfoFile), wsInfoFile);
+			in = new FileReader(wsInfoFile);
+			return new WsInfoFileImpl(in, wsInfoFile);
 		} catch (FileNotFoundException e) {
 			throw new IllegalStateException("Sorry, for a while I thought "
 					+ wsInfoFile + " exists.");
+		} finally {
+			if (in != null) {
+				in.close();
+			}
 		}
 	}
 
