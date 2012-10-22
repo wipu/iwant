@@ -54,24 +54,7 @@ public class Iwant3 {
 		File wsInfoFile = wsInfoFile(iHave);
 		WsInfo wsInfo = parseWsInfo(wsInfoFile);
 		if (!wsInfo.wsdefdefJava().exists()) {
-			File iwantWsRoot = WsRootFinder.wsRoot();
-			String iHaveRelativeToWsroot = FileUtil
-					.relativePathOfFileUnderParent(iHave, wsInfo.wsRoot());
-			String wsdefSrcRelativeToWsRoot = iHaveRelativeToWsroot + "/wsdef";
-			createFile(wsInfo.wsdefdefJava(),
-					ExampleWsDefGenerator.exampleWsdefdef(iwantWsRoot,
-							wsInfo.wsdefdefPackage(),
-							wsInfo.wsdefdefClassSimpleName(),
-							wsdefSrcRelativeToWsRoot));
-			File wsDefJava = new File(wsInfo.wsRoot(), wsdefSrcRelativeToWsRoot
-					+ "/com/example/wsdef/Workspace.java");
-			createFile(wsDefJava, ExampleWsDefGenerator.exampleWsdef(
-					iwantWsRoot, "com.example.wsdef", "Workspace"));
-			refreshWishScripts(asSomeone, Arrays.asList("hello"),
-					Arrays.asList("eclipse-settings"));
-			throw new IwantException("I created\n" + wsInfo.wsdefdefJava()
-					+ "\nand\n" + wsDefJava
-					+ "\nPlease edit them and rerun me.");
+			throw createExampleWsdefdefAndWsdef(asSomeone, iHave, wsInfo);
 		}
 		if (args.length == 0) {
 			throw new IwantException("Try "
@@ -122,6 +105,29 @@ public class Iwant3 {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Error invoking user code.", e);
 		}
+	}
+
+	private static IwantException createExampleWsdefdefAndWsdef(File asSomeone,
+			File iHave, WsInfo wsInfo) throws IOException {
+		File iwantWsRoot = WsRootFinder.wsRoot();
+		String iHaveRelativeToWsroot = FileUtil.relativePathOfFileUnderParent(
+				iHave, wsInfo.wsRoot());
+		String wsdefSrcRelativeToWsRoot = iHaveRelativeToWsroot + "/wsdef";
+		createFile(wsInfo.wsdefdefJava(),
+				ExampleWsDefGenerator.exampleWsdefdef(iwantWsRoot,
+						wsInfo.wsdefdefPackage(),
+						wsInfo.wsdefdefClassSimpleName(),
+						wsdefSrcRelativeToWsRoot));
+		File wsDefJava = new File(wsInfo.wsRoot(), wsdefSrcRelativeToWsRoot
+				+ "/com/example/wsdef/Workspace.java");
+		createFile(wsDefJava, ExampleWsDefGenerator.exampleWsdef(iwantWsRoot,
+				"com.example.wsdef", "Workspace"));
+		refreshWishScripts(asSomeone, Arrays.asList("hello"),
+				Arrays.asList("eclipse-settings"));
+		IwantException e = new IwantException("I created\n"
+				+ wsInfo.wsdefdefJava() + "\nand\n" + wsDefJava
+				+ "\nPlease edit them and rerun me.");
+		return e;
 	}
 
 	static List<File> wsdefRuntimeClasspath(TargetEvaluationContext ctx,
