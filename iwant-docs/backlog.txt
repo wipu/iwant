@@ -245,16 +245,12 @@
   + manually test and also see there is only 1 cache
   + fix help.sh to use same cache
 
-#################################################################
-= In progress
-#################################################################
-
 + @bugfix: as @buildscriptuser I want a target refreshed when a source has been DELETED
   + test it's broken, using WishEvaluator test because it tests laziness
   + ha, it works on linux, because parent dir gets modified, so split the story
 
 #################################################################
-= Planned
+= In progress
 #################################################################
 
 - As @buildscriptauthor I want to declare a target to use the singleton resource "computer" so it runs alone even when it's the only one explicitly using the resource
@@ -269,6 +265,10 @@
   - TODO on commandline, in a conf file, something else or all of them?
   - TODO automatic detection of cpu count and using it for a good default?
   - use 1 in descript for reliable output
+
+#################################################################
+= Planned
+#################################################################
 
 - As a @buildscriptauthor I want to declare some targets single-threaded so targets depending on it get never refreshed in parallel
   * e.g. for tests that need the display, a certain shared sql table area or some other shared resource
