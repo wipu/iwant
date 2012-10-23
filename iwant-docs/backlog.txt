@@ -271,9 +271,18 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want to use ant for a target so that I can utilize its wide support of tools
+  * the idea is to just evaluate default target, all dependency handling etc belongs to iwant
+  - adapt Concatenated from main branch for robust script generation
+  - hello world file generating ant script that references dependencies, by path and content
+  - ant target using downloaded ant.jar and the script
+  - descript
+
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptauthor I want an easy way to refer to a certain version of ant.jar from ibiblio so I can easily pick public dependencies
 
 - As @buildscriptuser I want to declare worker count once for my OS user so I don't need to create and maintain ws-specific files
 
