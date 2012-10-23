@@ -14,6 +14,7 @@ public class IwantApiSuite extends TestCase {
 		suite.addTestSuite(JavaClassesTest.class);
 		suite.addTestSuite(DownloadedTest.class);
 		suite.addTestSuite(EclipseSettingsTest.class);
+		suite.addTestSuite(ConcatenatedTest.class);
 		return suite;
 	}
 

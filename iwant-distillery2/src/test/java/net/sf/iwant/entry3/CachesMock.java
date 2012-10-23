@@ -63,7 +63,7 @@ public class CachesMock implements Caches {
 	}
 
 	private File cachedModifiableTargets() {
-		return nonNull(cachedModifiableTargets, "cachedModifiableTarget");
+		return nonNull(cachedModifiableTargets, "cachedModifiableTargets");
 	}
 
 	private File cachedDescriptors() {
