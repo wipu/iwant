@@ -274,13 +274,19 @@
 - As @buildscriptauthor I want to use ant for a target so that I can utilize its wide support of tools
   * the idea is to just evaluate default target, all dependency handling etc belongs to iwant
   + adapt Concatenated from main branch for robust script generation
+  + download ant.jar and ant-launcher.jar for test
+  + AntGenerated: target using downloaded ant.jar and minimal scripts
+    + minimal outputting echo and fail scripts
+    + assert exit status and stderr content
   - hello world file generating ant script that references dependencies, by path and content
-  - ant target using downloaded ant.jar and the script
   - descript
 
 #################################################################
 = Planned
 #################################################################
+
+- As @javaprogrammer I want to just put iwant in my classpath and use it with minimal code from my java code without setting up the full directory structure and bootstrapping so I can utilize its features in my program
+  * useful in iwant's own tests
 
 - As @buildscriptauthor I want an easy way to refer to a certain version of ant.jar from ibiblio so I can easily pick public dependencies
 

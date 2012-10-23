@@ -425,7 +425,7 @@ public class Iwant {
 		}
 	}
 
-	private static class ExitCalledException extends SecurityException {
+	public static class ExitCalledException extends SecurityException {
 
 		private final int status;
 
