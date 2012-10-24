@@ -5,14 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.ExitCalledException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
 import net.sf.iwant.entry.IwantNetworkMock;
 import net.sf.iwant.entry3.CachesMock;
 import net.sf.iwant.entry3.IwantEntry3TestArea;
@@ -76,20 +74,18 @@ public class AntGeneratedTest extends TestCase {
 		}
 	}
 
-	private static Path downloaded(Downloaded downloaded) throws IOException {
-		URL url = downloaded.url();
-		Iwant iwant = Iwant.usingRealNetwork();
-		iwant.downloaded(url);
-		return new ExternalSource(iwant.network().cacheLocation(
-				new UnmodifiableUrl(url)));
+	private Path downloaded(Downloaded downloaded) throws IOException {
+		return new ExternalSource(AsEmbeddedIwantUser.with()
+				.workspaceAt(wsRoot).cacheAt(cacheDir).iwant()
+				.target(downloaded).asPath());
 	}
 
-	private static Path antJar() throws IOException {
+	private Path antJar() throws IOException {
 		return downloaded(FromRepository.ibiblio().group("org/apache/ant")
 				.name("ant").version(ANT_VER));
 	}
 
-	private static Path antLauncherJar() throws IOException {
+	private Path antLauncherJar() throws IOException {
 		return downloaded(FromRepository.ibiblio().group("org/apache/ant")
 				.name("ant-launcher").version(ANT_VER));
 	}

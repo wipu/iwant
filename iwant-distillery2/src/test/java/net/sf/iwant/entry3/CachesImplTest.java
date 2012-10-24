@@ -16,7 +16,7 @@ import net.sf.iwant.entry.IwantNetworkMock;
 public class CachesImplTest extends TestCase {
 
 	private IwantEntry3TestArea testArea;
-	private File asSomeone;
+	private File cacheDir;
 	private Caches caches;
 	private File wsRoot;
 	private IwantNetworkMock network;
@@ -25,9 +25,9 @@ public class CachesImplTest extends TestCase {
 	public void setUp() {
 		testArea = new IwantEntry3TestArea();
 		wsRoot = testArea.newDir("wsroot");
-		asSomeone = testArea.newDir("as-someone");
+		cacheDir = testArea.newDir("cacheDir");
 		network = new IwantNetworkMock(testArea);
-		caches = new CachesImpl(asSomeone, wsRoot, network);
+		caches = new CachesImpl(cacheDir, wsRoot, network);
 	}
 
 	private static void assertFile(File expected, File actual) {
@@ -38,11 +38,6 @@ public class CachesImplTest extends TestCase {
 		File cached = caches.contentOf(new HelloTarget("hello", "whatever"));
 		assertFalse(cached.exists());
 		assertFalse(cached.getParentFile().exists());
-	}
-
-	public void testWorkspaceCacheRoot() {
-		assertFile(new File(asSomeone, ".i-cached"),
-				((CachesImpl) caches).wsCache());
 	}
 
 	public void testSourceIsItsOwnCacheAndRelativeToWsRoot() {
@@ -58,9 +53,9 @@ public class CachesImplTest extends TestCase {
 	}
 
 	public void testHelloTargetIsCachedAtWorkspaceCache() {
-		assertFile(new File(asSomeone, ".i-cached/target/hello"),
+		assertFile(new File(cacheDir, "target/hello"),
 				caches.contentOf(new HelloTarget("hello", "whatever")));
-		assertFile(new File(asSomeone, ".i-cached/target/hello2"),
+		assertFile(new File(cacheDir, "target/hello2"),
 				caches.contentOf(new HelloTarget("hello2", "whatever")));
 	}
 
@@ -77,9 +72,9 @@ public class CachesImplTest extends TestCase {
 	}
 
 	public void testContentDescriptorOfNormalTarget() {
-		assertFile(new File(asSomeone, ".i-cached/descriptor/h1"),
+		assertFile(new File(cacheDir, "descriptor/h1"),
 				caches.contentDescriptorOf(new HelloTarget("h1", "")));
-		assertFile(new File(asSomeone, ".i-cached/descriptor/h2"),
+		assertFile(new File(cacheDir, "descriptor/h2"),
 				caches.contentDescriptorOf(new HelloTarget("h2", "")));
 	}
 
@@ -89,11 +84,11 @@ public class CachesImplTest extends TestCase {
 	 */
 	public void testContentDescriptorOfDownloadedTarget() {
 		assertFile(
-				new File(asSomeone, ".i-cached/descriptor/dl1"),
+				new File(cacheDir, "descriptor/dl1"),
 				caches.contentDescriptorOf(Downloaded.withName("dl1")
 						.url("file:///any").md5("any")));
 		assertFile(
-				new File(asSomeone, ".i-cached/descriptor/dl2"),
+				new File(cacheDir, "descriptor/dl2"),
 				caches.contentDescriptorOf(Downloaded.withName("dl2")
 						.url("file:///any").md5("any")));
 	}

@@ -59,9 +59,10 @@ public class Iwant3 {
 		}
 		UserPrefs userPrefs = parseUserPrefs(iHave);
 
-		CachesImpl caches = new CachesImpl(asSomeone, wsInfo.wsRoot(),
+		File wsCache = new File(asSomeone, ".i-cached");
+		CachesImpl caches = new CachesImpl(wsCache, wsInfo.wsRoot(),
 				iwant.network());
-		File wsDefdefClasses = new File(caches.wsCache(), "wsdefdef-classes");
+		File wsDefdefClasses = new File(wsCache, "wsdefdef-classes");
 
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
 		File iwantApiClasses = iwantApiClasses();
@@ -82,9 +83,8 @@ public class Iwant3 {
 					.workspaceClasses(new ExternalSource(iwantApiClasses));
 
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
-					System.err, asSomeone, wsInfo.wsRoot(), iwantApiClasses,
-					iwant, wsInfo, wsdDefClassesTarget, caches,
-					userPrefs.workerCount());
+					System.err, wsInfo.wsRoot(), iwant, wsInfo,
+					wsdDefClassesTarget, caches, userPrefs.workerCount());
 
 			File wsDefClasses = wishEvaluator
 					.freshCachedContent(wsdDefClassesTarget);

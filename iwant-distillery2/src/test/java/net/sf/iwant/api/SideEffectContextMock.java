@@ -11,8 +11,6 @@ public class SideEffectContextMock implements SideEffectContext {
 	private final TestArea testArea;
 	private WsInfoMock wsInfo;
 	private File wsRoot;
-	private File asSomeone;
-	private File iwantApiClasses;
 	private JavaClasses wsdefClassesTarget;
 	private final TargetEvaluationContextMock evaluationCtx;
 
@@ -44,24 +42,6 @@ public class SideEffectContextMock implements SideEffectContext {
 	public void hasWsRoot(File wsRoot) {
 		this.wsRoot = wsRoot;
 		evaluationCtx.hasWsRoot(wsRoot);
-	}
-
-	@Override
-	public File asSomeone() {
-		return nonNull(asSomeone, "asSomeone");
-	}
-
-	public void hasAsSomeone(File asSomeone) {
-		this.asSomeone = asSomeone;
-	}
-
-	@Override
-	public File iwantApiClasses() {
-		return nonNull(iwantApiClasses, "iwantApiClasses");
-	}
-
-	public void hasIwantApiClasses(File iwantApiClasses) {
-		this.iwantApiClasses = iwantApiClasses;
 	}
 
 	@Override

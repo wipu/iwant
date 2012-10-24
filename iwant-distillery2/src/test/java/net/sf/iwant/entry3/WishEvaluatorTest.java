@@ -27,7 +27,6 @@ public class WishEvaluatorTest extends TestCase {
 
 	private IwantEntry3TestArea testArea;
 	private File asSomeone;
-	private File iwantApiClasses;
 	private File wsRoot;
 	private ByteArrayOutputStream out;
 	private ByteArrayOutputStream err;
@@ -44,7 +43,6 @@ public class WishEvaluatorTest extends TestCase {
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		asSomeone = testArea.newDir("as-" + getClass().getSimpleName());
-		iwantApiClasses = testArea.newDir("iwant-api-classes");
 		wsRoot = testArea.newDir("wsroot");
 		out = new ByteArrayOutputStream();
 		err = new ByteArrayOutputStream();
@@ -53,11 +51,11 @@ public class WishEvaluatorTest extends TestCase {
 		wsdDefClassesTarget = new JavaClasses("wsdef-classes",
 				new ExternalSource(testArea.newDir("wsdef")),
 				Collections.<Path> emptyList());
-		caches = new CachesImpl(asSomeone, wsInfo.wsRoot(), network);
+		caches = new CachesImpl(new File(asSomeone, ".i-cached"),
+				wsInfo.wsRoot(), network);
 		int workerCount = 1;
-		evaluator = new WishEvaluator(out, err, asSomeone, wsRoot,
-				iwantApiClasses, iwant, wsInfo, wsdDefClassesTarget, caches,
-				workerCount);
+		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo,
+				wsdDefClassesTarget, caches, workerCount);
 	}
 
 	private class Hello implements IwantWorkspace {

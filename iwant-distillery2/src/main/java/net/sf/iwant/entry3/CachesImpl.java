@@ -12,12 +12,12 @@ import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
 
 public class CachesImpl implements Caches {
 
-	private final File asSomeone;
+	private final File wsCache;
 	private final File wsRoot;
 	private final IwantNetwork network;
 
-	public CachesImpl(File asSomeone, File wsRoot, IwantNetwork network) {
-		this.asSomeone = asSomeone;
+	public CachesImpl(File wsCache, File wsRoot, IwantNetwork network) {
+		this.wsCache = wsCache;
 		this.wsRoot = wsRoot;
 		this.network = network;
 	}
@@ -27,15 +27,11 @@ public class CachesImpl implements Caches {
 		return path.cachedAt(new ContentChoices());
 	}
 
-	File wsCache() {
-		return new File(asSomeone, ".i-cached");
-	}
-
 	private class ContentChoices implements CacheScopeChoices {
 
 		@Override
 		public File target(Target target) {
-			return new File(wsCache(), "target/" + target.name());
+			return new File(wsCache, "target/" + target.name());
 		}
 
 		@Override
@@ -53,7 +49,7 @@ public class CachesImpl implements Caches {
 
 	@Override
 	public File contentDescriptorOf(Target target) {
-		return new File(wsCache(), "descriptor/" + target.name());
+		return new File(wsCache, "descriptor/" + target.name());
 	}
 
 }

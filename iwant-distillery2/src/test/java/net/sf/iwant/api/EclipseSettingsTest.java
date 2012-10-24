@@ -30,8 +30,6 @@ public class EclipseSettingsTest extends TestCase {
 		ctx = new SideEffectContextMock(testArea,
 				new TargetEvaluationContextMock(iwant, caches));
 		ctx.hasWsRoot(testArea.root());
-		ctx.hasAsSomeone(testArea.newDir("as-someone"));
-		ctx.hasIwantApiClasses(testArea.newDir("iwant-api-classes"));
 		ctx.wsInfo().hasWsdefdefSrc(
 				testArea.newDir("as-someone/i-have/wsdefdef"));
 		ctx.wsInfo().hasWsName(getClass().getSimpleName());
@@ -72,7 +70,6 @@ public class EclipseSettingsTest extends TestCase {
 	}
 
 	public void testDifferentValues() {
-		ctx.hasAsSomeone(testArea.newDir("as-someone2"));
 		ctx.wsInfo().hasWsdefdefSrc(
 				testArea.newDir("as-someone2/i-have/wsdefdef2"));
 		ctx.wsInfo().hasWsName("different-wsname");

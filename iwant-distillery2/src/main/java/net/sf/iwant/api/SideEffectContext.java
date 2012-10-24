@@ -9,10 +9,6 @@ public interface SideEffectContext {
 
 	File wsRoot();
 
-	File asSomeone();
-
-	File iwantApiClasses();
-
 	OutputStream err();
 
 	JavaClasses wsdDefClassesTarget();

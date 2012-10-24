@@ -288,6 +288,13 @@
   * Iwant3 doesn't refresh wish scripts, if help.sh is called when wsdef java already exists
   * this is the case after checking out a workspace
 
++ As @javaprogrammer I want to just put iwant in my classpath and use it with minimal code from my java code without setting up the full directory structure and bootstrapping so I can utilize its features in my program
+  * useful in iwant's own tests
+  + AsEmbeddedIwantUser
+  + use in AntGeneratedTest
+  + remove some unneeded deps from WishEvaluator
+  + bugfix: make workerCount=1 by default, after all, descript used worker 1 instead of 0 before changing it
+
 #################################################################
 = In progress
 #################################################################
@@ -295,9 +302,6 @@
 #################################################################
 = Planned
 #################################################################
-
-- As @javaprogrammer I want to just put iwant in my classpath and use it with minimal code from my java code without setting up the full directory structure and bootstrapping so I can utilize its features in my program
-  * useful in iwant's own tests
 
 - As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead

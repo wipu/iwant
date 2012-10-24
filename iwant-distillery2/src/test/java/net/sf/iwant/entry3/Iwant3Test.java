@@ -297,7 +297,7 @@ public class Iwant3Test extends TestCase {
 		} catch (IwantException e) {
 			assertEquals("(Using default user preferences (file " + asTest
 					+ "/i-have/user-preferences is missing):\n"
-					+ "[workerCount=2])\n" + "Try " + asTest
+					+ "[workerCount=1])\n" + "Try " + asTest
 					+ "/with/bash/iwant/list-of/targets", e.getMessage());
 		}
 
@@ -449,7 +449,7 @@ public class Iwant3Test extends TestCase {
 		} catch (IwantException e) {
 			assertEquals("(Using default user preferences (file " + asTest
 					+ "/i-have/user-preferences is missing):\n"
-					+ "[workerCount=2])\n" + "Try " + asTest
+					+ "[workerCount=1])\n" + "Try " + asTest
 					+ "/with/bash/iwant/list-of/targets", e.getMessage());
 		}
 
@@ -465,14 +465,14 @@ public class Iwant3Test extends TestCase {
 		startOfOutAndErrCapture();
 
 		new FileWriter(new File(asTest, "i-have/user-preferences")).append(
-				"workerCount=1").close();
+				"workerCount=3").close();
 
 		try {
 			iwant3.evaluate(asTest);
 			fail();
 		} catch (IwantException e) {
 			assertEquals("(Using user preferences from file " + asTest
-					+ "/i-have/user-preferences:\n" + "[workerCount=1])\n"
+					+ "/i-have/user-preferences:\n" + "[workerCount=3])\n"
 					+ "Try " + asTest + "/with/bash/iwant/list-of/targets",
 					e.getMessage());
 		}

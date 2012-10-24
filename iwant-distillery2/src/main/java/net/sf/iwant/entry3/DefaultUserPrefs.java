@@ -18,8 +18,8 @@ class DefaultUserPrefs implements UserPrefs {
 
 	@Override
 	public int workerCount() {
-		// some parallelism, but not too much
-		return 2;
+		// let's play safe by default
+		return 1;
 	}
 
 }

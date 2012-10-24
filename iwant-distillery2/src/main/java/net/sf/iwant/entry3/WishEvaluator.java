@@ -20,9 +20,7 @@ public class WishEvaluator {
 
 	private final OutputStream out;
 	private final OutputStream err;
-	private final File asSomeone;
 	private final File wsRoot;
-	private final File iwantApiClasses;
 	private final Iwant iwant;
 	private final WsInfo wsInfo;
 	private final Ctx ctx;
@@ -30,14 +28,12 @@ public class WishEvaluator {
 	private final Caches caches;
 	private final int workerCount;
 
-	public WishEvaluator(OutputStream out, OutputStream err, File asSomeone,
-			File wsRoot, File iwantApiClasses, Iwant iwant, WsInfo wsInfo,
-			JavaClasses wsdDefClassesTarget, Caches caches, int workerCount) {
+	public WishEvaluator(OutputStream out, OutputStream err, File wsRoot,
+			Iwant iwant, WsInfo wsInfo, JavaClasses wsdDefClassesTarget,
+			Caches caches, int workerCount) {
 		this.out = out;
 		this.err = err;
-		this.asSomeone = asSomeone;
 		this.wsRoot = wsRoot;
-		this.iwantApiClasses = iwantApiClasses;
 		this.iwant = iwant;
 		this.wsInfo = wsInfo;
 		this.wsdDefClassesTarget = wsdDefClassesTarget;
@@ -153,16 +149,6 @@ public class WishEvaluator {
 		@Override
 		public File cached(Path path) {
 			return caches.contentOf(path);
-		}
-
-		@Override
-		public File asSomeone() {
-			return asSomeone;
-		}
-
-		@Override
-		public File iwantApiClasses() {
-			return iwantApiClasses;
 		}
 
 		@Override
