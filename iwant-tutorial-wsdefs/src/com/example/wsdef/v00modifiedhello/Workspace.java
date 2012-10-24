@@ -14,7 +14,11 @@ public class Workspace implements IwantWorkspace {
 	@Override
 	public List<? extends Target> targets() {
 		return Arrays.asList(new HelloTarget("hello", "hello from iwant"),
-				new HelloTarget("hello2", "another target"));
+				hello2());
+	}
+
+	private static Target hello2() {
+		return new HelloTarget("hello2", "another target");
 	}
 
 	@Override

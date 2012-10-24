@@ -43,13 +43,19 @@ cmde "0" "as-distillery-developer/with/bash/iwant/target/hello2/as-path"
 cmde "0" 'cat ""$(as-distillery-developer/with/bash/iwant/target/hello2/as-path)'
 
 p "Next we add downloaded classes to be used in the workspace definition."
-wsdefdef-edit v00antjar
+wsdefdef-edit v00commonsmathjar
 
 p "TODO: document regenerating eclipse settings and refresing Eclipse."
 
-p "Now we can use ant classes in the workspace definition."
-wsdef-edit v01antjar
+p "Now we can use commons-math in the workspace definition."
+wsdef-edit v01commonsmathjar
 cmde "0 0" "as-distillery-developer/with/bash/iwant/target/hello2/as-path | xargs cat "
+
+p "Let's write another target using ant, downloaded from ibiblio.org. The ant script refers to another target."
+
+wsdef-edit v02antgeneratedtarget
+cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
+cmde "0 0" "as-distillery-developer/with/bash/iwant/target/antGenerated/as-path | xargs cat "
 
 }
 

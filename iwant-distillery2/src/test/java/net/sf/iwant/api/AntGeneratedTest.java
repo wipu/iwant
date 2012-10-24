@@ -70,12 +70,14 @@ public class AntGeneratedTest extends TestCase {
 		return err.toString();
 	}
 
-	private static URL ibiblioUrl(String group, String name, String version) {
-		return Iwant.url("http://mirrors.ibiblio.org/maven2/" + group + "/"
-				+ name + "/" + version + "/" + name + "-" + version + ".jar");
+	private static void assertContains(String full, String fragment) {
+		if (!full.contains(fragment)) {
+			assertEquals("Should contain:\n" + fragment, full);
+		}
 	}
 
-	private static Path downloaded(URL url) throws IOException {
+	private static Path downloaded(Downloaded downloaded) throws IOException {
+		URL url = downloaded.url();
 		Iwant iwant = Iwant.usingRealNetwork();
 		iwant.downloaded(url);
 		return new ExternalSource(iwant.network().cacheLocation(
@@ -83,11 +85,13 @@ public class AntGeneratedTest extends TestCase {
 	}
 
 	private static Path antJar() throws IOException {
-		return downloaded(ibiblioUrl("org/apache/ant", "ant", ANT_VER));
+		return downloaded(FromRepository.ibiblio().group("org/apache/ant")
+				.name("ant").version(ANT_VER));
 	}
 
 	private static Path antLauncherJar() throws IOException {
-		return downloaded(ibiblioUrl("org/apache/ant", "ant-launcher", ANT_VER));
+		return downloaded(FromRepository.ibiblio().group("org/apache/ant")
+				.name("ant-launcher").version(ANT_VER));
 	}
 
 	public void testContentDescriptor() throws IOException {
@@ -143,7 +147,7 @@ public class AntGeneratedTest extends TestCase {
 		antGen.path(ctx);
 
 		assertEquals("", out());
-		assertTrue(err().contains("hello message"));
+		assertContains(err(), "hello message");
 	}
 
 	public void testMinimalFail() throws Exception {
@@ -167,7 +171,58 @@ public class AntGeneratedTest extends TestCase {
 		}
 
 		assertEquals("", out());
-		assertTrue(err().contains("fail message"));
+		assertContains(err(), "fail message");
+	}
+
+	public void testEchoIwantOutFileProperty() throws Exception {
+		ConcatenatedBuilder scriptContent = Concatenated.named("script");
+		scriptContent.string("<project name='hello' default='hello'>\n");
+		scriptContent.string("  <target name='hello'>\n");
+		scriptContent.string("    <echo message='((${iwant-outfile}))'/>\n");
+		scriptContent.string("  </target>\n");
+		scriptContent.string("</project>\n");
+		Concatenated script = scriptContent.end();
+		script.path(ctx);
+
+		AntGenerated antGen = AntGenerated.with().name("ant")
+				.antJars(antJar(), antLauncherJar()).script(script).end();
+		antGen.path(ctx);
+
+		assertEquals("", out());
+		assertContains(err(), "((" + cacheDir + "/ant))");
+	}
+
+	public void testFileGeneratingScriptWithIngredients() throws Exception {
+		HelloTarget ingredient1 = new HelloTarget("ingredient1",
+				"ingredient1 content");
+		ingredient1.path(ctx);
+		HelloTarget ingredient2 = new HelloTarget("ingredient2",
+				"ingredient2 content");
+		ingredient2.path(ctx);
+
+		ConcatenatedBuilder scriptContent = Concatenated.named("script");
+		scriptContent.string("<project name='hello' default='hello'>\n");
+		scriptContent.string("  <target name='hello'>\n");
+		scriptContent.string("    <copy file='").pathTo(ingredient1)
+				.string("' tofile='${iwant-outfile}'/>\n");
+		scriptContent
+				.string("    <echo file='${iwant-outfile}' append='true'"
+						+ " message=' appended with ").contentOf(ingredient2)
+				.string("'/>\n");
+		scriptContent.string("  </target>\n");
+		scriptContent.string("</project>\n");
+		Concatenated script = scriptContent.end();
+		script.path(ctx);
+
+		AntGenerated antGen = AntGenerated.with().name("ant")
+				.antJars(antJar(), antLauncherJar()).script(script).end();
+		antGen.path(ctx);
+
+		assertEquals("", out());
+		assertContains(err(), "[copy]");
+
+		assertEquals("ingredient1 content appended with ingredient2 content",
+				testArea.contentOf(new File(cacheDir, "ant")));
 	}
 
 }

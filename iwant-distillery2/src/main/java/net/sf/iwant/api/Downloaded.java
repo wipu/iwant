@@ -11,10 +11,12 @@ import net.sf.iwant.entry.Iwant;
 public class Downloaded extends Target {
 
 	private final URL url;
+	private final String md5;
 
-	private Downloaded(String name, URL url) {
+	private Downloaded(String name, URL url, String md5) {
 		super(name);
 		this.url = url;
+		this.md5 = md5;
 	}
 
 	public static DownloadedSpex withName(String name) {
@@ -35,9 +37,8 @@ public class Downloaded extends Target {
 			return this;
 		}
 
-		public Downloaded md5(@SuppressWarnings("unused") String md5) {
-			// TODO pass md5 for verification
-			return new Downloaded(name, Iwant.url(url));
+		public Downloaded md5(String md5) {
+			return new Downloaded(name, Iwant.url(url), md5);
 		}
 
 	}
@@ -50,6 +51,7 @@ public class Downloaded extends Target {
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
+		// TODO pass md5 for verification
 		ctx.iwant().downloaded(url, ctx.cached(this));
 	}
 
@@ -70,6 +72,14 @@ public class Downloaded extends Target {
 		b.append("  url:" + url).append("\n");
 		b.append("}\n");
 		return b.toString();
+	}
+
+	public URL url() {
+		return url;
+	}
+
+	public String md5() {
+		return md5;
 	}
 
 }

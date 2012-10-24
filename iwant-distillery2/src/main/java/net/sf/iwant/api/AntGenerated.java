@@ -70,7 +70,7 @@ public class AntGenerated extends Target {
 		String cachedScript = ctx.cached(script).getAbsolutePath();
 		try {
 			Iwant.runJavaMain(true, false, className, cachedJars, "-f",
-					cachedScript);
+					cachedScript, "-Diwant-outfile=" + ctx.cached(this));
 		} catch (InvocationTargetException e) {
 			if (e.getCause() instanceof ExitCalledException) {
 				ExitCalledException ece = (ExitCalledException) e.getCause();

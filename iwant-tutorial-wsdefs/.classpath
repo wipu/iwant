@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/iwant-distillery2"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/wipu/.net.sf.iwant/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/org/apache/ant/ant/1.7.1/ant-1.7.1.jar"/>
+	<classpathentry kind="lib" path="/home/wipu/.net.sf.iwant/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/commons-math/commons-math/1.2/commons-math-1.2.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

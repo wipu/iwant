@@ -33,8 +33,6 @@ P<img width="0" />l<img width="0" />e<img width="0" />a<img width="0" />s<img wi
 <div class='console'><span class='prompt'>~<img width="0" /> $ </span><span class='cmd'>a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />w<img width="0" />i<img width="0" />t<img width="0" />h<img width="0" />/<img width="0" />b<img width="0" />a<img width="0" />s<img width="0" />h<img width="0" />/<img width="0" />i<img width="0" />w<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />/<img width="0" />h<img width="0" />e<img width="0" />l<img width="0" />p<img width="0" />.<img width="0" />s<img width="0" />h<img width="0" /> <img width="0" />2<img width="0" />><img width="0" />&amp;1<img width="0" />
 </span></div>
 <div class='console output'>:<img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" />s<img width="0" />v<img width="0" />n<img width="0" />-<img width="0" />e<img width="0" />x<img width="0" />p<img width="0" />o<img width="0" />r<img width="0" />t<img width="0" />e<img width="0" />d<img width="0" /> <img width="0" />-<img width="0" />><img width="0" /> <img width="0" />i<img width="0" />w<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" /><br/>
-:<img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" />c<img width="0" />o<img width="0" />m<img width="0" />p<img width="0" />i<img width="0" />l<img width="0" />e<img width="0" />d<img width="0" /> <img width="0" />-<img width="0" />><img width="0" /> <img width="0" />i<img width="0" />w<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" /><br/>
-:<img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" />s<img width="0" />e<img width="0" />l<img width="0" />f<img width="0" />-<img width="0" />t<img width="0" />e<img width="0" />s<img width="0" />t<img width="0" />e<img width="0" />d<img width="0" /> <img width="0" />-<img width="0" />><img width="0" /> <img width="0" />i<img width="0" />w<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" /><br/>
 I<img width="0" /> <img width="0" />c<img width="0" />r<img width="0" />e<img width="0" />a<img width="0" />t<img width="0" />e<img width="0" />d<img width="0" /> <img width="0" />/<img width="0" />h<img width="0" />o<img width="0" />m<img width="0" />e<img width="0" />/<img width="0" />h<img width="0" />a<img width="0" />c<img width="0" />k<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />i<img width="0" />-<img width="0" />h<img width="0" />a<img width="0" />v<img width="0" />e<img width="0" />/<img width="0" />w<img width="0" />s<img width="0" />-<img width="0" />i<img width="0" />n<img width="0" />f<img width="0" />o<img width="0" /><br/>
 P<img width="0" />l<img width="0" />e<img width="0" />a<img width="0" />s<img width="0" />e<img width="0" /> <img width="0" />e<img width="0" />d<img width="0" />i<img width="0" />t<img width="0" /> <img width="0" />i<img width="0" />t<img width="0" /> <img width="0" />a<img width="0" />n<img width="0" />d<img width="0" /> <img width="0" />r<img width="0" />e<img width="0" />r<img width="0" />u<img width="0" />n<img width="0" /> <img width="0" />m<img width="0" />e<img width="0" />.<img width="0" />
 </div>
@@ -149,7 +147,11 @@ Now we can import the project to eclipse (don't copy it to the workspace!) and t
 <div class='keep line'>	public List&lt;? extends Target> targets() {</div>
 <div class='del line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant"));</div>
 <div class='add line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant"),</div>
-<div class='add line'>				new HelloTarget("hello2", "another target"));</div>
+<div class='add line'>				hello2());</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private static Target hello2() {</div>
+<div class='add line'>		return new HelloTarget("hello2", "another target");</div>
 <div class='keep line'>	}</div>
 <div class='keep line'></div>
 <div class='keep line'>	@Override</div>
@@ -198,7 +200,7 @@ Next we add downloaded classes to be used in the workspace definition.
 <div class='keep line'>	public JavaClasses workspaceClasses(Path iwantApiClasses) {</div>
 <div class='keep line'>		return new JavaClasses("workspaceClasses", workspaceSrc(),</div>
 <div class='del line'>				Arrays.asList(iwantApiClasses));</div>
-<div class='add line'>				Arrays.asList(iwantApiClasses, antJar()));</div>
+<div class='add line'>				Arrays.asList(iwantApiClasses, commonsMathJar()));</div>
 <div class='keep line'>	}</div>
 <div class='keep line'></div>
 <div class='keep line'>	private static Source workspaceSrc() {</div>
@@ -212,13 +214,13 @@ Next we add downloaded classes to be used in the workspace definition.
 <div class='keep line'>		return "com.example.wsdef.Workspace";</div>
 <div class='keep line'>	}</div>
 <div class='keep line'></div>
-<div class='add line'>	private static Target antJar() {</div>
-<div class='add line'>		final String v = "1.7.1";</div>
+<div class='add line'>	private static Target commonsMathJar() {</div>
+<div class='add line'>		final String v = "1.2";</div>
 <div class='add line'>		return Downloaded</div>
 <div class='add line'>				.withName("antJar")</div>
-<div class='add line'>				.url("http://mirrors.ibiblio.org/maven2/org/apache/ant/ant/"</div>
-<div class='add line'>						+ v + "/ant-" + v + ".jar")</div>
-<div class='add line'>				.md5("ef62988c744551fb51f330eaa311bfc0");</div>
+<div class='add line'>				.url("http://mirrors.ibiblio.org/maven2/commons-math/commons-math/"</div>
+<div class='add line'>						+ v + "/commons-math-" + v + ".jar")</div>
+<div class='add line'>				.md5("5d3ce091a67e863549de4493e19df069");</div>
 <div class='add line'>	}</div>
 <div class='add line'></div>
 <div class='keep line'>}</div>
@@ -227,7 +229,7 @@ Next we add downloaded classes to be used in the workspace definition.
 TODO: document regenerating eclipse settings and refresing Eclipse.
 </p>
 <p class='text'>
-Now we can use ant classes in the workspace definition.
+Now we can use commons-math in the workspace definition.
 </p>
 <div class='console'><span class='prompt'>~<img width="0" /> $ </span><span class='cmd'>$<img width="0" />E<img width="0" />D<img width="0" />I<img width="0" />T<img width="0" />O<img width="0" />R<img width="0" /> <img width="0" />"<img width="0" />a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />i<img width="0" />-<img width="0" />h<img width="0" />a<img width="0" />v<img width="0" />e<img width="0" />/<img width="0" />w<img width="0" />s<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />/<img width="0" />c<img width="0" />o<img width="0" />m<img width="0" />/<img width="0" />e<img width="0" />x<img width="0" />a<img width="0" />m<img width="0" />p<img width="0" />l<img width="0" />e<img width="0" />/<img width="0" />w<img width="0" />s<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />/<img width="0" />W<img width="0" />o<img width="0" />r<img width="0" />k<img width="0" />s<img width="0" />p<img width="0" />a<img width="0" />c<img width="0" />e<img width="0" />.<img width="0" />j<img width="0" />a<img width="0" />v<img width="0" />a<img width="0" />"<img width="0" />
 </span></div>
@@ -243,16 +245,20 @@ Now we can use ant classes in the workspace definition.
 <div class='keep line'>import net.sf.iwant.api.SideEffect;</div>
 <div class='keep line'>import net.sf.iwant.api.Target;</div>
 <div class='keep line'></div>
-<div class='add line'>import org.apache.tools.ant.taskdefs.Echo;</div>
+<div class='add line'>import org.apache.commons.math.fraction.Fraction;</div>
 <div class='add line'></div>
 <div class='keep line'>public class Workspace implements IwantWorkspace {</div>
 <div class='keep line'></div>
 <div class='keep line'>	@Override</div>
 <div class='keep line'>	public List&lt;? extends Target> targets() {</div>
 <div class='keep line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant"),</div>
-<div class='del line'>				new HelloTarget("hello2", "another target"));</div>
-<div class='add line'>				new HelloTarget("hello2", new Echo().getClass()</div>
-<div class='add line'>						.getCanonicalName()));</div>
+<div class='keep line'>				hello2());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	private static Target hello2() {</div>
+<div class='del line'>		return new HelloTarget("hello2", "another target");</div>
+<div class='add line'>		return new HelloTarget("hello2", "1/2 + 2/4 = "</div>
+<div class='add line'>				+ new Fraction(1, 2).add(new Fraction(2, 4)).intValue());</div>
 <div class='keep line'>	}</div>
 <div class='keep line'></div>
 <div class='keep line'>	@Override</div>
@@ -268,6 +274,102 @@ Now we can use ant classes in the workspace definition.
 <div class='console output'>(<img width="0" />0<img width="0" /> <img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />J<img width="0" />a<img width="0" />r<img width="0" />)<img width="0" /><br/>
 (<img width="0" />0<img width="0" /> <img width="0" />w<img width="0" />o<img width="0" />r<img width="0" />k<img width="0" />s<img width="0" />p<img width="0" />a<img width="0" />c<img width="0" />e<img width="0" />C<img width="0" />l<img width="0" />a<img width="0" />s<img width="0" />s<img width="0" />e<img width="0" />s<img width="0" />)<img width="0" /><br/>
 (<img width="0" />0<img width="0" /> <img width="0" />h<img width="0" />e<img width="0" />l<img width="0" />l<img width="0" />o<img width="0" />2<img width="0" />)<img width="0" /><br/>
-o<img width="0" />r<img width="0" />g<img width="0" />.<img width="0" />a<img width="0" />p<img width="0" />a<img width="0" />c<img width="0" />h<img width="0" />e<img width="0" />.<img width="0" />t<img width="0" />o<img width="0" />o<img width="0" />l<img width="0" />s<img width="0" />.<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />.<img width="0" />t<img width="0" />a<img width="0" />s<img width="0" />k<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />s<img width="0" />.<img width="0" />E<img width="0" />c<img width="0" />h<img width="0" />o<img width="0" /></div>
+1<img width="0" />/<img width="0" />2<img width="0" /> <img width="0" />+<img width="0" /> <img width="0" />2<img width="0" />/<img width="0" />4<img width="0" /> <img width="0" />=<img width="0" /> <img width="0" />1<img width="0" /></div>
+<p class='text'>
+Let's write another target using ant, downloaded from ibiblio.org. The ant script refers to another target.
+</p>
+<div class='console'><span class='prompt'>~<img width="0" /> $ </span><span class='cmd'>$<img width="0" />E<img width="0" />D<img width="0" />I<img width="0" />T<img width="0" />O<img width="0" />R<img width="0" /> <img width="0" />"<img width="0" />a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />i<img width="0" />-<img width="0" />h<img width="0" />a<img width="0" />v<img width="0" />e<img width="0" />/<img width="0" />w<img width="0" />s<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />/<img width="0" />c<img width="0" />o<img width="0" />m<img width="0" />/<img width="0" />e<img width="0" />x<img width="0" />a<img width="0" />m<img width="0" />p<img width="0" />l<img width="0" />e<img width="0" />/<img width="0" />w<img width="0" />s<img width="0" />d<img width="0" />e<img width="0" />f<img width="0" />/<img width="0" />W<img width="0" />o<img width="0" />r<img width="0" />k<img width="0" />s<img width="0" />p<img width="0" />a<img width="0" />c<img width="0" />e<img width="0" />.<img width="0" />j<img width="0" />a<img width="0" />v<img width="0" />a<img width="0" />"<img width="0" />
+</span></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='add line'>import net.sf.iwant.api.AntGenerated;</div>
+<div class='add line'>import net.sf.iwant.api.Concatenated;</div>
+<div class='add line'>import net.sf.iwant.api.Concatenated.ConcatenatedBuilder;</div>
+<div class='keep line'>import net.sf.iwant.api.EclipseSettings;</div>
+<div class='add line'>import net.sf.iwant.api.FromRepository;</div>
+<div class='keep line'>import net.sf.iwant.api.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.IwantWorkspace;</div>
+<div class='keep line'>import net.sf.iwant.api.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.Target;</div>
+<div class='keep line'></div>
+<div class='keep line'>import org.apache.commons.math.fraction.Fraction;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class Workspace implements IwantWorkspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets() {</div>
+<div class='keep line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant"),</div>
+<div class='del line'>				hello2());</div>
+<div class='add line'>				hello2(), antGenerated());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	private static Target hello2() {</div>
+<div class='keep line'>		return new HelloTarget("hello2", "1/2 + 2/4 = "</div>
+<div class='keep line'>				+ new Fraction(1, 2).add(new Fraction(2, 4)).intValue());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='add line'>	private static Target antScript() {</div>
+<div class='add line'>		ConcatenatedBuilder scriptContent = Concatenated.named("script");</div>
+<div class='add line'>		scriptContent.string("&lt;project name='hello' default='hello'>\n");</div>
+<div class='add line'>		scriptContent.string("  &lt;target name='hello'>\n");</div>
+<div class='add line'>		scriptContent</div>
+<div class='add line'>				.string("    &lt;echo message='Refreshing ${iwant-outfile}'/>\n");</div>
+<div class='add line'>		scriptContent.string("    &lt;copy file='").pathTo(hello2())</div>
+<div class='add line'>				.string("' tofile='${iwant-outfile}'/>\n");</div>
+<div class='add line'>		scriptContent.string("    &lt;echo file='${iwant-outfile}' append='true'"</div>
+<div class='add line'>				+ " message=' appended by ant.'/>\n");</div>
+<div class='add line'>		scriptContent.string("  &lt;/target>\n");</div>
+<div class='add line'>		scriptContent.string("&lt;/project>\n");</div>
+<div class='add line'>		return scriptContent.end();</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private static Target antGenerated() {</div>
+<div class='add line'>		final String antGroup = "org/apache/ant";</div>
+<div class='add line'>		final String antVersion = "1.7.1";</div>
+<div class='add line'>		return AntGenerated</div>
+<div class='add line'>				.with()</div>
+<div class='add line'>				.name("antGenerated")</div>
+<div class='add line'>				.antJars(</div>
+<div class='add line'>						FromRepository.ibiblio().group(antGroup).name("ant")</div>
+<div class='add line'>								.version(antVersion),</div>
+<div class='add line'>						FromRepository.ibiblio().group(antGroup)</div>
+<div class='add line'>								.name("ant-launcher").version(antVersion))</div>
+<div class='add line'>				.script(antScript()).end();</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects() {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><span class='prompt'>~<img width="0" /> $ </span><span class='cmd'>a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />w<img width="0" />i<img width="0" />t<img width="0" />h<img width="0" />/<img width="0" />b<img width="0" />a<img width="0" />s<img width="0" />h<img width="0" />/<img width="0" />i<img width="0" />w<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />/<img width="0" />l<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />-<img width="0" />o<img width="0" />f<img width="0" />/<img width="0" />t<img width="0" />a<img width="0" />r<img width="0" />g<img width="0" />e<img width="0" />t<img width="0" />s<img width="0" />
+</span></div>
+<div class='console output'>(<img width="0" />0<img width="0" /> <img width="0" />w<img width="0" />o<img width="0" />r<img width="0" />k<img width="0" />s<img width="0" />p<img width="0" />a<img width="0" />c<img width="0" />e<img width="0" />C<img width="0" />l<img width="0" />a<img width="0" />s<img width="0" />s<img width="0" />e<img width="0" />s<img width="0" />)<img width="0" /><br/>
+h<img width="0" />e<img width="0" />l<img width="0" />l<img width="0" />o<img width="0" /><br/>
+h<img width="0" />e<img width="0" />l<img width="0" />l<img width="0" />o<img width="0" />2<img width="0" /><br/>
+a<img width="0" />n<img width="0" />t<img width="0" />G<img width="0" />e<img width="0" />n<img width="0" />e<img width="0" />r<img width="0" />a<img width="0" />t<img width="0" />e<img width="0" />d<img width="0" />
+</div>
+<div class='console'><span class='prompt'>~<img width="0" /> $ </span><span class='cmd'>a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />w<img width="0" />i<img width="0" />t<img width="0" />h<img width="0" />/<img width="0" />b<img width="0" />a<img width="0" />s<img width="0" />h<img width="0" />/<img width="0" />i<img width="0" />w<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />/<img width="0" />t<img width="0" />a<img width="0" />r<img width="0" />g<img width="0" />e<img width="0" />t<img width="0" />/<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />G<img width="0" />e<img width="0" />n<img width="0" />e<img width="0" />r<img width="0" />a<img width="0" />t<img width="0" />e<img width="0" />d<img width="0" />/<img width="0" />a<img width="0" />s<img width="0" />-<img width="0" />p<img width="0" />a<img width="0" />t<img width="0" />h<img width="0" /> <img width="0" />|<img width="0" /> <img width="0" />x<img width="0" />a<img width="0" />r<img width="0" />g<img width="0" />s<img width="0" /> <img width="0" />c<img width="0" />a<img width="0" />t<img width="0" /> <img width="0" />
+</span></div>
+<div class='console output'>(<img width="0" />0<img width="0" /> <img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />-<img width="0" />1<img width="0" />.<img width="0" />7<img width="0" />.<img width="0" />1<img width="0" />)<img width="0" /><br/>
+(<img width="0" />0<img width="0" /> <img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />-<img width="0" />l<img width="0" />a<img width="0" />u<img width="0" />n<img width="0" />c<img width="0" />h<img width="0" />e<img width="0" />r<img width="0" />-<img width="0" />1<img width="0" />.<img width="0" />7<img width="0" />.<img width="0" />1<img width="0" />)<img width="0" /><br/>
+(<img width="0" />0<img width="0" /> <img width="0" />s<img width="0" />c<img width="0" />r<img width="0" />i<img width="0" />p<img width="0" />t<img width="0" />)<img width="0" /><br/>
+(<img width="0" />0<img width="0" /> <img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />G<img width="0" />e<img width="0" />n<img width="0" />e<img width="0" />r<img width="0" />a<img width="0" />t<img width="0" />e<img width="0" />d<img width="0" />)<img width="0" /><br/>
+B<img width="0" />u<img width="0" />i<img width="0" />l<img width="0" />d<img width="0" />f<img width="0" />i<img width="0" />l<img width="0" />e<img width="0" />:<img width="0" /> <img width="0" />/<img width="0" />h<img width="0" />o<img width="0" />m<img width="0" />e<img width="0" />/<img width="0" />h<img width="0" />a<img width="0" />c<img width="0" />k<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />.<img width="0" />i<img width="0" />-<img width="0" />c<img width="0" />a<img width="0" />c<img width="0" />h<img width="0" />e<img width="0" />d<img width="0" />/<img width="0" />t<img width="0" />a<img width="0" />r<img width="0" />g<img width="0" />e<img width="0" />t<img width="0" />/<img width="0" />s<img width="0" />c<img width="0" />r<img width="0" />i<img width="0" />p<img width="0" />t<img width="0" /><br/>
+<br/>
+h<img width="0" />e<img width="0" />l<img width="0" />l<img width="0" />o<img width="0" />:<img width="0" /><br/>
+ <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" />[<img width="0" />e<img width="0" />c<img width="0" />h<img width="0" />o<img width="0" />]<img width="0" /> <img width="0" />R<img width="0" />e<img width="0" />f<img width="0" />r<img width="0" />e<img width="0" />s<img width="0" />h<img width="0" />i<img width="0" />n<img width="0" />g<img width="0" /> <img width="0" />/<img width="0" />h<img width="0" />o<img width="0" />m<img width="0" />e<img width="0" />/<img width="0" />h<img width="0" />a<img width="0" />c<img width="0" />k<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />.<img width="0" />i<img width="0" />-<img width="0" />c<img width="0" />a<img width="0" />c<img width="0" />h<img width="0" />e<img width="0" />d<img width="0" />/<img width="0" />t<img width="0" />a<img width="0" />r<img width="0" />g<img width="0" />e<img width="0" />t<img width="0" />/<img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />G<img width="0" />e<img width="0" />n<img width="0" />e<img width="0" />r<img width="0" />a<img width="0" />t<img width="0" />e<img width="0" />d<img width="0" /><br/>
+ <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" /> <img width="0" />[<img width="0" />c<img width="0" />o<img width="0" />p<img width="0" />y<img width="0" />]<img width="0" /> <img width="0" />C<img width="0" />o<img width="0" />p<img width="0" />y<img width="0" />i<img width="0" />n<img width="0" />g<img width="0" /> <img width="0" />1<img width="0" /> <img width="0" />f<img width="0" />i<img width="0" />l<img width="0" />e<img width="0" /> <img width="0" />t<img width="0" />o<img width="0" /> <img width="0" />/<img width="0" />h<img width="0" />o<img width="0" />m<img width="0" />e<img width="0" />/<img width="0" />h<img width="0" />a<img width="0" />c<img width="0" />k<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />a<img width="0" />s<img width="0" />-<img width="0" />d<img width="0" />i<img width="0" />s<img width="0" />t<img width="0" />i<img width="0" />l<img width="0" />l<img width="0" />e<img width="0" />r<img width="0" />y<img width="0" />-<img width="0" />d<img width="0" />e<img width="0" />v<img width="0" />e<img width="0" />l<img width="0" />o<img width="0" />p<img width="0" />e<img width="0" />r<img width="0" />/<img width="0" />.<img width="0" />i<img width="0" />-<img width="0" />c<img width="0" />a<img width="0" />c<img width="0" />h<img width="0" />e<img width="0" />d<img width="0" />/<img width="0" />t<img width="0" />a<img width="0" />r<img width="0" />g<img width="0" />e<img width="0" />t<img width="0" /><br/>
+<br/>
+B<img width="0" />U<img width="0" />I<img width="0" />L<img width="0" />D<img width="0" /> <img width="0" />S<img width="0" />U<img width="0" />C<img width="0" />C<img width="0" />E<img width="0" />S<img width="0" />S<img width="0" />F<img width="0" />U<img width="0" />L<img width="0" /><br/>
+T<img width="0" />o<img width="0" />t<img width="0" />a<img width="0" />l<img width="0" /> <img width="0" />t<img width="0" />i<img width="0" />m<img width="0" />e<img width="0" />:<img width="0" /> <img width="0" />0<img width="0" /> <img width="0" />s<img width="0" />e<img width="0" />c<img width="0" />o<img width="0" />n<img width="0" />d<img width="0" />s<img width="0" /><br/>
+1<img width="0" />/<img width="0" />2<img width="0" /> <img width="0" />+<img width="0" /> <img width="0" />2<img width="0" />/<img width="0" />4<img width="0" /> <img width="0" />=<img width="0" /> <img width="0" />1<img width="0" /> <img width="0" />a<img width="0" />p<img width="0" />p<img width="0" />e<img width="0" />n<img width="0" />d<img width="0" />e<img width="0" />d<img width="0" /> <img width="0" />b<img width="0" />y<img width="0" /> <img width="0" />a<img width="0" />n<img width="0" />t<img width="0" />.<img width="0" /></div>
 </body>
 </html>
