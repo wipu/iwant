@@ -281,9 +281,15 @@
     + then demonstrate file-generating hello ant
       + script refers to hello2 so extract method in all versions of the wsdef
 
++ As @buildscriptauthor I want an easy way to refer to a certain version of ant.jar from ibiblio so I can easily pick public dependencies
+  * was implemented in the AntGenerated story as FromRepository
+
 #################################################################
 = In progress
 #################################################################
+
+- @bugfix As @buildscriptuser I want iwant to generate wish scripts even when I only have the help.sh wish available, after having checked out the ws
+  * Iwant3 doesn't refresh wish scripts, if help.sh is called when wsdef java already exists
 
 #################################################################
 = Planned
@@ -294,8 +300,6 @@
 
 - As @buildscriptuser I want iwant to fail if I try to run it several times in parallel for the same workspace so it doesn't corrupt anything
   * locking, also mention lock location in case a run failed to delete it
-
-- As @buildscriptauthor I want an easy way to refer to a certain version of ant.jar from ibiblio so I can easily pick public dependencies
 
 - As @buildscriptuser I want to declare worker count once for my OS user so I don't need to create and maintain ws-specific files
 
@@ -366,9 +370,6 @@
 
 - As @developer I want cached content descriptor logic behind an interface and use real impl only in one integration test that just tests features here and there, mock in current tests.
   * also, do the same to cached content and maybe other file functionality
-
-- @bugfix As @buildscriptuser I want iwant to generate wish scripts even when I only have the help.sh wish available, after having checked out the ws
-  * Iwant3 doesn't refresh wish scripts, if help.sh is called when wsdef java already exists
 
 - As @buildscriptauthor I want the eclipse-settings side-effect to generate settings for other projects, not only as-someone
   * here we need to fix the many hardcoded values
