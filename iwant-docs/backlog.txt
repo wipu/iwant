@@ -284,12 +284,13 @@
 + As @buildscriptauthor I want an easy way to refer to a certain version of ant.jar from ibiblio so I can easily pick public dependencies
   * was implemented in the AntGenerated story as FromRepository
 
++ @bugfix As @buildscriptuser I want iwant to generate wish scripts even when I only have the help.sh wish available, after having checked out the ws
+  * Iwant3 doesn't refresh wish scripts, if help.sh is called when wsdef java already exists
+  * this is the case after checking out a workspace
+
 #################################################################
 = In progress
 #################################################################
-
-- @bugfix As @buildscriptuser I want iwant to generate wish scripts even when I only have the help.sh wish available, after having checked out the ws
-  * Iwant3 doesn't refresh wish scripts, if help.sh is called when wsdef java already exists
 
 #################################################################
 = Planned
@@ -297,6 +298,10 @@
 
 - As @javaprogrammer I want to just put iwant in my classpath and use it with minimal code from my java code without setting up the full directory structure and bootstrapping so I can utilize its features in my program
   * useful in iwant's own tests
+
+- As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
+  * don't split before deleting old code, otherwise it's difficult to see what is dead
+  - after split, take WsRootFinder and ExampleWsDefGenerator into use in Iwant3Test
 
 - As @buildscriptuser I want iwant to fail if I try to run it several times in parallel for the same workspace so it doesn't corrupt anything
   * locking, also mention lock location in case a run failed to delete it

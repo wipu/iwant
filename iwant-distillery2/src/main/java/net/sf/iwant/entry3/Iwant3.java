@@ -58,11 +58,6 @@ public class Iwant3 {
 			throw createExampleWsdefdefAndWsdef(asSomeone, iHave, wsInfo);
 		}
 		UserPrefs userPrefs = parseUserPrefs(iHave);
-		if (args.length == 0) {
-			throw new IwantException("(Using " + userPrefs + ")\nTry "
-					+ new File(asSomeone, "with/bash/iwant/list-of/targets"));
-		}
-		String wish = args[0];
 
 		CachesImpl caches = new CachesImpl(asSomeone, wsInfo.wsRoot(),
 				iwant.network());
@@ -103,6 +98,15 @@ public class Iwant3 {
 							wsdDefClassesTarget, wsDefdefClasses, wsDefClasses));
 			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
 			refreshWishScripts(asSomeone, wsDef);
+			if (args.length == 0) {
+				throw new IwantException(
+						"(Using "
+								+ userPrefs
+								+ ")\nTry "
+								+ new File(asSomeone,
+										"with/bash/iwant/list-of/targets"));
+			}
+			String wish = args[0];
 			wishEvaluator.iwant(wish, wsDef);
 		} catch (RuntimeException e) {
 			throw e;

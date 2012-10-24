@@ -274,6 +274,44 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", errIgnoringDebugLog());
 	}
 
+	/**
+	 * This is the situation after checking out the workspace from
+	 * version-control where the original author commited it after generating
+	 * with the iwant wizard.
+	 */
+	public void testEmptyWishCreatesWishScriptsEvenWhenWsdefdefAndWsdefExist()
+			throws Exception {
+		testArea.hasFile("as-test/i-have/ws-info", "WSNAME=example\n"
+				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdefdef\n"
+				+ "WSDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
+		testArea.hasFile(
+				"as-test/i-have/wsdefdef/com/example/wsdefdef/ExampleWsProvider.java",
+				exampleWsProvider());
+		testArea.hasFile(
+				"as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java",
+				modifiedExampleWsDef());
+
+		try {
+			iwant3.evaluate(asTest);
+			fail();
+		} catch (IwantException e) {
+			assertEquals("(Using default user preferences (file " + asTest
+					+ "/i-have/user-preferences is missing):\n"
+					+ "[workerCount=2])\n" + "Try " + asTest
+					+ "/with/bash/iwant/list-of/targets", e.getMessage());
+		}
+
+		assertEquals("", out());
+
+		assertTrue(new File(testArea.root(),
+				"as-test/with/bash/iwant/list-of/targets").exists());
+		assertTrue(new File(testArea.root(),
+				"as-test/with/bash/iwant/target/hello2/as-path").exists());
+		assertTrue(new File(testArea.root(),
+				"as-test/with/bash/iwant/target/modified-hello/as-path")
+				.exists());
+	}
+
 	public void testListOfTargetsOfModifiedWsDefAlsoCreatesWishScripts()
 			throws Exception {
 		testListOfTargetsOfModifiedWsDef();
