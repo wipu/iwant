@@ -1,29 +1,50 @@
 doc() {
+
+html "<h1>iwant tutorial</h1>"
+
+section "Acquiring iwant bootstrapper by exporting from svn"
+
 LOCAL_IWANT_WSROOT=$(readlink -f "$IWANT_DISTILLERY/..")
-svn export "$IWANT_DISTILLERY/as-some-developer" as-distillery-developer
+cmd svn export "$IWANT_DISTILLERY/as-some-developer" as-distillery-developer
 cmd 'find . -type f'
+
+section "Choosing url for iwant to use as engine"
+
 cmde 1 'as-distillery-developer/with/bash/iwant/help.sh'
 edit as-distillery-developer/i-have/iwant-from "local-iwant-from" <<EOF
 iwant-from=file://$LOCAL_IWANT_WSROOT
-EOF
-cmde "1" "as-distillery-developer/with/bash/iwant/help.sh 2>&1"
-cmd 'cat as-distillery-developer/i-have/ws-info'
-p 'An optimization for this tutorial.'
-edit as-distillery-developer/i-have/iwant-from "dont-reexport-iwant" <<EOF
-iwant-from=file://$LOCAL_IWANT_WSROOT
+# an optimization for this tutorial:
 re-export=false
 EOF
+cmde "1" "as-distillery-developer/with/bash/iwant/help.sh 2>&1"
+
+section "Defining your workspace and its build basics"
+
+p "Now we start defining our workspace and its build definition."
+
+edit as-distillery-developer/i-have/ws-info "no-changes" <<EOF
+# paths are relative to this file's directory
+WSNAME=iwant-tutorial
+WSROOT=../..
+WSDEF_SRC=wsdefdef
+WSDEF_CLASS=com.example.wsdefdef.WorkspaceProvider
+EOF
+
 cmde "1" "as-distillery-developer/with/bash/iwant/help.sh 2>&1"
 cmde "0 0" 'find as-distillery-developer -type f | grep -v ".i-cached"'
 p "End of wizard, everything is set for the final usage help message:"
 cmde "1" "as-distillery-developer/with/bash/iwant/help.sh"
 
-p "In this tutorial we'll use only one worker thread to keep the output deterministic. You should probably use bigger number, depending on your machine."
+section "Configuring the worker thread count"
+
+p "In this tutorial we'll use only one worker thread to keep the output deterministic. You should probably use a bigger number, depending on your machine."
 cmd 'echo workerCount=1 > as-distillery-developer/i-have/user-preferences'
 cmde "1" "as-distillery-developer/with/bash/iwant/help.sh"
 
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
 cmde "0" "as-distillery-developer/with/bash/iwant/target/hello/as-path"
+
+section "Using Eclipse to edit your build definition"
 
 p "Before we try editing the wsdef, we'll tell iwant to generate eclipse settings."
 
@@ -42,6 +63,8 @@ EOF
 cmde "0" "as-distillery-developer/with/bash/iwant/target/hello2/as-path"
 cmde "0" 'cat ""$(as-distillery-developer/with/bash/iwant/target/hello2/as-path)'
 
+section "Using external libraries in your build"
+
 p "Next we add downloaded classes to be used in the workspace definition."
 wsdefdef-edit v00commonsmathjar
 
@@ -50,6 +73,8 @@ p "TODO: document regenerating eclipse settings and refresing Eclipse."
 p "Now we can use commons-math in the workspace definition."
 wsdef-edit v01commonsmathjar
 cmde "0 0" "as-distillery-developer/with/bash/iwant/target/hello2/as-path | xargs cat "
+
+section "Using ant to define content for a target"
 
 p "Let's write another target using ant, downloaded from ibiblio.org. The ant script refers to another target."
 
