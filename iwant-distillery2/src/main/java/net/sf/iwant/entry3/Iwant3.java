@@ -135,7 +135,8 @@ public class Iwant3 {
 		File iwantWsRoot = WsRootFinder.wsRoot();
 		String iHaveRelativeToWsroot = FileUtil.relativePathOfFileUnderParent(
 				iHave, wsInfo.wsRoot());
-		String wsdefSrcRelativeToWsRoot = iHaveRelativeToWsroot + "/wsdef";
+		String wsdefSrcRelativeToWsRoot = iHaveRelativeToWsroot
+				+ "/wsdef/src/main/java";
 		createFile(wsInfo.wsdefdefJava(),
 				ExampleWsDefGenerator.exampleWsdefdef(iwantWsRoot,
 						wsInfo.wsdefdefPackage(),
@@ -239,7 +240,7 @@ public class Iwant3 {
 	private static void createExampleWsInfo(File wsInfo) {
 		createFile(wsInfo, "# paths are relative to this file's directory\n"
 				+ "WSNAME=example\n" + "WSROOT=../..\n"
-				+ "WSDEF_SRC=wsdefdef\n"
+				+ "WSDEF_SRC=wsdefdef/src/main/java\n"
 				+ "WSDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n");
 	}
 

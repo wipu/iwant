@@ -19,7 +19,7 @@ public class WorkspaceProvider implements IwantWorkspaceProvider {
 
 	private static Source workspaceSrc() {
 		return Source.underWsroot("as-distillery-developer/i-have/wsdef"
-				+ "/com/example/wsdef");
+				+ "/src/main/java/com/example/wsdef");
 	}
 
 	@Override

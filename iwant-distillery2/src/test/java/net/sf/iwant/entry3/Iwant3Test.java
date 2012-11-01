@@ -93,7 +93,7 @@ public class Iwant3Test extends TestCase {
 		}
 		assertEquals("# paths are relative to this file's directory\n"
 				+ "WSNAME=example\n" + "WSROOT=../..\n"
-				+ "WSDEF_SRC=wsdefdef\n"
+				+ "WSDEF_SRC=wsdefdef/src/main/java\n"
 				+ "WSDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n",
 				testArea.contentOf("as-test/i-have/ws-info"));
 	}
@@ -129,7 +129,7 @@ public class Iwant3Test extends TestCase {
 	public void testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation()
 			throws Exception {
 		testArea.hasFile("as-test/i-have/ws-info", "WSNAME=example\n"
-				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdefdef\n"
+				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdefdef/src/main/java\n"
 				+ "WSDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
 		try {
 			iwant3.evaluate(asTest);
@@ -138,20 +138,20 @@ public class Iwant3Test extends TestCase {
 			assertEquals(
 					"I created\n"
 							+ asTest
-							+ "/i-have/wsdefdef/com/example/wsdefdef/ExampleWsProvider.java\n"
+							+ "/i-have/wsdefdef/src/main/java/com/example/wsdefdef/ExampleWsProvider.java\n"
 							+ "and\n" + asTest
-							+ "/i-have/wsdef/com/example/wsdef/Workspace.java"
+							+ "/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java"
 							+ "\nPlease edit them and rerun me.",
 					e.getMessage());
 		}
 		String wsdefdefContent = testArea
-				.contentOf("as-test/i-have/wsdefdef/com/example/wsdefdef/ExampleWsProvider.java");
+				.contentOf("as-test/i-have/wsdefdef/src/main/java/com/example/wsdefdef/ExampleWsProvider.java");
 		assertTrue(wsdefdefContent
 				.startsWith("package com.example.wsdefdef;\n"));
 		assertTrue(wsdefdefContent.contains(" class ExampleWsProvider "));
 		// full content will be asserted by functionality
 		String wsdefContent = testArea
-				.contentOf("as-test/i-have/wsdef/com/example/wsdef/Workspace.java");
+				.contentOf("as-test/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java");
 		assertTrue(wsdefContent.startsWith("package com.example.wsdef;\n"));
 		assertTrue(wsdefContent.contains(" class Workspace "));
 		// full content will be asserted by functionality
@@ -359,10 +359,10 @@ public class Iwant3Test extends TestCase {
 		assertTrue(testArea.contentOf(".classpath").contains("<classpath>"));
 		assertTrue(testArea.contentOf(".classpath").contains(
 				"<classpathentry kind=\"src\" "
-						+ "path=\"as-test/i-have/wsdef\"/>"));
+						+ "path=\"as-test/i-have/wsdef/src/main/java\"/>"));
 		assertTrue(testArea.contentOf(".classpath").contains(
 				"<classpathentry kind=\"src\" "
-						+ "path=\"as-test/i-have/wsdefdef\"/>"));
+						+ "path=\"as-test/i-have/wsdefdef/src/main/java\"/>"));
 
 		assertTrue(testArea
 				.contentOf(".settings/org.eclipse.jdt.core.prefs")

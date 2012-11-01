@@ -36,10 +36,8 @@ class ExampleWsDefGenerator {
 				+ ";");
 		out = out.replaceFirst("class WorkspaceProvider ", "class " + newName
 				+ " ");
-		out = out
-				.replaceAll(
-						"return Source\\.underWsroot\\(\"AS_EXAMPLE_DEVELOPER/i-have/wsdef",
-						"return Source.underWsroot(\"" + relativeWsdefSrc);
+		out = out.replaceAll("return Source\\.underWsroot\\(\"WSDEF_SRC\"",
+				"return Source.underWsroot(\"" + relativeWsdefSrc + "\"");
 		return out;
 	}
 

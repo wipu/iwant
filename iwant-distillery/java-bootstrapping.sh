@@ -13,10 +13,16 @@ section "Choosing url for iwant to use as engine"
 cmde 1 'as-distillery-developer/with/bash/iwant/help.sh'
 edit as-distillery-developer/i-have/iwant-from "local-iwant-from" <<EOF
 iwant-from=file://$LOCAL_IWANT_WSROOT
+EOF
+cmde "1" "as-distillery-developer/with/bash/iwant/help.sh 2>&1"
+
+p "This is an optimization for this tutorial:"
+
+edit as-distillery-developer/i-have/iwant-from "iwant-re-export-optimization" <<EOF
+iwant-from=file://$LOCAL_IWANT_WSROOT
 # an optimization for this tutorial:
 re-export=false
 EOF
-cmde "1" "as-distillery-developer/with/bash/iwant/help.sh 2>&1"
 
 section "Defining your workspace and its build basics"
 
@@ -26,7 +32,7 @@ edit as-distillery-developer/i-have/ws-info "no-changes" <<EOF
 # paths are relative to this file's directory
 WSNAME=iwant-tutorial
 WSROOT=../..
-WSDEF_SRC=wsdefdef
+WSDEF_SRC=wsdefdef/src/main/java
 WSDEF_CLASS=com.example.wsdefdef.WorkspaceProvider
 EOF
 
@@ -101,5 +107,5 @@ def-edit() {
   log "def-edit $TYPE $NAME $CLASS"
   cat "$LOCAL_IWANT_WSROOT/iwant-tutorial-wsdefs/src/com/example/$TYPE/$NAME/${CLASS}.java" |
     sed "s/^package .*;/package com.example.${TYPE};/" |
-    edit as-distillery-developer/i-have/${TYPE}/com/example/$TYPE/${CLASS}.java "$TYPE-$NAME"
+    edit as-distillery-developer/i-have/${TYPE}/src/main/java/com/example/$TYPE/${CLASS}.java "$TYPE-$NAME"
 }

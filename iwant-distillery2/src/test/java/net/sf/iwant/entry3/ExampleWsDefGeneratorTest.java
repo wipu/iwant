@@ -23,7 +23,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		b.append("package com.example.wsdef;\n");
 		b.append("public class WorkspaceProvider implements IwantWorkspaceProvider {\n");
 		b.append("	private static Source workspaceSrc() {\n");
-		b.append("		return Source.underWsroot(\"AS_EXAMPLE_DEVELOPER/i-have/wsdef\");\n");
+		b.append("		return Source.underWsroot(\"WSDEF_SRC\");\n");
 		b.append("	}\n");
 		b.append("}\n");
 
@@ -62,11 +62,13 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		expectedWsdefdefStart
 				.append("	private static Source workspaceSrc() {\n");
 		expectedWsdefdefStart
-				.append("		return Source.underWsroot(\"as-x1/i-have/wsdef\");\n");
+				.append("		return Source.underWsroot(\"as-x1/i-have/wsdef"
+						+ "/src/main/java\");\n");
 		expectedWsdefdefStart.append("	}\n");
 		expectedWsdefdefStart.append("}\n");
 
-		assertChangeWsdefdefTo("new.package1", "Ws1", "as-x1/i-have/wsdef");
+		assertChangeWsdefdefTo("new.package1", "Ws1",
+				"as-x1/i-have/wsdef/src/main/java");
 	}
 
 	public void testWsdefdefName2() throws IOException {
@@ -76,11 +78,13 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		expectedWsdefdefStart
 				.append("	private static Source workspaceSrc() {\n");
 		expectedWsdefdefStart
-				.append("		return Source.underWsroot(\"as-x2/i-have/wsdef\");\n");
+				.append("		return Source.underWsroot(\"as-x2/i-have/wsdef"
+						+ "/src/main/java\");\n");
 		expectedWsdefdefStart.append("	}\n");
 		expectedWsdefdefStart.append("}\n");
 
-		assertChangeWsdefdefTo("new.package2", "Ws2", "as-x2/i-have/wsdef");
+		assertChangeWsdefdefTo("new.package2", "Ws2",
+				"as-x2/i-have/wsdef/src/main/java");
 	}
 
 	public void testWsdefName1() throws IOException {

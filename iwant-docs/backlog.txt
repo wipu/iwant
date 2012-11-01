@@ -307,8 +307,8 @@
   * no, better to keep all under as-x-developer/i-have so no wizard generation
     outside of it, risking name collisions with existings files
   - move ws-info etc to subdir "conf" so we can have 3 eclipse projects
-  - replace wsdef(def)? with wsdef(def)?/src to avoid having to use project
-    root as src for eclipse
+  + replace wsdef(def)? with wsdef(def)?/src/main/java to avoid
+    having to use project root as src for eclipse
   - change eclipse settings to generate
     - as-x-developer/i-have/conf
     - as-x-developer/i-have/wsdef
