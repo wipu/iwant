@@ -299,6 +299,13 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want to declare separate eclipse settings for each module instead of the default one per workspace so that Eclipse will force correct dependencies for java developers
+  * one module for as-x-developer, hosting wsdefdef, another for x-workspace
+  - move wsdef in example generator, tests and manual dummy project
+    from as-x-developer/i-have/wsdef to x-workspace/src/main/java
+  - change eclipse settings
+    * utilize the now unused but tested WsDefEclipseProject class.
+
 #################################################################
 = Planned
 #################################################################
@@ -368,9 +375,6 @@
   * maybe just keep StreamUtil as facade
 
 - As @buildscriptauthor I want iwant not to overwrite my wsdef even if I delete wsdefdef and iwant regenerates it and it points to my existing wsdef so that I don't lose my work
-
-- As @buildscriptauthor I want to declare separate eclipse settings for each module instead of the default one per workspace
-  * utilize the now unused but tested WsDefEclipseProject class.
 
 - As @developer I want better names for wsdef and wsdefdef (IwantWorkspaceProvider and IwantWorkspace) and also for their eclipse projects
   - rename interfaces
