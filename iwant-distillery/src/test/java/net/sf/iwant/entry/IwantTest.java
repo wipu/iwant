@@ -143,11 +143,11 @@ public class IwantTest extends TestCase {
 			assertEquals(1, e.status());
 		}
 		assertEquals("", out());
-		assertEquals("I created " + asSomeone + "/i-have/iwant-from\n"
+		assertEquals("I created " + asSomeone + "/i-have/conf/iwant-from\n"
 				+ "Please edit it and rerun me.\n", err());
 
 		assertEquals("iwant-from=TODO\n",
-				testArea.contentOf("as-test/i-have/iwant-from"));
+				testArea.contentOf("as-test/i-have/conf/iwant-from"));
 	}
 
 	public void testMainCreatesIwantFromAndPrintsHelpIfIwantFromDoesNotExist()
@@ -161,18 +161,18 @@ public class IwantTest extends TestCase {
 			assertEquals(1, e.status());
 		}
 		assertEquals("", out());
-		assertEquals("I created " + asSomeone + "/i-have/iwant-from\n"
+		assertEquals("I created " + asSomeone + "/i-have/conf/iwant-from\n"
 				+ "Please edit it and rerun me.\n", err());
 
 		assertEquals("iwant-from=TODO\n",
-				testArea.contentOf("as-test/i-have/iwant-from"));
+				testArea.contentOf("as-test/i-have/conf/iwant-from"));
 	}
 
 	public void testIwantIsSvnExportedWhenNotExported() throws Exception {
 		File asSomeone = testArea.newDir("as-test");
-		File iHave = testArea.newDir("as-test/i-have");
+		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		new FileWriter(new File(iHave, "iwant-from")).append(
+		new FileWriter(new File(iHaveConf, "iwant-from")).append(
 				"iwant-from=" + iwantFrom + "\n").close();
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
@@ -191,9 +191,9 @@ public class IwantTest extends TestCase {
 	 */
 	public void testExistingIwantIsSvnReExportedFromFile() throws Exception {
 		File asSomeone = testArea.newDir("as-test");
-		File iHave = testArea.newDir("as-test/i-have");
+		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		new FileWriter(new File(iHave, "iwant-from")).append(
+		new FileWriter(new File(iHaveConf, "iwant-from")).append(
 				"iwant-from=" + iwantFrom + "\n").close();
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
@@ -217,9 +217,9 @@ public class IwantTest extends TestCase {
 	public void testExistingIwantIsNotSvnReExportedFromFileWhenToldNotTo()
 			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
-		File iHave = testArea.newDir("as-test/i-have");
+		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		new FileWriter(new File(iHave, "iwant-from")).append(
+		new FileWriter(new File(iHaveConf, "iwant-from")).append(
 				"iwant-from=" + iwantFrom + "\nre-export=false\n").close();
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
@@ -240,9 +240,9 @@ public class IwantTest extends TestCase {
 	public void testIwantBootstrapsWhenNothingHasBeenDownloadedAndJustIwantFromIsGiven()
 			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
-		File iHave = testArea.newDir("as-test/i-have");
+		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		new FileWriter(new File(iHave, "iwant-from")).append(
+		new FileWriter(new File(iHaveConf, "iwant-from")).append(
 				"iwant-from=" + iwantFrom + "\n").close();
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);

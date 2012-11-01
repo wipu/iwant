@@ -11,14 +11,14 @@ cmd 'find . -type f'
 section "Choosing url for iwant to use as engine"
 
 cmde 1 'as-distillery-developer/with/bash/iwant/help.sh'
-edit as-distillery-developer/i-have/iwant-from "local-iwant-from" <<EOF
+edit as-distillery-developer/i-have/conf/iwant-from "local-iwant-from" <<EOF
 iwant-from=file://$LOCAL_IWANT_WSROOT
 EOF
 cmde "1" "as-distillery-developer/with/bash/iwant/help.sh 2>&1"
 
 p "This is an optimization for this tutorial:"
 
-edit as-distillery-developer/i-have/iwant-from "iwant-re-export-optimization" <<EOF
+edit as-distillery-developer/i-have/conf/iwant-from "iwant-re-export-optimization" <<EOF
 iwant-from=file://$LOCAL_IWANT_WSROOT
 # an optimization for this tutorial:
 re-export=false
@@ -28,11 +28,11 @@ section "Defining your workspace and its build basics"
 
 p "Now we start defining our workspace and its build definition."
 
-edit as-distillery-developer/i-have/ws-info "no-changes" <<EOF
+edit as-distillery-developer/i-have/conf/ws-info "no-changes" <<EOF
 # paths are relative to this file's directory
 WSNAME=iwant-tutorial
-WSROOT=../..
-WSDEF_SRC=wsdefdef/src/main/java
+WSROOT=../../..
+WSDEF_SRC=../wsdefdef/src/main/java
 WSDEF_CLASS=com.example.wsdefdef.WorkspaceProvider
 EOF
 
@@ -44,7 +44,7 @@ cmde "1" "as-distillery-developer/with/bash/iwant/help.sh"
 section "Configuring the worker thread count"
 
 p "In this tutorial we'll use only one worker thread to keep the output deterministic. You should probably use a bigger number, depending on your machine."
-cmd 'echo workerCount=1 > as-distillery-developer/i-have/user-preferences'
+cmd 'echo workerCount=1 > as-distillery-developer/i-have/conf/user-preferences'
 cmde "1" "as-distillery-developer/with/bash/iwant/help.sh"
 
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"

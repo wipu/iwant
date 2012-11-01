@@ -72,44 +72,32 @@ public class WsInfoFileImpl implements WsInfo {
 	 */
 	@Override
 	public File wsdefdefSrc() {
-		return wsdefdefSrc;
+		try {
+			return wsdefdefSrc.getCanonicalFile();
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.iwant.entry3.WsInfo#wsdefClass()
-	 */
 	@Override
 	public String wsdefClass() {
 		return wsdefdefClass;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.iwant.entry3.WsInfo#wsdefdefJava()
-	 */
 	@Override
 	public File wsdefdefJava() {
-		return wsdefdefJava;
+		try {
+			return wsdefdefJava.getCanonicalFile();
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.iwant.entry3.WsInfo#wsdefdefPackage()
-	 */
 	@Override
 	public String wsdefdefPackage() {
 		return wsdefdefClass.substring(0, wsdefdefClass.lastIndexOf('.'));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.iwant.entry3.WsInfo#wsdefdefClassSimpleName()
-	 */
 	@Override
 	public String wsdefdefClassSimpleName() {
 		return wsdefdefClass.substring(wsdefdefClass.lastIndexOf('.') + 1);

@@ -52,12 +52,13 @@ public class Iwant3 {
 	public void evaluate(File asSomeone, String... args) throws Exception {
 		File iHave = new File(asSomeone, "i-have");
 		iHave.mkdirs();
-		File wsInfoFile = wsInfoFile(iHave);
+		File iHaveConf = new File(iHave, "conf");
+		File wsInfoFile = wsInfoFile(iHaveConf);
 		WsInfo wsInfo = parseWsInfo(wsInfoFile);
 		if (!wsInfo.wsdefdefJava().exists()) {
 			throw createExampleWsdefdefAndWsdef(asSomeone, iHave, wsInfo);
 		}
-		UserPrefs userPrefs = parseUserPrefs(iHave);
+		UserPrefs userPrefs = parseUserPrefs(iHaveConf);
 
 		File wsCache = new File(asSomeone, ".i-cached");
 		CachesImpl caches = new CachesImpl(wsCache, wsInfo.wsRoot(),
@@ -115,8 +116,8 @@ public class Iwant3 {
 		}
 	}
 
-	private static UserPrefs parseUserPrefs(File iHave) throws IOException {
-		File userPrefsFile = new File(iHave, "user-preferences");
+	private static UserPrefs parseUserPrefs(File iHaveConf) throws IOException {
+		File userPrefsFile = new File(iHaveConf, "user-preferences");
 		if (!userPrefsFile.exists()) {
 			return new DefaultUserPrefs(userPrefsFile);
 		}
@@ -212,8 +213,8 @@ public class Iwant3 {
 				WishScriptGenerator.wishScriptContent(wish));
 	}
 
-	private static File wsInfoFile(File iHave) {
-		File wsInfoFile = new File(iHave, "ws-info");
+	private static File wsInfoFile(File iHaveConf) {
+		File wsInfoFile = new File(iHaveConf, "ws-info");
 		if (wsInfoFile.exists()) {
 			return wsInfoFile;
 		}
@@ -239,8 +240,8 @@ public class Iwant3 {
 
 	private static void createExampleWsInfo(File wsInfo) {
 		createFile(wsInfo, "# paths are relative to this file's directory\n"
-				+ "WSNAME=example\n" + "WSROOT=../..\n"
-				+ "WSDEF_SRC=wsdefdef/src/main/java\n"
+				+ "WSNAME=example\n" + "WSROOT=../../..\n"
+				+ "WSDEF_SRC=../wsdefdef/src/main/java\n"
 				+ "WSDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n");
 	}
 

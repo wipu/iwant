@@ -88,14 +88,14 @@ public class Iwant3Test extends TestCase {
 			iwant3.evaluate(asTest);
 			fail();
 		} catch (IwantException e) {
-			assertEquals("I created " + asTest + "/i-have/ws-info\n"
+			assertEquals("I created " + asTest + "/i-have/conf/ws-info\n"
 					+ "Please edit it and rerun me.", e.getMessage());
 		}
 		assertEquals("# paths are relative to this file's directory\n"
-				+ "WSNAME=example\n" + "WSROOT=../..\n"
-				+ "WSDEF_SRC=wsdefdef/src/main/java\n"
+				+ "WSNAME=example\n" + "WSROOT=../../..\n"
+				+ "WSDEF_SRC=../wsdefdef/src/main/java\n"
 				+ "WSDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n",
-				testArea.contentOf("as-test/i-have/ws-info"));
+				testArea.contentOf("as-test/i-have/conf/ws-info"));
 	}
 
 	public void testMissingAsSomeoneCausesFriendlyFailureAndExampleCreation()
@@ -116,20 +116,20 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testInvalidWsInfoCausesFailure() throws Exception {
-		testArea.hasFile("as-test/i-have/ws-info", "invalid\n");
+		testArea.hasFile("as-test/i-have/conf/ws-info", "invalid\n");
 		try {
 			iwant3.evaluate(asTest);
 			fail();
 		} catch (IwantException e) {
 			assertEquals("Please specify WSNAME in " + asTest
-					+ "/i-have/ws-info", e.getMessage());
+					+ "/i-have/conf/ws-info", e.getMessage());
 		}
 	}
 
 	public void testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation()
 			throws Exception {
-		testArea.hasFile("as-test/i-have/ws-info", "WSNAME=example\n"
-				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdefdef/src/main/java\n"
+		testArea.hasFile("as-test/i-have/conf/ws-info", "WSNAME=example\n"
+				+ "WSROOT=../../..\n" + "WSDEF_SRC=../wsdefdef/src/main/java\n"
 				+ "WSDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
 		try {
 			iwant3.evaluate(asTest);
@@ -259,8 +259,8 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testListOfTargetsOfModifiedWsDef() throws Exception {
-		testArea.hasFile("as-test/i-have/ws-info", "WSNAME=example\n"
-				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdefdef\n"
+		testArea.hasFile("as-test/i-have/conf/ws-info", "WSNAME=example\n"
+				+ "WSROOT=../../..\n" + "WSDEF_SRC=../wsdefdef\n"
 				+ "WSDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
 		testArea.hasFile(
 				"as-test/i-have/wsdefdef/com/example/wsdefdef/ExampleWsProvider.java",
@@ -282,8 +282,8 @@ public class Iwant3Test extends TestCase {
 	 */
 	public void testEmptyWishCreatesWishScriptsEvenWhenWsdefdefAndWsdefExist()
 			throws Exception {
-		testArea.hasFile("as-test/i-have/ws-info", "WSNAME=example\n"
-				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdefdef\n"
+		testArea.hasFile("as-test/i-have/conf/ws-info", "WSNAME=example\n"
+				+ "WSROOT=../../..\n" + "WSDEF_SRC=../wsdefdef\n"
 				+ "WSDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
 		testArea.hasFile(
 				"as-test/i-have/wsdefdef/com/example/wsdefdef/ExampleWsProvider.java",
@@ -297,7 +297,7 @@ public class Iwant3Test extends TestCase {
 			fail();
 		} catch (IwantException e) {
 			assertEquals("(Using default user preferences (file " + asTest
-					+ "/i-have/user-preferences is missing):\n"
+					+ "/i-have/conf/user-preferences is missing):\n"
 					+ "[workerCount=1])\n" + "Try " + asTest
 					+ "/with/bash/iwant/list-of/targets", e.getMessage());
 		}
@@ -375,8 +375,8 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testTargetModifiedHelloAsPathOfModifiedWsDef() throws Exception {
-		testArea.hasFile("as-test/i-have/ws-info", "WSNAME=example\n"
-				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdefdef\n"
+		testArea.hasFile("as-test/i-have/conf/ws-info", "WSNAME=example\n"
+				+ "WSROOT=../../..\n" + "WSDEF_SRC=../wsdefdef\n"
 				+ "WSDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
 		testArea.hasFile(
 				"as-test/i-have/wsdefdef/com/example/wsdefdef/ExampleWsProvider.java",
@@ -395,11 +395,11 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testListOfTargetsFailsIfWsDefDoesNotCompile() throws Exception {
-		testArea.hasFile("as-test/i-have/ws-info", "WSNAME=example\n"
-				+ "WSROOT=../..\n" + "WSDEF_SRC=wsdef\n"
+		testArea.hasFile("as-test/i-have/conf/ws-info", "WSNAME=example\n"
+				+ "WSROOT=../../..\n" + "WSDEF_SRC=../wsdef/src/main/java\n"
 				+ "WSDEF_CLASS=com.example.wsdef.ExampleWs\n");
 		testArea.hasFile(
-				"as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java",
+				"as-test/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWs.java",
 				"crap\n");
 
 		try {
@@ -409,10 +409,11 @@ public class Iwant3Test extends TestCase {
 			assertEquals("Compilation failed.", e.getMessage());
 		}
 		assertEquals("", out());
-		assertEquals(testArea.root()
-				+ "/as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java"
-				+ ":1: reached end of file while parsing\n" + "crap\n" + "^\n"
-				+ "1 error\n", errIgnoringDebugLog());
+		assertEquals(
+				testArea.root()
+						+ "/as-test/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWs.java"
+						+ ":1: reached end of file while parsing\n" + "crap\n"
+						+ "^\n" + "1 error\n", errIgnoringDebugLog());
 	}
 
 	/**
@@ -449,7 +450,7 @@ public class Iwant3Test extends TestCase {
 			fail();
 		} catch (IwantException e) {
 			assertEquals("(Using default user preferences (file " + asTest
-					+ "/i-have/user-preferences is missing):\n"
+					+ "/i-have/conf/user-preferences is missing):\n"
 					+ "[workerCount=1])\n" + "Try " + asTest
 					+ "/with/bash/iwant/list-of/targets", e.getMessage());
 		}
@@ -465,15 +466,15 @@ public class Iwant3Test extends TestCase {
 		testEmptyWishAfterCreationOfExampleWsDef();
 		startOfOutAndErrCapture();
 
-		new FileWriter(new File(asTest, "i-have/user-preferences")).append(
-				"workerCount=3").close();
+		new FileWriter(new File(asTest, "i-have/conf/user-preferences"))
+				.append("workerCount=3").close();
 
 		try {
 			iwant3.evaluate(asTest);
 			fail();
 		} catch (IwantException e) {
 			assertEquals("(Using user preferences from file " + asTest
-					+ "/i-have/user-preferences:\n" + "[workerCount=3])\n"
+					+ "/i-have/conf/user-preferences:\n" + "[workerCount=3])\n"
 					+ "Try " + asTest + "/with/bash/iwant/list-of/targets",
 					e.getMessage());
 		}

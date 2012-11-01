@@ -254,11 +254,11 @@ public class Iwant {
 
 	private static Properties iwantFromProperties(File asSomeone)
 			throws IOException, FileNotFoundException {
-		File iHave = new File(asSomeone, "i-have");
-		if (!iHave.exists()) {
-			iHave.mkdir();
+		File iHaveConf = new File(asSomeone, "i-have/conf");
+		if (!iHaveConf.exists()) {
+			iHaveConf.mkdirs();
 		}
-		File iwantFrom = new File(iHave, "iwant-from");
+		File iwantFrom = new File(iHaveConf, "iwant-from");
 		if (!iwantFrom.exists()) {
 			new FileWriter(iwantFrom).append("iwant-from=TODO\n").close();
 			throw new IwantException("I created " + iwantFrom
