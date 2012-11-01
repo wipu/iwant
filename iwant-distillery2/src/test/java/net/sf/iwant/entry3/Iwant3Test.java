@@ -139,7 +139,8 @@ public class Iwant3Test extends TestCase {
 					"I created\n"
 							+ asTest
 							+ "/i-have/wsdefdef/src/main/java/com/example/wsdefdef/ExampleWsProvider.java\n"
-							+ "and\n" + asTest
+							+ "and\n"
+							+ asTest
 							+ "/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java"
 							+ "\nPlease edit them and rerun me.",
 					e.getMessage());
