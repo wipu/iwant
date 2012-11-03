@@ -30,10 +30,10 @@ p "Now we start defining our workspace and its build definition."
 
 edit as-distillery-developer/i-have/conf/ws-info "no-changes" <<EOF
 # paths are relative to this file's directory
-WSNAME=iwant-tutorial
+WSNAME=distillery
 WSROOT=../../..
-WSDEF_SRC=../wsdefdef/src/main/java
-WSDEF_CLASS=com.example.wsdefdef.WorkspaceProvider
+WSDEFDEF_MODULE=../wsdefdef
+WSDEFDEF_CLASS=com.example.wsdefdef.WorkspaceProvider
 EOF
 
 cmde "1" "as-distillery-developer/with/bash/iwant/help.sh 2>&1"
@@ -56,13 +56,13 @@ p "Before we try editing the wsdef, we'll tell iwant to generate eclipse setting
 
 cmd "as-distillery-developer/with/bash/iwant/list-of/side-effects"
 cmd "as-distillery-developer/with/bash/iwant/side-effect/eclipse-settings/effective"
-cmd "ls .project .classpath .settings"
+cmd "ls as-distillery-developer/i-have/{wsdefdef,wsdef}/{.project,.classpath,.settings}"
 
 p "Now we can import the project to eclipse (don't copy it to the workspace!) and try our first edit."
 wsdef-edit v00modifiedhello
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
 out-was <<EOF
-(0 workspaceClasses)
+(0 distillery-workspace-main-classes)
 hello
 hello2
 EOF

@@ -16,6 +16,7 @@ import net.sf.iwant.api.ExternalSource;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.IwantWorkspaceProvider;
 import net.sf.iwant.api.JavaClasses;
+import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.TargetEvaluationContext;
 import net.sf.iwant.api.WsInfo;
@@ -80,15 +81,31 @@ public class Iwant3 {
 					.newInstance();
 
 			Iwant.fileLog("Refreshing wsdef classes");
-			JavaClasses wsdDefClassesTarget = wsDefdef
-					.workspaceClasses(new ExternalSource(iwantApiClasses));
+			JavaModule wsdDefClassesModule = wsDefdef
+					.workspaceModule(JavaModule
+							.implicitLibrary(new ExternalSource(iwantApiClasses)));
+			// TODO don't cast when no more necessary
+			JavaClasses wsDefClassesTarget = (JavaClasses) wsdDefClassesModule
+					.mainClasses();
 
+			String wsdefdefRelativeToWsRoot = FileUtil
+					.relativePathOfFileUnderParent(wsInfo.wsdefdefModule(),
+							wsInfo.wsRoot());
+			JavaModule wsdefdefJavaModule = JavaModule
+					.with()
+					.name(wsInfo.wsName() + "-wsdefdef")
+					.locationUnderWsRoot(wsdefdefRelativeToWsRoot)
+					.mainJava("src/main/java")
+					.mainDeps(
+							JavaModule.implicitLibrary(new ExternalSource(
+									iwantApiClasses))).end();
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
-					System.err, wsInfo.wsRoot(), iwant, wsInfo,
-					wsdDefClassesTarget, caches, userPrefs.workerCount());
+					System.err, wsInfo.wsRoot(), iwant, wsInfo, caches,
+					userPrefs.workerCount(), wsdefdefJavaModule,
+					wsdDefClassesModule);
 
 			File wsDefClasses = wishEvaluator
-					.freshCachedContent(wsdDefClassesTarget);
+					.freshCachedContent(wsDefClassesTarget);
 
 			Iwant.fileLog("Calling wsdef");
 			Class<?> wsDefClass = loadClass(
@@ -96,7 +113,7 @@ public class Iwant3 {
 					wsDefdef.workspaceClassname(),
 					wsdefRuntimeClasspath(
 							wishEvaluator.targetEvaluationContext(),
-							wsdDefClassesTarget, wsDefdefClasses, wsDefClasses));
+							wsDefClassesTarget, wsDefdefClasses, wsDefClasses));
 			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
 			refreshWishScripts(asSomeone, wsDef);
 			if (args.length == 0) {
@@ -134,16 +151,12 @@ public class Iwant3 {
 	private static IwantException createExampleWsdefdefAndWsdef(File asSomeone,
 			File iHave, WsInfo wsInfo) throws IOException {
 		File iwantWsRoot = WsRootFinder.wsRoot();
-		String iHaveRelativeToWsroot = FileUtil.relativePathOfFileUnderParent(
-				iHave, wsInfo.wsRoot());
-		String wsdefSrcRelativeToWsRoot = iHaveRelativeToWsroot
-				+ "/wsdef/src/main/java";
-		createFile(wsInfo.wsdefdefJava(),
+		createFile(
+				wsInfo.wsdefdefJava(),
 				ExampleWsDefGenerator.exampleWsdefdef(iwantWsRoot,
 						wsInfo.wsdefdefPackage(),
-						wsInfo.wsdefdefClassSimpleName(),
-						wsdefSrcRelativeToWsRoot));
-		File wsDefJava = new File(wsInfo.wsRoot(), wsdefSrcRelativeToWsRoot
+						wsInfo.wsdefdefClassSimpleName(), wsInfo.wsName()));
+		File wsDefJava = new File(iHave, "/wsdef/src/main/java"
 				+ "/com/example/wsdef/Workspace.java");
 		createFile(wsDefJava, ExampleWsDefGenerator.exampleWsdef(iwantWsRoot,
 				"com.example.wsdef", "Workspace"));
@@ -241,8 +254,8 @@ public class Iwant3 {
 	private static void createExampleWsInfo(File wsInfo) {
 		createFile(wsInfo, "# paths are relative to this file's directory\n"
 				+ "WSNAME=example\n" + "WSROOT=../../..\n"
-				+ "WSDEF_SRC=../wsdefdef/src/main/java\n"
-				+ "WSDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n");
+				+ "WSDEFDEF_MODULE=../wsdefdef\n"
+				+ "WSDEFDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n");
 	}
 
 	private static void createScript(File file, String content) {

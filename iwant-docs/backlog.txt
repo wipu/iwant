@@ -295,11 +295,7 @@
   + remove some unneeded deps from WishEvaluator
   + bugfix: make workerCount=1 by default, after all, descript used worker 1 instead of 0 before changing it
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I want to declare separate eclipse settings for each module instead of the default one per workspace so that Eclipse will force correct dependencies for java developers
++ As @buildscriptauthor I want to declare separate eclipse settings for each module instead of the default one per workspace so that Eclipse will force correct dependencies for java developers
   ( * one module for as-x-developer, hosting wsdefdef, another for x-workspace
     - move wsdef in example generator, tests and manual dummy project
       from as-x-developer/i-have/wsdef to x-workspace/src/main/java
@@ -309,15 +305,33 @@
   + move ws-info etc to subdir "conf" so we can have 3 eclipse projects
   + replace wsdef(def)? with wsdef(def)?/src/main/java to avoid
     having to use project root as src for eclipse
-  - change eclipse settings to generate
-    - as-x-developer/i-have/conf
-    - as-x-developer/i-have/wsdef
-    - as-x-developer/i-have/wsdefdef
-    * utilize the now unused but tested WsDefEclipseProject class.
+  + change eclipse settings to generate
+    * as-x-developer/i-have/conf
+    * as-x-developer/i-have/wsdef
+    * as-x-developer/i-have/wsdefdef
+    + back and forth: after all put just ../wsdefdef in ws-info, and name
+      it WSDEFDEF_MODULE
+      + (for now) make the src dir "src/main/java" inside it hardcoded
+      + and now is a good time to rename WSDEF_CLASS to WSDEFDEF...
+    + publish wsdefdef and wsdef as JavaModule in ctx for s.e. definition
+    + JavaModule
+      + File rootDir()
+      + JavaClasses mainJavaClasses()
+    + (utilize or) delete the now unused but tested WsDefEclipseProject class
+  + descript change
+  + manual test
+    + better error messages for missing/nondir srcdir of JavaClasses
+      (if wsname does not match as-someone dir name iwant cannot find wsdef)
+
+#################################################################
+= In progress
+#################################################################
 
 #################################################################
 = Planned
 #################################################################
+
+- make Iwant3Test use modified wsname to verify no hard-coded example stuff there
 
 - As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead
@@ -386,6 +400,7 @@
 - As @buildscriptauthor I want iwant not to overwrite my wsdef even if I delete wsdefdef and iwant regenerates it and it points to my existing wsdef so that I don't lose my work
 
 - As @developer I want better names for wsdef and wsdefdef (IwantWorkspaceProvider and IwantWorkspace) and also for their eclipse projects
+  * for example currently the java interface for wsdefdef is WorkspaceProvider
   - rename interfaces
   - rename java references
   - rename non-java refs, like in i-have

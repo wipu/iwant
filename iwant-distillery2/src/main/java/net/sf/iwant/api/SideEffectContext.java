@@ -11,8 +11,6 @@ public interface SideEffectContext {
 
 	OutputStream err();
 
-	JavaClasses wsdDefClassesTarget();
-
 	TargetEvaluationContext targetEvaluationContext();
 
 }

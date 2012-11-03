@@ -38,7 +38,7 @@ public class Iwant3Test extends TestCase {
 		testArea = new IwantEntry3TestArea();
 		network = new IwantNetworkMock(testArea);
 		iwant3 = Iwant3.using(network);
-		asTest = new File(testArea.root(), "as-test");
+		asTest = new File(testArea.root(), "as-example-developer");
 		originalIn = System.in;
 		originalOut = System.out;
 		originalErr = System.err;
@@ -93,9 +93,9 @@ public class Iwant3Test extends TestCase {
 		}
 		assertEquals("# paths are relative to this file's directory\n"
 				+ "WSNAME=example\n" + "WSROOT=../../..\n"
-				+ "WSDEF_SRC=../wsdefdef/src/main/java\n"
-				+ "WSDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n",
-				testArea.contentOf("as-test/i-have/conf/ws-info"));
+				+ "WSDEFDEF_MODULE=../wsdefdef\n"
+				+ "WSDEFDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n",
+				testArea.contentOf("as-example-developer/i-have/conf/ws-info"));
 	}
 
 	public void testMissingAsSomeoneCausesFriendlyFailureAndExampleCreation()
@@ -105,18 +105,19 @@ public class Iwant3Test extends TestCase {
 
 	public void testMissingIHaveCausesFriendlyFailureAndExampleCreation()
 			throws Exception {
-		testArea.newDir("as-test");
+		testArea.newDir("as-example-developer");
 		evaluateAndExpectFriendlyFailureAndExampleWsInfoCreation();
 	}
 
 	public void testMissingWsInfoCausesFriendlyFailureAndExampleCreation()
 			throws Exception {
-		testArea.newDir("as-test/i-have");
+		testArea.newDir("as-example-developer/i-have");
 		evaluateAndExpectFriendlyFailureAndExampleWsInfoCreation();
 	}
 
 	public void testInvalidWsInfoCausesFailure() throws Exception {
-		testArea.hasFile("as-test/i-have/conf/ws-info", "invalid\n");
+		testArea.hasFile("as-example-developer/i-have/conf/ws-info",
+				"invalid\n");
 		try {
 			iwant3.evaluate(asTest);
 			fail();
@@ -128,9 +129,12 @@ public class Iwant3Test extends TestCase {
 
 	public void testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation()
 			throws Exception {
-		testArea.hasFile("as-test/i-have/conf/ws-info", "WSNAME=example\n"
-				+ "WSROOT=../../..\n" + "WSDEF_SRC=../wsdefdef/src/main/java\n"
-				+ "WSDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
+		testArea.hasFile(
+				"as-example-developer/i-have/conf/ws-info",
+				"WSNAME=example\n"
+						+ "WSROOT=../../..\n"
+						+ "WSDEFDEF_MODULE=../wsdefdef\n"
+						+ "WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
 		try {
 			iwant3.evaluate(asTest);
 			fail();
@@ -146,13 +150,13 @@ public class Iwant3Test extends TestCase {
 					e.getMessage());
 		}
 		String wsdefdefContent = testArea
-				.contentOf("as-test/i-have/wsdefdef/src/main/java/com/example/wsdefdef/ExampleWsProvider.java");
+				.contentOf("as-example-developer/i-have/wsdefdef/src/main/java/com/example/wsdefdef/ExampleWsProvider.java");
 		assertTrue(wsdefdefContent
 				.startsWith("package com.example.wsdefdef;\n"));
 		assertTrue(wsdefdefContent.contains(" class ExampleWsProvider "));
 		// full content will be asserted by functionality
 		String wsdefContent = testArea
-				.contentOf("as-test/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java");
+				.contentOf("as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java");
 		assertTrue(wsdefContent.startsWith("package com.example.wsdef;\n"));
 		assertTrue(wsdefContent.contains(" class Workspace "));
 		// full content will be asserted by functionality
@@ -162,19 +166,19 @@ public class Iwant3Test extends TestCase {
 			throws Exception {
 		testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
 		// targets:
-		assertTrue(testArea
-				.contentOf("as-test/with/bash/iwant/list-of/targets")
+		assertTrue(testArea.contentOf(
+				"as-example-developer/with/bash/iwant/list-of/targets")
 				.startsWith("#!/bin/bash\n"));
 		assertTrue(testArea.contentOf(
-				"as-test/with/bash/iwant/target/hello/as-path").startsWith(
-				"#!/bin/bash\n"));
+				"as-example-developer/with/bash/iwant/target/hello/as-path")
+				.startsWith("#!/bin/bash\n"));
 		// side-effects:
 		assertTrue(testArea.contentOf(
-				"as-test/with/bash/iwant/list-of/side-effects").startsWith(
-				"#!/bin/bash\n"));
+				"as-example-developer/with/bash/iwant/list-of/side-effects")
+				.startsWith("#!/bin/bash\n"));
 		assertTrue(testArea
 				.contentOf(
-						"as-test/with/bash/iwant/side-effect/eclipse-settings/effective")
+						"as-example-developer/with/bash/iwant/side-effect/eclipse-settings/effective")
 				.startsWith("#!/bin/bash\n"));
 	}
 
@@ -208,6 +212,7 @@ public class Iwant3Test extends TestCase {
 		wsdef.append("import net.sf.iwant.api.HelloTarget;\n");
 		wsdef.append("import net.sf.iwant.api.IwantWorkspace;\n");
 		wsdef.append("import net.sf.iwant.api.SideEffect;\n");
+		wsdef.append("import net.sf.iwant.api.SideEffectDefinitionContext;\n");
 		wsdef.append("import net.sf.iwant.api.Target;\n");
 		wsdef.append("\n");
 		wsdef.append("public class ExampleWs implements IwantWorkspace {\n");
@@ -218,10 +223,16 @@ public class Iwant3Test extends TestCase {
 		wsdef.append("			new HelloTarget(\"hello2\", \"content 2\"));\n");
 		wsdef.append("	}\n");
 		wsdef.append("\n");
-		wsdef.append("  @Override\n");
-		wsdef.append("  public List<? extends SideEffect> sideEffects() {\n");
-		wsdef.append("		return Arrays.asList(EclipseSettings.with().name(\"eclipse-settings\").end());");
-		wsdef.append("  }\n");
+		wsdef.append("	@Override\n");
+		wsdef.append("	public List<? extends SideEffect> sideEffects(\n");
+		wsdef.append("			SideEffectDefinitionContext ctx) {\n");
+		wsdef.append("		return Arrays\n");
+		wsdef.append("				.asList(EclipseSettings\n");
+		wsdef.append("						.with()\n");
+		wsdef.append("						.name(\"eclipse-settings\")\n");
+		wsdef.append("						.modules(ctx.wsdefdefJavaModule(),\n");
+		wsdef.append("								ctx.wsdefJavaModule()).end());\n");
+		wsdef.append("	}\n");
 		wsdef.append("\n");
 		wsdef.append("}\n");
 		return wsdef.toString();
@@ -234,19 +245,17 @@ public class Iwant3Test extends TestCase {
 		b.append("import java.util.Arrays;\n");
 		b.append("\n");
 		b.append("import net.sf.iwant.api.IwantWorkspaceProvider;\n");
-		b.append("import net.sf.iwant.api.JavaClasses;\n");
+		b.append("import net.sf.iwant.api.JavaModule;\n");
 		b.append("import net.sf.iwant.api.Path;\n");
 		b.append("import net.sf.iwant.api.Source;\n");
 		b.append("\n");
 		b.append("public class ExampleWsProvider implements IwantWorkspaceProvider {\n");
 		b.append("\n");
 		b.append("      @Override\n");
-		b.append("      public JavaClasses workspaceClasses(Path iwantApiClasses) {\n");
-		b.append("              return new JavaClasses(\"workspaceClasses\", workspaceSrc(), Arrays.asList(iwantApiClasses));\n");
-		b.append("      }\n");
-		b.append("\n");
-		b.append("      private static Source workspaceSrc() {\n");
-		b.append("              return Source.underWsroot(\"as-test/i-have/wsdef\");\n");
+		b.append("        public JavaModule workspaceModule(JavaModule iwantApiClasses) {\n");
+		b.append("          return JavaModule.with().name(\"example-workspace\")\n");
+		b.append("            .locationUnderWsRoot(\"as-example-developer/i-have/wsdef\")\n");
+		b.append("            .mainJava(\"src/main/java\").mainDeps(iwantApiClasses).end();\n");
 		b.append("      }\n");
 		b.append("\n");
 		b.append("      @Override\n");
@@ -259,15 +268,17 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testListOfTargetsOfModifiedWsDef() throws Exception {
-		testArea.hasFile("as-test/i-have/conf/ws-info", "WSNAME=example\n"
-				+ "WSROOT=../../..\n" + "WSDEF_SRC=../wsdefdef\n"
-				+ "WSDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
 		testArea.hasFile(
-				"as-test/i-have/wsdefdef/com/example/wsdefdef/ExampleWsProvider.java",
+				"as-example-developer/i-have/conf/ws-info",
+				"WSNAME=example\n"
+						+ "WSROOT=../../..\n"
+						+ "WSDEFDEF_MODULE=../wsdefdef\n"
+						+ "WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
+		testArea.hasFile("as-example-developer/i-have/wsdefdef/src/main/java/"
+				+ "com/example/wsdefdef/ExampleWsProvider.java",
 				exampleWsProvider());
-		testArea.hasFile(
-				"as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java",
-				modifiedExampleWsDef());
+		testArea.hasFile("as-example-developer/i-have/wsdef/src/main/java/"
+				+ "com/example/wsdef/ExampleWs.java", modifiedExampleWsDef());
 
 		iwant3.evaluate(asTest, "list-of/targets");
 
@@ -282,15 +293,17 @@ public class Iwant3Test extends TestCase {
 	 */
 	public void testEmptyWishCreatesWishScriptsEvenWhenWsdefdefAndWsdefExist()
 			throws Exception {
-		testArea.hasFile("as-test/i-have/conf/ws-info", "WSNAME=example\n"
-				+ "WSROOT=../../..\n" + "WSDEF_SRC=../wsdefdef\n"
-				+ "WSDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
 		testArea.hasFile(
-				"as-test/i-have/wsdefdef/com/example/wsdefdef/ExampleWsProvider.java",
+				"as-example-developer/i-have/conf/ws-info",
+				"WSNAME=example\n"
+						+ "WSROOT=../../..\n"
+						+ "WSDEFDEF_MODULE=../wsdefdef\n"
+						+ "WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
+		testArea.hasFile("as-example-developer/i-have/wsdefdef/src/main/java/"
+				+ "com/example/wsdefdef/ExampleWsProvider.java",
 				exampleWsProvider());
-		testArea.hasFile(
-				"as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java",
-				modifiedExampleWsDef());
+		testArea.hasFile("as-example-developer/i-have/wsdef/src/main/java/"
+				+ "com/example/wsdef/ExampleWs.java", modifiedExampleWsDef());
 
 		try {
 			iwant3.evaluate(asTest);
@@ -305,11 +318,13 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", out());
 
 		assertTrue(new File(testArea.root(),
-				"as-test/with/bash/iwant/list-of/targets").exists());
+				"as-example-developer/with/bash/iwant/list-of/targets")
+				.exists());
 		assertTrue(new File(testArea.root(),
-				"as-test/with/bash/iwant/target/hello2/as-path").exists());
+				"as-example-developer/with/bash/iwant/target/hello2/as-path")
+				.exists());
 		assertTrue(new File(testArea.root(),
-				"as-test/with/bash/iwant/target/modified-hello/as-path")
+				"as-example-developer/with/bash/iwant/target/modified-hello/as-path")
 				.exists());
 	}
 
@@ -317,18 +332,20 @@ public class Iwant3Test extends TestCase {
 			throws Exception {
 		testListOfTargetsOfModifiedWsDef();
 
+		assertTrue(testArea.contentOf(
+				"as-example-developer/with/bash/iwant/list-of/targets")
+				.startsWith("#!/bin/bash\n"));
 		assertTrue(testArea
-				.contentOf("as-test/with/bash/iwant/list-of/targets")
+				.contentOf(
+						"as-example-developer/with/bash/iwant/target/modified-hello/as-path")
 				.startsWith("#!/bin/bash\n"));
 		assertTrue(testArea.contentOf(
-				"as-test/with/bash/iwant/target/modified-hello/as-path")
+				"as-example-developer/with/bash/iwant/target/hello2/as-path")
 				.startsWith("#!/bin/bash\n"));
-		assertTrue(testArea.contentOf(
-				"as-test/with/bash/iwant/target/hello2/as-path").startsWith(
-				"#!/bin/bash\n"));
 
 		assertFalse(new File(testArea.root(),
-				"as-test/with/bash/iwant/target/hello/as-path").exists());
+				"as-example-developer/with/bash/iwant/target/hello/as-path")
+				.exists());
 	}
 
 	public void testTargetHelloAsPathOfExampleWsDef() throws Exception {
@@ -354,36 +371,46 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", out());
 		assertEquals("", errIgnoringDebugLog());
 
-		assertTrue(testArea.contentOf(".project").contains(
-				"<projectDescription>\n        <name>example</name>"));
+		// project names
+		testArea.shallContainFragmentIn(
+				"as-example-developer/i-have/wsdefdef/.project",
+				"<projectDescription>\n        <name>example-wsdefdef</name>");
+		testArea.shallContainFragmentIn(
+				"as-example-developer/i-have/wsdef/.project",
+				"<projectDescription>\n        <name>example-workspace</name>");
 
-		assertTrue(testArea.contentOf(".classpath").contains("<classpath>"));
-		assertTrue(testArea.contentOf(".classpath").contains(
-				"<classpathentry kind=\"src\" "
-						+ "path=\"as-test/i-have/wsdef/src/main/java\"/>"));
-		assertTrue(testArea.contentOf(".classpath").contains(
-				"<classpathentry kind=\"src\" "
-						+ "path=\"as-test/i-have/wsdefdef/src/main/java\"/>"));
+		// project source dirs
+		testArea.shallContainFragmentIn(
+				"as-example-developer/i-have/wsdefdef/.classpath",
+				"<classpathentry kind=\"src\" path=\"src/main/java\"/>");
+		testArea.shallContainFragmentIn(
+				"as-example-developer/i-have/wsdef/.classpath",
+				"<classpathentry kind=\"src\" path=\"src/main/java\"/>");
 
-		assertTrue(testArea
-				.contentOf(".settings/org.eclipse.jdt.core.prefs")
-				.contains(
-						"org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6\n"));
+		// iwant classes in classpath cannot be tested, they are in different
+		// path when running this test inside eclipse than in a build script
 
-		assertTrue(testArea.contentOf(".settings/org.eclipse.jdt.ui.prefs")
-				.contains("formatter_profile=_iwant-generated\n"));
+		// settings
+		testArea.shallContainFragmentIn("as-example-developer/i-have/wsdef/"
+				+ ".settings/org.eclipse.jdt.core.prefs",
+				"org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6\n");
+		testArea.shallContainFragmentIn("as-example-developer/i-have/wsdef/"
+				+ ".settings/org.eclipse.jdt.ui.prefs",
+				"formatter_profile=_iwant-generated\n");
 	}
 
 	public void testTargetModifiedHelloAsPathOfModifiedWsDef() throws Exception {
-		testArea.hasFile("as-test/i-have/conf/ws-info", "WSNAME=example\n"
-				+ "WSROOT=../../..\n" + "WSDEF_SRC=../wsdefdef\n"
-				+ "WSDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
 		testArea.hasFile(
-				"as-test/i-have/wsdefdef/com/example/wsdefdef/ExampleWsProvider.java",
+				"as-example-developer/i-have/conf/ws-info",
+				"WSNAME=example\n"
+						+ "WSROOT=../../..\n"
+						+ "WSDEFDEF_MODULE=../wsdefdef\n"
+						+ "WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
+		testArea.hasFile("as-example-developer/i-have/wsdefdef/src/main/java/"
+				+ "com/example/wsdefdef/ExampleWsProvider.java",
 				exampleWsProvider());
-		testArea.hasFile(
-				"as-test/i-have/wsdef/com/example/wsdef/ExampleWs.java",
-				modifiedExampleWsDef());
+		testArea.hasFile("as-example-developer/i-have/wsdef/src/main/java/"
+				+ "com/example/wsdef/ExampleWs.java", modifiedExampleWsDef());
 
 		iwant3.evaluate(asTest, "target/modified-hello/as-path");
 
@@ -394,12 +421,14 @@ public class Iwant3Test extends TestCase {
 		assertEquals("content 1", testArea.contentOf(cached));
 	}
 
-	public void testListOfTargetsFailsIfWsDefDoesNotCompile() throws Exception {
-		testArea.hasFile("as-test/i-have/conf/ws-info", "WSNAME=example\n"
-				+ "WSROOT=../../..\n" + "WSDEF_SRC=../wsdef/src/main/java\n"
-				+ "WSDEF_CLASS=com.example.wsdef.ExampleWs\n");
+	public void testListOfTargetsFailsIfWsDefdefDoesNotCompile()
+			throws Exception {
+		testArea.hasFile("as-example-developer/i-have/conf/ws-info",
+				"WSNAME=example\n" + "WSROOT=../../..\n"
+						+ "WSDEFDEF_MODULE=../wsdefdef\n"
+						+ "WSDEFDEF_CLASS=com.example.wsdef.ExampleWs\n");
 		testArea.hasFile(
-				"as-test/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWs.java",
+				"as-example-developer/i-have/wsdefdef/src/main/java/com/example/wsdef/ExampleWs.java",
 				"crap\n");
 
 		try {
@@ -411,7 +440,7 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", out());
 		assertEquals(
 				testArea.root()
-						+ "/as-test/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWs.java"
+						+ "/as-example-developer/i-have/wsdefdef/src/main/java/com/example/wsdef/ExampleWs.java"
 						+ ":1: reached end of file while parsing\n" + "crap\n"
 						+ "^\n" + "1 error\n", errIgnoringDebugLog());
 	}

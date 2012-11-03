@@ -12,7 +12,7 @@ public class WsInfoFileImpl implements WsInfo {
 
 	private final String wsName;
 	private final File wsRoot;
-	private final File wsdefdefSrc;
+	private final File wsdefdefModule;
 	private final File wsdefdefJava;
 	private final String wsdefdefClass;
 
@@ -23,18 +23,19 @@ public class WsInfoFileImpl implements WsInfo {
 		} catch (IOException e) {
 			throw new IllegalStateException("Failed to read " + wsInfo, e);
 		}
-		File iHave = wsInfo.getParentFile();
+		File iHaveConf = wsInfo.getParentFile();
 		wsName = property(p, wsInfo, "WSNAME");
-		wsRoot = new File(iHave, property(p, wsInfo, "WSROOT"))
+		wsRoot = new File(iHaveConf, property(p, wsInfo, "WSROOT"))
 				.getCanonicalFile();
-		wsdefdefSrc = new File(iHave, property(p, wsInfo, "WSDEF_SRC"));
-		wsdefdefClass = property(p, wsInfo, "WSDEF_CLASS");
-		wsdefdefJava = wsdefdefJava(wsdefdefSrc, wsdefdefClass);
+		wsdefdefModule = new File(iHaveConf, property(p, wsInfo,
+				"WSDEFDEF_MODULE"));
+		wsdefdefClass = property(p, wsInfo, "WSDEFDEF_CLASS");
+		wsdefdefJava = wsdefdefJava(wsdefdefSrc(), wsdefdefClass);
 	}
 
-	private static File wsdefdefJava(File wsdefSrc, String wsdefClass) {
+	private static File wsdefdefJava(File wsdefdefSrc, String wsdefClass) {
 		String java = wsdefClass.replaceAll("\\.", "/") + ".java";
-		return new File(wsdefSrc, java);
+		return new File(wsdefdefSrc, java);
 	}
 
 	private static String property(Properties p, File wsInfo, String key) {
@@ -45,38 +46,28 @@ public class WsInfoFileImpl implements WsInfo {
 		return value;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.iwant.entry3.WsInfo#wsName()
-	 */
 	@Override
 	public String wsName() {
 		return wsName;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.iwant.entry3.WsInfo#wsRoot()
-	 */
 	@Override
 	public File wsRoot() {
 		return wsRoot;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.iwant.entry3.WsInfo#wsdefdefSrc()
-	 */
 	@Override
-	public File wsdefdefSrc() {
+	public File wsdefdefModule() {
 		try {
-			return wsdefdefSrc.getCanonicalFile();
+			return wsdefdefModule.getCanonicalFile();
 		} catch (IOException e) {
 			throw new IllegalArgumentException(e);
 		}
+	}
+
+	@Override
+	public File wsdefdefSrc() {
+		return new File(wsdefdefModule(), "src/main/java");
 	}
 
 	@Override

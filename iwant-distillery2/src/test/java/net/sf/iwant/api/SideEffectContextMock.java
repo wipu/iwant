@@ -11,7 +11,6 @@ public class SideEffectContextMock implements SideEffectContext {
 	private final TestArea testArea;
 	private WsInfoMock wsInfo;
 	private File wsRoot;
-	private JavaClasses wsdefClassesTarget;
 	private final TargetEvaluationContextMock evaluationCtx;
 
 	public SideEffectContextMock(TestArea testArea,
@@ -47,15 +46,6 @@ public class SideEffectContextMock implements SideEffectContext {
 	@Override
 	public OutputStream err() {
 		throw new UnsupportedOperationException("TODO test and implement");
-	}
-
-	@Override
-	public JavaClasses wsdDefClassesTarget() {
-		return nonNull(wsdefClassesTarget, "wsdDefClassesTarget");
-	}
-
-	public void hasWsdefClassesTarget(JavaClasses wsdefClassesTarget) {
-		this.wsdefClassesTarget = wsdefClassesTarget;
 	}
 
 	@Override

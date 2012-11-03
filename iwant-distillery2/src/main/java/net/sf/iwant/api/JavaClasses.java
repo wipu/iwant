@@ -51,6 +51,14 @@ public class JavaClasses extends Target {
 	}
 
 	private static List<File> javaFilesUnder(File dir) {
+		if (!dir.exists()) {
+			throw new IllegalArgumentException(
+					"Source directory does not exist: " + dir);
+		}
+		if (!dir.isDirectory()) {
+			throw new IllegalArgumentException("Source is not a directory: "
+					+ dir);
+		}
 		List<File> srcFiles = new ArrayList<File>();
 		File[] files = dir.listFiles();
 		Arrays.sort(files);

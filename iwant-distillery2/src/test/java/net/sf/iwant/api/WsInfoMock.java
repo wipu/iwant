@@ -4,7 +4,7 @@ import java.io.File;
 
 public class WsInfoMock implements WsInfo {
 
-	private File wsdefdefSrc;
+	private File wsdefdefModule;
 	private String wsName;
 	private File wsRoot;
 
@@ -35,12 +35,17 @@ public class WsInfoMock implements WsInfo {
 	}
 
 	@Override
-	public File wsdefdefSrc() {
-		return nonNull(wsdefdefSrc, "wsdefdefSrc");
+	public File wsdefdefModule() {
+		return nonNull(wsdefdefModule, "wsdefdefModule");
 	}
 
-	public void hasWsdefdefSrc(File wsdefdefSrc) {
-		this.wsdefdefSrc = wsdefdefSrc;
+	public void hasWsdefdefModule(File wsdefdefModule) {
+		this.wsdefdefModule = wsdefdefModule;
+	}
+
+	@Override
+	public File wsdefdefSrc() {
+		return new File(wsdefdefModule(), "src/main/java");
 	}
 
 	@Override

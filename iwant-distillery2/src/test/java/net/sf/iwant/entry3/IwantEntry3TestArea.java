@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import junit.framework.Assert;
 import net.sf.iwant.testarea.TestArea;
 
 public class IwantEntry3TestArea extends TestArea {
@@ -16,6 +17,14 @@ public class IwantEntry3TestArea extends TestArea {
 			return file;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	public void shallContainFragmentIn(String path, String fragment) {
+		String actual = contentOf(path);
+		if (!actual.contains(fragment)) {
+			Assert.assertEquals("File " + path + "\nshould contain:\n"
+					+ fragment, actual);
 		}
 	}
 

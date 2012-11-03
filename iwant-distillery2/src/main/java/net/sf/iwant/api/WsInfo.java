@@ -8,6 +8,8 @@ public interface WsInfo {
 
 	File wsRoot();
 
+	File wsdefdefModule();
+
 	File wsdefdefSrc();
 
 	String wsdefClass();

@@ -148,4 +148,52 @@ public class JavaClassesTest extends TestCase {
 				target.contentDescriptor());
 	}
 
+	public void testEmptySourceDirectoryCausesFriendlyError() throws Exception {
+		File srcDir = new File(wsRoot, "src");
+		srcDir.mkdirs();
+		Source src = Source.underWsroot("src");
+		Target target = new JavaClasses("empty", src,
+				Collections.<Path> emptyList());
+
+		try {
+			target.path(ctx);
+			fail();
+		} catch (IwantException e) {
+			assertEquals("Compilation failed.", e.getMessage());
+		}
+	}
+
+	public void testMissingSourceDirectoryCausesFriendlyError()
+			throws Exception {
+		Source src = Source.underWsroot("missing-src");
+		Target target = new JavaClasses("missing", src,
+				Collections.<Path> emptyList());
+
+		try {
+			target.path(ctx);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Source directory does not exist: " + wsRoot
+					+ "/missing-src", e.getMessage());
+		}
+	}
+
+	public void testUsingNonDirectoryAsSourceDirectoryCausesFriendlyError()
+			throws Exception {
+		wsRoot.mkdirs();
+		File srcFile = new File(wsRoot, "Valid.java");
+		new FileWriter(srcFile).append("class Valid {}").close();
+		Source src = Source.underWsroot("Valid.java");
+		Target target = new JavaClasses("non-dir", src,
+				Collections.<Path> emptyList());
+
+		try {
+			target.path(ctx);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Source is not a directory: " + srcFile,
+					e.getMessage());
+		}
+	}
+
 }

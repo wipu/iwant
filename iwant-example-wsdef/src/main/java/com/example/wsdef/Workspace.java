@@ -7,6 +7,7 @@ import net.sf.iwant.api.EclipseSettings;
 import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.SideEffect;
+import net.sf.iwant.api.SideEffectDefinitionContext;
 import net.sf.iwant.api.Target;
 
 public class Workspace implements IwantWorkspace {
@@ -17,9 +18,14 @@ public class Workspace implements IwantWorkspace {
 	}
 
 	@Override
-	public List<? extends SideEffect> sideEffects() {
-		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")
-				.end());
+	public List<? extends SideEffect> sideEffects(
+			SideEffectDefinitionContext ctx) {
+		return Arrays
+				.asList(EclipseSettings
+						.with()
+						.name("eclipse-settings")
+						.modules(ctx.wsdefdefJavaModule(),
+								ctx.wsdefJavaModule()).end());
 	}
 
 }

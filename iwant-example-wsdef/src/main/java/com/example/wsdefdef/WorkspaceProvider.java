@@ -1,22 +1,15 @@
 package com.example.wsdefdef;
 
-import java.util.Arrays;
-
 import net.sf.iwant.api.IwantWorkspaceProvider;
-import net.sf.iwant.api.JavaClasses;
-import net.sf.iwant.api.Path;
-import net.sf.iwant.api.Source;
+import net.sf.iwant.api.JavaModule;
 
 public class WorkspaceProvider implements IwantWorkspaceProvider {
 
 	@Override
-	public JavaClasses workspaceClasses(Path iwantApiClasses) {
-		return new JavaClasses("workspaceClasses", workspaceSrc(),
-				Arrays.asList(iwantApiClasses));
-	}
-
-	private static Source workspaceSrc() {
-		return Source.underWsroot("WSDEF_SRC");
+	public JavaModule workspaceModule(JavaModule iwantApiClasses) {
+		return JavaModule.with().name("WSNAME-workspace")
+				.locationUnderWsRoot("as-WSNAME-developer/i-have/wsdef")
+				.mainJava("src/main/java").mainDeps(iwantApiClasses).end();
 	}
 
 	@Override

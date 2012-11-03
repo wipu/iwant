@@ -5,10 +5,11 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import net.sf.iwant.api.IwantWorkspace;
-import net.sf.iwant.api.JavaClasses;
+import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.SideEffectContext;
+import net.sf.iwant.api.SideEffectDefinitionContext;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TargetEvaluationContext;
 import net.sf.iwant.api.WsInfo;
@@ -24,21 +25,23 @@ public class WishEvaluator {
 	private final Iwant iwant;
 	private final WsInfo wsInfo;
 	private final Ctx ctx;
-	private final JavaClasses wsdDefClassesTarget;
 	private final Caches caches;
 	private final int workerCount;
+	private final JavaModule wsdefdefJavaModule;
+	private final JavaModule wsdefJavaModule;
 
 	public WishEvaluator(OutputStream out, OutputStream err, File wsRoot,
-			Iwant iwant, WsInfo wsInfo, JavaClasses wsdDefClassesTarget,
-			Caches caches, int workerCount) {
+			Iwant iwant, WsInfo wsInfo, Caches caches, int workerCount,
+			JavaModule wsdefdefJavaModule, JavaModule wsdefJavaModule) {
 		this.out = out;
 		this.err = err;
 		this.wsRoot = wsRoot;
 		this.iwant = iwant;
 		this.wsInfo = wsInfo;
-		this.wsdDefClassesTarget = wsdDefClassesTarget;
 		this.caches = caches;
 		this.workerCount = workerCount;
+		this.wsdefdefJavaModule = wsdefdefJavaModule;
+		this.wsdefJavaModule = wsdefJavaModule;
 		this.ctx = new Ctx();
 	}
 
@@ -57,7 +60,7 @@ public class WishEvaluator {
 		}
 		if ("list-of/side-effects".equals(wish)) {
 			PrintWriter wr = new PrintWriter(out);
-			for (SideEffect se : ws.sideEffects()) {
+			for (SideEffect se : ws.sideEffects(ctx)) {
 				wr.println(se.name());
 			}
 			wr.close();
@@ -73,7 +76,7 @@ public class WishEvaluator {
 				return;
 			}
 		}
-		for (SideEffect se : ws.sideEffects()) {
+		for (SideEffect se : ws.sideEffects(ctx)) {
 			if (("side-effect/" + se.name() + "/effective").equals(wish)) {
 				try {
 					se.mutate(ctx);
@@ -134,7 +137,8 @@ public class WishEvaluator {
 		wr.close();
 	}
 
-	private class Ctx implements TargetEvaluationContext, SideEffectContext {
+	private class Ctx implements TargetEvaluationContext, SideEffectContext,
+			SideEffectDefinitionContext {
 
 		@Override
 		public Iwant iwant() {
@@ -162,13 +166,18 @@ public class WishEvaluator {
 		}
 
 		@Override
-		public JavaClasses wsdDefClassesTarget() {
-			return wsdDefClassesTarget;
+		public TargetEvaluationContext targetEvaluationContext() {
+			return this;
 		}
 
 		@Override
-		public TargetEvaluationContext targetEvaluationContext() {
-			return this;
+		public JavaModule wsdefdefJavaModule() {
+			return wsdefdefJavaModule;
+		}
+
+		@Override
+		public JavaModule wsdefJavaModule() {
+			return wsdefJavaModule;
 		}
 
 	}

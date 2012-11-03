@@ -22,8 +22,10 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		StringBuilder b = new StringBuilder();
 		b.append("package com.example.wsdef;\n");
 		b.append("public class WorkspaceProvider implements IwantWorkspaceProvider {\n");
-		b.append("	private static Source workspaceSrc() {\n");
-		b.append("		return Source.underWsroot(\"WSDEF_SRC\");\n");
+		b.append("	public JavaModule workspaceModule(JavaModule iwantApiClasses) {\n");
+		b.append("		return JavaModule.with().name(\"WSNAME-workspace\")\n");
+		b.append("				.locationUnderWsRoot(\"as-WSNAME-developer/i-have/wsdef\")\n");
+		b.append("				.mainJava(\"src/main/java\").mainDeps(iwantApiClasses).end();\n");
 		b.append("	}\n");
 		b.append("}\n");
 
@@ -60,15 +62,13 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		expectedWsdefdefStart
 				.append("public class Ws1 implements IwantWorkspaceProvider {\n");
 		expectedWsdefdefStart
-				.append("	private static Source workspaceSrc() {\n");
+				.append("	public JavaModule workspaceModule(JavaModule iwantApiClasses) {\n");
 		expectedWsdefdefStart
-				.append("		return Source.underWsroot(\"as-x1/i-have/wsdef"
-						+ "/src/main/java\");\n");
-		expectedWsdefdefStart.append("	}\n");
-		expectedWsdefdefStart.append("}\n");
+				.append("		return JavaModule.with().name(\"x1-workspace\")\n");
+		expectedWsdefdefStart
+				.append("				.locationUnderWsRoot(\"as-x1-developer/i-have/wsdef\")\n");
 
-		assertChangeWsdefdefTo("new.package1", "Ws1",
-				"as-x1/i-have/wsdef/src/main/java");
+		assertChangeWsdefdefTo("new.package1", "Ws1", "x1");
 	}
 
 	public void testWsdefdefName2() throws IOException {
@@ -76,15 +76,13 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		expectedWsdefdefStart
 				.append("public class Ws2 implements IwantWorkspaceProvider {\n");
 		expectedWsdefdefStart
-				.append("	private static Source workspaceSrc() {\n");
+				.append("	public JavaModule workspaceModule(JavaModule iwantApiClasses) {\n");
 		expectedWsdefdefStart
-				.append("		return Source.underWsroot(\"as-x2/i-have/wsdef"
-						+ "/src/main/java\");\n");
-		expectedWsdefdefStart.append("	}\n");
-		expectedWsdefdefStart.append("}\n");
+				.append("		return JavaModule.with().name(\"x2-workspace\")\n");
+		expectedWsdefdefStart
+				.append("				.locationUnderWsRoot(\"as-x2-developer/i-have/wsdef\")\n");
 
-		assertChangeWsdefdefTo("new.package2", "Ws2",
-				"as-x2/i-have/wsdef/src/main/java");
+		assertChangeWsdefdefTo("new.package2", "Ws2", "x2");
 	}
 
 	public void testWsdefName1() throws IOException {

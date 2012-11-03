@@ -1,8 +1,6 @@
 package net.sf.iwant.api;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
@@ -19,6 +17,7 @@ public class EclipseSettingsTest extends TestCase {
 	private IwantNetworkMock network;
 	private CachesMock caches;
 	private File wsRoot;
+	private File cacheDir;
 
 	@Override
 	public void setUp() {
@@ -30,21 +29,20 @@ public class EclipseSettingsTest extends TestCase {
 		ctx = new SideEffectContextMock(testArea,
 				new TargetEvaluationContextMock(iwant, caches));
 		ctx.hasWsRoot(testArea.root());
-		ctx.wsInfo().hasWsdefdefSrc(
-				testArea.newDir("as-someone/i-have/wsdefdef"));
+		File wsdefdef = testArea.newDir("as-someone/i-have/wsdefdef");
+		testArea.newDir("as-someone/i-have/wsdef");
+		ctx.wsInfo().hasWsdefdefModule(wsdefdef);
 		ctx.wsInfo().hasWsName(getClass().getSimpleName());
-		ctx.hasWsdefClassesTarget(new JavaClasses("wsdef-classes", Source
-				.underWsroot("as-someone/i-have/wsdef"), Collections
-				.<Path> emptyList()));
-		caches.cachesModifiableTargetsAt(testArea.newDir("cached-modifiable"));
+		cacheDir = testArea.newDir("cached-modifiable");
+		caches.cachesModifiableTargetsAt(cacheDir);
 	}
 
-	private void assertDotClasspathContains(String fragment) {
-		assertFileContains(".classpath", fragment);
+	private void assertDotClasspathContains(String project, String fragment) {
+		assertFileContains(project + "/.classpath", fragment);
 	}
 
-	private void assertDotProjectContains(String fragment) {
-		assertFileContains(".project", fragment);
+	private void assertDotProjectContains(String project, String fragment) {
+		assertFileContains(project + "/.project", fragment);
 	}
 
 	private void assertFileContains(String filename, String fragment) {
@@ -58,35 +56,48 @@ public class EclipseSettingsTest extends TestCase {
 		}
 	}
 
-	public void testDefaultValues() {
-		EclipseSettings es = EclipseSettings.with().name("es").end();
+	public void testMutationUsingWsdefdefAndWsdefAndAnotherModuleUsedByWsdef() {
+		JavaModule iwantClasses = JavaModule.implicitLibrary(new TargetMock(
+				"iwant-classes"));
+		JavaModule wsdefdef = JavaModule.with().name("test-wsdefdef")
+				.locationUnderWsRoot("as-someone/i-have/wsdefdef")
+				.mainJava("src/main/java").mainDeps(iwantClasses).end();
+		testArea.newDir("utils/wsdef-tools");
+		JavaModule wsdefTools = JavaModule.with().name("test-wsdef-tools")
+				.locationUnderWsRoot("utils/wsdef-tools").mainJava("src").end();
+		JavaModule wsdef = JavaModule.with().name("test-wsdef")
+				.locationUnderWsRoot("as-someone/i-have/wsdef")
+				.mainJava("src/main/java").mainDeps(iwantClasses, wsdefTools)
+				.end();
+		EclipseSettings es = EclipseSettings.with()
+				.modules(wsdefdef, wsdefTools, wsdef).name("es").end();
 
 		es.mutate(ctx);
 
-		assertDotProjectContains("<name>EclipseSettingsTest</name>");
+		assertDotProjectContains("as-someone/i-have/wsdefdef",
+				"<name>test-wsdefdef</name>");
+		assertDotProjectContains("as-someone/i-have/wsdef",
+				"<name>test-wsdef</name>");
+		assertDotProjectContains("utils/wsdef-tools",
+				"<name>test-wsdef-tools</name>");
 
-		assertDotClasspathContains("<classpathentry kind=\"src\" path=\"as-someone/i-have/wsdefdef\"/>");
-		assertDotClasspathContains("<classpathentry kind=\"src\" path=\"as-someone/i-have/wsdef\"/>");
-	}
+		assertDotClasspathContains("as-someone/i-have/wsdefdef",
+				"<classpathentry kind=\"src\" path=\"src/main/java\"/>");
+		assertDotClasspathContains("as-someone/i-have/wsdefdef",
+				"<classpathentry kind=\"lib\" path=\"" + cacheDir
+						+ "/iwant-classes\"/>");
 
-	public void testDifferentValues() {
-		ctx.wsInfo().hasWsdefdefSrc(
-				testArea.newDir("as-someone2/i-have/wsdefdef2"));
-		ctx.wsInfo().hasWsName("different-wsname");
-		ctx.hasWsdefClassesTarget(new JavaClasses("wsdef-classes", Source
-				.underWsroot("as-someone2/i-have/wsdef2"), Arrays.asList(
-				new TargetMock("lib1"), new TargetMock("lib2"))));
+		assertDotClasspathContains("utils/wsdef-tools",
+				"<classpathentry kind=\"src\" path=\"src\"/>");
 
-		EclipseSettings es = EclipseSettings.with().name("es").end();
-
-		es.mutate(ctx);
-
-		assertDotProjectContains("<name>different-wsname</name>");
-
-		assertDotClasspathContains("<classpathentry kind=\"src\" path=\"as-someone2/i-have/wsdefdef2\"/>");
-		assertDotClasspathContains("<classpathentry kind=\"src\" path=\"as-someone2/i-have/wsdef2\"/>");
-		assertDotClasspathContains("<classpathentry kind=\"lib\" path=\"cached-modifiable/lib1\"/>");
-		assertDotClasspathContains("<classpathentry kind=\"lib\" path=\"cached-modifiable/lib2\"/>");
+		assertDotClasspathContains("as-someone/i-have/wsdef",
+				"<classpathentry kind=\"src\" path=\"src/main/java\"/>");
+		assertDotClasspathContains("as-someone/i-have/wsdef",
+				"<classpathentry kind=\"lib\" path=\"" + cacheDir
+						+ "/iwant-classes\"/>");
+		assertDotClasspathContains("as-someone/i-have/wsdef",
+				"<classpathentry combineaccessrules=\"false\""
+						+ " kind=\"src\" path=\"/test-wsdef-tools\"/>");
 	}
 
 }

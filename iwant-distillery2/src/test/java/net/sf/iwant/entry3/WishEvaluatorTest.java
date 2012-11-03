@@ -10,13 +10,14 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.EclipseSettings;
-import net.sf.iwant.api.ExternalSource;
 import net.sf.iwant.api.HelloSideEffect;
 import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.JavaClasses;
+import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.SideEffect;
+import net.sf.iwant.api.SideEffectDefinitionContext;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.WsInfoMock;
@@ -34,8 +35,9 @@ public class WishEvaluatorTest extends TestCase {
 	private IwantNetworkMock network;
 	private Iwant iwant;
 	private WsInfoMock wsInfo;
-	private JavaClasses wsdDefClassesTarget;
 	private Caches caches;
+	private JavaModule wsdefdefJavaModule;
+	private JavaModule wsdefJavaModule;
 
 	@Override
 	public void setUp() throws IOException {
@@ -48,14 +50,15 @@ public class WishEvaluatorTest extends TestCase {
 		err = new ByteArrayOutputStream();
 		wsInfo = new WsInfoMock();
 		wsInfo.hasWsRoot(wsRoot);
-		wsdDefClassesTarget = new JavaClasses("wsdef-classes",
-				new ExternalSource(testArea.newDir("wsdef")),
-				Collections.<Path> emptyList());
+		wsdefdefJavaModule = JavaModule.with().name("wsdefdef")
+				.locationUnderWsRoot("wsdefdef").mainJava("src").end();
+		wsdefJavaModule = JavaModule.with().name("wsdef")
+				.locationUnderWsRoot("wsdef").mainJava("src").end();
 		caches = new CachesImpl(new File(asSomeone, ".i-cached"),
 				wsInfo.wsRoot(), network);
 		int workerCount = 1;
-		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo,
-				wsdDefClassesTarget, caches, workerCount);
+		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
+				workerCount, wsdefdefJavaModule, wsdefJavaModule);
 	}
 
 	private class Hello implements IwantWorkspace {
@@ -66,7 +69,8 @@ public class WishEvaluatorTest extends TestCase {
 		}
 
 		@Override
-		public List<? extends SideEffect> sideEffects() {
+		public List<? extends SideEffect> sideEffects(
+				SideEffectDefinitionContext ctx) {
 			return Collections.emptyList();
 		}
 
@@ -81,7 +85,8 @@ public class WishEvaluatorTest extends TestCase {
 		}
 
 		@Override
-		public List<? extends SideEffect> sideEffects() {
+		public List<? extends SideEffect> sideEffects(
+				SideEffectDefinitionContext ctx) {
 			return Collections.emptyList();
 		}
 
@@ -309,7 +314,8 @@ public class WishEvaluatorTest extends TestCase {
 		}
 
 		@Override
-		public List<? extends SideEffect> sideEffects() {
+		public List<? extends SideEffect> sideEffects(
+				SideEffectDefinitionContext ctx) {
 			return Arrays.asList(EclipseSettings.with()
 					.name("eclipse-settings").end());
 		}
@@ -324,7 +330,8 @@ public class WishEvaluatorTest extends TestCase {
 		}
 
 		@Override
-		public List<? extends SideEffect> sideEffects() {
+		public List<? extends SideEffect> sideEffects(
+				SideEffectDefinitionContext ctx) {
 			return Arrays.asList(new HelloSideEffect("hello-1"),
 					new HelloSideEffect("hello-2"));
 		}

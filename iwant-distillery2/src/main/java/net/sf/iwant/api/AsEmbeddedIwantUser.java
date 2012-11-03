@@ -61,13 +61,14 @@ public class AsEmbeddedIwantUser {
 						File iwantApiClasses = null;
 						Iwant iwant = Iwant.usingRealNetwork();
 						WsInfo wsInfo = null;
-						JavaClasses wsdDefClassesTarget = null;
 						Caches caches = new CachesImpl(wsCache,
 								iwantApiClasses, iwant.network());
 						int workerCount = 1;
+						JavaModule wsdefdefJavaModule = null;
+						JavaModule wsdefJavaModule = null;
 						WishEvaluator evaluator = new WishEvaluator(out, err,
-								wsRoot, iwant, wsInfo, wsdDefClassesTarget,
-								caches, workerCount);
+								wsRoot, iwant, wsInfo, caches, workerCount,
+								wsdefdefJavaModule, wsdefJavaModule);
 						evaluator.asPath(target);
 						out.close();
 						String cachedTarget = out.toString();

@@ -9,6 +9,6 @@ public interface IwantWorkspace {
 	 */
 	List<? extends Target> targets();
 
-	List<? extends SideEffect> sideEffects();
+	List<? extends SideEffect> sideEffects(SideEffectDefinitionContext ctx);
 
 }

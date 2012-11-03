@@ -38,8 +38,8 @@ public class WsInfoTest extends TestCase {
 
 	public void testMissingWsname() throws IOException {
 		in.append("WSROOT=../../..\n");
-		in.append("WSDEF_SRC=../wsdef/src/main/java\n");
-		in.append("WSDEF_CLASS=com.example.wsdef.Workspace\n");
+		in.append("WSDEFDEF_MODULE=../wsdef\n");
+		in.append("WSDEFDEF_CLASS=com.example.wsdef.Workspace\n");
 
 		try {
 			newWsInfo();
@@ -54,8 +54,8 @@ public class WsInfoTest extends TestCase {
 
 	public void testMissingWsroot() throws IOException {
 		in.append("WSNAME=example\n");
-		in.append("WSDEF_SRC=../wsdef/src/main/java\n");
-		in.append("WSDEF_CLASS=com.example.wsdef.Workspace\n");
+		in.append("WSDEFDEF_MODULE=../wsdef\n");
+		in.append("WSDEFDEF_CLASS=com.example.wsdef.Workspace\n");
 
 		try {
 			newWsInfo();
@@ -68,33 +68,33 @@ public class WsInfoTest extends TestCase {
 
 	}
 
-	public void testMissingWsdefSrc() throws IOException {
+	public void testMissingWsdefdefModule() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
-		in.append("WSDEF_CLASS=com.example.wsdef.Workspace\n");
+		in.append("WSDEFDEF_CLASS=com.example.wsdef.Workspace\n");
 
 		try {
 			newWsInfo();
 			fail();
 		} catch (IwantException e) {
 			assertEquals(
-					"Please specify WSDEF_SRC in /project/as-test/i-have/conf/wsinfo",
+					"Please specify WSDEFDEF_MODULE in /project/as-test/i-have/conf/wsinfo",
 					e.getMessage());
 		}
 
 	}
 
-	public void testMissingWsdefClass() throws IOException {
+	public void testMissingWsdefdefClass() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
-		in.append("WSDEF_SRC=../wsdef/src/main/java\n");
+		in.append("WSDEFDEF_MODULE=../wsdef\n");
 
 		try {
 			newWsInfo();
 			fail();
 		} catch (IwantException e) {
 			assertEquals(
-					"Please specify WSDEF_CLASS in /project/as-test/i-have/conf/wsinfo",
+					"Please specify WSDEFDEF_CLASS in /project/as-test/i-have/conf/wsinfo",
 					e.getMessage());
 		}
 
@@ -103,13 +103,15 @@ public class WsInfoTest extends TestCase {
 	public void testValid() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
-		in.append("WSDEF_SRC=../wsdef/src/main/java\n");
-		in.append("WSDEF_CLASS=com.example.wsdef.Workspace\n");
+		in.append("WSDEFDEF_MODULE=../wsdef\n");
+		in.append("WSDEFDEF_CLASS=com.example.wsdef.Workspace\n");
 
 		WsInfo wsInfo = newWsInfo();
 
 		assertEquals("example", wsInfo.wsName());
 		assertEquals("/project", wsInfo.wsRoot().toString());
+		assertEquals("/project/as-test/i-have/wsdef", wsInfo.wsdefdefModule()
+				.getCanonicalPath());
 		assertEquals("/project/as-test/i-have/wsdef/src/main/java", wsInfo
 				.wsdefdefSrc().getCanonicalPath());
 		assertEquals("com.example.wsdef.Workspace", wsInfo.wsdefClass());
@@ -123,19 +125,21 @@ public class WsInfoTest extends TestCase {
 	public void testValidWithDifferentValues() throws IOException {
 		in.append("WSNAME=example2\n");
 		in.append("WSROOT=../../../wsroot\n");
-		in.append("WSDEF_SRC=../../../wsroot/wsdefinition\n");
-		in.append("WSDEF_CLASS=com.example2.wsdef.Workspace2\n");
+		in.append("WSDEFDEF_MODULE=../../../wsroot/wsdefinition\n");
+		in.append("WSDEFDEF_CLASS=com.example2.wsdef.Workspace2\n");
 
 		WsInfo wsInfo = newWsInfo();
 
 		assertEquals("example2", wsInfo.wsName());
 		assertEquals("/project/wsroot", wsInfo.wsRoot().getCanonicalPath());
-		assertEquals("/project/wsroot/wsdefinition", wsInfo.wsdefdefSrc()
+		assertEquals("/project/wsroot/wsdefinition", wsInfo.wsdefdefModule()
 				.toString());
+		assertEquals("/project/wsroot/wsdefinition/src/main/java", wsInfo
+				.wsdefdefSrc().toString());
 		assertEquals("com.example2.wsdef.Workspace2", wsInfo.wsdefClass());
-		assertEquals(
-				"/project/wsroot/wsdefinition/com/example2/wsdef/Workspace2.java",
-				wsInfo.wsdefdefJava().toString());
+		assertEquals("/project/wsroot/wsdefinition/src/main/java/"
+				+ "com/example2/wsdef/Workspace2.java", wsInfo.wsdefdefJava()
+				.toString());
 		assertEquals("com.example2.wsdef", wsInfo.wsdefdefPackage());
 		assertEquals("Workspace2", wsInfo.wsdefdefClassSimpleName());
 	}

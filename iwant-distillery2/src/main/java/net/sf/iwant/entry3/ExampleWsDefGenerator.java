@@ -29,15 +29,14 @@ class ExampleWsDefGenerator {
 	}
 
 	static String exampleWsdefdef(File iwantWsRoot, String newPackage,
-			String newName, String relativeWsdefSrc) throws IOException {
+			String newName, String wsName) throws IOException {
 		String src = exampleJava(iwantWsRoot,
 				"com/example/wsdefdef/WorkspaceProvider.java");
 		String out = src.replaceFirst("package.*;", "package " + newPackage
 				+ ";");
 		out = out.replaceFirst("class WorkspaceProvider ", "class " + newName
 				+ " ");
-		out = out.replaceAll("return Source\\.underWsroot\\(\"WSDEF_SRC\"",
-				"return Source.underWsroot(\"" + relativeWsdefSrc + "\"");
+		out = out.replaceAll("WSNAME", wsName);
 		return out;
 	}
 
