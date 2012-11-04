@@ -327,6 +327,17 @@
 = In progress
 #################################################################
 
+- As @developer I want the old iwant build to use the current distillery version of iwant so I can get start getting rid of the old main branch
+  + practice eclipse project declaration in dummy project first
+  - make the change, using svn:externals to control version
+    * keep current wsdef, for copying website building and tagging scripts
+  - generate all eclipse projects
+  - svn:ignore generated eclipse setting files
+  - create public (remote) version of the bootstrapping tutorial
+  - adapt the current iwant ws to use the new bs tutorials
+  - adapt the static html
+  - delete old wsdef 
+
 #################################################################
 = Planned
 #################################################################
