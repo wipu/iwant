@@ -332,6 +332,16 @@
   - make the change, using svn:externals to control version
     * keep current wsdef, for copying website building and tagging scripts
   - generate all eclipse projects
+    + first wsdef and wsdefdef
+    + delete as-iwant-developer eclipse settings
+    + delete iwant-lib-{ant,junit}
+    + delete iwant-core as eclipse-project, keeping the files
+    + delete ref to lib-junit from distillery projects
+    - generate eclipse settings for all projects
+      - testJava and testDeps for JavaModule
+      - testJava and testDeps affect .classpath
+      - upgrade svn:externalized iwant to utilize these
+      - then make iwant ws generate all eclipse settings
   - svn:ignore generated eclipse setting files
   - create public (remote) version of the bootstrapping tutorial
   - adapt the current iwant ws to use the new bs tutorials
