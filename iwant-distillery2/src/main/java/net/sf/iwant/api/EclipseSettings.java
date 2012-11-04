@@ -77,15 +77,14 @@ public class EclipseSettings implements SideEffect {
 		}
 	}
 
-	private DotClasspathSpex dotClasspathWithDep(SideEffectContext ctx,
+	private static DotClasspathSpex dotClasspathWithDep(SideEffectContext ctx,
 			DotClasspathSpex dotClasspath, JavaModule dep) {
 		if (dep.isExplicit()) {
-			dotClasspath = dotClasspath.srcDep(dep.name());
+			return dotClasspath.srcDep(dep.name());
 		} else {
-			dotClasspath = dotClasspath.binDep(ctx.targetEvaluationContext()
+			return dotClasspath.binDep(ctx.targetEvaluationContext()
 					.cached(dep.mainClasses()).getAbsolutePath());
 		}
-		return dotClasspath;
 	}
 
 	public static EclipseSettingsSpex with() {
