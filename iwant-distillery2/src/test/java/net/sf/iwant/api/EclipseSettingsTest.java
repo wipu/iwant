@@ -100,4 +100,52 @@ public class EclipseSettingsTest extends TestCase {
 						+ " kind=\"src\" path=\"/test-wsdef-tools\"/>");
 	}
 
+	public void testNoSourcesMeansNoSources() {
+		JavaModule srcless = JavaModule.with().name("any")
+				.locationUnderWsRoot("any").end();
+		testArea.newDir("any");
+
+		EclipseSettings es = EclipseSettings.with().modules(srcless).name("es")
+				.end();
+
+		es.mutate(ctx);
+
+		assertFalse(testArea.contentOf("any/.classpath").contains(
+				"<classpathentry kind=\"src\" "));
+	}
+
+	public void testTestJavaAndTestDepsAffectDotClasspath() {
+		JavaModule testTools1 = JavaModule.implicitLibrary(new TargetMock(
+				"test-tools-1"));
+		JavaModule testTools2 = JavaModule.implicitLibrary(new TargetMock(
+				"test-tools-2"));
+
+		JavaModule mod1 = JavaModule.with().name("mod1")
+				.locationUnderWsRoot("mod1").mainJava("src").testJava("tests1")
+				.testDeps(testTools1).end();
+		JavaModule mod2 = JavaModule.with().name("mod2")
+				.locationUnderWsRoot("mod2").mainJava("src2")
+				.testJava("tests2").testDeps(testTools2).end();
+		testArea.newDir("mod1");
+		testArea.newDir("mod2");
+
+		EclipseSettings es = EclipseSettings.with().modules(mod1, mod2)
+				.name("es").end();
+
+		es.mutate(ctx);
+
+		assertDotClasspathContains("mod1",
+				"<classpathentry kind=\"src\" path=\"tests1\"/>");
+		assertDotClasspathContains("mod2",
+				"<classpathentry kind=\"src\" path=\"tests2\"/>");
+
+		assertDotClasspathContains("mod1",
+				"<classpathentry kind=\"lib\" path=\"" + cacheDir
+						+ "/test-tools-1\"/>");
+		assertDotClasspathContains("mod2",
+				"<classpathentry kind=\"lib\" path=\"" + cacheDir
+						+ "/test-tools-2\"/>");
+
+	}
+
 }

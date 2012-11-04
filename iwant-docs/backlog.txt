@@ -338,8 +338,8 @@
     + delete iwant-core as eclipse-project, keeping the files
     + delete ref to lib-junit from distillery projects
     - generate eclipse settings for all projects
-      - testJava and testDeps for JavaModule
-      - testJava and testDeps affect .classpath
+      + testJava and testDeps for JavaModule
+      + testJava and testDeps affect .classpath
       - upgrade svn:externalized iwant to utilize these
       - then make iwant ws generate all eclipse settings
   - svn:ignore generated eclipse setting files

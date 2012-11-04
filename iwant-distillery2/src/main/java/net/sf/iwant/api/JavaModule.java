@@ -11,18 +11,23 @@ public class JavaModule implements Comparable<JavaModule> {
 	private final String mainJava;
 	private final List<JavaModule> mainDeps;
 	private final Path mainClasses;
+	private final String testJava;
+	private final List<JavaModule> testDeps;
 
 	private JavaModule(String name, String locationUnderWsRoot,
-			String mainJava, List<JavaModule> mainDeps, Path mainClasses) {
+			String mainJava, List<JavaModule> mainDeps, Path mainClasses,
+			String testJava, List<JavaModule> testDeps) {
 		this.name = name;
 		this.locationUnderWsRoot = locationUnderWsRoot;
 		this.mainJava = mainJava;
 		this.mainDeps = mainDeps;
 		this.mainClasses = mainClasses;
+		this.testJava = testJava;
+		this.testDeps = testDeps;
 	}
 
 	public static JavaModule implicitLibrary(Path path) {
-		return new JavaModule(path.name(), null, null, null, path);
+		return new JavaModule(path.name(), null, null, null, path, null, null);
 	}
 
 	public static JavaModuleSpex with() {
@@ -34,7 +39,9 @@ public class JavaModule implements Comparable<JavaModule> {
 		private String name;
 		private String locationUnderWsRoot;
 		private String mainJava;
+		private String testJava;
 		private final List<JavaModule> mainDeps = new ArrayList<JavaModule>();
+		private final List<JavaModule> testDeps = new ArrayList<JavaModule>();
 
 		public JavaModuleSpex name(String name) {
 			this.name = name;
@@ -51,8 +58,18 @@ public class JavaModule implements Comparable<JavaModule> {
 			return this;
 		}
 
+		public JavaModuleSpex testJava(String testJava) {
+			this.testJava = testJava;
+			return this;
+		}
+
 		public JavaModuleSpex mainDeps(JavaModule... mainDeps) {
 			this.mainDeps.addAll(Arrays.asList(mainDeps));
+			return this;
+		}
+
+		public JavaModuleSpex testDeps(JavaModule... testDeps) {
+			this.testDeps.addAll(Arrays.asList(testDeps));
 			return this;
 		}
 
@@ -65,7 +82,7 @@ public class JavaModule implements Comparable<JavaModule> {
 			}
 			return new JavaModule(name, locationUnderWsRoot, mainJava,
 					mainDeps, new JavaClasses(name + "-main-classes", srcDir,
-							classLocations));
+							classLocations), testJava, testDeps);
 		}
 
 	}
@@ -82,8 +99,16 @@ public class JavaModule implements Comparable<JavaModule> {
 		return mainJava;
 	}
 
+	public String testJava() {
+		return testJava;
+	}
+
 	public List<JavaModule> mainDeps() {
 		return mainDeps;
+	}
+
+	public List<JavaModule> testDeps() {
+		return testDeps;
 	}
 
 	public Path mainClasses() {

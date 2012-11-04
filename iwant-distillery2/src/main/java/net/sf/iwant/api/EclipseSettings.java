@@ -43,16 +43,19 @@ public class EclipseSettings implements SideEffect {
 			throws IOException {
 		for (JavaModule module : javaModules) {
 			DotProject dotProject = DotProject.named(module.name()).end();
-			DotClasspathSpex dotClasspath = DotClasspath.with().src(
-					module.mainJava());
+
+			DotClasspathSpex dotClasspath = DotClasspath.with();
+			if (module.mainJava() != null) {
+				dotClasspath = dotClasspath.src(module.mainJava());
+			}
+			if (module.testJava() != null) {
+				dotClasspath = dotClasspath.src(module.testJava());
+			}
 			for (JavaModule dep : module.mainDeps()) {
-				if (dep.isExplicit()) {
-					dotClasspath = dotClasspath.srcDep(dep.name());
-				} else {
-					dotClasspath = dotClasspath.binDep(ctx
-							.targetEvaluationContext()
-							.cached(dep.mainClasses()).getAbsolutePath());
-				}
+				dotClasspath = dotClasspathWithDep(ctx, dotClasspath, dep);
+			}
+			for (JavaModule dep : module.testDeps()) {
+				dotClasspath = dotClasspathWithDep(ctx, dotClasspath, dep);
 			}
 
 			File moduleRoot = new File(ctx.wsRoot(),
@@ -72,6 +75,17 @@ public class EclipseSettings implements SideEffect {
 					OrgEclipseJdtUiPrefs.withDefaultValues().asFileContent())
 					.close();
 		}
+	}
+
+	private DotClasspathSpex dotClasspathWithDep(SideEffectContext ctx,
+			DotClasspathSpex dotClasspath, JavaModule dep) {
+		if (dep.isExplicit()) {
+			dotClasspath = dotClasspath.srcDep(dep.name());
+		} else {
+			dotClasspath = dotClasspath.binDep(ctx.targetEvaluationContext()
+					.cached(dep.mainClasses()).getAbsolutePath());
+		}
+		return dotClasspath;
 	}
 
 	public static EclipseSettingsSpex with() {
