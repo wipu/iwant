@@ -340,7 +340,8 @@
     - generate eclipse settings for all projects
       + testJava and testDeps for JavaModule
       + testJava and testDeps affect .classpath
-      - upgrade svn:externalized iwant to utilize these
+      + upgrade svn:externalized iwant to utilize these
+      - add testJava to all projects
       - then make iwant ws generate all eclipse settings
   - svn:ignore generated eclipse setting files
   - create public (remote) version of the bootstrapping tutorial
