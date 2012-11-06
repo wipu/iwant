@@ -341,6 +341,7 @@
       + testJava and testDeps for JavaModule
       + testJava and testDeps affect .classpath
       + upgrade svn:externalized iwant to utilize these
+      - local classdir for JavaModule
       - add testJava to all projects
       - then make iwant ws generate all eclipse settings
   - svn:ignore generated eclipse setting files
