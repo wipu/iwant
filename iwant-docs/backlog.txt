@@ -323,6 +323,11 @@
     + better error messages for missing/nondir srcdir of JavaClasses
       (if wsname does not match as-someone dir name iwant cannot find wsdef)
 
++ @bugfix: same target depended many times => iwant tries to refresh many times at the same time (workerCount>1), causing race conditions
+  + equals/hashCode of TargetRefreshTask must compare name, otherwise TaskQueue set of tasks being refreshed etc don't work
+
++ @bugfix Iwant.java generates compiled-by-Iwant under classes directory. Don't.
+
 #################################################################
 = In progress
 #################################################################
@@ -355,6 +360,13 @@
 #################################################################
 
 - make Iwant3Test use modified wsname to verify no hard-coded example stuff there
+
+- findings from real usage:
+  - targets() should just return collection of Paths, not Targets, wishes may be reasonable against ExternalSources for example
+    - but fix externalresource wish script path handling, the leading slash breaks number of ".."s
+  - binary javamodule should have empty deps, not null
+
+- failure if target accesses cached path during refresh without having declared it as ingredient
 
 - As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead

@@ -130,7 +130,7 @@ public class TaskQueueTest extends TestCase {
 		TaskMock dep1 = TaskMock.named("dep1").dirty().uses(pool1).noDeps();
 		TaskMock dep2 = TaskMock.named("dep2").dirty().uses(pool1, pool2)
 				.noDeps();
-		TaskMock dep3 = TaskMock.named("dep2").dirty().uses(pool2).noDeps();
+		TaskMock dep3 = TaskMock.named("dep3").dirty().uses(pool2).noDeps();
 		TaskMock root = TaskMock.named("root").clean().uses(pool1, pool2)
 				.deps(dep1, dep2, dep3);
 		queue = new TaskQueue(root);
@@ -193,6 +193,36 @@ public class TaskQueueTest extends TestCase {
 
 		done(rootA);
 
+		queueIsEmpty();
+	}
+
+	// other
+
+	public void testManyInstancesOfTheSameTargetAreHandledAsOne() {
+		TaskMock utilCopy1 = TaskMock.named("util").dirty().noDeps();
+		TaskMock utilCopy2 = TaskMock.named("util").dirty().noDeps();
+
+		// internal test:
+		assertEquals(utilCopy1, utilCopy2);
+		assertEquals(utilCopy1.hashCode(), utilCopy2.hashCode());
+
+		TaskMock subModule = TaskMock.named("subModule").dirty()
+				.deps(utilCopy1);
+		TaskMock root = TaskMock.named("root").clean()
+				.deps(subModule, utilCopy2);
+		queue = new TaskQueue(root);
+
+		TaskAllocation utilA = nextIs(utilCopy1);
+		nextIsNull();
+
+		done(utilA);
+		TaskAllocation subModuleA = nextIs(subModule);
+		nextIsNull();
+
+		done(subModuleA);
+		TaskAllocation rootA = nextIs(root);
+
+		done(rootA);
 		queueIsEmpty();
 	}
 

@@ -37,7 +37,7 @@ WSDEFDEF_CLASS=com.example.wsdefdef.WorkspaceProvider
 EOF
 
 cmde "1" "as-distillery-developer/with/bash/iwant/help.sh 2>&1"
-cmde "0 0" 'find as-distillery-developer -type f | grep -v ".i-cached"'
+cmde "0 0 0" 'find as-distillery-developer -type f | grep -v ".i-cached" | sort'
 p "End of wizard, everything is set for the final usage help message:"
 cmde "1" "as-distillery-developer/with/bash/iwant/help.sh"
 

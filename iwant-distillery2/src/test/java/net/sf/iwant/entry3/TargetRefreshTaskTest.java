@@ -80,6 +80,24 @@ public class TargetRefreshTaskTest extends TestCase {
 		assertEquals("t2", new TargetRefreshTask(t2, ctx, caches).toString());
 	}
 
+	public void testEqualityAndHashcodeAreDeterminedByName() {
+		TargetMock a1 = new TargetMock("a");
+		a1.hasNoIngredients();
+		TargetMock a2 = new TargetMock("a");
+		a2.hasNoIngredients();
+		TargetMock b = new TargetMock("b");
+		b.hasNoIngredients();
+
+		TargetRefreshTask a1Task = new TargetRefreshTask(a1, ctx, caches);
+		TargetRefreshTask a2Task = new TargetRefreshTask(a2, ctx, caches);
+		TargetRefreshTask bTask = new TargetRefreshTask(b, ctx, caches);
+
+		assertEquals(a1Task, a2Task);
+		assertEquals(a1Task.hashCode(), a2Task.hashCode());
+
+		assertFalse(a1Task.equals(bTask));
+	}
+
 	public void testTaskGetter() {
 		TargetMock target = new TargetMock("target");
 		target.hasNoIngredients();

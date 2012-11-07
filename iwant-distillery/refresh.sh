@@ -21,7 +21,7 @@ die() {
 CACHED=$HERE/cached
 
 tested-java-classes() {
-  JUNIT=$HERE/../as-iwant-developer/with/bash/iwant/cached/.internal/unmodifiable/junit-3.8.1.jar
+  JUNIT=~/.net.sf.iwant/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/junit/junit/4.8.2/junit-4.8.2.jar
   IWANT_TESTAREA_PROJ=$HERE/../iwant-testarea
   IWANT_TESTRUNNER_PROJ=$HERE/../iwant-testrunner
 

@@ -171,8 +171,8 @@ public class Iwant {
 		@Override
 		public URL junitUrl() {
 			final String v = "4.8.2";
-			return url("http://mirrors.ibiblio.org/pub/mirrors/maven2"
-					+ "/junit/junit/" + v + "/junit-" + v + ".jar");
+			return url("http://mirrors.ibiblio.org/maven2" + "/junit/junit/"
+					+ v + "/junit-" + v + ".jar");
 		}
 
 	}
@@ -329,8 +329,6 @@ public class Iwant {
 			if (!compilerTaskResult) {
 				throw new IwantException("Compilation failed.");
 			}
-			new FileWriter(new File(dest, "compiled-by-Iwant")).append("true")
-					.close();
 			return dest;
 		} catch (RuntimeException e) {
 			throw e;
