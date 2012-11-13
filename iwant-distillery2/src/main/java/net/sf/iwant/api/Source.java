@@ -3,6 +3,7 @@ package net.sf.iwant.api;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 public class Source implements Path {
@@ -39,7 +40,7 @@ public class Source implements Path {
 
 	@Override
 	public List<Path> ingredients() {
-		throw new UnsupportedOperationException("TODO test and implement");
+		return Collections.emptyList();
 	}
 
 	@Override

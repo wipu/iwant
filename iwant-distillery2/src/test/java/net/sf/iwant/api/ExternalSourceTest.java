@@ -21,4 +21,9 @@ public class ExternalSourceTest extends TestCase {
 				"relative/path")).toString());
 	}
 
+	public void testItHasNoIngredients() throws IOException {
+		assertTrue(new ExternalSource(new File("/whatever")).ingredients()
+				.isEmpty());
+	}
+
 }

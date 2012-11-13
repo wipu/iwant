@@ -27,7 +27,13 @@ public class JavaModule implements Comparable<JavaModule> {
 	}
 
 	public static JavaModule implicitLibrary(Path path) {
-		return new JavaModule(path.name(), null, null, null, path, null, null);
+		List<JavaModule> depModules = new ArrayList<JavaModule>();
+		for (Path dep : path.ingredients()) {
+			JavaModule depModule = JavaModule.implicitLibrary(dep);
+			depModules.add(depModule);
+		}
+		return new JavaModule(path.name(), null, null, depModules, path, null,
+				null);
 	}
 
 	public static JavaModuleSpex with() {

@@ -3,6 +3,7 @@ package net.sf.iwant.api;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 public class ExternalSource implements Path {
@@ -39,8 +40,7 @@ public class ExternalSource implements Path {
 
 	@Override
 	public List<Path> ingredients() {
-		System.err.println("TODO ingredients");
-		throw new UnsupportedOperationException("TODO test and implement");
+		return Collections.emptyList();
 	}
 
 	@Override

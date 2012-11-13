@@ -24,6 +24,12 @@ public class TargetMock extends Target {
 		super(name);
 	}
 
+	public static Path ingredientless(String name) {
+		TargetMock jar = new TargetMock(name);
+		jar.hasNoIngredients();
+		return jar;
+	}
+
 	private <T> T nonNull(T value, Object request) {
 		if (value == null) {
 			throw new IllegalStateException("You forgot to teach " + request

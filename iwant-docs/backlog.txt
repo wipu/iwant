@@ -331,6 +331,8 @@
 + @bugfix produce empty classes when java src directory contains no java files, don't fail
   + test and fix empty and non-empty dir with no java files
 
++ @bugfix: add ingredients of the path of JavaModule.implicitLibrary as implicit library dependencies so deps work correctly even with generated libraries 
+
 #################################################################
 = In progress
 #################################################################

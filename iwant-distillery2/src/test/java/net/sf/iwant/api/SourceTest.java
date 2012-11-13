@@ -9,4 +9,8 @@ public class SourceTest extends TestCase {
 		assertEquals("b", Source.underWsroot("b").toString());
 	}
 
+	public void testItHasNoIngredients() {
+		assertTrue(Source.underWsroot("whatever").ingredients().isEmpty());
+	}
+
 }
