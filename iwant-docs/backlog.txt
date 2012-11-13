@@ -328,6 +328,9 @@
 
 + @bugfix Iwant.java generates compiled-by-Iwant under classes directory. Don't.
 
++ @bugfix produce empty classes when java src directory contains no java files, don't fail
+  + test and fix empty and non-empty dir with no java files
+
 #################################################################
 = In progress
 #################################################################
@@ -358,6 +361,8 @@
 #################################################################
 = Planned
 #################################################################
+
+- @bugfix: make sure iwant deletes cached target before refreshing
 
 - make Iwant3Test use modified wsname to verify no hard-coded example stuff there
 

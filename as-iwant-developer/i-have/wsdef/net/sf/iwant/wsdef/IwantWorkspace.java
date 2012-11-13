@@ -14,6 +14,7 @@ import net.sf.iwant.core.Source;
 import net.sf.iwant.core.Target;
 import net.sf.iwant.core.WorkspaceDefinition;
 
+// old, copy ideas from here and delete
 public class IwantWorkspace implements WorkspaceDefinition {
 
 	@Override

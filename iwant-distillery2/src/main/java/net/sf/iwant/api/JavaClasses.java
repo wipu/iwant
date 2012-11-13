@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.entry.Iwant;
+
 public class JavaClasses extends Target {
 
 	private final List<Path> ingredients;
@@ -42,6 +44,12 @@ public class JavaClasses extends Target {
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.cached(this);
 		List<File> javaFiles = javaFilesUnder(ctx.cached(srcDir));
+		if (javaFiles.isEmpty()) {
+			Iwant.debugLog(getClass().getSimpleName(),
+					"No java files to compile.");
+			dest.mkdirs();
+			return;
+		}
 		List<File> classLocationDirs = new ArrayList<File>();
 		for (Path classLocation : classLocations) {
 			File classLocationDir = ctx.cached(classLocation);

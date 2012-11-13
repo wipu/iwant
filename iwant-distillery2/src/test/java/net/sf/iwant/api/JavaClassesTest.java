@@ -148,19 +148,31 @@ public class JavaClassesTest extends TestCase {
 				target.contentDescriptor());
 	}
 
-	public void testEmptySourceDirectoryCausesFriendlyError() throws Exception {
+	public void testEmptySourceDirectoryProducesEmptyClasses() throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDir.mkdirs();
 		Source src = Source.underWsroot("src");
 		Target target = new JavaClasses("empty", src,
 				Collections.<Path> emptyList());
 
-		try {
-			target.path(ctx);
-			fail();
-		} catch (IwantException e) {
-			assertEquals("Compilation failed.", e.getMessage());
-		}
+		target.path(ctx);
+
+		assertEquals("[]", Arrays.toString(new File(cached, "empty").list()));
+	}
+
+	public void testSourceDirectoryWithJustDotKeepInItProducesEmptyClasses()
+			throws Exception {
+		File srcDir = new File(wsRoot, "src");
+		srcDir.mkdirs();
+		testArea.hasFile("src/.keep", "");
+
+		Source src = Source.underWsroot("src");
+		Target target = new JavaClasses("empty", src,
+				Collections.<Path> emptyList());
+
+		target.path(ctx);
+
+		assertEquals("[]", Arrays.toString(new File(cached, "empty").list()));
 	}
 
 	public void testMissingSourceDirectoryCausesFriendlyError()
