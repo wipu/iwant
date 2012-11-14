@@ -80,15 +80,26 @@ public class JavaModule implements Comparable<JavaModule> {
 		}
 
 		public JavaModule end() {
+			return new JavaModule(name, locationUnderWsRoot, mainJava,
+					mainDeps, newMainClassesTarget(), testJava, testDeps);
+		}
+
+		private JavaClasses newMainClassesTarget() {
+			if (mainJava == null) {
+				return null;
+			}
 			Path srcDir = Source.underWsroot(locationUnderWsRoot + "/"
 					+ mainJava);
 			List<Path> classLocations = new ArrayList<Path>();
 			for (JavaModule mainDep : mainDeps) {
-				classLocations.add(mainDep.mainClasses());
+				Path depMainClasses = mainDep.mainClasses();
+				if (depMainClasses != null) {
+					classLocations.add(depMainClasses);
+				}
 			}
-			return new JavaModule(name, locationUnderWsRoot, mainJava,
-					mainDeps, new JavaClasses(name + "-main-classes", srcDir,
-							classLocations), testJava, testDeps);
+			JavaClasses mainClasses = new JavaClasses(name + "-main-classes",
+					srcDir, classLocations);
+			return mainClasses;
 		}
 
 	}

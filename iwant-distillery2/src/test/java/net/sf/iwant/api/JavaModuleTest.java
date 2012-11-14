@@ -73,4 +73,17 @@ public class JavaModuleTest extends TestCase {
 		assertSame(lib1, lib1Module.mainClasses());
 	}
 
+	public void testNoMainJavaMeansNullJavaClasses() {
+		JavaModule srcless = JavaModule.with().name("srcless").end();
+		assertNull(srcless.mainClasses());
+	}
+
+	public void testClasslessDependencyIsNotSeenInClasspathOfMainClasses() {
+		JavaModule srcless = JavaModule.with().name("srcless").end();
+		JavaModule user = JavaModule.with().name("depending").mainJava("src")
+				.mainDeps(srcless).end();
+		JavaClasses userClasses = (JavaClasses) user.mainClasses();
+		assertTrue(userClasses.classLocations().isEmpty());
+	}
+
 }

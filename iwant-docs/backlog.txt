@@ -333,6 +333,8 @@
 
 + @bugfix: add ingredients of the path of JavaModule.implicitLibrary as implicit library dependencies so deps work correctly even with generated libraries 
 
++ @bugfix: make JavaModule.mainClasses (of normal "explicit" module) return null if no mainJava, also don't add such paths as dependencies
+
 #################################################################
 = In progress
 #################################################################
