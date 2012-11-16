@@ -3,14 +3,20 @@ package net.sf.iwant.entry3;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.ConnectException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.Downloaded;
 import net.sf.iwant.api.ExternalSource;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
+import net.sf.iwant.api.TargetEvaluationContext;
 import net.sf.iwant.api.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
@@ -269,6 +275,181 @@ public class TargetRefreshTaskTest extends TestCase {
 				.supportsParallelism());
 		assertTrue(new TargetRefreshTask(par, ctx, caches)
 				.supportsParallelism());
+	}
+
+	private class TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory
+			extends Target {
+
+		private String fileNameToCreateUnderDirectory;
+		private Boolean expectsCachedTargetMissingBeforeRefresh;
+		private boolean mustVerifyCachedTargetExistence = false;
+
+		public TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory(
+				String name) {
+			super(name);
+		}
+
+		public synchronized void willCreateFile(
+				String fileNameToCreateUnderDirectory) {
+			this.fileNameToCreateUnderDirectory = fileNameToCreateUnderDirectory;
+		}
+
+		@Override
+		public InputStream content(TargetEvaluationContext ctx)
+				throws Exception {
+			throw new UnsupportedOperationException("TODO test and implement");
+		}
+
+		@Override
+		public synchronized void path(TargetEvaluationContext ctx)
+				throws Exception {
+			File dest = ctx.cached(this);
+			if (mustVerifyCachedTargetExistence) {
+				verifyCachedTargetExistence(dest);
+			}
+			if (!dest.getParentFile().exists()) {
+				fail("Parent of " + dest + " should exist.");
+			}
+			dest.mkdir();
+			File subFile = new File(dest, fileNameToCreateUnderDirectory);
+			new FileWriter(subFile).append(
+					fileNameToCreateUnderDirectory + " content").close();
+		}
+
+		private void verifyCachedTargetExistence(File dest) {
+			if (expectsCachedTargetMissingBeforeRefresh && dest.exists()) {
+				fail("Cached target should not exist!");
+			} else if (!expectsCachedTargetMissingBeforeRefresh
+					&& !dest.exists()) {
+				fail("Cached target should exist!");
+			}
+		}
+
+		@Override
+		public synchronized boolean expectsCachedTargetMissingBeforeRefresh() {
+			return expectsCachedTargetMissingBeforeRefresh;
+		}
+
+		public synchronized void expectsCachedTargetMissingBeforeRefresh(
+				boolean expectsCachedTargetMissingBeforeRefresh) {
+			this.expectsCachedTargetMissingBeforeRefresh = expectsCachedTargetMissingBeforeRefresh;
+		}
+
+		@Override
+		public List<Path> ingredients() {
+			return Collections.emptyList();
+		}
+
+		@Override
+		public synchronized String contentDescriptor() {
+			return getClass().getCanonicalName() + ":"
+					+ fileNameToCreateUnderDirectory;
+		}
+
+		public synchronized void willVerifyCachedTargetExistence() {
+			this.mustVerifyCachedTargetExistence = true;
+		}
+
+	}
+
+	public void testExistingCachedContentIsDeletedBeforeRefresh() {
+		TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory target = new TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory(
+				"target");
+		target.expectsCachedTargetMissingBeforeRefresh(true);
+		target.willCreateFile("f1");
+
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
+
+		assertTrue(task.isDirty());
+		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		assertFalse(task.isDirty());
+		assertEquals("f1 content", testArea.contentOf("cached/target/f1"));
+
+		// target content changes => f1 gets replaced by f2
+		target.willVerifyCachedTargetExistence();
+		target.willCreateFile("f2");
+		assertTrue(task.isDirty());
+		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		assertEquals("f2 content", testArea.contentOf("cached/target/f2"));
+		assertFalse(task.isDirty());
+		assertFalse(new File(cachedTarget, "target/f1").exists());
+	}
+
+	public void testExistingCachedContentIsNotDeletedBeforeRefreshIfTargetSaysSo() {
+		TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory target = new TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory(
+				"target");
+		target.expectsCachedTargetMissingBeforeRefresh(false);
+		target.willCreateFile("f1");
+
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
+
+		assertTrue(task.isDirty());
+		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		assertFalse(task.isDirty());
+		assertEquals("f1 content", testArea.contentOf("cached/target/f1"));
+
+		// target content changes => f1 stays and f2 is created alongside it
+		target.willVerifyCachedTargetExistence();
+		target.willCreateFile("f2");
+		assertTrue(task.isDirty());
+		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		assertEquals("f1 content", testArea.contentOf("cached/target/f1"));
+		assertEquals("f2 content", testArea.contentOf("cached/target/f2"));
+		assertFalse(task.isDirty());
+	}
+
+	public void testParentOfCachedContentIsCreatedBeforeRefreshWhenCachedTargetIsNotDeleted() {
+		TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory target = new TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory(
+				"parent/target");
+		target.expectsCachedTargetMissingBeforeRefresh(false);
+		target.willCreateFile("f");
+
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
+		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+
+		assertEquals("f content", testArea.contentOf("cached/parent/target/f"));
+	}
+
+	public void testParentOfCachedContentIsCreatedBeforeRefreshAlsoWhenCachedTargetIsDeleted() {
+		TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory target = new TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory(
+				"parent/target");
+		target.expectsCachedTargetMissingBeforeRefresh(true);
+		target.willCreateFile("f");
+
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
+		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+
+		assertEquals("f content", testArea.contentOf("cached/parent/target/f"));
+	}
+
+	public void testDownloadedTriesDownloadIfDescriptorIsMissingButNoRealDownloadIsExecutedBecauseCachedFileIsNotDeletedBeforeRefresh()
+			throws IOException {
+		URL urlThatShallNotBeContacted = Iwant.url("http://localhost:9999");
+		try {
+			urlThatShallNotBeContacted.openStream();
+			fail("Internal failure, expected " + urlThatShallNotBeContacted
+					+ " not to respond.");
+		} catch (ConnectException e) {
+			assertEquals("Connection refused", e.getMessage());
+		}
+
+		// cached file exists but descriptor doesn't
+		File cachedUrl = testArea.hasFile("cached-url", "downloaded content");
+		caches.cachesUrlAt(urlThatShallNotBeContacted, cachedUrl);
+		File cachedDescriptor = new File(cachedDescriptors, "downloaded");
+		assertFalse(cachedDescriptor.exists());
+
+		Downloaded target = Downloaded.withName("downloaded")
+				.url(urlThatShallNotBeContacted.toExternalForm()).md5("todo");
+
+		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
+
+		// no ConnectException means no download was tried
+		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+
+		// descriptor is created, downloaded file content stays the same
+		assertTrue(cachedDescriptor.exists());
+		assertEquals("downloaded content", testArea.contentOf("cached-url"));
 	}
 
 }

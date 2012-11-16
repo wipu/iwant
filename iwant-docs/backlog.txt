@@ -335,6 +335,13 @@
 
 + @bugfix: make JavaModule.mainClasses (of normal "explicit" module) return null if no mainJava, also don't add such paths as dependencies
 
++ @enhancement: automatically delete cached file before refresh, for convenience of the Target author
+  + make TargetRefreshTask do it
+  + don't do it for Downloaded, because when the content descriptor is missing, the target is dirty
+    but it's ok when we don't delete the cached download, the actual refresh then does nothing
+  + boolean Target.expectsCachedTargetMissingBeforeRefresh() that can be overridden for other similar Targets
+  + also test parent of cached target is created (it already was)
+
 #################################################################
 = In progress
 #################################################################
@@ -365,6 +372,8 @@
 #################################################################
 = Planned
 #################################################################
+
+- @bugfix: run tests as different user as wipu to find hardcoded paths from tests
 
 - @bugfix: make sure iwant deletes cached target before refreshing
 

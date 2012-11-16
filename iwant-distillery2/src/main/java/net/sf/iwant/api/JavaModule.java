@@ -14,9 +14,9 @@ public class JavaModule implements Comparable<JavaModule> {
 	private final String testJava;
 	private final List<JavaModule> testDeps;
 
-	public JavaModule(String name, String locationUnderWsRoot,
-			String mainJava, List<JavaModule> mainDeps, Path mainClasses,
-			String testJava, List<JavaModule> testDeps) {
+	public JavaModule(String name, String locationUnderWsRoot, String mainJava,
+			List<JavaModule> mainDeps, Path mainClasses, String testJava,
+			List<JavaModule> testDeps) {
 		this.name = name;
 		this.locationUnderWsRoot = locationUnderWsRoot;
 		this.mainJava = mainJava;

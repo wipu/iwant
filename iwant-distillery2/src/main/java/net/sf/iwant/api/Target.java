@@ -32,4 +32,11 @@ public abstract class Target implements Path {
 		return true;
 	}
 
+	/**
+	 * Override if needed
+	 */
+	public boolean expectsCachedTargetMissingBeforeRefresh() {
+		return true;
+	}
+
 }

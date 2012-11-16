@@ -60,6 +60,18 @@ public class Downloaded extends Target {
 		return cachedAt.unmodifiableUrl(url);
 	}
 
+	/**
+	 * When the workspace-specific content descriptor is missing, we are dirty
+	 * so a download is retried. But we don't want the globally cached (in the
+	 * user's home directory) downloaded file to be deleted. This way the
+	 * download does nothing if the cached file exists, except caches the
+	 * content descriptor.
+	 */
+	@Override
+	public boolean expectsCachedTargetMissingBeforeRefresh() {
+		return false;
+	}
+
 	@Override
 	public List<Path> ingredients() {
 		return Collections.emptyList();

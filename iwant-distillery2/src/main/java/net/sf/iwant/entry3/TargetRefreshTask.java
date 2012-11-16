@@ -46,6 +46,9 @@ public class TargetRefreshTask implements Task {
 		cachedDescriptor.getParentFile().mkdirs();
 		File cachedTarget = ctx.cached(target);
 		cachedTarget.getParentFile().mkdirs();
+		if (target.expectsCachedTargetMissingBeforeRefresh()) {
+			Iwant.del(cachedTarget);
+		}
 		try {
 			target.path(ctx);
 			new FileWriter(cachedDescriptor).append(target.contentDescriptor())
