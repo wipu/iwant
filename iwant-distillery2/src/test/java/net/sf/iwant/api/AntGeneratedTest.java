@@ -93,7 +93,9 @@ public class AntGeneratedTest extends TestCase {
 	public void testContentDescriptor() throws IOException {
 		assertEquals(
 				"net.sf.iwant.api.AntGenerated {\n"
-						+ "  ant-jar:/home/wipu/.net.sf.iwant/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/org/apache/ant/ant/1.7.1/ant-1.7.1.jar\n"
+						+ "  ant-jar:"
+						+ Iwant.IWANT_USER_DIR
+						+ "/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/org/apache/ant/ant/1.7.1/ant-1.7.1.jar\n"
 						+ "  script:script\n" + "}\n",
 				AntGenerated.with().name("minimal").antJars(antJar())
 						.script(Source.underWsroot("script")).end()

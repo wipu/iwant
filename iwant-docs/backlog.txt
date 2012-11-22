@@ -351,6 +351,7 @@
   + make refresh.sh download junit.jar
   + don't write filelog to one location (/tmp/iwant-cl) but instead under ~/.net.sf.iwant/log (not allowed when it exists for another user)
   - test again, what tests contain hard-coded paths?
+    + fix AntGeneratedTest /home/wipu
 
 - As @developer I want the old iwant build to use the current distillery version of iwant so I can get start getting rid of the old main branch
   + practice eclipse project declaration in dummy project first

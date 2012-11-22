@@ -41,7 +41,7 @@ public class Iwant {
 
 	private static final File HOME = new File(System.getProperty("user.home"));
 
-	private static final File IWANT_USER_DIR = new File(HOME, ".net.sf.iwant");
+	public static final File IWANT_USER_DIR = new File(HOME, ".net.sf.iwant");
 
 	static {
 		IWANT_USER_DIR.mkdir();
