@@ -342,16 +342,16 @@
   + boolean Target.expectsCachedTargetMissingBeforeRefresh() that can be overridden for other similar Targets
   + also test parent of cached target is created (it already was)
 
-#################################################################
-= In progress
-#################################################################
-
-- @bugfix: make bootstrapping (refresh.sh) pass as different user than wipu to find hardcoded paths from tests etc
++ @bugfix: make bootstrapping (refresh.sh) pass as different user than wipu to find hardcoded paths from tests etc
   + run refresh.sh as different user
   + make refresh.sh download junit.jar
   + don't write filelog to one location (/tmp/iwant-cl) but instead under ~/.net.sf.iwant/log (not allowed when it exists for another user)
-  - test again, what tests contain hard-coded paths?
+  + test again, what tests contain hard-coded paths?
     + fix AntGeneratedTest /home/wipu
+
+#################################################################
+= In progress
+#################################################################
 
 - As @developer I want the old iwant build to use the current distillery version of iwant so I can get start getting rid of the old main branch
   + practice eclipse project declaration in dummy project first
