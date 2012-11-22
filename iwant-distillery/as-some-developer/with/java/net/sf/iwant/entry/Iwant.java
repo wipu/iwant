@@ -39,6 +39,14 @@ public class Iwant {
 
 	private static final boolean DEBUG_LOG = "a".contains("b");
 
+	private static final File HOME = new File(System.getProperty("user.home"));
+
+	private static final File IWANT_USER_DIR = new File(HOME, ".net.sf.iwant");
+
+	static {
+		IWANT_USER_DIR.mkdir();
+	}
+
 	private final IwantNetwork network;
 
 	protected Iwant(IwantNetwork network) {
@@ -150,12 +158,9 @@ public class Iwant {
 
 	private static class RealIwantNetwork implements IwantNetwork {
 
-		private static final File HOME = new File(
-				System.getProperty("user.home"));
-
 		@Override
 		public File cacheLocation(UnmodifiableSource<?> src) {
-			File cached = new File(HOME, ".net.sf.iwant/cached");
+			File cached = new File(IWANT_USER_DIR, "cached");
 			File cachedFromSrc = new File(cached, src.getClass()
 					.getSimpleName());
 			String fileName = toSafeFilename(src.rawLocationString());
@@ -496,8 +501,10 @@ public class Iwant {
 
 	public static void fileLog(String msg) {
 		try {
-			new FileWriter("/tmp/iwant-cl", true).append(new Date().toString())
-					.append(" - ").append(msg).append("\n").close();
+
+			new FileWriter(new File(IWANT_USER_DIR, "log"), true)
+					.append(new Date().toString()).append(" - ").append(msg)
+					.append("\n").close();
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
