@@ -20,8 +20,18 @@ die() {
 
 CACHED=$HERE/cached
 
+ensure-junit() {
+  local JUNIT_HTTP_URL=mirrors.ibiblio.org/maven2/junit/junit/4.8.2/junit-4.8.2.jar
+  JUNIT=~/.net.sf.iwant/cached/UnmodifiableUrl/http%3A/%2F$JUNIT_HTTP_URL
+  [ -e "$JUNIT" ] || {
+    local JUNIT_PARENT=$(dirname "$JUNIT")
+    mkdir -p "$JUNIT_PARENT"
+    wget "http://$JUNIT_HTTP_URL" -O "$JUNIT"
+  }
+}
+
 tested-java-classes() {
-  JUNIT=~/.net.sf.iwant/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/junit/junit/4.8.2/junit-4.8.2.jar
+  ensure-junit
   IWANT_TESTAREA_PROJ=$HERE/../iwant-testarea
   IWANT_TESTRUNNER_PROJ=$HERE/../iwant-testrunner
 
