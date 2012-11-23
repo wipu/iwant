@@ -57,4 +57,11 @@ public class FilenameEscapingTest extends TestCase {
 		escapeCase("a?b", "a?b");
 	}
 
+	// and then the real fun, make sure it might even work under cygwin:
+
+	public void testWindowsPathsAreEscaped() {
+		escapeCase("c:\\Documents and Settings\\slave",
+				"c%3A%5CDocuments+and+Settings%5Cslave");
+	}
+
 }

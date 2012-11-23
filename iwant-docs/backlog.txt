@@ -355,7 +355,10 @@
 
 - @enhancement: add cygwin support to shell cli
   + help.sh must use cygpath in cygwin for paths used by javac and java
+  + test cache path escaping handles windows paths (backslash, colon and space)
   - test manually in a wintoys machine
+    + make IwantTestRunner use unix file.separator so tests don't need changes
+    - manually test how difficult windows file.separator makes life with cygwin
 
 - As @developer I want the old iwant build to use the current distillery version of iwant so I can get start getting rid of the old main branch
   + practice eclipse project declaration in dummy project first
