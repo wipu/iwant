@@ -359,6 +359,8 @@
   - test manually in a wintoys machine
     + make IwantTestRunner use unix file.separator so tests don't need changes
     + ah, doesn't help, so skip tests altogether if file.separator is backslash!!
+    + make FileUtil.relativePathOfFileUnderParent work without regexps, because wintoys backslashes
+      break them
     - manually test how difficult windows file.separator makes life with cygwin
 
 - As @developer I want the old iwant build to use the current distillery version of iwant so I can get start getting rid of the old main branch
