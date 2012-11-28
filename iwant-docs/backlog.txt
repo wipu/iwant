@@ -362,6 +362,9 @@
     * seems to work, of course the output path is in wintoys format, making it more difficult to use in scripts
       but it's not important    
 
++ @bugfix: delete wish scripts before writing fresh ones to remove unusable clutter
+  * Now also list of side-effects is no more hard-coded
+
 #################################################################
 = In progress
 #################################################################

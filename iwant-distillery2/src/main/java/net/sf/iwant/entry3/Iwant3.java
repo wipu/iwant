@@ -13,11 +13,16 @@ import java.util.List;
 import java.util.Properties;
 
 import net.sf.iwant.api.ExternalSource;
+import net.sf.iwant.api.HelloSideEffect;
+import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.IwantWorkspaceProvider;
 import net.sf.iwant.api.JavaClasses;
 import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.Path;
+import net.sf.iwant.api.SideEffect;
+import net.sf.iwant.api.SideEffectDefinitionContext;
+import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TargetEvaluationContext;
 import net.sf.iwant.api.WsInfo;
 import net.sf.iwant.entry.Iwant;
@@ -115,7 +120,8 @@ public class Iwant3 {
 							wishEvaluator.targetEvaluationContext(),
 							wsDefClassesTarget, wsDefdefClasses, wsDefClasses));
 			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
-			refreshWishScripts(asSomeone, wsDef);
+			refreshWishScripts(asSomeone, wsDef,
+					wishEvaluator.sideEffectDefinitionContext());
 			if (args.length == 0) {
 				throw new IwantException(
 						"(Using "
@@ -160,8 +166,11 @@ public class Iwant3 {
 				+ "/com/example/wsdef/Workspace.java");
 		createFile(wsDefJava, ExampleWsDefGenerator.exampleWsdef(iwantWsRoot,
 				"com.example.wsdef", "Workspace"));
-		refreshWishScripts(asSomeone, Arrays.asList("hello"),
-				Arrays.asList("eclipse-settings"));
+		// TODO it's a bit ugly to create dummy target and side-effect just to
+		// get proper names for wish scripts:
+		refreshWishScripts(asSomeone,
+				Arrays.asList(new HelloTarget("hello", "not needed")),
+				Arrays.asList(new HelloSideEffect("eclipse-settings")));
 		IwantException e = new IwantException("I created\n"
 				+ wsInfo.wsdefdefJava() + "\nand\n" + wsDefJava
 				+ "\nPlease edit them and rerun me.");
@@ -180,9 +189,10 @@ public class Iwant3 {
 		return cp;
 	}
 
-	private static void refreshWishScripts(File asSomeone, IwantWorkspace wsDef) {
+	private static void refreshWishScripts(File asSomeone,
+			IwantWorkspace wsDef, SideEffectDefinitionContext sedCtx) {
 		refreshWishScripts(asSomeone, wsDef.targets(),
-				Arrays.asList("eclipse-settings"));
+				wsDef.sideEffects(sedCtx));
 	}
 
 	private static Class<?> loadClass(ClassLoader parent, String className,
@@ -208,16 +218,27 @@ public class Iwant3 {
 	}
 
 	private static void refreshWishScripts(File asSomeone,
-			Collection<?> targets, Collection<?> sideEffects) {
+			Collection<? extends Target> targets,
+			Collection<? extends SideEffect> sideEffects) {
 		File withBashIwant = new File(asSomeone, "with/bash/iwant");
+		deleteWishScripts(withBashIwant);
 		createWishScript(withBashIwant, "list-of/targets");
 		for (Object target : targets) {
 			createWishScript(withBashIwant, "target/" + target + "/as-path");
 		}
 		createWishScript(withBashIwant, "list-of/side-effects");
-		for (Object sideEffect : sideEffects) {
-			createWishScript(withBashIwant, "side-effect/" + sideEffect
+		for (SideEffect sideEffect : sideEffects) {
+			createWishScript(withBashIwant, "side-effect/" + sideEffect.name()
 					+ "/effective");
+		}
+	}
+
+	private static void deleteWishScripts(File withBashIwant) {
+		for (File child : withBashIwant.listFiles()) {
+			if ("help.sh".equals(child.getName())) {
+				continue;
+			}
+			Iwant.del(child);
 		}
 	}
 

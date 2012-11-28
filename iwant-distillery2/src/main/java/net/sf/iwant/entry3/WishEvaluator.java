@@ -49,6 +49,10 @@ public class WishEvaluator {
 		return ctx;
 	}
 
+	public SideEffectDefinitionContext sideEffectDefinitionContext() {
+		return ctx;
+	}
+
 	public void iwant(String wish, IwantWorkspace ws) {
 		if ("list-of/targets".equals(wish)) {
 			PrintWriter wr = new PrintWriter(out);

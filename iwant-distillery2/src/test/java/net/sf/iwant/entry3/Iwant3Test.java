@@ -36,6 +36,8 @@ public class Iwant3Test extends TestCase {
 	@Override
 	public void setUp() throws Exception {
 		testArea = new IwantEntry3TestArea();
+		testArea.hasFile("as-example-developer/with/bash/iwant/help.sh",
+				"#!/bin/bash\njust a mock because this exists in real life\n");
 		network = new IwantNetworkMock(testArea);
 		iwant3 = Iwant3.using(network);
 		asTest = new File(testArea.root(), "as-example-developer");
@@ -180,6 +182,111 @@ public class Iwant3Test extends TestCase {
 				.contentOf(
 						"as-example-developer/with/bash/iwant/side-effect/eclipse-settings/effective")
 				.startsWith("#!/bin/bash\n"));
+	}
+
+	public void testIwant3DoesNotLeaveOldWishScriptsWhenTargetWasRenamedAndThereAreNoSideEffectsAnyMore()
+			throws Exception {
+		testIwant3AlsoCreatesWishScriptsForExampleWsDef();
+
+		String wsdefRelpath = "as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java";
+		String wsdefContent = testArea.contentOf(wsdefRelpath);
+		// renamed target
+		wsdefContent = wsdefContent.replace("new HelloTarget(\"hello\"",
+				"new HelloTarget(\"renamed-hello\"");
+		// no side-effects
+		wsdefContent = wsdefContent
+				.replace(
+						"SideEffectDefinitionContext ctx) {",
+						"SideEffectDefinitionContext ctx) { if(true) return java.util.Collections.emptyList(); else");
+		testArea.hasFile(wsdefRelpath, wsdefContent);
+
+		try {
+			iwant3.evaluate(asTest);
+			fail();
+		} catch (IwantException e) {
+			assertTrue(e
+					.getMessage()
+					.contains(
+							"Try "
+									+ testArea.root()
+									+ "/as-example-developer/with/bash/iwant/list-of/targets"));
+		}
+
+		// the target wish script has been renamed:
+		assertTrue(testArea.contentOf(
+				"as-example-developer/with/bash/iwant/list-of/targets")
+				.startsWith("#!/bin/bash\n"));
+		assertTrue(testArea
+				.contentOf(
+						"as-example-developer/with/bash/iwant/target/renamed-hello/as-path")
+				.startsWith("#!/bin/bash\n"));
+		assertFalse(new File(testArea.root(),
+				"as-example-developer/with/bash/iwant/target/hello").exists());
+
+		// no side-effects so the whole side-effect directory has disappeared:
+		assertTrue(testArea.contentOf(
+				"as-example-developer/with/bash/iwant/list-of/side-effects")
+				.startsWith("#!/bin/bash\n"));
+		assertFalse(new File(testArea.root(),
+				"as-example-developer/with/bash/iwant/side-effect").exists());
+
+		// help.sh is still there:
+		assertTrue(testArea.contentOf(
+				"as-example-developer/with/bash/iwant/help.sh").startsWith(
+				"#!/bin/bash\n"));
+	}
+
+	public void testIwant3DoesNotLeaveOldWishScriptsWhenSideEffectWasRenamedAndThereAreNoTargetsAnyMore()
+			throws Exception {
+		testIwant3AlsoCreatesWishScriptsForExampleWsDef();
+
+		String wsdefRelpath = "as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java";
+		String wsdefContent = testArea.contentOf(wsdefRelpath);
+
+		// no targets
+		wsdefContent = wsdefContent
+				.replace(" targets() {",
+						" targets() { if(true) return java.util.Collections.emptyList(); else");
+		// renamed side-effect
+		wsdefContent = wsdefContent.replace(".name(\"eclipse-settings\")",
+				".name(\"renamed-eclipse-settings\")");
+		testArea.hasFile(wsdefRelpath, wsdefContent);
+
+		try {
+			iwant3.evaluate(asTest);
+			fail();
+		} catch (IwantException e) {
+			assertTrue(e
+					.getMessage()
+					.contains(
+							"Try "
+									+ testArea.root()
+									+ "/as-example-developer/with/bash/iwant/list-of/targets"));
+		}
+
+		// no targets so the whole target directory has disappeared:
+		assertTrue(testArea.contentOf(
+				"as-example-developer/with/bash/iwant/list-of/targets")
+				.startsWith("#!/bin/bash\n"));
+		assertFalse(new File(testArea.root(),
+				"as-example-developer/with/bash/iwant/target").exists());
+
+		// the side-effect wish script has been renamed:
+		assertTrue(testArea.contentOf(
+				"as-example-developer/with/bash/iwant/list-of/side-effects")
+				.startsWith("#!/bin/bash\n"));
+		assertTrue(testArea
+				.contentOf(
+						"as-example-developer/with/bash/iwant/side-effect/renamed-eclipse-settings/effective")
+				.startsWith("#!/bin/bash\n"));
+		assertFalse(new File(testArea.root(),
+				"as-example-developer/with/bash/iwant/side-effect/eclipse-settings")
+				.exists());
+
+		// help.sh is still there:
+		assertTrue(testArea.contentOf(
+				"as-example-developer/with/bash/iwant/help.sh").startsWith(
+				"#!/bin/bash\n"));
 	}
 
 	public void testListOfTargetsOfExampleWsDef() throws Exception {
