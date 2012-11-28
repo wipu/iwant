@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# $Id$
+
 set -eu
 
 cyg() {
