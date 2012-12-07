@@ -371,15 +371,15 @@
   + but show output of self-test only after failure
   + manually test with real project
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptuser I want number of concurrent workers logged as well as the Target type of each refreshed target
++ As @buildscriptuser I want number of concurrent workers logged as well as the Target type of each refreshed target
   * so I can detect bottlenecks for parallelism and know what code is refreshing what
   + just tdd the string building, not actual logging
   + test with descript the actual log output
-  - test manually the actual log output
+  + test manually the actual log output
+
+#################################################################
+= In progress
+#################################################################
 
 #################################################################
 = Planned
