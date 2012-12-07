@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import net.sf.iwant.entry.Iwant;
 
@@ -64,6 +65,16 @@ public class Planner {
 		return failure;
 	}
 
+	private final AtomicInteger workersWorking = new AtomicInteger();
+
+	static String taskStartMessage(int workerId, int workersWorking, Task task) {
+		StringBuilder b = new StringBuilder();
+		b.append("(");
+		b.append(workerId).append("/").append(workersWorking).append(" ")
+				.append(task).append(")");
+		return b.toString();
+	}
+
 	private class Worker implements Runnable {
 
 		private final int id;
@@ -73,9 +84,8 @@ public class Planner {
 		}
 
 		private void consoleLog(String msg) {
-			String fullMsg = "(" + id + " " + msg + ")";
-			System.err.println(fullMsg);
-			log(fullMsg);
+			System.err.println(msg);
+			log(msg);
 		}
 
 		@Override
@@ -89,16 +99,20 @@ public class Planner {
 						log(this, " stops, no more tasks.");
 						return;
 					}
-					consoleLog("" + allocation.task());
 					try {
 						Task task = allocation.task();
 						Map<ResourcePool, Resource> resources = allocation
 								.allocatedResources();
+						workersWorking.incrementAndGet();
+						consoleLog(taskStartMessage(id, workersWorking.get(),
+								task));
 						task.refresh(resources);
 					} catch (Throwable e) {
-						consoleLog("failed    " + allocation.task());
+						consoleLog("(FAILED " + allocation.task() + ")");
 						refreshFailed(e);
 						return;
+					} finally {
+						workersWorking.decrementAndGet();
 					}
 					log(this, " finished ", allocation);
 					markDone(allocation);

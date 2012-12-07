@@ -376,8 +376,10 @@
 #################################################################
 
 - As @buildscriptuser I want number of concurrent workers logged as well as the Target type of each refreshed target
-  - just tdd the string building, not actual logging
-  - manually test actual log output
+  * so I can detect bottlenecks for parallelism and know what code is refreshing what
+  + just tdd the string building, not actual logging
+  + test with descript the actual log output
+  - test manually the actual log output
 
 #################################################################
 = Planned

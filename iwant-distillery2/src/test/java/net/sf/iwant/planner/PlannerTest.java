@@ -218,4 +218,15 @@ public class PlannerTest extends TestCase {
 		buildEndsSuccessfully();
 	}
 
+	public void testTaskStartLogMessage() {
+		assertEquals(
+				"(1/2 TaskMock:task1)",
+				Planner.taskStartMessage(1, 2, TaskMock.named("task1").dirty()
+						.noDeps()));
+		assertEquals(
+				"(2/1 TaskMock:task2)",
+				Planner.taskStartMessage(2, 1, TaskMock.named("task2").dirty()
+						.noDeps()));
+	}
+
 }

@@ -160,7 +160,7 @@ public class TargetRefreshTask implements Task {
 
 	@Override
 	public String toString() {
-		return name();
+		return target.getClass().getCanonicalName() + " " + name();
 	}
 
 	@Override

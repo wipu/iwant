@@ -13,6 +13,7 @@ import java.util.List;
 import junit.framework.TestCase;
 import net.sf.iwant.api.Downloaded;
 import net.sf.iwant.api.ExternalSource;
+import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
@@ -76,14 +77,19 @@ public class TargetRefreshTaskTest extends TestCase {
 		assertEquals("t2", new TargetRefreshTask(t2, ctx, caches).name());
 	}
 
-	public void testTaskToStringMentionsTargetsName() {
+	public void testTaskToStringMentionsTargetsClassAndName() {
 		TargetMock t1 = new TargetMock("t1");
 		t1.hasNoIngredients();
 		TargetMock t2 = new TargetMock("t2");
 		t2.hasNoIngredients();
+		HelloTarget hello = new HelloTarget("hello", "whatever");
 
-		assertEquals("t1", new TargetRefreshTask(t1, ctx, caches).toString());
-		assertEquals("t2", new TargetRefreshTask(t2, ctx, caches).toString());
+		assertEquals("net.sf.iwant.entry3.TargetMock t1",
+				new TargetRefreshTask(t1, ctx, caches).toString());
+		assertEquals("net.sf.iwant.entry3.TargetMock t2",
+				new TargetRefreshTask(t2, ctx, caches).toString());
+		assertEquals("net.sf.iwant.api.HelloTarget hello",
+				new TargetRefreshTask(hello, ctx, caches).toString());
 	}
 
 	public void testEqualityAndHashcodeAreDeterminedByName() {
