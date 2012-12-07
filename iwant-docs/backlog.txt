@@ -365,15 +365,19 @@
 + @bugfix: delete wish scripts before writing fresh ones to remove unusable clutter
   * Now also list of side-effects is no more hard-coded
 
++ @bugfix: only redirect stderr once so threads don't race for output
+  + quick and dirty: do in Iwant.runJavaMain like before, but keep a counter and only do it once and restore originals when all ready
+  + change: redirect out to err instead of buffering and only showing after failure
+  + but show output of self-test only after failure
+  + manually test with real project
+
 #################################################################
 = In progress
 #################################################################
 
-- @bugfix: only redirect stderr once so threads don't race for output
-  + quick and dirty: do in Iwant.runJavaMain like before, but keep a counter and only do it once and restore originals when all ready
-  + change: redirect out to err instead of buffering and only showing after failure
-  + but show output of self-test only after failure
-  - manually test with real project
+- As @buildscriptuser I want number of concurrent workers logged as well as the Target type of each refreshed target
+  - just tdd the string building, not actual logging
+  - manually test actual log output
 
 #################################################################
 = Planned
