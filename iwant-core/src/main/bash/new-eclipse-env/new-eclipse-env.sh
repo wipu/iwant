@@ -31,8 +31,9 @@ downloaded-tool() {
   eval "$VARNAME='$CACHED'"
 }
 
-
-NEEHOME=$(dirname "$0")
+NEESCRIPT=$(readlink -f "$0")
+NEEHOME=$(dirname "$NEESCRIPT")
+echo "NEEHOME=$NEEHOME"
 NEEHOME=$(readlink -f "$NEEHOME")
 CACHE=$NEEHOME/cache
 [ -e "$CACHE" ] || {
@@ -45,21 +46,26 @@ NEETEMPLATES=$NEEHOME/templates
 TARGETDIR=$1
 ARCH=$2
 
+ECL_CODENAME=indigo
+ECL_REL=SR1
+ECL_DISTBASE=eclipse-java-$ECL_CODENAME-$ECL_REL
+ECL_URLBASE='http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/'$ECL_CODENAME/$ECL_REL
+
 eclipse-url-linux32() {
-  DISTNAME='eclipse-java-indigo-SR1-linux-gtk.tar.gz'
-  DISTURL='http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/indigo/SR1/eclipse-java-indigo-SR1-linux-gtk.tar.gz&r=1'
+  DISTNAME=$ECL_DISTBASE-linux-gtk.tar.gz
+  DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
   DISTMD5='2a0af3038349efa7ddc9af00a4d66dda'
 }
 
 eclipse-url-linux64() {
-  DISTNAME='eclipse-java-indigo-SR1-linux-gtk-x86_64.tar.gz'
-  DISTURL='http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/indigo/SR1/eclipse-java-indigo-SR1-linux-gtk-x86_64.tar.gz&r=1'
+  DISTNAME=$ECL_DISTBASE-linux-gtk-x86_64.tar.gz
+  DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
   DISTMD5='71efb534eeae80644cd421e72a22e7e9'
 }
 
 eclipse-url-win32() {
-  DISTNAME='eclipse-java-indigo-SR1-win32.zip'
-  DISTURL='http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/indigo/SR1/eclipse-java-indigo-SR1-win32.zip&r=1'
+  DISTNAME=$ECL_DISTBASE-win32.zip
+  DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
   DISTMD5='7ef3ee6b2f0206888097c6b2713bb44c'
 }
 
