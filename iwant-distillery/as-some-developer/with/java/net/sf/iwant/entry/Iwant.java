@@ -378,6 +378,47 @@ public class Iwant {
 		return Arrays.asList(iwant2, iwant);
 	}
 
+	private static class StreamsAndSecurityManager {
+
+		private final PrintStream out;
+		private final PrintStream err;
+		private final SecurityManager securityManager;
+
+		StreamsAndSecurityManager(PrintStream out, PrintStream err,
+				SecurityManager securityManager) {
+			this.out = out;
+			this.err = err;
+			this.securityManager = securityManager;
+		}
+
+	}
+
+	private static StreamsAndSecurityManager originalStreamsAndSecurityManager;
+	private static int catchStreamsAndSystemExitsRequestCount = 0;
+
+	private static synchronized void catchStreamsAndSystemExits() {
+		catchStreamsAndSystemExitsRequestCount++;
+		if (originalStreamsAndSecurityManager != null) {
+			// already handled
+			return;
+		}
+		originalStreamsAndSecurityManager = new StreamsAndSecurityManager(
+				System.out, System.err, System.getSecurityManager());
+		System.setOut(System.err);
+		System.setSecurityManager(new ExitCatcher());
+	}
+
+	private static synchronized void restoreOriginalStreamsAndSecurityManager() {
+		catchStreamsAndSystemExitsRequestCount--;
+		if (originalStreamsAndSecurityManager != null
+				&& catchStreamsAndSystemExitsRequestCount <= 0) {
+			System.setOut(originalStreamsAndSecurityManager.out);
+			System.setErr(originalStreamsAndSecurityManager.err);
+			System.setSecurityManager(originalStreamsAndSecurityManager.securityManager);
+			originalStreamsAndSecurityManager = null;
+		}
+	}
+
 	public static void runJavaMain(boolean catchPrintsAndSystemExit,
 			boolean hideIwantClasses, String className,
 			List<File> classLocations, String... args) throws Exception {
@@ -395,38 +436,19 @@ public class Iwant {
 
 		Object[] invocationArgs = { args };
 
-		SecurityManager origSecman = System.getSecurityManager();
-		PrintStream origOut = System.out;
-		PrintStream origErr = System.err;
-
-		ByteArrayOutputStream outBytes = new ByteArrayOutputStream();
-		PrintStream out = new PrintStream(outBytes);
-		boolean callSucceeded = false;
 		if (catchPrintsAndSystemExit) {
-			System.setSecurityManager(new ExitCatcher());
-			System.setOut(out);
-			System.setErr(out);
+			catchStreamsAndSystemExits();
 		}
 		try {
 			mainMethod.invoke(null, invocationArgs);
-			callSucceeded = true;
 		} catch (ExitCalledException e) {
-			System.err.println("exit " + e.status());
 			if (e.status() != 0) {
 				throw new IwantException(className + " exited with "
 						+ e.status());
 			}
 		} finally {
 			if (catchPrintsAndSystemExit) {
-				out.close();
-				fileLog("caught out/err: " + outBytes.toString());
-			}
-			// no ifs here, you never know what changes the called class did:
-			System.setOut(origOut);
-			System.setErr(origErr);
-			System.setSecurityManager(origSecman);
-			if (!callSucceeded) {
-				System.err.print(outBytes.toString());
+				restoreOriginalStreamsAndSecurityManager();
 			}
 		}
 	}

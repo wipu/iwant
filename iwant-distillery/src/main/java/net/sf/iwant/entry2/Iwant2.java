@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,9 +79,25 @@ public class Iwant2 {
 						.singleton(allIwantClasses)));
 		if (timestampHandler.needsRefresh()) {
 			Iwant.log("self-tested", allIwantClasses);
-			Iwant.runJavaMain(true, false,
-					"net.sf.iwant.testrunner.IwantTestRunner", classLocations,
-					"net.sf.iwant.IwantDistillery2Suite");
+			ByteArrayOutputStream errBytes = new ByteArrayOutputStream();
+			PrintStream err = new PrintStream(errBytes);
+			PrintStream origErr = System.err;
+			System.setErr(err);
+			boolean testsPassed = false;
+			try {
+				Iwant.runJavaMain(true, false,
+						"net.sf.iwant.testrunner.IwantTestRunner",
+						classLocations, "net.sf.iwant.IwantDistillery2Suite");
+				testsPassed = true;
+			} finally {
+				System.setErr(origErr);
+				if (!testsPassed) {
+					err.close();
+					System.err
+							.print("Tests failed => displaying combined out and err:\n"
+									+ errBytes.toString());
+				}
+			}
 			timestampHandler.markFresh();
 		}
 

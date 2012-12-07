@@ -369,6 +369,12 @@
 = In progress
 #################################################################
 
+- @bugfix: only redirect stderr once so threads don't race for output
+  + quick and dirty: do in Iwant.runJavaMain like before, but keep a counter and only do it once and restore originals when all ready
+  + change: redirect out to err instead of buffering and only showing after failure
+  + but show output of self-test only after failure
+  - manually test with real project
+
 #################################################################
 = Planned
 #################################################################
