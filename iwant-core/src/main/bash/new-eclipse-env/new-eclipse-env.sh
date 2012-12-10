@@ -170,6 +170,7 @@ workspace() {
   log "Configuring workspace"
   WORKSPACE=$TARGETDIR/workspace
   mkdir "$WORKSPACE"
+  runtime-settings-file org.eclipse.core.resources.prefs
   runtime-settings-file org.eclipse.jdt.ui.prefs
   runtime-settings-file org.eclipse.ui.editors.prefs
 }
@@ -197,6 +198,7 @@ spelling_locale_initialized=true
 tabWidthPropagated=true
 useAnnotationsPrefPage=true
 useQuickDiffPrefPage=true
+escapeStrings=true
 
 java_bracket=127,127,127
 java_string=0,204,0
@@ -224,7 +226,16 @@ EOF
 conf_org.eclipse.ui.editors.prefs() {
 cat <<EOF
 eclipse.preferences.version=1
+lineNumberRuler=true
 overviewRuler_migration=migrated_3.1
+EOF
+}
+
+conf_org.eclipse.core.resources.prefs() {
+cat <<EOF
+eclipse.preferences.version=1
+encoding=UTF-8
+version=1
 EOF
 }
 
