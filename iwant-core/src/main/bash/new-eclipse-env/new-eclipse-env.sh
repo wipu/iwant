@@ -105,6 +105,8 @@ uncompress-linux64() {
 uncompress-win32() {
   log "Unzipping eclipse"
   unzip "$ECLIPSEDIST"
+  log "Fixing file permissions"
+  find eclipse -type f | xargs chmod u+x
 }
 
 pristine-eclipse() {
