@@ -58,7 +58,7 @@ public class JavaModuleTest extends TestCase {
 		assertEquals("d/a/test", aTestClasses.srcDir().toString());
 	}
 
-	public void testTestClassesHasBothTestAndMainDepsAsDeps() {
+	public void testTestClassesHasBothTestAndMainDepsAsDepsAsWellAsMainClasses() {
 		Path jar = TargetMock.ingredientless("lib.jar");
 		JavaModule jarLib = JavaModule.implicitLibrary(jar);
 		Path testUtilJar = TargetMock.ingredientless("testlib.jar");
@@ -76,6 +76,8 @@ public class JavaModuleTest extends TestCase {
 		assertTrue(aTestClasses.classLocations().contains(testUtilJar));
 		// main dep is an implicit test dep.
 		assertTrue(aTestClasses.classLocations().contains(jar));
+		// also main classses themselves are almost always needed
+		assertTrue(aTestClasses.classLocations().contains(a.mainClasses()));
 	}
 
 	public void testNoDuplicatesEvenIfSameDepDeclaredAsMainAndTestDep() {
@@ -93,8 +95,8 @@ public class JavaModuleTest extends TestCase {
 		assertEquals("d/a/test", aTestClasses.srcDir().toString());
 
 		// jar only once:
-		assertEquals("[lib.jar, testlib.jar]", aTestClasses.classLocations()
-				.toString());
+		assertEquals("[lib.jar, testlib.jar, a-main-classes]", aTestClasses
+				.classLocations().toString());
 	}
 
 	public void testComparationIsDelegatedToMainClassesName() {

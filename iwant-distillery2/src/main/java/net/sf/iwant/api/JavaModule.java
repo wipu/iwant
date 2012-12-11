@@ -83,31 +83,38 @@ public class JavaModule implements Comparable<JavaModule> {
 		}
 
 		public JavaModule end() {
-			List<JavaModule> combinedDeps = new ArrayList<JavaModule>(testDeps);
+			List<JavaModule> effectiveTestDeps = new ArrayList<JavaModule>(
+					testDeps);
 			for (JavaModule mainDep : mainDeps) {
-				if (!combinedDeps.contains(mainDep)) {
-					combinedDeps.add(mainDep);
+				if (!effectiveTestDeps.contains(mainDep)) {
+					effectiveTestDeps.add(mainDep);
 				}
 			}
+			JavaClasses mainClassesTarget = newClassesTarget("main", mainJava,
+					mainDeps);
 			return new JavaModule(name, locationUnderWsRoot, mainJava,
-					mainDeps, newClassesTarget("main", mainJava, mainDeps),
-					testJava, testDeps, newClassesTarget("test", testJava,
-							combinedDeps));
+					mainDeps, mainClassesTarget, testJava, testDeps,
+					newClassesTarget("test", testJava, effectiveTestDeps,
+							mainClassesTarget));
 		}
 
 		private JavaClasses newClassesTarget(String type,
-				String relativeJavaDir, List<JavaModule> deps) {
+				String relativeJavaDir, List<JavaModule> depModules,
+				Path... depPaths) {
 			if (relativeJavaDir == null) {
 				return null;
 			}
 			Path srcDir = Source.underWsroot(locationUnderWsRoot + "/"
 					+ relativeJavaDir);
 			List<Path> classLocations = new ArrayList<Path>();
-			for (JavaModule dep : deps) {
-				Path depMainClasses = dep.mainClasses();
+			for (JavaModule depModule : depModules) {
+				Path depMainClasses = depModule.mainClasses();
 				if (depMainClasses != null) {
 					classLocations.add(depMainClasses);
 				}
+			}
+			for (Path depPath : depPaths) {
+				classLocations.add(depPath);
 			}
 			JavaClasses mainClasses = new JavaClasses(name + "-" + type
 					+ "-classes", srcDir, classLocations);

@@ -386,6 +386,8 @@
   + add them
   + add only once even if redundantly declared as test dep
 
++ @enhancement: module's own main classes are a test dep
+
 #################################################################
 = In progress
 #################################################################
