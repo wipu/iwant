@@ -2,6 +2,7 @@ package net.sf.iwant.api;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class JavaModule implements Comparable<JavaModule> {
@@ -13,10 +14,11 @@ public class JavaModule implements Comparable<JavaModule> {
 	private final Path mainClasses;
 	private final String testJava;
 	private final List<JavaModule> testDeps;
+	private final Path testClasses;
 
 	public JavaModule(String name, String locationUnderWsRoot, String mainJava,
 			List<JavaModule> mainDeps, Path mainClasses, String testJava,
-			List<JavaModule> testDeps) {
+			List<JavaModule> testDeps, Path testClasses) {
 		this.name = name;
 		this.locationUnderWsRoot = locationUnderWsRoot;
 		this.mainJava = mainJava;
@@ -24,6 +26,7 @@ public class JavaModule implements Comparable<JavaModule> {
 		this.mainClasses = mainClasses;
 		this.testJava = testJava;
 		this.testDeps = testDeps;
+		this.testClasses = testClasses;
 	}
 
 	public static JavaModule implicitLibrary(Path path) {
@@ -33,7 +36,7 @@ public class JavaModule implements Comparable<JavaModule> {
 			depModules.add(depModule);
 		}
 		return new JavaModule(path.name(), null, null, depModules, path, null,
-				null);
+				Collections.<JavaModule> emptyList(), null);
 	}
 
 	public static JavaModuleSpex with() {
@@ -81,24 +84,27 @@ public class JavaModule implements Comparable<JavaModule> {
 
 		public JavaModule end() {
 			return new JavaModule(name, locationUnderWsRoot, mainJava,
-					mainDeps, newMainClassesTarget(), testJava, testDeps);
+					mainDeps, newClassesTarget("main", mainJava, mainDeps),
+					testJava, testDeps, newClassesTarget("test", testJava,
+							testDeps));
 		}
 
-		private JavaClasses newMainClassesTarget() {
-			if (mainJava == null) {
+		private JavaClasses newClassesTarget(String type,
+				String relativeJavaDir, List<JavaModule> deps) {
+			if (relativeJavaDir == null) {
 				return null;
 			}
 			Path srcDir = Source.underWsroot(locationUnderWsRoot + "/"
-					+ mainJava);
+					+ relativeJavaDir);
 			List<Path> classLocations = new ArrayList<Path>();
-			for (JavaModule mainDep : mainDeps) {
-				Path depMainClasses = mainDep.mainClasses();
+			for (JavaModule dep : deps) {
+				Path depMainClasses = dep.mainClasses();
 				if (depMainClasses != null) {
 					classLocations.add(depMainClasses);
 				}
 			}
-			JavaClasses mainClasses = new JavaClasses(name + "-main-classes",
-					srcDir, classLocations);
+			JavaClasses mainClasses = new JavaClasses(name + "-" + type
+					+ "-classes", srcDir, classLocations);
 			return mainClasses;
 		}
 
@@ -130,6 +136,10 @@ public class JavaModule implements Comparable<JavaModule> {
 
 	public Path mainClasses() {
 		return mainClasses;
+	}
+
+	public Path testClasses() {
+		return testClasses;
 	}
 
 	public boolean isExplicit() {

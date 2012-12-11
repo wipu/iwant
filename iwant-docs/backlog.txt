@@ -377,6 +377,11 @@
   + test with descript the actual log output
   + test manually the actual log output
 
++ @enhancement: testClasses support for JavaModule
+  + build target for it like doing for mainClasses
+  + make it null for lib module
+  + make testDeps empty, not null, for lib module
+
 #################################################################
 = In progress
 #################################################################
