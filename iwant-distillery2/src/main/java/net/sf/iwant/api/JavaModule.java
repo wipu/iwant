@@ -83,10 +83,16 @@ public class JavaModule implements Comparable<JavaModule> {
 		}
 
 		public JavaModule end() {
+			List<JavaModule> combinedDeps = new ArrayList<JavaModule>(testDeps);
+			for (JavaModule mainDep : mainDeps) {
+				if (!combinedDeps.contains(mainDep)) {
+					combinedDeps.add(mainDep);
+				}
+			}
 			return new JavaModule(name, locationUnderWsRoot, mainJava,
 					mainDeps, newClassesTarget("main", mainJava, mainDeps),
 					testJava, testDeps, newClassesTarget("test", testJava,
-							testDeps));
+							combinedDeps));
 		}
 
 		private JavaClasses newClassesTarget(String type,

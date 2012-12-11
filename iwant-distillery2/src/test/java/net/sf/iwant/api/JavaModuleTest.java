@@ -21,7 +21,7 @@ public class JavaModuleTest extends TestCase {
 		assertNull(lib.testClasses());
 	}
 
-	public void testNormalModule() {
+	public void testNormalModuleWithMainJavaOnly() {
 		Path jar = TargetMock.ingredientless("lib.jar");
 		JavaModule jarLib = JavaModule.implicitLibrary(jar);
 
@@ -39,9 +39,11 @@ public class JavaModuleTest extends TestCase {
 		assertEquals("a-main-classes", aMainClasses.name());
 		assertEquals("d/a/src", aMainClasses.srcDir().toString());
 		assertTrue(aMainClasses.classLocations().contains(jar));
+
+		assertNull(a.testClasses());
 	}
 
-	public void testNormalModuleWithTests() {
+	public void testBasicsOfTestClassesOfModule() {
 		Path jar = TargetMock.ingredientless("lib.jar");
 		JavaModule jarLib = JavaModule.implicitLibrary(jar);
 		Path testUtilJar = TargetMock.ingredientless("testlib.jar");
@@ -51,22 +53,48 @@ public class JavaModuleTest extends TestCase {
 				.mainJava("src").mainDeps(jarLib).testJava("test")
 				.testDeps(testUtilJarLib).end();
 
-		assertTrue(a.isExplicit());
+		JavaClasses aTestClasses = (JavaClasses) a.testClasses();
+		assertEquals("a-test-classes", aTestClasses.name());
+		assertEquals("d/a/test", aTestClasses.srcDir().toString());
+	}
 
-		assertEquals("a", a.name());
-		assertEquals("d/a", a.locationUnderWsRoot());
-		assertEquals("src", a.mainJava());
-		assertTrue(a.mainDeps().contains(jarLib));
+	public void testTestClassesHasBothTestAndMainDepsAsDeps() {
+		Path jar = TargetMock.ingredientless("lib.jar");
+		JavaModule jarLib = JavaModule.implicitLibrary(jar);
+		Path testUtilJar = TargetMock.ingredientless("testlib.jar");
+		JavaModule testUtilJarLib = JavaModule.implicitLibrary(testUtilJar);
 
-		JavaClasses aMainClasses = (JavaClasses) a.mainClasses();
-		assertEquals("a-main-classes", aMainClasses.name());
-		assertEquals("d/a/src", aMainClasses.srcDir().toString());
-		assertTrue(aMainClasses.classLocations().contains(jar));
+		JavaModule a = JavaModule.with().name("a").locationUnderWsRoot("d/a")
+				.mainJava("src").mainDeps(jarLib).testJava("test")
+				.testDeps(testUtilJarLib).end();
 
 		JavaClasses aTestClasses = (JavaClasses) a.testClasses();
 		assertEquals("a-test-classes", aTestClasses.name());
 		assertEquals("d/a/test", aTestClasses.srcDir().toString());
+
+		// explicit test dep:
 		assertTrue(aTestClasses.classLocations().contains(testUtilJar));
+		// main dep is an implicit test dep.
+		assertTrue(aTestClasses.classLocations().contains(jar));
+	}
+
+	public void testNoDuplicatesEvenIfSameDepDeclaredAsMainAndTestDep() {
+		Path jar = TargetMock.ingredientless("lib.jar");
+		JavaModule jarLib = JavaModule.implicitLibrary(jar);
+		Path testUtilJar = TargetMock.ingredientless("testlib.jar");
+		JavaModule testUtilJarLib = JavaModule.implicitLibrary(testUtilJar);
+
+		JavaModule a = JavaModule.with().name("a").locationUnderWsRoot("d/a")
+				.mainJava("src").mainDeps(jarLib).testJava("test")
+				.testDeps(jarLib, testUtilJarLib).end();
+
+		JavaClasses aTestClasses = (JavaClasses) a.testClasses();
+		assertEquals("a-test-classes", aTestClasses.name());
+		assertEquals("d/a/test", aTestClasses.srcDir().toString());
+
+		// jar only once:
+		assertEquals("[lib.jar, testlib.jar]", aTestClasses.classLocations()
+				.toString());
 	}
 
 	public void testComparationIsDelegatedToMainClassesName() {
