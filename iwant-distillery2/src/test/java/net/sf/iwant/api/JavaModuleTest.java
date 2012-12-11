@@ -69,8 +69,6 @@ public class JavaModuleTest extends TestCase {
 				.testDeps(testUtilJarLib).end();
 
 		JavaClasses aTestClasses = (JavaClasses) a.testClasses();
-		assertEquals("a-test-classes", aTestClasses.name());
-		assertEquals("d/a/test", aTestClasses.srcDir().toString());
 
 		// explicit test dep:
 		assertTrue(aTestClasses.classLocations().contains(testUtilJar));
@@ -78,6 +76,19 @@ public class JavaModuleTest extends TestCase {
 		assertTrue(aTestClasses.classLocations().contains(jar));
 		// also main classses themselves are almost always needed
 		assertTrue(aTestClasses.classLocations().contains(a.mainClasses()));
+	}
+
+	public void testTestClassesDependenciesDoesNotContainNullIfModuleHasNoMainClassesToDependOn() {
+		Path testUtilJar = TargetMock.ingredientless("testlib.jar");
+		JavaModule testUtilJarLib = JavaModule.implicitLibrary(testUtilJar);
+
+		JavaModule a = JavaModule.with().name("a").locationUnderWsRoot("d/a")
+				.testJava("test").testDeps(testUtilJarLib).end();
+
+		JavaClasses aTestClasses = (JavaClasses) a.testClasses();
+
+		// only testlib.jar, no traces of main classes:
+		assertEquals("[testlib.jar]", aTestClasses.classLocations().toString());
 	}
 
 	public void testNoDuplicatesEvenIfSameDepDeclaredAsMainAndTestDep() {

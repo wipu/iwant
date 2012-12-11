@@ -388,6 +388,8 @@
 
 + @enhancement: module's own main classes are a test dep
 
++ @bugfix: don't add null to test deps if module has no main classes
+
 #################################################################
 = In progress
 #################################################################

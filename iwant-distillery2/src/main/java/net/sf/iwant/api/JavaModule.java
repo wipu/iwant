@@ -114,6 +114,9 @@ public class JavaModule implements Comparable<JavaModule> {
 				}
 			}
 			for (Path depPath : depPaths) {
+				if (depPath == null) {
+					continue;
+				}
 				classLocations.add(depPath);
 			}
 			JavaClasses mainClasses = new JavaClasses(name + "-" + type
