@@ -392,6 +392,10 @@
 
 + As a @buildscriptauthor I want Iwant to fail if my Target impl accesses a cached path during refresh without having declared it as ingredient
   * so that I don't get incorrect results by using invalid cached content
+  + test referring to same path from a correct target, to make sure it really
+    checks the ingredients of the referring target
+  + TargetRefreshTask wraps ctx with a checking impl
+  + allow referring to target itself, and even a path with same name
 
 #################################################################
 = In progress
