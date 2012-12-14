@@ -390,6 +390,9 @@
 
 + @bugfix: don't add null to test deps if module has no main classes
 
++ As a @buildscriptauthor I want Iwant to fail if my Target impl accesses a cached path during refresh without having declared it as ingredient
+  * so that I don't get incorrect results by using invalid cached content
+
 #################################################################
 = In progress
 #################################################################
@@ -429,8 +432,6 @@
   - targets() should just return collection of Paths, not Targets, wishes may be reasonable against ExternalSources for example
     - but fix externalresource wish script path handling, the leading slash breaks number of ".."s
   - binary javamodule should have empty deps, not null
-
-- failure if target accesses cached path during refresh without having declared it as ingredient
 
 - As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead

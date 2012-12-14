@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.Concatenated;
+import net.sf.iwant.api.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.EclipseSettings;
 import net.sf.iwant.api.HelloSideEffect;
 import net.sf.iwant.api.HelloTarget;
@@ -408,6 +410,37 @@ public class WishEvaluatorTest extends TestCase {
 				.exists());
 		assertFalse(new File(caches.contentOf(target), "pak2/Callee.class")
 				.exists());
+	}
+
+	public void testTwoTargetsReferToSamePathButOnlyTheOneThatDeclaresItAsIngredientSucceeds() {
+		Path src = new HelloTarget("src", "src content");
+
+		ConcatenatedBuilder correctSpex = Concatenated.named("correct");
+		correctSpex.pathTo(src);
+		Target correct = correctSpex.end();
+
+		Target incorrect = new TargetThatForgetsToDeclareAnIngredient(
+				"incorrect", src);
+
+		Target root = Concatenated.named("root").pathTo(correct)
+				.pathTo(incorrect).end();
+
+		try {
+			evaluator.asPath(root);
+			fail();
+		} catch (IllegalStateException e) {
+			assertEquals("java.lang.IllegalStateException: Target"
+					+ " incorrect referred to src without"
+					+ " declaring it as an ingredient.", e.getMessage());
+		}
+
+		// correct shall succeed:
+		assertEquals(asSomeone + "/.i-cached/target/src",
+				testArea.contentOf(new File(asSomeone,
+						".i-cached/target/correct")));
+
+		// incorrect shall not even produce the file:
+		assertFalse(new File(asSomeone, ".i-cached/target/incorrect").exists());
 	}
 
 }

@@ -50,7 +50,8 @@ public class TargetRefreshTask implements Task {
 			Iwant.del(cachedTarget);
 		}
 		try {
-			target.path(ctx);
+			target.path(new IngredientCheckingTargetEvaluationContext(target,
+					ctx));
 			new FileWriter(cachedDescriptor).append(target.contentDescriptor())
 					.close();
 		} catch (RuntimeException e) {

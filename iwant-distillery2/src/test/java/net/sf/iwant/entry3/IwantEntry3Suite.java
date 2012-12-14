@@ -12,6 +12,7 @@ public class IwantEntry3Suite {
 		suite.addTestSuite(FileUtilTest.class);
 		suite.addTestSuite(ExampleWsDefGeneratorTest.class);
 		suite.addTestSuite(WishScriptGeneratorTest.class);
+		suite.addTestSuite(IngredientCheckingTargetEvaluationContextTest.class);
 		suite.addTestSuite(TargetRefreshTaskTest.class);
 		suite.addTestSuite(WishEvaluatorTest.class);
 		suite.addTestSuite(UserPrefsImplTest.class);
