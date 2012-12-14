@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.Iwant.IwantException;
 
 public class Planner {
 
@@ -146,6 +147,11 @@ public class Planner {
 		}
 		Throwable refreshFailure = refreshFailure();
 		if (refreshFailure != null) {
+			// an "expected" case:
+			if (refreshFailure instanceof IwantException) {
+				throw (IwantException) refreshFailure;
+			}
+			// something unexpected happened:
 			throw new IllegalStateException(refreshFailure);
 		}
 	}

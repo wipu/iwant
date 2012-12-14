@@ -24,6 +24,7 @@ import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.WsInfoMock;
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.IwantNetworkMock;
 
 public class WishEvaluatorTest extends TestCase {
@@ -402,8 +403,8 @@ public class WishEvaluatorTest extends TestCase {
 		try {
 			evaluator.asPath(target);
 			fail();
-		} catch (IllegalStateException e) {
-			assertEquals("Compilation failed.", e.getCause().getMessage());
+		} catch (IwantException e) {
+			assertEquals("Compilation failed.", e.getMessage());
 		}
 
 		assertFalse(new File(caches.contentOf(target), "pak1/Caller.class")
@@ -428,9 +429,8 @@ public class WishEvaluatorTest extends TestCase {
 		try {
 			evaluator.asPath(root);
 			fail();
-		} catch (IllegalStateException e) {
-			assertEquals("java.lang.IllegalStateException: Target"
-					+ " incorrect referred to src without"
+		} catch (IwantException e) {
+			assertEquals("Target incorrect referred to src without"
 					+ " declaring it as an ingredient.", e.getMessage());
 		}
 

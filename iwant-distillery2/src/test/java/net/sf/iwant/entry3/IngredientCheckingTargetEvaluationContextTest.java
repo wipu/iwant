@@ -7,6 +7,7 @@ import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.IwantNetworkMock;
 import net.sf.iwant.testarea.TestArea;
@@ -79,7 +80,7 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 		try {
 			ctx.cached(new TargetMock("implicit ingredient"));
 			fail();
-		} catch (IllegalStateException e) {
+		} catch (IwantException e) {
 			assertEquals(
 					"Target target referred to implicit ingredient without "
 							+ "declaring it as an ingredient.", e.getMessage());

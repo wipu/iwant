@@ -27,9 +27,8 @@ public class IngredientCheckingTargetEvaluationContext implements
 	@Override
 	public File cached(Path path) {
 		if (!isLegalReference(path)) {
-			throw new IllegalStateException("Target " + target
-					+ " referred to " + path + " without "
-					+ "declaring it as an ingredient.");
+			throw new Iwant.IwantException("Target " + target + " referred to "
+					+ path + " without " + "declaring it as an ingredient.");
 		}
 		return delegate.cached(path);
 	}
