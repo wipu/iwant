@@ -491,11 +491,29 @@ public class Iwant {
 		@Override
 		protected synchronized Class<?> loadClass(String name, boolean resolve)
 				throws ClassNotFoundException {
-			if (name.startsWith("net.sf.iwant")) {
+			if (isClassnameToHide(name)) {
 				return null;
 			} else {
 				return super.loadClass(name, resolve);
 			}
+		}
+
+		private boolean isClassnameToHide(String name) {
+			if (name.startsWith("net.sf.iwant")) {
+				return isIwantClassnameToHide(name);
+			}
+			return false;
+		}
+
+		private boolean isIwantClassnameToHide(String name) {
+			// canonical name of inner classes is not compatible with
+			// classloading (!!) so this manual name tweaking is needed:
+			if ((Iwant.class.getCanonicalName() + "$" + ExitCalledException.class
+					.getSimpleName()).equals(name)) {
+				// this is an exceptional case, for catches to work
+				return false;
+			}
+			return true;
 		}
 
 	}
