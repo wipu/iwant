@@ -34,7 +34,8 @@ public class IngredientCheckingTargetEvaluationContext implements
 	}
 
 	private boolean isLegalReference(Path path) {
-		if (target.name().equals(path.name())) {
+		// TODO this logic can be simplified
+		if (equals(target, path)) {
 			return true;
 		}
 		if (isDirectOrIndirectIngredientOf(path, target)) {
@@ -45,15 +46,19 @@ public class IngredientCheckingTargetEvaluationContext implements
 
 	private static boolean isDirectOrIndirectIngredientOf(
 			Path ingredientCandidate, Path target) {
-		if (target.ingredients().contains(ingredientCandidate)) {
-			return true;
-		}
 		for (Path ingredient : target.ingredients()) {
+			if (equals(ingredientCandidate, ingredient)) {
+				return true;
+			}
 			if (isDirectOrIndirectIngredientOf(ingredientCandidate, ingredient)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private static boolean equals(Path p1, Path p2) {
+		return p2.name().equals(p1.name());
 	}
 
 	@Override

@@ -399,6 +399,8 @@
 
 + @bugfix: ingredient of ingredient must be ok to refer to during refresh, otherwise a target would have to declare a lot of its indirect ingredients
 
++ @bugfix: even ingredients (of ingredients) need to be compared by name, not equality, because not all Path implementations implement equals/hashCode
+
 #################################################################
 = In progress
 #################################################################

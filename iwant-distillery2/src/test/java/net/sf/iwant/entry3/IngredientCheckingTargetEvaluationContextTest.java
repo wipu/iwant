@@ -4,6 +4,7 @@ import java.io.File;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.HelloTarget;
+import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
@@ -94,9 +95,30 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 	public void testReferenceToIngredientOfIngredientIsDelegated() {
 		TargetMock ingredientOfIngredient = new TargetMock(
 				"ingredient-of-ingredient");
+		ingredientOfIngredient.hasNoIngredients();
 		TargetMock ingredient = new TargetMock("ingredient");
 		ingredient.hasIngredients(ingredientOfIngredient);
+
 		target.hasIngredients(ingredient);
+
+		Path copyOfIngredientOfIngredient = Source
+				.underWsroot("ingredient-of-ingredient");
+		assertEquals(delegate.cached(copyOfIngredientOfIngredient),
+				ctx.cached(copyOfIngredientOfIngredient));
+	}
+
+	/**
+	 * See the other name related test for explanation
+	 */
+	public void testIngredientOfIngredientIsAlsoComparedByNameNotEquality() {
+		TargetMock ingredientOfIngredient = new TargetMock(
+				"ingredient-of-ingredient");
+		ingredientOfIngredient.hasNoIngredients();
+		TargetMock ingredient = new TargetMock("ingredient");
+		ingredient.hasIngredients(ingredientOfIngredient);
+
+		target.hasIngredients(ingredient);
+
 		assertEquals(delegate.cached(ingredientOfIngredient),
 				ctx.cached(ingredientOfIngredient));
 	}
