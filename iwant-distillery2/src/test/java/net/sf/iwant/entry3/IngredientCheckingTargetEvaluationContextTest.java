@@ -123,6 +123,19 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 				ctx.cached(ingredientOfIngredient));
 	}
 
+	public void testNullIngredientIsReportedAsFriendlyException() {
+		TargetMock ingredient = new TargetMock("ingredient");
+		ingredient.hasIngredients(new Path[] { null });
+		target.hasIngredients(ingredient);
+		try {
+			ctx.cached(new TargetMock("something"));
+			fail();
+		} catch (IwantException e) {
+			assertEquals("Path 'ingredient' has a null ingredient.",
+					e.getMessage());
+		}
+	}
+
 	public void testOtherMethodsAreJustDelegated() {
 		assertSame(delegate.iwant(), ctx.iwant());
 		assertSame(delegate.wsRoot(), ctx.wsRoot());

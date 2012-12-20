@@ -47,6 +47,10 @@ public class IngredientCheckingTargetEvaluationContext implements
 	private static boolean isDirectOrIndirectIngredientOf(
 			Path ingredientCandidate, Path target) {
 		for (Path ingredient : target.ingredients()) {
+			if (ingredient == null) {
+				throw new Iwant.IwantException("Path '" + target
+						+ "' has a null ingredient.");
+			}
 			if (equals(ingredientCandidate, ingredient)) {
 				return true;
 			}

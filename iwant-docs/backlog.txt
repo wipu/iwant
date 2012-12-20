@@ -401,6 +401,8 @@
 
 + @bugfix: even ingredients (of ingredients) need to be compared by name, not equality, because not all Path implementations implement equals/hashCode
 
++ @enhancement: friendly exception for null ingredient
+
 #################################################################
 = In progress
 #################################################################
