@@ -397,6 +397,8 @@
   + TargetRefreshTask wraps ctx with a checking impl
   + allow referring to target itself, and even a path with same name
 
++ @bugfix: ingredient of ingredient must be ok to refer to during refresh, otherwise a target would have to declare a lot of its indirect ingredients
+
 #################################################################
 = In progress
 #################################################################

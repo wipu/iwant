@@ -37,8 +37,21 @@ public class IngredientCheckingTargetEvaluationContext implements
 		if (target.name().equals(path.name())) {
 			return true;
 		}
-		if (target.ingredients().contains(path)) {
+		if (isDirectOrIndirectIngredientOf(path, target)) {
 			return true;
+		}
+		return false;
+	}
+
+	private static boolean isDirectOrIndirectIngredientOf(
+			Path ingredientCandidate, Path target) {
+		if (target.ingredients().contains(ingredientCandidate)) {
+			return true;
+		}
+		for (Path ingredient : target.ingredients()) {
+			if (isDirectOrIndirectIngredientOf(ingredientCandidate, ingredient)) {
+				return true;
+			}
 		}
 		return false;
 	}

@@ -87,6 +87,20 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 		}
 	}
 
+	/**
+	 * It's ok to use ingredients of ingredients, otherwise you would have to
+	 * declare everything recursively
+	 */
+	public void testReferenceToIngredientOfIngredientIsDelegated() {
+		TargetMock ingredientOfIngredient = new TargetMock(
+				"ingredient-of-ingredient");
+		TargetMock ingredient = new TargetMock("ingredient");
+		ingredient.hasIngredients(ingredientOfIngredient);
+		target.hasIngredients(ingredient);
+		assertEquals(delegate.cached(ingredientOfIngredient),
+				ctx.cached(ingredientOfIngredient));
+	}
+
 	public void testOtherMethodsAreJustDelegated() {
 		assertSame(delegate.iwant(), ctx.iwant());
 		assertSame(delegate.wsRoot(), ctx.wsRoot());
