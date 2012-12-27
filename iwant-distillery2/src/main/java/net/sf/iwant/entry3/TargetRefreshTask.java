@@ -25,7 +25,6 @@ public class TargetRefreshTask implements Task {
 	private final TargetEvaluationContext ctx;
 	private final Collection<Task> deps = new ArrayList<Task>();
 	private final Caches caches;
-	private TaskDirtiness dirtiness;
 
 	public TargetRefreshTask(Target target, TargetEvaluationContext ctx,
 			Caches caches) {
@@ -67,14 +66,6 @@ public class TargetRefreshTask implements Task {
 
 	@Override
 	public synchronized TaskDirtiness dirtiness() {
-		if (dirtiness == null) {
-			dirtiness = evaluateDirtiness();
-		}
-		return dirtiness;
-	}
-
-	private TaskDirtiness evaluateDirtiness() {
-		Iwant.fileLog(this + " evaluating dirtiness");
 		String cachedDescriptor = cachedDescriptor();
 		if (cachedDescriptor == null) {
 			return TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR;

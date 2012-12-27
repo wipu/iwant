@@ -345,26 +345,6 @@ public class TargetRefreshTaskTest extends TestCase {
 
 	}
 
-	public void testDirtinessIsNotReEvaluatedForPerformanceReasons() {
-		TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory target = new TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory(
-				"target");
-		target.expectsCachedTargetMissingBeforeRefresh(true);
-		target.willCreateFile("f1");
-
-		TargetRefreshTask taskInstance1 = task(target);
-		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR,
-				taskInstance1.dirtiness());
-
-		// after refresh the same task instance still thinks it's not fresh...
-		taskInstance1.refresh(Collections.<ResourcePool, Resource> emptyMap());
-		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR,
-				taskInstance1.dirtiness());
-
-		// ... but a new instance re-evalutes the situation
-		TargetRefreshTask taskInstance2 = task(target);
-		assertEquals(TaskDirtiness.NOT_DIRTY, taskInstance2.dirtiness());
-	}
-
 	public void testExistingCachedContentIsDeletedBeforeRefresh() {
 		TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory target = new TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory(
 				"target");

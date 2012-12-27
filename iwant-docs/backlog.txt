@@ -408,13 +408,13 @@
   + replace boolean with enum for dirty check
   + print it
 
++ @optimization: only check each target dirtyness once during a build
+  + map dirtinesses in TaskQueue
+  + remove the unnecessary caching inside TargetRefreshTask
+
 #################################################################
 = In progress
 #################################################################
-
-- @optimization: only check each target dirtyness once during a build
-  + map dirtinesses in TaskQueue
-  - remove the unnecessary caching inside TargetRefreshTask
 
 #################################################################
 = Planned

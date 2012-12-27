@@ -232,6 +232,18 @@ public class PlannerTest extends TestCase {
 				planner.taskStartMessage(2, 1, dirty));
 	}
 
+	public void testTaskStartLogMessageDoesNotReEvaluateDirtinessForPerformanceReasons() {
+		TaskMock dirty = TaskMock.named("task2").dirty().noDeps();
+		planner = new Planner(dirty, 1);
+		assertEquals("(2/1 S~ TaskMock:task2)",
+				planner.taskStartMessage(2, 1, dirty));
+
+		dirty.changesDirtinessTo(TaskDirtiness.NOT_DIRTY);
+		// the message still uses the old state:
+		assertEquals("(2/1 S~ TaskMock:task2)",
+				planner.taskStartMessage(2, 1, dirty));
+	}
+
 	public void testDirtinessStringForLogMessage() {
 		assertEquals("  ", Planner.dirtinessToString(TaskDirtiness.NOT_DIRTY));
 		assertEquals(

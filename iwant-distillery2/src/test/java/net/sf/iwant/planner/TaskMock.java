@@ -17,17 +17,17 @@ public class TaskMock implements Task {
 	private final Object refreshStartLock = new Object();
 	private boolean mayFinishRefresh = false;
 	private final Object refreshEndLock = new Object();
-	private final boolean isDirty;
+	private TaskDirtiness dirtiness;
 	private String refreshFailure;
 	private final List<ResourcePool> resourcePools;
 	private Map<ResourcePool, Resource> allocatedResources;
 	private final boolean supportsParallelism;
 
-	public TaskMock(String name, boolean isDirty,
+	public TaskMock(String name, TaskDirtiness dirtiness,
 			List<ResourcePool> resourcePools, boolean supportsParallelism,
 			Task... deps) {
 		this.name = name;
-		this.isDirty = isDirty;
+		this.dirtiness = dirtiness;
 		this.resourcePools = resourcePools;
 		this.supportsParallelism = supportsParallelism;
 		this.deps = Arrays.asList(deps);
@@ -43,7 +43,7 @@ public class TaskMock implements Task {
 
 	public static class TaskMockSpex {
 
-		private boolean isDirty;
+		private TaskDirtiness dirtiness;
 		private final String name;
 		private List<ResourcePool> resourcePools = new ArrayList<ResourcePool>();
 		private boolean supportsParallelism = true;
@@ -57,17 +57,17 @@ public class TaskMock implements Task {
 		}
 
 		public TaskMockSpex dirty() {
-			isDirty = true;
+			dirtiness = TaskDirtiness.DIRTY_SRC_MODIFIED;
 			return this;
 		}
 
 		public TaskMockSpex clean() {
-			isDirty = false;
+			dirtiness = TaskDirtiness.NOT_DIRTY;
 			return this;
 		}
 
 		public TaskMock deps(TaskMock... deps) {
-			return new TaskMock(name, isDirty, resourcePools,
+			return new TaskMock(name, dirtiness, resourcePools,
 					supportsParallelism, deps);
 		}
 
@@ -155,8 +155,11 @@ public class TaskMock implements Task {
 
 	@Override
 	public TaskDirtiness dirtiness() {
-		return isDirty ? TaskDirtiness.DIRTY_SRC_MODIFIED
-				: TaskDirtiness.NOT_DIRTY;
+		return dirtiness;
+	}
+
+	public void changesDirtinessTo(TaskDirtiness newDirtiness) {
+		this.dirtiness = newDirtiness;
 	}
 
 	@Override
