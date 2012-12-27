@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import net.sf.iwant.entry.Iwant;
 
 public class TaskQueue {
 
+	private final Map<Task, TaskDirtiness> dirtinessByTask = new HashMap<Task, TaskDirtiness>();
 	private final Set<Task> dirty = new HashSet<Task>();
 	private final Set<Task> refreshable = new HashSet<Task>();
 	private final Set<Task> refreshing = new HashSet<Task>();
@@ -23,7 +25,8 @@ public class TaskQueue {
 
 	public TaskQueue(Task rootTask) {
 		this.rootTask = rootTask;
-		dirty.addAll(dirties(rootTask));
+		evaluateDirtinesses(rootTask, dirtinessByTask);
+		dirty.addAll(findDirties(rootTask, dirtinessByTask));
 		refreshable.addAll(refreshable(rootTask, dirty));
 	}
 
@@ -46,14 +49,32 @@ public class TaskQueue {
 		return retval;
 	}
 
-	private static List<Task> dirties(Task root) {
+	public TaskDirtiness dirtiness(Task task) {
+		return dirtinessByTask.get(task);
+	}
+
+	private static void evaluateDirtinesses(Task task,
+			Map<Task, TaskDirtiness> dirtinessByTask) {
+		if (dirtinessByTask.containsKey(task)) {
+			// already evaluated
+			return;
+		}
+		TaskDirtiness dirtiness = task.dirtiness();
+		dirtinessByTask.put(task, dirtiness);
+		for (Task dep : task.dependencies()) {
+			evaluateDirtinesses(dep, dirtinessByTask);
+		}
+	}
+
+	private static List<Task> findDirties(Task root,
+			Map<Task, TaskDirtiness> dirtinessByTask) {
 		List<Task> retval = new ArrayList<Task>();
 		List<Task> dirtyDeps = new ArrayList<Task>();
 		for (Task dep : root.dependencies()) {
-			dirtyDeps.addAll(dirties(dep));
+			dirtyDeps.addAll(findDirties(dep, dirtinessByTask));
 		}
 		retval.addAll(dirtyDeps);
-		if (!dirtyDeps.isEmpty() || root.dirtiness().isDirty()) {
+		if (!dirtyDeps.isEmpty() || dirtinessByTask.get(root).isDirty()) {
 			retval.add(root);
 		}
 		return retval;

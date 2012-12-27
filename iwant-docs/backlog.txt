@@ -413,6 +413,8 @@
 #################################################################
 
 - @optimization: only check each target dirtyness once during a build
+  + map dirtinesses in TaskQueue
+  - remove the unnecessary caching inside TargetRefreshTask
 
 #################################################################
 = Planned

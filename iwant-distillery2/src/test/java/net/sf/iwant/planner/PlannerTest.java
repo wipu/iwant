@@ -221,15 +221,15 @@ public class PlannerTest extends TestCase {
 	public void testTaskStartLogMessage() {
 		// in practice targets whose dependency target is dirty is clean but
 		// still refreshed and this is what it looks like in the log:
-		assertEquals(
-				"(1/2    TaskMock:task1)",
-				Planner.taskStartMessage(1, 2, TaskMock.named("task1").clean()
-						.noDeps()));
+		TaskMock clean = TaskMock.named("task1").clean().noDeps();
+		planner = new Planner(clean, 1);
+		assertEquals("(1/2    TaskMock:task1)",
+				planner.taskStartMessage(1, 2, clean));
 		// and this is what a target whose src has been touched looks like:
-		assertEquals(
-				"(2/1 S~ TaskMock:task2)",
-				Planner.taskStartMessage(2, 1, TaskMock.named("task2").dirty()
-						.noDeps()));
+		TaskMock dirty = TaskMock.named("task2").dirty().noDeps();
+		planner = new Planner(dirty, 1);
+		assertEquals("(2/1 S~ TaskMock:task2)",
+				planner.taskStartMessage(2, 1, dirty));
 	}
 
 	public void testDirtinessStringForLogMessage() {

@@ -68,11 +68,11 @@ public class Planner {
 
 	private final AtomicInteger workersWorking = new AtomicInteger();
 
-	static String taskStartMessage(int workerId, int workersWorking, Task task) {
+	String taskStartMessage(int workerId, int workersWorking, Task task) {
 		StringBuilder b = new StringBuilder();
 		b.append("(");
 		b.append(workerId).append("/").append(workersWorking).append(" ")
-				.append(dirtinessToString(task.dirtiness())).append(" ")
+				.append(dirtinessToString(queue.dirtiness(task))).append(" ")
 				.append(task).append(")");
 		return b.toString();
 	}
