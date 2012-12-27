@@ -154,8 +154,9 @@ public class TaskMock implements Task {
 	}
 
 	@Override
-	public boolean isDirty() {
-		return isDirty;
+	public TaskDirtiness dirtiness() {
+		return isDirty ? TaskDirtiness.DIRTY_SRC_MODIFIED
+				: TaskDirtiness.NOT_DIRTY;
 	}
 
 	@Override

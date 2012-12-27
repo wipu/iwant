@@ -24,6 +24,7 @@ import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.IwantNetworkMock;
 import net.sf.iwant.planner.Resource;
 import net.sf.iwant.planner.ResourcePool;
+import net.sf.iwant.planner.TaskDirtiness;
 
 public class TargetRefreshTaskTest extends TestCase {
 
@@ -67,14 +68,18 @@ public class TargetRefreshTaskTest extends TestCase {
 		}
 	}
 
+	private TargetRefreshTask task(Target target) {
+		return new TargetRefreshTask(target, ctx, caches);
+	}
+
 	public void testTaskNameIsTargetsName() {
 		TargetMock t1 = new TargetMock("t1");
 		t1.hasNoIngredients();
 		TargetMock t2 = new TargetMock("t2");
 		t2.hasNoIngredients();
 
-		assertEquals("t1", new TargetRefreshTask(t1, ctx, caches).name());
-		assertEquals("t2", new TargetRefreshTask(t2, ctx, caches).name());
+		assertEquals("t1", task(t1).name());
+		assertEquals("t2", task(t2).name());
 	}
 
 	public void testTaskToStringMentionsTargetsClassAndName() {
@@ -84,12 +89,10 @@ public class TargetRefreshTaskTest extends TestCase {
 		t2.hasNoIngredients();
 		HelloTarget hello = new HelloTarget("hello", "whatever");
 
-		assertEquals("net.sf.iwant.entry3.TargetMock t1",
-				new TargetRefreshTask(t1, ctx, caches).toString());
-		assertEquals("net.sf.iwant.entry3.TargetMock t2",
-				new TargetRefreshTask(t2, ctx, caches).toString());
-		assertEquals("net.sf.iwant.api.HelloTarget hello",
-				new TargetRefreshTask(hello, ctx, caches).toString());
+		assertEquals("net.sf.iwant.entry3.TargetMock t1", task(t1).toString());
+		assertEquals("net.sf.iwant.entry3.TargetMock t2", task(t2).toString());
+		assertEquals("net.sf.iwant.api.HelloTarget hello", task(hello)
+				.toString());
 	}
 
 	public void testEqualityAndHashcodeAreDeterminedByName() {
@@ -100,9 +103,9 @@ public class TargetRefreshTaskTest extends TestCase {
 		TargetMock b = new TargetMock("b");
 		b.hasNoIngredients();
 
-		TargetRefreshTask a1Task = new TargetRefreshTask(a1, ctx, caches);
-		TargetRefreshTask a2Task = new TargetRefreshTask(a2, ctx, caches);
-		TargetRefreshTask bTask = new TargetRefreshTask(b, ctx, caches);
+		TargetRefreshTask a1Task = task(a1);
+		TargetRefreshTask a2Task = task(a2);
+		TargetRefreshTask bTask = task(b);
 
 		assertEquals(a1Task, a2Task);
 		assertEquals(a1Task.hashCode(), a2Task.hashCode());
@@ -114,18 +117,14 @@ public class TargetRefreshTaskTest extends TestCase {
 		TargetMock target = new TargetMock("target");
 		target.hasNoIngredients();
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-
-		assertSame(target, task.target());
+		assertSame(target, task(target).target());
 	}
 
 	public void testTaskOfIngredientlessTargetHasNoDeps() {
 		TargetMock target = new TargetMock("target");
 		target.hasNoIngredients();
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-
-		assertTrue(task.dependencies().isEmpty());
+		assertTrue(task(target).dependencies().isEmpty());
 	}
 
 	public void testTaskDependenciesAreRefreshTasksOfTargetIngredientsButNotSource() {
@@ -136,7 +135,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		TargetMock target = new TargetMock("target");
 		target.hasIngredients(Arrays.asList(srcIngredient, targetIngredient));
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
+		TargetRefreshTask task = task(target);
 
 		assertEquals(1, task.dependencies().size());
 		TargetRefreshTask depTask = (TargetRefreshTask) task.dependencies()
@@ -151,7 +150,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		// no cached content
 		cacheContainsFreshDescriptor(target);
 
-		assertTrue(new TargetRefreshTask(target, ctx, caches).isDirty());
+		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_CONTENT, task(target)
+				.dirtiness());
 	}
 
 	public void testIngredientlessTaskIsNotDirtyIfCachedTargetContentAndDescriptorExist() {
@@ -161,15 +161,14 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsFreshDescriptor(target);
 
-		assertFalse(new TargetRefreshTask(target, ctx, caches).isDirty());
+		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 	}
 
 	public void testNoResourcesRequiredIfTargetDoesNotRequireThem() {
 		TargetMock target = new TargetMock("target");
 		target.hasNoIngredients();
 
-		assertTrue(new TargetRefreshTask(target, ctx, caches)
-				.requiredResources().isEmpty());
+		assertTrue(task(target).requiredResources().isEmpty());
 	}
 
 	public void testRefreshWritesCachedContent() {
@@ -178,8 +177,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		target.hasContent("target content");
 		target.hasContentDescriptor("target descriptor");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
 
 		assertEquals("target content", testArea.contentOf("cached/target"));
 	}
@@ -190,8 +188,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		target.hasContent("target content");
 		target.hasContentDescriptor("target descriptor");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
 
 		assertEquals("target descriptor",
 				testArea.contentOf("cached-descriptor/target"));
@@ -204,9 +201,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "old-descriptor");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-
-		assertTrue(task.isDirty());
+		assertEquals(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED, task(target)
+				.dirtiness());
 	}
 
 	public void testTaskIsDirtyIfCachedDescriptorIsMissing() {
@@ -216,9 +212,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		// no cached descriptor
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-
-		assertTrue(task.isDirty());
+		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR, task(target)
+				.dirtiness());
 	}
 
 	public void testTaskIsNotDirtyIfDescriptorNotChanged() {
@@ -228,9 +223,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-
-		assertFalse(task.isDirty());
+		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 	}
 
 	public void testTaskIsDirtyIfFileUnderSourceDirWasModifiedAfterDescriptor()
@@ -247,9 +240,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-
-		assertTrue(task.isDirty());
+		assertEquals(TaskDirtiness.DIRTY_SRC_MODIFIED, task(target).dirtiness());
 	}
 
 	public void testCleanTaskWithSourceIngredient() throws IOException {
@@ -264,9 +255,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-
-		assertFalse(task.isDirty());
+		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 	}
 
 	public void testTaskSupportsParallelismIffTargetSupportsIt() {
@@ -277,10 +266,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		TargetMock par = new TargetMock("par");
 		par.hasNoIngredients();
 
-		assertFalse(new TargetRefreshTask(nonPar, ctx, caches)
-				.supportsParallelism());
-		assertTrue(new TargetRefreshTask(par, ctx, caches)
-				.supportsParallelism());
+		assertFalse(task(nonPar).supportsParallelism());
+		assertTrue(task(par).supportsParallelism());
 	}
 
 	private class TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory
@@ -358,26 +345,46 @@ public class TargetRefreshTaskTest extends TestCase {
 
 	}
 
+	public void testDirtinessIsNotReEvaluatedForPerformanceReasons() {
+		TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory target = new TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory(
+				"target");
+		target.expectsCachedTargetMissingBeforeRefresh(true);
+		target.willCreateFile("f1");
+
+		TargetRefreshTask taskInstance1 = task(target);
+		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR,
+				taskInstance1.dirtiness());
+
+		// after refresh the same task instance still thinks it's not fresh...
+		taskInstance1.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR,
+				taskInstance1.dirtiness());
+
+		// ... but a new instance re-evalutes the situation
+		TargetRefreshTask taskInstance2 = task(target);
+		assertEquals(TaskDirtiness.NOT_DIRTY, taskInstance2.dirtiness());
+	}
+
 	public void testExistingCachedContentIsDeletedBeforeRefresh() {
 		TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory target = new TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory(
 				"target");
 		target.expectsCachedTargetMissingBeforeRefresh(true);
 		target.willCreateFile("f1");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-
-		assertTrue(task.isDirty());
-		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
-		assertFalse(task.isDirty());
+		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR, task(target)
+				.dirtiness());
+		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
+		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 		assertEquals("f1 content", testArea.contentOf("cached/target/f1"));
 
 		// target content changes => f1 gets replaced by f2
 		target.willVerifyCachedTargetExistence();
 		target.willCreateFile("f2");
-		assertTrue(task.isDirty());
-		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		assertEquals(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED, task(target)
+				.dirtiness());
+		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
 		assertEquals("f2 content", testArea.contentOf("cached/target/f2"));
-		assertFalse(task.isDirty());
+		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 		assertFalse(new File(cachedTarget, "target/f1").exists());
 	}
 
@@ -387,21 +394,21 @@ public class TargetRefreshTaskTest extends TestCase {
 		target.expectsCachedTargetMissingBeforeRefresh(false);
 		target.willCreateFile("f1");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-
-		assertTrue(task.isDirty());
-		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
-		assertFalse(task.isDirty());
+		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR, task(target)
+				.dirtiness());
+		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
+		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 		assertEquals("f1 content", testArea.contentOf("cached/target/f1"));
 
 		// target content changes => f1 stays and f2 is created alongside it
 		target.willVerifyCachedTargetExistence();
 		target.willCreateFile("f2");
-		assertTrue(task.isDirty());
-		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		assertEquals(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED, task(target)
+				.dirtiness());
+		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
 		assertEquals("f1 content", testArea.contentOf("cached/target/f1"));
 		assertEquals("f2 content", testArea.contentOf("cached/target/f2"));
-		assertFalse(task.isDirty());
+		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 	}
 
 	public void testParentOfCachedContentIsCreatedBeforeRefreshWhenCachedTargetIsNotDeleted() {
@@ -410,8 +417,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		target.expectsCachedTargetMissingBeforeRefresh(false);
 		target.willCreateFile("f");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
 
 		assertEquals("f content", testArea.contentOf("cached/parent/target/f"));
 	}
@@ -422,8 +428,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		target.expectsCachedTargetMissingBeforeRefresh(true);
 		target.willCreateFile("f");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
 
 		assertEquals("f content", testArea.contentOf("cached/parent/target/f"));
 	}
@@ -448,10 +453,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		Downloaded target = Downloaded.withName("downloaded")
 				.url(urlThatShallNotBeContacted.toExternalForm()).md5("todo");
 
-		TargetRefreshTask task = new TargetRefreshTask(target, ctx, caches);
-
 		// no ConnectException means no download was tried
-		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
+		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
 
 		// descriptor is created, downloaded file content stays the same
 		assertTrue(cachedDescriptor.exists());

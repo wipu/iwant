@@ -10,7 +10,7 @@ public interface Task {
 
 	void refresh(Map<ResourcePool, Resource> allocatedResources);
 
-	boolean isDirty();
+	TaskDirtiness dirtiness();
 
 	Collection<Task> dependencies();
 

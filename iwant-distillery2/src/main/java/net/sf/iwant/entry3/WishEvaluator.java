@@ -126,14 +126,6 @@ public class WishEvaluator {
 		}
 	}
 
-	boolean needsRefreshing(Path path) {
-		if (!(path instanceof Target)) {
-			return false;
-		}
-		Target target = (Target) path;
-		return new TargetRefreshTask(target, ctx, caches).isDirty();
-	}
-
 	public void asPath(Path path) {
 		File cachedContent = freshCachedContent(path);
 		PrintWriter wr = new PrintWriter(out);

@@ -53,7 +53,7 @@ public class TaskQueue {
 			dirtyDeps.addAll(dirties(dep));
 		}
 		retval.addAll(dirtyDeps);
-		if (!dirtyDeps.isEmpty() || root.isDirty()) {
+		if (!dirtyDeps.isEmpty() || root.dirtiness().isDirty()) {
 			retval.add(root);
 		}
 		return retval;

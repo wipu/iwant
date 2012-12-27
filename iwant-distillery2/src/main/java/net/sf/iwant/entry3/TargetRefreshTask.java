@@ -2,7 +2,6 @@ package net.sf.iwant.entry3;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import net.sf.iwant.io.StreamUtil;
 import net.sf.iwant.planner.Resource;
 import net.sf.iwant.planner.ResourcePool;
 import net.sf.iwant.planner.Task;
+import net.sf.iwant.planner.TaskDirtiness;
 
 public class TargetRefreshTask implements Task {
 
@@ -25,6 +25,7 @@ public class TargetRefreshTask implements Task {
 	private final TargetEvaluationContext ctx;
 	private final Collection<Task> deps = new ArrayList<Task>();
 	private final Caches caches;
+	private TaskDirtiness dirtiness;
 
 	public TargetRefreshTask(Target target, TargetEvaluationContext ctx,
 			Caches caches) {
@@ -52,8 +53,7 @@ public class TargetRefreshTask implements Task {
 		try {
 			target.path(new IngredientCheckingTargetEvaluationContext(target,
 					ctx));
-			new FileWriter(cachedDescriptor).append(target.contentDescriptor())
-					.close();
+			Iwant.writeTextFile(cachedDescriptor, target.contentDescriptor());
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -65,39 +65,52 @@ public class TargetRefreshTask implements Task {
 		return caches.contentDescriptorOf(target);
 	}
 
-	private void debugLog(Object... lines) {
-		Iwant.debugLog(getClass().getSimpleName(), lines);
+	@Override
+	public synchronized TaskDirtiness dirtiness() {
+		if (dirtiness == null) {
+			dirtiness = evaluateDirtiness();
+		}
+		return dirtiness;
 	}
 
-	@Override
-	public synchronized boolean isDirty() {
+	private TaskDirtiness evaluateDirtiness() {
+		Iwant.fileLog(this + " evaluating dirtiness");
 		String cachedDescriptor = cachedDescriptor();
-		if (cachedDescriptor == null
-				|| !cachedDescriptor.equals(target.contentDescriptor())) {
-			debugLog(target + " is dirty because descriptor chanced.");
-			return true;
+		if (cachedDescriptor == null) {
+			return TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR;
+		}
+		if (!cachedDescriptor.equals(target.contentDescriptor())) {
+			return TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED;
 		}
 		File cachedContent = ctx.cached(target);
 		if (!cachedContent.exists()) {
-			debugLog(target + " is dirty because cached content missing.");
-			return true;
+			return TaskDirtiness.DIRTY_NO_CACHED_CONTENT;
 		}
 		if (isSourceModifiedSince(cachedDescriptorFile().lastModified())) {
-			Iwant.fileLog(target + " is dirty because a source was modified.");
-			return true;
+			return TaskDirtiness.DIRTY_SRC_MODIFIED;
 		}
-		debugLog(target + " is not dirty.");
-		return false;
+		return TaskDirtiness.NOT_DIRTY;
+	}
+
+	private String tryToRead(File file) throws IOException {
+		InputStream in = null;
+		try {
+			in = new FileInputStream(file);
+			return StreamUtil.toString(in);
+		} finally {
+			if (in != null) {
+				in.close();
+			}
+		}
 	}
 
 	private String cachedDescriptor() {
+		File file = cachedDescriptorFile();
+		if (!file.exists()) {
+			return null;
+		}
 		try {
-			File file = cachedDescriptorFile();
-			if (!file.exists()) {
-				return null;
-			}
-			InputStream in = new FileInputStream(file);
-			return StreamUtil.toString(in);
+			return tryToRead(file);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
@@ -122,7 +135,6 @@ public class TargetRefreshTask implements Task {
 	 */
 	private boolean isModifiedSince(File src, long time) {
 		if (src.lastModified() >= time) {
-			Iwant.fileLog("File was modified since " + time + ": " + src);
 			return true;
 		}
 		if (src.isDirectory()) {

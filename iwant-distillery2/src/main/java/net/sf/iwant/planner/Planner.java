@@ -72,8 +72,27 @@ public class Planner {
 		StringBuilder b = new StringBuilder();
 		b.append("(");
 		b.append(workerId).append("/").append(workersWorking).append(" ")
+				.append(dirtinessToString(task.dirtiness())).append(" ")
 				.append(task).append(")");
 		return b.toString();
+	}
+
+	static String dirtinessToString(TaskDirtiness dirtiness) {
+		switch (dirtiness) {
+		case DIRTY_DESCRIPTOR_CHANGED:
+			return "D~";
+		case DIRTY_NO_CACHED_CONTENT:
+			return "C!";
+		case DIRTY_NO_CACHED_DESCRIPTOR:
+			return "D!";
+		case DIRTY_SRC_MODIFIED:
+			return "S~";
+		case NOT_DIRTY:
+			return "  ";
+		default:
+			throw new UnsupportedOperationException("Unsupported dirtiness: "
+					+ dirtiness);
+		}
 	}
 
 	private class Worker implements Runnable {

@@ -235,50 +235,7 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals("Stream using 'src content' as ingredient", out.toString());
 	}
 
-	// file laziness
-
-	public void sourceNeedsNoRefresh() {
-		testArea.hasFile("src", "does not matter");
-		Source src = Source.underWsroot("src");
-		assertFalse(evaluator.needsRefreshing(src));
-
-		evaluator.asPath(src);
-
-		assertFalse(evaluator.needsRefreshing(src));
-	}
-
-	public void testSecondAsPathCausesNoRefresh() {
-		TargetMock target = new TargetMock("ingredientless");
-		target.hasNoIngredients();
-		target.hasContent("ingredientless content");
-		target.hasContentDescriptor("ingredientless descr");
-		assertTrue(evaluator.needsRefreshing(target));
-		evaluator.asPath(target);
-
-		target.shallNotBeToldToWriteFile();
-		assertFalse(evaluator.needsRefreshing(target));
-		evaluator.asPath(target);
-
-		assertEquals("ingredientless content", testArea.contentOf(new File(
-				asSomeone, ".i-cached/target/ingredientless")));
-	}
-
-	public void testSecondAsPathCausesRefreshWhenDescriptorChanges() {
-		TargetMock target = new TargetMock("ingredientless");
-		target.hasNoIngredients();
-		target.hasContent("content 1");
-		target.hasContentDescriptor("descr 1");
-		assertTrue(evaluator.needsRefreshing(target));
-		evaluator.asPath(target);
-
-		target.hasContent("content 2");
-		target.hasContentDescriptor("descr 2");
-		assertTrue(evaluator.needsRefreshing(target));
-		evaluator.asPath(target);
-
-		assertEquals("content 2", testArea.contentOf(new File(asSomeone,
-				".i-cached/target/ingredientless")));
-	}
+	// ...
 
 	public void testTargetIsRefreshedIfDescriptorOfIngredientsIngredientChanged() {
 		TargetMock t1 = new TargetMock("t1");

@@ -403,9 +403,16 @@
 
 + @enhancement: friendly exception for null ingredient
 
++ As a @buildscriptuser I want the log to mention why each target is refreshed so I can understand the logic better
+  * S~ for source modification etc
+  + replace boolean with enum for dirty check
+  + print it
+
 #################################################################
 = In progress
 #################################################################
+
+- @optimization: only check each target dirtyness once during a build
 
 #################################################################
 = Planned
