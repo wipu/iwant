@@ -1,7 +1,6 @@
 package net.sf.iwant.entry;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 
@@ -23,13 +22,13 @@ public class DownloadingTest extends TestCase {
 
 	private void cachedFileContains(URL url, String content) throws IOException {
 		File cached = iwant.network().cacheLocation(new UnmodifiableUrl(url));
-		new FileWriter(cached).append(content).close();
+		Iwant.writeTextFile(cached, content);
 	}
 
 	private File remoteFileContains(String path, String content)
 			throws IOException {
 		File remoteFile = new File(testArea.root(), path);
-		new FileWriter(remoteFile).append(content).close();
+		Iwant.writeTextFile(remoteFile, content);
 		return remoteFile;
 	}
 

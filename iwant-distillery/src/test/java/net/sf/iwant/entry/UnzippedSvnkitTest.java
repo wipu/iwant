@@ -1,7 +1,6 @@
 package net.sf.iwant.entry;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -44,7 +43,7 @@ public class UnzippedSvnkitTest extends TestCase {
 		File downloadedSvnkit = testArea.newDir("downloaded-svnkit");
 		File unzippedSvnkit = testArea.newDir("unzipped-svnkit");
 		File svnkitJar = new File(unzippedSvnkit, "svnkit.jar");
-		new FileWriter(svnkitJar).append("svnkit.jar content").close();
+		Iwant.writeTextFile(svnkitJar, "svnkit.jar content");
 		network.cachesZipAt(Iwant.fileToUrl(downloadedSvnkit),
 				"unzipped-svnkit");
 

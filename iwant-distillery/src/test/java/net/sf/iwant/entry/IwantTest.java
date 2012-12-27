@@ -2,7 +2,6 @@ package net.sf.iwant.entry;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URL;
@@ -172,8 +171,8 @@ public class IwantTest extends TestCase {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		new FileWriter(new File(iHaveConf, "iwant-from")).append(
-				"iwant-from=" + iwantFrom + "\n").close();
+		Iwant.writeTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
+				+ iwantFrom + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
@@ -193,8 +192,8 @@ public class IwantTest extends TestCase {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		new FileWriter(new File(iHaveConf, "iwant-from")).append(
-				"iwant-from=" + iwantFrom + "\n").close();
+		Iwant.writeTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
+				+ iwantFrom + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
@@ -219,8 +218,8 @@ public class IwantTest extends TestCase {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		new FileWriter(new File(iHaveConf, "iwant-from")).append(
-				"iwant-from=" + iwantFrom + "\nre-export=false\n").close();
+		Iwant.writeTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
+				+ iwantFrom + "\nre-export=false\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
@@ -242,8 +241,8 @@ public class IwantTest extends TestCase {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		new FileWriter(new File(iHaveConf, "iwant-from")).append(
-				"iwant-from=" + iwantFrom + "\n").close();
+		Iwant.writeTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
+				+ iwantFrom + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();

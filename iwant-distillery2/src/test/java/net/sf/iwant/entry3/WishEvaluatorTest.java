@@ -2,7 +2,6 @@ package net.sf.iwant.entry3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -380,12 +379,10 @@ public class WishEvaluatorTest extends TestCase {
 		File srcDir = new File(wsRoot, "src");
 		new File(srcDir, "pak1").mkdirs();
 		new File(srcDir, "pak2").mkdirs();
-		new FileWriter(new File(srcDir, "pak1/Caller.java")).append(
-				"package pak1;\npublic class Caller {pak2.Callee callee;}")
-				.close();
+		Iwant.writeTextFile(new File(srcDir, "pak1/Caller.java"),
+				"package pak1;\npublic class Caller {pak2.Callee callee;}");
 		File calleeJava = new File(srcDir, "pak2/Callee.java");
-		new FileWriter(calleeJava).append(
-				"package pak2;\npublic class Callee {}").close();
+		Iwant.writeTextFile(calleeJava, "package pak2;\npublic class Callee {}");
 		Source src = Source.underWsroot("src");
 		Target target = new JavaClasses("multiple", src,
 				Collections.<Path> emptyList());

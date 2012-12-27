@@ -318,8 +318,8 @@ public class TargetRefreshTaskTest extends TestCase {
 			}
 			dest.mkdir();
 			File subFile = new File(dest, fileNameToCreateUnderDirectory);
-			new FileWriter(subFile).append(
-					fileNameToCreateUnderDirectory + " content").close();
+			Iwant.writeTextFile(subFile, fileNameToCreateUnderDirectory
+					+ " content");
 		}
 
 		private void verifyCachedTargetExistence(File dest) {

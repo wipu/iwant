@@ -1,7 +1,6 @@
 package net.sf.iwant.entry;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 
@@ -60,7 +59,7 @@ public class ExportedFromSvnTest extends TestCase {
 				+ getClass());
 		File exportedDir = testArea.newDir("exported");
 		File exportedFile = new File(exportedDir, "exported-file");
-		new FileWriter(exportedFile).append("exported-content").close();
+		Iwant.writeTextFile(exportedFile, "exported-content");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exportedDir);
 
 		File exportedAgain = iwant.exportedFromSvn(remoteUrl, true);
@@ -78,7 +77,7 @@ public class ExportedFromSvnTest extends TestCase {
 				+ getClass());
 		File exportedDir = testArea.newDir("exported");
 		File exportedFile = new File(exportedDir, "exported-file");
-		new FileWriter(exportedFile).append("exported-content").close();
+		Iwant.writeTextFile(exportedFile, "exported-content");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exportedDir);
 
 		File exportedAgain = iwant.exportedFromSvn(remoteUrl, false);
@@ -99,8 +98,7 @@ public class ExportedFromSvnTest extends TestCase {
 		File exported = testArea.newDir("exported");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exported);
 		File previouslyExportedFile = new File(exported, "exported-file");
-		new FileWriter(previouslyExportedFile).append("exported-content")
-				.close();
+		Iwant.writeTextFile(previouslyExportedFile, "exported-content");
 
 		File exportedAgain = iwant.exportedFromSvn(remoteUrl, true);
 
@@ -123,8 +121,7 @@ public class ExportedFromSvnTest extends TestCase {
 		File exported = testArea.newDir("exported");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exported);
 		File previouslyExportedFile = new File(exported, "exported-file");
-		new FileWriter(previouslyExportedFile).append("exported-content")
-				.close();
+		Iwant.writeTextFile(previouslyExportedFile, "exported-content");
 
 		File exportedAgain = iwant.exportedFromSvn(remoteUrl, false);
 

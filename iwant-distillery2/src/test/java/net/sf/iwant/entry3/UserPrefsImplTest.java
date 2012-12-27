@@ -8,7 +8,6 @@ import net.sf.iwant.entry.Iwant.IwantException;
 
 public class UserPrefsImplTest extends TestCase {
 
-	@SuppressWarnings("unused")
 	public void testMissingWorkerCount() {
 		File file = new File("any");
 		Properties p = new Properties();
@@ -23,7 +22,6 @@ public class UserPrefsImplTest extends TestCase {
 
 	}
 
-	@SuppressWarnings("unused")
 	public void testNonIntegerWorkerCount() {
 		File file = new File("any");
 		Properties p = new Properties();
@@ -39,7 +37,6 @@ public class UserPrefsImplTest extends TestCase {
 
 	}
 
-	@SuppressWarnings("unused")
 	public void testZeroWorkerCount() {
 		File file = new File("any");
 		Properties p = new Properties();

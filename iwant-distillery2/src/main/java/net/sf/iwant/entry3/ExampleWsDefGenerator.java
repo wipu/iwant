@@ -17,13 +17,20 @@ class ExampleWsDefGenerator {
 	private static String contentOf(File file) throws IOException {
 		StringBuilder out = new StringBuilder();
 		char[] buffer = new char[8192];
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		while (true) {
-			int charsRead = reader.read(buffer);
-			if (charsRead < 0) {
-				break;
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			while (true) {
+				int charsRead = reader.read(buffer);
+				if (charsRead < 0) {
+					break;
+				}
+				out.append(buffer, 0, charsRead);
 			}
-			out.append(buffer, 0, charsRead);
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
 		}
 		return out.toString();
 	}

@@ -2,7 +2,6 @@ package net.sf.iwant.entry;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -49,8 +48,7 @@ public class UnzippingTest extends TestCase {
 				"not-to-be-accessed"));
 		File unzipped = network.cachesZipAt(zip, "unzipped");
 		unzipped.mkdir();
-		new FileWriter(new File(unzipped, "file")).append("unzipped content")
-				.close();
+		Iwant.writeTextFile(new File(unzipped, "file"), "unzipped content");
 
 		File unzippedAgain = iwant.unmodifiableZipUnzipped(new UnmodifiableZip(
 				zip));

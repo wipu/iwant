@@ -2,7 +2,6 @@ package net.sf.iwant.entry3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -602,8 +601,8 @@ public class Iwant3Test extends TestCase {
 		testEmptyWishAfterCreationOfExampleWsDef();
 		startOfOutAndErrCapture();
 
-		new FileWriter(new File(asTest, "i-have/conf/user-preferences"))
-				.append("workerCount=3").close();
+		Iwant.writeTextFile(new File(asTest, "i-have/conf/user-preferences"),
+				"workerCount=3");
 
 		try {
 			iwant3.evaluate(asTest);

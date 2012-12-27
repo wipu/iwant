@@ -1,7 +1,6 @@
 package net.sf.iwant.entry3;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +8,7 @@ import java.util.List;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TargetEvaluationContext;
+import net.sf.iwant.entry.Iwant;
 
 public class TargetThatForgetsToDeclareAnIngredient extends Target {
 
@@ -30,8 +30,8 @@ public class TargetThatForgetsToDeclareAnIngredient extends Target {
 		// this reference shall cause a failure:
 		File cachedIngredient = ctx.cached(implicitIngredient);
 		// this shall never be run:
-		new FileWriter(ctx.cached(this)).append(
-				cachedIngredient.getCanonicalPath()).close();
+		Iwant.writeTextFile(ctx.cached(this),
+				cachedIngredient.getCanonicalPath());
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package net.sf.iwant.api;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -57,7 +56,7 @@ public class JavaClassesTest extends TestCase {
 	public void testCrapToPathFails() throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDir.mkdirs();
-		new FileWriter(new File(srcDir, "Crap.java")).append("crap").close();
+		Iwant.writeTextFile(new File(srcDir, "Crap.java"), "crap");
 		Source src = Source.underWsroot("src");
 		Target target = new JavaClasses("crap", src,
 				Collections.<Path> emptyList());
@@ -73,8 +72,7 @@ public class JavaClassesTest extends TestCase {
 	public void testValidToPathCompiles() throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDir.mkdirs();
-		new FileWriter(new File(srcDir, "Valid.java")).append("class Valid {}")
-				.close();
+		Iwant.writeTextFile(new File(srcDir, "Valid.java"), "class Valid {}");
 		Source src = Source.underWsroot("src");
 		Target target = new JavaClasses("valid", src,
 				Collections.<Path> emptyList());
@@ -88,13 +86,12 @@ public class JavaClassesTest extends TestCase {
 		File srcDir = new File(wsRoot, "src");
 		new File(srcDir, "pak1").mkdirs();
 		new File(srcDir, "pak2").mkdirs();
-		new FileWriter(new File(srcDir, "Caller.java")).append(
-				"class Caller {pak1.Callee1 callee1;pak2.Callee2 callee2;}")
-				.close();
-		new FileWriter(new File(srcDir, "pak1/Callee1.java")).append(
-				"package pak1;\npublic class Callee1 {}").close();
-		new FileWriter(new File(srcDir, "pak2/Callee2.java")).append(
-				"package pak2;\npublic class Callee2 {}").close();
+		Iwant.writeTextFile(new File(srcDir, "Caller.java"),
+				"class Caller {pak1.Callee1 callee1;pak2.Callee2 callee2;}");
+		Iwant.writeTextFile(new File(srcDir, "pak1/Callee1.java"),
+				"package pak1;\npublic class Callee1 {}");
+		Iwant.writeTextFile(new File(srcDir, "pak2/Callee2.java"),
+				"package pak2;\npublic class Callee2 {}");
 		Source src = Source.underWsroot("src");
 		Target target = new JavaClasses("multiple", src,
 				Collections.<Path> emptyList());
@@ -111,10 +108,11 @@ public class JavaClassesTest extends TestCase {
 				"SuperClassForJavaClassesTest.class").toURI());
 		File srcDir = new File(wsRoot, "src");
 		srcDir.mkdirs();
-		new FileWriter(new File(srcDir, "Subclass.java")).append(
+		Iwant.writeTextFile(
+				new File(srcDir, "Subclass.java"),
 				"class Subclass extends "
 						+ SuperClassForJavaClassesTest.class.getCanonicalName()
-						+ "{}").close();
+						+ "{}");
 		Source src = Source.underWsroot("src");
 		File superClassClasses = superClassFile.getParentFile().getParentFile()
 				.getParentFile().getParentFile().getParentFile()
@@ -194,7 +192,7 @@ public class JavaClassesTest extends TestCase {
 			throws Exception {
 		wsRoot.mkdirs();
 		File srcFile = new File(wsRoot, "Valid.java");
-		new FileWriter(srcFile).append("class Valid {}").close();
+		Iwant.writeTextFile(srcFile, "class Valid {}");
 		Source src = Source.underWsroot("Valid.java");
 		Target target = new JavaClasses("non-dir", src,
 				Collections.<Path> emptyList());

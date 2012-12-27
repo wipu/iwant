@@ -268,13 +268,34 @@ public class Iwant {
 		}
 		File iwantFrom = new File(iHaveConf, "iwant-from");
 		if (!iwantFrom.exists()) {
-			new FileWriter(iwantFrom).append("iwant-from=TODO\n").close();
+			writeTextFile(iwantFrom, "iwant-from=TODO\n");
 			throw new IwantException("I created " + iwantFrom
 					+ "\nPlease edit it and rerun me.");
 		}
 		Properties iwantFromProps = new Properties();
 		iwantFromProps.load(new FileReader(iwantFrom));
 		return iwantFromProps;
+	}
+
+	private static void tryToWriteTextFile(File file, String content)
+			throws IOException {
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(file);
+			writer.append(content);
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
+	}
+
+	public static void writeTextFile(File file, String content) {
+		try {
+			tryToWriteTextFile(file, content);
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	private File iwantBootstrapperClasses(File iwantWs) {
