@@ -16,12 +16,14 @@ public class Planner {
 	private Throwable failure;
 
 	public Planner(Task rootTask, int workerCount) {
+		log("starting");
 		queue = new TaskQueue(rootTask);
 		for (int i = 0; i < workerCount; i++) {
 			Worker worker = new Worker(i);
 			Thread thread = new Thread(worker);
 			threads.add(thread);
 		}
+		log("started " + workerCount + " workers.");
 	}
 
 	private static void log(Object... msg) {
@@ -110,35 +112,27 @@ public class Planner {
 
 		@Override
 		public void run() {
-			log(this, " starts.");
-			try {
-				while (true) {
-					log(this, " waits for next task.");
-					TaskAllocation allocation = waitForNextTask();
-					if (allocation == null) {
-						log(this, " stops, no more tasks.");
-						return;
-					}
-					try {
-						Task task = allocation.task();
-						Map<ResourcePool, Resource> resources = allocation
-								.allocatedResources();
-						workersWorking.incrementAndGet();
-						consoleLog(taskStartMessage(id, workersWorking.get(),
-								task));
-						task.refresh(resources);
-					} catch (Throwable e) {
-						consoleLog("(FAILED " + allocation.task() + ")");
-						refreshFailed(e);
-						return;
-					} finally {
-						workersWorking.decrementAndGet();
-					}
-					log(this, " finished ", allocation);
-					markDone(allocation);
+			while (true) {
+				TaskAllocation allocation = waitForNextTask();
+				if (allocation == null) {
+					return;
 				}
-			} finally {
-				log(this, " ends.");
+				try {
+					Task task = allocation.task();
+					Map<ResourcePool, Resource> resources = allocation
+							.allocatedResources();
+					workersWorking.incrementAndGet();
+					consoleLog(taskStartMessage(id, workersWorking.get(), task));
+					task.refresh(resources);
+				} catch (Throwable e) {
+					consoleLog("(FAILED " + allocation.task() + ")");
+					refreshFailed(e);
+					return;
+				} finally {
+					workersWorking.decrementAndGet();
+				}
+				log(this, " finished ", allocation);
+				markDone(allocation);
 			}
 		}
 
@@ -164,6 +158,7 @@ public class Planner {
 				throw new IllegalStateException("TODO test this branch");
 			}
 		}
+		log("joined workers");
 		Throwable refreshFailure = refreshFailure();
 		if (refreshFailure != null) {
 			// an "expected" case:

@@ -1,7 +1,6 @@
 package net.sf.iwant.planner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,14 +23,14 @@ public class TaskQueue {
 	private boolean isNonParallelRefreshing = false;
 
 	public TaskQueue(Task rootTask) {
+		Iwant.debugLog("TaskQueue", "building queue");
+		long t1 = System.currentTimeMillis();
 		this.rootTask = rootTask;
 		evaluateDirtinesses(rootTask, dirtinessByTask);
 		dirty.addAll(findDirties(rootTask, dirtinessByTask));
 		refreshable.addAll(refreshable(rootTask, dirty));
-	}
-
-	private static void log(Object... msg) {
-		Iwant.debugLog("TaskQueue", Arrays.toString(msg));
+		long t2 = System.currentTimeMillis();
+		Iwant.debugLog("TaskQueue", "queue ready in " + (t2 - t1) + "ms.");
 	}
 
 	private static Set<Task> refreshable(Task root, Set<Task> dirty) {
@@ -81,7 +80,6 @@ public class TaskQueue {
 	}
 
 	private void remove(Task finishedTask) {
-		log(this, "removes ", finishedTask);
 		boolean wasDirty = dirty.remove(finishedTask);
 		boolean wasRefreshing = refreshing.remove(finishedTask);
 		if (!wasDirty || !wasRefreshing) {
@@ -93,7 +91,6 @@ public class TaskQueue {
 	}
 
 	public void markDone(TaskAllocation allocation) {
-		log(this, "marks done ", allocation);
 		TaskAllocationImpl impl = (TaskAllocationImpl) allocation;
 		impl.releaseResources();
 	}

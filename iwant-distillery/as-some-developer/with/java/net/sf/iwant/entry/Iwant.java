@@ -313,7 +313,6 @@ public class Iwant {
 			for (Iterator<File> iterator = classLocations.iterator(); iterator
 					.hasNext();) {
 				File classLocation = iterator.next();
-				debugLog("javac", "class-location: " + classLocation);
 				cp.append(classLocation.getCanonicalPath());
 				if (iterator.hasNext()) {
 					cp.append(pathSeparator());
@@ -329,11 +328,8 @@ public class Iwant {
 
 	public File compiledClasses(File dest, List<File> src, String classpath) {
 		try {
-			fileLog("compiledClasses " + dest);
-			debugLog("javac", "dest: " + dest);
-			for (File srcFile : src) {
-				debugLog("javac", "src: " + srcFile);
-			}
+			debugLog("compiledClasses", "dest: " + dest, "src: " + src,
+					"classpath: " + classpath);
 			del(dest);
 			dest.mkdirs();
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -372,10 +368,13 @@ public class Iwant {
 
 	public static void debugLog(String task, Object... lines) {
 		StringBuilder b = new StringBuilder();
-		for (Object part : lines) {
+		for (int i = 0; i < lines.length; i++) {
 			b.append(String.format("(%16s    ", task));
-			b.append(part);
+			b.append(lines[i]);
 			b.append(")");
+			if (i < lines.length - 1) {
+				b.append("\n");
+			}
 		}
 		fileLog(b.toString());
 		if (DEBUG_LOG) {
@@ -443,14 +442,10 @@ public class Iwant {
 	public static void runJavaMain(boolean catchPrintsAndSystemExit,
 			boolean hideIwantClasses, String className,
 			List<File> classLocations, String... args) throws Exception {
-		debugLog("invoke", "class: " + className,
-				"args: " + Arrays.toString(args));
-		debugLog("invoke", "catchPrintsAndSystemExit="
-				+ catchPrintsAndSystemExit);
-		debugLog("invoke", "hideIwantClasses=" + hideIwantClasses);
-		for (File classLocation : classLocations) {
-			debugLog("invoke", "class-location: " + classLocation);
-		}
+		debugLog("runJavaMain", "class: " + className,
+				"args: " + Arrays.toString(args), "catchPrintsAndSystemExit="
+						+ catchPrintsAndSystemExit, "hideIwantClasses="
+						+ hideIwantClasses, "classLocations: " + classLocations);
 		ClassLoader classLoader = classLoader(hideIwantClasses, classLocations);
 		Class<?> helloClass = classLoader.loadClass(className);
 		Method mainMethod = helloClass.getMethod("main", String[].class);
@@ -601,7 +596,6 @@ public class Iwant {
 	}
 
 	public static void del(File file) {
-		debugLog("del " + file);
 		if (file.isDirectory()) {
 			for (File child : file.listFiles()) {
 				del(child);

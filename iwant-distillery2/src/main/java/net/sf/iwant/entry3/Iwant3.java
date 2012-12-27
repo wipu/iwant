@@ -112,13 +112,14 @@ public class Iwant3 {
 			File wsDefClasses = wishEvaluator
 					.freshCachedContent(wsDefClassesTarget);
 
-			Iwant.fileLog("Calling wsdef");
+			Iwant.fileLog("Classloading wsdef");
 			Class<?> wsDefClass = loadClass(
 					getClass().getClassLoader(),
 					wsDefdef.workspaceClassname(),
 					wsdefRuntimeClasspath(
 							wishEvaluator.targetEvaluationContext(),
 							wsDefClassesTarget, wsDefdefClasses, wsDefClasses));
+			Iwant.fileLog("Instantiating " + wsDefClass);
 			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
 			refreshWishScripts(asSomeone, wsDef,
 					wishEvaluator.sideEffectDefinitionContext());
@@ -131,6 +132,7 @@ public class Iwant3 {
 										"with/bash/iwant/list-of/targets"));
 			}
 			String wish = args[0];
+			Iwant.fileLog("Wanting " + wish + " from " + wsDef);
 			wishEvaluator.iwant(wish, wsDef);
 		} catch (RuntimeException e) {
 			throw e;
@@ -220,6 +222,7 @@ public class Iwant3 {
 	private static void refreshWishScripts(File asSomeone,
 			Collection<? extends Target> targets,
 			Collection<? extends SideEffect> sideEffects) {
+		Iwant.fileLog("Refreshing wish scripts under " + asSomeone);
 		File withBashIwant = new File(asSomeone, "with/bash/iwant");
 		deleteWishScripts(withBashIwant);
 		createWishScript(withBashIwant, "list-of/targets");
