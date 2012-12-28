@@ -412,6 +412,11 @@
   + map dirtinesses in TaskQueue
   + remove the unnecessary caching inside TargetRefreshTask
 
++ @bugfix and @optimization: make target refreshes really parallel
+  * tested at planner level with TaskMock, but not working in practice
+  + test end-to-end (in WishEvaluatorTest) with a controllable mock target that utilizes the controllable TaskMock
+  + remove unnecessary synchronization from TargetRefreshTask that blocks other threads that try to read the task during its refresh
+
 #################################################################
 = In progress
 #################################################################

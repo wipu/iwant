@@ -397,4 +397,79 @@ public class WishEvaluatorTest extends TestCase {
 		assertFalse(new File(asSomeone, ".i-cached/target/incorrect").exists());
 	}
 
+	/**
+	 * Even though planner has been tested, TargetRefreshTask used to
+	 * synchronize too much, preventing concurrency from working properly
+	 * end-to-end
+	 */
+	public void testConcurrencyWorksEndToEnd() throws InterruptedException {
+		final int workerCount = 2;
+		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
+				workerCount, wsdefdefJavaModule, wsdefJavaModule);
+
+		ConcurrencyControllableTarget part1 = new ConcurrencyControllableTarget(
+				"part1");
+		ConcurrencyControllableTarget part2 = new ConcurrencyControllableTarget(
+				"part2");
+		ConcurrencyControllableTarget part3 = new ConcurrencyControllableTarget(
+				"part3");
+		ConcurrencyControllableTarget part4 = new ConcurrencyControllableTarget(
+				"part4");
+		final ConcurrencyControllableTarget listOfParts = new ConcurrencyControllableTarget(
+				"listOfParts", part1, part2, part3, part4);
+
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				evaluator.asPath(listOfParts);
+			}
+		});
+
+		thread.start();
+		// =>
+		part1.shallEventuallyStartRefresh();
+		part2.shallEventuallyStartRefresh();
+		part3.shallNotStartRefresh();
+		part4.shallNotStartRefresh();
+		listOfParts.shallNotStartRefresh();
+
+		part1.finishesRefresh();
+		// =>
+		part3.shallEventuallyStartRefresh();
+		part4.shallNotStartRefresh();
+		listOfParts.shallNotStartRefresh();
+
+		part3.finishesRefresh();
+		// =>
+		part4.shallEventuallyStartRefresh();
+		listOfParts.shallNotStartRefresh();
+
+		part1.finishesRefresh();
+		// =>
+		// nothing yet
+
+		part4.finishesRefresh();
+		// =>
+		// nothing yet
+
+		part2.finishesRefresh();
+		// =>
+		listOfParts.shallEventuallyStartRefresh();
+
+		listOfParts.finishesRefresh();
+		thread.join();
+		// =>
+
+		assertEquals("part1", testArea.contentOf(new File(asSomeone,
+				".i-cached/target/part1")));
+		assertEquals("part2", testArea.contentOf(new File(asSomeone,
+				".i-cached/target/part2")));
+		assertEquals("part3", testArea.contentOf(new File(asSomeone,
+				".i-cached/target/part3")));
+		assertEquals("part4", testArea.contentOf(new File(asSomeone,
+				".i-cached/target/part4")));
+		assertEquals("listOfParts", testArea.contentOf(new File(asSomeone,
+				".i-cached/target/listOfParts")));
+	}
+
 }

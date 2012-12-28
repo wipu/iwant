@@ -16,14 +16,14 @@ public class Planner {
 	private Throwable failure;
 
 	public Planner(Task rootTask, int workerCount) {
-		log("starting");
+		log("Constructing");
 		queue = new TaskQueue(rootTask);
 		for (int i = 0; i < workerCount; i++) {
 			Worker worker = new Worker(i);
-			Thread thread = new Thread(worker);
+			Thread thread = new Thread(worker, "w-" + i);
 			threads.add(thread);
 		}
-		log("started " + workerCount + " workers.");
+		log("Constructed with " + workerCount + " workers.");
 	}
 
 	private static void log(Object... msg) {
@@ -144,9 +144,11 @@ public class Planner {
 	}
 
 	public void start() {
+		log("Starting");
 		for (Thread thread : threads) {
 			thread.start();
 		}
+		log("Started " + threads.size() + " workers.");
 	}
 
 	public void join() {

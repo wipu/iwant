@@ -16,7 +16,7 @@ import net.sf.iwant.entry.Iwant;
 public class TaskQueue {
 
 	private final Map<Task, TaskDirtiness> dirtinessByTask = new HashMap<Task, TaskDirtiness>();
-	private final Set<Task> dirty = new HashSet<Task>();
+	private final Set<Task> stillDirty = new HashSet<Task>();
 	private final Set<Task> refreshable = new HashSet<Task>();
 	private final Set<Task> refreshing = new HashSet<Task>();
 	private final Task rootTask;
@@ -27,8 +27,8 @@ public class TaskQueue {
 		long t1 = System.currentTimeMillis();
 		this.rootTask = rootTask;
 		evaluateDirtinesses(rootTask, dirtinessByTask);
-		dirty.addAll(findDirties(rootTask, dirtinessByTask));
-		refreshable.addAll(refreshable(rootTask, dirty));
+		stillDirty.addAll(findDirties(rootTask, dirtinessByTask));
+		refreshable.addAll(refreshable(rootTask, stillDirty));
 		long t2 = System.currentTimeMillis();
 		Iwant.debugLog("TaskQueue", "queue ready in " + (t2 - t1) + "ms.");
 	}
@@ -80,14 +80,14 @@ public class TaskQueue {
 	}
 
 	private void remove(Task finishedTask) {
-		boolean wasDirty = dirty.remove(finishedTask);
+		boolean wasDirty = stillDirty.remove(finishedTask);
 		boolean wasRefreshing = refreshing.remove(finishedTask);
 		if (!wasDirty || !wasRefreshing) {
 			throw new IllegalStateException("Unexpected removal: "
 					+ finishedTask.name());
 		}
 		refreshable.clear();
-		refreshable.addAll(refreshable(rootTask, dirty));
+		refreshable.addAll(refreshable(rootTask, stillDirty));
 	}
 
 	public void markDone(TaskAllocation allocation) {
@@ -96,7 +96,7 @@ public class TaskQueue {
 	}
 
 	public boolean isEmpty() {
-		return dirty.isEmpty();
+		return stillDirty.isEmpty();
 	}
 
 	public TaskAllocation next() {
@@ -112,6 +112,7 @@ public class TaskQueue {
 	private TaskAllocation topmostRefreshable(Task task, Set<Task> refreshable) {
 		if (refreshable.contains(task)) {
 			if (refreshing.contains(task)) {
+				// the task is already refreshing
 				return null;
 			}
 			if (!task.supportsParallelism() && !refreshing.isEmpty()) {

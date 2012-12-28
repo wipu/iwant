@@ -40,8 +40,7 @@ public class TargetRefreshTask implements Task {
 	}
 
 	@Override
-	public synchronized void refresh(
-			Map<ResourcePool, Resource> allocatedResources) {
+	public void refresh(Map<ResourcePool, Resource> allocatedResources) {
 		File cachedDescriptor = cachedDescriptorFile();
 		cachedDescriptor.getParentFile().mkdirs();
 		File cachedTarget = ctx.cached(target);
@@ -65,7 +64,7 @@ public class TargetRefreshTask implements Task {
 	}
 
 	@Override
-	public synchronized TaskDirtiness dirtiness() {
+	public TaskDirtiness dirtiness() {
 		String cachedDescriptor = cachedDescriptor();
 		if (cachedDescriptor == null) {
 			return TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR;
@@ -139,21 +138,21 @@ public class TargetRefreshTask implements Task {
 	}
 
 	@Override
-	public synchronized Collection<Task> dependencies() {
+	public Collection<Task> dependencies() {
 		return Collections.unmodifiableCollection(deps);
 	}
 
 	@Override
-	public synchronized String name() {
+	public String name() {
 		return target.name();
 	}
 
 	@Override
-	public synchronized Collection<ResourcePool> requiredResources() {
+	public Collection<ResourcePool> requiredResources() {
 		return Collections.emptyList();
 	}
 
-	public synchronized Target target() {
+	public Target target() {
 		return target;
 	}
 
