@@ -343,8 +343,9 @@ public class Iwant {
 			Writer compilerTaskOut = null;
 			Iterable<String> classes = null;
 
-			List<String> options = Arrays.asList(new String[] { "-d",
-					dest.getCanonicalPath(), "-classpath", classpath });
+			List<String> options = Arrays.asList(new String[] { "-Xlint",
+					"-Xlint:-serial", "-d", dest.getCanonicalPath(),
+					"-classpath", classpath });
 
 			CompilationTask compilerTask = compiler.getTask(compilerTaskOut,
 					fileManager, diagnosticListener, options, classes,

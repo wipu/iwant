@@ -417,6 +417,8 @@
   + test end-to-end (in WishEvaluatorTest) with a controllable mock target that utilizes the controllable TaskMock
   + remove unnecessary synchronization from TargetRefreshTask that blocks other threads that try to read the task during its refresh
 
++ @enhancement: Iwant uses -Xlint for javac to see verbose warnings (but not the extremely controversial serialversionuid warning!)
+
 #################################################################
 = In progress
 #################################################################
