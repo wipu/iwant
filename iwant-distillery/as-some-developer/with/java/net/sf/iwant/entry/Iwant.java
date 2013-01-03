@@ -515,14 +515,14 @@ public class Iwant {
 			}
 		}
 
-		private boolean isClassnameToHide(String name) {
+		private static boolean isClassnameToHide(String name) {
 			if (name.startsWith("net.sf.iwant")) {
 				return isIwantClassnameToHide(name);
 			}
 			return false;
 		}
 
-		private boolean isIwantClassnameToHide(String name) {
+		private static boolean isIwantClassnameToHide(String name) {
 			// canonical name of inner classes is not compatible with
 			// classloading (!!) so this manual name tweaking is needed:
 			if ((Iwant.class.getCanonicalName() + "$" + ExitCalledException.class

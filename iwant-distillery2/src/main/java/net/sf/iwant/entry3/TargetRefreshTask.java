@@ -82,7 +82,7 @@ public class TargetRefreshTask implements Task {
 		return TaskDirtiness.NOT_DIRTY;
 	}
 
-	private String tryToRead(File file) throws IOException {
+	private static String tryToRead(File file) throws IOException {
 		InputStream in = null;
 		try {
 			in = new FileInputStream(file);

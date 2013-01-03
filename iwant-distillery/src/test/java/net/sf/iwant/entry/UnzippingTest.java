@@ -42,8 +42,7 @@ public class UnzippingTest extends TestCase {
 		assertEquals("b\n", testArea.contentOf(new File(unzipped, "dir/b")));
 	}
 
-	public void testCacheIsReturnedWithoutUnzippingWhenCacheExists()
-			throws FileNotFoundException, IOException {
+	public void testCacheIsReturnedWithoutUnzippingWhenCacheExists() {
 		URL zip = Iwant.fileToUrl(new File(testArea.root(),
 				"not-to-be-accessed"));
 		File unzipped = network.cachesZipAt(zip, "unzipped");

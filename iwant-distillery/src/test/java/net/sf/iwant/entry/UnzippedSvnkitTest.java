@@ -1,7 +1,6 @@
 package net.sf.iwant.entry;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -36,8 +35,7 @@ public class UnzippedSvnkitTest extends TestCase {
 		assertEquals("[dir]", Arrays.toString(svnkit.list()));
 	}
 
-	public void testCachedUnzippedSvnkitIsReturnedWithoutDownloadingIfItExists()
-			throws IOException {
+	public void testCachedUnzippedSvnkitIsReturnedWithoutDownloadingIfItExists() {
 		network.hasSvnkitUrl(dirContainingAAndBZip());
 		network.cachesUrlAt(dirContainingAAndBZip(), "downloaded-svnkit");
 		File downloadedSvnkit = testArea.newDir("downloaded-svnkit");

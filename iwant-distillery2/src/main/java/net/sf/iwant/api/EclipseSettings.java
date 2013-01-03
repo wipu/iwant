@@ -1,7 +1,6 @@
 package net.sf.iwant.api;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -39,8 +38,7 @@ public class EclipseSettings implements SideEffect {
 		}
 	}
 
-	private void generateEclipseSettings(SideEffectContext ctx)
-			throws IOException {
+	private void generateEclipseSettings(SideEffectContext ctx) {
 		for (JavaModule module : javaModules) {
 			DotProject dotProject = DotProject.named(module.name()).end();
 

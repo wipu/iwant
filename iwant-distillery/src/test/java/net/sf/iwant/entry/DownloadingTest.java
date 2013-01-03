@@ -1,7 +1,6 @@
 package net.sf.iwant.entry;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 
 import junit.framework.TestCase;
@@ -20,20 +19,18 @@ public class DownloadingTest extends TestCase {
 		iwant = Iwant.using(network);
 	}
 
-	private void cachedFileContains(URL url, String content) throws IOException {
+	private void cachedFileContains(URL url, String content) {
 		File cached = iwant.network().cacheLocation(new UnmodifiableUrl(url));
 		Iwant.writeTextFile(cached, content);
 	}
 
-	private File remoteFileContains(String path, String content)
-			throws IOException {
+	private File remoteFileContains(String path, String content) {
 		File remoteFile = new File(testArea.root(), path);
 		Iwant.writeTextFile(remoteFile, content);
 		return remoteFile;
 	}
 
-	public void testCachedFileIsReturnedWithoutDownloadingIfItExists()
-			throws IOException {
+	public void testCachedFileIsReturnedWithoutDownloadingIfItExists() {
 		URL url = Iwant.fileToUrl(new File(testArea.root(),
 				"non-existent-so-impossible-to-download"));
 		network.cachesUrlAt(url, "url");
@@ -44,7 +41,7 @@ public class DownloadingTest extends TestCase {
 		assertEquals("cached-content", testArea.contentOf(cached));
 	}
 
-	public void testFileIsDownloadedToCacheDoesNotExist() throws IOException {
+	public void testFileIsDownloadedToCacheDoesNotExist() {
 		File remoteFile = remoteFileContains("remote", "remote-content");
 		URL remoteUrl = Iwant.fileToUrl(remoteFile);
 		network.cachesUrlAt(remoteUrl, "cached-remote");
@@ -54,8 +51,7 @@ public class DownloadingTest extends TestCase {
 		assertEquals("remote-content", testArea.contentOf(cached));
 	}
 
-	public void testFileIsSuccessfullyDownloadedEvenIfCacheParentDirDoesNotExist()
-			throws IOException {
+	public void testFileIsSuccessfullyDownloadedEvenIfCacheParentDirDoesNotExist() {
 		File remoteFile = remoteFileContains("remote", "remote-content");
 		URL remoteUrl = Iwant.fileToUrl(remoteFile);
 		network.cachesUrlAt(remoteUrl, "cached/remote");
