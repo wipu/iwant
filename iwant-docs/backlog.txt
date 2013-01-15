@@ -423,6 +423,16 @@
 = In progress
 #################################################################
 
+- As @developer I want an ant cli for iwant that can be used by eclipse project builders so I can more easily create eclipse projects for modules that generate code
+  * also: as ant user I want to use iwant so I don't have to install cygwin
+  + just hack an ant script that compiles iwant entry and passes the wish to it, testing manually in a dummy project
+  - test happy case by demonstrating in descript
+    - help case: no wish
+    - wish cases:
+      - list-of/targets
+      - target/.../as-path
+  - exit status chapter to tutorial, and test ant and bash cli failure there
+
 #################################################################
 = Planned
 #################################################################
