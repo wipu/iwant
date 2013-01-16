@@ -1,5 +1,7 @@
 <project name="iwant" default="wish" basedir="">
 
+	<!-- $Id$ -->
+
 	<property name="as-someone" location="../../.." />
 	<property name="entry-src" location="${as-someone}/with/java" />
 
