@@ -88,6 +88,17 @@ wsdef-edit v02antgeneratedtarget
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
 cmde "0 0" "as-distillery-developer/with/bash/iwant/target/antGenerated/as-path | xargs cat "
 
+section "Using ant cli instead of bash"
+
+cmd "cd as-distillery-developer/with/ant/iw"
+
+p "Here we modify the time to keep this tutorial reproducible."
+
+cmde "0 0" "ant | sed 's/[0-9]* second/\?/'"
+cmde "0 0" "ant -Dwish=list-of/targets | sed 's/[0-9]* second/\?/'"
+cmde "0 0" "ant -Dwish=target/hello/as-path | sed 's/[0-9]* second/\?/'"
+cmd "cd -"
+
 }
 
 wsdef-edit() {
