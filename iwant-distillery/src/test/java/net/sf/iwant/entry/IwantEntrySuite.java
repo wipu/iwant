@@ -16,6 +16,7 @@ public class IwantEntrySuite extends TestCase {
 		suite.addTestSuite(UnzippedSvnkitTest.class);
 		suite.addTestSuite(ExportedFromSvnTest.class);
 		suite.addTestSuite(IwantTest.class);
+		suite.addTestSuite(HttpProxyInitializationTest.class);
 		return suite;
 	}
 

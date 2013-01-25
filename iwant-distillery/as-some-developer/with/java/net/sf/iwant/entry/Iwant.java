@@ -630,10 +630,33 @@ public class Iwant {
 
 	private static byte[] downloadBytes(URL url) throws MalformedURLException,
 			IOException {
+		unixHttpProxyToJavaHttpProxy(System.getenv("http_proxy"),
+				System.getenv("https_proxy"));
 		InputStream in = url.openStream();
 		byte[] respBody = readBytes(in);
 		in.close();
 		return respBody;
+	}
+
+	static void unixHttpProxyToJavaHttpProxy(String httpProxy, String httpsProxy) {
+		if (httpProxy != null) {
+			String[] parts = httpProxy.split(":");
+			if (parts.length > 0) {
+				System.setProperty("http.proxyHost", parts[0]);
+			}
+			if (parts.length > 1) {
+				System.setProperty("http.proxyPort", parts[1]);
+			}
+		}
+		if (httpsProxy != null) {
+			String[] parts = httpsProxy.split(":");
+			if (parts.length > 0) {
+				System.setProperty("https.proxyHost", parts[0]);
+			}
+			if (parts.length > 1) {
+				System.setProperty("https.proxyPort", parts[1]);
+			}
+		}
 	}
 
 	private static byte[] readBytes(InputStream in) throws IOException {
