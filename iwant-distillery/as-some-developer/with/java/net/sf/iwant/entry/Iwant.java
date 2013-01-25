@@ -639,23 +639,20 @@ public class Iwant {
 	}
 
 	static void unixHttpProxyToJavaHttpProxy(String httpProxy, String httpsProxy) {
-		if (httpProxy != null) {
-			String[] parts = httpProxy.split(":");
-			if (parts.length > 0) {
-				System.setProperty("http.proxyHost", parts[0]);
-			}
-			if (parts.length > 1) {
-				System.setProperty("http.proxyPort", parts[1]);
-			}
+		proxyUrlToJava(httpProxy, "http");
+		proxyUrlToJava(httpsProxy, "https");
+	}
+
+	private static void proxyUrlToJava(String urlString, String prefix) {
+		if (urlString == null || "".equals(urlString)) {
+			return;
 		}
-		if (httpsProxy != null) {
-			String[] parts = httpsProxy.split(":");
-			if (parts.length > 0) {
-				System.setProperty("https.proxyHost", parts[0]);
-			}
-			if (parts.length > 1) {
-				System.setProperty("https.proxyPort", parts[1]);
-			}
+		URL url = url(urlString);
+		String host = url.getHost();
+		int port = url.getPort();
+		System.setProperty(prefix + ".proxyHost", host);
+		if (port >= 0) {
+			System.setProperty(prefix + ".proxyPort", Integer.toString(port));
 		}
 	}
 

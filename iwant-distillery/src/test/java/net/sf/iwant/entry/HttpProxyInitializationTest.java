@@ -55,28 +55,37 @@ public class HttpProxyInitializationTest extends TestCase {
 
 	public void testEmptyValues() {
 		Iwant.unixHttpProxyToJavaHttpProxy("", "");
-		assertJavaSettings("", null, "", null);
+		assertJavaSettings(null, null, null, null);
+	}
+
+	public void testHttpProxyThatIsInvalidUrlOnlyAHostName() {
+		try {
+			Iwant.unixHttpProxyToJavaHttpProxy("http-proxy-host", "");
+			fail();
+		} catch (IllegalArgumentException e) {
+			// expected
+		}
 	}
 
 	public void testHttpProxyHost() {
-		Iwant.unixHttpProxyToJavaHttpProxy("http-proxy-host", "");
-		assertJavaSettings("http-proxy-host", null, "", null);
+		Iwant.unixHttpProxyToJavaHttpProxy("http://http-proxy-host", "");
+		assertJavaSettings("http-proxy-host", null, null, null);
 	}
 
 	public void testHttpProxyHostAndPort() {
-		Iwant.unixHttpProxyToJavaHttpProxy("http-proxy-host:8080", "");
-		assertJavaSettings("http-proxy-host", "8080", "", null);
+		Iwant.unixHttpProxyToJavaHttpProxy("http://http-proxy-host:8080", "");
+		assertJavaSettings("http-proxy-host", "8080", null, null);
 	}
 
 	public void testHttpProxyHostAndPortAndHttpsProxyHost() {
-		Iwant.unixHttpProxyToJavaHttpProxy("http-proxy-host:8080",
-				"https-proxy-host");
+		Iwant.unixHttpProxyToJavaHttpProxy("http://http-proxy-host:8080",
+				"http://https-proxy-host");
 		assertJavaSettings("http-proxy-host", "8080", "https-proxy-host", null);
 	}
 
 	public void testHttpProxyHostAndPortAndHttpsProxyHostAndPort() {
-		Iwant.unixHttpProxyToJavaHttpProxy("http-proxy-host:8080",
-				"https-proxy-host:8081");
+		Iwant.unixHttpProxyToJavaHttpProxy("http://http-proxy-host:8080",
+				"http://https-proxy-host:8081");
 		assertJavaSettings("http-proxy-host", "8080", "https-proxy-host",
 				"8081");
 	}
