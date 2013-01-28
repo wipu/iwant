@@ -438,6 +438,7 @@
   + remove setting of the custom variables from help.sh
   - manually test it works in a proxy environment
     + fix: http_proxy is an url, not only host[:port]
+    + enable proxy also before calling svnkit
 
 #################################################################
 = Planned

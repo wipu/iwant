@@ -630,12 +630,16 @@ public class Iwant {
 
 	private static byte[] downloadBytes(URL url) throws MalformedURLException,
 			IOException {
-		unixHttpProxyToJavaHttpProxy(System.getenv("http_proxy"),
-				System.getenv("https_proxy"));
+		enableHttpProxy();
 		InputStream in = url.openStream();
 		byte[] respBody = readBytes(in);
 		in.close();
 		return respBody;
+	}
+
+	private static void enableHttpProxy() {
+		unixHttpProxyToJavaHttpProxy(System.getenv("http_proxy"),
+				System.getenv("https_proxy"));
 	}
 
 	static void unixHttpProxyToJavaHttpProxy(String httpProxy, String httpsProxy) {
@@ -751,6 +755,7 @@ public class Iwant {
 			File svnkitJar = new File(svnkit, "svnkit-1.3.5.7406/svnkit.jar");
 			File svnkitCliJar = new File(svnkit,
 					"svnkit-1.3.5.7406/svnkit-cli.jar");
+			enableHttpProxy();
 			runJavaMain(true, false, "org.tmatesoft.svn.cli.SVN",
 					Arrays.asList(svnkitJar, svnkitCliJar), "export",
 					urlString, exported.getCanonicalPath());
