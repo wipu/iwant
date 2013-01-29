@@ -428,17 +428,18 @@
       + list-of/targets
       + target/.../as-path
 
-#################################################################
-= In progress
-#################################################################
-
-- @enhancement: As http proxy user I want iwant to use the Unix-style http_proxy and http_proxy instead of the custom value so I don't need to configure it twice
++ @enhancement: As http proxy user I want iwant to use the Unix-style http_proxy and http_proxy instead of the custom value so I don't need to configure it twice
   * also: do it in java so it also works from the ant interface
   + tdd env values -> sysprop setting
   + remove setting of the custom variables from help.sh
-  - manually test it works in a proxy environment
+  + manually test it works in a proxy environment
     + fix: http_proxy is an url, not only host[:port]
     + enable proxy also before calling svnkit
+    + works
+
+#################################################################
+= In progress
+#################################################################
 
 #################################################################
 = Planned
