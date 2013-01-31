@@ -79,6 +79,7 @@ public class Downloaded extends Target {
 				File corruptedFile = new File(dest.getCanonicalPath()
 						+ ".corrupted");
 				dest.renameTo(corruptedFile);
+				Iwant.debugLog("Downloaded", "checksum failed " + dest);
 				throw new Iwant.IwantException("Actual MD5 was " + actualMd5
 						+ ", moved downloaded file to " + corruptedFile);
 			}
