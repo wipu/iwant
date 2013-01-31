@@ -3,7 +3,6 @@ package net.sf.iwant.entry2;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -210,12 +209,8 @@ public class Iwant2 {
 
 		void markFresh() {
 			Iwant.fileLog("Writing " + sourceDescriptor);
-			try {
-				new FileWriter(sourceDescriptor).append(
-						currentSourceDescriptorContent()).close();
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
+			Iwant.newTextFile(sourceDescriptor,
+					currentSourceDescriptorContent());
 		}
 
 		boolean needsRefresh() {

@@ -2,14 +2,13 @@ package net.sf.iwant.entry2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.security.Permission;
 
 import junit.framework.TestCase;
+import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.IwantNetworkMock;
 import net.sf.iwant.entry.WsRootFinder;
 import net.sf.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantWsRoot;
@@ -155,21 +154,12 @@ public class Iwant2Test extends TestCase {
 	}
 
 	private static void mockedIwantRunnerShallSucceed() {
-		try {
-			new FileWriter(mockedIwantRunnerJava()).append(
-					mockedIwantTestRunner()).close();
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
+		Iwant.newTextFile(mockedIwantRunnerJava(), mockedIwantTestRunner());
 	}
 
 	private static void mockedIwantRunnerShallFail() {
-		try {
-			new FileWriter(mockedIwantRunnerJava()).append(
-					mockedFailingIwantTestRunner()).close();
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
+		Iwant.newTextFile(mockedIwantRunnerJava(),
+				mockedFailingIwantTestRunner());
 	}
 
 	public void testIwant2CompilesIwantAndRunsTestSuiteAndFailsWhenItFails()

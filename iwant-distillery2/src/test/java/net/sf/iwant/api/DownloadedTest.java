@@ -1,8 +1,6 @@
 package net.sf.iwant.api;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -140,20 +138,7 @@ public class DownloadedTest extends TestCase {
 				throw new IllegalStateException(
 						"You forgot to teach content of " + from);
 			}
-			to.getParentFile().mkdirs();
-			try {
-				FileWriter out = null;
-				try {
-					out = new FileWriter(to);
-					out.append(content);
-				} finally {
-					if (out != null) {
-						out.close();
-					}
-				}
-			} catch (IOException e) {
-				throw new IllegalStateException(e);
-			}
+			Iwant.newTextFile(to, content);
 		}
 
 		public void shallDownloadContent(URL from, String content) {

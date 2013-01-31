@@ -1,7 +1,6 @@
 package net.sf.iwant.entry3;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
@@ -60,12 +59,8 @@ public class TargetRefreshTaskTest extends TestCase {
 	}
 
 	private void cacheContainsDescriptor(Target target, String cachedDescriptor) {
-		try {
-			new FileWriter(new File(cachedDescriptors, target.name())).append(
-					cachedDescriptor).close();
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
+		Iwant.newTextFile(new File(cachedDescriptors, target.name()),
+				cachedDescriptor);
 	}
 
 	private TargetRefreshTask task(Target target) {
