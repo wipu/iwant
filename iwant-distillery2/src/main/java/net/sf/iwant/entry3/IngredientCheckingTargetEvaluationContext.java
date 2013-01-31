@@ -70,4 +70,9 @@ public class IngredientCheckingTargetEvaluationContext implements
 		return delegate.iwant();
 	}
 
+	@Override
+	public File freshTemporaryDirectory() {
+		return delegate.freshTemporaryDirectory();
+	}
+
 }

@@ -99,6 +99,14 @@ cmde "0 0" "ant -Dwish=list-of/targets | sed 's/[0-9]* second/\?/'"
 cmde "0 0" "ant -Dwish=target/hello/as-path | sed 's/[0-9]* second/\?/'"
 cmd "cd -"
 
+section "Using a script to define content for a target"
+
+p "In case java-based tools are not enough, you can use a script to define content for a target. Each script invocation gets a dedicated temporary directory in which to create temporary files, if needed."
+
+wsdef-edit v03scriptgeneratedtarget
+cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
+cmde "0 0" "as-distillery-developer/with/bash/iwant/target/scriptGenerated/as-path | xargs cat "
+
 }
 
 wsdef-edit() {

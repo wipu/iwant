@@ -437,6 +437,16 @@
     + enable proxy also before calling svnkit
     + works
 
++ As @buildscriptauthor I want to generate content with an external script so I can utilize the unix tools
+  + adapt tests and impl from the main branch for ScriptGenerated
+    + fresh temporary directory
+    + copy script there and chmod
+    + run
+    + verify cwd, out, err, creation of destfile, exit status
+    + parallel test to see tempdirs are not shared by 2 threads
+      + also test that tests it's the Thread name in the dir name
+  + descript
+
 #################################################################
 = In progress
 #################################################################
@@ -444,9 +454,10 @@
 - @epic: As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead
   - reimplement features that are now only in the main branch
-    - ScriptGeneratedContent
+    + ScriptGeneratedContent: see separate story
     * JunitResult seems to be thread-unsafe so let's skip it
       ( it uses ant and suppresses sysout)
+    - checksum of downloaded: any tests to copy?
   - after split, take WsRootFinder and ExampleWsDefGenerator into use in Iwant3Test
 
 #################################################################

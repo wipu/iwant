@@ -93,4 +93,33 @@ public class CachesImplTest extends TestCase {
 						.url("file:///any").md5("any")));
 	}
 
+	public void testRequestedTemporaryDirectoryExistsAndIsDirectory() {
+		File tmpDir = caches.temporaryDirectory("w");
+		assertTrue(tmpDir.exists());
+		assertTrue(tmpDir.isDirectory());
+	}
+
+	public void testRequestedTemporaryDirectoryIsSameIfAndOnlyIfSameWorkerNameUsed() {
+		File a1 = caches.temporaryDirectory("a");
+		File a2 = caches.temporaryDirectory("a");
+		File b = caches.temporaryDirectory("b");
+
+		assertTrue(a1.equals(a2));
+		assertFalse(a1.equals(b));
+	}
+
+	public void testTemporaryDirectoryIsEmptiedAfterPreviousUse()
+			throws IOException {
+		File tmpDir = caches.temporaryDirectory("w");
+		File fileCreatedByPreviousWorker = new File(tmpDir,
+				"file-from-previous-worker");
+		fileCreatedByPreviousWorker.createNewFile();
+		assertTrue(fileCreatedByPreviousWorker.exists());
+
+		File tmpDirAgain = caches.temporaryDirectory("w");
+		assertEquals(tmpDir, tmpDirAgain);
+
+		assertFalse(fileCreatedByPreviousWorker.exists());
+	}
+
 }

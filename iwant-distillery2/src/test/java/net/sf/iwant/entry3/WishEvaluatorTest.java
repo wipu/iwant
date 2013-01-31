@@ -3,6 +3,7 @@ package net.sf.iwant.entry3;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +18,7 @@ import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.JavaClasses;
 import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.Path;
+import net.sf.iwant.api.ScriptGenerated;
 import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.SideEffectDefinitionContext;
 import net.sf.iwant.api.Source;
@@ -470,6 +472,61 @@ public class WishEvaluatorTest extends TestCase {
 				".i-cached/target/part4")));
 		assertEquals("listOfParts", testArea.contentOf(new File(asSomeone,
 				".i-cached/target/listOfParts")));
+	}
+
+	public void testContextUsesThreadNameToMakeSureAllWorkersGetOwnTemporaryDirectory()
+			throws InterruptedException {
+		final List<File> results = Collections
+				.synchronizedList(new ArrayList<File>());
+		Runnable tester = new Runnable() {
+			@Override
+			public void run() {
+				File tmpDir = evaluator.targetEvaluationContext()
+						.freshTemporaryDirectory();
+				results.add(tmpDir);
+			}
+		};
+		Thread worker1 = new Thread(tester, "worker-1");
+		Thread worker2 = new Thread(tester, "worker-2");
+		worker1.start();
+		worker1.join();
+		worker2.start();
+		worker2.join();
+
+		assertEquals(new File(asSomeone, ".i-cached/temp/worker-1"),
+				results.get(0));
+		assertEquals(new File(asSomeone, ".i-cached/temp/worker-2"),
+				results.get(1));
+	}
+
+	public void testScriptsWorkCorrectlyInParallel() {
+		final int workerCount = 8;
+		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
+				workerCount, wsdefdefJavaModule, wsdefJavaModule);
+
+		final int partCount = 20;
+		List<Target> parts = new ArrayList<Target>();
+		ConcatenatedBuilder listOfPartsSpex = Concatenated.named("listOfParts");
+		for (int i = 0; i < partCount; i++) {
+			ConcatenatedBuilder scriptContent = Concatenated.named("script-"
+					+ i);
+			scriptContent.string("#!/bin/bash\n");
+			scriptContent.string("set -eu\n");
+			scriptContent.string("DEST=$1\n");
+			scriptContent.string("echo " + i + " > \"$DEST\"\n");
+			Concatenated script = scriptContent.end();
+			Target part = ScriptGenerated.named("part-" + i).byScript(script);
+			parts.add(part);
+			listOfPartsSpex = listOfPartsSpex.pathTo(part);
+		}
+		Target listOfParts = listOfPartsSpex.end();
+
+		evaluator.asPath(listOfParts);
+
+		for (int i = 0; i < partCount; i++) {
+			assertEquals(i + "\n", testArea.contentOf(new File(asSomeone,
+					".i-cached/target/part-" + i)));
+		}
 	}
 
 }

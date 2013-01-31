@@ -43,4 +43,9 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext {
 		return caches.contentOf(path);
 	}
 
+	@Override
+	public File freshTemporaryDirectory() {
+		return caches.temporaryDirectory("mock-worker");
+	}
+
 }

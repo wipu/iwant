@@ -176,6 +176,12 @@ public class WishEvaluator {
 			return wsdefJavaModule;
 		}
 
+		@Override
+		public File freshTemporaryDirectory() {
+			String workerName = Thread.currentThread().getName();
+			return caches.temporaryDirectory(workerName);
+		}
+
 	}
 
 }

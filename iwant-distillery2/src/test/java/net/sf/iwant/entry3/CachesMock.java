@@ -16,6 +16,7 @@ public class CachesMock implements Caches {
 	private File cachedModifiableTargets;
 	private File cachedDescriptors;
 	private Map<URL, File> cachedUrls = new HashMap<URL, File>();
+	private File temporaryDirectory;
 
 	public CachesMock(File wsRoot) {
 		this.wsRoot = wsRoot;
@@ -68,6 +69,15 @@ public class CachesMock implements Caches {
 
 	private File cachedDescriptors() {
 		return nonNull(cachedDescriptors, "cachedDescriptorsDir");
+	}
+
+	@Override
+	public File temporaryDirectory(String workerName) {
+		return nonNull(temporaryDirectory, "temporaryDirectory");
+	}
+
+	public void providesTemporaryDirectoryAt(File temporaryDirectory) {
+		this.temporaryDirectory = temporaryDirectory;
 	}
 
 	private <T> T nonNull(T value, Object request) {

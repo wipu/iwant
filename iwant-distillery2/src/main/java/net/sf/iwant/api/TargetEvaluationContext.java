@@ -12,4 +12,6 @@ public interface TargetEvaluationContext {
 
 	Iwant iwant();
 
+	File freshTemporaryDirectory();
+
 }

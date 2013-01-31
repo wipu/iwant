@@ -31,6 +31,7 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 		wsRoot = testArea.root();
 		caches = new CachesMock(wsRoot);
 		caches.cachesModifiableTargetsAt(testArea.newDir("cached-targets"));
+		caches.providesTemporaryDirectoryAt(testArea.newDir("tempDir"));
 		delegate = new TargetEvaluationContextMock(iwant, caches);
 		delegate.hasWsRoot(wsRoot);
 		target = new TargetMock("target");
@@ -139,6 +140,8 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 	public void testOtherMethodsAreJustDelegated() {
 		assertSame(delegate.iwant(), ctx.iwant());
 		assertSame(delegate.wsRoot(), ctx.wsRoot());
+		assertSame(delegate.freshTemporaryDirectory(),
+				ctx.freshTemporaryDirectory());
 	}
 
 }

@@ -19,6 +19,7 @@ public class IwantApiSuite extends TestCase {
 		suite.addTestSuite(FromRepositoryTest.class);
 		suite.addTestSuite(AsEmbeddedIwantUserTest.class);
 		suite.addTestSuite(AntGeneratedTest.class);
+		suite.addTestSuite(ScriptGeneratedTest.class);
 		return suite;
 	}
 

@@ -11,4 +11,6 @@ public interface Caches {
 
 	File contentDescriptorOf(Target target);
 
+	File temporaryDirectory(String workerName);
+
 }

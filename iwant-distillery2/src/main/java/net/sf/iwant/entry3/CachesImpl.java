@@ -7,6 +7,7 @@ import net.sf.iwant.api.CacheScopeChoices;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
+import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
 
@@ -50,6 +51,15 @@ public class CachesImpl implements Caches {
 	@Override
 	public File contentDescriptorOf(Target target) {
 		return new File(wsCache, "descriptor/" + target.name());
+	}
+
+	@Override
+	public File temporaryDirectory(String workerName) {
+		File parent = new File(wsCache, "temp");
+		File tmpDir = new File(parent, workerName);
+		Iwant.del(tmpDir);
+		tmpDir.mkdirs();
+		return tmpDir;
 	}
 
 }
