@@ -31,7 +31,7 @@ public class DownloadedTest extends TestCase {
 		cached = new File(testArea.root(), "cachedDownload");
 	}
 
-	public void testThereAreNowIngredients() {
+	public void testThereAreNoIngredients() {
 		assertTrue(Downloaded.withName("any").url("http://localhost/any")
 				.md5("any").ingredients().isEmpty());
 	}
