@@ -1,8 +1,6 @@
 package net.sf.iwant.api;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -10,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.io.StreamUtil;
+import net.sf.iwant.entry3.FileUtil;
 
 public class Downloaded extends Target {
 
@@ -67,14 +65,8 @@ public class Downloaded extends Target {
 		ctx.iwant().downloaded(url, dest);
 
 		if (md5 != null) {
-			// TODO proper closing, reusable utils *really* needed
-			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-			FileInputStream fileIn = new FileInputStream(dest);
-			StreamUtil.pipe(fileIn, bytes);
-			bytes.close();
-			fileIn.close();
-
-			String actualMd5 = md5(bytes.toByteArray());
+			byte[] fileContent = FileUtil.contentAsBytes(dest);
+			String actualMd5 = md5(fileContent);
 			if (!md5.equals(actualMd5)) {
 				File corruptedFile = new File(dest.getCanonicalPath()
 						+ ".corrupted");

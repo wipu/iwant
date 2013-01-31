@@ -1,5 +1,6 @@
 package net.sf.iwant.entry3;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -8,6 +9,9 @@ import java.nio.channels.FileChannel;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import net.sf.iwant.entry2.Iwant2;
+import net.sf.iwant.io.StreamUtil;
 
 /**
  * TODO remove need for this class
@@ -72,6 +76,28 @@ public class FileUtil {
 				destination.close();
 			}
 		}
+	}
+
+	public static byte[] contentAsBytes(File file) {
+		try {
+			FileInputStream in = null;
+			ByteArrayOutputStream out = null;
+			try {
+				in = new FileInputStream(file);
+				out = new ByteArrayOutputStream();
+				StreamUtil.pipe(in, out);
+				return out.toByteArray();
+			} finally {
+				StreamUtil.tryToClose(in);
+				StreamUtil.tryToClose(out);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String contentAsString(File file) {
+		return Iwant2.contentAsString(file);
 	}
 
 }

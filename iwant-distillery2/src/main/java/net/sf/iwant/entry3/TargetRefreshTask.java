@@ -1,9 +1,6 @@
 package net.sf.iwant.entry3;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,7 +10,6 @@ import net.sf.iwant.api.Path;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.io.StreamUtil;
 import net.sf.iwant.planner.Resource;
 import net.sf.iwant.planner.ResourcePool;
 import net.sf.iwant.planner.Task;
@@ -82,28 +78,12 @@ public class TargetRefreshTask implements Task {
 		return TaskDirtiness.NOT_DIRTY;
 	}
 
-	private static String tryToRead(File file) throws IOException {
-		InputStream in = null;
-		try {
-			in = new FileInputStream(file);
-			return StreamUtil.toString(in);
-		} finally {
-			if (in != null) {
-				in.close();
-			}
-		}
-	}
-
 	private String cachedDescriptor() {
 		File file = cachedDescriptorFile();
 		if (!file.exists()) {
 			return null;
 		}
-		try {
-			return tryToRead(file);
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
+		return FileUtil.contentAsString(file);
 	}
 
 	private boolean isSourceModifiedSince(long time) {

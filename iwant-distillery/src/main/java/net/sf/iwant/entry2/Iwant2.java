@@ -240,7 +240,7 @@ public class Iwant2 {
 					return true;
 				}
 			}
-			String lastSources = readFileAsString(sourceDescriptor);
+			String lastSources = contentAsString(sourceDescriptor);
 			String currentSources = currentSourceDescriptorContent();
 			if (!currentSources.equals(lastSources)) {
 				return true;
@@ -261,7 +261,7 @@ public class Iwant2 {
 
 	}
 
-	private static String readFileAsString(File file) {
+	public static String contentAsString(File file) {
 		InputStream in = null;
 		try {
 			in = new FileInputStream(file);

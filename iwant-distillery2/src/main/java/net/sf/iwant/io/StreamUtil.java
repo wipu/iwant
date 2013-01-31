@@ -1,5 +1,7 @@
 package net.sf.iwant.io;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -13,6 +15,26 @@ public class StreamUtil {
 
 	public static void pipe(InputStream in, OutputStream out) {
 		Iwant2.pipe(in, out);
+	}
+
+	public static void pipeAndClose(InputStream in, OutputStream out) {
+		try {
+			Iwant2.pipe(in, out);
+		} finally {
+			tryToClose(in);
+			tryToClose(out);
+		}
+	}
+
+	public static void tryToClose(Closeable closeable) {
+		if (closeable == null) {
+			return;
+		}
+		try {
+			closeable.close();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

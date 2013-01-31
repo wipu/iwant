@@ -29,6 +29,7 @@ import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.WsRootFinder;
+import net.sf.iwant.io.StreamUtil;
 
 public class Iwant3 {
 
@@ -157,7 +158,7 @@ public class Iwant3 {
 	}
 
 	private static IwantException createExampleWsdefdefAndWsdef(File asSomeone,
-			File iHave, WsInfo wsInfo) throws IOException {
+			File iHave, WsInfo wsInfo) {
 		File iwantWsRoot = WsRootFinder.wsRoot();
 		createFile(
 				wsInfo.wsdefdefJava(),
@@ -269,9 +270,7 @@ public class Iwant3 {
 			throw new IllegalStateException("Sorry, for a while I thought "
 					+ wsInfoFile + " exists.");
 		} finally {
-			if (in != null) {
-				in.close();
-			}
+			StreamUtil.tryToClose(in);
 		}
 	}
 

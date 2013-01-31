@@ -467,6 +467,8 @@
     * whoa, URL.hashCode tries DNS resolve!
     + fix in many places to use localhost urls
   - cleanup file/stream handling (closing)
+    + reuse
+    - reuse everywhere
 
 #################################################################
 = Planned

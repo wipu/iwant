@@ -1,7 +1,5 @@
 package net.sf.iwant.entry3;
 
-import java.io.IOException;
-
 import junit.framework.TestCase;
 
 public class ExampleWsDefGeneratorTest extends TestCase {
@@ -18,7 +16,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 	}
 
 	private void assertChangeWsdefdefTo(String newPackage, String newName,
-			String wsDefSrc) throws IOException {
+			String wsDefSrc) {
 		StringBuilder b = new StringBuilder();
 		b.append("package com.example.wsdef;\n");
 		b.append("public class WorkspaceProvider implements IwantWorkspaceProvider {\n");
@@ -41,8 +39,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 				actualWsdefdef.endsWith("\n}\n"));
 	}
 
-	private void assertChangeWsdefTo(String newPackage, String newName)
-			throws IOException {
+	private void assertChangeWsdefTo(String newPackage, String newName) {
 		testArea.hasFile(
 				"iwant-example-wsdef/src/main/java/"
 						+ "com/example/wsdef/Workspace.java",
@@ -57,7 +54,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		assertTrue("actual:\n" + actualWsdef, actualWsdef.endsWith("\n}\n"));
 	}
 
-	public void testWsdefdefName1() throws IOException {
+	public void testWsdefdefName1() {
 		expectedWsdefdefStart.append("package new.package1;\n");
 		expectedWsdefdefStart
 				.append("public class Ws1 implements IwantWorkspaceProvider {\n");
@@ -71,7 +68,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		assertChangeWsdefdefTo("new.package1", "Ws1", "x1");
 	}
 
-	public void testWsdefdefName2() throws IOException {
+	public void testWsdefdefName2() {
 		expectedWsdefdefStart.append("package new.package2;\n");
 		expectedWsdefdefStart
 				.append("public class Ws2 implements IwantWorkspaceProvider {\n");
@@ -85,7 +82,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		assertChangeWsdefdefTo("new.package2", "Ws2", "x2");
 	}
 
-	public void testWsdefName1() throws IOException {
+	public void testWsdefName1() {
 		expectedWsdefStart.append("package new.package1;\n");
 		expectedWsdefStart
 				.append("public class Ws1 implements IwantWorkspace ");
@@ -93,7 +90,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		assertChangeWsdefTo("new.package1", "Ws1");
 	}
 
-	public void testWsdefName2() throws IOException {
+	public void testWsdefName2() {
 		expectedWsdefStart.append("package new.package2;\n");
 		expectedWsdefStart
 				.append("public class Ws2 implements IwantWorkspace ");

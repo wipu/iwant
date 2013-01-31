@@ -1,42 +1,17 @@
 package net.sf.iwant.entry3;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 class ExampleWsDefGenerator {
 
-	private static String exampleJava(File iwantWsRoot, String javaPath)
-			throws IOException {
+	private static String exampleJava(File iwantWsRoot, String javaPath) {
 		File example = new File(iwantWsRoot,
 				"iwant-example-wsdef/src/main/java/" + javaPath);
-		return contentOf(example);
-	}
-
-	private static String contentOf(File file) throws IOException {
-		StringBuilder out = new StringBuilder();
-		char[] buffer = new char[8192];
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			while (true) {
-				int charsRead = reader.read(buffer);
-				if (charsRead < 0) {
-					break;
-				}
-				out.append(buffer, 0, charsRead);
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
-		}
-		return out.toString();
+		return FileUtil.contentAsString(example);
 	}
 
 	static String exampleWsdefdef(File iwantWsRoot, String newPackage,
-			String newName, String wsName) throws IOException {
+			String newName, String wsName) {
 		String src = exampleJava(iwantWsRoot,
 				"com/example/wsdefdef/WorkspaceProvider.java");
 		String out = src.replaceFirst("package.*;", "package " + newPackage
@@ -48,7 +23,7 @@ class ExampleWsDefGenerator {
 	}
 
 	public static String exampleWsdef(File iwantWsRoot, String newPackage,
-			String newName) throws IOException {
+			String newName) {
 		String src = exampleJava(iwantWsRoot,
 				"com/example/wsdef/Workspace.java");
 		return src.replaceFirst("package.*;", "package " + newPackage + ";")

@@ -31,9 +31,8 @@ public class HelloTarget extends Target {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File cachedContent = ctx.cached(this);
-		FileOutputStream out = new FileOutputStream(cachedContent);
-		StreamUtil.pipe(content(ctx), out);
-		out.close();
+		StreamUtil.pipeAndClose(content(ctx), new FileOutputStream(
+				cachedContent));
 	}
 
 	@Override
