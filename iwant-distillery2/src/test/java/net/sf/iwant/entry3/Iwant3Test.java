@@ -601,7 +601,7 @@ public class Iwant3Test extends TestCase {
 		testEmptyWishAfterCreationOfExampleWsDef();
 		startOfOutAndErrCapture();
 
-		Iwant.writeTextFile(new File(asTest, "i-have/conf/user-preferences"),
+		Iwant.newTextFile(new File(asTest, "i-have/conf/user-preferences"),
 				"workerCount=3");
 
 		try {

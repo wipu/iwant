@@ -47,7 +47,7 @@ public class TargetRefreshTask implements Task {
 		try {
 			target.path(new IngredientCheckingTargetEvaluationContext(target,
 					ctx));
-			Iwant.writeTextFile(cachedDescriptor, target.contentDescriptor());
+			Iwant.newTextFile(cachedDescriptor, target.contentDescriptor());
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {

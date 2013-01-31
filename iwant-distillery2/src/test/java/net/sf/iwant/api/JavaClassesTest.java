@@ -55,8 +55,7 @@ public class JavaClassesTest extends TestCase {
 
 	public void testCrapToPathFails() throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDir.mkdirs();
-		Iwant.writeTextFile(new File(srcDir, "Crap.java"), "crap");
+		Iwant.newTextFile(new File(srcDir, "Crap.java"), "crap");
 		Source src = Source.underWsroot("src");
 		Target target = new JavaClasses("crap", src,
 				Collections.<Path> emptyList());
@@ -71,8 +70,7 @@ public class JavaClassesTest extends TestCase {
 
 	public void testValidToPathCompiles() throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDir.mkdirs();
-		Iwant.writeTextFile(new File(srcDir, "Valid.java"), "class Valid {}");
+		Iwant.newTextFile(new File(srcDir, "Valid.java"), "class Valid {}");
 		Source src = Source.underWsroot("src");
 		Target target = new JavaClasses("valid", src,
 				Collections.<Path> emptyList());
@@ -84,13 +82,11 @@ public class JavaClassesTest extends TestCase {
 
 	public void testToPathCompilesFromMultiplePackages() throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		new File(srcDir, "pak1").mkdirs();
-		new File(srcDir, "pak2").mkdirs();
-		Iwant.writeTextFile(new File(srcDir, "Caller.java"),
+		Iwant.newTextFile(new File(srcDir, "Caller.java"),
 				"class Caller {pak1.Callee1 callee1;pak2.Callee2 callee2;}");
-		Iwant.writeTextFile(new File(srcDir, "pak1/Callee1.java"),
+		Iwant.newTextFile(new File(srcDir, "pak1/Callee1.java"),
 				"package pak1;\npublic class Callee1 {}");
-		Iwant.writeTextFile(new File(srcDir, "pak2/Callee2.java"),
+		Iwant.newTextFile(new File(srcDir, "pak2/Callee2.java"),
 				"package pak2;\npublic class Callee2 {}");
 		Source src = Source.underWsroot("src");
 		Target target = new JavaClasses("multiple", src,
@@ -107,8 +103,7 @@ public class JavaClassesTest extends TestCase {
 		File superClassFile = new File(getClass().getResource(
 				"SuperClassForJavaClassesTest.class").toURI());
 		File srcDir = new File(wsRoot, "src");
-		srcDir.mkdirs();
-		Iwant.writeTextFile(
+		Iwant.newTextFile(
 				new File(srcDir, "Subclass.java"),
 				"class Subclass extends "
 						+ SuperClassForJavaClassesTest.class.getCanonicalName()
@@ -192,7 +187,7 @@ public class JavaClassesTest extends TestCase {
 			throws Exception {
 		wsRoot.mkdirs();
 		File srcFile = new File(wsRoot, "Valid.java");
-		Iwant.writeTextFile(srcFile, "class Valid {}");
+		Iwant.newTextFile(srcFile, "class Valid {}");
 		Source src = Source.underWsroot("Valid.java");
 		Target target = new JavaClasses("non-dir", src,
 				Collections.<Path> emptyList());

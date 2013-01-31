@@ -21,12 +21,12 @@ public class DownloadingTest extends TestCase {
 
 	private void cachedFileContains(URL url, String content) {
 		File cached = iwant.network().cacheLocation(new UnmodifiableUrl(url));
-		Iwant.writeTextFile(cached, content);
+		Iwant.newTextFile(cached, content);
 	}
 
 	private File remoteFileContains(String path, String content) {
 		File remoteFile = new File(testArea.root(), path);
-		Iwant.writeTextFile(remoteFile, content);
+		Iwant.newTextFile(remoteFile, content);
 		return remoteFile;
 	}
 

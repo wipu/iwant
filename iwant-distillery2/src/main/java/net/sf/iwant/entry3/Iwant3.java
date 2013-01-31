@@ -3,7 +3,6 @@ package net.sf.iwant.entry3;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -160,15 +159,15 @@ public class Iwant3 {
 	private static IwantException createExampleWsdefdefAndWsdef(File asSomeone,
 			File iHave, WsInfo wsInfo) {
 		File iwantWsRoot = WsRootFinder.wsRoot();
-		createFile(
+		FileUtil.newTextFile(
 				wsInfo.wsdefdefJava(),
 				ExampleWsDefGenerator.exampleWsdefdef(iwantWsRoot,
 						wsInfo.wsdefdefPackage(),
 						wsInfo.wsdefdefClassSimpleName(), wsInfo.wsName()));
 		File wsDefJava = new File(iHave, "/wsdef/src/main/java"
 				+ "/com/example/wsdef/Workspace.java");
-		createFile(wsDefJava, ExampleWsDefGenerator.exampleWsdef(iwantWsRoot,
-				"com.example.wsdef", "Workspace"));
+		FileUtil.newTextFile(wsDefJava, ExampleWsDefGenerator.exampleWsdef(
+				iwantWsRoot, "com.example.wsdef", "Workspace"));
 		// TODO it's a bit ugly to create dummy target and side-effect just to
 		// get proper names for wish scripts:
 		refreshWishScripts(asSomeone,
@@ -275,24 +274,18 @@ public class Iwant3 {
 	}
 
 	private static void createExampleWsInfo(File wsInfo) {
-		createFile(wsInfo, "# paths are relative to this file's directory\n"
-				+ "WSNAME=example\n" + "WSROOT=../../..\n"
-				+ "WSDEFDEF_MODULE=../wsdefdef\n"
-				+ "WSDEFDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n");
+		FileUtil.newTextFile(
+				wsInfo,
+				"# paths are relative to this file's directory\n"
+						+ "WSNAME=example\n"
+						+ "WSROOT=../../..\n"
+						+ "WSDEFDEF_MODULE=../wsdefdef\n"
+						+ "WSDEFDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n");
 	}
 
 	private static void createScript(File file, String content) {
-		createFile(file, content);
+		FileUtil.newTextFile(file, content);
 		file.setExecutable(true);
-	}
-
-	private static void createFile(File file, String content) {
-		try {
-			file.getParentFile().mkdirs();
-			new FileWriter(file).append(content).close();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 }

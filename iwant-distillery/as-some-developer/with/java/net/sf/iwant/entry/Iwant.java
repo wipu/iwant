@@ -268,7 +268,7 @@ public class Iwant {
 		}
 		File iwantFrom = new File(iHaveConf, "iwant-from");
 		if (!iwantFrom.exists()) {
-			writeTextFile(iwantFrom, "iwant-from=TODO\n");
+			newTextFile(iwantFrom, "iwant-from=TODO\n");
 			throw new IwantException("I created " + iwantFrom
 					+ "\nPlease edit it and rerun me.");
 		}
@@ -277,12 +277,14 @@ public class Iwant {
 		return iwantFromProps;
 	}
 
-	private static void tryToWriteTextFile(File file, String content)
+	private static File tryToWriteTextFile(File file, String content)
 			throws IOException {
+		file.getParentFile().mkdirs();
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(file);
 			writer.append(content);
+			return file;
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -290,9 +292,9 @@ public class Iwant {
 		}
 	}
 
-	public static void writeTextFile(File file, String content) {
+	public static File newTextFile(File file, String content) {
 		try {
-			tryToWriteTextFile(file, content);
+			return tryToWriteTextFile(file, content);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}

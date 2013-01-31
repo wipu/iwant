@@ -12,9 +12,7 @@ public class IwantEntry2TestArea extends TestArea {
 	 */
 	public File hasFile(String path, String content) {
 		File file = new File(root(), path);
-		file.getParentFile().mkdirs();
-		Iwant.writeTextFile(file, content);
-		return file;
+		return Iwant.newTextFile(file, content);
 	}
 
 }

@@ -336,12 +336,10 @@ public class WishEvaluatorTest extends TestCase {
 	public void testDeletionOfJavaFileIsDetectedAndCompilationIsRetriedAndFailed()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		new File(srcDir, "pak1").mkdirs();
-		new File(srcDir, "pak2").mkdirs();
-		Iwant.writeTextFile(new File(srcDir, "pak1/Caller.java"),
+		Iwant.newTextFile(new File(srcDir, "pak1/Caller.java"),
 				"package pak1;\npublic class Caller {pak2.Callee callee;}");
 		File calleeJava = new File(srcDir, "pak2/Callee.java");
-		Iwant.writeTextFile(calleeJava, "package pak2;\npublic class Callee {}");
+		Iwant.newTextFile(calleeJava, "package pak2;\npublic class Callee {}");
 		Source src = Source.underWsroot("src");
 		Target target = new JavaClasses("multiple", src,
 				Collections.<Path> emptyList());

@@ -41,7 +41,7 @@ public class UnzippedSvnkitTest extends TestCase {
 		File downloadedSvnkit = testArea.newDir("downloaded-svnkit");
 		File unzippedSvnkit = testArea.newDir("unzipped-svnkit");
 		File svnkitJar = new File(unzippedSvnkit, "svnkit.jar");
-		Iwant.writeTextFile(svnkitJar, "svnkit.jar content");
+		Iwant.newTextFile(svnkitJar, "svnkit.jar content");
 		network.cachesZipAt(Iwant.fileToUrl(downloadedSvnkit),
 				"unzipped-svnkit");
 

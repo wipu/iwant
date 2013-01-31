@@ -30,8 +30,7 @@ public class TargetThatForgetsToDeclareAnIngredient extends Target {
 		// this reference shall cause a failure:
 		File cachedIngredient = ctx.cached(implicitIngredient);
 		// this shall never be run:
-		Iwant.writeTextFile(ctx.cached(this),
-				cachedIngredient.getCanonicalPath());
+		Iwant.newTextFile(ctx.cached(this), cachedIngredient.getCanonicalPath());
 	}
 
 	@Override

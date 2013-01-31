@@ -59,15 +59,15 @@ public class EclipseSettings implements SideEffect {
 			File moduleRoot = new File(ctx.wsRoot(),
 					module.locationUnderWsRoot());
 
-			Iwant.writeTextFile(new File(moduleRoot, ".project"),
+			Iwant.newTextFile(new File(moduleRoot, ".project"),
 					dotProject.asFileContent());
-			Iwant.writeTextFile(new File(moduleRoot, ".classpath"),
-					dotClasspath.end().asFileContent());
+			Iwant.newTextFile(new File(moduleRoot, ".classpath"), dotClasspath
+					.end().asFileContent());
 			new File(moduleRoot, ".settings").mkdirs();
-			Iwant.writeTextFile(new File(moduleRoot,
+			Iwant.newTextFile(new File(moduleRoot,
 					".settings/org.eclipse.jdt.core.prefs"),
 					OrgEclipseJdtCorePrefs.withDefaultValues().asFileContent());
-			Iwant.writeTextFile(new File(moduleRoot,
+			Iwant.newTextFile(new File(moduleRoot,
 					".settings/org.eclipse.jdt.ui.prefs"), OrgEclipseJdtUiPrefs
 					.withDefaultValues().asFileContent());
 		}

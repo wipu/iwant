@@ -4,12 +4,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry2.Iwant2;
 import net.sf.iwant.io.StreamUtil;
 
@@ -98,6 +100,22 @@ public class FileUtil {
 
 	public static String contentAsString(File file) {
 		return Iwant2.contentAsString(file);
+	}
+
+	public static void stringToFile(String content, File file) {
+		FileWriter out = null;
+		try {
+			out = new FileWriter(file);
+			out.append(content);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			StreamUtil.tryToClose(out);
+		}
+	}
+
+	public static File newTextFile(File file, String content) {
+		return Iwant.newTextFile(file, content);
 	}
 
 }

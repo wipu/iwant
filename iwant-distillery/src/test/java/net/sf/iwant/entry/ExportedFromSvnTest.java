@@ -60,7 +60,7 @@ public class ExportedFromSvnTest extends TestCase {
 						+ getClass());
 		File exportedDir = testArea.newDir("exported");
 		File exportedFile = new File(exportedDir, "exported-file");
-		Iwant.writeTextFile(exportedFile, "exported-content");
+		Iwant.newTextFile(exportedFile, "exported-content");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exportedDir);
 
 		File exportedAgain = iwant.exportedFromSvn(remoteUrl, true);
@@ -79,7 +79,7 @@ public class ExportedFromSvnTest extends TestCase {
 						+ getClass());
 		File exportedDir = testArea.newDir("exported");
 		File exportedFile = new File(exportedDir, "exported-file");
-		Iwant.writeTextFile(exportedFile, "exported-content");
+		Iwant.newTextFile(exportedFile, "exported-content");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exportedDir);
 
 		File exportedAgain = iwant.exportedFromSvn(remoteUrl, false);
@@ -100,7 +100,7 @@ public class ExportedFromSvnTest extends TestCase {
 		File exported = testArea.newDir("exported");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exported);
 		File previouslyExportedFile = new File(exported, "exported-file");
-		Iwant.writeTextFile(previouslyExportedFile, "exported-content");
+		Iwant.newTextFile(previouslyExportedFile, "exported-content");
 
 		File exportedAgain = iwant.exportedFromSvn(remoteUrl, true);
 
@@ -123,7 +123,7 @@ public class ExportedFromSvnTest extends TestCase {
 		File exported = testArea.newDir("exported");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exported);
 		File previouslyExportedFile = new File(exported, "exported-file");
-		Iwant.writeTextFile(previouslyExportedFile, "exported-content");
+		Iwant.newTextFile(previouslyExportedFile, "exported-content");
 
 		File exportedAgain = iwant.exportedFromSvn(remoteUrl, false);
 

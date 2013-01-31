@@ -303,9 +303,8 @@ public class TargetRefreshTaskTest extends TestCase {
 			if (!dest.getParentFile().exists()) {
 				fail("Parent of " + dest + " should exist.");
 			}
-			dest.mkdir();
 			File subFile = new File(dest, fileNameToCreateUnderDirectory);
-			Iwant.writeTextFile(subFile, fileNameToCreateUnderDirectory
+			Iwant.newTextFile(subFile, fileNameToCreateUnderDirectory
 					+ " content");
 		}
 

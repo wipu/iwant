@@ -171,7 +171,7 @@ public class IwantTest extends TestCase {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		Iwant.writeTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
+		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
 				+ iwantFrom + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
@@ -192,7 +192,7 @@ public class IwantTest extends TestCase {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		Iwant.writeTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
+		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
 				+ iwantFrom + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
@@ -218,7 +218,7 @@ public class IwantTest extends TestCase {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		Iwant.writeTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
+		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
 				+ iwantFrom + "\nre-export=false\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
@@ -241,7 +241,7 @@ public class IwantTest extends TestCase {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
-		Iwant.writeTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
+		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
 				+ iwantFrom + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);

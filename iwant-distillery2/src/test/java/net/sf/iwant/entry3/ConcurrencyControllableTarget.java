@@ -40,7 +40,7 @@ public class ConcurrencyControllableTarget extends Target {
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		log(this, "path starting");
 		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
-		Iwant.writeTextFile(ctx.cached(this), name());
+		Iwant.newTextFile(ctx.cached(this), name());
 		log(this, "path returning");
 	}
 
