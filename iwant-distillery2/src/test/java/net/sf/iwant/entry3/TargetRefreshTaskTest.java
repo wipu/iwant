@@ -431,7 +431,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		assertFalse(cachedDescriptor.exists());
 
 		Downloaded target = Downloaded.withName("downloaded")
-				.url(urlThatShallNotBeContacted.toExternalForm()).md5("todo");
+				.url(urlThatShallNotBeContacted.toExternalForm())
+				.md5("c1a9782e30af3d9d04061c3d4a7e93d5");
 
 		// no ConnectException means no download was tried
 		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());

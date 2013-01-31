@@ -1,12 +1,16 @@
 package net.sf.iwant.api;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.security.MessageDigest;
 import java.util.Collections;
 import java.util.List;
 
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.io.StreamUtil;
 
 public class Downloaded extends Target {
 
@@ -26,19 +30,27 @@ public class Downloaded extends Target {
 	public static class DownloadedSpex {
 
 		private final String name;
-		private String url;
+		private URL url;
 
 		public DownloadedSpex(String name) {
 			this.name = name;
 		}
 
 		public DownloadedSpex url(String url) {
+			return url(Iwant.url(url));
+		}
+
+		public DownloadedSpex url(URL url) {
 			this.url = url;
 			return this;
 		}
 
 		public Downloaded md5(String md5) {
-			return new Downloaded(name, Iwant.url(url), md5);
+			return new Downloaded(name, url, md5);
+		}
+
+		public Downloaded noCheck() {
+			return new Downloaded(name, url, null);
 		}
 
 	}
@@ -51,8 +63,49 @@ public class Downloaded extends Target {
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
-		// TODO pass md5 for verification
-		ctx.iwant().downloaded(url, ctx.cached(this));
+		File dest = ctx.cached(this);
+		ctx.iwant().downloaded(url, dest);
+
+		if (md5 != null) {
+			// TODO proper closing, reusable utils *really* needed
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+			FileInputStream fileIn = new FileInputStream(dest);
+			StreamUtil.pipe(fileIn, bytes);
+			bytes.close();
+			fileIn.close();
+
+			String actualMd5 = md5(bytes.toByteArray());
+			if (!md5.equals(actualMd5)) {
+				File corruptedFile = new File(dest.getCanonicalPath()
+						+ ".corrupted");
+				dest.renameTo(corruptedFile);
+				throw new Iwant.IwantException("Actual MD5 was " + actualMd5
+						+ ", moved downloaded file to " + corruptedFile);
+			}
+		}
+	}
+
+	private static String md5(byte[] bytes) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(bytes);
+			byte[] digest = md.digest();
+			return asHex(digest);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static String asHex(byte[] in) {
+		StringBuilder out = new StringBuilder();
+		for (int i = 0; i < in.length; i++) {
+			int shaByte = in[i] & 0xFF;
+			if (shaByte < 0x10) {
+				out.append('0');
+			}
+			out.append(Integer.toHexString(shaByte));
+		}
+		return out.toString();
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 package net.sf.iwant.api;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,12 +17,18 @@ public class DownloadedTest extends TestCase {
 	private IwantEntry3TestArea testArea;
 	private CachesMock caches;
 	private File wsRoot;
+	private IwantMock iwantMock;
+	private TargetEvaluationContextMock ctx;
+	private File cached;
 
 	@Override
 	public void setUp() {
 		testArea = new IwantEntry3TestArea();
 		wsRoot = testArea.newDir("wsroot");
 		caches = new CachesMock(wsRoot);
+		iwantMock = new IwantMock();
+		ctx = new TargetEvaluationContextMock(iwantMock, caches);
+		cached = new File(testArea.root(), "cachedDownload");
 	}
 
 	public void testThereAreNowIngredients() {
@@ -37,22 +45,61 @@ public class DownloadedTest extends TestCase {
 						.contentDescriptor());
 	}
 
-	public void testPathDelegatesDownloadingToGivenIwant() throws Exception {
-		String url = "http://an-url";
-		IwantMock iwant = new IwantMock();
-		File cached = testArea.newDir("downloaded");
-		caches.cachesUrlAt(Iwant.url(url), cached);
+	public void testDownloadSucceedsWithoutDigestCheck() throws Exception {
+		URL url = Iwant.url("http://an-url");
+		caches.cachesUrlAt(url, cached);
+		iwantMock.shallDownloadContent(url, "valid content");
 
-		Downloaded target = Downloaded.withName("any").url(url).md5("any");
-		target.path(new TargetEvaluationContextMock(iwant, caches));
+		Downloaded target = Downloaded.withName("any").url(url).noCheck();
+		target.path(ctx);
 
 		assertEquals("{http://an-url=" + cached + "}",
-				iwant.executedDownloads.toString());
+				iwantMock.executedDownloads.toString());
+		assertEquals("valid content", testArea.contentOf(cached));
+	}
+
+	public void testDownloadSucceedsWithCorrectMd5() throws Exception {
+		URL url = Iwant.url("http://an-url");
+		caches.cachesUrlAt(url, cached);
+		iwantMock.shallDownloadContent(url, "valid content");
+
+		Downloaded target = Downloaded.withName("any").url(url)
+				.md5("2cb7585162f62b8d58a09d0727faa68f");
+		target.path(ctx);
+
+		assertEquals("{http://an-url=" + cached + "}",
+				iwantMock.executedDownloads.toString());
+		assertEquals("valid content", testArea.contentOf(cached));
+	}
+
+	public void testDownloadFailsAndCachedFileIsRenamedIfMd5Fails()
+			throws Exception {
+		URL url = Iwant.url("http://an-url");
+		caches.cachesUrlAt(url, cached);
+		iwantMock.shallDownloadContent(url, "invalid");
+
+		Downloaded target = Downloaded.withName("any").url(url)
+				.md5("2cb7585162f62b8d58a09d0727faa68f");
+		try {
+			target.path(ctx);
+			fail();
+		} catch (Iwant.IwantException e) {
+			assertEquals("Actual MD5 was fedb2d84cafe20862cb4399751a8a7e3,"
+					+ " moved downloaded file to " + cached + ".corrupted",
+					e.getMessage());
+		}
+
+		assertFalse(cached.exists());
+		assertEquals(
+				"invalid",
+				testArea.contentOf(new File(cached.getCanonicalPath()
+						+ ".corrupted")));
 	}
 
 	private static class IwantMock extends Iwant {
 
 		private final Map<URL, File> executedDownloads = new LinkedHashMap<URL, File>();
+		private final Map<URL, String> contentToDownload = new LinkedHashMap<URL, String>();
 
 		IwantMock() {
 			super(null);
@@ -86,6 +133,29 @@ public class DownloadedTest extends TestCase {
 		@Override
 		public void downloaded(URL from, File to) {
 			executedDownloads.put(from, to);
+			String content = contentToDownload.get(from);
+			if (content == null) {
+				throw new IllegalStateException(
+						"You forgot to teach content of " + from);
+			}
+			to.getParentFile().mkdirs();
+			try {
+				FileWriter out = null;
+				try {
+					out = new FileWriter(to);
+					out.append(content);
+				} finally {
+					if (out != null) {
+						out.close();
+					}
+				}
+			} catch (IOException e) {
+				throw new IllegalStateException(e);
+			}
+		}
+
+		public void shallDownloadContent(URL from, String content) {
+			contentToDownload.put(from, content);
 		}
 
 		@Override

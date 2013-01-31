@@ -460,6 +460,13 @@
     - checksum of downloaded: any tests to copy?
   - after split, take WsRootFinder and ExampleWsDefGenerator into use in Iwant3Test
 
+- As @buildscriptuser I want iwant to verify the checksum of the downloaded files so I don't get any corrupted stuff
+  + MD5 basic functionality
+  + make checksum optional for Downloaded
+  - SHA-256
+  - find out why the test is slow to init
+  - cleanup file/stream handling (closing)
+
 #################################################################
 = Planned
 #################################################################
