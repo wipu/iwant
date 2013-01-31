@@ -38,8 +38,9 @@ public class FromRepository {
 
 			public Downloaded version(String version) {
 				URL url = url(version);
+				// TODO specify checksum urls when supported
 				return Downloaded.withName(name + "-" + version)
-						.url(url.toString()).md5(null);
+						.url(url.toString()).noCheck();
 			}
 
 			private URL url(String version) {

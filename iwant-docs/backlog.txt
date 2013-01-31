@@ -463,13 +463,16 @@
 - As @buildscriptuser I want iwant to verify the checksum of the downloaded files so I don't get any corrupted stuff
   + MD5 basic functionality
   + make checksum optional for Downloaded
-  - SHA-256
   - find out why the test is slow to init
   - cleanup file/stream handling (closing)
 
 #################################################################
 = Planned
 #################################################################
+
+- improvements for Downloaded checksum handling
+  - SHA-256: store map of algo->expected key
+  - url for checksum instead of the value, use in FromRepository.ibiblio
 
 - exit status chapter to tutorial, and test ant and bash cli failure there
 
