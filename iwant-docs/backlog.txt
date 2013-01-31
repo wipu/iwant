@@ -441,6 +441,14 @@
 = In progress
 #################################################################
 
+- @epic: As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
+  * don't split before deleting old code, otherwise it's difficult to see what is dead
+  - reimplement features that are now only in the main branch
+    - ScriptGeneratedContent
+    * JunitResult seems to be thread-unsafe so let's skip it
+      ( it uses ant and suppresses sysout)
+  - after split, take WsRootFinder and ExampleWsDefGenerator into use in Iwant3Test
+
 #################################################################
 = Planned
 #################################################################
@@ -478,10 +486,6 @@
   - targets() should just return collection of Paths, not Targets, wishes may be reasonable against ExternalSources for example
     - but fix externalresource wish script path handling, the leading slash breaks number of ".."s
   - binary javamodule should have empty deps, not null
-
-- As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
-  * don't split before deleting old code, otherwise it's difficult to see what is dead
-  - after split, take WsRootFinder and ExampleWsDefGenerator into use in Iwant3Test
 
 - As @buildscriptuser I want iwant to fail if I try to run it several times in parallel for the same workspace so it doesn't corrupt anything
   * locking, also mention lock location in case a run failed to delete it
