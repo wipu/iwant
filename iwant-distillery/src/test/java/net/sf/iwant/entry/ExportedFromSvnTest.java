@@ -55,8 +55,9 @@ public class ExportedFromSvnTest extends TestCase {
 
 	public void testNothingIsExportedIfLocalFileExists() throws IOException {
 		// an url that is assumed to fail:
-		URL remoteUrl = new URL("http://nonexistent/not-to-be-accessed-by-"
-				+ getClass());
+		URL remoteUrl = new URL(
+				"http://localhost/nonexistent/not-to-be-accessed-by-"
+						+ getClass());
 		File exportedDir = testArea.newDir("exported");
 		File exportedFile = new File(exportedDir, "exported-file");
 		Iwant.writeTextFile(exportedFile, "exported-content");
@@ -73,8 +74,9 @@ public class ExportedFromSvnTest extends TestCase {
 	public void testNothingIsExportedIfLocalFileExistsEvenWithReExportDisabled()
 			throws IOException {
 		// an url that is assumed to fail:
-		URL remoteUrl = new URL("http://nonexistent/not-to-be-accessed-by-"
-				+ getClass());
+		URL remoteUrl = new URL(
+				"http://localhost/nonexistent/not-to-be-accessed-by-"
+						+ getClass());
 		File exportedDir = testArea.newDir("exported");
 		File exportedFile = new File(exportedDir, "exported-file");
 		Iwant.writeTextFile(exportedFile, "exported-content");

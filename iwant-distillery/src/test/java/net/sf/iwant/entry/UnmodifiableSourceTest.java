@@ -13,10 +13,10 @@ public class UnmodifiableSourceTest extends TestCase {
 	public void testEqualsComparesTypeAndLocation()
 			throws MalformedURLException {
 		UnmodifiableSource<URL> url1a = new UnmodifiableUrl(new URL(
-				"http://one"));
+				"http://localhost/one"));
 		UnmodifiableSource<URL> url1b = new UnmodifiableUrl(url1a.location());
-		UnmodifiableSource<URL> url2 = new UnmodifiableUrl(
-				new URL("http://two"));
+		UnmodifiableSource<URL> url2 = new UnmodifiableUrl(new URL(
+				"http://localhost/two"));
 		UnmodifiableSource<URL> zipFromUrl1 = new UnmodifiableZip(
 				url1a.location());
 

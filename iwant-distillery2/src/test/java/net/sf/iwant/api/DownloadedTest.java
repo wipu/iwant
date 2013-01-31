@@ -32,34 +32,36 @@ public class DownloadedTest extends TestCase {
 	}
 
 	public void testThereAreNowIngredients() {
-		assertTrue(Downloaded.withName("any").url("http://any").md5("any")
-				.ingredients().isEmpty());
+		assertTrue(Downloaded.withName("any").url("http://localhost/any")
+				.md5("any").ingredients().isEmpty());
 	}
 
 	public void testContentDescriptor() {
-		assertEquals("net.sf.iwant.api.Downloaded {\n  url:http://url1\n}\n",
-				Downloaded.withName("any").url("http://url1").md5("any")
-						.contentDescriptor());
-		assertEquals("net.sf.iwant.api.Downloaded {\n  url:http://url2\n}\n",
-				Downloaded.withName("any").url("http://url2").md5("any")
-						.contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.api.Downloaded {\n  url:http://localhost/url1\n}\n",
+				Downloaded.withName("any").url("http://localhost/url1")
+						.md5("any").contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.api.Downloaded {\n  url:http://localhost/url2\n}\n",
+				Downloaded.withName("any").url("http://localhost/url2")
+						.md5("any").contentDescriptor());
 	}
 
 	public void testDownloadSucceedsWithoutDigestCheck() throws Exception {
-		URL url = Iwant.url("http://an-url");
+		URL url = Iwant.url("http://localhost");
 		caches.cachesUrlAt(url, cached);
 		iwantMock.shallDownloadContent(url, "valid content");
 
 		Downloaded target = Downloaded.withName("any").url(url).noCheck();
 		target.path(ctx);
 
-		assertEquals("{http://an-url=" + cached + "}",
+		assertEquals("{http://localhost=" + cached + "}",
 				iwantMock.executedDownloads.toString());
 		assertEquals("valid content", testArea.contentOf(cached));
 	}
 
 	public void testDownloadSucceedsWithCorrectMd5() throws Exception {
-		URL url = Iwant.url("http://an-url");
+		URL url = Iwant.url("http://localhost");
 		caches.cachesUrlAt(url, cached);
 		iwantMock.shallDownloadContent(url, "valid content");
 
@@ -67,14 +69,14 @@ public class DownloadedTest extends TestCase {
 				.md5("2cb7585162f62b8d58a09d0727faa68f");
 		target.path(ctx);
 
-		assertEquals("{http://an-url=" + cached + "}",
+		assertEquals("{http://localhost=" + cached + "}",
 				iwantMock.executedDownloads.toString());
 		assertEquals("valid content", testArea.contentOf(cached));
 	}
 
 	public void testDownloadFailsAndCachedFileIsRenamedIfMd5Fails()
 			throws Exception {
-		URL url = Iwant.url("http://an-url");
+		URL url = Iwant.url("http://localhost");
 		caches.cachesUrlAt(url, cached);
 		iwantMock.shallDownloadContent(url, "invalid");
 
