@@ -1,6 +1,7 @@
 package net.sf.iwant.entry3;
 
 import junit.framework.TestCase;
+import net.sf.iwant.testing.IwantEntry3TestArea;
 
 public class ExampleWsDefGeneratorTest extends TestCase {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package net.sf.iwant.testing;
 
 import java.io.File;
 
