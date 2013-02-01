@@ -27,8 +27,8 @@ import net.sf.iwant.api.WsInfo;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entry.WsRootFinder;
 import net.sf.iwant.io.StreamUtil;
+import net.sf.iwant.testing.WsRootFinder;
 
 public class Iwant3 {
 

@@ -12,6 +12,7 @@ import net.sf.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsR
 import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantEntryTestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
+import net.sf.iwant.testing.WsRootFinder;
 
 public class IwantTest extends TestCase {
 
