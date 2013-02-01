@@ -1,18 +1,7 @@
 package net.sf.iwant.testing;
 
-import java.io.File;
+public class IwantEntry2TestArea extends IwantEntryTestArea {
 
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.testarea.TestArea;
-
-public class IwantEntry2TestArea extends TestArea {
-
-	/**
-	 * TODO remove redundancy: copy-pasted (but enhanced...) from *3*
-	 */
-	public File hasFile(String path, String content) {
-		File file = new File(root(), path);
-		return Iwant.newTextFile(file, content);
-	}
+	// nothing to add
 
 }

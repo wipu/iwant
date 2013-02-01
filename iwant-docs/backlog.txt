@@ -468,7 +468,7 @@
     + WsRootFinder
     + test area 2
     + all testareas
-    - reuse code btw testareas (could also combine,
+    + reuse code btw testareas (could also combine,
       but separation may be handy later)
     - mocks
   - object mothers/testworlds for nonverbose setUp and tearDown
