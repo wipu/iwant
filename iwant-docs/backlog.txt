@@ -447,6 +447,16 @@
       + also test that tests it's the Thread name in the dir name
   + descript
 
++ As @buildscriptuser I want iwant to verify the checksum of the downloaded files so I don't get any corrupted stuff
+  + MD5 basic functionality
+  + make checksum optional for Downloaded
+  + find out why the test is slow to init
+    * whoa, URL.hashCode tries DNS resolve!
+    + fix in many places to use localhost urls
+  + cleanup file/stream handling (closing)
+    + reuse
+    + reuse everywhere
+
 #################################################################
 = In progress
 #################################################################
@@ -464,18 +474,9 @@
     + ScriptGeneratedContent: see separate story
     * JunitResult seems to be thread-unsafe so let's skip it
       ( it uses ant and suppresses sysout)
-    - checksum of downloaded: any tests to copy?
+    + checksum of downloaded: any tests to copy?
   - after split, take WsRootFinder and ExampleWsDefGenerator into use in Iwant3Test
-
-- As @buildscriptuser I want iwant to verify the checksum of the downloaded files so I don't get any corrupted stuff
-  + MD5 basic functionality
-  + make checksum optional for Downloaded
-  + find out why the test is slow to init
-    * whoa, URL.hashCode tries DNS resolve!
-    + fix in many places to use localhost urls
-  - cleanup file/stream handling (closing)
-    + reuse
-    - reuse everywhere
+    * actually, no split needed, but no need for WsRootFinder
 
 #################################################################
 = Planned
