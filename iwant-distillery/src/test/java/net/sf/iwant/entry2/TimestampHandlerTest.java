@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry2.Iwant2.TimestampHandler;
+import net.sf.iwant.testing.IwantEntry2TestArea;
 
 public class TimestampHandlerTest extends TestCase {
 

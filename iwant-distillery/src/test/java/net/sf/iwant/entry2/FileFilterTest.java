@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import junit.framework.TestCase;
+import net.sf.iwant.testing.IwantEntry2TestArea;
 
 public class FileFilterTest extends TestCase {
 
