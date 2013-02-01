@@ -8,9 +8,9 @@ import junit.framework.TestCase;
 import net.sf.iwant.api.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entry.IwantNetworkMock;
 import net.sf.iwant.entry3.CachesMock;
 import net.sf.iwant.entry3.IwantEntry3TestArea;
+import net.sf.iwant.testing.IwantNetworkMock;
 
 public class ScriptGeneratedTest extends TestCase {
 

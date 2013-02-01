@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
+import net.sf.iwant.testing.IwantEntryTestArea;
+import net.sf.iwant.testing.IwantNetworkMock;
 
 public class UnzippedSvnkitTest extends TestCase {
 

@@ -6,6 +6,8 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
+import net.sf.iwant.testing.IwantEntryTestArea;
+import net.sf.iwant.testing.IwantNetworkMock;
 
 public class ExportedFromSvnTest extends TestCase {
 

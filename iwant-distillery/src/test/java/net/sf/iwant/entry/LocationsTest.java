@@ -7,6 +7,8 @@ import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
 import net.sf.iwant.testarea.TestArea;
+import net.sf.iwant.testing.IwantEntryTestArea;
+import net.sf.iwant.testing.IwantNetworkMock;
 
 public class LocationsTest extends TestCase {
 

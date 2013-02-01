@@ -14,7 +14,7 @@ import net.sf.iwant.api.Source;
 import net.sf.iwant.api.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
-import net.sf.iwant.entry.IwantNetworkMock;
+import net.sf.iwant.testing.IwantNetworkMock;
 
 public class Iwant3Test extends TestCase {
 

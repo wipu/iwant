@@ -11,7 +11,7 @@ import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
-import net.sf.iwant.entry.IwantNetworkMock;
+import net.sf.iwant.testing.IwantNetworkMock;
 
 public class CachesImplTest extends TestCase {
 

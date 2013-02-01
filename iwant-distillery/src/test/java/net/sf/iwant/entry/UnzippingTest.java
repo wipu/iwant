@@ -8,6 +8,8 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant.UnmodifiableZip;
+import net.sf.iwant.testing.IwantEntryTestArea;
+import net.sf.iwant.testing.IwantNetworkMock;
 
 public class UnzippingTest extends TestCase {
 

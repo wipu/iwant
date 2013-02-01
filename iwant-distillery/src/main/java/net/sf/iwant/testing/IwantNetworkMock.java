@@ -1,4 +1,4 @@
-package net.sf.iwant.entry;
+package net.sf.iwant.testing;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.Iwant.UnmodifiableSource;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;

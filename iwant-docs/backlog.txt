@@ -184,7 +184,7 @@
 + As @buildscriptuser I want iwant to refresh targets lazily i.e. iff for target or any of its ingredients cached is missing or descriptor has changed
   + as path twice => second causes no refresh
   + descriptor changes, no other changes => refresh
-  - ingredient changed => refresh
+  + ingredient changed => refresh
     + test that the simple impl is broken
     + develop a separate module for lazy task execution (multi-threaded even)
       * sorry, this happened in isolation, no log for it
@@ -200,7 +200,7 @@
   + make Iwant3 load wsdefdef instead of wsdef
   + write/modify tests to test Iwant3 compiles & classloads wsdef defined in wsdefdef
   + update example generator to generate both wsdefdef and wsdef
-  (- update descript: no need, it was good)
+  (* update descript: no need, it was good)
   + fix i-have/wsinfo example
   + update hard-coded eclipse-settings generator
     + KISS: for now: just one eclipse project for the whole workspace!
@@ -275,7 +275,7 @@
     + minimal outputting echo and fail scripts
     + assert exit status and stderr content
   + hello world file generating ant script that references dependencies, by path and content
-  - descript
+  + descript
     + to avoid misunderstanding: 1st replace ant.jar with commons-math
     + FromRepository: easily reusable way of referring to the ant jars used in AntGeneratedTest
     + then demonstrate file-generating hello ant
@@ -297,7 +297,7 @@
 
 + As @buildscriptauthor I want to declare separate eclipse settings for each module instead of the default one per workspace so that Eclipse will force correct dependencies for java developers
   ( * one module for as-x-developer, hosting wsdefdef, another for x-workspace
-    - move wsdef in example generator, tests and manual dummy project
+    * move wsdef in example generator, tests and manual dummy project
       from as-x-developer/i-have/wsdef to x-workspace/src/main/java
   )
   * no, better to keep all under as-x-developer/i-have so no wizard generation
@@ -450,6 +450,12 @@
 #################################################################
 = In progress
 #################################################################
+
+- @refactoring: As @developer and @buildscriptauthor I want test utilities, like mocks, for easy and nonverbose testing of iwant and iwant-based code
+  + new package: testing
+  + rehearse by moving a couple of test utilities there
+  - move all, creating a different package for entry2/3 stuff
+  - object mothers/testworlds for nonverbose setUp and tearDown
 
 - @epic: As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead

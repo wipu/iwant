@@ -10,6 +10,8 @@ import java.security.Permission;
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
 import net.sf.iwant.testarea.TestArea;
+import net.sf.iwant.testing.IwantEntryTestArea;
+import net.sf.iwant.testing.IwantNetworkMock;
 
 public class IwantTest extends TestCase {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.entry;
+package net.sf.iwant.testing;
 
 import net.sf.iwant.testarea.TestArea;
 

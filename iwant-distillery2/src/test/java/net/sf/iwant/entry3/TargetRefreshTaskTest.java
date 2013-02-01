@@ -20,10 +20,10 @@ import net.sf.iwant.api.TargetEvaluationContext;
 import net.sf.iwant.api.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entry.IwantNetworkMock;
 import net.sf.iwant.planner.Resource;
 import net.sf.iwant.planner.ResourcePool;
 import net.sf.iwant.planner.TaskDirtiness;
+import net.sf.iwant.testing.IwantNetworkMock;
 
 public class TargetRefreshTaskTest extends TestCase {
 
