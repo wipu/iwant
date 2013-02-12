@@ -5,7 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,34 +50,11 @@ public class FileUtil {
 		return b.toString();
 	}
 
-	/**
-	 * Copied from
-	 * http://stackoverflow.com/questions/106770/standard-concise-way
-	 * -to-copy-a-file-in-java
-	 * 
-	 * No dedicated test for this, TODO use commons-io when easy build-wise
-	 */
 	public static void copyFile(File sourceFile, File destFile)
 			throws IOException {
-		if (!destFile.exists()) {
-			destFile.createNewFile();
-		}
-
-		FileChannel source = null;
-		FileChannel destination = null;
-
-		try {
-			source = new FileInputStream(sourceFile).getChannel();
-			destination = new FileOutputStream(destFile).getChannel();
-			destination.transferFrom(source, 0, source.size());
-		} finally {
-			if (source != null) {
-				source.close();
-			}
-			if (destination != null) {
-				destination.close();
-			}
-		}
+		InputStream in = new FileInputStream(sourceFile);
+		OutputStream out = new FileOutputStream(destFile);
+		StreamUtil.pipeAndClose(in, out);
 	}
 
 	public static byte[] contentAsBytes(File file) {
@@ -89,8 +67,11 @@ public class FileUtil {
 				StreamUtil.pipe(in, out);
 				return out.toByteArray();
 			} finally {
-				StreamUtil.tryToClose(in);
-				StreamUtil.tryToClose(out);
+				try {
+					StreamUtil.tryToClose(in);
+				} finally {
+					StreamUtil.tryToClose(out);
+				}
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);

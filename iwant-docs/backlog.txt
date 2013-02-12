@@ -457,9 +457,20 @@
     + reuse
     + reuse everywhere
 
++ @enhancement As Win64 user I want a 64-bit eclipse installed by new-eclipse-env.sh so I don't have to resolve 32/64 complications
+  + also here make unzip quiet
+
 #################################################################
 = In progress
 #################################################################
+
+- @bugfix: fix: parallel script run sometimes fails with "text file busy"
+  * may be caused by chmod!
+  + cleanup closing in StreamUtil and FileUtil
+  + utilize pipe in copying of files
+  - incr numbers in WishEvaluatorTest.testScriptsWorkCorrectlyInParallel()
+  - test chmod in isolation
+  - fix, try to find even a workaround
 
 - @refactoring: As @developer and @buildscriptauthor I want test utilities, like mocks, for easy and nonverbose testing of iwant and iwant-based code
   + new package: testing

@@ -21,8 +21,11 @@ public class StreamUtil {
 		try {
 			Iwant2.pipe(in, out);
 		} finally {
-			tryToClose(in);
-			tryToClose(out);
+			try {
+				tryToClose(in);
+			} finally {
+				tryToClose(out);
+			}
 		}
 	}
 

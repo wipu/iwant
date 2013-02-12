@@ -46,7 +46,7 @@ CACHE=$NEEHOME/cache
   mkdir -p "$CACHE"
 }
 
-[ $# == 2 ] || die "Usage: $0 TARGETDIR linux32|linux64|win32"
+[ $# == 2 ] || die "Usage: $0 TARGETDIR linux32|linux64|win32|win64"
 TARGETDIR=$1
 ARCH=$2
 
@@ -71,6 +71,12 @@ eclipse-url-win32() {
   DISTNAME=$ECL_DISTBASE-win32.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
   DISTMD5='b2057e0aaab5be19205c399d740ca85a'
+}
+
+eclipse-url-win64() {
+  DISTNAME=$ECL_DISTBASE-win32-x86_64.zip
+  DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
+  DISTMD5='9f32991030b4a7f73c6248512ff47682'
 }
 
 eclipse-dist() {
@@ -104,9 +110,13 @@ uncompress-linux64() {
 
 uncompress-win32() {
   log "Unzipping eclipse"
-  unzip "$ECLIPSEDIST"
+  unzip -q "$ECLIPSEDIST"
   log "Fixing file permissions"
   find eclipse -type f -exec chmod u+x '{}' ';'
+}
+
+uncompress-win64() {
+  uncompress-win32
 }
 
 pristine-eclipse() {
@@ -137,7 +147,7 @@ EOF
 
 subclipse() {
   log "Unzipping subclipse"
-  unzip "$SUBCLIPSEDIST" \
+  unzip -q "$SUBCLIPSEDIST" \
     features/com.collabnet.subversion.merge.feature_2.1.0.jar \
     features/org.tigris.subversion.clientadapter.feature_1.6.12.jar \
     features/org.tigris.subversion.clientadapter.javahl.feature_1.6.12.jar \
