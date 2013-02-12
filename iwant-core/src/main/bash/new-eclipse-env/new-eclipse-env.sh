@@ -181,6 +181,8 @@ workspace() {
   WORKSPACE=$TARGETDIR/workspace
   mkdir "$WORKSPACE"
   runtime-settings-file org.eclipse.core.resources.prefs
+  runtime-settings-file org.eclipse.debug.ui.prefs
+  runtime-settings-file org.eclipse.jdt.core.prefs
   runtime-settings-file org.eclipse.jdt.ui.prefs
   runtime-settings-file org.eclipse.ui.editors.prefs
 }
@@ -226,6 +228,7 @@ semanticHighlighting.parameterVariable.enabled=true
 semanticHighlighting.staticFinalField.bold=true
 semanticHighlighting.staticFinalField.color=0,0,192
 semanticHighlighting.staticFinalField.enabled=true
+semanticHighlighting.staticFinalField.italic=true
 semanticHighlighting.typeArgument.enabled=true
 semanticHighlighting.typeArgument.underline=true
 semanticHighlighting.typeParameter.color=46,114,51
@@ -241,11 +244,50 @@ overviewRuler_migration=migrated_3.1
 EOF
 }
 
+conf_org.eclipse.jdt.core.prefs() {
+cat <<EOF
+eclipse.preferences.version=1
+org.eclipse.jdt.core.compiler.problem.emptyStatement=warning
+org.eclipse.jdt.core.compiler.problem.fallthroughCase=warning
+org.eclipse.jdt.core.compiler.problem.missingDefaultCase=warning
+org.eclipse.jdt.core.compiler.problem.missingDeprecatedAnnotation=warning
+org.eclipse.jdt.core.compiler.problem.missingHashCodeMethod=warning
+org.eclipse.jdt.core.compiler.problem.missingOverrideAnnotation=warning
+org.eclipse.jdt.core.compiler.problem.missingSerialVersion=ignore
+org.eclipse.jdt.core.compiler.problem.missingSynchronizedOnInheritedMethod=warning
+org.eclipse.jdt.core.compiler.problem.parameterAssignment=warning
+org.eclipse.jdt.core.compiler.problem.possibleAccidentalBooleanAssignment=warning
+org.eclipse.jdt.core.compiler.problem.potentialNullReference=warning
+org.eclipse.jdt.core.compiler.problem.potentiallyUnclosedCloseable=warning
+org.eclipse.jdt.core.compiler.problem.redundantNullCheck=warning
+org.eclipse.jdt.core.compiler.problem.redundantSuperinterface=warning
+org.eclipse.jdt.core.compiler.problem.reportMethodCanBeStatic=warning
+org.eclipse.jdt.core.compiler.problem.undocumentedEmptyBlock=warning
+org.eclipse.jdt.core.compiler.problem.unnecessaryTypeCheck=warning
+org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownException=warning
+org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownExceptionExemptExceptionAndThrowable=disabled
+org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownExceptionIncludeDocCommentReference=disabled
+org.eclipse.jdt.core.compiler.problem.unusedObjectAllocation=warning
+org.eclipse.jdt.core.compiler.problem.unusedParameter=warning
+org.eclipse.jdt.core.compiler.problem.unusedParameterIncludeDocCommentReference=disabled
+org.eclipse.jdt.core.timeoutForParameterNameFromAttachedJavadoc=50
+EOF
+}
+
 conf_org.eclipse.core.resources.prefs() {
 cat <<EOF
 eclipse.preferences.version=1
 encoding=UTF-8
 version=1
+EOF
+}
+
+# this selects "Launch previously launched" instead of the open one
+conf_org.eclipse.debug.ui.prefs() {
+cat <<EOF
+eclipse.preferences.version=1
+org.eclipse.debug.ui.PREF_LAUNCH_PERSPECTIVES=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<launchPerspectives/>\n
+org.eclipse.debug.ui.UseContextualLaunch=false
 EOF
 }
 

@@ -460,6 +460,11 @@
 + @enhancement As Win64 user I want a 64-bit eclipse installed by new-eclipse-env.sh so I don't have to resolve 32/64 complications
   + also here make unzip quiet
 
++ @enhancement More sane settings for newly installed eclipse
+  + launch previously run, not the open one
+  + make constants italic, like other static members
+  + more warnings
+
 #################################################################
 = In progress
 #################################################################
