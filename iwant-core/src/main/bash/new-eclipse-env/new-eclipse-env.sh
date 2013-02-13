@@ -185,6 +185,7 @@ workspace() {
   runtime-settings-file org.eclipse.jdt.core.prefs
   runtime-settings-file org.eclipse.jdt.ui.prefs
   runtime-settings-file org.eclipse.ui.editors.prefs
+  runtime-settings-file org.eclipse.e4.ui.css.swt.theme.prefs
 }
 
 runtime-settings-file() {
@@ -258,10 +259,11 @@ org.eclipse.jdt.core.compiler.problem.missingSynchronizedOnInheritedMethod=warni
 org.eclipse.jdt.core.compiler.problem.parameterAssignment=warning
 org.eclipse.jdt.core.compiler.problem.possibleAccidentalBooleanAssignment=warning
 org.eclipse.jdt.core.compiler.problem.potentialNullReference=warning
-org.eclipse.jdt.core.compiler.problem.potentiallyUnclosedCloseable=warning
+org.eclipse.jdt.core.compiler.problem.potentiallyUnclosedCloseable=ignore
 org.eclipse.jdt.core.compiler.problem.redundantNullCheck=warning
 org.eclipse.jdt.core.compiler.problem.redundantSuperinterface=warning
 org.eclipse.jdt.core.compiler.problem.reportMethodCanBeStatic=warning
+org.eclipse.jdt.core.compiler.problem.unclosedCloseable=warning
 org.eclipse.jdt.core.compiler.problem.undocumentedEmptyBlock=warning
 org.eclipse.jdt.core.compiler.problem.unnecessaryTypeCheck=warning
 org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownException=warning
@@ -282,12 +284,23 @@ version=1
 EOF
 }
 
-# this selects "Launch previously launched" instead of the open one
+# the Console settings increase the output buffer size
+# the launch-related settings select "Launch previously launched" instead of the open one
 conf_org.eclipse.debug.ui.prefs() {
 cat <<EOF
 eclipse.preferences.version=1
+Console.highWaterMark=1008000
+Console.lowWaterMark=1000000
 org.eclipse.debug.ui.PREF_LAUNCH_PERSPECTIVES=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<launchPerspectives/>\n
 org.eclipse.debug.ui.UseContextualLaunch=false
+EOF
+}
+
+# shamelessly opinionated: the new default theme is horrible
+conf_org.eclipse.e4.ui.css.swt.theme.prefs() {
+cat <<EOF
+eclipse.preferences.version=1
+themeid=org.eclipse.e4.ui.css.theme.e4_classic
 EOF
 }
 
