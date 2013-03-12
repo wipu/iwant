@@ -2,20 +2,22 @@ package com.example.wsdefdef.v00commonsmathjar;
 
 import net.sf.iwant.api.Downloaded;
 import net.sf.iwant.api.IwantWorkspaceProvider;
+import net.sf.iwant.api.JavaBinModule;
 import net.sf.iwant.api.JavaModule;
+import net.sf.iwant.api.JavaSrcModule;
 import net.sf.iwant.api.Target;
 
 public class WorkspaceProvider implements IwantWorkspaceProvider {
 
 	@Override
 	public JavaModule workspaceModule(JavaModule iwantApiClasses) {
-		return JavaModule
+		return JavaSrcModule
 				.with()
 				.name("distillery-workspace")
 				.locationUnderWsRoot("as-distillery-developer/i-have/wsdef")
 				.mainJava("src/main/java")
 				.mainDeps(iwantApiClasses,
-						JavaModule.implicitLibrary(commonsMathJar())).end();
+						JavaBinModule.providing(commonsMathJar())).end();
 	}
 
 	@Override

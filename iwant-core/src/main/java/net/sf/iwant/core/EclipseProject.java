@@ -11,6 +11,7 @@ import java.util.List;
  * TODO this class' interface resembles Content so find a natural way to make
  * this one.
  */
+@SuppressWarnings("resource")
 public class EclipseProject implements Comparable<EclipseProject> {
 
 	private final String name;

@@ -13,7 +13,9 @@ public class IwantApiSuite extends TestCase {
 		suite.addTestSuite(HelloTargetTest.class);
 		suite.addTestSuite(JavaClassesTest.class);
 		suite.addTestSuite(DownloadedTest.class);
-		suite.addTestSuite(JavaModuleTest.class);
+		suite.addTestSuite(CodeStylePolicyTest.class);
+		suite.addTestSuite(JavaSrcModuleTest.class);
+		suite.addTestSuite(JavaBinModuleTest.class);
 		suite.addTestSuite(EclipseSettingsTest.class);
 		suite.addTestSuite(ConcatenatedTest.class);
 		suite.addTestSuite(FromRepositoryTest.class);

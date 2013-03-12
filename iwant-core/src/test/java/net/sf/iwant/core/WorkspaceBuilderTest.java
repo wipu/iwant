@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import net.sf.iwant.core.Concatenated.ConcatenatedBuilder;
 
+@SuppressWarnings("resource")
 public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	public void testListOfTargetsOfEmptyWs() {
@@ -204,7 +205,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	}
 
-	public void testJunitResultOfFailingTest() throws Exception {
+	public void testJunitResultOfFailingTest() {
 		directoryExists("tests");
 		file("tests/ATest.java").withContent();
 		line("public class ATest extends junit.framework.TestCase {");
@@ -286,7 +287,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	}
 
-	public void testDownloadFailsIfFileDoesNotExist() throws Exception {
+	public void testDownloadFailsIfFileDoesNotExist() {
 		try {
 			at(WorkspaceWithDownloadedContent.class).iwant(
 					"target/aDownloadedFile/as-path");

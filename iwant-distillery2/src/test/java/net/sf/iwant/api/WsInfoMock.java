@@ -7,6 +7,7 @@ public class WsInfoMock implements WsInfo {
 	private File wsdefdefModule;
 	private String wsName;
 	private File wsRoot;
+	private String relativeAsSomeone;
 
 	private <T> T nonNull(T value, Object request) {
 		if (value == null) {
@@ -66,6 +67,15 @@ public class WsInfoMock implements WsInfo {
 	@Override
 	public String wsdefdefClassSimpleName() {
 		throw new UnsupportedOperationException("TODO test and implement");
+	}
+
+	public void hasRelativeAsSomeone(String relativeAsSomeone) {
+		this.relativeAsSomeone = relativeAsSomeone;
+	}
+
+	@Override
+	public String relativeAsSomeone() {
+		return nonNull(relativeAsSomeone, "relativeAsSomeone");
 	}
 
 }

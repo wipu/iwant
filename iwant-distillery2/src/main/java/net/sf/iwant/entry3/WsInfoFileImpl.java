@@ -15,8 +15,10 @@ public class WsInfoFileImpl implements WsInfo {
 	private final File wsdefdefModule;
 	private final File wsdefdefJava;
 	private final String wsdefdefClass;
+	private final String relativeAsSomeone;
 
-	public WsInfoFileImpl(Reader in, File wsInfo) throws IOException {
+	public WsInfoFileImpl(Reader in, File wsInfo, File asSomeone)
+			throws IOException {
 		Properties p = new Properties();
 		try {
 			p.load(in);
@@ -31,6 +33,8 @@ public class WsInfoFileImpl implements WsInfo {
 				"WSDEFDEF_MODULE"));
 		wsdefdefClass = property(p, wsInfo, "WSDEFDEF_CLASS");
 		wsdefdefJava = wsdefdefJava(wsdefdefSrc(), wsdefdefClass);
+		relativeAsSomeone = FileUtil.relativePathOfFileUnderParent(asSomeone,
+				wsRoot);
 	}
 
 	private static File wsdefdefJava(File wsdefdefSrc, String wsdefClass) {
@@ -92,6 +96,11 @@ public class WsInfoFileImpl implements WsInfo {
 	@Override
 	public String wsdefdefClassSimpleName() {
 		return wsdefdefClass.substring(wsdefdefClass.lastIndexOf('.') + 1);
+	}
+
+	@Override
+	public String relativeAsSomeone() {
+		return relativeAsSomeone;
 	}
 
 }

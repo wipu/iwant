@@ -3,9 +3,11 @@ package net.sf.iwant.eclipsesettings;
 public class DotProject {
 
 	private final String name;
+	private final boolean hasExternalBuilder;
 
-	public DotProject(String name) {
+	public DotProject(String name, boolean hasExternalBuilder) {
 		this.name = name;
+		this.hasExternalBuilder = hasExternalBuilder;
 	}
 
 	public static DotProjectSpex named(String name) {
@@ -25,6 +27,18 @@ public class DotProject {
 		b.append("        <projects>\n");
 		b.append("        </projects>\n");
 		b.append("        <buildSpec>\n");
+		if (hasExternalBuilder) {
+			b.append("                <buildCommand>\n");
+			b.append("                        <name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>\n");
+			b.append("                        <arguments>\n");
+			b.append("                                <dictionary>\n");
+			b.append("                                        <key>LaunchConfigHandle</key>\n");
+			b.append("                                        <value>&lt;project&gt;/.externalToolBuilders/"
+					+ name() + ".launch</value>\n");
+			b.append("                                </dictionary>\n");
+			b.append("                        </arguments>\n");
+			b.append("                </buildCommand>\n");
+		}
 		b.append("                <buildCommand>\n");
 		b.append("                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
 		b.append("                        <arguments>\n");
@@ -38,16 +52,26 @@ public class DotProject {
 		return b.toString();
 	}
 
+	public boolean hasExternalBuilder() {
+		return hasExternalBuilder;
+	}
+
 	public static class DotProjectSpex {
 
 		private final String name;
+		private boolean hasExternalBuilder;
 
 		public DotProjectSpex(String name) {
 			this.name = name;
 		}
 
+		public DotProjectSpex hasExternalBuilder(boolean hasExternalBuilder) {
+			this.hasExternalBuilder = hasExternalBuilder;
+			return this;
+		}
+
 		public DotProject end() {
-			return new DotProject(name);
+			return new DotProject(name, hasExternalBuilder);
 		}
 
 	}

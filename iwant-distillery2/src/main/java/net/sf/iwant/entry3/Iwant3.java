@@ -16,8 +16,10 @@ import net.sf.iwant.api.HelloSideEffect;
 import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.IwantWorkspaceProvider;
+import net.sf.iwant.api.JavaBinModule;
 import net.sf.iwant.api.JavaClasses;
 import net.sf.iwant.api.JavaModule;
+import net.sf.iwant.api.JavaSrcModule;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.SideEffectDefinitionContext;
@@ -60,7 +62,7 @@ public class Iwant3 {
 		iHave.mkdirs();
 		File iHaveConf = new File(iHave, "conf");
 		File wsInfoFile = wsInfoFile(iHaveConf);
-		WsInfo wsInfo = parseWsInfo(wsInfoFile);
+		WsInfo wsInfo = parseWsInfo(wsInfoFile, asSomeone);
 		if (!wsInfo.wsdefdefJava().exists()) {
 			throw createExampleWsdefdefAndWsdef(asSomeone, iHave, wsInfo);
 		}
@@ -87,22 +89,22 @@ public class Iwant3 {
 
 			Iwant.fileLog("Refreshing wsdef classes");
 			JavaModule wsdDefClassesModule = wsDefdef
-					.workspaceModule(JavaModule
-							.implicitLibrary(new ExternalSource(iwantApiClasses)));
+					.workspaceModule(JavaBinModule
+							.providing(new ExternalSource(iwantApiClasses)));
 			// TODO don't cast when no more necessary
 			JavaClasses wsDefClassesTarget = (JavaClasses) wsdDefClassesModule
-					.mainClasses();
+					.mainArtifact();
 
 			String wsdefdefRelativeToWsRoot = FileUtil
 					.relativePathOfFileUnderParent(wsInfo.wsdefdefModule(),
 							wsInfo.wsRoot());
-			JavaModule wsdefdefJavaModule = JavaModule
+			JavaModule wsdefdefJavaModule = JavaSrcModule
 					.with()
 					.name(wsInfo.wsName() + "-wsdefdef")
 					.locationUnderWsRoot(wsdefdefRelativeToWsRoot)
 					.mainJava("src/main/java")
 					.mainDeps(
-							JavaModule.implicitLibrary(new ExternalSource(
+							JavaBinModule.providing(new ExternalSource(
 									iwantApiClasses))).end();
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
 					System.err, wsInfo.wsRoot(), iwant, wsInfo, caches,
@@ -260,11 +262,12 @@ public class Iwant3 {
 				+ "\nPlease edit it and rerun me.");
 	}
 
-	private static WsInfo parseWsInfo(File wsInfoFile) throws IOException {
+	private static WsInfo parseWsInfo(File wsInfoFile, File asSomeone)
+			throws IOException {
 		FileReader in = null;
 		try {
 			in = new FileReader(wsInfoFile);
-			return new WsInfoFileImpl(in, wsInfoFile);
+			return new WsInfoFileImpl(in, wsInfoFile, asSomeone);
 		} catch (FileNotFoundException e) {
 			throw new IllegalStateException("Sorry, for a while I thought "
 					+ wsInfoFile + " exists.");

@@ -1,9 +1,209 @@
 package net.sf.iwant.eclipsesettings;
 
+import net.sf.iwant.api.CodeStyle;
+import net.sf.iwant.api.CodeStylePolicy;
+import net.sf.iwant.api.CodeStyleValue;
+
 public class OrgEclipseJdtCorePrefs {
 
-	public static OrgEclipseJdtCorePrefs withDefaultValues() {
-		return new OrgEclipseJdtCorePrefs();
+	private final CodeStylePolicy codeStylePolicy;
+
+	public OrgEclipseJdtCorePrefs(CodeStylePolicy codeStylePolicy) {
+		this.codeStylePolicy = codeStylePolicy;
+	}
+
+	private static String asPropertyLine(CodeStyle style, CodeStyleValue value) {
+		switch (style) {
+		case ANNOTATION_SUPER_INTERFACE:
+			return ignoreable("annotationSuperInterface", value);
+		case ASSERT_IDENTIFIER:
+			return ignoreable("assertIdentifier", value);
+		case AUTOBOXING:
+			return ignoreable("autoboxing", value);
+		case COMPARING_IDENTICAL:
+			return ignoreable("comparingIdentical", value);
+		case DEAD_CODE:
+			return ignoreable("deadCode", value);
+		case DEPRECATION:
+			return ignoreable("deprecation", value);
+		case DEPRECATION_IN_DEPRECATED_CODE:
+			return disableable("deprecationInDeprecatedCode", value);
+		case DEPRECATION_WHEN_OVERRIDING_DEPRECATED_METHOD:
+			return disableable("deprecationWhenOverridingDeprecatedMethod",
+					value);
+		case DISCOURAGED_REFERENCE:
+			return ignoreable("discouragedReference", value);
+		case EMPTY_STATEMENT:
+			return ignoreable("emptyStatement", value);
+		case ENUM_IDENTIFIER:
+			return ignoreable("enumIdentifier", value);
+		case FALLTHROUGH_CASE:
+			return ignoreable("fallthroughCase", value);
+		case FATAL_OPTIONAL_ERROR:
+			return disableable("fatalOptionalError", value);
+		case FIELD_HIDING:
+			return ignoreable("fieldHiding", value);
+		case FINAL_PARAMETER_BOUND:
+			return ignoreable("finalParameterBound", value);
+		case FINALLY_BLOCK_NOT_COMPLETING_NORMALLY:
+			return ignoreable("finallyBlockNotCompletingNormally", value);
+		case FORBIDDEN_REFERENCE:
+			return ignoreable("forbiddenReference", value);
+		case HIDDEN_CATCH_BLOCK:
+			return ignoreable("hiddenCatchBlock", value);
+		case INCLUDE_NULL_INFO_FROM_ASSERTS:
+			return disableable("includeNullInfoFromAsserts", value);
+		case INCOMPATIBLE_NON_INHERITED_INTERFACE_METHOD:
+			return ignoreable("incompatibleNonInheritedInterfaceMethod", value);
+		case INCOMPLETE_ENUM_SWITCH:
+			return ignoreable("incompleteEnumSwitch", value);
+		case INDIRECT_STATIC_ACCESS:
+			return ignoreable("indirectStaticAccess", value);
+		case LOCAL_VARIABLE_HIDING:
+			return ignoreable("localVariableHiding", value);
+		case METHOD_WITH_CONSTRUCTOR_NAME:
+			return ignoreable("methodWithConstructorName", value);
+		case MISSING_DEPRECATED_ANNOTATION:
+			return ignoreable("missingDeprecatedAnnotation", value);
+		case MISSING_HASHCODE_METHOD:
+			return ignoreable("missingHashCodeMethod", value);
+		case MISSING_OVERRIDE_ANNOTATION:
+			return ignoreable("missingOverrideAnnotation", value);
+		case MISSING_OVERRIDE_ANNOTATION_FOR_INTERFACE_METHOD_IMPLEMENTATION:
+			return disableable(
+					"missingOverrideAnnotationForInterfaceMethodImplementation",
+					value);
+		case MISSING_SERIAL_VERSION:
+			return ignoreable("missingSerialVersion", value);
+		case MISSING_SYNCHRONIZED_ON_INHERITED_METHOD:
+			return ignoreable("missingSynchronizedOnInheritedMethod", value);
+		case NO_EFFECT_ASSIGNMENT:
+			return ignoreable("noEffectAssignment", value);
+		case NO_IMPLICIT_STRING_CONVERSION:
+			return ignoreable("noImplicitStringConversion", value);
+		case NON_EXTERNALIZED_STRING_LITERAL:
+			return ignoreable("nonExternalizedStringLiteral", value);
+		case NULL_REFERENCE:
+			return ignoreable("nullReference", value);
+		case OVERRIDING_PACKAGE_DEFAULT_METHOD:
+			return ignoreable("overridingPackageDefaultMethod", value);
+		case PARAMETER_ASSIGNMENT:
+			return ignoreable("parameterAssignment", value);
+		case POSSIBLE_ACCIDENTAL_BOOLEAN_ASSIGNMENT:
+			return ignoreable("possibleAccidentalBooleanAssignment", value);
+		case POTENTIAL_NULL_REFERENCE:
+			return ignoreable("potentialNullReference", value);
+		case RAW_TYPE_REFERENCE:
+			return ignoreable("rawTypeReference", value);
+		case REDUNDANT_NULL_CHECK:
+			return ignoreable("redundantNullCheck", value);
+		case REDUNDANT_SPECIFICATION_OF_TYPE_ARGUMENTS:
+			return ignoreable("redundantSpecificationOfTypeArguments", value);
+		case REDUNDANT_SUPERINTERFACE:
+			return ignoreable("redundantSuperinterface", value);
+		case REPORT_METHOD_CAN_BE_POTENTIALLY_STATIC:
+			return ignoreable("reportMethodCanBePotentiallyStatic", value);
+		case REPORT_METHOD_CAN_BE_STATIC:
+			return ignoreable("reportMethodCanBeStatic", value);
+		case SPECIAL_PARAMETER_HIDING_FIELD:
+			return disableable("specialParameterHidingField", value);
+		case STATIC_ACCESS_RECEIVER:
+			return ignoreable("staticAccessReceiver", value);
+		case SUPPRESS_OPTIONAL_ERRORS:
+			return disableable("suppressOptionalErrors", value);
+		case SUPPRESS_WARNINGS:
+			return disableable("suppressWarnings", value);
+		case SYNTHETIC_ACCESS_EMULATION:
+			return ignoreable("syntheticAccessEmulation", value);
+		case TYPE_PARAMETER_HIDING:
+			return ignoreable("typeParameterHiding", value);
+		case UNAVOIDABLE_GENERIC_TYPE_PROBLEMS:
+			return disableable("unavoidableGenericTypeProblems", value);
+		case UNCHECKED_TYPE_OPERATION:
+			return ignoreable("uncheckedTypeOperation", value);
+		case UNDOCUMENTED_EMPTY_BLOCK:
+			return ignoreable("undocumentedEmptyBlock", value);
+		case UNHANDLED_WARNING_TOKEN:
+			return ignoreable("unhandledWarningToken", value);
+		case UNNECESSARY_ELSE:
+			return ignoreable("unnecessaryElse", value);
+		case UNNECESSARY_TYPE_CHECK:
+			return ignoreable("unnecessaryTypeCheck", value);
+		case UNQUALIFIED_FIELD_ACCESS:
+			return ignoreable("unqualifiedFieldAccess", value);
+		case UNUSED_DECLARED_THROWN_EXCEPTION:
+			return ignoreable("unusedDeclaredThrownException", value);
+		case UNUSED_DECLARED_THROWN_EXCEPTION_EXEMPT_EXCEPTION_AND_THROWABLE:
+			return disableable(
+					"unusedDeclaredThrownExceptionExemptExceptionAndThrowable",
+					value);
+		case UNUSED_DECLARED_THROWN_EXCEPTION_INCLUDE_DOC_COMMENT_REFERENCE:
+			return disableable(
+					"unusedDeclaredThrownExceptionIncludeDocCommentReference",
+					value);
+		case UNUSED_DECLARED_THROWN_EXCEPTION_WHEN_OVERRIDING:
+			return disableable("unusedDeclaredThrownExceptionWhenOverriding",
+					value);
+		case UNUSED_IMPORT:
+			return ignoreable("unusedImport", value);
+		case UNUSED_LABEL:
+			return ignoreable("unusedLabel", value);
+		case UNUSED_LOCAL:
+			return ignoreable("unusedLocal", value);
+		case UNUSED_OBJECT_ALLOCATION:
+			return ignoreable("unusedObjectAllocation", value);
+		case UNUSED_PARAMETER:
+			return ignoreable("unusedParameter", value);
+		case UNUSED_PARAMETER_INCLUDE_DOC_COMMENT_REFERENCE:
+			return disableable("unusedParameterIncludeDocCommentReference",
+					value);
+		case UNUSED_PARAMETER_WHEN_IMPLEMENTING_ABSTRACT:
+			return disableable("unusedParameterWhenImplementingAbstract", value);
+		case UNUSED_PARAMETER_WHEN_OVERRIDING_CONCRETE:
+			return disableable("unusedParameterWhenOverridingConcrete", value);
+		case UNUSED_PRIVATE_MEMBER:
+			return ignoreable("unusedPrivateMember", value);
+		case UNUSED_WARNING_TOKEN:
+			return ignoreable("unusedWarningToken", value);
+		case VARARGS_ARGUMENT_NEED_CAST:
+			return ignoreable("varargsArgumentNeedCast", value);
+		default:
+			throw new UnsupportedOperationException("Unsupported style: "
+					+ style);
+		}
+	}
+
+	public String asPropertyLine(CodeStyle style) {
+		return asPropertyLine(style, codeStylePolicy.valueOf(style));
+	}
+
+	private static String ignoreable(String key, CodeStyleValue value) {
+		return propertyLine(key, value, false);
+	}
+
+	private static String propertyLine(String key, CodeStyleValue value,
+			boolean disableable) {
+		return "org.eclipse.jdt.core.compiler.problem." + key + "="
+				+ valueToEclipseValue(disableable, value) + "\n";
+	}
+
+	private static String disableable(String key, CodeStyleValue value) {
+		return propertyLine(key, value, true);
+	}
+
+	private static String valueToEclipseValue(boolean disableInsteadOfIgnore,
+			CodeStyleValue value) {
+		switch (value) {
+		case FAIL:
+			return disableInsteadOfIgnore ? "enabled" : "error";
+		case IGNORE:
+			return disableInsteadOfIgnore ? "disabled" : "ignore";
+		case WARN:
+			return disableInsteadOfIgnore ? "enabled" : "warning";
+		default:
+			throw new UnsupportedOperationException("Unsupported value "
+					+ value);
+		}
 	}
 
 	public String asFileContent() {
@@ -17,78 +217,11 @@ public class OrgEclipseJdtCorePrefs {
 		b.append("org.eclipse.jdt.core.compiler.debug.lineNumber=generate\n");
 		b.append("org.eclipse.jdt.core.compiler.debug.localVariable=generate\n");
 		b.append("org.eclipse.jdt.core.compiler.debug.sourceFile=generate\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.annotationSuperInterface=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.assertIdentifier=error\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.autoboxing=ignore\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.comparingIdentical=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.deadCode=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.deprecation=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.deprecationInDeprecatedCode=disabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.deprecationWhenOverridingDeprecatedMethod=disabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.discouragedReference=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.emptyStatement=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.enumIdentifier=error\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.fallthroughCase=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.fatalOptionalError=disabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.fieldHiding=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.finalParameterBound=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.finallyBlockNotCompletingNormally=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.forbiddenReference=error\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.hiddenCatchBlock=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.includeNullInfoFromAsserts=disabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.incompatibleNonInheritedInterfaceMethod=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.incompleteEnumSwitch=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.indirectStaticAccess=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.localVariableHiding=ignore\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.methodWithConstructorName=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.missingDeprecatedAnnotation=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.missingHashCodeMethod=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.missingOverrideAnnotation=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.missingOverrideAnnotationForInterfaceMethodImplementation=enabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.missingSerialVersion=ignore\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.missingSynchronizedOnInheritedMethod=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.noEffectAssignment=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.noImplicitStringConversion=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.nonExternalizedStringLiteral=ignore\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.nullReference=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.overridingPackageDefaultMethod=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.parameterAssignment=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.possibleAccidentalBooleanAssignment=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.potentialNullReference=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.rawTypeReference=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.redundantNullCheck=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.redundantSpecificationOfTypeArguments=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.redundantSuperinterface=ignore\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.reportMethodCanBePotentiallyStatic=ignore\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.reportMethodCanBeStatic=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.specialParameterHidingField=disabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.staticAccessReceiver=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.suppressOptionalErrors=disabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.suppressWarnings=enabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.syntheticAccessEmulation=ignore\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.typeParameterHiding=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unavoidableGenericTypeProblems=enabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.uncheckedTypeOperation=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.undocumentedEmptyBlock=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unhandledWarningToken=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unnecessaryElse=ignore\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unnecessaryTypeCheck=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unqualifiedFieldAccess=ignore\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownException=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownExceptionExemptExceptionAndThrowable=enabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownExceptionIncludeDocCommentReference=enabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownExceptionWhenOverriding=disabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedImport=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedLabel=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedLocal=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedObjectAllocation=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedParameter=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedParameterIncludeDocCommentReference=enabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedParameterWhenImplementingAbstract=disabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedParameterWhenOverridingConcrete=disabled\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedPrivateMember=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.unusedWarningToken=warning\n");
-		b.append("org.eclipse.jdt.core.compiler.problem.varargsArgumentNeedCast=warning\n");
+
+		for (CodeStyle style : CodeStyle.values()) {
+			b.append(asPropertyLine(style));
+		}
+
 		b.append("org.eclipse.jdt.core.compiler.source=1.6\n");
 		b.append("org.eclipse.jdt.core.formatter.align_type_members_on_columns=false\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression=16\n");
@@ -101,7 +234,7 @@ public class OrgEclipseJdtCorePrefs {
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_binary_expression=16\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_compact_if=16\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_conditional_expression=80\n");
-		b.append("org.eclipse.jdt.core.formatter.alignment_for_enum_constants=48\n");
+		b.append("org.eclipse.jdt.core.formatter.alignment_for_enum_constants=0\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_expressions_in_array_initializer=16\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_method_declaration=0\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_multiple_fields=16\n");
@@ -363,7 +496,7 @@ public class OrgEclipseJdtCorePrefs {
 		b.append("org.eclipse.jdt.core.formatter.number_of_blank_lines_at_beginning_of_method_body=0\n");
 		b.append("org.eclipse.jdt.core.formatter.number_of_empty_lines_to_preserve=1\n");
 		b.append("org.eclipse.jdt.core.formatter.put_empty_statement_on_new_line=true\n");
-		b.append("org.eclipse.jdt.core.formatter.tabulation.char=space\n");
+		b.append("org.eclipse.jdt.core.formatter.tabulation.char=tab\n");
 		b.append("org.eclipse.jdt.core.formatter.tabulation.size=4\n");
 		b.append("org.eclipse.jdt.core.formatter.use_on_off_tags=false\n");
 		b.append("org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations=false\n");

@@ -353,6 +353,7 @@ public class Iwant3Test extends TestCase {
 		b.append("\n");
 		b.append("import net.sf.iwant.api.IwantWorkspaceProvider;\n");
 		b.append("import net.sf.iwant.api.JavaModule;\n");
+		b.append("import net.sf.iwant.api.JavaSrcModule;\n");
 		b.append("import net.sf.iwant.api.Path;\n");
 		b.append("import net.sf.iwant.api.Source;\n");
 		b.append("\n");
@@ -360,7 +361,7 @@ public class Iwant3Test extends TestCase {
 		b.append("\n");
 		b.append("      @Override\n");
 		b.append("        public JavaModule workspaceModule(JavaModule iwantApiClasses) {\n");
-		b.append("          return JavaModule.with().name(\"example-workspace\")\n");
+		b.append("          return JavaSrcModule.with().name(\"example-workspace\")\n");
 		b.append("            .locationUnderWsRoot(\"as-example-developer/i-have/wsdef\")\n");
 		b.append("            .mainJava(\"src/main/java\").mainDeps(iwantApiClasses).end();\n");
 		b.append("      }\n");

@@ -31,7 +31,6 @@ public class DotProjectTest extends TestCase {
 		expected.append("        </natures>\n");
 		expected.append("</projectDescription>\n");
 		assertEquals(expected.toString(), dp.asFileContent());
-
 	}
 
 	public void testMinimalProjectB() {
@@ -54,7 +53,45 @@ public class DotProjectTest extends TestCase {
 		expected.append("        </natures>\n");
 		expected.append("</projectDescription>\n");
 		assertEquals(expected.toString(), dp.asFileContent());
+	}
 
+	public void testHasExternalBuilder() {
+		assertTrue(DotProject.named("codegen").hasExternalBuilder(true).end()
+				.hasExternalBuilder());
+		assertFalse(DotProject.named("no-codegen").hasExternalBuilder(false)
+				.end().hasExternalBuilder());
+	}
+
+	public void testExternalBuilderReferenceInContent() {
+		DotProject dp = DotProject.named("codegen").hasExternalBuilder(true)
+				.end();
+		expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		expected.append("<projectDescription>\n");
+		expected.append("        <name>codegen</name>\n");
+		expected.append("        <comment></comment>\n");
+		expected.append("        <projects>\n");
+		expected.append("        </projects>\n");
+		expected.append("        <buildSpec>\n");
+		expected.append("                <buildCommand>\n");
+		expected.append("                        <name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>\n");
+		expected.append("                        <arguments>\n");
+		expected.append("                                <dictionary>\n");
+		expected.append("                                        <key>LaunchConfigHandle</key>\n");
+		expected.append("                                        <value>&lt;project&gt;/.externalToolBuilders/codegen.launch</value>\n");
+		expected.append("                                </dictionary>\n");
+		expected.append("                        </arguments>\n");
+		expected.append("                </buildCommand>\n");
+		expected.append("                <buildCommand>\n");
+		expected.append("                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
+		expected.append("                        <arguments>\n");
+		expected.append("                        </arguments>\n");
+		expected.append("                </buildCommand>\n");
+		expected.append("        </buildSpec>\n");
+		expected.append("        <natures>\n");
+		expected.append("                <nature>org.eclipse.jdt.core.javanature</nature>\n");
+		expected.append("        </natures>\n");
+		expected.append("</projectDescription>\n");
+		assertEquals(expected.toString(), dp.asFileContent());
 	}
 
 }

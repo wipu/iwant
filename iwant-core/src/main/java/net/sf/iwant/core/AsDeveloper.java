@@ -47,7 +47,7 @@ public class AsDeveloper {
 					this.target = target;
 				}
 
-				public String asPath() throws Exception {
+				public String asPath() {
 					return WorkspaceBuilder
 							.freshTargetAsPath(target, locations);
 				}

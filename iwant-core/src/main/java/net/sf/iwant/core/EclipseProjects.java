@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+@SuppressWarnings("resource")
 public class EclipseProjects implements Content {
 
 	private final SortedSet<Path> ingredients = new TreeSet<Path>();

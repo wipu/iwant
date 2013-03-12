@@ -17,6 +17,7 @@ import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.JavaClasses;
 import net.sf.iwant.api.JavaModule;
+import net.sf.iwant.api.JavaSrcModule;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.ScriptGenerated;
 import net.sf.iwant.api.SideEffect;
@@ -55,9 +56,9 @@ public class WishEvaluatorTest extends TestCase {
 		err = new ByteArrayOutputStream();
 		wsInfo = new WsInfoMock();
 		wsInfo.hasWsRoot(wsRoot);
-		wsdefdefJavaModule = JavaModule.with().name("wsdefdef")
+		wsdefdefJavaModule = JavaSrcModule.with().name("wsdefdef")
 				.locationUnderWsRoot("wsdefdef").mainJava("src").end();
-		wsdefJavaModule = JavaModule.with().name("wsdef")
+		wsdefJavaModule = JavaSrcModule.with().name("wsdef")
 				.locationUnderWsRoot("wsdef").mainJava("src").end();
 		caches = new CachesImpl(new File(asSomeone, ".i-cached"),
 				wsInfo.wsRoot(), network);
@@ -334,8 +335,7 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals("hello-2 mutating.\n", err.toString());
 	}
 
-	public void testDeletionOfJavaFileIsDetectedAndCompilationIsRetriedAndFailed()
-			throws Exception {
+	public void testDeletionOfJavaFileIsDetectedAndCompilationIsRetriedAndFailed() {
 		File srcDir = new File(wsRoot, "src");
 		Iwant.newTextFile(new File(srcDir, "pak1/Caller.java"),
 				"package pak1;\npublic class Caller {pak2.Callee callee;}");

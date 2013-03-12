@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.security.Permission;
 
+@SuppressWarnings("resource")
 public class IwantTest extends WorkspaceBuilderTestBase {
 
 	private SecurityManager origSecman;

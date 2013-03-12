@@ -1,16 +1,12 @@
 package net.sf.iwant.api;
 
-import java.io.File;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sf.iwant.eclipsesettings.DotClasspath;
-import net.sf.iwant.eclipsesettings.DotClasspath.DotClasspathSpex;
-import net.sf.iwant.eclipsesettings.DotProject;
-import net.sf.iwant.eclipsesettings.OrgEclipseJdtCorePrefs;
-import net.sf.iwant.eclipsesettings.OrgEclipseJdtUiPrefs;
-import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.eclipsesettings.EclipseSettingsWriter;
 
 public class EclipseSettings implements SideEffect {
 
@@ -19,12 +15,16 @@ public class EclipseSettings implements SideEffect {
 
 	private EclipseSettings(String name, SortedSet<JavaModule> javaModules) {
 		this.name = name;
-		this.javaModules = javaModules;
+		this.javaModules = Collections.unmodifiableSortedSet(javaModules);
 	}
 
 	@Override
 	public String name() {
 		return name;
+	}
+
+	public SortedSet<JavaModule> modules() {
+		return javaModules;
 	}
 
 	@Override
@@ -39,48 +39,9 @@ public class EclipseSettings implements SideEffect {
 	}
 
 	private void generateEclipseSettings(SideEffectContext ctx) {
-		for (JavaModule module : javaModules) {
-			DotProject dotProject = DotProject.named(module.name()).end();
-
-			DotClasspathSpex dotClasspath = DotClasspath.with();
-			if (module.mainJava() != null) {
-				dotClasspath = dotClasspath.src(module.mainJava());
-			}
-			if (module.testJava() != null) {
-				dotClasspath = dotClasspath.src(module.testJava());
-			}
-			for (JavaModule dep : module.mainDeps()) {
-				dotClasspath = dotClasspathWithDep(ctx, dotClasspath, dep);
-			}
-			for (JavaModule dep : module.testDeps()) {
-				dotClasspath = dotClasspathWithDep(ctx, dotClasspath, dep);
-			}
-
-			File moduleRoot = new File(ctx.wsRoot(),
-					module.locationUnderWsRoot());
-
-			Iwant.newTextFile(new File(moduleRoot, ".project"),
-					dotProject.asFileContent());
-			Iwant.newTextFile(new File(moduleRoot, ".classpath"), dotClasspath
-					.end().asFileContent());
-			new File(moduleRoot, ".settings").mkdirs();
-			Iwant.newTextFile(new File(moduleRoot,
-					".settings/org.eclipse.jdt.core.prefs"),
-					OrgEclipseJdtCorePrefs.withDefaultValues().asFileContent());
-			Iwant.newTextFile(new File(moduleRoot,
-					".settings/org.eclipse.jdt.ui.prefs"), OrgEclipseJdtUiPrefs
-					.withDefaultValues().asFileContent());
-		}
-	}
-
-	private static DotClasspathSpex dotClasspathWithDep(SideEffectContext ctx,
-			DotClasspathSpex dotClasspath, JavaModule dep) {
-		if (dep.isExplicit()) {
-			return dotClasspath.srcDep(dep.name());
-		} else {
-			return dotClasspath.binDep(ctx.targetEvaluationContext()
-					.cached(dep.mainClasses()).getAbsolutePath());
-		}
+		EclipseSettingsWriter writer = EclipseSettingsWriter.with()
+				.context(ctx).modules(javaModules).end();
+		writer.write();
 	}
 
 	public static EclipseSettingsSpex with() {
@@ -99,7 +60,12 @@ public class EclipseSettings implements SideEffect {
 		}
 
 		public EclipseSettingsSpex modules(JavaModule... modules) {
-			javaModules.addAll(Arrays.asList(modules));
+			return modules(Arrays.asList(modules));
+		}
+
+		public EclipseSettingsSpex modules(
+				Collection<? extends JavaModule> modules) {
+			javaModules.addAll(modules);
 			return this;
 		}
 

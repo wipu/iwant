@@ -1,6 +1,7 @@
 package net.sf.iwant.api;
 
 import java.io.File;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
@@ -33,6 +34,7 @@ public class EclipseSettingsTest extends TestCase {
 		testArea.newDir("as-someone/i-have/wsdef");
 		ctx.wsInfo().hasWsdefdefModule(wsdefdef);
 		ctx.wsInfo().hasWsName(getClass().getSimpleName());
+		ctx.wsInfo().hasRelativeAsSomeone("as-someone");
 		cacheDir = testArea.newDir("cached-modifiable");
 		caches.cachesModifiableTargetsAt(cacheDir);
 	}
@@ -56,16 +58,40 @@ public class EclipseSettingsTest extends TestCase {
 		}
 	}
 
+	public void testModulesCanBeAddedInManyPartsBothAsVarargsAndAsCollections() {
+		JavaSrcModule m1 = JavaSrcModule.with().name("m1").end();
+		JavaSrcModule m2 = JavaSrcModule.with().name("m2").end();
+		JavaSrcModule m3 = JavaSrcModule.with().name("m3").end();
+		JavaSrcModule m4 = JavaSrcModule.with().name("m4").end();
+		JavaSrcModule m5 = JavaSrcModule.with().name("m5").end();
+		EclipseSettings es = EclipseSettings.with().modules(m1, m2)
+				.modules(Arrays.asList(m3, m4)).modules(m5).end();
+
+		assertEquals("[m1, m2, m3, m4, m5]", es.modules().toString());
+	}
+
+	public void testModulesAreCollectedToSortedSetSoMultipleAddsAndWrongOrderDontAffectIt() {
+		JavaSrcModule m1 = JavaSrcModule.with().name("m1").end();
+		JavaSrcModule m2 = JavaSrcModule.with().name("m2").end();
+		JavaSrcModule m3 = JavaSrcModule.with().name("m3").end();
+		JavaSrcModule m4 = JavaSrcModule.with().name("m4").end();
+		JavaSrcModule m5 = JavaSrcModule.with().name("m5").end();
+		EclipseSettings es = EclipseSettings.with().modules(m5, m4)
+				.modules(Arrays.asList(m3)).modules(m1, m2, m3, m4, m5).end();
+
+		assertEquals("[m1, m2, m3, m4, m5]", es.modules().toString());
+	}
+
 	public void testMutationUsingWsdefdefAndWsdefAndAnotherModuleUsedByWsdef() {
-		JavaModule iwantClasses = JavaModule.implicitLibrary(TargetMock
+		JavaModule iwantClasses = JavaBinModule.providing(TargetMock
 				.ingredientless("iwant-classes"));
-		JavaModule wsdefdef = JavaModule.with().name("test-wsdefdef")
+		JavaModule wsdefdef = JavaSrcModule.with().name("test-wsdefdef")
 				.locationUnderWsRoot("as-someone/i-have/wsdefdef")
 				.mainJava("src/main/java").mainDeps(iwantClasses).end();
 		testArea.newDir("utils/wsdef-tools");
-		JavaModule wsdefTools = JavaModule.with().name("test-wsdef-tools")
+		JavaModule wsdefTools = JavaSrcModule.with().name("test-wsdef-tools")
 				.locationUnderWsRoot("utils/wsdef-tools").mainJava("src").end();
-		JavaModule wsdef = JavaModule.with().name("test-wsdef")
+		JavaModule wsdef = JavaSrcModule.with().name("test-wsdef")
 				.locationUnderWsRoot("as-someone/i-have/wsdef")
 				.mainJava("src/main/java").mainDeps(iwantClasses, wsdefTools)
 				.end();
@@ -101,7 +127,7 @@ public class EclipseSettingsTest extends TestCase {
 	}
 
 	public void testNoSourcesMeansNoSources() {
-		JavaModule srcless = JavaModule.with().name("any")
+		JavaModule srcless = JavaSrcModule.with().name("any")
 				.locationUnderWsRoot("any").end();
 		testArea.newDir("any");
 
@@ -115,15 +141,15 @@ public class EclipseSettingsTest extends TestCase {
 	}
 
 	public void testTestJavaAndTestDepsAffectDotClasspath() {
-		JavaModule testTools1 = JavaModule.implicitLibrary(TargetMock
+		JavaModule testTools1 = JavaBinModule.providing(TargetMock
 				.ingredientless("test-tools-1"));
-		JavaModule testTools2 = JavaModule.implicitLibrary(TargetMock
+		JavaModule testTools2 = JavaBinModule.providing(TargetMock
 				.ingredientless("test-tools-2"));
 
-		JavaModule mod1 = JavaModule.with().name("mod1")
+		JavaModule mod1 = JavaSrcModule.with().name("mod1")
 				.locationUnderWsRoot("mod1").mainJava("src").testJava("tests1")
 				.testDeps(testTools1).end();
-		JavaModule mod2 = JavaModule.with().name("mod2")
+		JavaModule mod2 = JavaSrcModule.with().name("mod2")
 				.locationUnderWsRoot("mod2").mainJava("src2")
 				.testJava("tests2").testDeps(testTools2).end();
 		testArea.newDir("mod1");

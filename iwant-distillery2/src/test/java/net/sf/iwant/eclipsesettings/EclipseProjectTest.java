@@ -1,0 +1,353 @@
+package net.sf.iwant.eclipsesettings;
+
+import java.io.File;
+
+import junit.framework.TestCase;
+import net.sf.iwant.api.CodeStyle;
+import net.sf.iwant.api.CodeStylePolicy;
+import net.sf.iwant.api.CodeStylePolicy.CodeStylePolicySpex;
+import net.sf.iwant.api.Concatenated;
+import net.sf.iwant.api.HelloTarget;
+import net.sf.iwant.api.JavaBinModule;
+import net.sf.iwant.api.JavaModule;
+import net.sf.iwant.api.JavaSrcModule;
+import net.sf.iwant.api.Target;
+import net.sf.iwant.api.TargetEvaluationContextMock;
+import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.Iwant.IwantNetwork;
+import net.sf.iwant.entry3.CachesMock;
+import net.sf.iwant.testarea.TestArea;
+import net.sf.iwant.testing.IwantNetworkMock;
+
+public class EclipseProjectTest extends TestCase {
+
+	private TestArea testArea;
+	private IwantNetwork network;
+	private Iwant iwant;
+	private File wsRoot;
+	private CachesMock caches;
+	private TargetEvaluationContextMock evCtx;
+
+	@Override
+	protected void setUp() throws Exception {
+		testArea = new EclipseSettingsTestArea();
+		network = new IwantNetworkMock(testArea);
+		iwant = Iwant.using(network);
+		wsRoot = testArea.newDir("wsroot");
+		caches = new CachesMock(wsRoot);
+		evCtx = new TargetEvaluationContextMock(iwant, caches);
+	}
+
+	public void testSimpleSrcModuleDotProject() {
+		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotProject dotProject = project.eclipseDotProject();
+
+		assertEquals("simple", dotProject.name());
+	}
+
+	public void testMinimalDotClasspath() {
+		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals("[]", dotClasspath.srcs().toString());
+		assertEquals("[]", dotClasspath.deps().toString());
+	}
+
+	public void testDotClasspathWithMainJavaOnly() {
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals("[        <classpathentry kind=\"src\" path=\"src\"/>\n]",
+				dotClasspath.srcs().toString());
+		assertEquals("[]", dotClasspath.deps().toString());
+	}
+
+	public void testDotClasspathWithAllFourSrcs() {
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").mainResources("res").testJava("test")
+				.testResources("testRes").end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals("[        <classpathentry kind=\"src\" path=\"src\"/>\n"
+				+ ",         <classpathentry kind=\"src\" path=\"res\"/>\n"
+				+ ",         <classpathentry kind=\"src\" path=\"test\"/>\n"
+				+ ",         <classpathentry kind=\"src\" path=\"testRes\"/>\n"
+				+ "]", dotClasspath.srcs().toString());
+		assertEquals("[]", dotClasspath.deps().toString());
+	}
+
+	public void testDotClasspathWithMavenLayout() {
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mavenLayout().end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals(
+				"[        <classpathentry kind=\"src\" path=\"src/main/java\"/>\n"
+						+ ",         <classpathentry kind=\"src\" path=\"src/main/resources\"/>\n"
+						+ ",         <classpathentry kind=\"src\" path=\"src/test/java\"/>\n"
+						+ ",         <classpathentry kind=\"src\" path=\"src/test/resources\"/>\n"
+						+ "]", dotClasspath.srcs().toString());
+		assertEquals("[]", dotClasspath.deps().toString());
+	}
+
+	public void testDotClasspathWithOneDepToOtherSrcModule() {
+		JavaSrcModule util = JavaSrcModule.with().name("util").mainJava("src")
+				.end();
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").mainDeps(util).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals(
+				"[        <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/util\"/>\n]",
+				dotClasspath.deps().toString());
+	}
+
+	public void testDotClasspathWithTwoSrcModulesAsMainDep() {
+		JavaSrcModule util1 = JavaSrcModule.with().name("util1")
+				.mainJava("src").end();
+		JavaSrcModule util2 = JavaSrcModule.with().name("util2")
+				.mainJava("src").end();
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").mainDeps(util1, util2).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals(
+				"[        <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/util1\"/>\n"
+						+ ",         <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/util2\"/>\n"
+						+ "]", dotClasspath.deps().toString());
+	}
+
+	public void testDotClasspathWithMainDepsAndTestDeps() {
+		JavaSrcModule mainUtil = JavaSrcModule.with().name("main-util")
+				.mainJava("src").end();
+		JavaSrcModule testUtil = JavaSrcModule.with().name("test-util")
+				.mainJava("src").end();
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").mainDeps(mainUtil).testDeps(testUtil).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals(
+				"[        <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/main-util\"/>\n"
+						+ ",         <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/test-util\"/>\n"
+						+ "]", dotClasspath.deps().toString());
+	}
+
+	public void testModuleThatIsBothMainDepAndSrcDepIsOnlyOnceInDotClasspath() {
+		JavaSrcModule mainUtil = JavaSrcModule.with().name("main-util")
+				.mainJava("src").end();
+		JavaSrcModule testUtil = JavaSrcModule.with().name("test-util")
+				.mainJava("src").end();
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").mainDeps(mainUtil)
+				.testDeps(mainUtil, testUtil).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals(
+				"[        <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/main-util\"/>\n"
+						+ ",         <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/test-util\"/>\n"
+						+ "]", dotClasspath.deps().toString());
+	}
+
+	public void testDotClasspathWithOneDepToBinModuleProvidedBySrcModule() {
+		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
+		JavaModule util = JavaBinModule.named("util.jar").inside(libs);
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").mainDeps(util).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals(
+				"[        <classpathentry kind=\"lib\" path=\"/libs/util.jar\"/>\n"
+						+ "]", dotClasspath.deps().toString());
+	}
+
+	public void testDotClasspathWithOneDepToBinModuleWithSourcesProvidedBySrcModule() {
+		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
+		JavaModule util = JavaBinModule.named("util.jar")
+				.source("util-src.zip").inside(libs);
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").mainDeps(util).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals(
+				"[        <classpathentry kind=\"lib\" path=\"/libs/util.jar\" sourcepath=\"/libs/util-src.zip\"/>\n"
+						+ "]", dotClasspath.deps().toString());
+	}
+
+	// code generation
+
+	public void testDotProjectWithReferenceToCodeGenerator() {
+		Target generatedSrc = new HelloTarget("generated-src",
+				"in reality this would be a src directory generated from src-for-generator");
+		Target generatedClasses = Concatenated.named("generated-classes")
+				.string("in reality this would be compiled from: ")
+				.pathTo(generatedSrc).end();
+		JavaSrcModule module = JavaSrcModule.with()
+				.name("code-generating-module")
+				.exportsClasses(generatedClasses, generatedSrc).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotProject dotProject = project.eclipseDotProject();
+
+		assertTrue(dotProject.hasExternalBuilder());
+	}
+
+	public void testDotClasspathWithCodeGenerator() {
+		Target generatedSrc = new HelloTarget("generated-src",
+				"in reality this would be a src directory generated from src-for-generator");
+		Target generatedClasses = Concatenated.named("generated-classes")
+				.string("in reality this would be compiled from: ")
+				.pathTo(generatedSrc).end();
+		JavaSrcModule module = JavaSrcModule.with()
+				.name("code-generating-module")
+				.exportsClasses(generatedClasses, generatedSrc).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals(
+				"[        <classpathentry exported=\"true\" kind=\"lib\" path=\"eclipse-ant-generated/generated-classes\" sourcepath=\"eclipse-ant-generated/generated-src\"/>\n"
+						+ "]", dotClasspath.deps().toString());
+	}
+
+	public void testProjectExternalBuilderLaunchIsNullWithoutCodeGeneration() {
+		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		assertNull(project.externalBuilderLaunch());
+	}
+
+	public void testProjectExternalBuilderLaunchHasCorrectContent() {
+		Target generatedSrc = new HelloTarget("generated-src",
+				"in reality this would be a src directory generated from src-for-generator");
+		Target generatedClasses = Concatenated.named("generated-classes")
+				.string("in reality this would be compiled from: ")
+				.pathTo(generatedSrc).end();
+		JavaSrcModule module = JavaSrcModule.with()
+				.name("code-generating-module")
+				.exportsClasses(generatedClasses, generatedSrc).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		ProjectExternalBuilderLaunch launch = project.externalBuilderLaunch();
+
+		assertEquals("code-generating-module", launch.name());
+		assertEquals("eclipse-ant-generated", launch.relativeOutputDirectory());
+		assertEquals("[]", launch.relativeInputPaths().toString());
+	}
+
+	public void testEclipseAntScriptIsNullWithoutCodeGeneration() {
+		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		assertNull(project.eclipseAntScript("as-ws-developer"));
+	}
+
+	public void testEclipseAntScriptHasCorrectContent() {
+		Target generatedSrc = new HelloTarget("generated-src",
+				"in reality this would be a src directory generated from src-for-generator");
+		Target generatedClasses = Concatenated.named("generated-classes")
+				.string("in reality this would be compiled from: ")
+				.pathTo(generatedSrc).end();
+		JavaSrcModule module = JavaSrcModule.with()
+				.name("code-generating-module")
+				.exportsClasses(generatedClasses, generatedSrc).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		EclipseAntScript antScript = project
+				.eclipseAntScript("as-ws-developer");
+
+		assertEquals("code-generating-module", antScript.projectName());
+		assertEquals("..", antScript.relativeBasedir());
+		assertEquals("generated-src", antScript.srcTargetName());
+		assertEquals("generated-classes", antScript.classesTargetName());
+		assertEquals("as-ws-developer", antScript.asSomeone());
+	}
+
+	public void testEclipseAntScriptHasCorrectBasedirWhenModuleIsNotDirectlyUnderWsRoot() {
+		Target generatedSrc = new HelloTarget("generated-src",
+				"in reality this would be a src directory generated from src-for-generator");
+		Target generatedClasses = Concatenated.named("generated-classes")
+				.string("in reality this would be compiled from: ")
+				.pathTo(generatedSrc).end();
+		JavaSrcModule module = JavaSrcModule.with()
+				.name("code-generating-module")
+				.relativeParentDir("subdir1/subdir2")
+				.exportsClasses(generatedClasses, generatedSrc).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		EclipseAntScript antScript = project
+				.eclipseAntScript("as-ws-developer");
+
+		assertEquals("../../..", antScript.relativeBasedir());
+	}
+
+	// compiler warnings
+
+	public void testDefaultCompilerSettings() {
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		OrgEclipseJdtCorePrefs prefs = project.orgEclipseJdtCorePrefs();
+
+		assertEquals(
+				"org.eclipse.jdt.core.compiler.problem.deadCode=warning\n",
+				prefs.asPropertyLine(CodeStyle.DEAD_CODE));
+		assertEquals(
+				"org.eclipse.jdt.core.compiler.problem.nonExternalizedStringLiteral=ignore\n",
+				prefs.asPropertyLine(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL));
+	}
+
+	public void testOverriddenCompilerSettings() {
+		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
+		policy.ignore(CodeStyle.DEAD_CODE);
+		policy.warn(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL);
+
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").codeStyle(policy.end()).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		OrgEclipseJdtCorePrefs prefs = project.orgEclipseJdtCorePrefs();
+
+		assertEquals("org.eclipse.jdt.core.compiler.problem.deadCode=ignore\n",
+				prefs.asPropertyLine(CodeStyle.DEAD_CODE));
+		assertEquals(
+				"org.eclipse.jdt.core.compiler.problem.nonExternalizedStringLiteral=warning\n",
+				prefs.asPropertyLine(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL));
+	}
+
+	// formatter
+
+	public void testProjectGivesUiPrefs() {
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		OrgEclipseJdtUiPrefs uiPrefs = project.orgEclipseJdtUiPrefs();
+
+		assertNotNull(uiPrefs);
+	}
+
+}

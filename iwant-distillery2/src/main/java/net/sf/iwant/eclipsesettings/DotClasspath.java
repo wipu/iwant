@@ -75,6 +75,12 @@ public class DotClasspath {
 			return this;
 		}
 
+		public DotClasspathSpex exportedClasses(String binPath, String srcPath) {
+			deps.add("        <classpathentry exported=\"true\" kind=\"lib\" path=\""
+					+ binPath + "\" sourcepath=\"" + srcPath + "\"/>\n");
+			return this;
+		}
+
 	}
 
 }

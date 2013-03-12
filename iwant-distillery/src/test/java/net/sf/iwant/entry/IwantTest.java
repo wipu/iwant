@@ -170,7 +170,7 @@ public class IwantTest extends TestCase {
 				testArea.contentOf("as-test/i-have/conf/iwant-from"));
 	}
 
-	public void testIwantIsSvnExportedWhenNotExported() throws Exception {
+	public void testIwantIsSvnExportedWhenNotExported() {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
@@ -191,7 +191,7 @@ public class IwantTest extends TestCase {
 	/**
 	 * See the svn export test
 	 */
-	public void testExistingIwantIsSvnReExportedFromFile() throws Exception {
+	public void testExistingIwantIsSvnReExportedFromFile() {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
@@ -216,8 +216,7 @@ public class IwantTest extends TestCase {
 	/**
 	 * See the svn export test
 	 */
-	public void testExistingIwantIsNotSvnReExportedFromFileWhenToldNotTo()
-			throws Exception {
+	public void testExistingIwantIsNotSvnReExportedFromFileWhenToldNotTo() {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());

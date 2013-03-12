@@ -467,12 +467,14 @@
 
 + @enhancement generated eclipse: new method body template to throw USE
 
++ @enhancement: usable eclipse settings generation
+  + code generator support in .classpath and .project
+  + replace old mechanism with new
+  + test in real dummy project
+
 #################################################################
 = In progress
 #################################################################
-
-- @enhancement: usable eclipse settings generation
-  + code generator support in .classpath and .project
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!

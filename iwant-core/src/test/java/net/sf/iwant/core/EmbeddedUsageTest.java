@@ -11,7 +11,7 @@ public class EmbeddedUsageTest extends TestCase {
 		testArea = TestArea.newEmpty();
 	}
 
-	public void testNonexistentTargetAsPath() throws Exception {
+	public void testNonexistentTargetAsPath() {
 		Workspace ws = Workspace.with().name("test").target("hello")
 				.content(Concatenated.from().string("hello world").end())
 				.endWorkspace();

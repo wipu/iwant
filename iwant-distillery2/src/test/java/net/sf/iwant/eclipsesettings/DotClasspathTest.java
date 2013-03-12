@@ -61,4 +61,19 @@ public class DotClasspathTest extends TestCase {
 		assertEquals(out.toString(), dp.asFileContent());
 	}
 
+	// code generation
+
+	public void testExportedClassesWithSourceAttachment() {
+		DotClasspath dp = DotClasspath.with().src("src")
+				.exportedClasses("a.jar", "a-src.zip").end();
+		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		out.append("<classpath>\n");
+		out.append("        <classpathentry kind=\"src\" path=\"src\"/>\n");
+		out.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
+		out.append("        <classpathentry exported=\"true\" kind=\"lib\" path=\"a.jar\" sourcepath=\"a-src.zip\"/>\n");
+		out.append("        <classpathentry kind=\"output\" path=\"classes\"/>\n");
+		out.append("</classpath>\n");
+		assertEquals(out.toString(), dp.asFileContent());
+	}
+
 }

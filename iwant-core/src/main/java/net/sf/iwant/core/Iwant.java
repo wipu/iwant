@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import org.apache.tools.ant.ExitStatusException;
 
+@SuppressWarnings("resource")
 public class Iwant {
 
 	static class IwantException extends RuntimeException {

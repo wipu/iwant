@@ -36,7 +36,7 @@ public class JavaClassesTest extends TestCase {
 		caches.cachesModifiableTargetsAt(cached);
 	}
 
-	public void testSrcDirIsAnIgredient() throws Exception {
+	public void testSrcDirIsAnIgredient() {
 		Path src = Source.underWsroot("src");
 		Target target = new JavaClasses("classes", src,
 				Collections.<Path> emptyList());
@@ -44,7 +44,7 @@ public class JavaClassesTest extends TestCase {
 		assertTrue(target.ingredients().contains(src));
 	}
 
-	public void testSrcDirIsInContentDescriptor() throws Exception {
+	public void testSrcDirIsInContentDescriptor() {
 		assertEquals("net.sf.iwant.api.JavaClasses {\n  src:src\n}",
 				new JavaClasses("classes", Source.underWsroot("src"),
 						Collections.<Path> emptyList()).contentDescriptor());

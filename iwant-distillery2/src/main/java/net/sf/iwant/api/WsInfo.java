@@ -20,4 +20,6 @@ public interface WsInfo {
 
 	String wsdefdefClassSimpleName();
 
+	String relativeAsSomeone();
+
 }
