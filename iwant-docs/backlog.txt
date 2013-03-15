@@ -476,6 +476,15 @@
 = In progress
 #################################################################
 
+- as @developer I want new eclipse-settings-generating version of iwant for itself so I can start developing ant-depending modules
+  * e.g. for new jvm, tar etc
+  + upgrade iwant for iwant
+  - generate eclipse settings
+    + some of them
+    - add support for many mainJava directories, needed by iwant-distillery
+    - add rest 
+  - when ready, svn:ignore eclipse settings (or postpone as later story)
+
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!
   + cleanup closing in StreamUtil and FileUtil
