@@ -6,5 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/home/wipu/.net.sf.iwant/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/junit/junit/4.8.2/junit-4.8.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/iwant-testarea"/>
+	<classpathentry exported="true" kind="lib" path="classpath-marker"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
