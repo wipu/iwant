@@ -13,7 +13,7 @@ import net.sf.iwant.entry3.CachesMock;
 import net.sf.iwant.testing.IwantEntry3TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
-public class EmmaInstrumentationAndEmmaCoverageTest extends TestCase {
+public class EmmaInstrumentationTest extends TestCase {
 
 	private IwantEntry3TestArea testArea;
 	private Iwant iwant;
@@ -62,14 +62,14 @@ public class EmmaInstrumentationAndEmmaCoverageTest extends TestCase {
 		System.setOut(oldOut);
 	}
 
-	private Path downloaded(Downloaded downloaded) throws IOException {
+	private Path downloaded(Path downloaded) throws IOException {
 		return new ExternalSource(AsEmbeddedIwantUser.with()
 				.workspaceAt(wsRoot).cacheAt(cacheDir).iwant()
-				.target(downloaded).asPath());
+				.target((Target) downloaded).asPath());
 	}
 
 	private Path emma() throws IOException {
-		return downloaded((Downloaded) TestedIwantDependencies.emma());
+		return downloaded(TestedIwantDependencies.emma());
 	}
 
 	private JavaClassesAndSources newJavaClassesAndSources(String name)
@@ -77,7 +77,9 @@ public class EmmaInstrumentationAndEmmaCoverageTest extends TestCase {
 		String srcDirString = name + "-src";
 		File srcDir = new File(wsRoot, srcDirString);
 		Iwant.newTextFile(new File(srcDir, "Hello.java"),
-				"public class Hello {}");
+				"public class Hello {\n"
+						+ "  public static void main(String[] args) {\n"
+						+ "    System.out.println(\"main\");\n" + "  }\n}\n");
 		JavaClasses classes = new JavaClasses(name + "-classes",
 				Source.underWsroot(srcDirString),
 				Collections.<Path> emptyList());

@@ -17,8 +17,6 @@ import net.sf.iwant.testing.IwantNetworkMock;
 
 public class AntGeneratedTest extends TestCase {
 
-	private static final String ANT_VER = "1.7.1";
-
 	private IwantEntry3TestArea testArea;
 	private Iwant iwant;
 	private IwantNetwork network;
@@ -74,20 +72,18 @@ public class AntGeneratedTest extends TestCase {
 		}
 	}
 
-	private Path downloaded(Downloaded downloaded) throws IOException {
+	private Path downloaded(Path downloaded) throws IOException {
 		return new ExternalSource(AsEmbeddedIwantUser.with()
 				.workspaceAt(wsRoot).cacheAt(cacheDir).iwant()
-				.target(downloaded).asPath());
+				.target((Target) downloaded).asPath());
 	}
 
 	private Path antJar() throws IOException {
-		return downloaded(FromRepository.ibiblio().group("org/apache/ant")
-				.name("ant").version(ANT_VER));
+		return downloaded(TestedIwantDependencies.antJar());
 	}
 
 	private Path antLauncherJar() throws IOException {
-		return downloaded(FromRepository.ibiblio().group("org/apache/ant")
-				.name("ant-launcher").version(ANT_VER));
+		return downloaded(TestedIwantDependencies.antLauncherJar());
 	}
 
 	public void testContentDescriptor() throws IOException {

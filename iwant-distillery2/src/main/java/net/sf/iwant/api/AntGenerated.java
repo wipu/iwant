@@ -62,15 +62,25 @@ public class AntGenerated extends Target {
 		// ant.sh calls this but it is not probably good for embedding:
 		// String className = "org.apache.tools.ant.launch.Launcher";
 
-		final String className = "org.apache.tools.ant.Main";
 		List<File> cachedJars = new ArrayList<File>();
 		for (Path jar : antJars) {
 			cachedJars.add(ctx.cached(jar));
 		}
-		String cachedScript = ctx.cached(script).getAbsolutePath();
+		File cachedScript = ctx.cached(script);
+
+		runAnt(cachedJars, cachedScript, "-Diwant-outfile=" + ctx.cached(this));
+	}
+
+	public static void runAnt(List<File> antJars, File cachedScript,
+			String... antArgs) throws Exception, InvocationTargetException {
+		final String className = "org.apache.tools.ant.Main";
+		List<String> allArgs = new ArrayList<String>();
+		allArgs.add("-f");
+		allArgs.add(cachedScript.getAbsolutePath());
+		allArgs.addAll(Arrays.asList(antArgs));
 		try {
-			Iwant.runJavaMain(true, false, className, cachedJars, "-f",
-					cachedScript, "-Diwant-outfile=" + ctx.cached(this));
+			Iwant.runJavaMain(true, false, className, antJars,
+					allArgs.toArray(new String[0]));
 		} catch (InvocationTargetException e) {
 			if (e.getCause() instanceof ExitCalledException) {
 				ExitCalledException ece = (ExitCalledException) e.getCause();

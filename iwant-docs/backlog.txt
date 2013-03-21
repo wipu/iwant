@@ -480,8 +480,12 @@
   + instrumentation using emma that contains the emma metafile, confs, instrumented classes
     + mention in ec filename in conf that it should be overridden during testrun
       * this way the coverage report will be about a testrun, and one module can be involved in many
-  - testrun using given ant that produces the required ec file
-    - buildscript that forks a new jvm so the ec will get created
+  + testrun using given ant that produces the required ec file
+    + buildscript that forks a new jvm so the ec will get created
+  + remove redundancy of ant jar download in test
+  + basics of EmmaCoverage (ingredients etc)
+  - non-instrumented deps for testrun
+  - control over classname to run during testrun
 
 - as @developer I want new eclipse-settings-generating version of iwant for itself so I can start developing ant-depending modules
   * e.g. for new jvm, tar etc
