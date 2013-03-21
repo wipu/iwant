@@ -95,6 +95,12 @@ public class JavaSrcModuleTest extends TestCase {
 		assertSame(generatedSrc, mainJava);
 	}
 
+	public void testTestJavaAsPathWithNullAndNonNull() {
+		assertNull(JavaSrcModule.with().name("testless").end().testJavaAsPath());
+		assertEquals("tested/test", JavaSrcModule.with().name("tested")
+				.testJava("test").end().testJavaAsPath().toString());
+	}
+
 	public void testSourcelessSrcModuleHasNoMainArtifact() {
 		JavaSrcModule module = JavaSrcModule.with().name("srcless").end();
 
@@ -155,6 +161,49 @@ public class JavaSrcModuleTest extends TestCase {
 
 		assertTrue(libs.compareTo(srcA) > 0);
 		assertTrue(libs.compareTo(binA) > 0);
+	}
+
+	public void testTestArtifactIsNullWhenNoTests() {
+		assertNull(JavaSrcModule.with().name("testless").mainJava("src").end()
+				.testArtifact());
+	}
+
+	public void testTestArtifactIsWhenThereAreTests() {
+		JavaClasses tests = (JavaClasses) JavaSrcModule.with().name("tested")
+				.mainJava("src").testJava("test").end().testArtifact();
+
+		assertEquals("tested-test-classes", tests.name());
+		assertEquals("tested/test", tests.srcDir().toString());
+		assertEquals("[tested-main-classes]", tests.classLocations().toString());
+	}
+
+	public void testTestArtifactWithMainAndTestDeps() {
+		JavaClasses tests = (JavaClasses) JavaSrcModule
+				.with()
+				.name("tested2")
+				.mainJava("src")
+				.mainDeps(
+						JavaBinModule.providing(Source
+								.underWsroot("main-lib.jar")))
+				.testJava("test")
+				.testDeps(
+						JavaBinModule.providing(Source
+								.underWsroot("test-lib.jar"))).end()
+				.testArtifact();
+
+		assertEquals("tested2-test-classes", tests.name());
+		assertEquals("tested2/test", tests.srcDir().toString());
+		assertEquals("[tested2-main-classes, main-lib.jar, test-lib.jar]",
+				tests.classLocations().toString());
+	}
+
+	public void testTestArtifactWhenNoMainJava() {
+		JavaClasses tests = (JavaClasses) JavaSrcModule.with()
+				.name("only-tests").testJava("test").end().testArtifact();
+
+		assertEquals("only-tests-test-classes", tests.name());
+		assertEquals("only-tests/test", tests.srcDir().toString());
+		assertEquals("[]", tests.classLocations().toString());
 	}
 
 }

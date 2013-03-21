@@ -210,6 +210,13 @@ public class JavaSrcModule extends JavaModule {
 		return Source.underWsroot(locationUnderWsRoot() + "/" + mainJava);
 	}
 
+	public Path testJavaAsPath() {
+		if (testJava == null) {
+			return null;
+		}
+		return Source.underWsroot(locationUnderWsRoot() + "/" + testJava);
+	}
+
 	@Override
 	public Path mainArtifact() {
 		if (generatedClasses != null) {
@@ -226,6 +233,31 @@ public class JavaSrcModule extends JavaModule {
 			}
 		}
 		return new JavaClasses(name() + "-main-classes", mainJavaAsPath(),
+				classpath);
+	}
+
+	public Path testArtifact() {
+		if (testJava == null) {
+			return null;
+		}
+		Collection<Path> classpath = new ArrayList<Path>();
+		Path mainClasses = mainArtifact();
+		if (mainClasses != null) {
+			classpath.add(mainClasses);
+		}
+		for (JavaModule mainDep : mainDeps) {
+			Path depArtifact = mainDep.mainArtifact();
+			if (depArtifact != null) {
+				classpath.add(depArtifact);
+			}
+		}
+		for (JavaModule testDep : testDeps) {
+			Path depArtifact = testDep.mainArtifact();
+			if (depArtifact != null) {
+				classpath.add(depArtifact);
+			}
+		}
+		return new JavaClasses(name() + "-test-classes", testJavaAsPath(),
 				classpath);
 	}
 

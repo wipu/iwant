@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import net.sf.iwant.entry.Iwant;
@@ -12,14 +13,22 @@ public class EmmaCoverage extends Target {
 
 	private final Path emma;
 	private final List<Path> antJars;
+	private final String mainClass;
+	private final List<String> mainClassArguments;
 	private final List<EmmaInstrumentation> instrumentations;
+	private final List<Path> nonInstrumentedDeps;
 
 	public EmmaCoverage(String name, Path emma, List<Path> antJars,
-			List<EmmaInstrumentation> instrumentations) {
+			String mainClass, List<String> mainClassArguments,
+			List<EmmaInstrumentation> instrumentations,
+			List<Path> nonInstrumentedDeps) {
 		super(name);
 		this.emma = emma;
 		this.antJars = antJars;
+		this.mainClass = mainClass;
+		this.mainClassArguments = mainClassArguments;
 		this.instrumentations = instrumentations;
+		this.nonInstrumentedDeps = nonInstrumentedDeps;
 	}
 
 	public static EmmaCoverageSpex with() {
@@ -31,7 +40,10 @@ public class EmmaCoverage extends Target {
 		private String name;
 		private List<Path> antJars;
 		private Path emma;
+		private String mainClass;
+		private List<String> mainClassArguments;
 		private final List<EmmaInstrumentation> instrumentations = new ArrayList<EmmaInstrumentation>();
+		private final List<Path> nonInstrumentedDeps = new ArrayList<Path>();
 
 		public EmmaCoverageSpex name(String name) {
 			this.name = name;
@@ -52,14 +64,33 @@ public class EmmaCoverage extends Target {
 			return this;
 		}
 
+		public EmmaCoverageSpex mainClassAndArguments(String mainClass,
+				String... mainClassArguments) {
+			this.mainClass = mainClass;
+			this.mainClassArguments = Arrays.asList(mainClassArguments);
+			return this;
+		}
+
 		public EmmaCoverageSpex instrumentations(
 				EmmaInstrumentation... instrumentations) {
 			this.instrumentations.addAll(Arrays.asList(instrumentations));
 			return this;
 		}
 
+		public EmmaCoverageSpex nonInstrumentedClasses(
+				Path... nonInstrumentedDeps) {
+			return nonInstrumentedClasses(Arrays.asList(nonInstrumentedDeps));
+		}
+
+		public EmmaCoverageSpex nonInstrumentedClasses(
+				Collection<? extends Path> nonInstrumentedDeps) {
+			this.nonInstrumentedDeps.addAll(nonInstrumentedDeps);
+			return this;
+		}
+
 		public EmmaCoverage end() {
-			return new EmmaCoverage(name, emma, antJars, instrumentations);
+			return new EmmaCoverage(name, emma, antJars, mainClass,
+					mainClassArguments, instrumentations, nonInstrumentedDeps);
 		}
 
 	}
@@ -79,19 +110,29 @@ public class EmmaCoverage extends Target {
 		StringBuilder script = new StringBuilder();
 		script.append("<project name='emma-coverage' default='emma-coverage'>\n");
 		script.append("  <target name='emma-coverage'>\n");
-		script.append("    <echo message='Running Hello' />\n");
+		script.append("    <echo message='Running " + mainClass + "' />\n");
 		script.append("    <java\n");
-		script.append("      classname='Hello'\n");
+		script.append("      classname='" + mainClass + "'\n");
 		script.append("      fork='true'\n");
 		script.append("      failonerror='true'\n");
 		script.append("    >\n");
+
 		script.append("      <sysproperty key='emma.coverage.out.file' value='")
 				.append(ec.getCanonicalPath()).append("' />\n");
+
+		for (String arg : mainClassArguments) {
+			script.append("      <arg value='").append(arg).append("' />\n");
+		}
+
 		script.append("      <classpath>\n");
 		for (EmmaInstrumentation instrumentation : instrumentations) {
 			script.append("        <pathelement location='")
 					.append(ctx.cached(instrumentation))
 					.append("/instr-classes'/>\n");
+		}
+		for (Path nonInstrumentedDep : nonInstrumentedDeps) {
+			script.append("        <pathelement location='")
+					.append(ctx.cached(nonInstrumentedDep)).append("'/>\n");
 		}
 		script.append("        <pathelement location='")
 				.append(ctx.cached(emma)).append("'/>\n");
@@ -116,6 +157,7 @@ public class EmmaCoverage extends Target {
 		ingredients.addAll(antJars);
 		ingredients.add(emma);
 		ingredients.addAll(instrumentations);
+		ingredients.addAll(nonInstrumentedDeps);
 		return ingredients;
 	}
 

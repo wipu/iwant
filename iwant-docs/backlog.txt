@@ -472,11 +472,7 @@
   + replace old mechanism with new
   + test in real dummy project
 
-#################################################################
-= In progress
-#################################################################
-
-- as @buildscriptauthor I want a simple pair of targets, instrumentation and forked testrun, so I can easily measure test coverage of a java-classes path
++ as @buildscriptauthor I want a simple pair of targets, instrumentation and forked testrun, so I can easily measure test coverage of a java-classes path
   + instrumentation using emma that contains the emma metafile, confs, instrumented classes
     + mention in ec filename in conf that it should be overridden during testrun
       * this way the coverage report will be about a testrun, and one module can be involved in many
@@ -484,8 +480,17 @@
     + buildscript that forks a new jvm so the ec will get created
   + remove redundancy of ant jar download in test
   + basics of EmmaCoverage (ingredients etc)
-  - non-instrumented deps for testrun
-  - control over classname to run during testrun
+  + real test with dummy workspace
+    + add junit to tested deps, reusing the url with Iwant.java
+    + control over classname to run during testrun
+    + also arguments so junit main can be used
+    + non-instrumented deps for testrun (junit.jar in dummy ws)
+    + testArtifact for JavaSrcModule
+    + in dummy run junit with test class as argument 
+
+#################################################################
+= In progress
+#################################################################
 
 - as @developer I want new eclipse-settings-generating version of iwant for itself so I can start developing ant-depending modules
   * e.g. for new jvm, tar etc

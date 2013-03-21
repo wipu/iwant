@@ -1,5 +1,10 @@
 package net.sf.iwant.api;
 
+import java.io.File;
+import java.net.URL;
+
+import net.sf.iwant.entry.Iwant;
+
 public class TestedIwantDependencies {
 
 	private static final String ANT_VER = "1.7.1";
@@ -17,6 +22,12 @@ public class TestedIwantDependencies {
 	public static Path emma() {
 		return FromRepository.ibiblio().group("emma").name("emma")
 				.version("2.0.5312");
+	}
+
+	public static Path junit() {
+		URL url = Iwant.usingRealNetwork().network().junitUrl();
+		File file = new File(url.getFile());
+		return Downloaded.withName(file.getName()).url(url).noCheck();
 	}
 
 }

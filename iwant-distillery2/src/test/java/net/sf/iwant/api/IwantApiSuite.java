@@ -23,6 +23,7 @@ public class IwantApiSuite extends TestCase {
 		suite.addTestSuite(AntGeneratedTest.class);
 		suite.addTestSuite(ScriptGeneratedTest.class);
 		suite.addTestSuite(JavaClassesAndSourcesTest.class);
+		suite.addTestSuite(TestedIwantDependenciesTest.class);
 		suite.addTestSuite(EmmaInstrumentationTest.class);
 		suite.addTestSuite(EmmaCoverageTest.class);
 		return suite;
