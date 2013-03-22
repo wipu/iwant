@@ -488,6 +488,10 @@
     + testArtifact for JavaSrcModule
     + in dummy run junit with test class as argument 
 
++ As @buildscriptauthor I want an emma coverage report from a given set of coverage files so I can report a set of different ways to calculate coverage
+  + tdd impl
+  + manual test with dummy ws
+
 #################################################################
 = In progress
 #################################################################

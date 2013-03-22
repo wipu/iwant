@@ -105,7 +105,7 @@ public class EmmaCoverage extends Target {
 		File dest = ctx.cached(this);
 		dest.mkdirs();
 
-		File ec = new File(dest, "coverage.ec");
+		File ec = coverageFile(ctx);
 
 		StringBuilder script = new StringBuilder();
 		script.append("<project name='emma-coverage' default='emma-coverage'>\n");
@@ -149,6 +149,10 @@ public class EmmaCoverage extends Target {
 			cachedAntJars.add(ctx.cached(antJar));
 		}
 		AntGenerated.runAnt(cachedAntJars, scriptFile);
+	}
+
+	public File coverageFile(TargetEvaluationContext ctx) {
+		return new File(ctx.cached(this), "coverage.ec");
 	}
 
 	@Override

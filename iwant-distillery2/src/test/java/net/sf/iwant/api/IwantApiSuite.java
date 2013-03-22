@@ -26,6 +26,7 @@ public class IwantApiSuite extends TestCase {
 		suite.addTestSuite(TestedIwantDependenciesTest.class);
 		suite.addTestSuite(EmmaInstrumentationTest.class);
 		suite.addTestSuite(EmmaCoverageTest.class);
+		suite.addTestSuite(EmmaReportTest.class);
 		return suite;
 	}
 

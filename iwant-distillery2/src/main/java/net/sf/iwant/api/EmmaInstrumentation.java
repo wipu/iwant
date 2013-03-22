@@ -47,7 +47,7 @@ public class EmmaInstrumentation extends Target {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dir = ctx.cached(this);
-		File em = new File(dir, "emma.em");
+		File em = metadataFile(ctx);
 		File ec = new File(dir, "please-override-when-running-tests.ec");
 		File instrClasses = new File(dir, "instr-classes");
 		String emmaLogLevel = "warning";
@@ -65,8 +65,15 @@ public class EmmaInstrumentation extends Target {
 				cachedClasses.getCanonicalPath());
 	}
 
-	private static void runEmma(File emmaJar, String... emmaArgs)
-			throws Exception {
+	public File metadataFile(TargetEvaluationContext ctx) {
+		return new File(ctx.cached(this), "emma.em");
+	}
+
+	public JavaClassesAndSources classesAndSources() {
+		return classesAndSources;
+	}
+
+	static void runEmma(File emmaJar, String... emmaArgs) throws Exception {
 		List<File> classLocations = new ArrayList<File>();
 		classLocations.add(emmaJar);
 		Iwant.runJavaMain(true, true, "emma", classLocations, emmaArgs);
