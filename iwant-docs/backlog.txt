@@ -535,6 +535,13 @@
 = Planned
 #################################################################
 
+- @bugfix: indirect ingredient check does not work with many instances of the same Path
+  - see if it's time to make Path an abstract class that fixes equals,comparable,hashCode for good
+
+- @bugfix: eclipse env script generates unix-style path to workspace in cygwin => windows eclipse looks under C:/thepath instead of C:/cygwin/thepath
+  - see what else needs cygpath
+  - maybe tell a story about generating eclipse for another machine
+
 - improvements for Downloaded checksum handling
   - SHA-256: store map of algo->expected key
   - url for checksum instead of the value, use in FromRepository.ibiblio
