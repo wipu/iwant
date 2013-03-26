@@ -499,7 +499,7 @@
 - as @developer I want new eclipse-settings-generating version of iwant for itself so I can start developing ant-depending modules
   * e.g. for new jvm, tar etc
   + upgrade iwant for iwant
-  - generate eclipse settings
+  + generate eclipse settings
     + some of them
     - add support for many mainJava directories, needed by iwant-distillery
       + JavaClasses builder instead of direct constructor call
@@ -510,7 +510,7 @@
       + SrcModule utilizes testJava
       + also emptyable SrcModule mainJava
       + also emptyable SrcModule testJava
-    - add rest
+    + add rest
       + distillery
       + fix distillery: depend on classpath-marker as bin module
       + example-wsdef
@@ -518,6 +518,9 @@
       + testarea
       + tutorial-wsdefs
   - when ready, svn:ignore eclipse settings (or postpone as later story)
+    + delete
+    + delete unnecessary old iwant-bootstrapper
+    - ignore
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!
