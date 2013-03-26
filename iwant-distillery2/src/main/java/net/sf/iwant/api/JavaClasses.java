@@ -41,7 +41,11 @@ public class JavaClasses extends Target {
 		}
 
 		public JavaClassesSpex srcDirs(Path... srcDirs) {
-			this.srcDirs.addAll(Arrays.asList(srcDirs));
+			return srcDirs(Arrays.asList(srcDirs));
+		}
+
+		public JavaClassesSpex srcDirs(Collection<? extends Path> srcDirs) {
+			this.srcDirs.addAll(srcDirs);
 			return this;
 		}
 

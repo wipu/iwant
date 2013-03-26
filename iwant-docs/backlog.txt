@@ -506,7 +506,10 @@
       + many srcs
       + affects compilation
       + way to empty the srcDirs in builder (to override convenience "builder builder" output)
-      - SrcModule utilizes
+      + SrcModule utilizes mainJava
+      + SrcModule utilizes testJava
+      + also emptyable SrcModule mainJava
+      + also emptyable SrcModule testJava
     - add rest 
   - when ready, svn:ignore eclipse settings (or postpone as later story)
 

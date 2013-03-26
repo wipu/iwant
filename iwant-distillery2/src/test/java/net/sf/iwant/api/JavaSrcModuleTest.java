@@ -1,5 +1,7 @@
 package net.sf.iwant.api;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 import net.sf.iwant.api.JavaSrcModule.IwantSrcModuleSpex;
 
@@ -66,21 +68,20 @@ public class JavaSrcModuleTest extends TestCase {
 
 	// java classes
 
-	public void testMainJavaAsPathFromSourcelessSrcModule() {
-		assertNull(JavaSrcModule.with().name("srcless").end().mainJavaAsPath());
+	public void testMainJavasAsPathsFromSourcelessSrcModule() {
+		assertTrue(JavaSrcModule.with().name("srcless").end()
+				.mainJavasAsPaths().isEmpty());
 	}
 
-	public void testMainJavaAsPathFromNormalSrcModule() {
-		assertEquals("simple/src", JavaSrcModule.with().name("simple")
-				.mainJava("src").end().mainJavaAsPath().name());
-		assertEquals(
-				"parent/more-nesting/src/main/java",
-				JavaSrcModule.with().name("more-nesting")
-						.relativeParentDir("parent").mainJava("src/main/java")
-						.end().mainJavaAsPath().name());
+	public void testMainJavasAsPathsFromNormalSrcModule() {
+		assertEquals("[simple/src]", JavaSrcModule.with().name("simple")
+				.mainJava("src").end().mainJavasAsPaths().toString());
+		assertEquals("[parent/more-nesting/src/main/java]", JavaSrcModule
+				.with().name("more-nesting").relativeParentDir("parent")
+				.mainJava("src/main/java").end().mainJavasAsPaths().toString());
 	}
 
-	public void testMainJavaAsPathFromCodeGenerationModule() {
+	public void testMainJavasAsPathsFromCodeGenerationModule() {
 		Target generatedSrc = new HelloTarget("generated-src",
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
@@ -91,14 +92,16 @@ public class JavaSrcModuleTest extends TestCase {
 				.relativeParentDir("subdir1/subdir2")
 				.exportsClasses(generatedClasses, generatedSrc).end();
 
-		Target mainJava = (Target) module.mainJavaAsPath();
-		assertSame(generatedSrc, mainJava);
+		List<Path> mainJavas = module.mainJavasAsPaths();
+		assertEquals(1, mainJavas.size());
+		assertSame(generatedSrc, mainJavas.get(0));
 	}
 
 	public void testTestJavaAsPathWithNullAndNonNull() {
-		assertNull(JavaSrcModule.with().name("testless").end().testJavaAsPath());
-		assertEquals("tested/test", JavaSrcModule.with().name("tested")
-				.testJava("test").end().testJavaAsPath().toString());
+		assertTrue(JavaSrcModule.with().name("testless").end()
+				.testJavasAsPaths().isEmpty());
+		assertEquals("[tested/test]", JavaSrcModule.with().name("tested")
+				.testJava("test").end().testJavasAsPaths().toString());
 	}
 
 	public void testSourcelessSrcModuleHasNoMainArtifact() {
@@ -146,6 +149,46 @@ public class JavaSrcModuleTest extends TestCase {
 				.toString());
 		assertEquals("[util1-main-classes, util2-main-classes]", mainArtifact
 				.classLocations().toString());
+	}
+
+	public void testMainArtifactOfOfSrcModuleThatHasManyMainJavas() {
+		JavaSrcModule module = JavaSrcModule.with().name("dual-src")
+				.mainJava("src1").mainJava("src2").mainDeps().end();
+
+		JavaClasses mainArtifact = (JavaClasses) module.mainArtifact();
+
+		assertEquals("[dual-src/src1, dual-src/src2]", mainArtifact.srcDirs()
+				.toString());
+	}
+
+	public void testMainJavaCollectionCanBeEmptiedDuringSpecification() {
+		JavaSrcModule module = JavaSrcModule.with().name("dual-src")
+				.mainJava("src1").noMainJava().mainJava("src2").mainDeps()
+				.end();
+
+		JavaClasses mainArtifact = (JavaClasses) module.mainArtifact();
+
+		assertEquals("[dual-src/src2]", mainArtifact.srcDirs().toString());
+	}
+
+	public void testTestArtifactOfOfSrcModuleThatHasManyTestJavas() {
+		JavaSrcModule module = JavaSrcModule.with().name("dual-test")
+				.testJava("test1").testJava("test2").mainDeps().end();
+
+		JavaClasses testArtifact = (JavaClasses) module.testArtifact();
+
+		assertEquals("[dual-test/test1, dual-test/test2]", testArtifact
+				.srcDirs().toString());
+	}
+
+	public void testTestJavaCollectionCanBeEmptiedDuringSpecification() {
+		JavaSrcModule module = JavaSrcModule.with().name("dual-test")
+				.testJava("test1").noTestJava().testJava("test2").mainDeps()
+				.end();
+
+		JavaClasses testArtifact = (JavaClasses) module.testArtifact();
+
+		assertEquals("[dual-test/test2]", testArtifact.srcDirs().toString());
 	}
 
 	public void testModulesAreComparedByName() {

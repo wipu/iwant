@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class JavaSrcModule extends JavaModule {
 
 	private final String name;
 	private final String locationUnderWsRoot;
-	private final String mainJava;
+	private final List<String> mainJavas;
 	private final String mainResources;
-	private final String testJava;
+	private final List<String> testJavas;
 	private final String testResources;
 	private final Set<JavaModule> mainDeps;
 	private final Set<JavaModule> testDeps;
@@ -21,16 +22,17 @@ public class JavaSrcModule extends JavaModule {
 	private final CodeStylePolicy codeStylePolicy;
 
 	public JavaSrcModule(String name, String locationUnderWsRoot,
-			String mainJava, String mainResources, String testJava,
-			String testResources, Set<JavaModule> mainDeps,
-			Set<JavaModule> testDeps, Target generatedClasses,
-			Target generatedSrc, CodeStylePolicy codeStylePolicy) {
+			List<String> mainJavas, String mainResources,
+			List<String> testJavas, String testResources,
+			Set<JavaModule> mainDeps, Set<JavaModule> testDeps,
+			Target generatedClasses, Target generatedSrc,
+			CodeStylePolicy codeStylePolicy) {
 		this.name = name;
 		this.codeStylePolicy = codeStylePolicy;
 		this.locationUnderWsRoot = locationUnderWsRoot;
-		this.mainJava = mainJava;
+		this.mainJavas = mainJavas;
 		this.mainResources = mainResources;
-		this.testJava = testJava;
+		this.testJavas = testJavas;
 		this.testResources = testResources;
 		this.mainDeps = Collections.unmodifiableSet(mainDeps);
 		this.testDeps = Collections.unmodifiableSet(testDeps);
@@ -46,9 +48,9 @@ public class JavaSrcModule extends JavaModule {
 
 		private String name;
 		private String relativeParentDir;
-		private String mainJava;
+		private final List<String> mainJavas = new ArrayList<String>();
 		private String mainResources;
-		private String testJava;
+		private final List<String> testJavas = new ArrayList<String>();
 		private String testResources;
 		private final Set<JavaModule> mainDeps = new LinkedHashSet<JavaModule>();
 		private final Set<JavaModule> testDeps = new LinkedHashSet<JavaModule>();
@@ -70,9 +72,9 @@ public class JavaSrcModule extends JavaModule {
 				locationUnderWsRootToUse = normalizedRelativeParentDir(relativeParentDir)
 						+ name;
 			}
-			return new JavaSrcModule(name, locationUnderWsRootToUse, mainJava,
-					mainResources, testJava, testResources, mainDeps, testDeps,
-					generatedClasses, generatedSrc, codeStylePolicy);
+			return new JavaSrcModule(name, locationUnderWsRootToUse, mainJavas,
+					mainResources, testJavas, testResources, mainDeps,
+					testDeps, generatedClasses, generatedSrc, codeStylePolicy);
 		}
 
 		private static String normalizedRelativeParentDir(String value) {
@@ -108,7 +110,12 @@ public class JavaSrcModule extends JavaModule {
 		}
 
 		public IwantSrcModuleSpex mainJava(String mainJava) {
-			this.mainJava = mainJava;
+			this.mainJavas.add(mainJava);
+			return this;
+		}
+
+		public IwantSrcModuleSpex noMainJava() {
+			this.mainJavas.clear();
 			return this;
 		}
 
@@ -118,7 +125,12 @@ public class JavaSrcModule extends JavaModule {
 		}
 
 		public IwantSrcModuleSpex testJava(String testJava) {
-			this.testJava = testJava;
+			this.testJavas.add(testJava);
+			return this;
+		}
+
+		public IwantSrcModuleSpex noTestJava() {
+			this.testJavas.clear();
 			return this;
 		}
 
@@ -160,16 +172,16 @@ public class JavaSrcModule extends JavaModule {
 		return name;
 	}
 
-	public String mainJava() {
-		return mainJava;
+	public List<String> mainJavas() {
+		return mainJavas;
 	}
 
 	public String mainResources() {
 		return mainResources;
 	}
 
-	public String testJava() {
-		return testJava;
+	public List<String> testJavas() {
+		return testJavas;
 	}
 
 	public String testResources() {
@@ -200,21 +212,25 @@ public class JavaSrcModule extends JavaModule {
 		return locationUnderWsRoot.replaceAll("[^/]+", "..");
 	}
 
-	public Path mainJavaAsPath() {
+	public List<Path> mainJavasAsPaths() {
 		if (generatedSrc != null) {
-			return generatedSrc;
+			return Collections.<Path> singletonList(generatedSrc);
 		}
-		if (mainJava == null) {
-			return null;
+		List<Path> retval = new ArrayList<Path>();
+		for (String mainJava : mainJavas) {
+			retval.add(Source.underWsroot(locationUnderWsRoot() + "/"
+					+ mainJava));
 		}
-		return Source.underWsroot(locationUnderWsRoot() + "/" + mainJava);
+		return retval;
 	}
 
-	public Path testJavaAsPath() {
-		if (testJava == null) {
-			return null;
+	public List<Path> testJavasAsPaths() {
+		List<Path> retval = new ArrayList<Path>();
+		for (String testJava : testJavas) {
+			retval.add(Source.underWsroot(locationUnderWsRoot() + "/"
+					+ testJava));
 		}
-		return Source.underWsroot(locationUnderWsRoot() + "/" + testJava);
+		return retval;
 	}
 
 	@Override
@@ -222,7 +238,7 @@ public class JavaSrcModule extends JavaModule {
 		if (generatedClasses != null) {
 			return generatedClasses;
 		}
-		if (mainJava == null) {
+		if (mainJavas.isEmpty()) {
 			return null;
 		}
 		Collection<Path> classpath = new ArrayList<Path>();
@@ -233,11 +249,11 @@ public class JavaSrcModule extends JavaModule {
 			}
 		}
 		return JavaClasses.with().name(name() + "-main-classes")
-				.srcDirs(mainJavaAsPath()).classLocations(classpath).end();
+				.srcDirs(mainJavasAsPaths()).classLocations(classpath).end();
 	}
 
 	public Path testArtifact() {
-		if (testJava == null) {
+		if (testJavas.isEmpty()) {
 			return null;
 		}
 		Collection<Path> classpath = new ArrayList<Path>();
@@ -258,7 +274,7 @@ public class JavaSrcModule extends JavaModule {
 			}
 		}
 		return JavaClasses.with().name(name() + "-test-classes")
-				.srcDirs(testJavaAsPath()).classLocations(classpath).end();
+				.srcDirs(testJavasAsPaths()).classLocations(classpath).end();
 	}
 
 	public String locationUnderWsRoot() {

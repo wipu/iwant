@@ -26,9 +26,13 @@ public class EclipseProject {
 
 	public DotClasspath eclipseDotClasspath() {
 		DotClasspathSpex dcp = DotClasspath.with();
-		dcp = optionalSrc(dcp, module.mainJava());
+		for (String mainJava : module.mainJavas()) {
+			dcp = optionalSrc(dcp, mainJava);
+		}
 		dcp = optionalSrc(dcp, module.mainResources());
-		dcp = optionalSrc(dcp, module.testJava());
+		for (String testJava : module.testJavas()) {
+			dcp = optionalSrc(dcp, testJava);
+		}
 		dcp = optionalSrc(dcp, module.testResources());
 
 		Set<JavaModule> allDeps = new LinkedHashSet<JavaModule>();
