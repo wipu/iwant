@@ -129,6 +129,10 @@ public class EmmaCoverage extends Target {
 			script.append("        <pathelement location='")
 					.append(ctx.cached(instrumentation))
 					.append("/instr-classes'/>\n");
+			// interfaces are only found from the original classes:
+			script.append("        <pathelement location='")
+					.append(ctx.cached(instrumentation.classesAndSources()
+							.classes())).append("'/>\n");
 		}
 		for (Path nonInstrumentedDep : nonInstrumentedDeps) {
 			script.append("        <pathelement location='")

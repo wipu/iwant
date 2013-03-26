@@ -263,4 +263,48 @@ public class EmmaCoverageTest extends TestCase {
 		assertTrue(err().contains("found class org.junit.runner.JUnitCore\n"));
 	}
 
+	/**
+	 * Emma does not instrument interfaces so special handling is needed to
+	 * include them in the classpath
+	 */
+	public void testInterfaceInInstrumentedModule() throws Exception {
+		File srcDir = new File(wsRoot, "src");
+		StringBuilder caller = new StringBuilder();
+		caller.append("public class Impl implements If {\n");
+		caller.append("  public static void main(String[] args) {\n");
+		caller.append("    System.out.println(new Impl().hello());\n");
+		caller.append("  }\n");
+		caller.append("  public String hello() {");
+		caller.append("    return \"hello\";\n");
+		caller.append("  }\n");
+		caller.append("}\n");
+		Iwant.newTextFile(new File(srcDir, "Impl.java"), caller.toString());
+
+		StringBuilder callee = new StringBuilder();
+		callee.append("public interface If {\n");
+		callee.append("  String hello();\n");
+		callee.append("}\n");
+		Iwant.newTextFile(new File(srcDir, "If.java"), callee.toString());
+
+		Path src = Source.underWsroot("src");
+		JavaClasses classes = JavaClasses.with().name("classes").srcDirs(src)
+				.classLocations().end();
+		classes.path(ctx);
+
+		JavaClassesAndSources classesAndSources = new JavaClassesAndSources(
+				classes, Arrays.asList(src));
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.using(emma());
+		instr.path(ctx);
+
+		EmmaCoverage coverage = EmmaCoverage.with()
+				.name("instrtest-emma-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("Impl").instrumentations(instr).end();
+		coverage.path(ctx);
+
+		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+				.exists());
+	}
+
 }

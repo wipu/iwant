@@ -90,14 +90,14 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		JavaSrcModule mod = distillery();
 		return EmmaInstrumentation.of(
 				new JavaClassesAndSources(mod.mainArtifact(), mod
-						.mainJavasAsPaths().get(0))).using(emma());
+						.mainJavasAsPaths())).using(emma());
 	}
 
 	private static EmmaInstrumentation distillery2EmmaInstrumentation() {
 		JavaSrcModule mod = distillery2();
 		return EmmaInstrumentation.of(
 				new JavaClassesAndSources(mod.mainArtifact(), mod
-						.mainJavasAsPaths().get(0))).using(emma());
+						.mainJavasAsPaths())).using(emma());
 	}
 
 	private static EmmaCoverage testrunnerEmmaCoverage() {
@@ -118,14 +118,14 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		JavaSrcModule mod = testarea();
 		return EmmaInstrumentation.of(
 				new JavaClassesAndSources(mod.mainArtifact(), mod
-						.mainJavasAsPaths().get(0))).using(emma());
+						.mainJavasAsPaths())).using(emma());
 	}
 
 	private static EmmaInstrumentation testrunnerEmmaInstrumentation() {
 		JavaSrcModule mod = testrunner();
 		return EmmaInstrumentation.of(
 				new JavaClassesAndSources(mod.mainArtifact(), mod
-						.mainJavasAsPaths().get(0))).using(emma());
+						.mainJavasAsPaths())).using(emma());
 	}
 
 	// the modules

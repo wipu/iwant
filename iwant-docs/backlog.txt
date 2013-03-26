@@ -530,6 +530,7 @@
     - distillery2
       + add it
       + support for >1 source for JavaClassesAndSources (distillery uses that)
+      + emma doesn't include interfaces in instrumented classes => add original to classpath during EmmaCoverage
       - upgrade iwant for iwant to test in practice
   - add other projects, referring to their Suite
 
