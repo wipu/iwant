@@ -504,7 +504,7 @@
     - add support for many mainJava directories, needed by iwant-distillery
       + JavaClasses builder instead of direct constructor call
       + many srcs
-      - affects compilation
+      + affects compilation
       - way to empty the srcDirs in builder (to override convenience "builder builder" output)
       - SrcModule utilizes
     - add rest 

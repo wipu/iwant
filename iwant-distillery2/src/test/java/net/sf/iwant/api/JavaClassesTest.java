@@ -53,16 +53,19 @@ public class JavaClassesTest extends TestCase {
 		assertTrue(target.ingredients().contains(src2));
 	}
 
-	public void testSrcDirIsInContentDescriptor() {
+	public void testSrcDirsAreInContentDescriptor() {
 		assertEquals(
 				"net.sf.iwant.api.JavaClasses {\n  src:src\n}",
 				JavaClasses.with().name("classes")
 						.srcDirs(Source.underWsroot("src")).classLocations()
 						.end().contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.JavaClasses {\n  src:src2\n}",
-				JavaClasses.with().name("classes2")
-						.srcDirs(Source.underWsroot("src2")).classLocations()
+				"net.sf.iwant.api.JavaClasses {\n  src:src2\n  src:src3\n}",
+				JavaClasses
+						.with()
+						.name("classes2")
+						.srcDirs(Source.underWsroot("src2"),
+								Source.underWsroot("src3")).classLocations()
 						.end().contentDescriptor());
 	}
 
@@ -103,6 +106,32 @@ public class JavaClassesTest extends TestCase {
 				"package pak2;\npublic class Callee2 {}");
 		Source src = Source.underWsroot("src");
 		Target target = JavaClasses.with().name("multiple").srcDirs(src)
+				.classLocations().end();
+
+		target.path(ctx);
+
+		assertTrue(new File(cached, "multiple/Caller.class").exists());
+		assertTrue(new File(cached, "multiple/pak1/Callee1.class").exists());
+		assertTrue(new File(cached, "multiple/pak2/Callee2.class").exists());
+	}
+
+	public void testToPathCompilesFromMultipleSrcDirs() throws Exception {
+		File srcDir1 = new File(wsRoot, "src1");
+		Iwant.newTextFile(new File(srcDir1, "Caller.java"),
+				"class Caller {pak1.Callee1 callee1;pak2.Callee2 callee2;}");
+
+		File srcDir2 = new File(wsRoot, "src2");
+		Iwant.newTextFile(new File(srcDir2, "pak1/Callee1.java"),
+				"package pak1;\npublic class Callee1 {}");
+		File srcDir3 = new File(wsRoot, "src3");
+		Iwant.newTextFile(new File(srcDir3, "pak2/Callee2.java"),
+				"package pak2;\npublic class Callee2 {}");
+
+		Target target = JavaClasses
+				.with()
+				.name("multiple")
+				.srcDirs(Source.underWsroot("src1"),
+						Source.underWsroot("src2"), Source.underWsroot("src3"))
 				.classLocations().end();
 
 		target.path(ctx);

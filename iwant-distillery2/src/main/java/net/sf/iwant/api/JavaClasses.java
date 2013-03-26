@@ -77,8 +77,10 @@ public class JavaClasses extends Target {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.cached(this);
-		List<File> javaFiles = javaFilesUnder(ctx.cached(srcDirs.iterator()
-				.next()));
+		List<File> javaFiles = new ArrayList<File>();
+		for (Path srcDir : srcDirs) {
+			javaFiles.addAll(javaFilesUnder(ctx.cached(srcDir)));
+		}
 		if (javaFiles.isEmpty()) {
 			Iwant.debugLog(getClass().getSimpleName(),
 					"No java files to compile.");
