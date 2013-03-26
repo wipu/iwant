@@ -517,10 +517,10 @@
       + mock-wsroot
       + testarea
       + tutorial-wsdefs
-  - when ready, svn:ignore eclipse settings (or postpone as later story)
+  + when ready, svn:ignore eclipse settings (or postpone as later story)
     + delete
     + delete unnecessary old iwant-bootstrapper
-    - ignore
+    + ignore
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!
