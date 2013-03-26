@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.JavaClasses.JavaClassesSpex;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
@@ -50,6 +51,20 @@ public class JavaClassesTest extends TestCase {
 				.classLocations().end();
 
 		assertTrue(target.ingredients().contains(src1));
+		assertTrue(target.ingredients().contains(src2));
+	}
+
+	public void testSrcDirsCanBeEmptiedDuringSpecifyingJavaClasses() {
+		Path src1 = Source.underWsroot("src1");
+		Path src2 = Source.underWsroot("src1");
+		JavaClassesSpex spex = JavaClasses.with().name("classes").srcDirs(src1)
+				.classLocations();
+
+		spex = spex.noSrcDirs().srcDirs(src2);
+
+		JavaClasses target = spex.end();
+
+		assertFalse(target.ingredients().contains(src1));
 		assertTrue(target.ingredients().contains(src2));
 	}
 

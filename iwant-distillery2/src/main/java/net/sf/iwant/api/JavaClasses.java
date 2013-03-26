@@ -45,6 +45,11 @@ public class JavaClasses extends Target {
 			return this;
 		}
 
+		public JavaClassesSpex noSrcDirs() {
+			this.srcDirs.clear();
+			return this;
+		}
+
 		public JavaClassesSpex classLocations(Path... classLocations) {
 			return classLocations(Arrays.asList(classLocations));
 		}
