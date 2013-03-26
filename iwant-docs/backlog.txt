@@ -516,6 +516,7 @@
       + example-wsdef
       + mock-wsroot
       + testarea
+      + tutorial-wsdefs
   - when ready, svn:ignore eclipse settings (or postpone as later story)
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"

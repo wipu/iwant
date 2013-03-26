@@ -41,9 +41,16 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static SortedSet<JavaModule> allModules() {
-		return new TreeSet<JavaModule>(Arrays.asList(distillery(),
-				distillery2(), docs(), exampleWsdef(), mockWsroot(),
-				testarea(), testrunner()));
+		return new TreeSet<JavaModule>(Arrays.asList(commonsMath(),
+				distillery(), distillery2(), docs(), exampleWsdef(), junit(),
+				mockWsroot(), testarea(), testrunner(), tutorialWsdefs()));
+	}
+
+	// the modules
+
+	private static JavaModule commonsMath() {
+		return JavaBinModule.providing(FromRepository.ibiblio()
+				.group("commons-math").name("commons-math").version("1.2"));
 	}
 
 	private static JavaModule distillery() {
@@ -102,6 +109,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaModule testrunner() {
 		return iwantSrcModule("testrunner").mainDeps(junit()).end();
+	}
+
+	private static JavaModule tutorialWsdefs() {
+		return iwantSrcModule("tutorial-wsdefs").noMainJava().noTestJava()
+				.mainJava("src").mainDeps(commonsMath(), distillery2()).end();
 	}
 
 }
