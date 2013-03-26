@@ -510,7 +510,8 @@
       + SrcModule utilizes testJava
       + also emptyable SrcModule mainJava
       + also emptyable SrcModule testJava
-    - add rest 
+    - add rest
+      + distillery
   - when ready, svn:ignore eclipse settings (or postpone as later story)
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"

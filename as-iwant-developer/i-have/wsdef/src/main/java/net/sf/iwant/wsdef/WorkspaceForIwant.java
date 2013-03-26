@@ -40,14 +40,13 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static SortedSet<JavaModule> allModules() {
-		// TODO add distillery when >1 mainJava's supported
-		return new TreeSet<JavaModule>(Arrays.asList(/* distillery(), */
-		distillery2(), docs()));
+		return new TreeSet<JavaModule>(Arrays.asList(distillery(),
+				distillery2(), docs()));
 	}
 
 	private static JavaModule distillery() {
 		return iwantSrcModule("distillery")
-				.mainJava("as-some-developer/with/java")
+				.mainJava("as-some-developer/with/java").mainDeps()
 				.testDeps(junit(), testarea()).end();
 	}
 
