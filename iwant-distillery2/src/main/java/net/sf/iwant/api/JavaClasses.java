@@ -12,27 +12,61 @@ import net.sf.iwant.entry.Iwant;
 public class JavaClasses extends Target {
 
 	private final List<Path> ingredients;
-	private final Path srcDir;
+	private final Collection<? extends Path> srcDirs;
 	private final Collection<? extends Path> classLocations;
 
-	public JavaClasses(String name, Path srcDir,
+	private JavaClasses(String name, Collection<? extends Path> srcDirs,
 			Collection<? extends Path> classLocations) {
 		super(name);
-		this.srcDir = srcDir;
+		this.srcDirs = srcDirs;
 		this.classLocations = classLocations;
 		this.ingredients = new ArrayList<Path>();
-		this.ingredients.add(srcDir);
-		for (Path classLocation : classLocations) {
-			this.ingredients.add(classLocation);
+		this.ingredients.addAll(srcDirs);
+		this.ingredients.addAll(classLocations);
+	}
+
+	public static JavaClassesSpex with() {
+		return new JavaClassesSpex();
+	}
+
+	public static class JavaClassesSpex {
+
+		private String name;
+		private final List<Path> srcDirs = new ArrayList<Path>();
+		private final List<Path> classLocations = new ArrayList<Path>();
+
+		public JavaClassesSpex name(String name) {
+			this.name = name;
+			return this;
 		}
+
+		public JavaClassesSpex srcDirs(Path... srcDirs) {
+			this.srcDirs.addAll(Arrays.asList(srcDirs));
+			return this;
+		}
+
+		public JavaClassesSpex classLocations(Path... classLocations) {
+			return classLocations(Arrays.asList(classLocations));
+		}
+
+		public JavaClassesSpex classLocations(
+				Collection<? extends Path> classLocations) {
+			this.classLocations.addAll(classLocations);
+			return this;
+		}
+
+		public JavaClasses end() {
+			return new JavaClasses(name, srcDirs, classLocations);
+		}
+
 	}
 
 	public Collection<? extends Path> classLocations() {
 		return classLocations;
 	}
 
-	public Path srcDir() {
-		return srcDir;
+	public Collection<? extends Path> srcDirs() {
+		return srcDirs;
 	}
 
 	@Override
@@ -43,7 +77,8 @@ public class JavaClasses extends Target {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.cached(this);
-		List<File> javaFiles = javaFilesUnder(ctx.cached(srcDir));
+		List<File> javaFiles = javaFilesUnder(ctx.cached(srcDirs.iterator()
+				.next()));
 		if (javaFiles.isEmpty()) {
 			Iwant.debugLog(getClass().getSimpleName(),
 					"No java files to compile.");
@@ -91,7 +126,9 @@ public class JavaClasses extends Target {
 	public String contentDescriptor() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getCanonicalName()).append(" {\n");
-		b.append("  src:").append(srcDir).append("\n");
+		for (Path srcDir : srcDirs) {
+			b.append("  src:").append(srcDir).append("\n");
+		}
 		for (Path classLocation : classLocations) {
 			b.append("  classes:").append(classLocation).append("\n");
 		}

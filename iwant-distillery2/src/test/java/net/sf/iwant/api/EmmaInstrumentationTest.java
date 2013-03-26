@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Collections;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
@@ -80,9 +79,9 @@ public class EmmaInstrumentationTest extends TestCase {
 				"public class Hello {\n"
 						+ "  public static void main(String[] args) {\n"
 						+ "    System.out.println(\"main\");\n" + "  }\n}\n");
-		JavaClasses classes = new JavaClasses(name + "-classes",
-				Source.underWsroot(srcDirString),
-				Collections.<Path> emptyList());
+		JavaClasses classes = JavaClasses.with().name(name + "-classes")
+				.srcDirs(Source.underWsroot(srcDirString)).classLocations()
+				.end();
 		classes.path(ctx);
 		return new JavaClassesAndSources(classes,
 				Source.underWsroot(srcDirString));

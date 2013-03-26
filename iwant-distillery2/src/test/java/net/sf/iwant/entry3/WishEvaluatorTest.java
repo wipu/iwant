@@ -342,8 +342,8 @@ public class WishEvaluatorTest extends TestCase {
 		File calleeJava = new File(srcDir, "pak2/Callee.java");
 		Iwant.newTextFile(calleeJava, "package pak2;\npublic class Callee {}");
 		Source src = Source.underWsroot("src");
-		Target target = new JavaClasses("multiple", src,
-				Collections.<Path> emptyList());
+		Target target = JavaClasses.with().name("multiple").srcDirs(src)
+				.classLocations().end();
 
 		evaluator.asPath(target);
 

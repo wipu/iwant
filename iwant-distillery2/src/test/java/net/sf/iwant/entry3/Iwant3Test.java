@@ -630,9 +630,9 @@ public class Iwant3Test extends TestCase {
 				Iwant.using(network), caches);
 		caches.cachesModifiableTargetsAt(new File("cached"));
 
-		JavaClasses wsdDefClassesTarget = new JavaClasses("wsdef",
-				Source.underWsroot("wsdef"), Arrays.asList(new TargetMock(
-						"iwant-api-classes")));
+		JavaClasses wsdDefClassesTarget = JavaClasses.with().name("wsdef")
+				.srcDirs(Source.underWsroot("wsdef"))
+				.classLocations(new TargetMock("iwant-api-classes")).end();
 
 		File wsDefdefClasses = new File("wsDefdefClasses");
 		File wsDefClasses = new File("wsDefClasses");
@@ -651,10 +651,12 @@ public class Iwant3Test extends TestCase {
 				Iwant.using(network), caches);
 		caches.cachesModifiableTargetsAt(new File("cached"));
 
-		JavaClasses wsdDefClassesTarget = new JavaClasses("wsdef",
-				Source.underWsroot("wsdef"), Arrays.asList(new TargetMock(
-						"iwant-api-classes"),
-						new TargetMock("external-library")));
+		JavaClasses wsdDefClassesTarget = JavaClasses
+				.with()
+				.name("wsdef")
+				.srcDirs(Source.underWsroot("wsdef"))
+				.classLocations(new TargetMock("iwant-api-classes"),
+						new TargetMock("external-library")).end();
 
 		File wsDefdefClasses = new File("wsDefdefClasses");
 		File wsDefClasses = new File("wsDefClasses");

@@ -232,8 +232,8 @@ public class JavaSrcModule extends JavaModule {
 				classpath.add(depArtifact);
 			}
 		}
-		return new JavaClasses(name() + "-main-classes", mainJavaAsPath(),
-				classpath);
+		return JavaClasses.with().name(name() + "-main-classes")
+				.srcDirs(mainJavaAsPath()).classLocations(classpath).end();
 	}
 
 	public Path testArtifact() {
@@ -257,8 +257,8 @@ public class JavaSrcModule extends JavaModule {
 				classpath.add(depArtifact);
 			}
 		}
-		return new JavaClasses(name() + "-test-classes", testJavaAsPath(),
-				classpath);
+		return JavaClasses.with().name(name() + "-test-classes")
+				.srcDirs(testJavaAsPath()).classLocations(classpath).end();
 	}
 
 	public String locationUnderWsRoot() {

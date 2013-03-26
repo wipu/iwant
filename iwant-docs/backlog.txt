@@ -502,6 +502,11 @@
   - generate eclipse settings
     + some of them
     - add support for many mainJava directories, needed by iwant-distillery
+      + JavaClasses builder instead of direct constructor call
+      + many srcs
+      - affects compilation
+      - way to empty the srcDirs in builder (to override convenience "builder builder" output)
+      - SrcModule utilizes
     - add rest 
   - when ready, svn:ignore eclipse settings (or postpone as later story)
 

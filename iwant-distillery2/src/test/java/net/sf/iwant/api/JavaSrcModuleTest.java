@@ -128,8 +128,7 @@ public class JavaSrcModuleTest extends TestCase {
 
 		JavaClasses mainArtifact = (JavaClasses) module.mainArtifact();
 
-		assertEquals("simple/src", mainArtifact.srcDir().name());
-		assertEquals("simple/src", mainArtifact.srcDir().toString());
+		assertEquals("[simple/src]", mainArtifact.srcDirs().toString());
 		assertEquals("[]", mainArtifact.classLocations().toString());
 	}
 
@@ -143,7 +142,8 @@ public class JavaSrcModuleTest extends TestCase {
 
 		JavaClasses mainArtifact = (JavaClasses) module.mainArtifact();
 
-		assertEquals("simple/src/main/java", mainArtifact.srcDir().name());
+		assertEquals("[simple/src/main/java]", mainArtifact.srcDirs()
+				.toString());
 		assertEquals("[util1-main-classes, util2-main-classes]", mainArtifact
 				.classLocations().toString());
 	}
@@ -173,7 +173,7 @@ public class JavaSrcModuleTest extends TestCase {
 				.mainJava("src").testJava("test").end().testArtifact();
 
 		assertEquals("tested-test-classes", tests.name());
-		assertEquals("tested/test", tests.srcDir().toString());
+		assertEquals("[tested/test]", tests.srcDirs().toString());
 		assertEquals("[tested-main-classes]", tests.classLocations().toString());
 	}
 
@@ -192,7 +192,7 @@ public class JavaSrcModuleTest extends TestCase {
 				.testArtifact();
 
 		assertEquals("tested2-test-classes", tests.name());
-		assertEquals("tested2/test", tests.srcDir().toString());
+		assertEquals("[tested2/test]", tests.srcDirs().toString());
 		assertEquals("[tested2-main-classes, main-lib.jar, test-lib.jar]",
 				tests.classLocations().toString());
 	}
@@ -202,7 +202,7 @@ public class JavaSrcModuleTest extends TestCase {
 				.name("only-tests").testJava("test").end().testArtifact();
 
 		assertEquals("only-tests-test-classes", tests.name());
-		assertEquals("only-tests/test", tests.srcDir().toString());
+		assertEquals("[only-tests/test]", tests.srcDirs().toString());
 		assertEquals("[]", tests.classLocations().toString());
 	}
 

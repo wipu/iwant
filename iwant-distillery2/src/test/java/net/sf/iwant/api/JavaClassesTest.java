@@ -2,7 +2,6 @@ package net.sf.iwant.api;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
@@ -38,27 +37,41 @@ public class JavaClassesTest extends TestCase {
 
 	public void testSrcDirIsAnIgredient() {
 		Path src = Source.underWsroot("src");
-		Target target = new JavaClasses("classes", src,
-				Collections.<Path> emptyList());
+		Target target = JavaClasses.with().name("classes").srcDirs(src)
+				.classLocations().end();
 
 		assertTrue(target.ingredients().contains(src));
 	}
 
+	public void testSrcDirsAreIgredients() {
+		Path src1 = Source.underWsroot("src1");
+		Path src2 = Source.underWsroot("src1");
+		Target target = JavaClasses.with().name("classes").srcDirs(src1, src2)
+				.classLocations().end();
+
+		assertTrue(target.ingredients().contains(src1));
+		assertTrue(target.ingredients().contains(src2));
+	}
+
 	public void testSrcDirIsInContentDescriptor() {
-		assertEquals("net.sf.iwant.api.JavaClasses {\n  src:src\n}",
-				new JavaClasses("classes", Source.underWsroot("src"),
-						Collections.<Path> emptyList()).contentDescriptor());
-		assertEquals("net.sf.iwant.api.JavaClasses {\n  src:src2\n}",
-				new JavaClasses("classes2", Source.underWsroot("src2"),
-						Collections.<Path> emptyList()).contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.api.JavaClasses {\n  src:src\n}",
+				JavaClasses.with().name("classes")
+						.srcDirs(Source.underWsroot("src")).classLocations()
+						.end().contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.api.JavaClasses {\n  src:src2\n}",
+				JavaClasses.with().name("classes2")
+						.srcDirs(Source.underWsroot("src2")).classLocations()
+						.end().contentDescriptor());
 	}
 
 	public void testCrapToPathFails() throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		Iwant.newTextFile(new File(srcDir, "Crap.java"), "crap");
 		Source src = Source.underWsroot("src");
-		Target target = new JavaClasses("crap", src,
-				Collections.<Path> emptyList());
+		Target target = JavaClasses.with().name("crap").srcDirs(src)
+				.classLocations().end();
 
 		try {
 			target.path(ctx);
@@ -72,8 +85,8 @@ public class JavaClassesTest extends TestCase {
 		File srcDir = new File(wsRoot, "src");
 		Iwant.newTextFile(new File(srcDir, "Valid.java"), "class Valid {}");
 		Source src = Source.underWsroot("src");
-		Target target = new JavaClasses("valid", src,
-				Collections.<Path> emptyList());
+		Target target = JavaClasses.with().name("valid").srcDirs(src)
+				.classLocations().end();
 
 		target.path(ctx);
 
@@ -89,8 +102,8 @@ public class JavaClassesTest extends TestCase {
 		Iwant.newTextFile(new File(srcDir, "pak2/Callee2.java"),
 				"package pak2;\npublic class Callee2 {}");
 		Source src = Source.underWsroot("src");
-		Target target = new JavaClasses("multiple", src,
-				Collections.<Path> emptyList());
+		Target target = JavaClasses.with().name("multiple").srcDirs(src)
+				.classLocations().end();
 
 		target.path(ctx);
 
@@ -112,8 +125,8 @@ public class JavaClassesTest extends TestCase {
 		File superClassClasses = superClassFile.getParentFile().getParentFile()
 				.getParentFile().getParentFile().getParentFile()
 				.getAbsoluteFile();
-		Target target = new JavaClasses("valid", src,
-				Arrays.asList(new ExternalSource(superClassClasses)));
+		Target target = JavaClasses.with().name("valid").srcDirs(src)
+				.classLocations(new ExternalSource(superClassClasses)).end();
 
 		target.path(ctx);
 
@@ -123,8 +136,9 @@ public class JavaClassesTest extends TestCase {
 	public void testDependenciesAreIgredients() {
 		Target dep1 = new TargetMock("dep1");
 		Target dep2 = new TargetMock("dep2");
-		Target target = new JavaClasses("valid", Source.underWsroot("src"),
-				Arrays.asList(dep1, dep2));
+		Target target = JavaClasses.with().name("valid")
+				.srcDirs(Source.underWsroot("src")).classLocations(dep1, dep2)
+				.end();
 
 		assertTrue(target.ingredients().contains(dep1));
 		assertTrue(target.ingredients().contains(dep2));
@@ -133,8 +147,9 @@ public class JavaClassesTest extends TestCase {
 	public void testDependenciesAreInContentDescriptor() {
 		Target dep1 = new TargetMock("dep1");
 		Target dep2 = new TargetMock("dep2");
-		Target target = new JavaClasses("valid", Source.underWsroot("src"),
-				Arrays.asList(dep1, dep2));
+		Target target = JavaClasses.with().name("valid")
+				.srcDirs(Source.underWsroot("src")).classLocations(dep1, dep2)
+				.end();
 
 		assertEquals("net.sf.iwant.api.JavaClasses {\n  src:src\n"
 				+ "  classes:dep1\n  classes:dep2\n" + "}",
@@ -145,8 +160,8 @@ public class JavaClassesTest extends TestCase {
 		File srcDir = new File(wsRoot, "src");
 		srcDir.mkdirs();
 		Source src = Source.underWsroot("src");
-		Target target = new JavaClasses("empty", src,
-				Collections.<Path> emptyList());
+		Target target = JavaClasses.with().name("empty").srcDirs(src)
+				.classLocations().end();
 
 		target.path(ctx);
 
@@ -160,8 +175,8 @@ public class JavaClassesTest extends TestCase {
 		testArea.hasFile("src/.keep", "");
 
 		Source src = Source.underWsroot("src");
-		Target target = new JavaClasses("empty", src,
-				Collections.<Path> emptyList());
+		Target target = JavaClasses.with().name("empty").srcDirs(src)
+				.classLocations().end();
 
 		target.path(ctx);
 
@@ -171,8 +186,8 @@ public class JavaClassesTest extends TestCase {
 	public void testMissingSourceDirectoryCausesFriendlyError()
 			throws Exception {
 		Source src = Source.underWsroot("missing-src");
-		Target target = new JavaClasses("missing", src,
-				Collections.<Path> emptyList());
+		Target target = JavaClasses.with().name("missing").srcDirs(src)
+				.classLocations().end();
 
 		try {
 			target.path(ctx);
@@ -189,8 +204,8 @@ public class JavaClassesTest extends TestCase {
 		File srcFile = new File(wsRoot, "Valid.java");
 		Iwant.newTextFile(srcFile, "class Valid {}");
 		Source src = Source.underWsroot("Valid.java");
-		Target target = new JavaClasses("non-dir", src,
-				Collections.<Path> emptyList());
+		Target target = JavaClasses.with().name("non-dir").srcDirs(src)
+				.classLocations().end();
 
 		try {
 			target.path(ctx);
