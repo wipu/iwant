@@ -6,23 +6,28 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.sf.iwant.api.EclipseSettings;
+import net.sf.iwant.api.EmmaCoverage;
+import net.sf.iwant.api.EmmaInstrumentation;
+import net.sf.iwant.api.EmmaReport;
 import net.sf.iwant.api.FromRepository;
-import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.JavaBinModule;
+import net.sf.iwant.api.JavaClassesAndSources;
 import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.JavaSrcModule;
 import net.sf.iwant.api.JavaSrcModule.IwantSrcModuleSpex;
+import net.sf.iwant.api.Path;
 import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.SideEffectDefinitionContext;
 import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
+import net.sf.iwant.api.TestedIwantDependencies;
 
 public class WorkspaceForIwant implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {
-		return Arrays.asList(new HelloTarget("hello", "hello from iwant"));
+		return Arrays.asList(emmaCoverageReport());
 	}
 
 	@Override
@@ -44,6 +49,39 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return new TreeSet<JavaModule>(Arrays.asList(commonsMath(),
 				distillery(), distillery2(), docs(), exampleWsdef(), junit(),
 				mockWsroot(), testarea(), testrunner(), tutorialWsdefs()));
+	}
+
+	// the targets
+
+	private static Path emma() {
+		return TestedIwantDependencies.emma();
+	}
+
+	private static Target emmaCoverageReport() {
+		return EmmaReport.with().name("emma-coverage-report").emma(emma())
+				.instrumentations(testrunnerEmmaInstrumentation())
+				.coverages(testrunnerEmmaCoverage()).end();
+	}
+
+	private static EmmaCoverage testrunnerEmmaCoverage() {
+		return EmmaCoverage
+				.with()
+				.name("iwant-testrunner.emmacoverage")
+				.antJars(TestedIwantDependencies.antJar(),
+						TestedIwantDependencies.antLauncherJar())
+				.emma(emma())
+				.instrumentations(testrunnerEmmaInstrumentation())
+				.nonInstrumentedClasses(junit().mainArtifact(),
+						testrunner().testArtifact())
+				.mainClassAndArguments("org.junit.runner.JUnitCore",
+						"net.sf.iwant.testrunner.IwantTestRunnerTest").end();
+	}
+
+	private static EmmaInstrumentation testrunnerEmmaInstrumentation() {
+		JavaSrcModule mod = testrunner();
+		return EmmaInstrumentation.of(
+				new JavaClassesAndSources(mod.mainArtifact(), mod
+						.mainJavasAsPaths().get(0))).using(emma());
 	}
 
 	// the modules
@@ -107,7 +145,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.underWsroot("iwant-testarea/testarea-classdir"));
 	}
 
-	private static JavaModule testrunner() {
+	private static JavaSrcModule testrunner() {
 		return iwantSrcModule("testrunner").mainDeps(junit()).end();
 	}
 
