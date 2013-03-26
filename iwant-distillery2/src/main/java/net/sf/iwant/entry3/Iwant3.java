@@ -240,11 +240,15 @@ public class Iwant3 {
 
 	private static void deleteWishScripts(File withBashIwant) {
 		for (File child : withBashIwant.listFiles()) {
-			if ("help.sh".equals(child.getName())) {
-				continue;
+			if (isWishScriptParent(child)) {
+				Iwant.del(child);
 			}
-			Iwant.del(child);
 		}
+	}
+
+	private static boolean isWishScriptParent(File dir) {
+		String name = dir.getName();
+		return "target".equals(name) || "side-effect".equals(name);
 	}
 
 	private static void createWishScript(File withBashIwant, String wish) {

@@ -521,6 +521,8 @@
     + delete
     + delete unnecessary old iwant-bootstrapper
     + ignore
+  + Iwant3 no more deletes all but help.sh (including .svn !!) under with/bash/iwant/, instead it only deletes target and side-effect
+    * so svn won't complain after using iwant bootstrapper that has been svn:externalized
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!
