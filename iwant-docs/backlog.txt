@@ -527,11 +527,12 @@
 - As @buildscriptauthor and @developer I want to easily define emma coverage report for the whole workspace of java modules so I know my test coverage
   + experiment with one project in iwant itself: testrunner with its one test class
   - another project, if needed, and then move the logic to JavaSrcModule
-    - distillery2
+    + distillery2
       + add it
       + support for >1 source for JavaClassesAndSources (distillery uses that)
       + emma doesn't include interfaces in instrumented classes => add original to classpath during EmmaCoverage
-      - upgrade iwant for iwant to test in practice
+      + upgrade iwant for iwant to test in practice
+      + add testarea dirs to classpath for coverage
   - add other projects, referring to their Suite
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
@@ -567,6 +568,8 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @developer I don't want iwant tests rerun just because testarea was touched so that it gets rerun only when real sources were touched
 
 - As @buildscriptauthor I want an easy way to define EmmaCoverage that finds test classes by a source filename pattern so I don't have to define a TestSuite
 

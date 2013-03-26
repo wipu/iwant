@@ -80,8 +80,12 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.instrumentations(distilleryEmmaInstrumentation(),
 						distillery2EmmaInstrumentation(),
 						testareaEmmaInstrumentation())
-				.nonInstrumentedClasses(distillery2().testArtifact(),
-						junit().mainArtifact(), testrunner().testArtifact())
+				.nonInstrumentedClasses(
+						distilleryClasspathMarker().mainArtifact(),
+						distillery2().testArtifact(), junit().mainArtifact(),
+						testarea().mainArtifact(),
+						testareaClassdir().mainArtifact(),
+						testrunner().testArtifact())
 				.mainClassAndArguments("org.junit.runner.JUnitCore",
 						"net.sf.iwant.IwantDistillery2Suite").end();
 	}
