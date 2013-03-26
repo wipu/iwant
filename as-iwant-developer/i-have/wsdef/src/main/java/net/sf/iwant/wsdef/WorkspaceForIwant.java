@@ -42,7 +42,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static SortedSet<JavaModule> allModules() {
 		return new TreeSet<JavaModule>(Arrays.asList(distillery(),
-				distillery2(), docs(), exampleWsdef()));
+				distillery2(), docs(), exampleWsdef(), mockWsroot()));
 	}
 
 	private static JavaModule distillery() {
@@ -74,6 +74,19 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaModule junit() {
 		return JavaBinModule.providing(FromRepository.ibiblio().group("junit")
 				.name("junit").version("4.8.2"));
+	}
+
+	private static JavaModule mockWsroot() {
+		IwantSrcModuleSpex mod = iwantSrcModule("mock-wsroot").noMainJava()
+				.noTestJava();
+		mod.mainJava("iwant-distillery/src/main/java");
+		mod.mainJava("iwant-testrunner/src/main/java");
+		mod.mainJava("iwant-testarea/src/main/java");
+		mod.mainJava("iwant-distillery/src/test/java");
+		mod.mainJava("iwant-distillery2/src/test/java");
+		mod.mainJava("iwant-distillery2/src/main/java");
+		mod.mainJava("iwant-distillery/as-some-developer/with/java");
+		return mod.mainDeps(junit()).end();
 	}
 
 	private static JavaModule testarea() {

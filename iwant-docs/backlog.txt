@@ -514,6 +514,7 @@
       + distillery
       + fix distillery: depend on classpath-marker as bin module
       + example-wsdef
+      + mock-wsroot
   - when ready, svn:ignore eclipse settings (or postpone as later story)
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="iwant-distillery/src/main/java"/>
-	<classpathentry kind="src" path="iwant-testrunner/src/main/java"/>
-	<classpathentry kind="src" path="iwant-testarea/src/main/java"/>
-	<classpathentry kind="src" path="iwant-distillery/src/test/java"/>
-	<classpathentry kind="src" path="iwant-distillery2/src/test/java"/>
-	<classpathentry kind="src" path="iwant-distillery2/src/main/java"/>
-	<classpathentry kind="src" path="iwant-distillery/as-some-developer/with/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="output" path="classes"/>
+        <classpathentry kind="src" path="iwant-distillery/src/main/java"/>
+        <classpathentry kind="src" path="iwant-testrunner/src/main/java"/>
+        <classpathentry kind="src" path="iwant-testarea/src/main/java"/>
+        <classpathentry kind="src" path="iwant-distillery/src/test/java"/>
+        <classpathentry kind="src" path="iwant-distillery2/src/test/java"/>
+        <classpathentry kind="src" path="iwant-distillery2/src/main/java"/>
+        <classpathentry kind="src" path="iwant-distillery/as-some-developer/with/java"/>
+        <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+        <classpathentry kind="lib" path="/home/wipu/.net.sf.iwant/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/junit/junit/4.8.2/junit-4.8.2.jar"/>
+        <classpathentry kind="output" path="classes"/>
 </classpath>
