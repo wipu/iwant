@@ -15,6 +15,7 @@ import net.sf.iwant.api.JavaSrcModule;
 import net.sf.iwant.api.JavaSrcModule.IwantSrcModuleSpex;
 import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.SideEffectDefinitionContext;
+import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
 
 public class WorkspaceForIwant implements IwantWorkspace {
@@ -41,13 +42,19 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static SortedSet<JavaModule> allModules() {
 		return new TreeSet<JavaModule>(Arrays.asList(distillery(),
-				distillery2(), docs()));
+				distillery2(), docs(), exampleWsdef()));
 	}
 
 	private static JavaModule distillery() {
 		return iwantSrcModule("distillery")
 				.mainJava("as-some-developer/with/java").mainDeps()
-				.testDeps(junit(), testarea()).end();
+				.testDeps(distilleryClasspathMarker(), junit(), testarea())
+				.end();
+	}
+
+	private static JavaBinModule distilleryClasspathMarker() {
+		return JavaBinModule.providing(Source
+				.underWsroot("iwant-distillery/classpath-marker"));
 	}
 
 	private static JavaModule distillery2() {
@@ -57,6 +64,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaModule docs() {
 		return iwantSrcModule("docs").end();
+	}
+
+	private static JavaModule exampleWsdef() {
+		return iwantSrcModule("example-wsdef").noTestJava()
+				.mainDeps(distillery2()).end();
 	}
 
 	private static JavaModule junit() {
