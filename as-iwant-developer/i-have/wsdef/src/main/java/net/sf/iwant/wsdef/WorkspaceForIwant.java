@@ -41,9 +41,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static SortedSet<JavaModule> allModules() {
-		return new TreeSet<JavaModule>(
-				Arrays.asList(distillery(), distillery2(), docs(),
-						exampleWsdef(), mockWsroot(), testarea()));
+		return new TreeSet<JavaModule>(Arrays.asList(distillery(),
+				distillery2(), docs(), exampleWsdef(), mockWsroot(),
+				testarea(), testrunner()));
 	}
 
 	private static JavaModule distillery() {
@@ -98,6 +98,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaBinModule testareaClassdir() {
 		return JavaBinModule.providing(Source
 				.underWsroot("iwant-testarea/testarea-classdir"));
+	}
+
+	private static JavaModule testrunner() {
+		return iwantSrcModule("testrunner").mainDeps(junit()).end();
 	}
 
 }
