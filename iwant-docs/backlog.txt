@@ -492,11 +492,7 @@
   + tdd impl
   + manual test with dummy ws
 
-#################################################################
-= In progress
-#################################################################
-
-- as @developer I want new eclipse-settings-generating version of iwant for itself so I can start developing ant-depending modules
++ as @developer I want new eclipse-settings-generating version of iwant for itself so I can start developing ant-depending modules
   * e.g. for new jvm, tar etc
   + upgrade iwant for iwant
   + generate eclipse settings
@@ -523,6 +519,10 @@
     + ignore
   + Iwant3 no more deletes all but help.sh (including .svn !!) under with/bash/iwant/, instead it only deletes target and side-effect
     * so svn won't complain after using iwant bootstrapper that has been svn:externalized
+
+#################################################################
+= In progress
+#################################################################
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!
