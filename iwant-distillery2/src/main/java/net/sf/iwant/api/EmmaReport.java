@@ -100,9 +100,10 @@ public class EmmaReport extends Target {
 		for (EmmaInstrumentation instr : instrumentations) {
 			reportArgs.add("-in");
 			reportArgs.add(instr.metadataFile(ctx).getCanonicalPath());
-			reportArgs.add("-sp");
-			reportArgs.add(ctx.cached(instr.classesAndSources().sources())
-					.getCanonicalPath());
+			for (Path source : instr.classesAndSources().sources()) {
+				reportArgs.add("-sp");
+				reportArgs.add(ctx.cached(source).getCanonicalPath());
+			}
 		}
 		for (EmmaCoverage coverage : coverages) {
 			reportArgs.add("-in");

@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
@@ -57,6 +58,7 @@ public class EmmaCoverageTest extends TestCase {
 	protected void tearDown() throws Exception {
 		System.setErr(oldErr);
 		System.setOut(oldOut);
+		System.err.println(err());
 	}
 
 	private String err() {
@@ -172,6 +174,47 @@ public class EmmaCoverageTest extends TestCase {
 				.antJars(antJar(), antLauncherJar()).emma(emma())
 				.mainClassAndArguments("NotNamedHello").instrumentations(instr)
 				.end();
+		coverage.path(ctx);
+
+		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+				.exists());
+	}
+
+	public void testManySourcesForClasses() throws Exception {
+		File srcDir = new File(wsRoot, "src1");
+		StringBuilder caller = new StringBuilder();
+		caller.append("public class Caller {\n");
+		caller.append("  public static void main(String[] args) {\n");
+		caller.append("    System.out.println(Callee.hello());\n");
+		caller.append("  }\n");
+		caller.append("}\n");
+		Iwant.newTextFile(new File(srcDir, "Caller.java"), caller.toString());
+
+		File srcDir2 = new File(wsRoot, "src2");
+		StringBuilder callee = new StringBuilder();
+		callee.append("public class Callee {\n");
+		callee.append("  public static String hello() {\n");
+		callee.append("    return \"Hello\";\n");
+		callee.append("  }\n");
+		callee.append("}\n");
+		Iwant.newTextFile(new File(srcDir2, "Callee.java"), callee.toString());
+
+		Path src1 = Source.underWsroot("src1");
+		Path src2 = Source.underWsroot("src2");
+		JavaClasses classes = JavaClasses.with().name("classes")
+				.srcDirs(src1, src2).classLocations().end();
+		classes.path(ctx);
+
+		JavaClassesAndSources classesAndSources = new JavaClassesAndSources(
+				classes, Arrays.asList(src1, src2));
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.using(emma());
+		instr.path(ctx);
+
+		EmmaCoverage coverage = EmmaCoverage.with()
+				.name("instrtest-emma-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("Caller").instrumentations(instr).end();
 		coverage.path(ctx);
 
 		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")

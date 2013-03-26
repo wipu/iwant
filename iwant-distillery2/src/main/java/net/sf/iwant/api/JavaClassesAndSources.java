@@ -1,11 +1,18 @@
 package net.sf.iwant.api;
 
+import java.util.Collections;
+import java.util.List;
+
 public class JavaClassesAndSources {
 
 	private Path classes;
-	private Path sources;
+	private List<Path> sources;
 
-	public JavaClassesAndSources(Path classes, Path sources) {
+	public JavaClassesAndSources(Path classes, Path source) {
+		this(classes, Collections.singletonList(source));
+	}
+
+	public JavaClassesAndSources(Path classes, List<Path> sources) {
 		this.classes = classes;
 		this.sources = sources;
 	}
@@ -18,7 +25,7 @@ public class JavaClassesAndSources {
 		return classes;
 	}
 
-	public Path sources() {
+	public List<Path> sources() {
 		return sources;
 	}
 
