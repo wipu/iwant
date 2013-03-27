@@ -1,5 +1,6 @@
 package net.sf.iwant.eclipsesettings;
 
+import net.sf.iwant.api.CodeFormatterPolicy;
 import net.sf.iwant.api.CodeStyle;
 import net.sf.iwant.api.CodeStylePolicy;
 import net.sf.iwant.api.CodeStyleValue;
@@ -7,9 +8,12 @@ import net.sf.iwant.api.CodeStyleValue;
 public class OrgEclipseJdtCorePrefs {
 
 	private final CodeStylePolicy codeStylePolicy;
+	private final CodeFormatterPolicy formatterPolicy;
 
-	public OrgEclipseJdtCorePrefs(CodeStylePolicy codeStylePolicy) {
+	public OrgEclipseJdtCorePrefs(CodeStylePolicy codeStylePolicy,
+			CodeFormatterPolicy formatterPolicy) {
 		this.codeStylePolicy = codeStylePolicy;
+		this.formatterPolicy = formatterPolicy;
 	}
 
 	private static String asPropertyLine(CodeStyle style, CodeStyleValue value) {
@@ -240,7 +244,8 @@ public class OrgEclipseJdtCorePrefs {
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_binary_expression=16\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_compact_if=16\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_conditional_expression=80\n");
-		b.append("org.eclipse.jdt.core.formatter.alignment_for_enum_constants=0\n");
+		b.append("org.eclipse.jdt.core.formatter.alignment_for_enum_constants="
+				+ formatterPolicy.alignmentForEnumConstants + "\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_expressions_in_array_initializer=16\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_method_declaration=0\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_multiple_fields=16\n");
@@ -502,7 +507,8 @@ public class OrgEclipseJdtCorePrefs {
 		b.append("org.eclipse.jdt.core.formatter.number_of_blank_lines_at_beginning_of_method_body=0\n");
 		b.append("org.eclipse.jdt.core.formatter.number_of_empty_lines_to_preserve=1\n");
 		b.append("org.eclipse.jdt.core.formatter.put_empty_statement_on_new_line=true\n");
-		b.append("org.eclipse.jdt.core.formatter.tabulation.char=tab\n");
+		b.append("org.eclipse.jdt.core.formatter.tabulation.char="
+				+ formatterPolicy.tabulationChar.name().toLowerCase() + "\n");
 		b.append("org.eclipse.jdt.core.formatter.tabulation.size=4\n");
 		b.append("org.eclipse.jdt.core.formatter.use_on_off_tags=false\n");
 		b.append("org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations=false\n");
@@ -510,6 +516,10 @@ public class OrgEclipseJdtCorePrefs {
 		b.append("org.eclipse.jdt.core.formatter.wrap_before_or_operator_multicatch=true\n");
 		b.append("org.eclipse.jdt.core.formatter.wrap_outer_expressions_when_nested=true\n");
 		return b.toString();
+	}
+
+	public CodeFormatterPolicy codeFormatterPolicy() {
+		return formatterPolicy;
 	}
 
 }

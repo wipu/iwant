@@ -20,13 +20,15 @@ public class JavaSrcModule extends JavaModule {
 	private final Target generatedClasses;
 	private final Target generatedSrc;
 	private final CodeStylePolicy codeStylePolicy;
+	private final CodeFormatterPolicy codeFormatterPolicy;
 
 	public JavaSrcModule(String name, String locationUnderWsRoot,
 			List<String> mainJavas, String mainResources,
 			List<String> testJavas, String testResources,
 			Set<JavaModule> mainDeps, Set<JavaModule> testDeps,
 			Target generatedClasses, Target generatedSrc,
-			CodeStylePolicy codeStylePolicy) {
+			CodeStylePolicy codeStylePolicy,
+			CodeFormatterPolicy codeFormatterPolicy) {
 		this.name = name;
 		this.codeStylePolicy = codeStylePolicy;
 		this.locationUnderWsRoot = locationUnderWsRoot;
@@ -34,6 +36,7 @@ public class JavaSrcModule extends JavaModule {
 		this.mainResources = mainResources;
 		this.testJavas = testJavas;
 		this.testResources = testResources;
+		this.codeFormatterPolicy = codeFormatterPolicy;
 		this.mainDeps = Collections.unmodifiableSet(mainDeps);
 		this.testDeps = Collections.unmodifiableSet(testDeps);
 		this.generatedClasses = generatedClasses;
@@ -58,6 +61,7 @@ public class JavaSrcModule extends JavaModule {
 		private Target generatedSrc;
 		private CodeStylePolicy codeStylePolicy = CodeStylePolicy
 				.defaultsExcept().end();
+		private CodeFormatterPolicy codeFormatterPolicy = new CodeFormatterPolicy();
 		private String locationUnderWsRoot;
 
 		public JavaSrcModule end() {
@@ -74,7 +78,8 @@ public class JavaSrcModule extends JavaModule {
 			}
 			return new JavaSrcModule(name, locationUnderWsRootToUse, mainJavas,
 					mainResources, testJavas, testResources, mainDeps,
-					testDeps, generatedClasses, generatedSrc, codeStylePolicy);
+					testDeps, generatedClasses, generatedSrc, codeStylePolicy,
+					codeFormatterPolicy);
 		}
 
 		private static String normalizedRelativeParentDir(String value) {
@@ -165,6 +170,12 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
+		public IwantSrcModuleSpex codeFormatter(
+				CodeFormatterPolicy codeFormatterPolicy) {
+			this.codeFormatterPolicy = codeFormatterPolicy;
+			return this;
+		}
+
 	}
 
 	@Override
@@ -206,6 +217,10 @@ public class JavaSrcModule extends JavaModule {
 
 	public CodeStylePolicy codeStylePolicy() {
 		return codeStylePolicy;
+	}
+
+	public CodeFormatterPolicy codeFormatterPolicy() {
+		return codeFormatterPolicy;
 	}
 
 	public String relativeWsRoot() {

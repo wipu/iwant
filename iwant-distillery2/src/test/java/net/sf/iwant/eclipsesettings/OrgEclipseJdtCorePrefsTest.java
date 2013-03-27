@@ -1,6 +1,8 @@
 package net.sf.iwant.eclipsesettings;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.CodeFormatterPolicy;
+import net.sf.iwant.api.CodeFormatterPolicy.TabulationCharValue;
 import net.sf.iwant.api.CodeStyle;
 import net.sf.iwant.api.CodeStylePolicy;
 import net.sf.iwant.api.CodeStylePolicy.CodeStylePolicySpex;
@@ -9,8 +11,10 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 
 	public void testDefaultCodeStyle() {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
+		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
-		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end());
+		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
+				formatter);
 
 		assertEquals(
 				"org.eclipse.jdt.core.compiler.problem.deadCode=warning\n",
@@ -30,8 +34,10 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
 		policy.ignore(CodeStyle.DEAD_CODE);
 		policy.warn(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL);
+		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
-		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end());
+		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
+				formatter);
 
 		assertEquals("org.eclipse.jdt.core.compiler.problem.deadCode=ignore\n",
 				prefs.asPropertyLine(CodeStyle.DEAD_CODE));
@@ -48,27 +54,30 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 
 	public void testAStyleThatIsOnlyDisabledOrEnabled() {
 		CodeStyle style = CodeStyle.MISSING_OVERRIDE_ANNOTATION_FOR_INTERFACE_METHOD_IMPLEMENTATION;
+		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 		assertEquals(
 				"org.eclipse.jdt.core.compiler.problem."
 						+ "missingOverrideAnnotationForInterfaceMethodImplementation=disabled\n",
 				new OrgEclipseJdtCorePrefs(CodeStylePolicy.defaultsExcept()
-						.ignore(style).end()).asPropertyLine(style));
+						.ignore(style).end(), formatter).asPropertyLine(style));
 		assertEquals(
 				"org.eclipse.jdt.core.compiler.problem."
 						+ "missingOverrideAnnotationForInterfaceMethodImplementation=enabled\n",
 				new OrgEclipseJdtCorePrefs(CodeStylePolicy.defaultsExcept()
-						.warn(style).end()).asPropertyLine(style));
+						.warn(style).end(), formatter).asPropertyLine(style));
 		assertEquals(
 				"org.eclipse.jdt.core.compiler.problem."
 						+ "missingOverrideAnnotationForInterfaceMethodImplementation=enabled\n",
 				new OrgEclipseJdtCorePrefs(CodeStylePolicy.defaultsExcept()
-						.fail(style).end()).asPropertyLine(style));
+						.fail(style).end(), formatter).asPropertyLine(style));
 	}
 
 	public void testDefaultsAsFileContent() {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
+		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
-		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end());
+		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
+				formatter);
 
 		StringBuilder b = new StringBuilder();
 		b.append("#Fri Jan 13 10:19:42 EET 2012\n");
@@ -444,8 +453,10 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
 		policy.ignore(CodeStyle.DEAD_CODE);
 		policy.warn(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL);
+		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
-		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end());
+		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
+				formatter);
 
 		String fileContent = prefs.asFileContent();
 
@@ -456,6 +467,25 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 			assertEquals("Something that contains:\n" + deadCodeFragment
 					+ "\n and\n" + nonExtFragment, fileContent);
 		}
+	}
+
+	public void testOverriddenCodeFormatterAffectsFileContent() {
+		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
+		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
+		formatter.alignmentForEnumConstants = 48;
+		formatter.tabulationChar = TabulationCharValue.SPACE;
+
+		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
+				formatter);
+
+		String fileContent = prefs.asFileContent();
+
+		String alignmentKey = "org.eclipse.jdt.core.formatter.alignment_for_enum_constants";
+		String tabKey = "org.eclipse.jdt.core.formatter.tabulation.char";
+		assertFalse(fileContent.contains(alignmentKey + "=0\n"));
+		assertFalse(fileContent.contains(tabKey + "=tab\n"));
+		assertTrue(fileContent.contains(alignmentKey + "=48\n"));
+		assertTrue(fileContent.contains(tabKey + "=space\n"));
 	}
 
 }

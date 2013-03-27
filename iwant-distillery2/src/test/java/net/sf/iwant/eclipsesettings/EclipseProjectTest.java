@@ -3,6 +3,7 @@ package net.sf.iwant.eclipsesettings;
 import java.io.File;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.CodeFormatterPolicy;
 import net.sf.iwant.api.CodeStyle;
 import net.sf.iwant.api.CodeStylePolicy;
 import net.sf.iwant.api.CodeStylePolicy.CodeStylePolicySpex;
@@ -339,6 +340,33 @@ public class EclipseProjectTest extends TestCase {
 	}
 
 	// formatter
+
+	public void testDefaultFormatterSettings() {
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		OrgEclipseJdtCorePrefs prefs = project.orgEclipseJdtCorePrefs();
+		CodeFormatterPolicy policy = prefs.codeFormatterPolicy();
+
+		assertEquals(Integer.valueOf(0), policy.alignmentForEnumConstants);
+	}
+
+	public void testOverriddenFormatterSettings() {
+		CodeFormatterPolicy policy = new CodeFormatterPolicy();
+		policy.alignmentForEnumConstants = 48;
+
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").codeFormatter(policy).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		OrgEclipseJdtCorePrefs prefs = project.orgEclipseJdtCorePrefs();
+		CodeFormatterPolicy policyAgain = prefs.codeFormatterPolicy();
+
+		assertEquals(Integer.valueOf(48), policyAgain.alignmentForEnumConstants);
+	}
+
+	// formatter reference
 
 	public void testProjectGivesUiPrefs() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
