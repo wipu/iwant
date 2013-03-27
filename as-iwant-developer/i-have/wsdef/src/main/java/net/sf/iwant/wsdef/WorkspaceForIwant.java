@@ -85,6 +85,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.nonInstrumentedClasses(mockWsroot().mainArtifact(),
 						distillery().testArtifact(),
 						distilleryClasspathMarker().mainArtifact(),
+						distilleryTestResources().mainArtifact(),
 						junit().mainArtifact(),
 						testareaClassdir().mainArtifact(),
 						testrunner().mainArtifact())
@@ -163,6 +164,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule distillery() {
 		return iwantSrcModule("distillery")
 				.mainJava("as-some-developer/with/java")
+				.testResources("src/test/resources")
 				.mainDeps(junit(), testarea())
 				.testDeps(distilleryClasspathMarker()).end();
 	}
@@ -170,6 +172,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaBinModule distilleryClasspathMarker() {
 		return JavaBinModule.providing(Source
 				.underWsroot("iwant-distillery/classpath-marker"));
+	}
+
+	private static JavaBinModule distilleryTestResources() {
+		return JavaBinModule.providing(Source
+				.underWsroot("iwant-distillery/src/test/resources"));
 	}
 
 	private static JavaSrcModule distillery2() {
