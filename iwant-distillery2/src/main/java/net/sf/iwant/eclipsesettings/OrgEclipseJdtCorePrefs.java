@@ -63,6 +63,8 @@ public class OrgEclipseJdtCorePrefs {
 			return ignoreable("localVariableHiding", value);
 		case METHOD_WITH_CONSTRUCTOR_NAME:
 			return ignoreable("methodWithConstructorName", value);
+		case MISSING_DEFAULT_CASE:
+			return ignoreable("missingDefaultCase", value);
 		case MISSING_DEPRECATED_ANNOTATION:
 			return ignoreable("missingDeprecatedAnnotation", value);
 		case MISSING_HASHCODE_METHOD:
@@ -93,6 +95,8 @@ public class OrgEclipseJdtCorePrefs {
 			return ignoreable("possibleAccidentalBooleanAssignment", value);
 		case POTENTIAL_NULL_REFERENCE:
 			return ignoreable("potentialNullReference", value);
+		case POTENTIALLY_UNCLOSED_CLOSEABLE:
+			return ignoreable("potentiallyUnclosedCloseable", value);
 		case RAW_TYPE_REFERENCE:
 			return ignoreable("rawTypeReference", value);
 		case REDUNDANT_NULL_CHECK:
@@ -121,6 +125,8 @@ public class OrgEclipseJdtCorePrefs {
 			return disableable("unavoidableGenericTypeProblems", value);
 		case UNCHECKED_TYPE_OPERATION:
 			return ignoreable("uncheckedTypeOperation", value);
+		case UNCLOSED_CLOSEABLE:
+			return ignoreable("unclosedCloseable", value);
 		case UNDOCUMENTED_EMPTY_BLOCK:
 			return ignoreable("undocumentedEmptyBlock", value);
 		case UNHANDLED_WARNING_TOKEN:

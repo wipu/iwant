@@ -104,6 +104,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		b.append("org.eclipse.jdt.core.compiler.problem.indirectStaticAccess=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.localVariableHiding=ignore\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.methodWithConstructorName=warning\n");
+		b.append("org.eclipse.jdt.core.compiler.problem.missingDefaultCase=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.missingDeprecatedAnnotation=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.missingHashCodeMethod=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.missingOverrideAnnotation=warning\n");
@@ -117,6 +118,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		b.append("org.eclipse.jdt.core.compiler.problem.overridingPackageDefaultMethod=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.parameterAssignment=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.possibleAccidentalBooleanAssignment=warning\n");
+		b.append("org.eclipse.jdt.core.compiler.problem.potentiallyUnclosedCloseable=ignore\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.potentialNullReference=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.rawTypeReference=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.redundantNullCheck=warning\n");
@@ -132,6 +134,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		b.append("org.eclipse.jdt.core.compiler.problem.typeParameterHiding=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.unavoidableGenericTypeProblems=enabled\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.uncheckedTypeOperation=warning\n");
+		b.append("org.eclipse.jdt.core.compiler.problem.unclosedCloseable=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.undocumentedEmptyBlock=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.unhandledWarningToken=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.unnecessaryElse=ignore\n");
