@@ -16,7 +16,6 @@ import net.sf.iwant.api.HelloSideEffect;
 import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.JavaClasses;
-import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.JavaSrcModule;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.ScriptGenerated;
@@ -42,8 +41,8 @@ public class WishEvaluatorTest extends TestCase {
 	private Iwant iwant;
 	private WsInfoMock wsInfo;
 	private Caches caches;
-	private JavaModule wsdefdefJavaModule;
-	private JavaModule wsdefJavaModule;
+	private JavaSrcModule wsdefdefJavaModule;
+	private JavaSrcModule wsdefJavaModule;
 
 	@Override
 	public void setUp() throws IOException {

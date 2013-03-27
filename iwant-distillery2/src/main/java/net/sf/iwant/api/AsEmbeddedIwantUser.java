@@ -64,8 +64,8 @@ public class AsEmbeddedIwantUser {
 						Caches caches = new CachesImpl(wsCache,
 								iwantApiClasses, iwant.network());
 						int workerCount = 1;
-						JavaModule wsdefdefJavaModule = null;
-						JavaModule wsdefJavaModule = null;
+						JavaSrcModule wsdefdefJavaModule = null;
+						JavaSrcModule wsdefJavaModule = null;
 						WishEvaluator evaluator = new WishEvaluator(out, err,
 								wsRoot, iwant, wsInfo, caches, workerCount,
 								wsdefdefJavaModule, wsdefJavaModule);

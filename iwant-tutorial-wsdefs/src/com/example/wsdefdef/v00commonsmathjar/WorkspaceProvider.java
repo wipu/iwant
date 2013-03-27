@@ -10,7 +10,7 @@ import net.sf.iwant.api.Target;
 public class WorkspaceProvider implements IwantWorkspaceProvider {
 
 	@Override
-	public JavaModule workspaceModule(JavaModule iwantApiClasses) {
+	public JavaSrcModule workspaceModule(JavaModule iwantApiClasses) {
 		return JavaSrcModule
 				.with()
 				.name("distillery-workspace")

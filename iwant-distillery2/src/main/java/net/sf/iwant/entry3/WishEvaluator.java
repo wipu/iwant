@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import net.sf.iwant.api.IwantWorkspace;
-import net.sf.iwant.api.JavaModule;
+import net.sf.iwant.api.JavaSrcModule;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.SideEffectContext;
@@ -27,12 +27,12 @@ public class WishEvaluator {
 	private final Ctx ctx;
 	private final Caches caches;
 	private final int workerCount;
-	private final JavaModule wsdefdefJavaModule;
-	private final JavaModule wsdefJavaModule;
+	private final JavaSrcModule wsdefdefJavaModule;
+	private final JavaSrcModule wsdefJavaModule;
 
 	public WishEvaluator(OutputStream out, OutputStream err, File wsRoot,
 			Iwant iwant, WsInfo wsInfo, Caches caches, int workerCount,
-			JavaModule wsdefdefJavaModule, JavaModule wsdefJavaModule) {
+			JavaSrcModule wsdefdefJavaModule, JavaSrcModule wsdefJavaModule) {
 		this.out = out;
 		this.err = err;
 		this.wsRoot = wsRoot;
@@ -167,12 +167,12 @@ public class WishEvaluator {
 		}
 
 		@Override
-		public JavaModule wsdefdefJavaModule() {
+		public JavaSrcModule wsdefdefJavaModule() {
 			return wsdefdefJavaModule;
 		}
 
 		@Override
-		public JavaModule wsdefJavaModule() {
+		public JavaSrcModule wsdefJavaModule() {
 			return wsdefJavaModule;
 		}
 

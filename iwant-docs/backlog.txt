@@ -543,6 +543,8 @@
   + just do it
   * other settings will be iterated later, now these 2 just in a simple way
 
++ @enhancement: use JavaSrcModule as type for wsdefdef and wsdef
+
 #################################################################
 = In progress
 #################################################################

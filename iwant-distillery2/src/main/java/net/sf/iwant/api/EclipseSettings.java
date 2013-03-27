@@ -63,6 +63,10 @@ public class EclipseSettings implements SideEffect {
 			return modules(Arrays.asList(modules));
 		}
 
+		public EclipseSettingsSpex modules(JavaSrcModule... modules) {
+			return modules(Arrays.asList(modules));
+		}
+
 		public EclipseSettingsSpex modules(
 				Collection<? extends JavaModule> modules) {
 			javaModules.addAll(modules);

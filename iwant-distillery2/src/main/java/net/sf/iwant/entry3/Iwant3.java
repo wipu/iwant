@@ -18,7 +18,6 @@ import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.IwantWorkspaceProvider;
 import net.sf.iwant.api.JavaBinModule;
 import net.sf.iwant.api.JavaClasses;
-import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.JavaSrcModule;
 import net.sf.iwant.api.Path;
 import net.sf.iwant.api.SideEffect;
@@ -88,7 +87,7 @@ public class Iwant3 {
 					.newInstance();
 
 			Iwant.fileLog("Refreshing wsdef classes");
-			JavaModule wsdDefClassesModule = wsDefdef
+			JavaSrcModule wsdDefClassesModule = wsDefdef
 					.workspaceModule(JavaBinModule
 							.providing(new ExternalSource(iwantApiClasses)));
 			// TODO don't cast when no more necessary
@@ -98,7 +97,7 @@ public class Iwant3 {
 			String wsdefdefRelativeToWsRoot = FileUtil
 					.relativePathOfFileUnderParent(wsInfo.wsdefdefModule(),
 							wsInfo.wsRoot());
-			JavaModule wsdefdefJavaModule = JavaSrcModule
+			JavaSrcModule wsdefdefJavaModule = JavaSrcModule
 					.with()
 					.name(wsInfo.wsName() + "-wsdefdef")
 					.locationUnderWsRoot(wsdefdefRelativeToWsRoot)

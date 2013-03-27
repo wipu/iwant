@@ -2,8 +2,8 @@ package net.sf.iwant.api;
 
 public interface SideEffectDefinitionContext {
 
-	JavaModule wsdefdefJavaModule();
+	JavaSrcModule wsdefdefJavaModule();
 
-	JavaModule wsdefJavaModule();
+	JavaSrcModule wsdefJavaModule();
 
 }
