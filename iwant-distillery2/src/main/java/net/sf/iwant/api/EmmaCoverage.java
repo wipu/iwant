@@ -96,6 +96,11 @@ public class EmmaCoverage extends Target {
 	}
 
 	@Override
+	public boolean supportsParallelism() {
+		return false;
+	}
+
+	@Override
 	public InputStream content(TargetEvaluationContext ctx) throws Exception {
 		throw new UnsupportedOperationException("TODO test and implement");
 	}

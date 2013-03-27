@@ -67,12 +67,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						distillery2EmmaInstrumentation(),
 						testareaEmmaInstrumentation(),
 						testrunnerEmmaInstrumentation())
-				.coverages(
-				/* distilleryEmmaCoverage(), */distillery2EmmaCoverage(),
+				.coverages(distilleryEmmaCoverage(), distillery2EmmaCoverage(),
 						testrunnerEmmaCoverage()).end();
 	}
 
-	@SuppressWarnings("unused")
 	private static EmmaCoverage distilleryEmmaCoverage() {
 		return EmmaCoverage
 				.with()
@@ -82,13 +80,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.emma(emma())
 				.instrumentations(distilleryEmmaInstrumentation(),
 						testareaEmmaInstrumentation())
-				.nonInstrumentedClasses(mockWsroot().mainArtifact(),
-						distillery().testArtifact(),
+				.nonInstrumentedClasses(distillery().testArtifact(),
 						distilleryClasspathMarker().mainArtifact(),
 						distilleryTestResources().mainArtifact(),
 						junit().mainArtifact(),
-						testareaClassdir().mainArtifact(),
-						testrunner().mainArtifact())
+						testareaClassdir().mainArtifact())
 				.mainClassAndArguments("org.junit.runner.JUnitCore",
 						"net.sf.iwant.IwantDistillerySuite").end();
 	}

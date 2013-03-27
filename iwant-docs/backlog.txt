@@ -534,8 +534,9 @@
       + upgrade iwant for iwant to test in practice
       + add testarea dirs to classpath for coverage
   - add other projects, referring to their Suite
-    + try distillery, not passing (disabled)
+    + try distillery, not passing so:
       + move test zips to test resources
+      + disable concurrency for EmmaCoverage to see if it fixes the occasional deadlocks
       - make sure test resources in classpath during tests
       - ensure correct classpath so classes are found from mock-wsroot
       - svn:ignore generated testrunner in mock-wsroot (if possible, should be)

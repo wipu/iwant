@@ -113,6 +113,20 @@ public class EmmaCoverageTest extends TestCase {
 
 	// the tests
 
+	public void testParallelismIsDisabledUntilProvenByPracticeItDoesNotCauseProblems()
+			throws IOException {
+		JavaClassesAndSources classesAndSources = new JavaClassesAndSources(
+				Source.underWsroot("classes"), Source.underWsroot("src"));
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.using(emma());
+
+		EmmaCoverage coverage = EmmaCoverage.with().name("any")
+				.instrumentations(instr).antJars(antJar(), antLauncherJar())
+				.emma(emma()).mainClassAndArguments("Any").end();
+
+		assertFalse(coverage.supportsParallelism());
+	}
+
 	public void testIngredients() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Hello");
