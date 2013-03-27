@@ -537,8 +537,9 @@
     + try distillery, not passing so:
       + move test zips to test resources
       + disable concurrency for EmmaCoverage to see if it fixes the occasional deadlocks
-      - make sure test resources in classpath during tests
-      - ensure correct classpath so classes are found from mock-wsroot
+      + make sure test resources in classpath during tests
+      + ensure correct classpath so classes are found from mock-wsroot
+      * yes, it passes, and total line coverage is now 93%
       - svn:ignore generated testrunner in mock-wsroot (if possible, should be)
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
