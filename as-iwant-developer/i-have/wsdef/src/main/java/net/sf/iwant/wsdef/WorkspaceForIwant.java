@@ -58,6 +58,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static Target emmaCoverageReport() {
+		// TODO enable distillery when it passes
 		return EmmaReport
 				.with()
 				.name("emma-coverage-report")
@@ -66,8 +67,36 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						distillery2EmmaInstrumentation(),
 						testareaEmmaInstrumentation(),
 						testrunnerEmmaInstrumentation())
-				.coverages(distillery2EmmaCoverage(), testrunnerEmmaCoverage())
-				.end();
+				.coverages(
+				/* distilleryEmmaCoverage(), */distillery2EmmaCoverage(),
+						testrunnerEmmaCoverage()).end();
+	}
+
+	@SuppressWarnings("unused")
+	private static EmmaCoverage distilleryEmmaCoverage() {
+		return EmmaCoverage
+				.with()
+				.name("iwant-distillery.emmacoverage")
+				.antJars(TestedIwantDependencies.antJar(),
+						TestedIwantDependencies.antLauncherJar())
+				.emma(emma())
+				.instrumentations(distilleryEmmaInstrumentation(),
+						testareaEmmaInstrumentation())
+				.nonInstrumentedClasses(mockWsroot().mainArtifact(),
+						distillery().testArtifact(),
+						distilleryClasspathMarker().mainArtifact(),
+						junit().mainArtifact(),
+						testareaClassdir().mainArtifact(),
+						testrunner().mainArtifact())
+				.mainClassAndArguments("org.junit.runner.JUnitCore",
+						"net.sf.iwant.IwantDistillerySuite").end();
+	}
+
+	private static EmmaInstrumentation distilleryEmmaInstrumentation() {
+		JavaSrcModule mod = distillery();
+		return EmmaInstrumentation.of(
+				new JavaClassesAndSources(mod.mainArtifact(), mod
+						.mainJavasAsPaths())).using(emma());
 	}
 
 	private static EmmaCoverage distillery2EmmaCoverage() {
@@ -83,18 +112,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.nonInstrumentedClasses(
 						distilleryClasspathMarker().mainArtifact(),
 						distillery2().testArtifact(), junit().mainArtifact(),
-						testarea().mainArtifact(),
 						testareaClassdir().mainArtifact(),
 						testrunner().testArtifact())
 				.mainClassAndArguments("org.junit.runner.JUnitCore",
 						"net.sf.iwant.IwantDistillery2Suite").end();
-	}
-
-	private static EmmaInstrumentation distilleryEmmaInstrumentation() {
-		JavaSrcModule mod = distillery();
-		return EmmaInstrumentation.of(
-				new JavaClassesAndSources(mod.mainArtifact(), mod
-						.mainJavasAsPaths())).using(emma());
 	}
 
 	private static EmmaInstrumentation distillery2EmmaInstrumentation() {

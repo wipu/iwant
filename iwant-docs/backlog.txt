@@ -534,6 +534,9 @@
       + upgrade iwant for iwant to test in practice
       + add testarea dirs to classpath for coverage
   - add other projects, referring to their Suite
+    + try distillery, not passing (disabled)
+    - move test zips to test resources
+    - make sure test resources in classpath during tests
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!
