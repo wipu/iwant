@@ -53,7 +53,8 @@ public class EclipseProject {
 
 	public ProjectExternalBuilderLaunch externalBuilderLaunch() {
 		return hasExternalBuilder() ? new ProjectExternalBuilderLaunch(
-				module.name(), module.generatedSrc(), "eclipse-ant-generated")
+				module.name(), module.generatedSrc(),
+				module.generatorSourcesToFollow(), "eclipse-ant-generated")
 				: null;
 	}
 

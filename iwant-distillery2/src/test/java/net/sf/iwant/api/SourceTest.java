@@ -13,4 +13,9 @@ public class SourceTest extends TestCase {
 		assertTrue(Source.underWsroot("whatever").ingredients().isEmpty());
 	}
 
+	public void testWsrootRelativePath() {
+		assertEquals("a", Source.underWsroot("a").wsRootRelativePath());
+		assertEquals("a/b", Source.underWsroot("a/b").wsRootRelativePath());
+	}
+
 }

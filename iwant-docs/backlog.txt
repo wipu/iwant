@@ -547,6 +547,8 @@
 
 + @bugfix: corret parent dir for EclipseAntScript, currently it's always ${basedir}
 
++ @enhancement: As @buildscriptauthor I want to declare explicit sources to follow when my code-generating module generates the sources by running a java program so that the eclipse project refreshes automatically
+
 #################################################################
 = In progress
 #################################################################

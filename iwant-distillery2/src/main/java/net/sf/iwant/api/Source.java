@@ -53,4 +53,8 @@ public class Source implements Path {
 		return path;
 	}
 
+	public String wsRootRelativePath() {
+		return path;
+	}
+
 }

@@ -14,10 +14,14 @@ public class ProjectExternalBuilderLaunch {
 	private final String relativeOutputDirectory;
 
 	public ProjectExternalBuilderLaunch(String projectName,
-			Path generatedJavaSrc, String relativeOutputDirectory) {
+			Path generatedJavaSrc, List<Source> generatorSourcesToFollow,
+			String relativeOutputDirectory) {
 		this.projectName = projectName;
 		this.relativeOutputDirectory = relativeOutputDirectory;
 		List<String> relativeInputPaths = new ArrayList<String>();
+		for (Source genSrc : generatorSourcesToFollow) {
+			relativeInputPaths.add(genSrc.wsRootRelativePath());
+		}
 		for (Path ingredient : generatedJavaSrc.ingredients()) {
 			if (ingredient instanceof Source) {
 				relativeInputPaths.add(ingredient.name());

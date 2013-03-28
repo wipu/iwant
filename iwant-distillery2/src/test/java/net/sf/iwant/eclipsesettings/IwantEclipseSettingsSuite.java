@@ -14,6 +14,7 @@ public class IwantEclipseSettingsSuite {
 		suite.addTestSuite(EclipseSettingsWriterTest.class);
 		suite.addTestSuite(OrgEclipseJdtCorePrefsTest.class);
 		suite.addTestSuite(OrgEclipseJdtUiPrefsTest.class);
+		suite.addTestSuite(ProjectExternalBuilderLaunchTest.class);
 		return suite;
 	}
 }

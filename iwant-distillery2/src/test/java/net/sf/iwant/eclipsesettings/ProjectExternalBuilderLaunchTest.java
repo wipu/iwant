@@ -1,5 +1,7 @@
 package net.sf.iwant.eclipsesettings;
 
+import java.util.Arrays;
+
 import junit.framework.TestCase;
 import net.sf.iwant.api.Concatenated;
 import net.sf.iwant.api.HelloTarget;
@@ -12,7 +14,8 @@ public class ProjectExternalBuilderLaunchTest extends TestCase {
 	public void testGettersOfMinimal() {
 		Target generatedJava = new HelloTarget("genSrc", "");
 		ProjectExternalBuilderLaunch launch = new ProjectExternalBuilderLaunch(
-				"project-name", generatedJava, "generator-out");
+				"project-name", generatedJava, Arrays.<Source> asList(),
+				"generator-out");
 
 		assertEquals("project-name", launch.name());
 		assertEquals("[]", launch.relativeInputPaths().toString());
@@ -31,10 +34,34 @@ public class ProjectExternalBuilderLaunchTest extends TestCase {
 				.end();
 
 		ProjectExternalBuilderLaunch launch = new ProjectExternalBuilderLaunch(
-				"project-name", generatedJava, "generator-out");
+				"project-name", generatedJava, Arrays.<Source> asList(),
+				"generator-out");
 
 		assertEquals("[src-ingr1, src/ingr2]", launch.relativeInputPaths()
 				.toString());
+	}
+
+	public void testSourceIngredientsOfGeneratedJavaAreUsedAsGeneratorInputsTogetherWithExplicitlyGivenInputs() {
+		Source genSrc1 = Source.underWsroot("explicit-gen-src1");
+		Source genSrc2 = Source.underWsroot("explicit-gen-src2");
+
+		Path ingr1ForGenerator = new HelloTarget("target-ingr1", "");
+		Path ingr2ForGenerator = Source.underWsroot("src-ingr1");
+		Path ingr3ForGenerator = new HelloTarget("target-ingr2", "");
+		Path ingr4ForGenerator = Source.underWsroot("src/ingr2");
+
+		Target generatedJava = Concatenated.named("generated-java")
+				.contentOf(ingr1ForGenerator).contentOf(ingr2ForGenerator)
+				.contentOf(ingr3ForGenerator).contentOf(ingr4ForGenerator)
+				.end();
+
+		ProjectExternalBuilderLaunch launch = new ProjectExternalBuilderLaunch(
+				"project-name", generatedJava, Arrays.asList(genSrc1, genSrc2),
+				"generator-out");
+
+		assertEquals(
+				"[explicit-gen-src1, explicit-gen-src2, src-ingr1, src/ingr2]",
+				launch.relativeInputPaths().toString());
 	}
 
 	/**
@@ -45,7 +72,8 @@ public class ProjectExternalBuilderLaunchTest extends TestCase {
 		Concatenated generatedJava = Concatenated.named("genSrc")
 				.string("no ingredients").end();
 		ProjectExternalBuilderLaunch launch = new ProjectExternalBuilderLaunch(
-				"project-name-2", generatedJava, "generator-out-2");
+				"project-name-2", generatedJava, Arrays.<Source> asList(),
+				"generator-out-2");
 
 		StringBuilder expected = new StringBuilder();
 		expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
@@ -76,7 +104,8 @@ public class ProjectExternalBuilderLaunchTest extends TestCase {
 				.contentOf(Source.underWsroot("module-b/src-for-generator"))
 				.end();
 		ProjectExternalBuilderLaunch launch = new ProjectExternalBuilderLaunch(
-				"project-name-2", generatedJava, "generator-out-2");
+				"project-name-2", generatedJava, Arrays.<Source> asList(),
+				"generator-out-2");
 
 		StringBuilder expected = new StringBuilder();
 		expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");

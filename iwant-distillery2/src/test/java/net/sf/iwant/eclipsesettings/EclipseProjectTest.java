@@ -12,6 +12,7 @@ import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.JavaBinModule;
 import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.JavaSrcModule;
+import net.sf.iwant.api.Source;
 import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
@@ -256,6 +257,62 @@ public class EclipseProjectTest extends TestCase {
 		assertEquals("code-generating-module", launch.name());
 		assertEquals("eclipse-ant-generated", launch.relativeOutputDirectory());
 		assertEquals("[]", launch.relativeInputPaths().toString());
+	}
+
+	public void testProjectExternalBuilderLaunchUsesGeneratorSourceAsRelativeInputPaths() {
+		Source srcForGenerator = Source
+				.underWsroot("gen-parent/gen-src-project/gen-src");
+		Target generatedSrc = Concatenated.named("generated-src")
+				.pathTo(srcForGenerator).end();
+		Target generatedClasses = Concatenated.named("generated-classes")
+				.string("in reality this would be compiled from: ")
+				.pathTo(generatedSrc).end();
+		JavaSrcModule module = JavaSrcModule.with()
+				.name("code-generating-module").relativeParentDir("parent-dir")
+				.mainResources("src/main/resources")
+				.exportsClasses(generatedClasses, generatedSrc).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		ProjectExternalBuilderLaunch launch = project.externalBuilderLaunch();
+
+		assertEquals("code-generating-module", launch.name());
+		assertEquals("eclipse-ant-generated", launch.relativeOutputDirectory());
+		assertEquals("[gen-parent/gen-src-project/gen-src]", launch
+				.relativeInputPaths().toString());
+	}
+
+	public void testProjectExternalBuilderLaunchUsesExplicitlyGivenRelativeInputPaths() {
+		Source generatorMainJava = Source
+				.underWsroot("gen-parent/generator/src/main/java");
+		Source generatorMainResources = Source
+				.underWsroot("gen-parent/generator/src/main/resources");
+		Target generatorClasses = Concatenated.named("generator-classes")
+				.string("In reality this is compiled from ")
+				.pathTo(generatorMainJava).string(" and ")
+				.pathTo(generatorMainResources).end();
+		Target generatedSrc = Concatenated.named("generated-src")
+				.string("In reality this is produced by running a class from ")
+				.pathTo(generatorClasses).end();
+		Target generatedClasses = Concatenated.named("generated-classes")
+				.string("In reality this is compiled from")
+				.pathTo(generatedSrc).end();
+		JavaSrcModule module = JavaSrcModule
+				.with()
+				.name("code-generating-module")
+				.relativeParentDir("parent-dir")
+				.mainResources("src/main/resources")
+				.exportsClasses(generatedClasses, generatedSrc)
+				.generatorSourcesToFollow(generatorMainJava,
+						generatorMainResources).end();
+		EclipseProject project = new EclipseProject(module, evCtx);
+
+		ProjectExternalBuilderLaunch launch = project.externalBuilderLaunch();
+
+		assertEquals("code-generating-module", launch.name());
+		assertEquals("eclipse-ant-generated", launch.relativeOutputDirectory());
+		assertEquals(
+				"[gen-parent/generator/src/main/java, gen-parent/generator/src/main/resources]",
+				launch.relativeInputPaths().toString());
 	}
 
 	public void testEclipseAntScriptIsNullWithoutCodeGeneration() {

@@ -1,6 +1,7 @@
 package net.sf.iwant.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -21,15 +22,18 @@ public class JavaSrcModule extends JavaModule {
 	private final Target generatedSrc;
 	private final CodeStylePolicy codeStylePolicy;
 	private final CodeFormatterPolicy codeFormatterPolicy;
+	private final List<Source> generatorSourcesToFollow;
 
 	public JavaSrcModule(String name, String locationUnderWsRoot,
 			List<String> mainJavas, String mainResources,
 			List<String> testJavas, String testResources,
 			Set<JavaModule> mainDeps, Set<JavaModule> testDeps,
 			Target generatedClasses, Target generatedSrc,
+			List<Source> generatorSourcesToFollow,
 			CodeStylePolicy codeStylePolicy,
 			CodeFormatterPolicy codeFormatterPolicy) {
 		this.name = name;
+		this.generatorSourcesToFollow = generatorSourcesToFollow;
 		this.codeStylePolicy = codeStylePolicy;
 		this.locationUnderWsRoot = locationUnderWsRoot;
 		this.mainJavas = mainJavas;
@@ -59,6 +63,7 @@ public class JavaSrcModule extends JavaModule {
 		private final Set<JavaModule> testDeps = new LinkedHashSet<JavaModule>();
 		private Target generatedClasses;
 		private Target generatedSrc;
+		private final List<Source> generatorSourcesToFollow = new ArrayList<Source>();
 		private CodeStylePolicy codeStylePolicy = CodeStylePolicy
 				.defaultsExcept().end();
 		private CodeFormatterPolicy codeFormatterPolicy = new CodeFormatterPolicy();
@@ -78,7 +83,8 @@ public class JavaSrcModule extends JavaModule {
 			}
 			return new JavaSrcModule(name, locationUnderWsRootToUse, mainJavas,
 					mainResources, testJavas, testResources, mainDeps,
-					testDeps, generatedClasses, generatedSrc, codeStylePolicy,
+					testDeps, generatedClasses, generatedSrc,
+					generatorSourcesToFollow, codeStylePolicy,
 					codeFormatterPolicy);
 		}
 
@@ -162,6 +168,13 @@ public class JavaSrcModule extends JavaModule {
 				Target generatedSrc) {
 			this.generatedClasses = generatedClasses;
 			this.generatedSrc = generatedSrc;
+			return this;
+		}
+
+		public IwantSrcModuleSpex generatorSourcesToFollow(
+				Source... generatorSourcesToFollow) {
+			this.generatorSourcesToFollow.addAll(Arrays
+					.asList(generatorSourcesToFollow));
 			return this;
 		}
 
@@ -302,6 +315,10 @@ public class JavaSrcModule extends JavaModule {
 			return "";
 		}
 		return locationUnderWsRoot.replaceFirst("/[^/]*$", "");
+	}
+
+	public List<Source> generatorSourcesToFollow() {
+		return generatorSourcesToFollow;
 	}
 
 	@Override
