@@ -12,7 +12,7 @@ public class JavaSrcModuleTest extends TestCase {
 		assertEquals("m2", JavaSrcModule.with().name("m2").end().toString());
 	}
 
-	public void testParentDirectoryNormalization() {
+	public void testParentDirectoryNormalizationAffectsLocationUnderWsRoot() {
 		assertEquals("a", JavaSrcModule.with().name("a").end()
 				.locationUnderWsRoot());
 		assertEquals("a", JavaSrcModule.with().name("a").relativeParentDir("")
@@ -23,6 +23,23 @@ public class JavaSrcModuleTest extends TestCase {
 		assertEquals("dir/a",
 				JavaSrcModule.with().name("a").relativeParentDir("dir/").end()
 						.locationUnderWsRoot());
+	}
+
+	public void testParentDirectoryNormalizationAffectsWsrootRelativeParentDir() {
+		assertEquals("", JavaSrcModule.with().name("a").end()
+				.wsrootRelativeParentDir());
+		assertEquals("", JavaSrcModule.with().name("a").relativeParentDir("")
+				.end().wsrootRelativeParentDir());
+		assertEquals("dir",
+				JavaSrcModule.with().name("a").relativeParentDir("dir").end()
+						.wsrootRelativeParentDir());
+		assertEquals("dir",
+				JavaSrcModule.with().name("a").relativeParentDir("dir/").end()
+						.wsrootRelativeParentDir());
+
+		assertEquals("dir1/dir2", JavaSrcModule.with().name("proj-name")
+				.locationUnderWsRoot("dir1/dir2/proj").end()
+				.wsrootRelativeParentDir());
 	}
 
 	public void testRelativeWsRoot() {

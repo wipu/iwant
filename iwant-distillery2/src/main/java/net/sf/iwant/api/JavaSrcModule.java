@@ -296,6 +296,14 @@ public class JavaSrcModule extends JavaModule {
 		return locationUnderWsRoot;
 	}
 
+	public String wsrootRelativeParentDir() {
+		String loc = locationUnderWsRoot();
+		if (loc.indexOf("/") < 0) {
+			return "";
+		}
+		return locationUnderWsRoot.replaceFirst("/[^/]*$", "");
+	}
+
 	@Override
 	public String toString() {
 		return name;

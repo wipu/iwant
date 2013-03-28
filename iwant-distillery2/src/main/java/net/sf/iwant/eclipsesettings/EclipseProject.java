@@ -59,8 +59,9 @@ public class EclipseProject {
 
 	public EclipseAntScript eclipseAntScript(String asSomeone) {
 		return hasExternalBuilder() ? new EclipseAntScript(module.name(),
-				module.relativeWsRoot(), module.generatedClasses().name(),
-				module.generatedSrc().name(), asSomeone) : null;
+				module.relativeWsRoot(), module.wsrootRelativeParentDir(),
+				module.generatedClasses().name(), module.generatedSrc().name(),
+				asSomeone) : null;
 	}
 
 	public OrgEclipseJdtCorePrefs orgEclipseJdtCorePrefs() {

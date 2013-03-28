@@ -2,16 +2,19 @@ package net.sf.iwant.eclipsesettings;
 
 public class EclipseAntScript {
 
-	private String projectName;
-	private String relativeBasedir;
-	private String classesTargetName;
-	private String srcTargetName;
-	private String asSomeone;
+	private final String projectName;
+	private final String relativeBasedir;
+	private final String basedirRelativeParentDir;
+	private final String classesTargetName;
+	private final String srcTargetName;
+	private final String asSomeone;
 
 	public EclipseAntScript(String projectName, String relativeBasedir,
-			String classesTargetName, String srcTargetName, String asSomeone) {
+			String basedirRelativeParentDir, String classesTargetName,
+			String srcTargetName, String asSomeone) {
 		this.projectName = projectName;
 		this.relativeBasedir = relativeBasedir;
+		this.basedirRelativeParentDir = basedirRelativeParentDir;
 		this.classesTargetName = classesTargetName;
 		this.srcTargetName = srcTargetName;
 		this.asSomeone = asSomeone;
@@ -23,6 +26,10 @@ public class EclipseAntScript {
 
 	public String relativeBasedir() {
 		return relativeBasedir;
+	}
+
+	public String basedirRelativeParentDir() {
+		return basedirRelativeParentDir;
 	}
 
 	public String srcTargetName() {
@@ -45,7 +52,8 @@ public class EclipseAntScript {
 		b.append("\n");
 		b.append("        <property name=\"project-name\" value=\""
 				+ projectName() + "\" />\n");
-		b.append("        <property name=\"project-parent\" location=\"${basedir}\" />\n");
+		b.append("        <property name=\"project-parent\" location=\"${basedir}"
+				+ projectParentString() + "\" />\n");
 		b.append("\n");
 		b.append("        <property name=\"as-someone\" location=\"${basedir}/"
 				+ asSomeone() + "\" />\n");
@@ -82,6 +90,14 @@ public class EclipseAntScript {
 		b.append("\n");
 		b.append("</project>\n");
 		return b.toString();
+	}
+
+	private String projectParentString() {
+		if ("".equals(basedirRelativeParentDir)) {
+			return "";
+		} else {
+			return "/" + basedirRelativeParentDir;
+		}
 	}
 
 }

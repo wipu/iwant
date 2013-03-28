@@ -281,12 +281,13 @@ public class EclipseProjectTest extends TestCase {
 
 		assertEquals("code-generating-module", antScript.projectName());
 		assertEquals("..", antScript.relativeBasedir());
+		assertEquals("", antScript.basedirRelativeParentDir());
 		assertEquals("generated-src", antScript.srcTargetName());
 		assertEquals("generated-classes", antScript.classesTargetName());
 		assertEquals("as-ws-developer", antScript.asSomeone());
 	}
 
-	public void testEclipseAntScriptHasCorrectBasedirWhenModuleIsNotDirectlyUnderWsRoot() {
+	public void testEclipseAntScriptHasCorrectBasedirAndParentDirWhenModuleIsNotDirectlyUnderWsRoot() {
 		Target generatedSrc = new HelloTarget("generated-src",
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
@@ -302,6 +303,7 @@ public class EclipseProjectTest extends TestCase {
 				.eclipseAntScript("as-ws-developer");
 
 		assertEquals("../../..", antScript.relativeBasedir());
+		assertEquals("subdir1/subdir2", antScript.basedirRelativeParentDir());
 	}
 
 	// compiler warnings

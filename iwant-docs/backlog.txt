@@ -545,6 +545,8 @@
 
 + @enhancement: use JavaSrcModule as type for wsdefdef and wsdef
 
++ @bugfix: corret parent dir for EclipseAntScript, currently it's always ${basedir}
+
 #################################################################
 = In progress
 #################################################################
