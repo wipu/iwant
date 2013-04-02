@@ -561,6 +561,7 @@
     * hardcoded ClassNameList to pass this test
   - implement ClassNameList that
     + reads the names from a given classes directory
+    + excludes non classes automatically
     - filters names by regex
       - matches(".*Test$")
       - doesNotMatch(".*\.Abstract[^.]*Test$"

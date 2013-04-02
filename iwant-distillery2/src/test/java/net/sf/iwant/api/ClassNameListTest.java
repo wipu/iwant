@@ -118,4 +118,19 @@ public class ClassNameListTest extends TestCase {
 		assertEquals("A\nb.B\nc.subc.C\n", testArea.contentOf(ctx.cached(list)));
 	}
 
+	public void testNonClassFilesAreExcludedAutomatically() throws Exception {
+		testArea.newDir("classes");
+		testArea.hasFile("classes/A.notclass", "whatever");
+		testArea.hasFile("classes/b/B1.class", "whatever");
+		testArea.hasFile("classes/b/B2.notclass", "whatever");
+		testArea.hasFile("classes/c/subc/C1.class", "whatever");
+		testArea.hasFile("classes/c/subc/C2.notclass", "whatever");
+
+		ClassNameList list = ClassNameList.with().name("list")
+				.classes(Source.underWsroot("classes")).end();
+		list.path(ctx);
+
+		assertEquals("b.B1\nc.subc.C1\n", testArea.contentOf(ctx.cached(list)));
+	}
+
 }

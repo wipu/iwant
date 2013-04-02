@@ -76,10 +76,16 @@ public class ClassNameList extends Target {
 			if (child.isDirectory()) {
 				classNames.addAll(fileNamesUnder(child, childName));
 			} else {
-				classNames.add(childName);
+				if (isFileAClassFile(child)) {
+					classNames.add(childName);
+				}
 			}
 		}
 		return classNames;
+	}
+
+	private static boolean isFileAClassFile(File file) {
+		return file.getName().endsWith(".class");
 	}
 
 	private static String fullName(String parentName, String name) {
