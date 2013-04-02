@@ -46,14 +46,6 @@ public class IwantNetworkMock implements IwantNetwork {
 		return cachesAt(src, new File(testArea.root(), pathInTestArea));
 	}
 
-	public void cachesUrlAt(String url, String pathInTestArea) {
-		try {
-			cachesUrlAt(new URL(url), pathInTestArea);
-		} catch (MalformedURLException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
-
 	public File cachesUrlAt(URL url, String pathInTestArea) {
 		return cachesAt(new UnmodifiableUrl(url), pathInTestArea);
 	}
@@ -110,13 +102,6 @@ public class IwantNetworkMock implements IwantNetwork {
 
 		UnmodifiableZip zip = new UnmodifiableZip(Iwant.fileToUrl(downloaded));
 		cachesAt(zip, iwant.unmodifiableZipUnzipped(zip));
-	}
-
-	@Override
-	public String toString() {
-		return "IwantNetworkMock [testArea=" + testArea
-				+ ", cachedUnmodifiables=" + cachedUnmodifiables
-				+ ", junitUrl=" + junitUrl + ", svnkitUrl=" + svnkitUrl + "]";
 	}
 
 }
