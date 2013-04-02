@@ -555,6 +555,16 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want to measure coverage by running junit on a list of dynamically found test classes so I don't have to use a suite
+  - test passing argument list as a Path to a file that lists the arguments as lines
+  - create and use ClassNameList as the argument path
+  - implement ClassNameList that
+    - reads the names from a given classes directory
+    - filters names by regex
+      - matches(".*Test$")
+      - doesNotMatch(".*\.Abstract[^.]*Test$"
+      
+
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!
   + cleanup closing in StreamUtil and FileUtil
