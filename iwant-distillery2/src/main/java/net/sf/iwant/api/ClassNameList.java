@@ -10,11 +10,13 @@ import net.sf.iwant.entry.Iwant;
 
 public class ClassNameList extends Target {
 
-	private Path classes;
+	private final Path classes;
+	private final StringFilter filter;
 
-	public ClassNameList(String name, Path classes) {
+	public ClassNameList(String name, Path classes, StringFilter filter) {
 		super(name);
 		this.classes = classes;
+		this.filter = filter;
 	}
 
 	public static ClassNameListSpex with() {
@@ -25,6 +27,7 @@ public class ClassNameList extends Target {
 
 		private String name;
 		private Path classes;
+		private StringFilter filter;
 
 		public ClassNameListSpex name(String name) {
 			this.name = name;
@@ -36,8 +39,13 @@ public class ClassNameList extends Target {
 			return this;
 		}
 
+		public ClassNameListSpex matching(StringFilter filter) {
+			this.filter = filter;
+			return this;
+		}
+
 		public ClassNameList end() {
-			return new ClassNameList(name, classes);
+			return new ClassNameList(name, classes, filter);
 		}
 
 	}
@@ -56,10 +64,19 @@ public class ClassNameList extends Target {
 		StringBuilder out = new StringBuilder();
 		for (String fileName : fileNames) {
 			String className = toClassName(fileName);
-			out.append(className).append("\n");
+			if (isAcceptedByFilter(className)) {
+				out.append(className).append("\n");
+			}
 		}
 
 		Iwant.newTextFile(ctx.cached(this), out.toString());
+	}
+
+	private boolean isAcceptedByFilter(String className) {
+		if (filter == null) {
+			return true;
+		}
+		return filter.matches(className);
 	}
 
 	private static String toClassName(String fileName) {
@@ -102,6 +119,9 @@ public class ClassNameList extends Target {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getCanonicalName()).append(" {\n");
 		b.append("  classes:").append(classes).append("\n");
+		if (filter != null) {
+			b.append("  filter:").append(filter).append("\n");
+		}
 		b.append("}\n");
 		return b.toString();
 	}

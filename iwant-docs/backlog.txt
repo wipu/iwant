@@ -551,21 +551,18 @@
 
 + @enhancement: As @buildscriptauthor I want to use an optional filter file for emma instrumentation so my coverage won't be too low because of some code that is not really production code under my control
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I want to measure coverage by running junit on a list of dynamically found test classes so I don't have to use a suite
++ As @buildscriptauthor I want to measure coverage by running junit on a list of dynamically found test classes so I don't have to use a suite
   + test passing argument list as a Path to a file that lists the arguments as lines
   + create and use ClassNameList as the argument path
     * hardcoded ClassNameList to pass this test
-  - implement ClassNameList that
+  + implement ClassNameList that
     + reads the names from a given classes directory
     + excludes non classes automatically
-    - filters names by regex
-      - matches(".*Test$")
-      - doesNotMatch(".*\.Abstract[^.]*Test$"
-      
+    + filters names using given StringFilter
+
+#################################################################
+= In progress
+#################################################################
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!
