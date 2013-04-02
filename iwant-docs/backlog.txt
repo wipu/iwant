@@ -560,7 +560,7 @@
   + create and use ClassNameList as the argument path
     * hardcoded ClassNameList to pass this test
   - implement ClassNameList that
-    - reads the names from a given classes directory
+    + reads the names from a given classes directory
     - filters names by regex
       - matches(".*Test$")
       - doesNotMatch(".*\.Abstract[^.]*Test$"
