@@ -361,4 +361,78 @@ public class EmmaCoverageTest extends TestCase {
 				.exists());
 	}
 
+	public void testJunitRunOfDynamicallyFoundClassNameList() throws Exception {
+		File srcDir = new File(wsRoot, "src");
+		StringBuilder aJava = new StringBuilder();
+		aJava.append("public class A {\n");
+		aJava.append("  public static String hello(String caller) {");
+		aJava.append("    System.err.println(\"A called by \"+caller);\n");
+		aJava.append("    return \"hello \"+caller;\n");
+		aJava.append("  }\n");
+		aJava.append("}\n");
+		Iwant.newTextFile(new File(srcDir, "A.java"), aJava.toString());
+
+		File testsDir = new File(wsRoot, "tests");
+		StringBuilder aTestJava = new StringBuilder();
+		aTestJava.append("import static org.junit.Assert.assertEquals;\n");
+		aTestJava.append("import org.junit.Test;\n");
+		aTestJava.append("public class ATest {\n");
+		aTestJava.append("  @Test\n");
+		aTestJava.append("  public void a() {\n");
+		aTestJava
+				.append("    assertEquals(\"hello ATest\", A.hello(\"ATest\"));\n");
+		aTestJava.append("  }\n");
+		aTestJava.append("}\n");
+		Iwant.newTextFile(new File(testsDir, "ATest.java"),
+				aTestJava.toString());
+
+		StringBuilder bTestJava = new StringBuilder();
+		bTestJava.append("import static org.junit.Assert.assertEquals;\n");
+		bTestJava.append("import org.junit.Test;\n");
+		bTestJava.append("public class BTest {\n");
+		bTestJava.append("  @Test\n");
+		bTestJava.append("  public void b() {\n");
+		bTestJava
+				.append("    assertEquals(\"hello BTest\", A.hello(\"BTest\"));\n");
+		bTestJava.append("  }\n");
+		bTestJava.append("}\n");
+		Iwant.newTextFile(new File(testsDir, "BTest.java"),
+				bTestJava.toString());
+
+		Path src = Source.underWsroot("src");
+		JavaClasses mainClasses = JavaClasses.with().name("classes")
+				.srcDirs(src).classLocations().end();
+		mainClasses.path(ctx);
+		JavaClasses testClasses = JavaClasses.with().name("test-classes")
+				.srcDirs(Source.underWsroot("tests"))
+				.classLocations(mainClasses, junit()).end();
+		testClasses.path(ctx);
+
+		JavaClassesAndSources classesAndSources = new JavaClassesAndSources(
+				mainClasses, Arrays.asList(src));
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.using(emma());
+		instr.path(ctx);
+
+		ClassNameList testClassNames = ClassNameList.with()
+				.name("test-class-names").classes(testClasses).end();
+		testClassNames.path(ctx);
+
+		EmmaCoverage coverage = EmmaCoverage
+				.with()
+				.name("instrtest-emma-coverage")
+				.antJars(antJar(), antLauncherJar())
+				.emma(emma())
+				.mainClassAndArguments("org.junit.runner.JUnitCore",
+						testClassNames).instrumentations(instr)
+				.nonInstrumentedClasses(testClasses, junit()).end();
+		coverage.path(ctx);
+
+		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+				.exists());
+
+		assertTrue(err().contains("A called by ATest\n"));
+		assertTrue(err().contains("A called by BTest\n"));
+	}
+
 }

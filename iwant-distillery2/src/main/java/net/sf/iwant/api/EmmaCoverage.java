@@ -125,6 +125,9 @@ public class EmmaCoverage extends Target {
 
 		File ec = coverageFile(ctx);
 
+		List<String> mainArgsToUse = mainArgsToUse(ctx);
+		System.err.println(mainClass + " " + mainArgsToUse);
+
 		StringBuilder script = new StringBuilder();
 		script.append("<project name='emma-coverage' default='emma-coverage'>\n");
 		script.append("  <target name='emma-coverage'>\n");
@@ -138,7 +141,9 @@ public class EmmaCoverage extends Target {
 		script.append("      <sysproperty key='emma.coverage.out.file' value='")
 				.append(ec.getCanonicalPath()).append("' />\n");
 
-		appendMainArgs(script, ctx);
+		for (String arg : mainArgsToUse) {
+			script.append("      <arg value='").append(arg).append("' />\n");
+		}
 
 		script.append("      <classpath>\n");
 		for (EmmaInstrumentation instrumentation : instrumentations) {
@@ -171,27 +176,18 @@ public class EmmaCoverage extends Target {
 		AntGenerated.runAnt(cachedAntJars, scriptFile);
 	}
 
-	private void appendMainArgs(StringBuilder script,
-			TargetEvaluationContext ctx) {
-		if (mainClassArgumentsFile != null) {
-			appendMainArgsFromFile(script, ctx.cached(mainClassArgumentsFile));
+	private List<String> mainArgsToUse(TargetEvaluationContext ctx) {
+		if (mainClassArgumentsFile == null) {
+			return mainClassArguments;
 		} else {
-			appendMainArgs(script, mainClassArguments);
+			return mainArgsFromFile(ctx.cached(mainClassArgumentsFile));
 		}
 	}
 
-	private static void appendMainArgsFromFile(StringBuilder script,
-			File argumentsFile) {
+	private static List<String> mainArgsFromFile(File argumentsFile) {
 		String content = FileUtil.contentAsString(argumentsFile);
 		String[] lines = content.split("\n");
-		appendMainArgs(script, Arrays.asList(lines));
-	}
-
-	private static void appendMainArgs(StringBuilder script,
-			List<String> arguments) {
-		for (String arg : arguments) {
-			script.append("      <arg value='").append(arg).append("' />\n");
-		}
+		return Arrays.asList(lines);
 	}
 
 	public File coverageFile(TargetEvaluationContext ctx) {

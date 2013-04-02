@@ -557,7 +557,8 @@
 
 - As @buildscriptauthor I want to measure coverage by running junit on a list of dynamically found test classes so I don't have to use a suite
   + test passing argument list as a Path to a file that lists the arguments as lines
-  - create and use ClassNameList as the argument path
+  + create and use ClassNameList as the argument path
+    * hardcoded ClassNameList to pass this test
   - implement ClassNameList that
     - reads the names from a given classes directory
     - filters names by regex
