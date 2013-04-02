@@ -107,7 +107,8 @@ public class EmmaInstrumentationTest extends TestCase {
 						.using(emma()).name());
 	}
 
-	public void testIngredientsAreEmmaAndTheClasses() throws IOException {
+	public void testIngredientsAreEmmaAndTheClassesIfNoFilter()
+			throws IOException {
 		assertEquals(
 				"[" + emma() + ", one]",
 				EmmaInstrumentation
@@ -121,6 +122,18 @@ public class EmmaInstrumentationTest extends TestCase {
 						.of(new JavaClassesAndSources(
 								Source.underWsroot("two"), Source
 										.underWsroot("irrelevant")))
+						.using(emma()).ingredients().toString());
+	}
+
+	public void testIngredientsAreEmmaAndTheClassesAndTheFilterIfTherIsOne()
+			throws IOException {
+		assertEquals(
+				"[" + emma() + ", one, emma-filter.txt]",
+				EmmaInstrumentation
+						.of(new JavaClassesAndSources(
+								Source.underWsroot("one"), Source
+										.underWsroot("irrelevant")))
+						.filter(Source.underWsroot("emma-filter.txt"))
 						.using(emma()).ingredients().toString());
 	}
 
@@ -155,7 +168,39 @@ public class EmmaInstrumentationTest extends TestCase {
 				+ "/please-override-when-running-tests.ec\n",
 				testArea.contentOf(new File(instrDir, "emma-instr.properties")));
 		assertTrue(new File(instrDir, "emma.em").exists());
-		assertTrue(new File(instrDir, "instr-classes").exists());
+		assertTrue(new File(instrDir, "instr-classes/Hello.class").exists());
+	}
+
+	public void testLeavingClassByNameUninstrumentedByUsingAFilterFile()
+			throws Exception {
+		String srcDirString = "src";
+		File srcDir = new File(wsRoot, srcDirString);
+		Iwant.newTextFile(new File(srcDir, "toinstrument/ToInstrument.java"),
+				"package toinstrument;\npublic class ToInstrument {}\n");
+		Iwant.newTextFile(new File(srcDir,
+				"nottoinstrument/NotToInstrument.java"),
+				"package nottoinstrument;\npublic class NotToInstrument {}\n");
+		JavaClasses classes = JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot(srcDirString)).classLocations()
+				.end();
+		classes.path(ctx);
+		JavaClassesAndSources classesAndSources = new JavaClassesAndSources(
+				classes, Source.underWsroot(srcDirString));
+
+		String filterFileString = "emma-filter.txt";
+		Iwant.newTextFile(new File(wsRoot, filterFileString),
+				"-nottoinstrument.*\n");
+
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.filter(Source.underWsroot(filterFileString)).using(emma());
+
+		instr.path(ctx);
+		File instrDir = new File(cacheDir, "classes.emma-instr");
+
+		assertTrue(new File(instrDir,
+				"instr-classes/toinstrument/ToInstrument.class").exists());
+		assertFalse(new File(instrDir,
+				"instr-classes/nottoinstrument/NotToInstrument.class").exists());
 	}
 
 	/**

@@ -549,6 +549,8 @@
 
 + @enhancement: As @buildscriptauthor I want to declare explicit sources to follow when my code-generating module generates the sources by running a java program so that the eclipse project refreshes automatically
 
++ @enhancement: As @buildscriptauthor I want to use an optional filter file for emma instrumentation so my coverage won't be too low because of some code that is not really production code under my control
+
 #################################################################
 = In progress
 #################################################################

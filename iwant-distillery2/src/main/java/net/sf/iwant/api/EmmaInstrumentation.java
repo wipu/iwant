@@ -3,7 +3,6 @@ package net.sf.iwant.api;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.sf.iwant.entry.Iwant;
@@ -12,12 +11,14 @@ public class EmmaInstrumentation extends Target {
 
 	private final Path emma;
 	private final JavaClassesAndSources classesAndSources;
+	private final Path filter;
 
 	public EmmaInstrumentation(JavaClassesAndSources classesAndSources,
-			Path emma) {
+			Path emma, Path filter) {
 		super(classesAndSources.name() + ".emma-instr");
 		this.classesAndSources = classesAndSources;
 		this.emma = emma;
+		this.filter = filter;
 	}
 
 	public static EmmaInstrumentationUsing of(
@@ -28,13 +29,19 @@ public class EmmaInstrumentation extends Target {
 	public static class EmmaInstrumentationUsing {
 
 		private final JavaClassesAndSources classesAndSources;
+		private Path filter;
 
 		public EmmaInstrumentationUsing(JavaClassesAndSources classesAndSources) {
 			this.classesAndSources = classesAndSources;
 		}
 
+		public EmmaInstrumentationUsing filter(Path filter) {
+			this.filter = filter;
+			return this;
+		}
+
 		public EmmaInstrumentation using(Path emma) {
-			return new EmmaInstrumentation(classesAndSources, emma);
+			return new EmmaInstrumentation(classesAndSources, emma, filter);
 		}
 
 	}
@@ -60,9 +67,19 @@ public class EmmaInstrumentation extends Target {
 		File cachedClasses = ctx.cached(classesAndSources.classes());
 		File cachedEmma = ctx.cached(emma);
 
-		runEmma(cachedEmma, "instr", "-d", instrClasses.getCanonicalPath(),
-				"-properties", instrProps.getCanonicalPath(), "-ip",
-				cachedClasses.getCanonicalPath());
+		List<String> emmaArgs = new ArrayList<String>();
+		emmaArgs.add("instr");
+		emmaArgs.add("-d");
+		emmaArgs.add(instrClasses.getCanonicalPath());
+		emmaArgs.add("-properties");
+		emmaArgs.add(instrProps.getCanonicalPath());
+		emmaArgs.add("-ip");
+		emmaArgs.add(cachedClasses.getCanonicalPath());
+		if (filter != null) {
+			emmaArgs.add("-filter");
+			emmaArgs.add("@" + ctx.cached(filter).getCanonicalPath());
+		}
+		runEmma(cachedEmma, emmaArgs.toArray(new String[0]));
 	}
 
 	public File metadataFile(TargetEvaluationContext ctx) {
@@ -81,7 +98,13 @@ public class EmmaInstrumentation extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		return Arrays.asList(emma, classesAndSources.classes());
+		List<Path> ingredients = new ArrayList<Path>();
+		ingredients.add(emma);
+		ingredients.add(classesAndSources.classes());
+		if (filter != null) {
+			ingredients.add(filter);
+		}
+		return ingredients;
 	}
 
 	@Override
