@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry3.FileUtil;
 
 public class EmmaCoverage extends Target {
 
@@ -15,11 +16,13 @@ public class EmmaCoverage extends Target {
 	private final List<Path> antJars;
 	private final String mainClass;
 	private final List<String> mainClassArguments;
+	private final Path mainClassArgumentsFile;
 	private final List<EmmaInstrumentation> instrumentations;
 	private final List<Path> nonInstrumentedDeps;
 
 	public EmmaCoverage(String name, Path emma, List<Path> antJars,
 			String mainClass, List<String> mainClassArguments,
+			Path mainClassArgumentsFile,
 			List<EmmaInstrumentation> instrumentations,
 			List<Path> nonInstrumentedDeps) {
 		super(name);
@@ -27,6 +30,7 @@ public class EmmaCoverage extends Target {
 		this.antJars = antJars;
 		this.mainClass = mainClass;
 		this.mainClassArguments = mainClassArguments;
+		this.mainClassArgumentsFile = mainClassArgumentsFile;
 		this.instrumentations = instrumentations;
 		this.nonInstrumentedDeps = nonInstrumentedDeps;
 	}
@@ -44,6 +48,7 @@ public class EmmaCoverage extends Target {
 		private List<String> mainClassArguments;
 		private final List<EmmaInstrumentation> instrumentations = new ArrayList<EmmaInstrumentation>();
 		private final List<Path> nonInstrumentedDeps = new ArrayList<Path>();
+		private Path mainClassArgumentsFile;
 
 		public EmmaCoverageSpex name(String name) {
 			this.name = name;
@@ -71,6 +76,13 @@ public class EmmaCoverage extends Target {
 			return this;
 		}
 
+		public EmmaCoverageSpex mainClassAndArguments(String mainClass,
+				Path mainClassArgumentsFile) {
+			this.mainClass = mainClass;
+			this.mainClassArgumentsFile = mainClassArgumentsFile;
+			return this;
+		}
+
 		public EmmaCoverageSpex instrumentations(
 				EmmaInstrumentation... instrumentations) {
 			this.instrumentations.addAll(Arrays.asList(instrumentations));
@@ -90,7 +102,8 @@ public class EmmaCoverage extends Target {
 
 		public EmmaCoverage end() {
 			return new EmmaCoverage(name, emma, antJars, mainClass,
-					mainClassArguments, instrumentations, nonInstrumentedDeps);
+					mainClassArguments, mainClassArgumentsFile,
+					instrumentations, nonInstrumentedDeps);
 		}
 
 	}
@@ -125,9 +138,7 @@ public class EmmaCoverage extends Target {
 		script.append("      <sysproperty key='emma.coverage.out.file' value='")
 				.append(ec.getCanonicalPath()).append("' />\n");
 
-		for (String arg : mainClassArguments) {
-			script.append("      <arg value='").append(arg).append("' />\n");
-		}
+		appendMainArgs(script, ctx);
 
 		script.append("      <classpath>\n");
 		for (EmmaInstrumentation instrumentation : instrumentations) {
@@ -160,6 +171,29 @@ public class EmmaCoverage extends Target {
 		AntGenerated.runAnt(cachedAntJars, scriptFile);
 	}
 
+	private void appendMainArgs(StringBuilder script,
+			TargetEvaluationContext ctx) {
+		if (mainClassArgumentsFile != null) {
+			appendMainArgsFromFile(script, ctx.cached(mainClassArgumentsFile));
+		} else {
+			appendMainArgs(script, mainClassArguments);
+		}
+	}
+
+	private static void appendMainArgsFromFile(StringBuilder script,
+			File argumentsFile) {
+		String content = FileUtil.contentAsString(argumentsFile);
+		String[] lines = content.split("\n");
+		appendMainArgs(script, Arrays.asList(lines));
+	}
+
+	private static void appendMainArgs(StringBuilder script,
+			List<String> arguments) {
+		for (String arg : arguments) {
+			script.append("      <arg value='").append(arg).append("' />\n");
+		}
+	}
+
 	public File coverageFile(TargetEvaluationContext ctx) {
 		return new File(ctx.cached(this), "coverage.ec");
 	}
@@ -171,6 +205,9 @@ public class EmmaCoverage extends Target {
 		ingredients.add(emma);
 		ingredients.addAll(instrumentations);
 		ingredients.addAll(nonInstrumentedDeps);
+		if (mainClassArgumentsFile != null) {
+			ingredients.add(mainClassArgumentsFile);
+		}
 		return ingredients;
 	}
 

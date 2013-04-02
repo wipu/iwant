@@ -143,6 +143,21 @@ public class EmmaCoverageTest extends TestCase {
 				.ingredients().toString());
 	}
 
+	public void testMainClassArgumentPathIsAnIngredient() throws Exception {
+		Path args = Source.underWsroot("args");
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "Hello");
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.using(emma());
+		EmmaCoverage coverage = EmmaCoverage.with()
+				.name("instrtest-emma-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("Hello", args).instrumentations(instr)
+				.nonInstrumentedClasses(junit()).end();
+
+		assertTrue(coverage.ingredients().contains(args));
+	}
+
 	public void testDescriptor() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Hello");
@@ -254,6 +269,31 @@ public class EmmaCoverageTest extends TestCase {
 				.exists());
 
 		assertTrue(err().contains("args:[arg1, arg2]\n"));
+	}
+
+	public void testArgumentsToMainClassAsPath() throws Exception {
+		Target args = new HelloTarget("args",
+				"arg1 from file\narg2 from file\n");
+		args.path(ctx);
+
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "ArgPrinter",
+				"System.err.println(\"args:\"+java.util.Arrays.toString(args));");
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.using(emma());
+		instr.path(ctx);
+
+		EmmaCoverage coverage = EmmaCoverage.with()
+				.name("instrtest-emma-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("ArgPrinter", args)
+				.instrumentations(instr).end();
+		coverage.path(ctx);
+
+		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+				.exists());
+
+		assertTrue(err().contains("args:[arg1 from file, arg2 from file]\n"));
 	}
 
 	public void testNonInstrumentedDependency() throws Exception {
