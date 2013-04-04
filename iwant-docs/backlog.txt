@@ -566,13 +566,13 @@
 
 + @enhancement: As @buildscriptauthor I want EmmaCoverage to use jvmargs I pass to it so I can increase permgenspace etc for big test runs
 
++ @enhancement: Add permgen and heap in help.sh, might be that EmmaCoverage is not the issue
+  + do it
+  + test in the real project that currently fails
+
 #################################################################
 = In progress
 #################################################################
-
-- @enhancement: Add permgen and heap in help.sh, might be that EmmaCoverage is not the issue
-  + do it
-  - test in the real project that currently fails
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!
