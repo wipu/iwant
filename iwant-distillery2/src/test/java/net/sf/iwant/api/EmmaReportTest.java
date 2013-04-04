@@ -57,6 +57,11 @@ public class EmmaReportTest extends TestCase {
 	protected void tearDown() throws Exception {
 		System.setErr(oldErr);
 		System.setOut(oldOut);
+		System.err.println(err());
+	}
+
+	private String err() {
+		return err.toString();
 	}
 
 	private Path downloaded(Path downloaded) throws IOException {
@@ -148,6 +153,39 @@ public class EmmaReportTest extends TestCase {
 
 		EmmaReport report = EmmaReport.with().name("report").emma(emma())
 				.instrumentations(instr).coverages(coverage).end();
+		report.path(ctx);
+
+		assertTrue(new File(ctx.cached(report), "coverage.txt").exists());
+		assertTrue(new File(ctx.cached(report), "coverage/index.html").exists());
+	}
+
+	public void testFilteredOutModuleDoesNotBreakReportBuilding()
+			throws Exception {
+		String filterFileString = "emma-filter.txt";
+		Iwant.newTextFile(new File(wsRoot, filterFileString), "-Filtered\n");
+		Path filter = Source.underWsroot(filterFileString);
+
+		JavaClassesAndSources cs1 = newJavaClassesAndSources("filtered",
+				"Filtered");
+		EmmaInstrumentation instr1 = EmmaInstrumentation.of(cs1).filter(filter)
+				.using(emma());
+		instr1.path(ctx);
+
+		JavaClassesAndSources cs2 = newJavaClassesAndSources("nonfiltered",
+				"NonFiltered");
+		EmmaInstrumentation instr2 = EmmaInstrumentation.of(cs2).filter(filter)
+				.using(emma());
+		instr2.path(ctx);
+
+		EmmaCoverage coverage = EmmaCoverage.with()
+				.name("instrtest-emma-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("NonFiltered")
+				.instrumentations(instr1, instr2).end();
+		coverage.path(ctx);
+
+		EmmaReport report = EmmaReport.with().name("report").emma(emma())
+				.instrumentations(instr1, instr2).coverages(coverage).end();
 		report.path(ctx);
 
 		assertTrue(new File(ctx.cached(report), "coverage.txt").exists());

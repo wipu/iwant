@@ -560,6 +560,10 @@
     + excludes non classes automatically
     + filters names using given StringFilter
 
++ @bugfix: EmmaReport must not try to refer to missing em files that are caused by a filter filtering out a whole module
+  + test that EmmaInstrumentation really works like this, producing missing em file and empty instrumented classes
+  + test and fix EmmaReport to skip such a module
+
 #################################################################
 = In progress
 #################################################################

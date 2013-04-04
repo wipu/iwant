@@ -171,6 +171,38 @@ public class EmmaInstrumentationTest extends TestCase {
 		assertTrue(new File(instrDir, "instr-classes/Hello.class").exists());
 	}
 
+	/**
+	 * This is an unconvenient feature of emma, producing "null" instead of
+	 * "empty"
+	 */
+	public void testInstrumentationDoesNotCreateClassesNorMetafileAtAllIfFilterAppliesToAllClasses()
+			throws Exception {
+		String srcDirString = "src";
+		File srcDir = new File(wsRoot, srcDirString);
+		Iwant.newTextFile(new File(srcDir,
+				"nottoinstrument/NotToInstrument.java"),
+				"package nottoinstrument;\npublic class NotToInstrument {}\n");
+		JavaClasses classes = JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot(srcDirString)).classLocations()
+				.end();
+		classes.path(ctx);
+		JavaClassesAndSources classesAndSources = new JavaClassesAndSources(
+				classes, Source.underWsroot(srcDirString));
+
+		String filterFileString = "emma-filter.txt";
+		Iwant.newTextFile(new File(wsRoot, filterFileString),
+				"-nottoinstrument.*\n");
+
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.filter(Source.underWsroot(filterFileString)).using(emma());
+
+		instr.path(ctx);
+		File instrDir = new File(cacheDir, "classes.emma-instr");
+
+		assertEquals(0, new File(instrDir, "instr-classes").listFiles().length);
+		assertFalse(new File(instrDir, "emma.em").exists());
+	}
+
 	public void testLeavingClassByNameUninstrumentedByUsingAFilterFile()
 			throws Exception {
 		String srcDirString = "src";

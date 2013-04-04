@@ -98,8 +98,13 @@ public class EmmaReport extends Target {
 		reportArgs.add("-properties");
 		reportArgs.add(reportProps.getCanonicalPath());
 		for (EmmaInstrumentation instr : instrumentations) {
+			File em = instr.metadataFile(ctx);
+			if (!em.exists()) {
+				// the whole module seems to be filtered out
+				continue;
+			}
 			reportArgs.add("-in");
-			reportArgs.add(instr.metadataFile(ctx).getCanonicalPath());
+			reportArgs.add(em.getCanonicalPath());
 			for (Path source : instr.classesAndSources().sources()) {
 				reportArgs.add("-sp");
 				reportArgs.add(ctx.cached(source).getCanonicalPath());
