@@ -7,7 +7,7 @@ import net.sf.iwant.api.JavaSrcModule;
 public class WorkspaceProviderForIwant implements IwantWorkspaceProvider {
 
 	@Override
-	public JavaModule workspaceModule(JavaModule iwantApiClasses) {
+	public JavaSrcModule workspaceModule(JavaModule iwantApiClasses) {
 		return JavaSrcModule.with().name("iwant-workspace")
 				.locationUnderWsRoot("as-iwant-developer/i-have/wsdef")
 				.mainJava("src/main/java").mainDeps(iwantApiClasses).end();
