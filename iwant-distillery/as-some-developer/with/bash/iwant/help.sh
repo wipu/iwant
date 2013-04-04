@@ -26,4 +26,6 @@ CYG_SRC=$(cyg "$AS_SOMEONE/with/java/net/sf/iwant/entry/Iwant.java")
 javac -d "$CYG_CLASSES" "$CYG_SRC"
 
 java \
+  -Xmx1024m \
+  -XX:MaxPermSize=256m \
   -cp "$CYG_CLASSES" net.sf.iwant.entry.Iwant "$CYG_AS_SOMEONE" "$@"

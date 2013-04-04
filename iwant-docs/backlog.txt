@@ -570,6 +570,10 @@
 = In progress
 #################################################################
 
+- @enhancement: Add permgen and heap in help.sh, might be that EmmaCoverage is not the issue
+  + do it
+  - test in the real project that currently fails
+
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!
   + cleanup closing in StreamUtil and FileUtil
