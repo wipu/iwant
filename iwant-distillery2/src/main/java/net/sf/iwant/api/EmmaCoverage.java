@@ -19,12 +19,13 @@ public class EmmaCoverage extends Target {
 	private final Path mainClassArgumentsFile;
 	private final List<EmmaInstrumentation> instrumentations;
 	private final List<Path> nonInstrumentedDeps;
+	private final List<String> jvmargs;
 
 	public EmmaCoverage(String name, Path emma, List<Path> antJars,
 			String mainClass, List<String> mainClassArguments,
 			Path mainClassArgumentsFile,
 			List<EmmaInstrumentation> instrumentations,
-			List<Path> nonInstrumentedDeps) {
+			List<Path> nonInstrumentedDeps, List<String> jvmargs) {
 		super(name);
 		this.emma = emma;
 		this.antJars = antJars;
@@ -33,6 +34,7 @@ public class EmmaCoverage extends Target {
 		this.mainClassArgumentsFile = mainClassArgumentsFile;
 		this.instrumentations = instrumentations;
 		this.nonInstrumentedDeps = nonInstrumentedDeps;
+		this.jvmargs = jvmargs;
 	}
 
 	public static EmmaCoverageSpex with() {
@@ -49,6 +51,7 @@ public class EmmaCoverage extends Target {
 		private final List<EmmaInstrumentation> instrumentations = new ArrayList<EmmaInstrumentation>();
 		private final List<Path> nonInstrumentedDeps = new ArrayList<Path>();
 		private Path mainClassArgumentsFile;
+		private final List<String> jvmargs = new ArrayList<String>();
 
 		public EmmaCoverageSpex name(String name) {
 			this.name = name;
@@ -100,10 +103,15 @@ public class EmmaCoverage extends Target {
 			return this;
 		}
 
+		public EmmaCoverageSpex jvmArgs(String... jvmargs) {
+			this.jvmargs.addAll(Arrays.asList(jvmargs));
+			return this;
+		}
+
 		public EmmaCoverage end() {
 			return new EmmaCoverage(name, emma, antJars, mainClass,
 					mainClassArguments, mainClassArgumentsFile,
-					instrumentations, nonInstrumentedDeps);
+					instrumentations, nonInstrumentedDeps, jvmargs);
 		}
 
 	}
@@ -137,6 +145,10 @@ public class EmmaCoverage extends Target {
 		script.append("      fork='true'\n");
 		script.append("      failonerror='true'\n");
 		script.append("    >\n");
+
+		for (String jvmarg : jvmargs) {
+			script.append("      <jvmarg value=\"" + jvmarg + "\"/>\n");
+		}
 
 		script.append("      <sysproperty key='emma.coverage.out.file' value='")
 				.append(ec.getCanonicalPath()).append("' />\n");

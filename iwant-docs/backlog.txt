@@ -564,6 +564,8 @@
   + test that EmmaInstrumentation really works like this, producing missing em file and empty instrumented classes
   + test and fix EmmaReport to skip such a module
 
++ @enhancement: As @buildscriptauthor I want EmmaCoverage to use jvmargs I pass to it so I can increase permgenspace etc for big test runs
+
 #################################################################
 = In progress
 #################################################################
@@ -607,6 +609,8 @@
 - As @developer I don't want iwant tests rerun just because testarea was touched so that it gets rerun only when real sources were touched
 
 - As @buildscriptauthor I want an easy way to define EmmaCoverage that finds test classes by a source filename pattern so I don't have to define a TestSuite
+
+- @bugfix: As @buildscriptauthor I want iwant to xml escape jvmargs passed to EmmaCoverage so I don't have to do it
 
 - @bugfix: indirect ingredient check does not work with many instances of the same Path
   - see if it's time to make Path an abstract class that fixes equals,comparable,hashCode for good

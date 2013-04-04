@@ -435,4 +435,24 @@ public class EmmaCoverageTest extends TestCase {
 		assertTrue(err().contains("A called by BTest\n"));
 	}
 
+	public void testAntScriptUsesGivenJvmArgs() throws Exception {
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "Whatever");
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.using(emma());
+		instr.path(ctx);
+
+		EmmaCoverage coverage = EmmaCoverage.with().name("coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("Whatever").instrumentations(instr)
+				.jvmArgs("-Xmx1024m", "-XX:MaxPermSize=256m").end();
+		coverage.path(ctx);
+
+		String xml = testArea
+				.contentOf(new File(cacheDir, "coverage/build.xml"));
+
+		assertTrue(xml.contains("<jvmarg value=\"-Xmx1024m\"/>\n"));
+		assertTrue(xml.contains("<jvmarg value=\"-XX:MaxPermSize=256m\"/>\n"));
+	}
+
 }
