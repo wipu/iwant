@@ -1,11 +1,13 @@
 package net.sf.iwant.api;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry3.FileUtil;
 
 public class EmmaInstrumentation extends Target {
 
@@ -80,6 +82,40 @@ public class EmmaInstrumentation extends Target {
 			emmaArgs.add("@" + ctx.cached(filter).getCanonicalPath());
 		}
 		runEmma(cachedEmma, emmaArgs.toArray(new String[0]));
+
+		int nOfFileCopied = copyMissingFiles(cachedClasses, instrClasses);
+		System.err.println("Copied " + nOfFileCopied
+				+ " files emma excluded from instrumented classes.");
+	}
+
+	private int copyMissingFiles(File from, File to) throws IOException {
+		int count = 0;
+		for (File child : from.listFiles()) {
+			File toChild = new File(to, child.getName());
+			if (!toChild.exists()) {
+				count += copyRecursively(child, toChild);
+				continue;
+			}
+			if (child.isDirectory()) {
+				count += copyMissingFiles(child, toChild);
+			}
+		}
+		return count;
+	}
+
+	private int copyRecursively(File from, File to) throws IOException {
+		if (from.isDirectory()) {
+			int count = 0;
+			to.mkdir();
+			for (File child : from.listFiles()) {
+				File toChild = new File(to, child.getName());
+				count += copyRecursively(child, toChild);
+			}
+			return count;
+		} else {
+			FileUtil.copyFile(from, to);
+			return 1;
+		}
 	}
 
 	public File metadataFile(TargetEvaluationContext ctx) {

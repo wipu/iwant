@@ -4,11 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry3.CachesMock;
+import net.sf.iwant.entry3.FileUtil;
 import net.sf.iwant.testing.IwantEntry3TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
@@ -59,6 +61,11 @@ public class EmmaInstrumentationTest extends TestCase {
 	protected void tearDown() throws Exception {
 		System.setErr(oldErr);
 		System.setOut(oldOut);
+		System.err.println(err());
+	}
+
+	private String err() {
+		return err.toString();
 	}
 
 	private Path downloaded(Path downloaded) throws IOException {
@@ -172,16 +179,21 @@ public class EmmaInstrumentationTest extends TestCase {
 	}
 
 	/**
-	 * This is an unconvenient feature of emma, producing "null" instead of
-	 * "empty"
+	 * This is an inconvenient feature of emma, producing "null" instead of
+	 * "empty" for the metafile. EmmaInstrumentation works around another part
+	 * of the problem and copies the excluded classes (including always excluded
+	 * interfaces)
 	 */
-	public void testInstrumentationDoesNotCreateClassesNorMetafileAtAllIfFilterAppliesToAllClasses()
+	public void testInstrumentationDoesNotCreateMetafileAtAllIfFilterAppliesToAllClassesButItDoesContainFilteredOutClassesEvenInterfaces()
 			throws Exception {
 		String srcDirString = "src";
 		File srcDir = new File(wsRoot, srcDirString);
 		Iwant.newTextFile(new File(srcDir,
 				"nottoinstrument/NotToInstrument.java"),
 				"package nottoinstrument;\npublic class NotToInstrument {}\n");
+		Iwant.newTextFile(new File(srcDir,
+				"packagetoinstrument/AnInterface.java"),
+				"package packagetoinstrument;\npublic interface AnInterface {}\n");
 		JavaClasses classes = JavaClasses.with().name("classes")
 				.srcDirs(Source.underWsroot(srcDirString)).classLocations()
 				.end();
@@ -199,11 +211,14 @@ public class EmmaInstrumentationTest extends TestCase {
 		instr.path(ctx);
 		File instrDir = new File(cacheDir, "classes.emma-instr");
 
-		assertEquals(0, new File(instrDir, "instr-classes").listFiles().length);
 		assertFalse(new File(instrDir, "emma.em").exists());
+		assertTrue(new File(instrDir,
+				"instr-classes/nottoinstrument/NotToInstrument.class").exists());
+		assertTrue(new File(instrDir,
+				"instr-classes/packagetoinstrument/AnInterface.class").exists());
 	}
 
-	public void testLeavingClassByNameUninstrumentedByUsingAFilterFile()
+	public void testLeavingClassByNameUninstrumentedByUsingAFilterFileMeansTheExcludedClassIsJustCopiedFromClasses()
 			throws Exception {
 		String srcDirString = "src";
 		File srcDir = new File(wsRoot, srcDirString);
@@ -227,12 +242,20 @@ public class EmmaInstrumentationTest extends TestCase {
 				.filter(Source.underWsroot(filterFileString)).using(emma());
 
 		instr.path(ctx);
-		File instrDir = new File(cacheDir, "classes.emma-instr");
 
-		assertTrue(new File(instrDir,
-				"instr-classes/toinstrument/ToInstrument.class").exists());
-		assertFalse(new File(instrDir,
-				"instr-classes/nottoinstrument/NotToInstrument.class").exists());
+		File origIncluded = new File(ctx.cached(classes),
+				"toinstrument/ToInstrument.class");
+		File instrIncluded = new File(ctx.cached(instr),
+				"instr-classes/toinstrument/ToInstrument.class");
+		assertFalse(Arrays.equals(FileUtil.contentAsBytes(origIncluded),
+				FileUtil.contentAsBytes(instrIncluded)));
+
+		File origExcluded = new File(ctx.cached(classes),
+				"nottoinstrument/NotToInstrument.class");
+		File instrExcluded = new File(ctx.cached(instr),
+				"instr-classes/nottoinstrument/NotToInstrument.class");
+		assertTrue(Arrays.equals(FileUtil.contentAsBytes(origExcluded),
+				FileUtil.contentAsBytes(instrExcluded)));
 	}
 
 	/**

@@ -570,6 +570,10 @@
   + do it
   + test in the real project that currently fails
 
++ @enhancement: As @buildscriptuser I want EmmaInstrumentation to copy excluded files (interfaces and those defined by the filter) so I need to add a module only once in the classpath and I'm guaranteed to use instrumented classes always
+  * for example when deploying to a web application, you have no control over the order of jars in the classpath, meaning that noninstrumented classes may be used instead of instrumented ones
+  + recursively copy files that exist in classes but not in instr-classes
+
 #################################################################
 = In progress
 #################################################################
