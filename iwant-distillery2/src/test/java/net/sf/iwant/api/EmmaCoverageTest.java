@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.List;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
@@ -453,6 +454,34 @@ public class EmmaCoverageTest extends TestCase {
 
 		assertTrue(xml.contains("<jvmarg value=\"-Xmx1024m\"/>\n"));
 		assertTrue(xml.contains("<jvmarg value=\"-XX:MaxPermSize=256m\"/>\n"));
+	}
+
+	public void testAllClasspathItemsBothInstrumentedAndNonInstrumentedGoToClasspathInTheSpecifiedOrder()
+			throws Exception {
+		Path classes1 = Source.underWsroot("classes1");
+
+		JavaClassesAndSources cs1 = newJavaClassesAndSources("one", "One");
+		EmmaInstrumentation instr1 = EmmaInstrumentation.of(cs1).using(emma());
+		instr1.path(ctx);
+
+		Path classes2 = Source.underWsroot("classes2");
+
+		JavaClassesAndSources cs2 = newJavaClassesAndSources("two", "Two");
+		EmmaInstrumentation instr2 = EmmaInstrumentation.of(cs2).using(emma());
+		instr2.path(ctx);
+
+		EmmaCoverage coverage = EmmaCoverage.with()
+				.name("instrtest-emma-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("JunitReferrer")
+				.nonInstrumentedClasses(classes1).instrumentations(instr1)
+				.nonInstrumentedClasses(classes2).instrumentations(instr2)
+				.end();
+
+		List<Path> classpath = coverage.classPathIngredients();
+		assertEquals(
+				"[classes1, one-classes.emma-instr, classes2, two-classes.emma-instr]",
+				classpath.toString());
 	}
 
 }

@@ -17,23 +17,20 @@ public class EmmaCoverage extends Target {
 	private final String mainClass;
 	private final List<String> mainClassArguments;
 	private final Path mainClassArgumentsFile;
-	private final List<EmmaInstrumentation> instrumentations;
-	private final List<Path> nonInstrumentedDeps;
+	private final List<ClasspathItem> classpath;
 	private final List<String> jvmargs;
 
 	public EmmaCoverage(String name, Path emma, List<Path> antJars,
 			String mainClass, List<String> mainClassArguments,
-			Path mainClassArgumentsFile,
-			List<EmmaInstrumentation> instrumentations,
-			List<Path> nonInstrumentedDeps, List<String> jvmargs) {
+			Path mainClassArgumentsFile, List<ClasspathItem> classpath,
+			List<String> jvmargs) {
 		super(name);
 		this.emma = emma;
 		this.antJars = antJars;
 		this.mainClass = mainClass;
 		this.mainClassArguments = mainClassArguments;
 		this.mainClassArgumentsFile = mainClassArgumentsFile;
-		this.instrumentations = instrumentations;
-		this.nonInstrumentedDeps = nonInstrumentedDeps;
+		this.classpath = classpath;
 		this.jvmargs = jvmargs;
 	}
 
@@ -48,8 +45,7 @@ public class EmmaCoverage extends Target {
 		private Path emma;
 		private String mainClass;
 		private List<String> mainClassArguments;
-		private final List<EmmaInstrumentation> instrumentations = new ArrayList<EmmaInstrumentation>();
-		private final List<Path> nonInstrumentedDeps = new ArrayList<Path>();
+		private final List<ClasspathItem> classpath = new ArrayList<ClasspathItem>();
 		private Path mainClassArgumentsFile;
 		private final List<String> jvmargs = new ArrayList<String>();
 
@@ -88,7 +84,10 @@ public class EmmaCoverage extends Target {
 
 		public EmmaCoverageSpex instrumentations(
 				EmmaInstrumentation... instrumentations) {
-			this.instrumentations.addAll(Arrays.asList(instrumentations));
+			for (EmmaInstrumentation instrumentation : instrumentations) {
+				this.classpath.add(new InstrumentedClasspathItem(
+						instrumentation));
+			}
 			return this;
 		}
 
@@ -99,7 +98,9 @@ public class EmmaCoverage extends Target {
 
 		public EmmaCoverageSpex nonInstrumentedClasses(
 				Collection<? extends Path> nonInstrumentedDeps) {
-			this.nonInstrumentedDeps.addAll(nonInstrumentedDeps);
+			for (Path classes : nonInstrumentedDeps) {
+				this.classpath.add(new NonInstrumentedClasspathItem(classes));
+			}
 			return this;
 		}
 
@@ -110,8 +111,8 @@ public class EmmaCoverage extends Target {
 
 		public EmmaCoverage end() {
 			return new EmmaCoverage(name, emma, antJars, mainClass,
-					mainClassArguments, mainClassArgumentsFile,
-					instrumentations, nonInstrumentedDeps, jvmargs);
+					mainClassArguments, mainClassArgumentsFile, classpath,
+					jvmargs);
 		}
 
 	}
@@ -158,18 +159,8 @@ public class EmmaCoverage extends Target {
 		}
 
 		script.append("      <classpath>\n");
-		for (EmmaInstrumentation instrumentation : instrumentations) {
-			script.append("        <pathelement location='")
-					.append(ctx.cached(instrumentation))
-					.append("/instr-classes'/>\n");
-			// interfaces are only found from the original classes:
-			script.append("        <pathelement location='")
-					.append(ctx.cached(instrumentation.classesAndSources()
-							.classes())).append("'/>\n");
-		}
-		for (Path nonInstrumentedDep : nonInstrumentedDeps) {
-			script.append("        <pathelement location='")
-					.append(ctx.cached(nonInstrumentedDep)).append("'/>\n");
+		for (ClasspathItem cpItem : classpath) {
+			cpItem.toAnt(ctx, script);
 		}
 		script.append("        <pathelement location='")
 				.append(ctx.cached(emma)).append("'/>\n");
@@ -186,6 +177,61 @@ public class EmmaCoverage extends Target {
 			cachedAntJars.add(ctx.cached(antJar));
 		}
 		AntGenerated.runAnt(cachedAntJars, scriptFile);
+	}
+
+	private interface ClasspathItem {
+
+		void toAnt(TargetEvaluationContext ctx, StringBuilder script);
+
+		Path ingredient();
+
+	}
+
+	private static class InstrumentedClasspathItem implements ClasspathItem {
+
+		private final EmmaInstrumentation instrumentation;
+
+		public InstrumentedClasspathItem(EmmaInstrumentation instrumentation) {
+			this.instrumentation = instrumentation;
+		}
+
+		@Override
+		public Path ingredient() {
+			return instrumentation;
+		}
+
+		@Override
+		public void toAnt(TargetEvaluationContext ctx, StringBuilder script) {
+			script.append("        <pathelement location='")
+					.append(ctx.cached(instrumentation))
+					.append("/instr-classes'/>\n");
+			// interfaces are only found from the original classes:
+			script.append("        <pathelement location='")
+					.append(ctx.cached(instrumentation.classesAndSources()
+							.classes())).append("'/>\n");
+		}
+
+	}
+
+	private static class NonInstrumentedClasspathItem implements ClasspathItem {
+
+		private final Path classes;
+
+		public NonInstrumentedClasspathItem(Path classes) {
+			this.classes = classes;
+		}
+
+		@Override
+		public Path ingredient() {
+			return classes;
+		}
+
+		@Override
+		public void toAnt(TargetEvaluationContext ctx, StringBuilder script) {
+			script.append("        <pathelement location='")
+					.append(ctx.cached(classes)).append("'/>\n");
+		}
+
 	}
 
 	private List<String> mainArgsToUse(TargetEvaluationContext ctx) {
@@ -211,8 +257,7 @@ public class EmmaCoverage extends Target {
 		List<Path> ingredients = new ArrayList<Path>();
 		ingredients.addAll(antJars);
 		ingredients.add(emma);
-		ingredients.addAll(instrumentations);
-		ingredients.addAll(nonInstrumentedDeps);
+		ingredients.addAll(classPathIngredients());
 		if (mainClassArgumentsFile != null) {
 			ingredients.add(mainClassArgumentsFile);
 		}
@@ -222,6 +267,14 @@ public class EmmaCoverage extends Target {
 	@Override
 	public String contentDescriptor() {
 		return getClass().getCanonicalName() + ":" + ingredients();
+	}
+
+	public List<Path> classPathIngredients() {
+		List<Path> paths = new ArrayList<Path>();
+		for (ClasspathItem cpItem : classpath) {
+			paths.add(cpItem.ingredient());
+		}
+		return paths;
 	}
 
 }

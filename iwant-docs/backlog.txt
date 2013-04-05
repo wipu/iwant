@@ -574,6 +574,10 @@
 = In progress
 #################################################################
 
+- @enhancement: As @buildscriptauthor I want EmmaCoverage to put classpath items, be them instrumented or not, to classpath in the order I specify them so I can control for example which log4j.properties take effect etc
+  + do it
+  - test in real project that it helps
+
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!
   + cleanup closing in StreamUtil and FileUtil
