@@ -18,6 +18,7 @@ import java.net.URLClassLoader;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.security.Permission;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -305,11 +306,11 @@ public class Iwant {
 				.cacheLocation(new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
 						iwantWs));
 		return compiledClasses(classes, iwantBootstrappingJavaSources(iwantWs),
-				Collections.<File> emptyList());
+				Collections.<File> emptyList(), true);
 	}
 
 	public File compiledClasses(File dest, List<File> src,
-			List<File> classLocations) {
+			List<File> classLocations, boolean debug) {
 		try {
 			StringBuilder cp = new StringBuilder();
 			for (Iterator<File> iterator = classLocations.iterator(); iterator
@@ -320,7 +321,7 @@ public class Iwant {
 					cp.append(pathSeparator());
 				}
 			}
-			return compiledClasses(dest, src, cp.toString());
+			return compiledClasses(dest, src, cp.toString(), debug);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -328,10 +329,11 @@ public class Iwant {
 		}
 	}
 
-	public File compiledClasses(File dest, List<File> src, String classpath) {
+	public File compiledClasses(File dest, List<File> src, String classpath,
+			boolean debug) {
 		try {
 			debugLog("compiledClasses", "dest: " + dest, "src: " + src,
-					"classpath: " + classpath);
+					"classpath: " + classpath, "debug:" + debug);
 			del(dest);
 			dest.mkdirs();
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -345,9 +347,16 @@ public class Iwant {
 			Writer compilerTaskOut = null;
 			Iterable<String> classes = null;
 
-			List<String> options = Arrays.asList(new String[] { "-Xlint",
-					"-Xlint:-serial", "-d", dest.getCanonicalPath(),
-					"-classpath", classpath });
+			List<String> options = new ArrayList<String>();
+			options.add("-Xlint");
+			options.add("-Xlint:-serial");
+			if (debug) {
+				options.add("-g");
+			}
+			options.add("-d");
+			options.add(dest.getCanonicalPath());
+			options.add("-classpath");
+			options.add(classpath);
 
 			CompilationTask compilerTask = compiler.getTask(compilerTaskOut,
 					fileManager, diagnosticListener, options, classes,

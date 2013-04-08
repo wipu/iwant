@@ -75,7 +75,7 @@ public class Iwant3 {
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
 		File iwantApiClasses = iwantApiClasses();
 		iwant.compiledClasses(wsDefdefClasses, srcFiles,
-				Arrays.asList(iwantApiClasses));
+				Arrays.asList(iwantApiClasses), true);
 
 		List<File> runtimeClasses = Arrays.asList(wsDefdefClasses);
 		Class<?> wsDefdefClass = loadClass(getClass().getClassLoader(),

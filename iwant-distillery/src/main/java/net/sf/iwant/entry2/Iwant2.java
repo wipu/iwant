@@ -160,7 +160,8 @@ public class Iwant2 {
 		}
 		allIwantClasses.mkdirs();
 
-		iwant.compiledClasses(allIwantClasses, src, Arrays.asList(junitJar()));
+		iwant.compiledClasses(allIwantClasses, src, Arrays.asList(junitJar()),
+				true);
 		timestampHandler.markFresh();
 		return allIwantClasses;
 	}

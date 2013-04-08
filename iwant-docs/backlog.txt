@@ -578,6 +578,12 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want iwant to contain enough debug and source information so I get proper variable names in my iwant-related code
+  * debug flag of compilation untested as such, but:
+  + JavaClasses supports and obeys debug flag
+  - add iwant sources reference to eclipse .classpath
+  - manually test in dummy project that iwant is now more usable  
+
 - @enhancement: As @buildscriptauthor I want EmmaCoverage to put classpath items, be them instrumented or not, to classpath in the order I specify them so I can control for example which log4j.properties take effect etc
   + do it
   - test in real project that it helps

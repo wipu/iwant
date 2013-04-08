@@ -9,6 +9,7 @@ import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry3.CachesMock;
+import net.sf.iwant.entry3.FileUtil;
 import net.sf.iwant.entry3.TargetMock;
 import net.sf.iwant.testing.IwantEntry3TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
@@ -34,6 +35,26 @@ public class JavaClassesTest extends TestCase {
 		ctx.hasWsRoot(wsRoot);
 		cached = new File(testArea.root(), "cached");
 		caches.cachesModifiableTargetsAt(cached);
+	}
+
+	private static boolean bytesContain(byte[] bytes, String stringToFind) {
+		for (int i = 0; i < bytes.length - stringToFind.length(); i++) {
+			if (bytesHasAt(bytes, i, stringToFind)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean bytesHasAt(byte[] bytes, int location,
+			String stringToFind) {
+		for (int i = 0; i < stringToFind.length(); i++) {
+			byte expected = (byte) stringToFind.charAt(i);
+			if (bytes[location + i] != expected) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void testSrcDirIsAnIgredient() {
@@ -258,6 +279,34 @@ public class JavaClassesTest extends TestCase {
 			assertEquals("Source is not a directory: " + srcFile,
 					e.getMessage());
 		}
+	}
+
+	public void testDebugInformationIsIncludedIffRequested() throws Exception {
+		String srcDirName = "src";
+		Path src = Source.underWsroot(srcDirName);
+		Iwant.newTextFile(new File(new File(wsRoot, srcDirName), "Foo.java"),
+				"public class Foo {\n"
+						+ "  public String hello(String message) {\n"
+						+ "    final String greeting = \"Moi \";\n"
+						+ "    return greeting +\" \" + message;\n" + "  }\n"
+						+ "}\n");
+
+		Target noDebug = JavaClasses.with().name("no-debug").srcDirs(src)
+				.classLocations().end();
+		noDebug.path(ctx);
+		Target debug = JavaClasses.with().name("debug").srcDirs(src)
+				.classLocations().debug(true).end();
+		debug.path(ctx);
+
+		byte[] noDebugContent = FileUtil.contentAsBytes(new File(ctx
+				.cached(noDebug), "Foo.class"));
+		assertFalse(bytesContain(noDebugContent, "message"));
+		assertFalse(bytesContain(noDebugContent, "greeting"));
+
+		byte[] debugContent = FileUtil.contentAsBytes(new File(ctx
+				.cached(debug), "Foo.class"));
+		assertTrue(bytesContain(debugContent, "message"));
+		assertTrue(bytesContain(debugContent, "greeting"));
 	}
 
 }

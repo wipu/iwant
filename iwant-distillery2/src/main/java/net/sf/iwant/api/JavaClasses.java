@@ -14,12 +14,14 @@ public class JavaClasses extends Target {
 	private final List<Path> ingredients;
 	private final Collection<? extends Path> srcDirs;
 	private final Collection<? extends Path> classLocations;
+	private final boolean debug;
 
 	private JavaClasses(String name, Collection<? extends Path> srcDirs,
-			Collection<? extends Path> classLocations) {
+			Collection<? extends Path> classLocations, boolean debug) {
 		super(name);
 		this.srcDirs = srcDirs;
 		this.classLocations = classLocations;
+		this.debug = debug;
 		this.ingredients = new ArrayList<Path>();
 		this.ingredients.addAll(srcDirs);
 		this.ingredients.addAll(classLocations);
@@ -34,6 +36,7 @@ public class JavaClasses extends Target {
 		private String name;
 		private final List<Path> srcDirs = new ArrayList<Path>();
 		private final List<Path> classLocations = new ArrayList<Path>();
+		private boolean debug;
 
 		public JavaClassesSpex name(String name) {
 			this.name = name;
@@ -64,8 +67,13 @@ public class JavaClasses extends Target {
 			return this;
 		}
 
+		public JavaClassesSpex debug(boolean debug) {
+			this.debug = debug;
+			return this;
+		}
+
 		public JavaClasses end() {
-			return new JavaClasses(name, srcDirs, classLocations);
+			return new JavaClasses(name, srcDirs, classLocations, debug);
 		}
 
 	}
@@ -101,7 +109,7 @@ public class JavaClasses extends Target {
 			File classLocationDir = ctx.cached(classLocation);
 			classLocationDirs.add(classLocationDir);
 		}
-		ctx.iwant().compiledClasses(dest, javaFiles, classLocationDirs);
+		ctx.iwant().compiledClasses(dest, javaFiles, classLocationDirs, debug);
 	}
 
 	private static List<File> javaFilesUnder(File dir) {
