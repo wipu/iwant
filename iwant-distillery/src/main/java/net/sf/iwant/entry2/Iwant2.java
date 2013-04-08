@@ -104,16 +104,23 @@ public class Iwant2 {
 				classLocations, args);
 	}
 
+	private static List<String> relativeIwantSrcDirs() {
+		List<String> srcDirs = new ArrayList<String>();
+		srcDirs.add("iwant-distillery/" + "as-some-developer/with/java");
+		srcDirs.add("iwant-distillery/" + "src/main/java");
+		srcDirs.add("iwant-distillery/" + "src/test/java");
+		srcDirs.add("iwant-distillery2/" + "src/test/java");
+		srcDirs.add("iwant-distillery2/" + "src/main/java");
+		srcDirs.add("iwant-testarea/" + "src/main/java");
+		srcDirs.add("iwant-testrunner/" + "src/main/java");
+		return srcDirs;
+	}
+
 	public static SortedSet<File> srcDirsOfIwantWs(File iwantWs) {
 		SortedSet<File> srcDirs = new TreeSet<File>();
-		srcDirs.add(new File(iwantWs, "iwant-distillery/"
-				+ "as-some-developer/with/java"));
-		srcDirs.add(new File(iwantWs, "iwant-distillery/" + "src/main/java"));
-		srcDirs.add(new File(iwantWs, "iwant-distillery/" + "src/test/java"));
-		srcDirs.add(new File(iwantWs, "iwant-distillery2/" + "src/test/java"));
-		srcDirs.add(new File(iwantWs, "iwant-distillery2/" + "src/main/java"));
-		srcDirs.add(new File(iwantWs, "iwant-testarea/" + "src/main/java"));
-		srcDirs.add(new File(iwantWs, "iwant-testrunner/" + "src/main/java"));
+		for (String relative : relativeIwantSrcDirs()) {
+			srcDirs.add(new File(iwantWs, relative));
+		}
 		return srcDirs;
 	}
 
