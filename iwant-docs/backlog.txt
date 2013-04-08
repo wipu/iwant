@@ -645,8 +645,6 @@
 
 - As @developer I don't want iwant tests rerun just because testarea was touched so that it gets rerun only when real sources were touched
 
-- As @buildscriptauthor I want an easy way to define EmmaCoverage that finds test classes by a source filename pattern so I don't have to define a TestSuite
-
 - @bugfix: As @buildscriptauthor I want iwant to xml escape jvmargs passed to EmmaCoverage so I don't have to do it
 
 - @bugfix: indirect ingredient check does not work with many instances of the same Path
