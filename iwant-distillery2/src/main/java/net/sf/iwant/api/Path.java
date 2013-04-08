@@ -12,13 +12,9 @@ public interface Path {
 
 	File cachedAt(CacheScopeChoices cachedAt);
 
-	void path(TargetEvaluationContext ctx) throws Exception;
-
 	/**
 	 * TODO SortedSet
 	 */
 	List<Path> ingredients();
-
-	String contentDescriptor();
 
 }

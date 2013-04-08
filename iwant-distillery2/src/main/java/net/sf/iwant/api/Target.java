@@ -15,6 +15,10 @@ public abstract class Target implements Path {
 		return name;
 	}
 
+	public abstract void path(TargetEvaluationContext ctx) throws Exception;
+
+	public abstract String contentDescriptor();
+
 	@Override
 	public File cachedAt(CacheScopeChoices cachedAt) {
 		return cachedAt.target(this);

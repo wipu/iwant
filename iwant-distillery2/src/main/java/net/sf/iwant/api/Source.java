@@ -34,18 +34,8 @@ public class Source implements Path {
 	}
 
 	@Override
-	public void path(TargetEvaluationContext ctx) throws Exception {
-		// nothing to build for source
-	}
-
-	@Override
 	public List<Path> ingredients() {
 		return Collections.emptyList();
-	}
-
-	@Override
-	public String contentDescriptor() {
-		return null;
 	}
 
 	@Override

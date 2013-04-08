@@ -33,20 +33,8 @@ public class ExternalSource implements Path {
 	}
 
 	@Override
-	public void path(TargetEvaluationContext ctx) throws Exception {
-		System.err.println("TODO path");
-		throw new UnsupportedOperationException("TODO test and implement");
-	}
-
-	@Override
 	public List<Path> ingredients() {
 		return Collections.emptyList();
-	}
-
-	@Override
-	public String contentDescriptor() {
-		System.err.println("TODO contentDescriptor");
-		throw new UnsupportedOperationException("TODO test and implement");
 	}
 
 	@Override
