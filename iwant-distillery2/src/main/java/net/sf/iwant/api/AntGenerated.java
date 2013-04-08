@@ -72,7 +72,7 @@ public class AntGenerated extends Target {
 	}
 
 	public static void runAnt(List<File> antJars, File cachedScript,
-			String... antArgs) throws Exception, InvocationTargetException {
+			String... antArgs) throws Exception {
 		final String className = "org.apache.tools.ant.Main";
 		List<String> allArgs = new ArrayList<String>();
 		allArgs.add("-f");
