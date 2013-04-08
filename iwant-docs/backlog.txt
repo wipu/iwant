@@ -587,7 +587,7 @@
       needs one proper source directory (or zip but not practical here)
     - Iwant3 asks list of src dirs from Iwant2 and merges to 1 dir
       + Iwant2 finds java files to compile recursively
-      - clean up now unnecessary compiler-fodder from mock-wsroot
+      + clean up now unnecessary compiler-fodder from mock-wsroot
       - Iwant2 uses and provides list of srcdirs
     - Iwant3 adds src to iwant classes bin module
       - reuse recursive copy code with EmmaInstrumentation
