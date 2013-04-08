@@ -1,8 +1,10 @@
 package net.sf.iwant.entry3;
 
 import java.io.File;
+import java.io.IOException;
 
 import junit.framework.TestCase;
+import net.sf.iwant.testing.IwantEntry3TestArea;
 
 public class FileUtilTest extends TestCase {
 
@@ -68,6 +70,25 @@ public class FileUtilTest extends TestCase {
 		File parent = new File("/a");
 		assertEquals("b/c", FileUtil.relativePathOfFileUnderParent(new File(
 				"/a/b/c"), parent));
+	}
+
+	public void testCopyMissingFilesExcludesSvnMetafiles() throws IOException {
+		IwantEntry3TestArea testArea = new IwantEntry3TestArea();
+		File from = testArea.newDir("from");
+		testArea.newDir("from/.svn");
+		testArea.hasFile("from/A", "");
+		testArea.newDir("from/b");
+		testArea.newDir("from/b/.svn");
+		testArea.hasFile("from/b/B", "");
+
+		File to = testArea.newDir("to");
+
+		FileUtil.copyMissingFiles(from, to);
+
+		assertFalse(new File(to, ".svn").exists());
+		assertTrue(new File(to, "A").exists());
+		assertFalse(new File(to, "b/.svn").exists());
+		assertTrue(new File(to, "b/B").exists());
 	}
 
 }

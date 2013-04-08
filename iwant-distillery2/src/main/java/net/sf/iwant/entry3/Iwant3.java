@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import java.util.SortedSet;
 
 import net.sf.iwant.api.ExternalSource;
 import net.sf.iwant.api.HelloSideEffect;
@@ -29,6 +30,7 @@ import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.Iwant.UnmodifiableSource;
+import net.sf.iwant.entry2.Iwant2;
 import net.sf.iwant.io.StreamUtil;
 import net.sf.iwant.testing.WsRootFinder;
 
@@ -152,6 +154,13 @@ public class Iwant3 {
 	private Path combinedIwantSources() throws IOException {
 		File combinedSources = iwant.network().cacheLocation(
 				new CombinedSrcFromUnmodifiableIwantWsRoot(iwantWs));
+		Iwant.fileLog("Combining iwant sources from " + iwantWs + " to "
+				+ combinedSources);
+		combinedSources.mkdirs();
+		SortedSet<File> srcDirs = Iwant2.srcDirsOfIwantWs(iwantWs);
+		for (File srcDir : srcDirs) {
+			FileUtil.copyMissingFiles(srcDir, combinedSources);
+		}
 		return new ExternalSource(combinedSources);
 	}
 

@@ -574,30 +574,31 @@
   * for example when deploying to a web application, you have no control over the order of jars in the classpath, meaning that noninstrumented classes may be used instead of instrumented ones
   + recursively copy files that exist in classes but not in instr-classes
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I want iwant to contain enough debug and source information so I get proper variable names in my iwant-related code
++ As @buildscriptauthor I want iwant to contain enough debug and source information so I get proper variable names in my iwant-related code
   * debug flag of compilation of Iwant2 untested as such, but:
   + JavaClasses supports and obeys debug flag
   + test that Iwant2 compiles the rest with debug
   - add iwant sources reference to eclipse .classpath
     + try if eclipse finds sources if src is the exported iwant ws: no, it
       needs one proper source directory (or zip but not practical here)
-    - Iwant3 asks list of src dirs from Iwant2 and merges to 1 dir
+    + Iwant3 asks list of src dirs from Iwant2 and merges to 1 dir
       + Iwant2 finds java files to compile recursively
       + clean up now unnecessary compiler-fodder from mock-wsroot
       + Iwant2 uses and provides list of srcdirs
-    - Iwant3 adds src to iwant classes bin module
+    + Iwant3 adds src to iwant classes bin module
       + derive cache location from wsroot location
       + put location in eclipse .classpath
         + Iwant2 passes iwantWs to Iwant3
-      - actually combine the sources
-        - reuse recursive copy code with EmmaInstrumentation
-        - 1st version of optimization: don't copy if exists
-        - don't copy if not modified since
-  - manually test in dummy project that iwant is now more usable  
+      + actually combine the sources
+        + reuse recursive copy code with EmmaInstrumentation
+  + manually test in dummy project that iwant is now more usable
+    * required restart of eclipse (?!)
+    * not refreshed when iwant-from a file that gets re-exported, filed
+      as a separate bug  
+
+#################################################################
+= In progress
+#################################################################
 
 - @enhancement: As @buildscriptauthor I want EmmaCoverage to put classpath items, be them instrumented or not, to classpath in the order I specify them so I can control for example which log4j.properties take effect etc
   + do it
@@ -636,6 +637,9 @@
 #################################################################
 = Planned
 #################################################################
+
+- @bugfix: As @buildscriptauthor I want combined sources updated when iwant sources are re-exported so I can see fresh sources when I develop using iwant-from a file
+  * But keep it fast
 
 - As @buildscriptauthor I want target JavaClassesWithResources so I get classes and resources under the same directory, which is easier for classpaths 
 

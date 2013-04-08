@@ -17,6 +17,7 @@ import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantWsRoot;
 import net.sf.iwant.testing.IwantEntry3TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
+import net.sf.iwant.testing.WsRootFinder;
 
 public class Iwant3Test extends TestCase {
 
@@ -45,7 +46,7 @@ public class Iwant3Test extends TestCase {
 				"#!/bin/bash\njust a mock because this exists in real life\n");
 		network = new IwantNetworkMock(testArea);
 		combinedIwantSrc = new File(testArea.root(), "combined-iwant-src");
-		iwantWs = testArea.newDir("iwantWs");
+		iwantWs = WsRootFinder.mockWsRoot();
 		network.cachesAt(new CombinedSrcFromUnmodifiableIwantWsRoot(iwantWs),
 				combinedIwantSrc);
 		iwant3 = Iwant3.using(network, iwantWs);
@@ -316,6 +317,16 @@ public class Iwant3Test extends TestCase {
 
 		assertEquals("eclipse-settings\n", out());
 		assertEquals("", errIgnoringDebugLog());
+	}
+
+	public void testIwant3CreatesCombinedSources() throws Exception {
+		testListOfSideEffectsOfExampleWsDef();
+
+		assertTrue(combinedIwantSrc.exists());
+		assertTrue(new File(combinedIwantSrc, "net/sf/iwant/entry2/Iwant2.java")
+				.exists());
+		assertTrue(new File(combinedIwantSrc,
+				"net/sf/iwant/api/IwantWorkspace.java").exists());
 	}
 
 	private static String modifiedExampleWsDef() {

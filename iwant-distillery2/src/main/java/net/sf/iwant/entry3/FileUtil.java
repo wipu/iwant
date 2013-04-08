@@ -86,4 +86,38 @@ public class FileUtil {
 		return Iwant.newTextFile(file, content);
 	}
 
+	public static int copyMissingFiles(File from, File to) throws IOException {
+		int count = 0;
+		for (File child : from.listFiles()) {
+			File toChild = new File(to, child.getName());
+			if (!toChild.exists()) {
+				count += copyRecursively(child, toChild);
+				continue;
+			}
+			if (child.isDirectory()) {
+				count += copyMissingFiles(child, toChild);
+			}
+		}
+		return count;
+	}
+
+	public static int copyRecursively(File from, File to) throws IOException {
+		if (".svn".equals(from.getName())) {
+			// TODO handle svn filtering only once
+			return 0;
+		}
+		if (from.isDirectory()) {
+			int count = 0;
+			to.mkdir();
+			for (File child : from.listFiles()) {
+				File toChild = new File(to, child.getName());
+				count += copyRecursively(child, toChild);
+			}
+			return count;
+		} else {
+			FileUtil.copyFile(from, to);
+			return 1;
+		}
+	}
+
 }
