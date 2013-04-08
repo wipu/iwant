@@ -104,31 +104,33 @@ public class Iwant2 {
 				classLocations, args);
 	}
 
+	public static SortedSet<File> srcDirsOfIwantWs(File iwantWs) {
+		SortedSet<File> srcDirs = new TreeSet<File>();
+		srcDirs.add(new File(iwantWs, "iwant-distillery/"
+				+ "as-some-developer/with/java"));
+		srcDirs.add(new File(iwantWs, "iwant-distillery/" + "src/main/java"));
+		srcDirs.add(new File(iwantWs, "iwant-distillery/" + "src/test/java"));
+		srcDirs.add(new File(iwantWs, "iwant-distillery2/" + "src/test/java"));
+		srcDirs.add(new File(iwantWs, "iwant-distillery2/" + "src/main/java"));
+		srcDirs.add(new File(iwantWs, "iwant-testarea/" + "src/main/java"));
+		srcDirs.add(new File(iwantWs, "iwant-testrunner/" + "src/main/java"));
+		return srcDirs;
+	}
+
 	public File allIwantClasses(File iwantWs) {
 		Iwant.fileLog("allIwantClasses, iwantWs=" + iwantWs);
 		File allIwantClasses = network
 				.cacheLocation(new ClassesFromUnmodifiableIwantWsRoot(iwantWs));
 		Iwant.fileLog("allIwantClasses, dest=" + allIwantClasses);
 
-		SortedSet<File> src = new TreeSet<File>();
-		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-distillery/"
-				+ "as-some-developer/with/java"));
-		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-distillery/"
-				+ "src/main/java"));
-		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-distillery/"
-				+ "src/test/java"));
-		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-distillery2/"
-				+ "src/test/java"));
-		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-distillery2/"
-				+ "src/main/java"));
-		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-testarea/"
-				+ "src/main/java"));
-		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-testrunner/"
-				+ "src/main/java"));
+		SortedSet<File> javaFiles = new TreeSet<File>();
+		for (File srcDir : srcDirsOfIwantWs(iwantWs)) {
+			javaFiles.addAll(javaFilesRecursivelyUnder(srcDir));
+		}
 
 		TimestampHandler timestampHandler = new TimestampHandler(
 				allIwantClasses, new File(allIwantClasses.getAbsolutePath()
-						+ ".srcdescr"), src);
+						+ ".srcdescr"), javaFiles);
 		if (!timestampHandler.needsRefresh()) {
 			Iwant.fileLog("allIwantClasses does not need refresh.");
 			return allIwantClasses;
@@ -140,17 +142,11 @@ public class Iwant2 {
 		}
 		allIwantClasses.mkdirs();
 
-		List<File> srcList = new ArrayList<File>(src);
-		iwant.compiledClasses(allIwantClasses, srcList,
+		List<File> javaFileList = new ArrayList<File>(javaFiles);
+		iwant.compiledClasses(allIwantClasses, javaFileList,
 				Arrays.asList(junitJar()), true);
 		timestampHandler.markFresh();
 		return allIwantClasses;
-	}
-
-	private static SortedSet<File> javaFilesOfSrcDir(File iwantWs,
-			String srcDirPath) {
-		File srcDir = new File(iwantWs, srcDirPath);
-		return javaFilesRecursivelyUnder(srcDir);
 	}
 
 	public static SortedSet<File> javaFilesRecursivelyUnder(File dir) {
