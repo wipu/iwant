@@ -199,4 +199,24 @@ public class Iwant2Test extends TestCase {
 		// (real junit is too chatty)
 	}
 
+	public void testIwant2CompilesIwantWithDebugInformation() throws Exception {
+		File iwantWsRoot = WsRootFinder.mockWsRoot();
+		network.usesRealJunitUrlAndCached();
+		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
+				"all-iwant-classes");
+		mockedIwantRunnerShallSucceed();
+
+		iwant2.evaluate(WsRootFinder.mockWsRoot());
+
+		File iwantClasses = new File(testArea.root(), "all-iwant-classes");
+		File classWithVars = new File(iwantClasses,
+				"net/sf/iwant/api/ClassToTestDebugInformation.class");
+
+		// TODO reuse code with JavaClassesTest to read as bytes. This is not
+		// robust because we parse binary as String
+		String contentOfClass = Iwant2.contentAsString(classWithVars);
+		assertTrue(contentOfClass.contains("parameterVariable"));
+		assertTrue(contentOfClass.contains("localVariable"));
+	}
+
 }

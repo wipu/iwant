@@ -579,8 +579,9 @@
 #################################################################
 
 - As @buildscriptauthor I want iwant to contain enough debug and source information so I get proper variable names in my iwant-related code
-  * debug flag of compilation untested as such, but:
+  * debug flag of compilation of Iwant2 untested as such, but:
   + JavaClasses supports and obeys debug flag
+  + test that Iwant2 compiles the rest with debug
   - add iwant sources reference to eclipse .classpath
   - manually test in dummy project that iwant is now more usable  
 

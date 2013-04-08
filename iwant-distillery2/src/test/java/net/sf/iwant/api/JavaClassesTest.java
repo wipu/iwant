@@ -11,6 +11,7 @@ import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry3.CachesMock;
 import net.sf.iwant.entry3.FileUtil;
 import net.sf.iwant.entry3.TargetMock;
+import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantEntry3TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
@@ -35,26 +36,6 @@ public class JavaClassesTest extends TestCase {
 		ctx.hasWsRoot(wsRoot);
 		cached = new File(testArea.root(), "cached");
 		caches.cachesModifiableTargetsAt(cached);
-	}
-
-	private static boolean bytesContain(byte[] bytes, String stringToFind) {
-		for (int i = 0; i < bytes.length - stringToFind.length(); i++) {
-			if (bytesHasAt(bytes, i, stringToFind)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private static boolean bytesHasAt(byte[] bytes, int location,
-			String stringToFind) {
-		for (int i = 0; i < stringToFind.length(); i++) {
-			byte expected = (byte) stringToFind.charAt(i);
-			if (bytes[location + i] != expected) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	public void testSrcDirIsAnIgredient() {
@@ -300,13 +281,13 @@ public class JavaClassesTest extends TestCase {
 
 		byte[] noDebugContent = FileUtil.contentAsBytes(new File(ctx
 				.cached(noDebug), "Foo.class"));
-		assertFalse(bytesContain(noDebugContent, "message"));
-		assertFalse(bytesContain(noDebugContent, "greeting"));
+		assertFalse(TestArea.bytesContain(noDebugContent, "message"));
+		assertFalse(TestArea.bytesContain(noDebugContent, "greeting"));
 
 		byte[] debugContent = FileUtil.contentAsBytes(new File(ctx
 				.cached(debug), "Foo.class"));
-		assertTrue(bytesContain(debugContent, "message"));
-		assertTrue(bytesContain(debugContent, "greeting"));
+		assertTrue(TestArea.bytesContain(debugContent, "message"));
+		assertTrue(TestArea.bytesContain(debugContent, "greeting"));
 	}
 
 }

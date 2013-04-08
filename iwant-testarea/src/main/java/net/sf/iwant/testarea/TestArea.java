@@ -71,4 +71,24 @@ public abstract class TestArea {
 		}
 	}
 
+	public static boolean bytesContain(byte[] bytes, String stringToFind) {
+		for (int i = 0; i < bytes.length - stringToFind.length(); i++) {
+			if (bytesHasAt(bytes, i, stringToFind)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean bytesHasAt(byte[] bytes, int location,
+			String stringToFind) {
+		for (int i = 0; i < stringToFind.length(); i++) {
+			byte expected = (byte) stringToFind.charAt(i);
+			if (bytes[location + i] != expected) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }
