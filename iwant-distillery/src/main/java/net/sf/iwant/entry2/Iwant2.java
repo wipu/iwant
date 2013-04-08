@@ -110,45 +110,25 @@ public class Iwant2 {
 				.cacheLocation(new ClassesFromUnmodifiableIwantWsRoot(iwantWs));
 		Iwant.fileLog("allIwantClasses, dest=" + allIwantClasses);
 
-		List<File> src = new ArrayList<File>();
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
-				+ "as-some-developer/with/java/" + "net/sf/iwant/entry"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
-				+ "src/main/java/" + "net/sf/iwant/entry2"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
-				+ "src/main/java/" + "net/sf/iwant/testing"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery/"
-				+ "src/test/java/" + "net/sf/iwant/entry"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-				+ "src/test/java/" + "net/sf/iwant"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-				+ "src/test/java/" + "net/sf/iwant/api"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-				+ "src/main/java/" + "net/sf/iwant/api"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-				+ "src/test/java/" + "net/sf/iwant/eclipsesettings"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-				+ "src/main/java/" + "net/sf/iwant/eclipsesettings"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-				+ "src/main/java/" + "net/sf/iwant/entry3"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-				+ "src/test/java/" + "net/sf/iwant/entry3"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-				+ "src/test/java/" + "net/sf/iwant/io"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-				+ "src/main/java/" + "net/sf/iwant/io"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-				+ "src/test/java/" + "net/sf/iwant/planner"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-distillery2/"
-				+ "src/main/java/" + "net/sf/iwant/planner"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-testarea/"
-				+ "src/main/java/" + "net/sf/iwant/testarea"));
-		src.addAll(srcFilesOfPackageDir(iwantWs, "iwant-testrunner/"
-				+ "src/main/java/" + "net/sf/iwant/testrunner"));
+		SortedSet<File> src = new TreeSet<File>();
+		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-distillery/"
+				+ "as-some-developer/with/java"));
+		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-distillery/"
+				+ "src/main/java"));
+		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-distillery/"
+				+ "src/test/java"));
+		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-distillery2/"
+				+ "src/test/java"));
+		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-distillery2/"
+				+ "src/main/java"));
+		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-testarea/"
+				+ "src/main/java"));
+		src.addAll(javaFilesOfSrcDir(iwantWs, "iwant-testrunner/"
+				+ "src/main/java"));
 
 		TimestampHandler timestampHandler = new TimestampHandler(
 				allIwantClasses, new File(allIwantClasses.getAbsolutePath()
-						+ ".srcdescr"), new TreeSet<File>(src));
+						+ ".srcdescr"), src);
 		if (!timestampHandler.needsRefresh()) {
 			Iwant.fileLog("allIwantClasses does not need refresh.");
 			return allIwantClasses;
@@ -160,24 +140,29 @@ public class Iwant2 {
 		}
 		allIwantClasses.mkdirs();
 
-		iwant.compiledClasses(allIwantClasses, src, Arrays.asList(junitJar()),
-				true);
+		List<File> srcList = new ArrayList<File>(src);
+		iwant.compiledClasses(allIwantClasses, srcList,
+				Arrays.asList(junitJar()), true);
 		timestampHandler.markFresh();
 		return allIwantClasses;
 	}
 
-	private static List<File> srcFilesOfPackageDir(File iwantWs,
-			String packagePath) {
-		File packageDir = new File(iwantWs, packagePath);
-		return javaFilesUnder(packageDir);
+	private static SortedSet<File> javaFilesOfSrcDir(File iwantWs,
+			String srcDirPath) {
+		File srcDir = new File(iwantWs, srcDirPath);
+		return javaFilesRecursivelyUnder(srcDir);
 	}
 
-	private static List<File> javaFilesUnder(File dir) {
-		List<File> srcFiles = new ArrayList<File>();
+	public static SortedSet<File> javaFilesRecursivelyUnder(File dir) {
+		SortedSet<File> srcFiles = new TreeSet<File>();
 		File[] files = dir.listFiles();
-		Arrays.sort(files);
 		for (File file : files) {
-			if (isJavaSourceFile(file)) {
+			if (".svn".equals(file.getName())) {
+				continue;
+			}
+			if (file.isDirectory()) {
+				srcFiles.addAll(javaFilesRecursivelyUnder(file));
+			} else if (isJavaSourceFile(file)) {
 				srcFiles.add(file);
 			}
 		}
