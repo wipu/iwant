@@ -83,8 +83,9 @@ public class EclipseSettingsTest extends TestCase {
 	}
 
 	public void testMutationUsingWsdefdefAndWsdefAndAnotherModuleUsedByWsdef() {
-		JavaModule iwantClasses = JavaBinModule.providing(TargetMock
-				.ingredientless("iwant-classes"));
+		JavaModule iwantClasses = JavaBinModule.providing(
+				TargetMock.ingredientless("iwant-classes"),
+				TargetMock.ingredientless("combined-iwant-sources"));
 		JavaModule wsdefdef = JavaSrcModule.with().name("test-wsdefdef")
 				.locationUnderWsRoot("as-someone/i-have/wsdefdef")
 				.mainJava("src/main/java").mainDeps(iwantClasses).end();
@@ -111,7 +112,8 @@ public class EclipseSettingsTest extends TestCase {
 				"<classpathentry kind=\"src\" path=\"src/main/java\"/>");
 		assertDotClasspathContains("as-someone/i-have/wsdefdef",
 				"<classpathentry kind=\"lib\" path=\"" + cacheDir
-						+ "/iwant-classes\"/>");
+						+ "/iwant-classes\" sourcepath=\"" + cacheDir
+						+ "/combined-iwant-sources\"/>");
 
 		assertDotClasspathContains("utils/wsdef-tools",
 				"<classpathentry kind=\"src\" path=\"src\"/>");
@@ -120,7 +122,8 @@ public class EclipseSettingsTest extends TestCase {
 				"<classpathentry kind=\"src\" path=\"src/main/java\"/>");
 		assertDotClasspathContains("as-someone/i-have/wsdef",
 				"<classpathentry kind=\"lib\" path=\"" + cacheDir
-						+ "/iwant-classes\"/>");
+						+ "/iwant-classes\" sourcepath=\"" + cacheDir
+						+ "/combined-iwant-sources\"/>");
 		assertDotClasspathContains("as-someone/i-have/wsdef",
 				"<classpathentry combineaccessrules=\"false\""
 						+ " kind=\"src\" path=\"/test-wsdef-tools\"/>");
@@ -141,10 +144,11 @@ public class EclipseSettingsTest extends TestCase {
 	}
 
 	public void testTestJavaAndTestDepsAffectDotClasspath() {
-		JavaModule testTools1 = JavaBinModule.providing(TargetMock
-				.ingredientless("test-tools-1"));
-		JavaModule testTools2 = JavaBinModule.providing(TargetMock
-				.ingredientless("test-tools-2"));
+		JavaModule testTools1 = JavaBinModule.providing(
+				TargetMock.ingredientless("test-tools-1"),
+				TargetMock.ingredientless("test-tools-1-src"));
+		JavaModule testTools2 = JavaBinModule.providing(
+				TargetMock.ingredientless("test-tools-2-srcless"), null);
 
 		JavaModule mod1 = JavaSrcModule.with().name("mod1")
 				.locationUnderWsRoot("mod1").mainJava("src").testJava("tests1")
@@ -167,10 +171,11 @@ public class EclipseSettingsTest extends TestCase {
 
 		assertDotClasspathContains("mod1",
 				"<classpathentry kind=\"lib\" path=\"" + cacheDir
-						+ "/test-tools-1\"/>");
+						+ "/test-tools-1\" sourcepath=\"" + cacheDir
+						+ "/test-tools-1-src\"/>");
 		assertDotClasspathContains("mod2",
 				"<classpathentry kind=\"lib\" path=\"" + cacheDir
-						+ "/test-tools-2\"/>");
+						+ "/test-tools-2-srcless\"/>");
 
 	}
 

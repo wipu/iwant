@@ -14,6 +14,7 @@ import net.sf.iwant.api.Source;
 import net.sf.iwant.api.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
+import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantWsRoot;
 import net.sf.iwant.testing.IwantEntry3TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
@@ -33,13 +34,21 @@ public class Iwant3Test extends TestCase {
 	private ByteArrayOutputStream err;
 	private String originalLineSeparator;
 
+	private File iwantWs;
+
+	private File combinedIwantSrc;
+
 	@Override
 	public void setUp() throws Exception {
 		testArea = new IwantEntry3TestArea();
 		testArea.hasFile("as-example-developer/with/bash/iwant/help.sh",
 				"#!/bin/bash\njust a mock because this exists in real life\n");
 		network = new IwantNetworkMock(testArea);
-		iwant3 = Iwant3.using(network);
+		combinedIwantSrc = new File(testArea.root(), "combined-iwant-src");
+		iwantWs = testArea.newDir("iwantWs");
+		network.cachesAt(new CombinedSrcFromUnmodifiableIwantWsRoot(iwantWs),
+				combinedIwantSrc);
+		iwant3 = Iwant3.using(network, iwantWs);
 		asTest = new File(testArea.root(), "as-example-developer");
 		originalIn = System.in;
 		originalOut = System.out;
@@ -495,8 +504,17 @@ public class Iwant3Test extends TestCase {
 				"as-example-developer/i-have/wsdef/.classpath",
 				"<classpathentry kind=\"src\" path=\"src/main/java\"/>");
 
-		// iwant classes in classpath cannot be tested, they are in different
-		// path when running this test inside eclipse than in a build script
+		// iwant classes in classpath cannot be tested by exact paths, they are
+		// in different path when running this test inside eclipse than in a
+		// build script
+
+		// iwant sources in classpath
+		testArea.shallContainFragmentIn(
+				"as-example-developer/i-have/wsdef/.classpath",
+				" sourcepath=\"" + combinedIwantSrc + "\"/>");
+		testArea.shallContainFragmentIn(
+				"as-example-developer/i-have/wsdefdef/.classpath",
+				" sourcepath=\"" + combinedIwantSrc + "\"/>");
 
 		// settings
 		testArea.shallContainFragmentIn("as-example-developer/i-have/wsdef/"

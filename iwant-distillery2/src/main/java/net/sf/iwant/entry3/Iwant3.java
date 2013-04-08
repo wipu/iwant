@@ -28,32 +28,36 @@ import net.sf.iwant.api.WsInfo;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
+import net.sf.iwant.entry.Iwant.UnmodifiableSource;
 import net.sf.iwant.io.StreamUtil;
 import net.sf.iwant.testing.WsRootFinder;
 
 public class Iwant3 {
 
 	private final Iwant iwant;
+	private final File iwantWs;
 
-	public Iwant3(IwantNetwork network) {
+	public Iwant3(IwantNetwork network, File iwantWs) {
+		this.iwantWs = iwantWs;
 		this.iwant = Iwant.using(network);
 	}
 
 	public static void main(String[] args) throws Exception {
-		File asSomeone = new File(args[0]);
-		String[] args2 = new String[args.length - 1];
-		System.arraycopy(args, 1, args2, 0, args2.length);
+		File iwantWs = new File(args[0]);
+		File asSomeone = new File(args[1]);
+		String[] args2 = new String[args.length - 2];
+		System.arraycopy(args, 2, args2, 0, args2.length);
 		try {
-			using(Iwant.usingRealNetwork().network())
-					.evaluate(asSomeone, args2);
+			using(Iwant.usingRealNetwork().network(), iwantWs).evaluate(
+					asSomeone, args2);
 		} catch (IwantException e) {
 			System.err.println(e.getMessage());
 			System.exit(1);
 		}
 	}
 
-	public static Iwant3 using(IwantNetwork network) {
-		return new Iwant3(network);
+	public static Iwant3 using(IwantNetwork network, File iwantWs) {
+		return new Iwant3(network, iwantWs);
 	}
 
 	public void evaluate(File asSomeone, String... args) throws Exception {
@@ -86,10 +90,12 @@ public class Iwant3 {
 			IwantWorkspaceProvider wsDefdef = (IwantWorkspaceProvider) wsDefdefClass
 					.newInstance();
 
+			Path combinedIwantSources = combinedIwantSources();
 			Iwant.fileLog("Refreshing wsdef classes");
 			JavaSrcModule wsdDefClassesModule = wsDefdef
-					.workspaceModule(JavaBinModule
-							.providing(new ExternalSource(iwantApiClasses)));
+					.workspaceModule(JavaBinModule.providing(
+							new ExternalSource(iwantApiClasses),
+							combinedIwantSources));
 			// TODO don't cast when no more necessary
 			JavaClasses wsDefClassesTarget = (JavaClasses) wsdDefClassesModule
 					.mainArtifact();
@@ -104,7 +110,8 @@ public class Iwant3 {
 					.mainJava("src/main/java")
 					.mainDeps(
 							JavaBinModule.providing(new ExternalSource(
-									iwantApiClasses))).end();
+									iwantApiClasses), combinedIwantSources))
+					.end();
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
 					System.err, wsInfo.wsRoot(), iwant, wsInfo, caches,
 					userPrefs.workerCount(), wsdefdefJavaModule,
@@ -140,6 +147,21 @@ public class Iwant3 {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Error invoking user code.", e);
 		}
+	}
+
+	private Path combinedIwantSources() throws IOException {
+		File combinedSources = iwant.network().cacheLocation(
+				new CombinedSrcFromUnmodifiableIwantWsRoot(iwantWs));
+		return new ExternalSource(combinedSources);
+	}
+
+	static class CombinedSrcFromUnmodifiableIwantWsRoot extends
+			UnmodifiableSource<File> {
+
+		public CombinedSrcFromUnmodifiableIwantWsRoot(File location) {
+			super(location);
+		}
+
 	}
 
 	private static UserPrefs parseUserPrefs(File iHaveConf) throws IOException {

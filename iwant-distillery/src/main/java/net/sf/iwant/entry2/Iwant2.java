@@ -100,8 +100,11 @@ public class Iwant2 {
 			timestampHandler.markFresh();
 		}
 
+		String[] iwant3Args = new String[args.length + 1];
+		iwant3Args[0] = iwantWs.getCanonicalPath();
+		System.arraycopy(args, 0, iwant3Args, 1, args.length);
 		Iwant.runJavaMain(false, false, "net.sf.iwant.entry3.Iwant3",
-				classLocations, args);
+				classLocations, iwant3Args);
 	}
 
 	private static List<String> relativeIwantSrcDirs() {

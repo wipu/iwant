@@ -193,8 +193,8 @@ public class Iwant2Test extends TestCase {
 
 		iwant2.evaluate(WsRootFinder.mockWsRoot(), "args", "to be", "passed");
 
-		assertEquals("Mocked net.sf.iwant.entry3.Iwant3\n"
-				+ "args: [args, to be, passed]\n", out());
+		assertEquals("Mocked net.sf.iwant.entry3.Iwant3\n" + "args: ["
+				+ iwantWsRoot + ", args, to be, passed]\n", out());
 		// we cannot assert mocked IwantTestRunner output, because we catch it
 		// (real junit is too chatty)
 	}

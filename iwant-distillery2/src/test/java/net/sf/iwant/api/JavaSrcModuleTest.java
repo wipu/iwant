@@ -243,13 +243,13 @@ public class JavaSrcModuleTest extends TestCase {
 				.name("tested2")
 				.mainJava("src")
 				.mainDeps(
-						JavaBinModule.providing(Source
-								.underWsroot("main-lib.jar")))
+						JavaBinModule.providing(
+								Source.underWsroot("main-lib.jar"), null))
 				.testJava("test")
 				.testDeps(
-						JavaBinModule.providing(Source
-								.underWsroot("test-lib.jar"))).end()
-				.testArtifact();
+						JavaBinModule.providing(
+								Source.underWsroot("test-lib.jar"), null))
+				.end().testArtifact();
 
 		assertEquals("tested2-test-classes", tests.name());
 		assertEquals("[tested2/test]", tests.srcDirs().toString());

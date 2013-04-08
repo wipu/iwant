@@ -63,19 +63,30 @@ public class JavaBinModuleTest extends TestCase {
 
 	public void testBinModuleThatProvidesAMainArtifactTarget() {
 		Target libJar = new HelloTarget("lib.jar", "");
-		JavaBinModule libJarModule = JavaBinModule.providing(libJar);
+		JavaBinModule libJarModule = JavaBinModule.providing(libJar, null);
 
 		assertEquals("lib.jar", libJarModule.name());
 		assertSame(libJar, libJarModule.mainArtifact());
 	}
 
-	public void testEclipsePathsOfModuleThatProviderAMainArtifactTarget() {
+	public void testEclipsePathsOfModuleThatProvidesAMainArtifactTarget() {
 		Target libJar = new HelloTarget("lib.jar", "");
 		JavaBinModule libJarModule = JavaBinModule.providing(libJar);
 
 		assertEquals(cachedTargets + "/lib.jar",
 				libJarModule.eclipseBinaryReference(evCtx));
 		assertEquals(null, libJarModule.eclipseSourceReference(evCtx));
+	}
+
+	public void testEclipsePathsOfModuleThatProvidesAMainArtifactTargetWithSources() {
+		Target libJar = new HelloTarget("lib.jar", "");
+		Target libSrc = new HelloTarget("lib-src.zip", "");
+		JavaBinModule libJarModule = JavaBinModule.providing(libJar, libSrc);
+
+		assertEquals(cachedTargets + "/lib.jar",
+				libJarModule.eclipseBinaryReference(evCtx));
+		assertEquals(cachedTargets + "/lib-src.zip",
+				libJarModule.eclipseSourceReference(evCtx));
 	}
 
 }

@@ -9,7 +9,11 @@ public abstract class JavaBinModule extends JavaModule {
 	}
 
 	public static JavaBinModule providing(Path mainArtifact) {
-		return new PathProvider(mainArtifact);
+		return providing(mainArtifact, null);
+	}
+
+	public static JavaBinModule providing(Path mainArtifact, Path sources) {
+		return new PathProvider(mainArtifact, sources);
 	}
 
 	public abstract String eclipseSourceReference(TargetEvaluationContext ctx);
@@ -78,22 +82,30 @@ public abstract class JavaBinModule extends JavaModule {
 
 	private static class PathProvider extends JavaBinModule {
 
-		private Path mainArtifact;
+		private final Path mainArtifact;
+		private final Path sources;
 
-		public PathProvider(Path mainArtifact) {
+		public PathProvider(Path mainArtifact, Path sources) {
 			this.mainArtifact = mainArtifact;
+			this.sources = sources;
 		}
 
 		@Override
 		public String eclipseSourceReference(TargetEvaluationContext ctx) {
-			// TODO support source
-			return null;
+			if (sources == null) {
+				return null;
+			}
+			return cached(ctx, sources);
 		}
 
 		@Override
 		public String eclipseBinaryReference(TargetEvaluationContext ctx) {
+			return cached(ctx, mainArtifact);
+		}
+
+		private static String cached(TargetEvaluationContext ctx, Path path) {
 			try {
-				return ctx.cached(mainArtifact).getCanonicalPath();
+				return ctx.cached(path).getCanonicalPath();
 			} catch (IOException e) {
 				throw new IllegalArgumentException(e);
 			}
