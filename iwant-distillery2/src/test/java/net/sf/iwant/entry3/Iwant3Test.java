@@ -338,8 +338,8 @@ public class Iwant3Test extends TestCase {
 		wsdef.append("import net.sf.iwant.api.EclipseSettings;\n");
 		wsdef.append("import net.sf.iwant.api.HelloTarget;\n");
 		wsdef.append("import net.sf.iwant.api.IwantWorkspace;\n");
-		wsdef.append("import net.sf.iwant.api.SideEffect;\n");
 		wsdef.append("import net.sf.iwant.api.SideEffectDefinitionContext;\n");
+		wsdef.append("import net.sf.iwant.api.model.SideEffect;\n");
 		wsdef.append("import net.sf.iwant.api.model.Target;\n");
 		wsdef.append("\n");
 		wsdef.append("public class ExampleWs implements IwantWorkspace {\n");

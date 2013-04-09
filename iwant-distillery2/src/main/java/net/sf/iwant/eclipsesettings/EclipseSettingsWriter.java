@@ -8,7 +8,7 @@ import java.util.Set;
 
 import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.JavaSrcModule;
-import net.sf.iwant.api.SideEffectContext;
+import net.sf.iwant.api.model.SideEffectContext;
 import net.sf.iwant.entry.Iwant;
 
 public class EclipseSettingsWriter {

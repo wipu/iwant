@@ -2,6 +2,8 @@ package net.sf.iwant.api;
 
 import java.io.File;
 
+import net.sf.iwant.api.model.WsInfo;
+
 public class WsInfoMock implements WsInfo {
 
 	private File wsdefdefModule;

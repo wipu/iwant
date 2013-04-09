@@ -2,6 +2,9 @@ package net.sf.iwant.api;
 
 import java.io.PrintWriter;
 
+import net.sf.iwant.api.model.SideEffect;
+import net.sf.iwant.api.model.SideEffectContext;
+
 public class HelloSideEffect implements SideEffect {
 
 	private final String name;

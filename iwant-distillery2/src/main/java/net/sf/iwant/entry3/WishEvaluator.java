@@ -6,14 +6,14 @@ import java.io.PrintWriter;
 
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.JavaSrcModule;
-import net.sf.iwant.api.SideEffect;
-import net.sf.iwant.api.SideEffectContext;
 import net.sf.iwant.api.SideEffectDefinitionContext;
-import net.sf.iwant.api.WsInfo;
 import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.SideEffect;
+import net.sf.iwant.api.model.SideEffectContext;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.model.WsInfo;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.io.StreamUtil;
 import net.sf.iwant.planner.Planner;
