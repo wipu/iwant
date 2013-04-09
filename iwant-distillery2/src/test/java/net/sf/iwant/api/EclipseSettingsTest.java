@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry3.CachesMock;
 import net.sf.iwant.entry3.TargetMock;

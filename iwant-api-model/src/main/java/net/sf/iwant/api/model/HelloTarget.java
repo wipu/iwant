@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -6,11 +6,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
-
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.io.StreamUtil;
 
 public class HelloTarget extends Target {
 
@@ -34,8 +29,8 @@ public class HelloTarget extends Target {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File cachedContent = ctx.cached(this);
-		StreamUtil.pipeAndClose(content(ctx), new FileOutputStream(
-				cachedContent));
+		ctx.iwant().pipeAndClose(content(ctx),
+				new FileOutputStream(cachedContent));
 	}
 
 	@Override

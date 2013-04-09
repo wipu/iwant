@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.javamodules;
 
 public enum CodeStyle {
 

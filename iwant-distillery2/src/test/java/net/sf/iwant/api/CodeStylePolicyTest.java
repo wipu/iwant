@@ -1,6 +1,9 @@
 package net.sf.iwant.api;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.javamodules.CodeStyle;
+import net.sf.iwant.api.javamodules.CodeStylePolicy;
+import net.sf.iwant.api.javamodules.CodeStyleValue;
 
 public class CodeStylePolicyTest extends TestCase {
 

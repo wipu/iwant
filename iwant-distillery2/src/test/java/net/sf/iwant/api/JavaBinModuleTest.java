@@ -3,6 +3,10 @@ package net.sf.iwant.api;
 import java.io.File;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
+import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.eclipsesettings.EclipseSettingsTestArea;

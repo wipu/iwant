@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.JavaClasses.JavaClassesSpex;
+import net.sf.iwant.api.javamodules.JavaClasses;
+import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
@@ -76,12 +77,12 @@ public class JavaClassesTest extends TestCase {
 
 	public void testSrcDirsAreInContentDescriptor() {
 		assertEquals(
-				"net.sf.iwant.api.JavaClasses {\n  src:src\n}",
+				"net.sf.iwant.api.javamodules.JavaClasses {\n  src:src\n}",
 				JavaClasses.with().name("classes")
 						.srcDirs(Source.underWsroot("src")).classLocations()
 						.end().contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.JavaClasses {\n  src:src2\n  src:src3\n}",
+				"net.sf.iwant.api.javamodules.JavaClasses {\n  src:src2\n  src:src3\n}",
 				JavaClasses
 						.with()
 						.name("classes2")
@@ -201,7 +202,7 @@ public class JavaClassesTest extends TestCase {
 				.srcDirs(Source.underWsroot("src")).classLocations(dep1, dep2)
 				.end();
 
-		assertEquals("net.sf.iwant.api.JavaClasses {\n  src:src\n"
+		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n  src:src\n"
 				+ "  classes:dep1\n  classes:dep2\n" + "}",
 				target.contentDescriptor());
 	}

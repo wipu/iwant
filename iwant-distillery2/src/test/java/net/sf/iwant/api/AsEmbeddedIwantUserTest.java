@@ -3,6 +3,7 @@ package net.sf.iwant.api;
 import java.io.File;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.testing.IwantEntry3TestArea;
 
 public class AsEmbeddedIwantUserTest extends TestCase {

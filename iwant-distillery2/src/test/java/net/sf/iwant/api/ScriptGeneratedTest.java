@@ -5,7 +5,8 @@ import java.io.File;
 import java.io.PrintStream;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.Concatenated.ConcatenatedBuilder;
+import net.sf.iwant.api.model.Concatenated;
+import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;

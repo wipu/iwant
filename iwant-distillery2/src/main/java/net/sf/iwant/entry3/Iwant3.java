@@ -13,15 +13,15 @@ import java.util.Properties;
 import java.util.SortedSet;
 
 import net.sf.iwant.api.HelloSideEffect;
-import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.IwantWorkspaceProvider;
-import net.sf.iwant.api.JavaBinModule;
-import net.sf.iwant.api.JavaClasses;
-import net.sf.iwant.api.JavaModule;
-import net.sf.iwant.api.JavaSrcModule;
 import net.sf.iwant.api.SideEffectDefinitionContext;
+import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaClasses;
+import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.ExternalSource;
+import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
@@ -80,19 +80,22 @@ public class Iwant3 {
 		File wsDefdefClasses = new File(wsCache, "wsdefdef-classes");
 
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
+		File iwantApiJavamodulesClasses = iwantApiJavamodulesClasses();
 		File iwantApiModelClasses = iwantApiModelClasses();
 		File iwantDistillery2Classes = iwantDistillery2Classes();
 		Path combinedIwantSources = combinedIwantSources();
 		JavaModule[] iwantApiModules = {
+				JavaBinModule.providing(new ExternalSource(
+						iwantApiJavamodulesClasses), combinedIwantSources),
 				JavaBinModule.providing(
 						new ExternalSource(iwantApiModelClasses),
 						combinedIwantSources),
 				JavaBinModule.providing(new ExternalSource(
 						iwantDistillery2Classes), combinedIwantSources) };
 
-		iwant.compiledClasses(wsDefdefClasses, srcFiles,
-				Arrays.asList(iwantApiModelClasses, iwantDistillery2Classes),
-				true);
+		iwant.compiledClasses(wsDefdefClasses, srcFiles, Arrays.asList(
+				iwantApiJavamodulesClasses, iwantApiModelClasses,
+				iwantDistillery2Classes), true);
 
 		List<File> runtimeClasses = Arrays.asList(wsDefdefClasses);
 		Class<?> wsDefdefClass = loadClass(getClass().getClassLoader(),
@@ -240,6 +243,18 @@ public class Iwant3 {
 			throw e;
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
+		}
+	}
+
+	private static File iwantApiJavamodulesClasses() {
+		try {
+			URL url = Iwant3.class
+					.getResource("/net/sf/iwant/api/javamodules/JavaModule.class");
+			return new File(url.toURI()).getParentFile().getParentFile()
+					.getParentFile().getParentFile().getParentFile()
+					.getParentFile();
+		} catch (Exception e) {
+			throw new IllegalStateException("Cannot find classes.", e);
 		}
 	}
 

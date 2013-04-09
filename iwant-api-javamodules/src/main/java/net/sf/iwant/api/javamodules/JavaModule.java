@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.javamodules;
 
 import net.sf.iwant.api.model.Path;
 

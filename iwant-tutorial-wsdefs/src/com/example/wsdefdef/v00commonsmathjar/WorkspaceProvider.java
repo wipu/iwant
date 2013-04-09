@@ -2,9 +2,9 @@ package com.example.wsdefdef.v00commonsmathjar;
 
 import net.sf.iwant.api.Downloaded;
 import net.sf.iwant.api.IwantWorkspaceProvider;
-import net.sf.iwant.api.JavaBinModule;
-import net.sf.iwant.api.JavaModule;
-import net.sf.iwant.api.JavaSrcModule;
+import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Target;
 
 public class WorkspaceProvider implements IwantWorkspaceProvider {

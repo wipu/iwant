@@ -1,9 +1,11 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.javamodules;
 
 import java.util.List;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.JavaSrcModule.IwantSrcModuleSpex;
+import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import net.sf.iwant.api.model.Concatenated;
+import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;

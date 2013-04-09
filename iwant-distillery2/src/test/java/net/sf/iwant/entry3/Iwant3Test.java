@@ -9,8 +9,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.IwantWorkspace;
-import net.sf.iwant.api.JavaClasses;
 import net.sf.iwant.api.TargetEvaluationContextMock;
+import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
@@ -336,9 +336,9 @@ public class Iwant3Test extends TestCase {
 		wsdef.append("import java.util.Arrays;\n");
 		wsdef.append("import java.util.List;\n");
 		wsdef.append("import net.sf.iwant.api.EclipseSettings;\n");
-		wsdef.append("import net.sf.iwant.api.HelloTarget;\n");
 		wsdef.append("import net.sf.iwant.api.IwantWorkspace;\n");
 		wsdef.append("import net.sf.iwant.api.SideEffectDefinitionContext;\n");
+		wsdef.append("import net.sf.iwant.api.model.HelloTarget;\n");
 		wsdef.append("import net.sf.iwant.api.model.SideEffect;\n");
 		wsdef.append("import net.sf.iwant.api.model.Target;\n");
 		wsdef.append("\n");
@@ -372,8 +372,8 @@ public class Iwant3Test extends TestCase {
 		b.append("import java.util.Arrays;\n");
 		b.append("\n");
 		b.append("import net.sf.iwant.api.IwantWorkspaceProvider;\n");
-		b.append("import net.sf.iwant.api.JavaModule;\n");
-		b.append("import net.sf.iwant.api.JavaSrcModule;\n");
+		b.append("import net.sf.iwant.api.javamodules.JavaModule;\n");
+		b.append("import net.sf.iwant.api.javamodules.JavaSrcModule;\n");
 		b.append("import net.sf.iwant.api.model.Path;\n");
 		b.append("import net.sf.iwant.api.model.Source;\n");
 		b.append("\n");

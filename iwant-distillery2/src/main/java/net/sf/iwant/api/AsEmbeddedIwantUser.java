@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.WsInfo;
 import net.sf.iwant.entry.Iwant;

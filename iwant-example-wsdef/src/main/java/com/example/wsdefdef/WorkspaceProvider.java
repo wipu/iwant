@@ -1,8 +1,8 @@
 package com.example.wsdefdef;
 
 import net.sf.iwant.api.IwantWorkspaceProvider;
-import net.sf.iwant.api.JavaModule;
-import net.sf.iwant.api.JavaSrcModule;
+import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 
 public class WorkspaceProvider implements IwantWorkspaceProvider {
 

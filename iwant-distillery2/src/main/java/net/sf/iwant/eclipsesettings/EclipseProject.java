@@ -3,9 +3,9 @@ package net.sf.iwant.eclipsesettings;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import net.sf.iwant.api.JavaBinModule;
-import net.sf.iwant.api.JavaModule;
-import net.sf.iwant.api.JavaSrcModule;
+import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.eclipsesettings.DotClasspath.DotClasspathSpex;
 

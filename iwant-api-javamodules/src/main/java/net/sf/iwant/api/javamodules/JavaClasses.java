@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.javamodules;
 
 import java.io.File;
 import java.io.InputStream;
@@ -10,7 +10,6 @@ import java.util.List;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.entry.Iwant;
 
 public class JavaClasses extends Target {
 
@@ -102,7 +101,7 @@ public class JavaClasses extends Target {
 			javaFiles.addAll(javaFilesUnder(ctx.cached(srcDir)));
 		}
 		if (javaFiles.isEmpty()) {
-			Iwant.debugLog(getClass().getSimpleName(),
+			ctx.iwant().debugLog(getClass().getSimpleName(),
 					"No java files to compile.");
 			dest.mkdirs();
 			return;

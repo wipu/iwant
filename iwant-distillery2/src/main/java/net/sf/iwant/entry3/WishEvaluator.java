@@ -5,8 +5,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import net.sf.iwant.api.IwantWorkspace;
-import net.sf.iwant.api.JavaSrcModule;
 import net.sf.iwant.api.SideEffectDefinitionContext;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;

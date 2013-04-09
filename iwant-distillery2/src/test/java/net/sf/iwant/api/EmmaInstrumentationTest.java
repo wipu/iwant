@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;

@@ -1,11 +1,11 @@
 package net.sf.iwant.eclipsesettings;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.CodeFormatterPolicy;
-import net.sf.iwant.api.CodeFormatterPolicy.TabulationCharValue;
-import net.sf.iwant.api.CodeStyle;
-import net.sf.iwant.api.CodeStylePolicy;
-import net.sf.iwant.api.CodeStylePolicy.CodeStylePolicySpex;
+import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
+import net.sf.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
+import net.sf.iwant.api.javamodules.CodeStyle;
+import net.sf.iwant.api.javamodules.CodeStylePolicy;
+import net.sf.iwant.api.javamodules.CodeStylePolicy.CodeStylePolicySpex;
 
 public class OrgEclipseJdtCorePrefsTest extends TestCase {
 

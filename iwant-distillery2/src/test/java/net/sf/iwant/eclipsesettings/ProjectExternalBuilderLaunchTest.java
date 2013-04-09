@@ -3,8 +3,8 @@ package net.sf.iwant.eclipsesettings;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.Concatenated;
-import net.sf.iwant.api.HelloTarget;
+import net.sf.iwant.api.model.Concatenated;
+import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;

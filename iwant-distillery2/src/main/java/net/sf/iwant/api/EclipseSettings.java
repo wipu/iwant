@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.SideEffectContext;
 import net.sf.iwant.eclipsesettings.EclipseSettingsWriter;

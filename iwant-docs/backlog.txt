@@ -611,11 +611,19 @@
     + fix compilation by Iwant2
     + fix compilation by Iwant3: now >1 classes in eclipse
     + add to coverage
-  - module: iwant-api-javamodules
+  + module: iwant-api-javamodules
     + create empty
-    - move minimal set of classes and tests
-    - fix compilation
-    - fix coverage
+    + move minimal set of classes and tests
+      + JavaModule ,src and bin impls, JavaSrcModuleTest
+      + for now: Concatenated and HelloTarget to api-model, needed in test
+    + fix compilation
+    + fix coverage
+    + fix descript (real bootstrapping by Iwant2)
+  - test Concatenated and HelloTarget in their own modules
+    - also JavaBinModule
+    - maybe another module for these
+    - modularize test tools so testing is possible
+  - clean up Iwant3 code that finds and creates iwant modules
   - modularization
     + abstract away dep to Iwant from api-model
 

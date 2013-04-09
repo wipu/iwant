@@ -1,8 +1,9 @@
 package net.sf.iwant.api;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.CodeFormatterPolicy.FormatterSettingsListener;
-import net.sf.iwant.api.CodeFormatterPolicy.TabulationCharValue;
+import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
+import net.sf.iwant.api.javamodules.CodeFormatterPolicy.FormatterSettingsListener;
+import net.sf.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
 
 public class CodeFormatterPolicyTest extends TestCase implements
 		FormatterSettingsListener {
