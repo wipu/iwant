@@ -82,9 +82,12 @@ public class Iwant3 {
 
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
 		SortedSet<File> apiClassLocations = new TreeSet<File>();
-		apiClassLocations.add(iwantApiJavamodulesClasses());
-		apiClassLocations.add(iwantApiModelClasses());
-		apiClassLocations.add(iwantDistillery2Classes());
+		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
+				+ "api/javamodules/JavaModule.class"));
+		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
+				+ "api/model/Path.class"));
+		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
+				+ "api/IwantWorkspace.class"));
 		Path combinedIwantSources = combinedIwantSources();
 		SortedSet<JavaModule> iwantApiModules = new TreeSet<JavaModule>();
 		for (File apiClasses : apiClassLocations) {
@@ -245,39 +248,29 @@ public class Iwant3 {
 		}
 	}
 
-	private static File iwantApiJavamodulesClasses() {
+	private static File classesDirOf(String resourceInsideClassLocation) {
 		try {
-			URL url = Iwant3.class
-					.getResource("/net/sf/iwant/api/javamodules/JavaModule.class");
-			return new File(url.toURI()).getParentFile().getParentFile()
-					.getParentFile().getParentFile().getParentFile()
-					.getParentFile();
+			int slashCount = countOfOccurrencesIn('/',
+					resourceInsideClassLocation);
+			URL url = Iwant3.class.getResource(resourceInsideClassLocation);
+			File file = new File(url.toURI());
+			for (int i = 0; i < slashCount; i++) {
+				file = file.getParentFile();
+			}
+			return file;
 		} catch (Exception e) {
 			throw new IllegalStateException("Cannot find classes.", e);
 		}
 	}
 
-	private static File iwantApiModelClasses() {
-		try {
-			URL url = Iwant3.class
-					.getResource("/net/sf/iwant/api/model/Path.class");
-			return new File(url.toURI()).getParentFile().getParentFile()
-					.getParentFile().getParentFile().getParentFile()
-					.getParentFile();
-		} catch (Exception e) {
-			throw new IllegalStateException("Cannot find classes.", e);
+	private static int countOfOccurrencesIn(char c, String string) {
+		int count = 0;
+		for (int i = 0; i < string.length(); i++) {
+			if (c == string.charAt(i)) {
+				count++;
+			}
 		}
-	}
-
-	private static File iwantDistillery2Classes() {
-		try {
-			URL url = Iwant3.class
-					.getResource("/net/sf/iwant/api/IwantWorkspace.class");
-			return new File(url.toURI()).getParentFile().getParentFile()
-					.getParentFile().getParentFile().getParentFile();
-		} catch (Exception e) {
-			throw new IllegalStateException("Cannot find classes.", e);
-		}
+		return count;
 	}
 
 	private static void refreshWishScripts(File asSomeone,
