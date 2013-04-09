@@ -602,15 +602,20 @@
 
 - @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
   + new empty module: iwant-api-model
-  - move a minimal amount of model to new module
-    - move ?
+  + move a minimal amount of model to new module
+    + move ?
       * the api has a lot of cross-deps, contains actual code also =>
       + add test java to api model
       + then move some
-      - move more
+      + move more
     + fix compilation by Iwant2
     + fix compilation by Iwant3: now >1 classes in eclipse
     + add to coverage
+  - module: iwant-api-javamodules
+    + create empty
+    - move minimal set of classes and tests
+    - fix compilation
+    - fix coverage
   - modularization
     + abstract away dep to Iwant from api-model
 
