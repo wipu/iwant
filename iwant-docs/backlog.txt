@@ -600,6 +600,13 @@
 = In progress
 #################################################################
 
+- @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
+  + new empty module: iwant-api-model
+  - move a minimal amount of model to new module
+    - move ?
+    - fix compilation by Iwant2
+    - add to coverage
+
 - @enhancement: As @buildscriptauthor I want EmmaCoverage to put classpath items, be them instrumented or not, to classpath in the order I specify them so I can control for example which log4j.properties take effect etc
   + do it
   - test in real project that it helps
