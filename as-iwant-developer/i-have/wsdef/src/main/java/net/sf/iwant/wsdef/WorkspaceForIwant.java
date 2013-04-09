@@ -102,22 +102,16 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static EmmaCoverage apiModelEmmaCoverage() {
 		return EmmaCoverage
 				.with()
-				.name("iwant-api-model.emmacoverage")
 				.antJars(TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar())
 				.emma(emma())
-				.instrumentations(apiModelEmmaInstrumentation())
-				.nonInstrumentedClasses(iwantApiModel().testArtifact(),
-						junit().mainArtifact())
+				.module(iwantApiModel())
 				.mainClassAndArguments("org.junit.runner.JUnitCore",
 						"net.sf.iwant.api.model.IwantApiModelSuite").end();
 	}
 
 	private static EmmaInstrumentation apiModelEmmaInstrumentation() {
-		JavaSrcModule mod = iwantApiModel();
-		return EmmaInstrumentation.of(
-				new JavaClassesAndSources(mod.mainArtifact(), mod
-						.mainJavasAsPaths())).using(emma());
+		return EmmaInstrumentation.of(iwantApiModel()).using(emma());
 	}
 
 	private static EmmaCoverage distilleryEmmaCoverage() {
