@@ -600,6 +600,9 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want an easy way of creating emma targets (instr and coverage) from modules, without having to build their dependencies manually
+  - a "from" factory method in both?
+
 - @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
   + new empty module: iwant-api-model
   + move a minimal amount of model to new module
@@ -624,6 +627,8 @@
     * this breaks real eclipse settings
     + clean up Iwant3 code that finds and creates iwant modules
       * just use SortedSet, not worth trying to test
+  - before adding modules make it easy by implementing story about
+    emma target building from modules and take into use
   - test Concatenated and HelloTarget in their own modules
     - also JavaBinModule
     - maybe another module for these
