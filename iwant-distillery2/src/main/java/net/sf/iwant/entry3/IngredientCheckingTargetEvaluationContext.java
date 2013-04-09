@@ -2,6 +2,7 @@ package net.sf.iwant.entry3;
 
 import java.io.File;
 
+import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
@@ -66,7 +67,7 @@ public class IngredientCheckingTargetEvaluationContext implements
 	}
 
 	@Override
-	public Iwant iwant() {
+	public IwantCoreServices iwant() {
 		return delegate.iwant();
 	}
 

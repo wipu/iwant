@@ -10,6 +10,7 @@ import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.SideEffectContext;
 import net.sf.iwant.api.SideEffectDefinitionContext;
 import net.sf.iwant.api.WsInfo;
+import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
@@ -136,9 +137,12 @@ public class WishEvaluator {
 	private class Ctx implements TargetEvaluationContext, SideEffectContext,
 			SideEffectDefinitionContext {
 
+		private final IwantCoreServices iwantCoreServices = new IwantCoreServicesImpl(
+				iwant);
+
 		@Override
-		public Iwant iwant() {
-			return iwant;
+		public IwantCoreServices iwant() {
+			return iwantCoreServices;
 		}
 
 		@Override

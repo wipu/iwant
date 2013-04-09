@@ -2,20 +2,22 @@ package net.sf.iwant.api;
 
 import java.io.File;
 
+import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry3.CachesMock;
+import net.sf.iwant.entry3.IwantCoreServicesImpl;
 
 public class TargetEvaluationContextMock implements TargetEvaluationContext {
 
-	private final Iwant iwant;
 	private File wsRoot;
 	private final CachesMock caches;
+	private final IwantCoreServices iwantCoreServices;
 
 	public TargetEvaluationContextMock(Iwant iwant, CachesMock caches) {
-		this.iwant = iwant;
 		this.caches = caches;
+		this.iwantCoreServices = new IwantCoreServicesImpl(iwant);
 	}
 
 	private <T> T nonNull(T value, Object request) {
@@ -36,8 +38,8 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext {
 	}
 
 	@Override
-	public Iwant iwant() {
-		return iwant;
+	public IwantCoreServices iwant() {
+		return iwantCoreServices;
 	}
 
 	@Override
