@@ -11,17 +11,17 @@ import net.sf.iwant.api.EmmaInstrumentation;
 import net.sf.iwant.api.EmmaReport;
 import net.sf.iwant.api.FromRepository;
 import net.sf.iwant.api.IwantWorkspace;
-import net.sf.iwant.api.JavaBinModule;
 import net.sf.iwant.api.JavaClassesAndSources;
-import net.sf.iwant.api.JavaModule;
-import net.sf.iwant.api.JavaSrcModule;
-import net.sf.iwant.api.JavaSrcModule.IwantSrcModuleSpex;
-import net.sf.iwant.api.Path;
-import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.SideEffectDefinitionContext;
-import net.sf.iwant.api.Source;
-import net.sf.iwant.api.Target;
 import net.sf.iwant.api.TestedIwantDependencies;
+import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.SideEffect;
+import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.Target;
 
 public class WorkspaceForIwant implements IwantWorkspace {
 
