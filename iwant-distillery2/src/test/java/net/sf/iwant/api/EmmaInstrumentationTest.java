@@ -7,7 +7,9 @@ import java.io.PrintStream;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
@@ -271,6 +273,38 @@ public class EmmaInstrumentationTest extends TestCase {
 		testInstrumentationCreatesNeededFiles();
 		assertFalse(new File(cwd, "coverage.em").exists());
 
+	}
+
+	public void testCreationFromJavaSrcModule() throws IOException {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.end();
+
+		EmmaInstrumentation instr = EmmaInstrumentation.of(mod).using(emma());
+
+		assertEquals("mod-main-classes.emma-instr", instr.name());
+		assertEquals("mod-main-classes", instr.classesAndSources().classes()
+				.toString());
+		assertEquals("[mod/src]", instr.classesAndSources().sources()
+				.toString());
+	}
+
+	public void testCreationFromJavaSrcModuleWithTestJavaOnly()
+			throws IOException {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
+				.end();
+
+		EmmaInstrumentation instr = EmmaInstrumentation.of(mod).using(emma());
+
+		assertNull(instr);
+	}
+
+	public void testCreationFromJavaBinModule() throws IOException {
+		JavaBinModule mod = JavaBinModule.providing(Source
+				.underWsroot("lib.jar"));
+
+		EmmaInstrumentation instr = EmmaInstrumentation.of(mod).using(emma());
+
+		assertNull(instr);
 	}
 
 }

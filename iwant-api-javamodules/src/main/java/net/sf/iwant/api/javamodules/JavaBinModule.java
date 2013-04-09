@@ -1,6 +1,8 @@
 package net.sf.iwant.api.javamodules;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Set;
 
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
@@ -82,6 +84,11 @@ public abstract class JavaBinModule extends JavaModule {
 					+ name);
 		}
 
+		@Override
+		public Set<JavaModule> mainDeps() {
+			return Collections.emptySet();
+		}
+
 	}
 
 	private static class PathProvider extends JavaBinModule {
@@ -123,6 +130,11 @@ public abstract class JavaBinModule extends JavaModule {
 		@Override
 		public Path mainArtifact() {
 			return mainArtifact;
+		}
+
+		@Override
+		public Set<JavaModule> mainDeps() {
+			return Collections.emptySet();
 		}
 
 	}

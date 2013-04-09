@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
@@ -30,6 +32,19 @@ public class EmmaInstrumentation extends Target {
 		return new EmmaInstrumentationUsing(classesAndSources);
 	}
 
+	public static EmmaInstrumentationUsing of(JavaModule mod) {
+		if (!(mod instanceof JavaSrcModule)) {
+			return new EmmaInstrumentationUsing(null);
+		}
+		JavaSrcModule srcMod = (JavaSrcModule) mod;
+		if (srcMod.mainJavasAsPaths().isEmpty()) {
+			return new EmmaInstrumentationUsing(null);
+		}
+		JavaClassesAndSources classesAndSources = new JavaClassesAndSources(
+				srcMod.mainArtifact(), srcMod.mainJavasAsPaths());
+		return new EmmaInstrumentationUsing(classesAndSources);
+	}
+
 	public static class EmmaInstrumentationUsing {
 
 		private final JavaClassesAndSources classesAndSources;
@@ -45,6 +60,9 @@ public class EmmaInstrumentation extends Target {
 		}
 
 		public EmmaInstrumentation using(Path emma) {
+			if (classesAndSources == null) {
+				return null;
+			}
 			return new EmmaInstrumentation(classesAndSources, emma, filter);
 		}
 

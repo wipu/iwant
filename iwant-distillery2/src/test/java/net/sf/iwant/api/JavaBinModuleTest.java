@@ -95,4 +95,12 @@ public class JavaBinModuleTest extends TestCase {
 				libJarModule.eclipseSourceReference(evCtx));
 	}
 
+	public void testBinaryModulesDontHaveMainDeps() {
+		assertTrue(JavaBinModule.named("lib")
+				.inside(JavaSrcModule.with().name("libs").end()).mainDeps()
+				.isEmpty());
+		assertTrue(JavaBinModule.providing(Source.underWsroot("lib"))
+				.mainDeps().isEmpty());
+	}
+
 }

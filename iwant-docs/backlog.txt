@@ -601,7 +601,13 @@
 #################################################################
 
 - As @buildscriptauthor I want an easy way of creating emma targets (instr and coverage) from modules, without having to build their dependencies manually
-  - a "from" factory method in both?
+  * a "from" factory method in both?
+  + factory for instr: non-null only if a src module with main javas
+  - factory for coverage
+    + simple
+    - don't put duplicates, even if same mod belongs to
+      cumulative test and main deps
+  - upgrade iwant for iwant and try it out
 
 - @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
   + new empty module: iwant-api-model

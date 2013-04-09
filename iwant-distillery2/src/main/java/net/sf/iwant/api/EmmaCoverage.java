@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
@@ -110,6 +112,29 @@ public class EmmaCoverage extends Target {
 		public EmmaCoverageSpex jvmArgs(String... jvmargs) {
 			this.jvmargs.addAll(Arrays.asList(jvmargs));
 			return this;
+		}
+
+		public EmmaCoverageSpex module(JavaSrcModule mod) {
+			name(mod.name() + ".emmacoverage");
+			// TODO avoid duplicates, same dep can come from main and tests
+			nonInstrumentedClasses(mod.testArtifact());
+			for (JavaModule testDep : mod.testDeps()) {
+				dep(testDep);
+			}
+			dep(mod);
+			return this;
+		}
+
+		private void dep(JavaModule mod) {
+			EmmaInstrumentation instr = EmmaInstrumentation.of(mod).using(emma);
+			if (instr != null) {
+				instrumentations(instr);
+			} else {
+				nonInstrumentedClasses(mod.mainArtifact());
+			}
+			for (JavaModule dep : mod.mainDeps()) {
+				dep(dep);
+			}
 		}
 
 		public EmmaCoverage end() {

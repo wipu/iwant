@@ -216,6 +216,7 @@ public class JavaSrcModule extends JavaModule {
 		return testResources;
 	}
 
+	@Override
 	public Set<JavaModule> mainDeps() {
 		return mainDeps;
 	}
