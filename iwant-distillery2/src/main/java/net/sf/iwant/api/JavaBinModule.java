@@ -2,6 +2,10 @@ package net.sf.iwant.api;
 
 import java.io.IOException;
 
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.TargetEvaluationContext;
+
 public abstract class JavaBinModule extends JavaModule {
 
 	public static IwantBinModuleSpex named(String name) {

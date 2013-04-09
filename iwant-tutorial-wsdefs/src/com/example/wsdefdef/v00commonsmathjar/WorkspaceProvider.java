@@ -5,19 +5,16 @@ import net.sf.iwant.api.IwantWorkspaceProvider;
 import net.sf.iwant.api.JavaBinModule;
 import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.JavaSrcModule;
-import net.sf.iwant.api.Target;
+import net.sf.iwant.api.model.Target;
 
 public class WorkspaceProvider implements IwantWorkspaceProvider {
 
 	@Override
-	public JavaSrcModule workspaceModule(JavaModule iwantApiClasses) {
-		return JavaSrcModule
-				.with()
-				.name("distillery-workspace")
+	public JavaSrcModule workspaceModule(JavaModule... iwantApiModules) {
+		return JavaSrcModule.with().name("distillery-workspace")
 				.locationUnderWsRoot("as-distillery-developer/i-have/wsdef")
-				.mainJava("src/main/java")
-				.mainDeps(iwantApiClasses,
-						JavaBinModule.providing(commonsMathJar())).end();
+				.mainJava("src/main/java").mainDeps(iwantApiModules)
+				.mainDeps(JavaBinModule.providing(commonsMathJar())).end();
 	}
 
 	@Override

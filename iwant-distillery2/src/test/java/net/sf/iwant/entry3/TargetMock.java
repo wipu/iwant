@@ -7,9 +7,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import net.sf.iwant.api.Path;
-import net.sf.iwant.api.Target;
-import net.sf.iwant.api.TargetEvaluationContext;
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.io.StreamUtil;
 
 public class TargetMock extends Target {

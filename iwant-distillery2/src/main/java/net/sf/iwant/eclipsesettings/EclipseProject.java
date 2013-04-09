@@ -6,7 +6,7 @@ import java.util.Set;
 import net.sf.iwant.api.JavaBinModule;
 import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.JavaSrcModule;
-import net.sf.iwant.api.TargetEvaluationContext;
+import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.eclipsesettings.DotClasspath.DotClasspathSpex;
 
 public class EclipseProject {

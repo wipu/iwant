@@ -2,9 +2,9 @@ package net.sf.iwant.entry3;
 
 import java.io.File;
 
-import net.sf.iwant.api.Path;
-import net.sf.iwant.api.Target;
-import net.sf.iwant.api.TargetEvaluationContext;
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 
 public class IngredientCheckingTargetEvaluationContext implements

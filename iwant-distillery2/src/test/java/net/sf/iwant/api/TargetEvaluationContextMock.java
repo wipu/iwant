@@ -2,6 +2,8 @@ package net.sf.iwant.api;
 
 import java.io.File;
 
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry3.CachesMock;
 

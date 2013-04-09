@@ -606,9 +606,11 @@
     - move ?
       * the api has a lot of cross-deps, contains actual code also =>
       + add test java to api model
-      - then move
-    - fix compilation by Iwant2
-    - add to coverage
+      + then move some
+      - move more
+    + fix compilation by Iwant2
+    + fix compilation by Iwant3: now >1 classes in eclipse
+    + add to coverage
 
 - @enhancement: As @buildscriptauthor I want EmmaCoverage to put classpath items, be them instrumented or not, to classpath in the order I specify them so I can control for example which log4j.properties take effect etc
   + do it

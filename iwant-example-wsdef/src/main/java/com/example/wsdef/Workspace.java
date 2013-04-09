@@ -8,7 +8,7 @@ import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.SideEffectDefinitionContext;
-import net.sf.iwant.api.Target;
+import net.sf.iwant.api.model.Target;
 
 public class Workspace implements IwantWorkspace {
 

@@ -109,9 +109,11 @@ public class Iwant2 {
 
 	private static List<String> relativeIwantSrcDirs() {
 		List<String> srcDirs = new ArrayList<String>();
+		srcDirs.add("iwant-api-model/" + "src/test/java");
+		srcDirs.add("iwant-api-model/" + "src/main/java");
+		srcDirs.add("iwant-distillery/" + "src/test/java");
 		srcDirs.add("iwant-distillery/" + "as-some-developer/with/java");
 		srcDirs.add("iwant-distillery/" + "src/main/java");
-		srcDirs.add("iwant-distillery/" + "src/test/java");
 		srcDirs.add("iwant-distillery2/" + "src/test/java");
 		srcDirs.add("iwant-distillery2/" + "src/main/java");
 		srcDirs.add("iwant-testarea/" + "src/main/java");

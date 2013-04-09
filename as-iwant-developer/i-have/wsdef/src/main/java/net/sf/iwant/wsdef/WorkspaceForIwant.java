@@ -48,7 +48,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static SortedSet<JavaModule> allModules() {
 		return new TreeSet<JavaModule>(Arrays.asList(commonsMath(),
 				iwantApiModel(), iwantDistillery(), iwantDistillery2(),
-				iwantDocs(), iwantWxampleWsdef(), iwantMockWsroot(),
+				iwantDocs(), iwantExampleWsdef(), iwantMockWsroot(),
 				iwantTestarea(), iwantTestrunner(), iwantTutorialWsdefs(),
 				junit()));
 	}
@@ -60,17 +60,39 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static Target emmaCoverageReport() {
-		// TODO enable distillery when it passes
 		return EmmaReport
 				.with()
 				.name("emma-coverage-report")
 				.emma(emma())
-				.instrumentations(distilleryEmmaInstrumentation(),
+				.instrumentations(apiModelEmmaInstrumentation(),
+						distilleryEmmaInstrumentation(),
 						distillery2EmmaInstrumentation(),
 						testareaEmmaInstrumentation(),
 						testrunnerEmmaInstrumentation())
-				.coverages(distilleryEmmaCoverage(), distillery2EmmaCoverage(),
-						testrunnerEmmaCoverage()).end();
+				.coverages(apiModelEmmaCoverage(), distilleryEmmaCoverage(),
+						distillery2EmmaCoverage(), testrunnerEmmaCoverage())
+				.end();
+	}
+
+	private static EmmaCoverage apiModelEmmaCoverage() {
+		return EmmaCoverage
+				.with()
+				.name("iwant-api-model.emmacoverage")
+				.antJars(TestedIwantDependencies.antJar(),
+						TestedIwantDependencies.antLauncherJar())
+				.emma(emma())
+				.instrumentations(apiModelEmmaInstrumentation())
+				.nonInstrumentedClasses(iwantApiModel().testArtifact(),
+						junit().mainArtifact())
+				.mainClassAndArguments("org.junit.runner.JUnitCore",
+						"net.sf.iwant.api.model.IwantApiModelSuite").end();
+	}
+
+	private static EmmaInstrumentation apiModelEmmaInstrumentation() {
+		JavaSrcModule mod = iwantApiModel();
+		return EmmaInstrumentation.of(
+				new JavaClassesAndSources(mod.mainArtifact(), mod
+						.mainJavasAsPaths())).using(emma());
 	}
 
 	private static EmmaCoverage distilleryEmmaCoverage() {
@@ -80,7 +102,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.antJars(TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar())
 				.emma(emma())
-				.instrumentations(distilleryEmmaInstrumentation(),
+				.instrumentations(apiModelEmmaInstrumentation(),
+						distilleryEmmaInstrumentation(),
 						testareaEmmaInstrumentation())
 				.nonInstrumentedClasses(iwantDistillery().testArtifact(),
 						iwantDistilleryClasspathMarker().mainArtifact(),
@@ -105,7 +128,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.antJars(TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar())
 				.emma(emma())
-				.instrumentations(distilleryEmmaInstrumentation(),
+				.instrumentations(apiModelEmmaInstrumentation(),
+						distilleryEmmaInstrumentation(),
 						distillery2EmmaInstrumentation(),
 						testareaEmmaInstrumentation())
 				.nonInstrumentedClasses(
@@ -161,14 +185,15 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaSrcModule iwantApiModel() {
-		return iwantSrcModule("api-model").mainDeps().testDeps(junit()).end();
+		return iwantSrcModule("api-model").mainDeps(iwantDistillery())
+				.testDeps(junit()).end();
 	}
 
 	private static JavaSrcModule iwantDistillery() {
 		return iwantSrcModule("distillery")
 				.mainJava("as-some-developer/with/java")
 				.testResources("src/test/resources")
-				.mainDeps(junit(), iwantTestarea())
+				.mainDeps(iwantTestarea(), junit())
 				.testDeps(iwantDistilleryClasspathMarker()).end();
 	}
 
@@ -183,7 +208,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaSrcModule iwantDistillery2() {
-		return iwantSrcModule("distillery2").mainDeps(iwantDistillery())
+		return iwantSrcModule("distillery2")
+				.mainDeps(iwantApiModel(), iwantDistillery())
 				.testDeps(junit(), iwantTestarea()).end();
 	}
 
@@ -191,21 +217,23 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return iwantSrcModule("docs").end();
 	}
 
-	private static JavaModule iwantWxampleWsdef() {
+	private static JavaModule iwantExampleWsdef() {
 		return iwantSrcModule("example-wsdef").noTestJava()
-				.mainDeps(iwantDistillery2()).end();
+				.mainDeps(iwantApiModel(), iwantDistillery2()).end();
 	}
 
 	private static JavaModule iwantMockWsroot() {
 		IwantSrcModuleSpex mod = iwantSrcModule("mock-wsroot").noMainJava()
 				.noTestJava();
-		mod.mainJava("iwant-distillery/src/main/java");
-		mod.mainJava("iwant-testrunner/src/main/java");
-		mod.mainJava("iwant-testarea/src/main/java");
+		mod.mainJava("iwant-api-model/src/test/java");
+		mod.mainJava("iwant-api-model/src/main/java");
 		mod.mainJava("iwant-distillery/src/test/java");
+		mod.mainJava("iwant-distillery/as-some-developer/with/java");
+		mod.mainJava("iwant-distillery/src/main/java");
 		mod.mainJava("iwant-distillery2/src/test/java");
 		mod.mainJava("iwant-distillery2/src/main/java");
-		mod.mainJava("iwant-distillery/as-some-developer/with/java");
+		mod.mainJava("iwant-testarea/src/main/java");
+		mod.mainJava("iwant-testrunner/src/main/java");
 		return mod.mainDeps(junit()).end();
 	}
 
@@ -225,7 +253,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaModule iwantTutorialWsdefs() {
 		return iwantSrcModule("tutorial-wsdefs").noMainJava().noTestJava()
-				.mainJava("src").mainDeps(commonsMath(), iwantDistillery2())
+				.mainJava("src")
+				.mainDeps(commonsMath(), iwantApiModel(), iwantDistillery2())
 				.end();
 	}
 

@@ -5,10 +5,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.iwant.api.CacheScopeChoices;
-import net.sf.iwant.api.Path;
-import net.sf.iwant.api.Source;
-import net.sf.iwant.api.Target;
+import net.sf.iwant.api.model.CacheScopeChoices;
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.Target;
 
 public class CachesMock implements Caches {
 

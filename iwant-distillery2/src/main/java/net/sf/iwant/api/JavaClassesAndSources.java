@@ -3,6 +3,8 @@ package net.sf.iwant.api;
 import java.util.Collections;
 import java.util.List;
 
+import net.sf.iwant.api.model.Path;
+
 public class JavaClassesAndSources {
 
 	private Path classes;

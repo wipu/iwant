@@ -9,6 +9,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 
 public class EmmaReport extends Target {

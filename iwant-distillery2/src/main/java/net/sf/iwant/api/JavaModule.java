@@ -1,5 +1,7 @@
 package net.sf.iwant.api;
 
+import net.sf.iwant.api.model.Path;
+
 public abstract class JavaModule implements Comparable<JavaModule> {
 
 	public abstract String name();

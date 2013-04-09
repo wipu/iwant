@@ -19,13 +19,14 @@ import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.IwantWorkspaceProvider;
 import net.sf.iwant.api.JavaBinModule;
 import net.sf.iwant.api.JavaClasses;
+import net.sf.iwant.api.JavaModule;
 import net.sf.iwant.api.JavaSrcModule;
-import net.sf.iwant.api.Path;
 import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.SideEffectDefinitionContext;
-import net.sf.iwant.api.Target;
-import net.sf.iwant.api.TargetEvaluationContext;
 import net.sf.iwant.api.WsInfo;
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
@@ -79,9 +80,19 @@ public class Iwant3 {
 		File wsDefdefClasses = new File(wsCache, "wsdefdef-classes");
 
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
-		File iwantApiClasses = iwantApiClasses();
+		File iwantApiModelClasses = iwantApiModelClasses();
+		File iwantDistillery2Classes = iwantDistillery2Classes();
+		Path combinedIwantSources = combinedIwantSources();
+		JavaModule[] iwantApiModules = {
+				JavaBinModule.providing(
+						new ExternalSource(iwantApiModelClasses),
+						combinedIwantSources),
+				JavaBinModule.providing(new ExternalSource(
+						iwantDistillery2Classes), combinedIwantSources) };
+
 		iwant.compiledClasses(wsDefdefClasses, srcFiles,
-				Arrays.asList(iwantApiClasses), true);
+				Arrays.asList(iwantApiModelClasses, iwantDistillery2Classes),
+				true);
 
 		List<File> runtimeClasses = Arrays.asList(wsDefdefClasses);
 		Class<?> wsDefdefClass = loadClass(getClass().getClassLoader(),
@@ -92,12 +103,9 @@ public class Iwant3 {
 			IwantWorkspaceProvider wsDefdef = (IwantWorkspaceProvider) wsDefdefClass
 					.newInstance();
 
-			Path combinedIwantSources = combinedIwantSources();
 			Iwant.fileLog("Refreshing wsdef classes");
 			JavaSrcModule wsdDefClassesModule = wsDefdef
-					.workspaceModule(JavaBinModule.providing(
-							new ExternalSource(iwantApiClasses),
-							combinedIwantSources));
+					.workspaceModule(iwantApiModules);
 			// TODO don't cast when no more necessary
 			JavaClasses wsDefClassesTarget = (JavaClasses) wsdDefClassesModule
 					.mainArtifact();
@@ -105,15 +113,10 @@ public class Iwant3 {
 			String wsdefdefRelativeToWsRoot = FileUtil
 					.relativePathOfFileUnderParent(wsInfo.wsdefdefModule(),
 							wsInfo.wsRoot());
-			JavaSrcModule wsdefdefJavaModule = JavaSrcModule
-					.with()
+			JavaSrcModule wsdefdefJavaModule = JavaSrcModule.with()
 					.name(wsInfo.wsName() + "-wsdefdef")
 					.locationUnderWsRoot(wsdefdefRelativeToWsRoot)
-					.mainJava("src/main/java")
-					.mainDeps(
-							JavaBinModule.providing(new ExternalSource(
-									iwantApiClasses), combinedIwantSources))
-					.end();
+					.mainJava("src/main/java").mainDeps(iwantApiModules).end();
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
 					System.err, wsInfo.wsRoot(), iwant, wsInfo, caches,
 					userPrefs.workerCount(), wsdefdefJavaModule,
@@ -240,7 +243,19 @@ public class Iwant3 {
 		}
 	}
 
-	private static File iwantApiClasses() {
+	private static File iwantApiModelClasses() {
+		try {
+			URL url = Iwant3.class
+					.getResource("/net/sf/iwant/api/model/Path.class");
+			return new File(url.toURI()).getParentFile().getParentFile()
+					.getParentFile().getParentFile().getParentFile()
+					.getParentFile();
+		} catch (Exception e) {
+			throw new IllegalStateException("Cannot find classes.", e);
+		}
+	}
+
+	private static File iwantDistillery2Classes() {
 		try {
 			URL url = Iwant3.class
 					.getResource("/net/sf/iwant/api/IwantWorkspace.class");

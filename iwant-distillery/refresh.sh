@@ -46,7 +46,7 @@ tested-java-classes() {
     $(find $IWANT_TESTRUNNER_PROJ/src/main/java -name '*.java') \
     $(find $IWANT_TESTRUNNER_PROJ/src/test/java -name '*.java') \
     $(find $HERE/src/test/java -name '*.java')
-  cp "$HERE/src/test/java/net/sf/iwant/entry/"*.zip \
+  cp "$HERE/src/test/resources/net/sf/iwant/entry/"*.zip \
     "$CLASSES_TO_TEST/net/sf/iwant/entry/"
   touch "$CLASSES_TO_TEST/compiled-by-refresh.sh"
 

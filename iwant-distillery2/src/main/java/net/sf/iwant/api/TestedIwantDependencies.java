@@ -3,6 +3,7 @@ package net.sf.iwant.api;
 import java.io.File;
 import java.net.URL;
 
+import net.sf.iwant.api.model.Path;
 import net.sf.iwant.entry.Iwant;
 
 public class TestedIwantDependencies {

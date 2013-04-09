@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.sf.iwant.api.Path;
-import net.sf.iwant.api.Source;
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Source;
 
 public class ProjectExternalBuilderLaunch {
 

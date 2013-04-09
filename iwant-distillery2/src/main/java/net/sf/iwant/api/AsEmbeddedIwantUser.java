@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 
+import net.sf.iwant.api.model.Target;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry3.Caches;
 import net.sf.iwant.entry3.CachesImpl;

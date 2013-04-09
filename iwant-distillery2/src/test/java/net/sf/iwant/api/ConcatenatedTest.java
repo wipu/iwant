@@ -3,6 +3,7 @@ package net.sf.iwant.api;
 import java.io.File;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.model.Source;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry3.CachesMock;

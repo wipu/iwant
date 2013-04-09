@@ -2,8 +2,8 @@ package net.sf.iwant.entry3;
 
 import java.io.File;
 
-import net.sf.iwant.api.Path;
-import net.sf.iwant.api.Target;
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Target;
 
 public interface Caches {
 

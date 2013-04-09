@@ -2,6 +2,8 @@ package net.sf.iwant.api;
 
 import java.util.List;
 
+import net.sf.iwant.api.model.Target;
+
 public interface IwantWorkspace {
 
 	/**
