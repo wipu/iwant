@@ -47,8 +47,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static SortedSet<JavaModule> allModules() {
 		return new TreeSet<JavaModule>(Arrays.asList(commonsMath(),
-				distillery(), distillery2(), docs(), exampleWsdef(), junit(),
-				mockWsroot(), testarea(), testrunner(), tutorialWsdefs()));
+				iwantDistillery(), iwantDistillery2(), iwantDocs(),
+				iwantWxampleWsdef(), junit(), iwantMockWsroot(),
+				iwantTestarea(), iwantTestrunner(), iwantTutorialWsdefs()));
 	}
 
 	// the targets
@@ -80,17 +81,17 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.emma(emma())
 				.instrumentations(distilleryEmmaInstrumentation(),
 						testareaEmmaInstrumentation())
-				.nonInstrumentedClasses(distillery().testArtifact(),
-						distilleryClasspathMarker().mainArtifact(),
-						distilleryTestResources().mainArtifact(),
+				.nonInstrumentedClasses(iwantDistillery().testArtifact(),
+						iwantDistilleryClasspathMarker().mainArtifact(),
+						iwantDistilleryTestResources().mainArtifact(),
 						junit().mainArtifact(),
-						testareaClassdir().mainArtifact())
+						iwantTestareaClassdir().mainArtifact())
 				.mainClassAndArguments("org.junit.runner.JUnitCore",
 						"net.sf.iwant.IwantDistillerySuite").end();
 	}
 
 	private static EmmaInstrumentation distilleryEmmaInstrumentation() {
-		JavaSrcModule mod = distillery();
+		JavaSrcModule mod = iwantDistillery();
 		return EmmaInstrumentation.of(
 				new JavaClassesAndSources(mod.mainArtifact(), mod
 						.mainJavasAsPaths())).using(emma());
@@ -107,16 +108,17 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						distillery2EmmaInstrumentation(),
 						testareaEmmaInstrumentation())
 				.nonInstrumentedClasses(
-						distilleryClasspathMarker().mainArtifact(),
-						distillery2().testArtifact(), junit().mainArtifact(),
-						testareaClassdir().mainArtifact(),
-						testrunner().testArtifact())
+						iwantDistilleryClasspathMarker().mainArtifact(),
+						iwantDistillery2().testArtifact(),
+						junit().mainArtifact(),
+						iwantTestareaClassdir().mainArtifact(),
+						iwantTestrunner().testArtifact())
 				.mainClassAndArguments("org.junit.runner.JUnitCore",
 						"net.sf.iwant.IwantDistillery2Suite").end();
 	}
 
 	private static EmmaInstrumentation distillery2EmmaInstrumentation() {
-		JavaSrcModule mod = distillery2();
+		JavaSrcModule mod = iwantDistillery2();
 		return EmmaInstrumentation.of(
 				new JavaClassesAndSources(mod.mainArtifact(), mod
 						.mainJavasAsPaths())).using(emma());
@@ -131,20 +133,20 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.emma(emma())
 				.instrumentations(testrunnerEmmaInstrumentation())
 				.nonInstrumentedClasses(junit().mainArtifact(),
-						testrunner().testArtifact())
+						iwantTestrunner().testArtifact())
 				.mainClassAndArguments("org.junit.runner.JUnitCore",
 						"net.sf.iwant.testrunner.IwantTestRunnerTest").end();
 	}
 
 	private static EmmaInstrumentation testareaEmmaInstrumentation() {
-		JavaSrcModule mod = testarea();
+		JavaSrcModule mod = iwantTestarea();
 		return EmmaInstrumentation.of(
 				new JavaClassesAndSources(mod.mainArtifact(), mod
 						.mainJavasAsPaths())).using(emma());
 	}
 
 	private static EmmaInstrumentation testrunnerEmmaInstrumentation() {
-		JavaSrcModule mod = testrunner();
+		JavaSrcModule mod = iwantTestrunner();
 		return EmmaInstrumentation.of(
 				new JavaClassesAndSources(mod.mainArtifact(), mod
 						.mainJavasAsPaths())).using(emma());
@@ -157,44 +159,39 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.group("commons-math").name("commons-math").version("1.2"));
 	}
 
-	private static JavaSrcModule distillery() {
+	private static JavaSrcModule iwantDistillery() {
 		return iwantSrcModule("distillery")
 				.mainJava("as-some-developer/with/java")
 				.testResources("src/test/resources")
-				.mainDeps(junit(), testarea())
-				.testDeps(distilleryClasspathMarker()).end();
+				.mainDeps(junit(), iwantTestarea())
+				.testDeps(iwantDistilleryClasspathMarker()).end();
 	}
 
-	private static JavaBinModule distilleryClasspathMarker() {
+	private static JavaBinModule iwantDistilleryClasspathMarker() {
 		return JavaBinModule.providing(Source
 				.underWsroot("iwant-distillery/classpath-marker"));
 	}
 
-	private static JavaBinModule distilleryTestResources() {
+	private static JavaBinModule iwantDistilleryTestResources() {
 		return JavaBinModule.providing(Source
 				.underWsroot("iwant-distillery/src/test/resources"));
 	}
 
-	private static JavaSrcModule distillery2() {
-		return iwantSrcModule("distillery2").mainDeps(distillery())
-				.testDeps(junit(), testarea()).end();
+	private static JavaSrcModule iwantDistillery2() {
+		return iwantSrcModule("distillery2").mainDeps(iwantDistillery())
+				.testDeps(junit(), iwantTestarea()).end();
 	}
 
-	private static JavaModule docs() {
+	private static JavaModule iwantDocs() {
 		return iwantSrcModule("docs").end();
 	}
 
-	private static JavaModule exampleWsdef() {
+	private static JavaModule iwantWxampleWsdef() {
 		return iwantSrcModule("example-wsdef").noTestJava()
-				.mainDeps(distillery2()).end();
+				.mainDeps(iwantDistillery2()).end();
 	}
 
-	private static JavaModule junit() {
-		return JavaBinModule.providing(FromRepository.ibiblio().group("junit")
-				.name("junit").version("4.8.2"));
-	}
-
-	private static JavaModule mockWsroot() {
+	private static JavaModule iwantMockWsroot() {
 		IwantSrcModuleSpex mod = iwantSrcModule("mock-wsroot").noMainJava()
 				.noTestJava();
 		mod.mainJava("iwant-distillery/src/main/java");
@@ -207,23 +204,29 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return mod.mainDeps(junit()).end();
 	}
 
-	private static JavaSrcModule testarea() {
+	private static JavaSrcModule iwantTestarea() {
 		return iwantSrcModule("testarea").noTestJava()
-				.mainDeps(testareaClassdir()).end();
+				.mainDeps(iwantTestareaClassdir()).end();
 	}
 
-	private static JavaBinModule testareaClassdir() {
+	private static JavaBinModule iwantTestareaClassdir() {
 		return JavaBinModule.providing(Source
 				.underWsroot("iwant-testarea/testarea-classdir"));
 	}
 
-	private static JavaSrcModule testrunner() {
+	private static JavaSrcModule iwantTestrunner() {
 		return iwantSrcModule("testrunner").mainDeps(junit()).end();
 	}
 
-	private static JavaModule tutorialWsdefs() {
+	private static JavaModule iwantTutorialWsdefs() {
 		return iwantSrcModule("tutorial-wsdefs").noMainJava().noTestJava()
-				.mainJava("src").mainDeps(commonsMath(), distillery2()).end();
+				.mainJava("src").mainDeps(commonsMath(), iwantDistillery2())
+				.end();
+	}
+
+	private static JavaModule junit() {
+		return JavaBinModule.providing(FromRepository.ibiblio().group("junit")
+				.name("junit").version("4.8.2"));
 	}
 
 }
