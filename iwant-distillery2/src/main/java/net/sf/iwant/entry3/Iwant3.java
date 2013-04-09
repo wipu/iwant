@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import net.sf.iwant.api.HelloSideEffect;
 import net.sf.iwant.api.IwantWorkspace;
@@ -80,22 +81,19 @@ public class Iwant3 {
 		File wsDefdefClasses = new File(wsCache, "wsdefdef-classes");
 
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
-		File iwantApiJavamodulesClasses = iwantApiJavamodulesClasses();
-		File iwantApiModelClasses = iwantApiModelClasses();
-		File iwantDistillery2Classes = iwantDistillery2Classes();
+		SortedSet<File> apiClassLocations = new TreeSet<File>();
+		apiClassLocations.add(iwantApiJavamodulesClasses());
+		apiClassLocations.add(iwantApiModelClasses());
+		apiClassLocations.add(iwantDistillery2Classes());
 		Path combinedIwantSources = combinedIwantSources();
-		JavaModule[] iwantApiModules = {
-				JavaBinModule.providing(new ExternalSource(
-						iwantApiJavamodulesClasses), combinedIwantSources),
-				JavaBinModule.providing(
-						new ExternalSource(iwantApiModelClasses),
-						combinedIwantSources),
-				JavaBinModule.providing(new ExternalSource(
-						iwantDistillery2Classes), combinedIwantSources) };
+		SortedSet<JavaModule> iwantApiModules = new TreeSet<JavaModule>();
+		for (File apiClasses : apiClassLocations) {
+			iwantApiModules.add(JavaBinModule.providing(new ExternalSource(
+					apiClasses), combinedIwantSources));
+		}
 
-		iwant.compiledClasses(wsDefdefClasses, srcFiles, Arrays.asList(
-				iwantApiJavamodulesClasses, iwantApiModelClasses,
-				iwantDistillery2Classes), true);
+		iwant.compiledClasses(wsDefdefClasses, srcFiles, new ArrayList<File>(
+				apiClassLocations), true);
 
 		List<File> runtimeClasses = Arrays.asList(wsDefdefClasses);
 		Class<?> wsDefdefClass = loadClass(getClass().getClassLoader(),
@@ -108,7 +106,7 @@ public class Iwant3 {
 
 			Iwant.fileLog("Refreshing wsdef classes");
 			JavaSrcModule wsdDefClassesModule = wsDefdef
-					.workspaceModule(iwantApiModules);
+					.workspaceModule(iwantApiModules.toArray(new JavaModule[0]));
 			// TODO don't cast when no more necessary
 			JavaClasses wsDefClassesTarget = (JavaClasses) wsdDefClassesModule
 					.mainArtifact();
@@ -119,7 +117,8 @@ public class Iwant3 {
 			JavaSrcModule wsdefdefJavaModule = JavaSrcModule.with()
 					.name(wsInfo.wsName() + "-wsdefdef")
 					.locationUnderWsRoot(wsdefdefRelativeToWsRoot)
-					.mainJava("src/main/java").mainDeps(iwantApiModules).end();
+					.mainJava("src/main/java")
+					.mainDeps(iwantApiModules.toArray(new JavaModule[0])).end();
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
 					System.err, wsInfo.wsRoot(), iwant, wsInfo, caches,
 					userPrefs.workerCount(), wsdefdefJavaModule,

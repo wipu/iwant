@@ -619,11 +619,15 @@
     + fix compilation
     + fix coverage
     + fix descript (real bootstrapping by Iwant2)
+  + bugfix: pass iwant classes only once: there are many modules only
+    when running tests in eclipse
+    * this breaks real eclipse settings
+    + clean up Iwant3 code that finds and creates iwant modules
+      * just use SortedSet, not worth trying to test
   - test Concatenated and HelloTarget in their own modules
     - also JavaBinModule
     - maybe another module for these
     - modularize test tools so testing is possible
-  - clean up Iwant3 code that finds and creates iwant modules
   - modularization
     + abstract away dep to Iwant from api-model
 
