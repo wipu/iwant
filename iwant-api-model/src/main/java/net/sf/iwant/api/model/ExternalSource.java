@@ -1,14 +1,10 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.model;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
-
-import net.sf.iwant.api.model.CacheScopeChoices;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.TargetEvaluationContext;
 
 public class ExternalSource implements Path {
 

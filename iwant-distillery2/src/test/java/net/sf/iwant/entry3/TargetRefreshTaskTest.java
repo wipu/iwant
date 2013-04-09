@@ -11,9 +11,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.Downloaded;
-import net.sf.iwant.api.ExternalSource;
 import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.TargetEvaluationContextMock;
+import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;

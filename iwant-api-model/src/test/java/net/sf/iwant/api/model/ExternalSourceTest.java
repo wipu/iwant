@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.model;
 
 import java.io.File;
 import java.io.IOException;

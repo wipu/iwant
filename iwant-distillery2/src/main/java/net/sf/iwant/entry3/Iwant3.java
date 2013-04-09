@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.SortedSet;
 
-import net.sf.iwant.api.ExternalSource;
 import net.sf.iwant.api.HelloSideEffect;
 import net.sf.iwant.api.HelloTarget;
 import net.sf.iwant.api.IwantWorkspace;
@@ -24,6 +23,7 @@ import net.sf.iwant.api.JavaSrcModule;
 import net.sf.iwant.api.SideEffect;
 import net.sf.iwant.api.SideEffectDefinitionContext;
 import net.sf.iwant.api.WsInfo;
+import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;

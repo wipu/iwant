@@ -8,7 +8,6 @@ public class IwantApiSuite extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("net.sf.iwant.api");
-		suite.addTestSuite(ExternalSourceTest.class);
 		suite.addTestSuite(HelloTargetTest.class);
 		suite.addTestSuite(JavaClassesTest.class);
 		suite.addTestSuite(DownloadedTest.class);
