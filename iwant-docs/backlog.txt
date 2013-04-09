@@ -604,6 +604,9 @@
   + new empty module: iwant-api-model
   - move a minimal amount of model to new module
     - move ?
+      * the api has a lot of cross-deps, contains actual code also =>
+      + add test java to api model
+      - then move
     - fix compilation by Iwant2
     - add to coverage
 

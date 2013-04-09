@@ -161,7 +161,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaSrcModule iwantApiModel() {
-		return iwantSrcModule("api-model").noTestJava().end();
+		return iwantSrcModule("api-model").mainDeps().testDeps(junit()).end();
 	}
 
 	private static JavaSrcModule iwantDistillery() {
