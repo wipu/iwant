@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.EclipseSettings;
@@ -15,7 +16,9 @@ import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.ScriptGenerated;
 import net.sf.iwant.api.SideEffectDefinitionContext;
 import net.sf.iwant.api.WsInfoMock;
+import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
+import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
@@ -43,6 +46,8 @@ public class WishEvaluatorTest extends TestCase {
 	private Caches caches;
 	private JavaSrcModule wsdefdefJavaModule;
 	private JavaSrcModule wsdefJavaModule;
+	private JavaModule[] iwantApiModules = { JavaBinModule.providing(Source
+			.underWsroot("mock-iwant-classes")) };
 
 	@Override
 	public void setUp() throws IOException {
@@ -63,7 +68,8 @@ public class WishEvaluatorTest extends TestCase {
 				wsInfo.wsRoot(), network);
 		int workerCount = 1;
 		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
-				workerCount, wsdefdefJavaModule, wsdefJavaModule);
+				workerCount, wsdefdefJavaModule, wsdefJavaModule,
+				iwantApiModules);
 	}
 
 	private class Hello implements IwantWorkspace {
@@ -405,7 +411,8 @@ public class WishEvaluatorTest extends TestCase {
 	public void testConcurrencyWorksEndToEnd() throws InterruptedException {
 		final int workerCount = 2;
 		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
-				workerCount, wsdefdefJavaModule, wsdefJavaModule);
+				workerCount, wsdefdefJavaModule, wsdefJavaModule,
+				iwantApiModules);
 
 		ConcurrencyControllableTarget part1 = new ConcurrencyControllableTarget(
 				"part1");
@@ -500,7 +507,8 @@ public class WishEvaluatorTest extends TestCase {
 	public void testScriptsWorkCorrectlyInParallel() {
 		final int workerCount = 8;
 		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
-				workerCount, wsdefdefJavaModule, wsdefJavaModule);
+				workerCount, wsdefdefJavaModule, wsdefJavaModule,
+				iwantApiModules);
 
 		final int partCount = 20;
 		List<Target> parts = new ArrayList<Target>();
@@ -525,6 +533,29 @@ public class WishEvaluatorTest extends TestCase {
 			assertEquals(i + "\n", testArea.contentOf(new File(asSomeone,
 					".i-cached/target/part-" + i)));
 		}
+	}
+
+	public void testSideEffectDefinitionContextPassesIwantApiClasses() {
+		final AtomicReference<JavaModule[]> fromCtx = new AtomicReference<JavaModule[]>();
+		IwantWorkspace ws = new IwantWorkspace() {
+
+			@Override
+			public List<? extends Target> targets() {
+				throw new UnsupportedOperationException(
+						"TODO test and implement");
+			}
+
+			@Override
+			public List<? extends SideEffect> sideEffects(
+					SideEffectDefinitionContext ctx) {
+				fromCtx.set(ctx.iwantApiModules());
+				return Collections.emptyList();
+			}
+		};
+
+		evaluator.iwant("list-of/side-effects", ws);
+
+		assertSame(iwantApiModules, fromCtx.get());
 	}
 
 }

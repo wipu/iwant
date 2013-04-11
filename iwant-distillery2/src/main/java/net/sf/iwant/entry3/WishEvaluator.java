@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.SideEffectDefinitionContext;
+import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.api.model.Path;
@@ -30,10 +31,12 @@ public class WishEvaluator {
 	private final int workerCount;
 	private final JavaSrcModule wsdefdefJavaModule;
 	private final JavaSrcModule wsdefJavaModule;
+	private final JavaModule[] iwantApiModules;
 
 	public WishEvaluator(OutputStream out, OutputStream err, File wsRoot,
 			Iwant iwant, WsInfo wsInfo, Caches caches, int workerCount,
-			JavaSrcModule wsdefdefJavaModule, JavaSrcModule wsdefJavaModule) {
+			JavaSrcModule wsdefdefJavaModule, JavaSrcModule wsdefJavaModule,
+			JavaModule[] iwantApiModules) {
 		this.out = out;
 		this.err = err;
 		this.wsRoot = wsRoot;
@@ -43,6 +46,7 @@ public class WishEvaluator {
 		this.workerCount = workerCount;
 		this.wsdefdefJavaModule = wsdefdefJavaModule;
 		this.wsdefJavaModule = wsdefJavaModule;
+		this.iwantApiModules = iwantApiModules;
 		this.ctx = new Ctx();
 	}
 
@@ -184,6 +188,11 @@ public class WishEvaluator {
 		public File freshTemporaryDirectory() {
 			String workerName = Thread.currentThread().getName();
 			return caches.temporaryDirectory(workerName);
+		}
+
+		@Override
+		public JavaModule[] iwantApiModules() {
+			return iwantApiModules;
 		}
 
 	}

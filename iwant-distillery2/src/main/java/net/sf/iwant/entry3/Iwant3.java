@@ -64,6 +64,17 @@ public class Iwant3 {
 		return new Iwant3(network, iwantWs);
 	}
 
+	private JavaModule[] iwantApiModules(SortedSet<File> apiClassLocations)
+			throws IOException {
+		Path combinedIwantSources = combinedIwantSources();
+		SortedSet<JavaModule> iwantApiModules = new TreeSet<JavaModule>();
+		for (File apiClasses : apiClassLocations) {
+			iwantApiModules.add(JavaBinModule.providing(new ExternalSource(
+					apiClasses), combinedIwantSources));
+		}
+		return iwantApiModules.toArray(new JavaModule[0]);
+	}
+
 	public void evaluate(File asSomeone, String... args) throws Exception {
 		File iHave = new File(asSomeone, "i-have");
 		iHave.mkdirs();
@@ -80,21 +91,10 @@ public class Iwant3 {
 				iwant.network());
 		File wsDefdefClasses = new File(wsCache, "wsdefdef-classes");
 
-		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
-		SortedSet<File> apiClassLocations = new TreeSet<File>();
-		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
-				+ "api/javamodules/JavaModule.class"));
-		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
-				+ "api/model/Path.class"));
-		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
-				+ "api/IwantWorkspace.class"));
-		Path combinedIwantSources = combinedIwantSources();
-		SortedSet<JavaModule> iwantApiModules = new TreeSet<JavaModule>();
-		for (File apiClasses : apiClassLocations) {
-			iwantApiModules.add(JavaBinModule.providing(new ExternalSource(
-					apiClasses), combinedIwantSources));
-		}
+		SortedSet<File> apiClassLocations = iwantApiClassLocations();
+		JavaModule[] iwantApiModules = iwantApiModules(apiClassLocations);
 
+		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
 		iwant.compiledClasses(wsDefdefClasses, srcFiles, new ArrayList<File>(
 				apiClassLocations), true);
 
@@ -109,7 +109,7 @@ public class Iwant3 {
 
 			Iwant.fileLog("Refreshing wsdef classes");
 			JavaSrcModule wsdDefClassesModule = wsDefdef
-					.workspaceModule(iwantApiModules.toArray(new JavaModule[0]));
+					.workspaceModule(iwantApiModules);
 			// TODO don't cast when no more necessary
 			JavaClasses wsDefClassesTarget = (JavaClasses) wsdDefClassesModule
 					.mainArtifact();
@@ -120,12 +120,11 @@ public class Iwant3 {
 			JavaSrcModule wsdefdefJavaModule = JavaSrcModule.with()
 					.name(wsInfo.wsName() + "-wsdefdef")
 					.locationUnderWsRoot(wsdefdefRelativeToWsRoot)
-					.mainJava("src/main/java")
-					.mainDeps(iwantApiModules.toArray(new JavaModule[0])).end();
+					.mainJava("src/main/java").mainDeps(iwantApiModules).end();
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
 					System.err, wsInfo.wsRoot(), iwant, wsInfo, caches,
 					userPrefs.workerCount(), wsdefdefJavaModule,
-					wsdDefClassesModule);
+					wsdDefClassesModule, iwantApiModules);
 
 			File wsDefClasses = wishEvaluator
 					.freshCachedContent(wsDefClassesTarget);
@@ -246,6 +245,17 @@ public class Iwant3 {
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
+	}
+
+	private static SortedSet<File> iwantApiClassLocations() {
+		SortedSet<File> apiClassLocations = new TreeSet<File>();
+		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
+				+ "api/javamodules/JavaModule.class"));
+		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
+				+ "api/model/Path.class"));
+		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
+				+ "api/IwantWorkspace.class"));
+		return apiClassLocations;
 	}
 
 	private static File classesDirOf(String resourceInsideClassLocation) {

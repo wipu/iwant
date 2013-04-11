@@ -596,6 +596,8 @@
     * not refreshed when iwant-from a file that gets re-exported, filed
       as a separate bug  
 
++ As @buildscriptauthor I want iwant api modules from side effect definition context so I can define iwant wsdef module eclipse settings for a subproject (iwant-using project integrated to another project)
+
 #################################################################
 = In progress
 #################################################################
