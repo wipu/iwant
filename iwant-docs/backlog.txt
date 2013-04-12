@@ -652,13 +652,15 @@
           + upgrade iwant
           + try filter again to make sure iwant now
             detects the conflict: yes it does
-          - fix the design so no duplicate creation of instrs, or at least
+          + fix the design so no duplicate creation of instrs, or at least
             created similar
             (- maybe pass an immutable builder to emma coverage)
-            - or maybe emmacoverage responsibility is too big here:
-              - another class should create instrs and coverages from modules
+            + or maybe emmacoverage responsibility is too big here:
+              + another class should create instrs and coverages from modules
         - upgrade iwant and enable filter in iwant build
-    - evaluate and explain: to create emma targets from modules or vice versa?
+    + evaluate and explain: to create emma targets from modules or vice versa?
+      * neither: again, when in doubt which of 2 things should assume new responsibility,
+        a third thing is needed
 
 - @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
   + new empty module: iwant-api-model
@@ -726,6 +728,10 @@
 #################################################################
 = Planned
 #################################################################
+
+- @enhancement: clean up the way JavaSrcModule defines test classes. Maybe better to just use a regex, whether it matches one suite or many classes
+  - just rename the string setter as testClassRegex and always use it
+  - use a sane default
 
 - @bugfix: As @buildscriptauthor I want combined sources updated when iwant sources are re-exported so I can see fresh sources when I develop using iwant-from a file
   * But keep it fast

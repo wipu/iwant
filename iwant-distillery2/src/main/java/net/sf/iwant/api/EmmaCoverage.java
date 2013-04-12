@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
@@ -46,7 +44,7 @@ public class EmmaCoverage extends Target {
 	public static class EmmaCoverageSpex {
 
 		private String name;
-		private List<Path> antJars;
+		private final List<Path> antJars = new ArrayList<Path>();
 		private Path emma;
 		private String mainClass;
 		private List<String> mainClassArguments;
@@ -63,8 +61,8 @@ public class EmmaCoverage extends Target {
 			return antJars(Arrays.asList(antJars));
 		}
 
-		public EmmaCoverageSpex antJars(List<Path> antJars) {
-			this.antJars = antJars;
+		public EmmaCoverageSpex antJars(Collection<? extends Path> antJars) {
+			this.antJars.addAll(antJars);
 			return this;
 		}
 
@@ -112,29 +110,6 @@ public class EmmaCoverage extends Target {
 		public EmmaCoverageSpex jvmArgs(String... jvmargs) {
 			this.jvmargs.addAll(Arrays.asList(jvmargs));
 			return this;
-		}
-
-		public EmmaCoverageSpex module(JavaSrcModule mod) {
-			name(mod.name() + ".emmacoverage");
-			// TODO avoid duplicates, same dep can come from main and tests
-			nonInstrumentedClasses(mod.testArtifact());
-			for (JavaModule testDep : mod.testDeps()) {
-				dep(testDep);
-			}
-			dep(mod);
-			return this;
-		}
-
-		private void dep(JavaModule mod) {
-			EmmaInstrumentation instr = EmmaInstrumentation.of(mod).using(emma);
-			if (instr != null) {
-				instrumentations(instr);
-			} else {
-				nonInstrumentedClasses(mod.mainArtifact());
-			}
-			for (JavaModule dep : mod.mainDeps()) {
-				dep(dep);
-			}
 		}
 
 		public EmmaCoverage end() {
@@ -290,7 +265,17 @@ public class EmmaCoverage extends Target {
 
 	@Override
 	public String contentDescriptor() {
-		return getClass().getCanonicalName() + ":" + ingredients();
+		StringBuilder b = new StringBuilder();
+		b.append(getClass().getCanonicalName()).append(" {\n");
+		b.append("  ingredients:").append(ingredients()).append("\n");
+		b.append("  mainClass:").append(mainClass);
+		if (mainClassArguments != null) {
+			for (String arg : mainClassArguments) {
+				b.append("  mainClassArgument:").append(arg).append("\n");
+			}
+		}
+		b.append("}\n");
+		return b.toString();
 	}
 
 	public List<Path> classPathIngredients() {
@@ -299,6 +284,18 @@ public class EmmaCoverage extends Target {
 			paths.add(cpItem.ingredient());
 		}
 		return paths;
+	}
+
+	public String mainClass() {
+		return mainClass;
+	}
+
+	public List<String> mainClassArguments() {
+		return mainClassArguments;
+	}
+
+	public Path mainClassArgumentsFile() {
+		return mainClassArgumentsFile;
 	}
 
 }

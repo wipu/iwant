@@ -8,9 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
@@ -175,11 +173,14 @@ public class EmmaCoverageTest extends TestCase {
 		EmmaCoverage coverage = EmmaCoverage.with()
 				.name("instrtest-emma-coverage")
 				.antJars(antJar(), antLauncherJar()).emma(emma())
-				.mainClassAndArguments("Hello").instrumentations(instr).end();
+				.mainClassAndArguments("Hello", "arg1", "arg2")
+				.instrumentations(instr).end();
 
-		assertEquals("net.sf.iwant.api.EmmaCoverage:[" + antJar() + ", "
-				+ antLauncherJar() + ", " + emma()
-				+ ", instrtest-classes.emma-instr]",
+		assertEquals("net.sf.iwant.api.EmmaCoverage {\n  ingredients:["
+				+ antJar() + ", " + antLauncherJar() + ", " + emma()
+				+ ", instrtest-classes.emma-instr]\n"
+				+ "  mainClass:Hello  mainClassArgument:arg1\n"
+				+ "  mainClassArgument:arg2\n" + "}\n",
 				coverage.contentDescriptor());
 	}
 
@@ -490,35 +491,6 @@ public class EmmaCoverageTest extends TestCase {
 		assertEquals(
 				"[classes1, one-classes.emma-instr, classes2, two-classes.emma-instr]",
 				classpath.toString());
-	}
-
-	public void testCoverageBuiltFromJavaSrcModuleUsesModulesDeps()
-			throws IOException {
-		JavaBinModule bin1 = JavaBinModule
-				.providing(Source.underWsroot("bin1"));
-		JavaSrcModule src1 = JavaSrcModule.with().name("src1").mainJava("src")
-				.mainDeps(bin1).end();
-		JavaSrcModule src2 = JavaSrcModule.with().name("src2").mainJava("src")
-				.end();
-		JavaBinModule bin2 = JavaBinModule
-				.providing(Source.underWsroot("bin2"));
-		JavaBinModule testLib = JavaBinModule.providing(Source
-				.underWsroot("testLib"));
-
-		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
-				.testJava("test").mainDeps(src1, bin2, src2).testDeps(testLib)
-				.end();
-
-		EmmaCoverage coverage = EmmaCoverage.with()
-				.antJars(antJar(), antLauncherJar()).emma(emma())
-				.mainClassAndArguments("ModTestStuie").module(mod).end();
-
-		assertEquals("mod.emmacoverage", coverage.name());
-		assertEquals("[mod-test-classes, testLib,"
-				+ " mod-main-classes.emma-instr,"
-				+ " src1-main-classes.emma-instr, bin1, bin2,"
-				+ " src2-main-classes.emma-instr]", coverage
-				.classPathIngredients().toString());
 	}
 
 }

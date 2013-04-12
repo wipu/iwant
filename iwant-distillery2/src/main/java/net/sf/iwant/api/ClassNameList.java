@@ -129,4 +129,8 @@ public class ClassNameList extends Target {
 		return b.toString();
 	}
 
+	public Path classes() {
+		return classes;
+	}
+
 }

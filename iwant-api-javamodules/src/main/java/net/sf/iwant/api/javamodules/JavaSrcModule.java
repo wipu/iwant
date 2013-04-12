@@ -27,6 +27,7 @@ public class JavaSrcModule extends JavaModule {
 	private final CodeStylePolicy codeStylePolicy;
 	private final CodeFormatterPolicy codeFormatterPolicy;
 	private final List<Source> generatorSourcesToFollow;
+	private final String testSuiteName;
 
 	public JavaSrcModule(String name, String locationUnderWsRoot,
 			List<String> mainJavas, List<String> mainResources,
@@ -35,7 +36,7 @@ public class JavaSrcModule extends JavaModule {
 			Target generatedClasses, Target generatedSrc,
 			List<Source> generatorSourcesToFollow,
 			CodeStylePolicy codeStylePolicy,
-			CodeFormatterPolicy codeFormatterPolicy) {
+			CodeFormatterPolicy codeFormatterPolicy, String testSuiteName) {
 		this.name = name;
 		this.generatorSourcesToFollow = generatorSourcesToFollow;
 		this.codeStylePolicy = codeStylePolicy;
@@ -45,6 +46,7 @@ public class JavaSrcModule extends JavaModule {
 		this.testJavas = testJavas;
 		this.testResources = testResources;
 		this.codeFormatterPolicy = codeFormatterPolicy;
+		this.testSuiteName = testSuiteName;
 		this.mainDeps = Collections.unmodifiableSet(mainDeps);
 		this.testDeps = Collections.unmodifiableSet(testDeps);
 		this.generatedClasses = generatedClasses;
@@ -72,6 +74,7 @@ public class JavaSrcModule extends JavaModule {
 				.defaultsExcept().end();
 		private CodeFormatterPolicy codeFormatterPolicy = new CodeFormatterPolicy();
 		private String locationUnderWsRoot;
+		private String testSuiteName;
 
 		public JavaSrcModule end() {
 			if (locationUnderWsRoot != null && relativeParentDir != null) {
@@ -89,7 +92,7 @@ public class JavaSrcModule extends JavaModule {
 					mainResources, testJavas, testResources, mainDeps,
 					testDeps, generatedClasses, generatedSrc,
 					generatorSourcesToFollow, codeStylePolicy,
-					codeFormatterPolicy);
+					codeFormatterPolicy, testSuiteName);
 		}
 
 		private static String normalizedRelativeParentDir(String value) {
@@ -190,6 +193,11 @@ public class JavaSrcModule extends JavaModule {
 		public IwantSrcModuleSpex codeFormatter(
 				CodeFormatterPolicy codeFormatterPolicy) {
 			this.codeFormatterPolicy = codeFormatterPolicy;
+			return this;
+		}
+
+		public IwantSrcModuleSpex testSuiteName(String testSuiteName) {
+			this.testSuiteName = testSuiteName;
 			return this;
 		}
 
@@ -349,6 +357,10 @@ public class JavaSrcModule extends JavaModule {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public String testSuiteName() {
+		return testSuiteName;
 	}
 
 }

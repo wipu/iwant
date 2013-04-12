@@ -297,4 +297,13 @@ public class JavaSrcModuleTest extends TestCase {
 		assertEquals("[]", tests.classLocations().toString());
 	}
 
+	public void testTestSuiteName() {
+		assertNull(JavaSrcModule.with().name("suiteless").testJava("test")
+				.end().testSuiteName());
+		assertEquals("com.example.TestSuite",
+				JavaSrcModule.with().name("suited").testJava("test")
+						.testSuiteName("com.example.TestSuite").end()
+						.testSuiteName());
+	}
+
 }
