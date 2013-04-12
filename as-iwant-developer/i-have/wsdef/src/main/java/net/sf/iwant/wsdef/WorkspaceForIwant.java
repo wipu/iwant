@@ -59,6 +59,18 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return TestedIwantDependencies.emma();
 	}
 
+	private static EmmaCoverage emmaCoverage(JavaSrcModule module,
+			String testSuiteName) {
+		return EmmaCoverage
+				.with()
+				.antJars(TestedIwantDependencies.antJar(),
+						TestedIwantDependencies.antLauncherJar())
+				.emma(emma())
+				.module(module)
+				.mainClassAndArguments("org.junit.runner.JUnitCore",
+						testSuiteName).end();
+	}
+
 	private static Target emmaCoverageReport() {
 		return EmmaReport
 				.with()
@@ -100,14 +112,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static EmmaCoverage apiModelEmmaCoverage() {
-		return EmmaCoverage
-				.with()
-				.antJars(TestedIwantDependencies.antJar(),
-						TestedIwantDependencies.antLauncherJar())
-				.emma(emma())
-				.module(iwantApiModel())
-				.mainClassAndArguments("org.junit.runner.JUnitCore",
-						"net.sf.iwant.api.model.IwantApiModelSuite").end();
+		return emmaCoverage(iwantApiModel(),
+				"net.sf.iwant.api.model.IwantApiModelSuite");
 	}
 
 	private static EmmaInstrumentation apiModelEmmaInstrumentation() {
