@@ -20,13 +20,18 @@ public class EmmaTargetsOfJavaModules {
 	private final Path filter;
 	private final Map<String, EmmaInstrumentation> instrsByName = new HashMap<String, EmmaInstrumentation>();
 	private final Map<String, EmmaCoverage> coveragesByName = new HashMap<String, EmmaCoverage>();
+	private final SortedSet<String> modulesNotToInstrument = new TreeSet<String>();
 
 	private EmmaTargetsOfJavaModules(Path emma, SortedSet<Path> antJars,
-			Path filter, SortedSet<JavaModule> modules) {
+			Path filter, SortedSet<JavaModule> modules,
+			SortedSet<JavaModule> modulesNotToInstrument) {
 		this.emma = emma;
 		this.antJars = antJars;
 		this.filter = filter;
 		this.modules = modules;
+		for (JavaModule mod : modulesNotToInstrument) {
+			this.modulesNotToInstrument.add(mod.name());
+		}
 
 	}
 
@@ -37,6 +42,7 @@ public class EmmaTargetsOfJavaModules {
 	public static class EmmaTargetsOfJavaModulesSpex {
 
 		private final SortedSet<JavaModule> modules = new TreeSet<JavaModule>();
+		private final SortedSet<JavaModule> modulesNotToInstrument = new TreeSet<JavaModule>();
 		private Path emma;
 		private final SortedSet<Path> antJars = new TreeSet<Path>();
 		private Path filter;
@@ -71,13 +77,28 @@ public class EmmaTargetsOfJavaModules {
 			return this;
 		}
 
+		public EmmaTargetsOfJavaModulesSpex butNotInstrumenting(
+				JavaModule... modulesNotToInstrument) {
+			return butNotInstrumenting(Arrays.asList(modulesNotToInstrument));
+		}
+
+		public EmmaTargetsOfJavaModulesSpex butNotInstrumenting(
+				Collection<? extends JavaModule> modulesNotToInstrument) {
+			this.modulesNotToInstrument.addAll(modulesNotToInstrument);
+			return this;
+		}
+
 		public EmmaTargetsOfJavaModules end() {
-			return new EmmaTargetsOfJavaModules(emma, antJars, filter, modules);
+			return new EmmaTargetsOfJavaModules(emma, antJars, filter, modules,
+					modulesNotToInstrument);
 		}
 
 	}
 
 	public EmmaInstrumentation emmaInstrumentationOf(JavaModule mod) {
+		if (modulesNotToInstrument.contains(mod.name())) {
+			return null;
+		}
 		EmmaInstrumentation instr = instrsByName.get(mod.name());
 		if (instr == null) {
 			instr = EmmaInstrumentation.of(mod).filter(filter).using(emma);

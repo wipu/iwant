@@ -159,4 +159,32 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 	}
 
+	public void testExcludingModuleFromInstrumentation() {
+		JavaSrcModule toExclude = JavaSrcModule.with().name("toExclude")
+				.mainJava("src").testJava("test").end();
+		JavaSrcModule normal = JavaSrcModule.with().name("normal")
+				.mainJava("src").testJava("test").mainDeps(toExclude).end();
+
+		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
+				.emma(emma).antJars(ant).modules(normal, toExclude)
+				.butNotInstrumenting(toExclude).end();
+
+		assertNull(emmaTargets.emmaInstrumentationOf(toExclude));
+		EmmaCoverage exclCoverage = emmaTargets.emmaCoverageOf(toExclude);
+		assertEquals("[mocked-ant, mocked-emma, toExclude-test-classes, "
+				+ "toExclude-main-classes, toExclude-test-class-names]",
+				exclCoverage.ingredients().toString());
+
+		EmmaInstrumentation instr = emmaTargets.emmaInstrumentationOf(normal);
+		assertEquals("normal-main-classes.emma-instr", instr.name());
+		assertEquals("[mocked-emma, normal-main-classes]", instr.ingredients()
+				.toString());
+
+		EmmaCoverage normalCoverage = emmaTargets.emmaCoverageOf(normal);
+		assertEquals("[mocked-ant, mocked-emma, normal-test-classes, "
+				+ "normal-main-classes.emma-instr, "
+				+ "toExclude-main-classes, normal-test-class-names]",
+				normalCoverage.ingredients().toString());
+	}
+
 }

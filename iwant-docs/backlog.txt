@@ -659,6 +659,9 @@
       * neither: again, when in doubt which of 2 things should assume new responsibility,
         a third thing is needed
 
++ As a @buildscriptauthor I want to exclude a module from emma-report so that duplicate classes in it won't confuse emma
+  * example: iwant-mock-wsroot that is used by classloader magic to use mocked versions of classes
+
 #################################################################
 = In progress
 #################################################################
@@ -729,9 +732,6 @@
 #################################################################
 = Planned
 #################################################################
-
-- As a @buildscriptauthor I want to exclude a module from emma-report so that duplicate classes in it won't confuse emma
-  * example: iwant-mock-wsroot that is used by classloader magic to use mocked versions of classes
 
 - As @developer I want emma filter enabled so I get rid of false reds of examples
   - make it possible to exclude iwant-mock-wsroot first (another story)
