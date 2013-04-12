@@ -666,6 +666,13 @@
 = In progress
 #################################################################
 
+- As @developer I want emma filter enabled so I get rid of false reds of examples
+  + make it possible to exclude iwant-mock-wsroot first (another story)
+  + upgrade iwant
+  - use EmmaTargetsOfJavaModules
+  - exclude mock wsroot
+  - enable filter
+
 - @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
   + new empty module: iwant-api-model
   + move a minimal amount of model to new module
@@ -732,13 +739,6 @@
 #################################################################
 = Planned
 #################################################################
-
-- As @developer I want emma filter enabled so I get rid of false reds of examples
-  - make it possible to exclude iwant-mock-wsroot first (another story)
-  - upgrade iwant
-  - use EmmaTargetsOfJavaModules
-  - exclude mock wsroot
-  - enable filter
 
 - @enhancement: don't put duplicates of classes for emma coverage, even if they come from cumulative test and main deps
 
