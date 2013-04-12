@@ -616,6 +616,10 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want iwant to fail if I create different versions of Paths with same name so dependency tracking works correctly etc
+  - compare class
+  - compare content descriptor
+
 - As @buildscriptauthor I want an easy way of creating emma targets (instr and coverage) from modules, without having to build their dependencies manually
   * a "from" factory method in both?
   + factory for instr: non-null only if a src module with main javas
@@ -631,7 +635,18 @@
         * see another story about JavaClasses and JavaSrcModule
       + upgrade iwant for iwant
       + simplify all coverage methods of iwant build
-      - more for-looping instead of explicit per-module building
+      + more for-looping instead of explicit per-module building
+        + filter out mock wsroot: duplicate classes confuse emma
+      - add filter to instr
+        + try
+        - fix bug: directly created instrs use filter, but those created
+          by coverage don't
+          * so filter was not refreshed because dep was asked from the
+            filterless version of instr
+          - see another story: make Iwant fail if conflicting paths
+          - fix the design so no duplicate creation of instrs, or at least
+            created similar
+        - upgrade iwant and enable filter in iwant build
     - evaluate and explain: to create emma targets from modules or vice versa?
 
 - @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
