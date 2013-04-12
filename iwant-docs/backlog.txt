@@ -627,8 +627,9 @@
     + upgrade
     + one module: works, descriptors more or less equivalent
     - the rest, clean up and evaluate usability
-      - add test resources in classpath
+      + add test resources in classpath
         * see another story about JavaClasses and JavaSrcModule
+      + upgrade iwant for iwant
       - simplify all coverage methods of iwant build
     - evaluate and explain: to create emma targets from modules or vice versa?
 
