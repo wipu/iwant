@@ -646,9 +646,13 @@
           by coverage don't
           * so filter was not refreshed because dep was asked from the
             filterless version of instr
-          - see another story: make Iwant fail if conflicting paths
+          + see another story: make Iwant fail if conflicting paths
+          + upgrade iwant
+          - try filter again to make sure iwant now
+            detects the conflict
           - fix the design so no duplicate creation of instrs, or at least
             created similar
+            - maybe pass an immutable builder to emma coverage
         - upgrade iwant and enable filter in iwant build
     - evaluate and explain: to create emma targets from modules or vice versa?
 
