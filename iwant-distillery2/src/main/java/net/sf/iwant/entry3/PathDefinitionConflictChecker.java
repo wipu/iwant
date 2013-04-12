@@ -86,11 +86,11 @@ class PathDefinitionConflictChecker {
 		}
 		for (int i = 0; i < ingr1.size(); i++) {
 			Path p1 = ingr1.get(i);
-			Path p2 = ingr1.get(i);
+			Path p2 = ingr2.get(i);
 			if (p1 == null || p2 == null) {
 				return true;
 			}
-			if (p1.name().equals(p2.name())) {
+			if (!p1.name().equals(p2.name())) {
 				return true;
 			}
 		}

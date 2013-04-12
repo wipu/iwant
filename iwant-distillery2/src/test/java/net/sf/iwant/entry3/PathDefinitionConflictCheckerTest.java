@@ -30,6 +30,15 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 		assertError(null, new HelloTarget("a", "a"), new HelloTarget("a", "a"));
 	}
 
+	public void testTwoIdenticalTargetsWithIngredients() {
+		Path p1 = Concatenated.named("a").pathTo(Source.underWsroot("ingr"))
+				.end();
+		Path p2 = Concatenated.named("a").pathTo(Source.underWsroot("ingr"))
+				.end();
+
+		assertError(null, p1, p2);
+	}
+
 	public void testTwoRootTargetsWithDifferentClass() {
 		HelloTarget helloA = new HelloTarget("a", "a");
 		Concatenated concatenatedA = Concatenated.named("a").end();

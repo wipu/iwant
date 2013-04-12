@@ -619,6 +619,8 @@
     catch this too)
   + various null checks
 
++ @bugfix: compare ingredients properly for conflicts, forgot to test the negative case with ingredients
+
 #################################################################
 = In progress
 #################################################################
