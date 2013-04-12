@@ -662,19 +662,19 @@
 + As a @buildscriptauthor I want to exclude a module from emma-report so that duplicate classes in it won't confuse emma
   * example: iwant-mock-wsroot that is used by classloader magic to use mocked versions of classes
 
-#################################################################
-= In progress
-#################################################################
-
-- As @developer I want emma filter enabled so I get rid of false reds of examples
++ As @developer I want emma filter enabled so I get rid of false reds of examples
   + make it possible to exclude iwant-mock-wsroot first (another story)
   + upgrade iwant
   + use EmmaTargetsOfJavaModules
   + exclude mock wsroot
   + doh, fix: ant jars cannot be put to SortedSet
   + doh2: instrs and coverages neither, when building report
-  - reupgrade
-  - enable filter
+  + reupgrade
+  + enable filter
+
+#################################################################
+= In progress
+#################################################################
 
 - @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
   + new empty module: iwant-api-model

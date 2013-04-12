@@ -64,18 +64,12 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.antJars(TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar()).emma(emma())
 				.modules(allModules()).butNotInstrumenting(iwantMockWsroot())
-				.end();
+				.filter(emmaFilter()).end();
 		return emmaTargets.emmaReport();
 
 	}
 
-	@SuppressWarnings("unused")
 	private static Path emmaFilter() {
-		if (true) {
-			// TODO fix bug: multiple versions of instrs, with and without
-			// filter!
-			return null;
-		}
 		ConcatenatedBuilder filter = Concatenated.named("emma-filter");
 		// only used in the tutorial, not "real" code:
 		filter.string("-com.example.*\n");
