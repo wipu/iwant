@@ -606,6 +606,10 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want module to tell JavaClasses to copy resources, if any, and JavaClasses to obey, so I always get resources in classpath without extra effort
+  * this is how other build systems do it, instead of adding resources as such in classpath.
+    So let's do the same, for least surprise
+
 - As @buildscriptauthor I want an easy way of creating emma targets (instr and coverage) from modules, without having to build their dependencies manually
   * a "from" factory method in both?
   + factory for instr: non-null only if a src module with main javas
@@ -617,6 +621,9 @@
     + upgrade
     + one module: works, descriptors more or less equivalent
     - the rest, clean up and evaluate usability
+      - add test resources in classpath
+        * see another story about JavaClasses and JavaSrcModule
+      - simplify all coverage methods of iwant build
     - evaluate and explain: to create emma targets from modules or vice versa?
 
 - @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
