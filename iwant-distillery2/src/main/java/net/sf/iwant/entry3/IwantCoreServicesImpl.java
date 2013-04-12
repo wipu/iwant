@@ -1,6 +1,7 @@
 package net.sf.iwant.entry3;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -22,6 +23,15 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 	public File compiledClasses(File dest, List<File> src,
 			List<File> classLocations, boolean debug) {
 		return iwant.compiledClasses(dest, src, classLocations, debug);
+	}
+
+	@Override
+	public int copyMissingFiles(File from, File to) {
+		try {
+			return FileUtil.copyMissingFiles(from, to);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

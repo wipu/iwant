@@ -15,17 +15,21 @@ public class JavaClasses extends Target {
 
 	private final List<Path> ingredients;
 	private final Collection<? extends Path> srcDirs;
+	private final Collection<? extends Path> resourceDirs;
 	private final Collection<? extends Path> classLocations;
 	private final boolean debug;
 
 	private JavaClasses(String name, Collection<? extends Path> srcDirs,
-			Collection<? extends Path> classLocations, boolean debug) {
+			Collection<? extends Path> resourceDirs, List<Path> classLocations,
+			boolean debug) {
 		super(name);
 		this.srcDirs = srcDirs;
+		this.resourceDirs = resourceDirs;
 		this.classLocations = classLocations;
 		this.debug = debug;
 		this.ingredients = new ArrayList<Path>();
 		this.ingredients.addAll(srcDirs);
+		this.ingredients.addAll(resourceDirs);
 		this.ingredients.addAll(classLocations);
 	}
 
@@ -37,6 +41,7 @@ public class JavaClasses extends Target {
 
 		private String name;
 		private final List<Path> srcDirs = new ArrayList<Path>();
+		private final List<Path> resourceDirs = new ArrayList<Path>();
 		private final List<Path> classLocations = new ArrayList<Path>();
 		private boolean debug;
 
@@ -59,6 +64,21 @@ public class JavaClasses extends Target {
 			return this;
 		}
 
+		public JavaClassesSpex resourceDirs(Path... resourceDirs) {
+			return resourceDirs(Arrays.asList(resourceDirs));
+		}
+
+		public JavaClassesSpex resourceDirs(
+				Collection<? extends Path> resourceDirs) {
+			this.resourceDirs.addAll(resourceDirs);
+			return this;
+		}
+
+		public JavaClassesSpex noResourceDirs() {
+			this.resourceDirs.clear();
+			return this;
+		}
+
 		public JavaClassesSpex classLocations(Path... classLocations) {
 			return classLocations(Arrays.asList(classLocations));
 		}
@@ -75,7 +95,8 @@ public class JavaClasses extends Target {
 		}
 
 		public JavaClasses end() {
-			return new JavaClasses(name, srcDirs, classLocations, debug);
+			return new JavaClasses(name, srcDirs, resourceDirs, classLocations,
+					debug);
 		}
 
 	}
@@ -86,6 +107,10 @@ public class JavaClasses extends Target {
 
 	public Collection<? extends Path> srcDirs() {
 		return srcDirs;
+	}
+
+	public Collection<? extends Path> resourceDirs() {
+		return resourceDirs;
 	}
 
 	@Override
@@ -100,18 +125,28 @@ public class JavaClasses extends Target {
 		for (Path srcDir : srcDirs) {
 			javaFiles.addAll(javaFilesUnder(ctx.cached(srcDir)));
 		}
-		if (javaFiles.isEmpty()) {
+		if (javaFiles.isEmpty() && resourceDirs().isEmpty()) {
 			ctx.iwant().debugLog(getClass().getSimpleName(),
-					"No java files to compile.");
+					"No java files to compile or resources to copy.");
 			dest.mkdirs();
 			return;
 		}
-		List<File> classLocationDirs = new ArrayList<File>();
-		for (Path classLocation : classLocations) {
-			File classLocationDir = ctx.cached(classLocation);
-			classLocationDirs.add(classLocationDir);
+		if (!javaFiles.isEmpty()) {
+			List<File> classLocationDirs = new ArrayList<File>();
+			for (Path classLocation : classLocations) {
+				File classLocationDir = ctx.cached(classLocation);
+				classLocationDirs.add(classLocationDir);
+			}
+			ctx.iwant().compiledClasses(dest, javaFiles, classLocationDirs,
+					debug);
+		} else {
+			// create dest for resource copying
+			dest.mkdirs();
 		}
-		ctx.iwant().compiledClasses(dest, javaFiles, classLocationDirs, debug);
+		for (Path res : resourceDirs()) {
+			File cachedRes = ctx.cached(res);
+			ctx.iwant().copyMissingFiles(cachedRes, dest);
+		}
 	}
 
 	private static List<File> javaFilesUnder(File dir) {
@@ -149,6 +184,9 @@ public class JavaClasses extends Target {
 		b.append(getClass().getCanonicalName()).append(" {\n");
 		for (Path srcDir : srcDirs) {
 			b.append("  src:").append(srcDir).append("\n");
+		}
+		for (Path resourceDir : resourceDirs) {
+			b.append("  res:").append(resourceDir).append("\n");
 		}
 		for (Path classLocation : classLocations) {
 			b.append("  classes:").append(classLocation).append("\n");

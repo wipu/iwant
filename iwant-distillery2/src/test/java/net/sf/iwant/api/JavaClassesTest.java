@@ -61,6 +61,16 @@ public class JavaClassesTest extends TestCase {
 		assertTrue(target.ingredients().contains(src2));
 	}
 
+	public void testResourceDirsAreIgredients() {
+		Path res1 = Source.underWsroot("res1");
+		Path res2 = Source.underWsroot("res1");
+		Target target = JavaClasses.with().name("classes")
+				.resourceDirs(res1, res2).classLocations().end();
+
+		assertTrue(target.ingredients().contains(res1));
+		assertTrue(target.ingredients().contains(res2));
+	}
+
 	public void testSrcDirsCanBeEmptiedDuringSpecifyingJavaClasses() {
 		Path src1 = Source.underWsroot("src1");
 		Path src2 = Source.underWsroot("src1");
@@ -75,20 +85,21 @@ public class JavaClassesTest extends TestCase {
 		assertTrue(target.ingredients().contains(src2));
 	}
 
-	public void testSrcDirsAreInContentDescriptor() {
+	public void testSrcDirsAndResourcesAreInContentDescriptor() {
 		assertEquals(
 				"net.sf.iwant.api.javamodules.JavaClasses {\n  src:src\n}",
 				JavaClasses.with().name("classes")
 						.srcDirs(Source.underWsroot("src")).classLocations()
 						.end().contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.javamodules.JavaClasses {\n  src:src2\n  src:src3\n}",
+				"net.sf.iwant.api.javamodules.JavaClasses {\n  src:src2\n  src:src3\n  res:res\n}",
 				JavaClasses
 						.with()
 						.name("classes2")
 						.srcDirs(Source.underWsroot("src2"),
-								Source.underWsroot("src3")).classLocations()
-						.end().contentDescriptor());
+								Source.underWsroot("src3"))
+						.resourceDirs(Source.underWsroot("res"))
+						.classLocations().end().contentDescriptor());
 	}
 
 	public void testCrapToPathFails() throws Exception {
@@ -293,6 +304,57 @@ public class JavaClassesTest extends TestCase {
 				.cached(debug), "Foo.class"));
 		assertTrue(TestArea.bytesContain(debugContent, "message"));
 		assertTrue(TestArea.bytesContain(debugContent, "greeting"));
+	}
+
+	public void testResourceDirDefinitionAndGetter() {
+		JavaClasses c = JavaClasses.with()
+				.resourceDirs(Source.underWsroot("res")).end();
+		assertEquals("[res]", c.resourceDirs().toString());
+	}
+
+	public void testClearingResourceDirsAndSpecifyingManyOfThem() {
+		JavaClasses c = JavaClasses
+				.with()
+				.resourceDirs(Source.underWsroot("to-be-removed"))
+				.noResourceDirs()
+				.resourceDirs(Source.underWsroot("r1"),
+						Source.underWsroot("r2")).end();
+		assertEquals("[r1, r2]", c.resourceDirs().toString());
+	}
+
+	public void testResourcesAreCopiedAlongsideCompilationFromTheOneDirectoryGiven()
+			throws Exception {
+		Iwant.newTextFile(new File(wsRoot, "src/Foo.java"),
+				"public class Foo {}");
+		Iwant.newTextFile(new File(wsRoot, "res/res.txt"), "res.txt content");
+
+		JavaClasses classes = JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot("src"))
+				.resourceDirs(Source.underWsroot("res")).end();
+		classes.path(ctx);
+
+		assertTrue(new File(cached, "classes/Foo.class").exists());
+		assertEquals("res.txt content",
+				testArea.contentOf(new File(cached, "classes/res.txt")));
+	}
+
+	public void testTwoResourceDirsAndNoSrc() throws Exception {
+		Iwant.newTextFile(new File(wsRoot, "res1/pak1/res1.txt"),
+				"res1.txt content");
+		Iwant.newTextFile(new File(wsRoot, "res2/pak2/res2.txt"),
+				"res2.txt content");
+
+		JavaClasses classes = JavaClasses
+				.with()
+				.name("classes")
+				.resourceDirs(Source.underWsroot("res1"),
+						Source.underWsroot("res2")).end();
+		classes.path(ctx);
+
+		assertEquals("res1.txt content",
+				testArea.contentOf(new File(cached, "classes/pak1/res1.txt")));
+		assertEquals("res2.txt content",
+				testArea.contentOf(new File(cached, "classes/pak2/res2.txt")));
 	}
 
 }

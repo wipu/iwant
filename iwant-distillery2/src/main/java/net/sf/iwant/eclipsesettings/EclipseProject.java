@@ -29,11 +29,15 @@ public class EclipseProject {
 		for (String mainJava : module.mainJavas()) {
 			dcp = optionalSrc(dcp, mainJava);
 		}
-		dcp = optionalSrc(dcp, module.mainResources());
+		for (String res : module.mainResources()) {
+			dcp = optionalSrc(dcp, res);
+		}
 		for (String testJava : module.testJavas()) {
 			dcp = optionalSrc(dcp, testJava);
 		}
-		dcp = optionalSrc(dcp, module.testResources());
+		for (String res : module.testResources()) {
+			dcp = optionalSrc(dcp, res);
+		}
 
 		Set<JavaModule> allDeps = new LinkedHashSet<JavaModule>();
 		allDeps.addAll(module.mainDeps());

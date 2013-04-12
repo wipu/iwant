@@ -602,13 +602,19 @@
   + do it
   + test in real project that it helps
 
++ As @buildscriptauthor I want module to tell JavaClasses to copy resources, if any, and JavaClasses to obey, so I always get resources in classpath without extra effort
+  * this is how other build systems do it, instead of adding resources as such in classpath.
+    So let's do the same, for least surprise
+  + pass resources to JavaClasses
+  + test JavaClasses copies files from all given resource dirs
+  + allow JavaClasses with no src, just resources
+  + make JavaSrcModule also support >1 resource dirs
+  + make eclipse settings support >1 resource dirs
+    * didn't even require further tests: compiler required a for loop
+
 #################################################################
 = In progress
 #################################################################
-
-- As @buildscriptauthor I want module to tell JavaClasses to copy resources, if any, and JavaClasses to obey, so I always get resources in classpath without extra effort
-  * this is how other build systems do it, instead of adding resources as such in classpath.
-    So let's do the same, for least surprise
 
 - As @buildscriptauthor I want an easy way of creating emma targets (instr and coverage) from modules, without having to build their dependencies manually
   * a "from" factory method in both?

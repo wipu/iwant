@@ -17,9 +17,9 @@ public class JavaSrcModule extends JavaModule {
 	private final String name;
 	private final String locationUnderWsRoot;
 	private final List<String> mainJavas;
-	private final String mainResources;
+	private final List<String> mainResources;
 	private final List<String> testJavas;
-	private final String testResources;
+	private final List<String> testResources;
 	private final Set<JavaModule> mainDeps;
 	private final Set<JavaModule> testDeps;
 	private final Target generatedClasses;
@@ -29,8 +29,8 @@ public class JavaSrcModule extends JavaModule {
 	private final List<Source> generatorSourcesToFollow;
 
 	public JavaSrcModule(String name, String locationUnderWsRoot,
-			List<String> mainJavas, String mainResources,
-			List<String> testJavas, String testResources,
+			List<String> mainJavas, List<String> mainResources,
+			List<String> testJavas, List<String> testResources,
 			Set<JavaModule> mainDeps, Set<JavaModule> testDeps,
 			Target generatedClasses, Target generatedSrc,
 			List<Source> generatorSourcesToFollow,
@@ -60,9 +60,9 @@ public class JavaSrcModule extends JavaModule {
 		private String name;
 		private String relativeParentDir;
 		private final List<String> mainJavas = new ArrayList<String>();
-		private String mainResources;
+		private final List<String> mainResources = new ArrayList<String>();
 		private final List<String> testJavas = new ArrayList<String>();
-		private String testResources;
+		private final List<String> testResources = new ArrayList<String>();
 		private final Set<JavaModule> mainDeps = new LinkedHashSet<JavaModule>();
 		private final Set<JavaModule> testDeps = new LinkedHashSet<JavaModule>();
 		private Target generatedClasses;
@@ -135,7 +135,7 @@ public class JavaSrcModule extends JavaModule {
 		}
 
 		public IwantSrcModuleSpex mainResources(String mainResources) {
-			this.mainResources = mainResources;
+			this.mainResources.add(mainResources);
 			return this;
 		}
 
@@ -150,7 +150,7 @@ public class JavaSrcModule extends JavaModule {
 		}
 
 		public IwantSrcModuleSpex testResources(String testResources) {
-			this.testResources = testResources;
+			this.testResources.add(testResources);
 			return this;
 		}
 
@@ -204,7 +204,7 @@ public class JavaSrcModule extends JavaModule {
 		return mainJavas;
 	}
 
-	public String mainResources() {
+	public List<String> mainResources() {
 		return mainResources;
 	}
 
@@ -212,7 +212,7 @@ public class JavaSrcModule extends JavaModule {
 		return testJavas;
 	}
 
-	public String testResources() {
+	public List<String> testResources() {
 		return testResources;
 	}
 
@@ -257,11 +257,27 @@ public class JavaSrcModule extends JavaModule {
 		return retval;
 	}
 
+	public List<Path> mainResourcesAsPaths() {
+		List<Path> retval = new ArrayList<Path>();
+		for (String res : mainResources) {
+			retval.add(Source.underWsroot(locationUnderWsRoot() + "/" + res));
+		}
+		return retval;
+	}
+
 	public List<Path> testJavasAsPaths() {
 		List<Path> retval = new ArrayList<Path>();
 		for (String testJava : testJavas) {
 			retval.add(Source.underWsroot(locationUnderWsRoot() + "/"
 					+ testJava));
+		}
+		return retval;
+	}
+
+	public List<Path> testResourcesAsPaths() {
+		List<Path> retval = new ArrayList<Path>();
+		for (String res : testResources) {
+			retval.add(Source.underWsroot(locationUnderWsRoot() + "/" + res));
 		}
 		return retval;
 	}
@@ -282,7 +298,9 @@ public class JavaSrcModule extends JavaModule {
 			}
 		}
 		return JavaClasses.with().name(name() + "-main-classes")
-				.srcDirs(mainJavasAsPaths()).classLocations(classpath).end();
+				.srcDirs(mainJavasAsPaths())
+				.resourceDirs(mainResourcesAsPaths()).classLocations(classpath)
+				.end();
 	}
 
 	public Path testArtifact() {
@@ -307,7 +325,9 @@ public class JavaSrcModule extends JavaModule {
 			}
 		}
 		return JavaClasses.with().name(name() + "-test-classes")
-				.srcDirs(testJavasAsPaths()).classLocations(classpath).end();
+				.srcDirs(testJavasAsPaths())
+				.resourceDirs(testResourcesAsPaths()).classLocations(classpath)
+				.end();
 	}
 
 	public String locationUnderWsRoot() {

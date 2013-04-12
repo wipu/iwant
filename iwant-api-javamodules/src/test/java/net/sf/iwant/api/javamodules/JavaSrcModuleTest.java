@@ -213,6 +213,32 @@ public class JavaSrcModuleTest extends TestCase {
 		assertEquals("[dual-test/test2]", testArtifact.srcDirs().toString());
 	}
 
+	public void testMainResourcesArePassedToMainClassesWhileTestResourcesAreMissing() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.mainResources("res").testJava("test").end();
+
+		JavaClasses mainClasses = (JavaClasses) mod.mainArtifact();
+		assertEquals("[mod/res]", mainClasses.resourceDirs().toString());
+		JavaClasses testClasses = (JavaClasses) mod.testArtifact();
+		assertEquals("[]", testClasses.resourceDirs().toString());
+
+		assertEquals("[mod/res]", mod.mainResourcesAsPaths().toString());
+		assertEquals("[]", mod.testResourcesAsPaths().toString());
+	}
+
+	public void testTestResourcesArePassedToTestClassesWhileMainResourcesAreMissing() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").testResources("test-res").end();
+
+		JavaClasses mainClasses = (JavaClasses) mod.mainArtifact();
+		assertEquals("[]", mainClasses.resourceDirs().toString());
+		JavaClasses testClasses = (JavaClasses) mod.testArtifact();
+		assertEquals("[mod/test-res]", testClasses.resourceDirs().toString());
+
+		assertEquals("[]", mod.mainResourcesAsPaths().toString());
+		assertEquals("[mod/test-res]", mod.testResourcesAsPaths().toString());
+	}
+
 	public void testModulesAreComparedByName() {
 		JavaModule srcA = JavaSrcModule.with().name("a").end();
 		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
