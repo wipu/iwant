@@ -88,19 +88,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static EmmaCoverage apiJavamodulesEmmaCoverage() {
-		return EmmaCoverage
-				.with()
-				.name("iwant-api-javamodules.emmacoverage")
-				.antJars(TestedIwantDependencies.antJar(),
-						TestedIwantDependencies.antLauncherJar())
-				.emma(emma())
-				.instrumentations(apiJavamodulesEmmaInstrumentation(),
-						apiModelEmmaInstrumentation())
-				.nonInstrumentedClasses(iwantApiJavamodules().testArtifact(),
-						junit().mainArtifact())
-				.mainClassAndArguments("org.junit.runner.JUnitCore",
-						"net.sf.iwant.api.javamodules.IwantApiJavamodulesSuite")
-				.end();
+		return emmaCoverage(iwantApiJavamodules(),
+				"net.sf.iwant.api.javamodules.IwantApiJavamodulesSuite");
 	}
 
 	private static EmmaInstrumentation apiJavamodulesEmmaInstrumentation() {
@@ -117,22 +106,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static EmmaCoverage distilleryEmmaCoverage() {
-		return EmmaCoverage
-				.with()
-				.name("iwant-distillery.emmacoverage")
-				.antJars(TestedIwantDependencies.antJar(),
-						TestedIwantDependencies.antLauncherJar())
-				.emma(emma())
-				.instrumentations(apiModelEmmaInstrumentation(),
-						distilleryEmmaInstrumentation(),
-						testareaEmmaInstrumentation())
-				.nonInstrumentedClasses(iwantDistillery().testArtifact(),
-						iwantDistilleryClasspathMarker().mainArtifact(),
-						iwantDistilleryTestResources().mainArtifact(),
-						junit().mainArtifact(),
-						iwantTestareaClassdir().mainArtifact())
-				.mainClassAndArguments("org.junit.runner.JUnitCore",
-						"net.sf.iwant.IwantDistillerySuite").end();
+		return emmaCoverage(iwantDistillery(),
+				"net.sf.iwant.IwantDistillerySuite");
 	}
 
 	private static EmmaInstrumentation distilleryEmmaInstrumentation() {
@@ -140,25 +115,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static EmmaCoverage distillery2EmmaCoverage() {
-		return EmmaCoverage
-				.with()
-				.name("iwant-distillery2.emmacoverage")
-				.antJars(TestedIwantDependencies.antJar(),
-						TestedIwantDependencies.antLauncherJar())
-				.emma(emma())
-				.instrumentations(apiJavamodulesEmmaInstrumentation(),
-						apiModelEmmaInstrumentation(),
-						distilleryEmmaInstrumentation(),
-						distillery2EmmaInstrumentation(),
-						testareaEmmaInstrumentation())
-				.nonInstrumentedClasses(
-						iwantDistilleryClasspathMarker().mainArtifact(),
-						iwantDistillery2().testArtifact(),
-						junit().mainArtifact(),
-						iwantTestareaClassdir().mainArtifact(),
-						iwantTestrunner().testArtifact())
-				.mainClassAndArguments("org.junit.runner.JUnitCore",
-						"net.sf.iwant.IwantDistillery2Suite").end();
+		return emmaCoverage(iwantDistillery2(),
+				"net.sf.iwant.IwantDistillery2Suite");
 	}
 
 	private static EmmaInstrumentation distillery2EmmaInstrumentation() {
@@ -166,17 +124,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static EmmaCoverage testrunnerEmmaCoverage() {
-		return EmmaCoverage
-				.with()
-				.name("iwant-testrunner.emmacoverage")
-				.antJars(TestedIwantDependencies.antJar(),
-						TestedIwantDependencies.antLauncherJar())
-				.emma(emma())
-				.instrumentations(testrunnerEmmaInstrumentation())
-				.nonInstrumentedClasses(junit().mainArtifact(),
-						iwantTestrunner().testArtifact())
-				.mainClassAndArguments("org.junit.runner.JUnitCore",
-						"net.sf.iwant.testrunner.IwantTestRunnerTest").end();
+		return emmaCoverage(iwantTestrunner(),
+				"net.sf.iwant.testrunner.IwantTestRunnerTest");
 	}
 
 	private static EmmaInstrumentation testareaEmmaInstrumentation() {
@@ -216,16 +165,12 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.underWsroot("iwant-distillery/classpath-marker"));
 	}
 
-	private static JavaBinModule iwantDistilleryTestResources() {
-		return JavaBinModule.providing(Source
-				.underWsroot("iwant-distillery/src/test/resources"));
-	}
-
 	private static JavaSrcModule iwantDistillery2() {
 		return iwantSrcModule("distillery2")
 				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
-						iwantDistillery()).testDeps(junit(), iwantTestarea())
-				.end();
+						iwantDistillery())
+				.testDeps(iwantDistilleryClasspathMarker(), iwantTestarea(),
+						junit()).end();
 	}
 
 	private static JavaModule iwantDocs() {

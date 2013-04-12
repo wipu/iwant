@@ -630,7 +630,8 @@
       + add test resources in classpath
         * see another story about JavaClasses and JavaSrcModule
       + upgrade iwant for iwant
-      - simplify all coverage methods of iwant build
+      + simplify all coverage methods of iwant build
+      - more for-looping instead of explicit per-module building
     - evaluate and explain: to create emma targets from modules or vice versa?
 
 - @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
