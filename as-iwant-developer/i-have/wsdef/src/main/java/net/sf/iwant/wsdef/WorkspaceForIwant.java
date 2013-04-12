@@ -11,7 +11,6 @@ import net.sf.iwant.api.EmmaInstrumentation;
 import net.sf.iwant.api.EmmaReport;
 import net.sf.iwant.api.FromRepository;
 import net.sf.iwant.api.IwantWorkspace;
-import net.sf.iwant.api.JavaClassesAndSources;
 import net.sf.iwant.api.SideEffectDefinitionContext;
 import net.sf.iwant.api.TestedIwantDependencies;
 import net.sf.iwant.api.javamodules.JavaBinModule;
@@ -105,10 +104,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static EmmaInstrumentation apiJavamodulesEmmaInstrumentation() {
-		JavaSrcModule mod = iwantApiJavamodules();
-		return EmmaInstrumentation.of(
-				new JavaClassesAndSources(mod.mainArtifact(), mod
-						.mainJavasAsPaths())).using(emma());
+		return EmmaInstrumentation.of(iwantApiJavamodules()).using(emma());
 	}
 
 	private static EmmaCoverage apiModelEmmaCoverage() {
@@ -140,10 +136,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static EmmaInstrumentation distilleryEmmaInstrumentation() {
-		JavaSrcModule mod = iwantDistillery();
-		return EmmaInstrumentation.of(
-				new JavaClassesAndSources(mod.mainArtifact(), mod
-						.mainJavasAsPaths())).using(emma());
+		return EmmaInstrumentation.of(iwantDistillery()).using(emma());
 	}
 
 	private static EmmaCoverage distillery2EmmaCoverage() {
@@ -169,10 +162,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static EmmaInstrumentation distillery2EmmaInstrumentation() {
-		JavaSrcModule mod = iwantDistillery2();
-		return EmmaInstrumentation.of(
-				new JavaClassesAndSources(mod.mainArtifact(), mod
-						.mainJavasAsPaths())).using(emma());
+		return EmmaInstrumentation.of(iwantDistillery2()).using(emma());
 	}
 
 	private static EmmaCoverage testrunnerEmmaCoverage() {
@@ -190,17 +180,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static EmmaInstrumentation testareaEmmaInstrumentation() {
-		JavaSrcModule mod = iwantTestarea();
-		return EmmaInstrumentation.of(
-				new JavaClassesAndSources(mod.mainArtifact(), mod
-						.mainJavasAsPaths())).using(emma());
+		return EmmaInstrumentation.of(iwantTestarea()).using(emma());
 	}
 
 	private static EmmaInstrumentation testrunnerEmmaInstrumentation() {
-		JavaSrcModule mod = iwantTestrunner();
-		return EmmaInstrumentation.of(
-				new JavaClassesAndSources(mod.mainArtifact(), mod
-						.mainJavasAsPaths())).using(emma());
+		return EmmaInstrumentation.of(iwantTestrunner()).using(emma());
 	}
 
 	// the modules
