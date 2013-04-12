@@ -1,8 +1,10 @@
 package net.sf.iwant.api;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -15,14 +17,14 @@ import net.sf.iwant.api.model.Path;
 public class EmmaTargetsOfJavaModules {
 
 	private final Path emma;
-	private final SortedSet<Path> antJars;
+	private final List<Path> antJars;
 	private final SortedSet<JavaModule> modules;
 	private final Path filter;
 	private final Map<String, EmmaInstrumentation> instrsByName = new HashMap<String, EmmaInstrumentation>();
 	private final Map<String, EmmaCoverage> coveragesByName = new HashMap<String, EmmaCoverage>();
 	private final SortedSet<String> modulesNotToInstrument = new TreeSet<String>();
 
-	private EmmaTargetsOfJavaModules(Path emma, SortedSet<Path> antJars,
+	private EmmaTargetsOfJavaModules(Path emma, List<Path> antJars,
 			Path filter, SortedSet<JavaModule> modules,
 			SortedSet<JavaModule> modulesNotToInstrument) {
 		this.emma = emma;
@@ -44,7 +46,7 @@ public class EmmaTargetsOfJavaModules {
 		private final SortedSet<JavaModule> modules = new TreeSet<JavaModule>();
 		private final SortedSet<JavaModule> modulesNotToInstrument = new TreeSet<JavaModule>();
 		private Path emma;
-		private final SortedSet<Path> antJars = new TreeSet<Path>();
+		private final List<Path> antJars = new ArrayList<Path>();
 		private Path filter;
 
 		public EmmaTargetsOfJavaModulesSpex emma(Path emma) {

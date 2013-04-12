@@ -9,11 +9,13 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 	private Source emma;
 	private Source ant;
+	private Source antLauncher;
 
 	@Override
 	protected void setUp() throws Exception {
 		emma = Source.underWsroot("mocked-emma");
 		ant = Source.underWsroot("mocked-ant");
+		antLauncher = Source.underWsroot("mocked-ant-launcher");
 	}
 
 	public void testTargetsFromOneMinimalTestlessModule() {
@@ -21,7 +23,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				.end();
 
 		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
-				.emma(emma).antJars(ant).modules(mod).end();
+				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
 
 		EmmaInstrumentation instr = emmaTargets.emmaInstrumentationOf(mod);
 		assertEquals("mod-main-classes.emma-instr", instr.name());
@@ -37,7 +39,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").end();
 
 		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
-				.emma(emma).antJars(ant).modules(mod).end();
+				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
 
 		assertNull(emmaTargets.emmaInstrumentationOf(mod));
 
@@ -50,7 +52,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 		JavaBinModule mod = JavaBinModule.providing(Source.underWsroot("lib"));
 
 		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
-				.emma(emma).antJars(ant).modules(mod).end();
+				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
 
 		assertNull(emmaTargets.emmaInstrumentationOf(mod));
 
@@ -64,8 +66,8 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				.end();
 
 		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
-				.emma(emma).antJars(ant).filter(Source.underWsroot("filter"))
-				.modules(mod).end();
+				.emma(emma).antJars(ant, antLauncher)
+				.filter(Source.underWsroot("filter")).modules(mod).end();
 
 		EmmaInstrumentation instr = emmaTargets.emmaInstrumentationOf(mod);
 		assertEquals("[mocked-emma, mod-main-classes, filter]", instr
@@ -77,7 +79,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				.testJava("test").end();
 
 		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
-				.emma(emma).antJars(ant).modules(mod).end();
+				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
 
 		EmmaInstrumentation instr = emmaTargets.emmaInstrumentationOf(mod);
 		assertEquals("mod-main-classes.emma-instr", instr.name());
@@ -86,7 +88,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 		EmmaCoverage coverage = emmaTargets.emmaCoverageOf(mod);
 		assertEquals("mod.emmacoverage", coverage.name());
-		assertEquals("[mocked-ant, mocked-emma, "
+		assertEquals("[mocked-ant, mocked-ant-launcher, mocked-emma, "
 				+ "mod-test-classes, mod-main-classes.emma-instr, "
 				+ "mod-test-class-names]", coverage.ingredients().toString());
 
@@ -114,7 +116,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				.end();
 
 		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
-				.emma(emma).antJars(ant).modules(mod).end();
+				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
 
 		EmmaCoverage coverage = emmaTargets.emmaCoverageOf(mod);
 
@@ -132,7 +134,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				.end();
 
 		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
-				.emma(emma).antJars(ant).modules(mod).end();
+				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
 
 		EmmaCoverage coverage = emmaTargets.emmaCoverageOf(mod);
 		assertEquals("org.junit.runner.JUnitCore", coverage.mainClass());
@@ -147,7 +149,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				.testJava("test").end();
 
 		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
-				.emma(emma).antJars(ant).modules(mod).end();
+				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
 
 		EmmaCoverage coverage = emmaTargets.emmaCoverageOf(mod);
 		assertEquals("org.junit.runner.JUnitCore", coverage.mainClass());
@@ -166,12 +168,14 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				.mainJava("src").testJava("test").mainDeps(toExclude).end();
 
 		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
-				.emma(emma).antJars(ant).modules(normal, toExclude)
-				.butNotInstrumenting(toExclude).end();
+				.emma(emma).antJars(ant, antLauncher)
+				.modules(normal, toExclude).butNotInstrumenting(toExclude)
+				.end();
 
 		assertNull(emmaTargets.emmaInstrumentationOf(toExclude));
 		EmmaCoverage exclCoverage = emmaTargets.emmaCoverageOf(toExclude);
-		assertEquals("[mocked-ant, mocked-emma, toExclude-test-classes, "
+		assertEquals("[mocked-ant, mocked-ant-launcher, "
+				+ "mocked-emma, toExclude-test-classes, "
 				+ "toExclude-main-classes, toExclude-test-class-names]",
 				exclCoverage.ingredients().toString());
 
@@ -181,7 +185,8 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				.toString());
 
 		EmmaCoverage normalCoverage = emmaTargets.emmaCoverageOf(normal);
-		assertEquals("[mocked-ant, mocked-emma, normal-test-classes, "
+		assertEquals("[mocked-ant, mocked-ant-launcher, "
+				+ "mocked-emma, normal-test-classes, "
 				+ "normal-main-classes.emma-instr, "
 				+ "toExclude-main-classes, normal-test-class-names]",
 				normalCoverage.ingredients().toString());

@@ -669,8 +669,10 @@
 - As @developer I want emma filter enabled so I get rid of false reds of examples
   + make it possible to exclude iwant-mock-wsroot first (another story)
   + upgrade iwant
-  - use EmmaTargetsOfJavaModules
-  - exclude mock wsroot
+  + use EmmaTargetsOfJavaModules
+  + exclude mock wsroot
+  + doh, fix: ant jars cannot be put to SortedSet
+  - reupgrade
   - enable filter
 
 - @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming

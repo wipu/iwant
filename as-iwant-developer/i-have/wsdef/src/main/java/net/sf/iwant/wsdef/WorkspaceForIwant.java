@@ -1,17 +1,12 @@
 package net.sf.iwant.wsdef;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.sf.iwant.api.EclipseSettings;
-import net.sf.iwant.api.EmmaCoverage;
-import net.sf.iwant.api.EmmaInstrumentation;
-import net.sf.iwant.api.EmmaReport;
+import net.sf.iwant.api.EmmaTargetsOfJavaModules;
 import net.sf.iwant.api.FromRepository;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.SideEffectDefinitionContext;
@@ -28,22 +23,6 @@ import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 
 public class WorkspaceForIwant implements IwantWorkspace {
-
-	private static final Map<String, String> moduleNameToSuiteName = new HashMap<String, String>();
-
-	private static void suiteName(JavaSrcModule mod, String suiteName) {
-		moduleNameToSuiteName.put(mod.name(), suiteName);
-	}
-
-	static {
-		suiteName(iwantApiJavamodules(),
-				"net.sf.iwant.api.javamodules.IwantApiJavamodulesSuite");
-		suiteName(iwantApiModel(), "net.sf.iwant.api.model.IwantApiModelSuite");
-		suiteName(iwantDistillery(), "net.sf.iwant.IwantDistillerySuite");
-		suiteName(iwantDistillery2(), "net.sf.iwant.IwantDistillery2Suite");
-		suiteName(iwantTestrunner(),
-				"net.sf.iwant.testrunner.IwantTestRunnerTest");
-	}
 
 	@Override
 	public List<? extends Target> targets() {
@@ -79,63 +58,15 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return TestedIwantDependencies.emma();
 	}
 
-	private static EmmaCoverage emmaCoverage(JavaSrcModule module,
-			String testSuiteName) {
-		if (module.testArtifact() == null) {
-			return null;
-		}
-		if (testSuiteName == null) {
-			throw new IllegalArgumentException("Please specify test suite for "
-					+ module);
-		}
-		return EmmaCoverage
+	private static Target emmaCoverageReport() {
+		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules
 				.with()
 				.antJars(TestedIwantDependencies.antJar(),
-						TestedIwantDependencies.antLauncherJar())
-				.emma(emma())
-				.module(module)
-				.mainClassAndArguments("org.junit.runner.JUnitCore",
-						testSuiteName).end();
-	}
+						TestedIwantDependencies.antLauncherJar()).emma(emma())
+				.modules(allModules()).butNotInstrumenting(iwantMockWsroot())
+				.end();
+		return emmaTargets.emmaReport();
 
-	private static Target emmaCoverageReport() {
-		List<EmmaInstrumentation> instrumentations = new ArrayList<EmmaInstrumentation>();
-		List<EmmaCoverage> coverages = new ArrayList<EmmaCoverage>();
-		System.err.println(" -- Building emma instrs and coverages --");
-		for (JavaModule mod : allModules()) {
-			// TODO remove call to name() when toString() works
-			System.err.println(mod.name() + ":");
-			if (!(mod instanceof JavaSrcModule)) {
-				System.err.println("(" + mod.name() + " is not a src module)");
-				continue;
-			}
-			JavaSrcModule srcMod = (JavaSrcModule) mod;
-			// TODO remove calls to name() when equals() works
-			if (iwantMockWsroot().name().equals(srcMod.name())) {
-				System.err.println("(" + srcMod
-						+ " contains duplicate classes,"
-						+ " which would confuse emma)");
-				continue;
-			}
-			EmmaInstrumentation instr = EmmaInstrumentation.of(srcMod)
-					.filter(emmaFilter()).using(emma());
-			if (instr != null) {
-				System.err.println(instr);
-				instrumentations.add(instr);
-			} else {
-				System.err.println("(" + srcMod + " has no emma instr)");
-			}
-			String suiteName = moduleNameToSuiteName.get(srcMod.name());
-			EmmaCoverage coverage = emmaCoverage(srcMod, suiteName);
-			if (coverage != null) {
-				System.err.println(coverage);
-				coverages.add(coverage);
-			} else {
-				System.err.println("(" + srcMod + " has no emma coverage)");
-			}
-		}
-		return EmmaReport.with().name("emma-coverage-report").emma(emma())
-				.instrumentations(instrumentations).coverages(coverages).end();
 	}
 
 	@SuppressWarnings("unused")
@@ -159,12 +90,18 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaSrcModule iwantApiJavamodules() {
-		return iwantSrcModule("api-javamodules").mainDeps(iwantApiModel())
-				.testDeps(junit()).end();
+		return iwantSrcModule("api-javamodules")
+				.mainDeps(iwantApiModel())
+				.testDeps(junit())
+				.testSuiteName(
+						"net.sf.iwant.api.javamodules.IwantApiJavamodulesSuite")
+				.end();
 	}
 
 	private static JavaSrcModule iwantApiModel() {
-		return iwantSrcModule("api-model").mainDeps().testDeps(junit()).end();
+		return iwantSrcModule("api-model").mainDeps().testDeps(junit())
+				.testSuiteName("net.sf.iwant.api.model.IwantApiModelSuite")
+				.end();
 	}
 
 	private static JavaSrcModule iwantDistillery() {
@@ -172,7 +109,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainJava("as-some-developer/with/java")
 				.testResources("src/test/resources")
 				.mainDeps(iwantTestarea(), junit())
-				.testDeps(iwantDistilleryClasspathMarker()).end();
+				.testDeps(iwantDistilleryClasspathMarker())
+				.testSuiteName("net.sf.iwant.IwantDistillerySuite").end();
 	}
 
 	private static JavaBinModule iwantDistilleryClasspathMarker() {
@@ -185,7 +123,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
 						iwantDistillery())
 				.testDeps(iwantDistilleryClasspathMarker(), iwantTestarea(),
-						junit()).end();
+						junit())
+				.testSuiteName("net.sf.iwant.IwantDistillery2Suite").end();
 	}
 
 	private static JavaModule iwantDocs() {
@@ -227,7 +166,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaSrcModule iwantTestrunner() {
-		return iwantSrcModule("testrunner").mainDeps(junit()).end();
+		return iwantSrcModule("testrunner").mainDeps(junit())
+				.testSuiteName("net.sf.iwant.testrunner.IwantTestRunnerTest")
+				.end();
 	}
 
 	private static JavaModule iwantTutorialWsdefs() {
