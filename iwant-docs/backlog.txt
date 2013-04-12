@@ -621,30 +621,26 @@
 
 + @bugfix: compare ingredients properly for conflicts, forgot to test the negative case with ingredients
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I want an easy way of creating emma targets (instr and coverage) from modules, without having to build their dependencies manually
++ As @buildscriptauthor I want an easy way of creating emma targets (instr and coverage) from modules, without having to build their dependencies manually
   * a "from" factory method in both?
   + factory for instr: non-null only if a src module with main javas
-  - factory for coverage
+  + factory for coverage
     + simple
-    - don't put duplicates, even if same mod belongs to
-      cumulative test and main deps
-  - upgrade iwant for iwant and try it out
+    (- don't put duplicates, even if same mod belongs to
+      cumulative test and main deps: postponed as another story)
+  + upgrade iwant for iwant and try it out
     + upgrade
     + one module: works, descriptors more or less equivalent
-    - the rest, clean up and evaluate usability
+    + the rest, clean up and evaluate usability
       + add test resources in classpath
         * see another story about JavaClasses and JavaSrcModule
       + upgrade iwant for iwant
       + simplify all coverage methods of iwant build
       + more for-looping instead of explicit per-module building
         + filter out mock wsroot: duplicate classes confuse emma
-      - add filter to instr
+      + investigate adding filter to instr
         + try
-        - fix bug: directly created instrs use filter, but those created
+        + fix bug: directly created instrs use filter, but those created
           by coverage don't
           * so filter was not refreshed because dep was asked from the
             filterless version of instr
@@ -657,10 +653,15 @@
             (- maybe pass an immutable builder to emma coverage)
             + or maybe emmacoverage responsibility is too big here:
               + another class should create instrs and coverages from modules
-        - upgrade iwant and enable filter in iwant build
+        (- upgrade iwant and enable filter in iwant build:
+           postponed as another story)
     + evaluate and explain: to create emma targets from modules or vice versa?
       * neither: again, when in doubt which of 2 things should assume new responsibility,
         a third thing is needed
+
+#################################################################
+= In progress
+#################################################################
 
 - @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
   + new empty module: iwant-api-model
@@ -728,6 +729,18 @@
 #################################################################
 = Planned
 #################################################################
+
+- As a @buildscriptauthor I want to exclude a module from emma-report so that duplicate classes in it won't confuse emma
+  * example: iwant-mock-wsroot that is used by classloader magic to use mocked versions of classes
+
+- As @developer I want emma filter enabled so I get rid of false reds of examples
+  - make it possible to exclude iwant-mock-wsroot first (another story)
+  - upgrade iwant
+  - use EmmaTargetsOfJavaModules
+  - exclude mock wsroot
+  - enable filter
+
+- @enhancement: don't put duplicates of classes for emma coverage, even if they come from cumulative test and main deps
 
 - @enhancement: clean up the way JavaSrcModule defines test classes. Maybe better to just use a regex, whether it matches one suite or many classes
   - just rename the string setter as testClassRegex and always use it
