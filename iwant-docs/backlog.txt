@@ -650,11 +650,13 @@
             filterless version of instr
           + see another story: make Iwant fail if conflicting paths
           + upgrade iwant
-          - try filter again to make sure iwant now
-            detects the conflict
+          + try filter again to make sure iwant now
+            detects the conflict: yes it does
           - fix the design so no duplicate creation of instrs, or at least
             created similar
-            - maybe pass an immutable builder to emma coverage
+            (- maybe pass an immutable builder to emma coverage)
+            - or maybe emmacoverage responsibility is too big here:
+              - another class should create instrs and coverages from modules
         - upgrade iwant and enable filter in iwant build
     - evaluate and explain: to create emma targets from modules or vice versa?
 
