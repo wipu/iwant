@@ -541,8 +541,7 @@ public class WishEvaluatorTest extends TestCase {
 
 			@Override
 			public List<? extends Target> targets() {
-				throw new UnsupportedOperationException(
-						"TODO test and implement");
+				return Collections.emptyList();
 			}
 
 			@Override
@@ -556,6 +555,48 @@ public class WishEvaluatorTest extends TestCase {
 		evaluator.iwant("list-of/side-effects", ws);
 
 		assertSame(iwantApiModules, fromCtx.get());
+	}
+
+	public void testSameNameOnPathAndTargetCausesErrorAtListOfOrAsPath() {
+		IwantWorkspace ws = new IwantWorkspace() {
+
+			@Override
+			public List<? extends Target> targets() {
+				return Arrays.asList(targetA(), targetB());
+			}
+
+			private Target targetA() {
+				ConcatenatedBuilder a = Concatenated.named("a");
+				a.pathTo(sourceB());
+				return a.end();
+			}
+
+			private Path sourceB() {
+				return Source.underWsroot("b");
+			}
+
+			private Target targetB() {
+				return new HelloTarget("b", "b");
+			}
+
+			@Override
+			public List<? extends SideEffect> sideEffects(
+					SideEffectDefinitionContext ctx) {
+				return Collections.emptyList();
+			}
+		};
+
+		try {
+			evaluator.iwant("list-of/targets", ws);
+			fail();
+		} catch (Iwant.IwantException e) {
+			assertEquals("Two conflicting definitions for Path name b:\n"
+					+ "One is of\n"
+					+ " class net.sf.iwant.api.model.HelloTarget\n"
+					+ "and another is of\n"
+					+ " class net.sf.iwant.api.model.Source", e.getMessage());
+		}
+
 	}
 
 }

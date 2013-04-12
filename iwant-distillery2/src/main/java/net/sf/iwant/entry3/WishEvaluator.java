@@ -59,6 +59,7 @@ public class WishEvaluator {
 	}
 
 	public void iwant(String wish, IwantWorkspace ws) {
+		failIfConflictingPathDefinitions(ws);
 		if ("list-of/targets".equals(wish)) {
 			PrintWriter wr = new PrintWriter(out);
 			for (Target target : ws.targets()) {
@@ -99,6 +100,11 @@ public class WishEvaluator {
 		}
 		throw new IllegalArgumentException("Illegal wish: " + wish
 				+ "\nlegal targets:" + ws.targets());
+	}
+
+	private static void failIfConflictingPathDefinitions(IwantWorkspace ws) {
+		PathDefinitionConflictChecker.failIfConflictingPathDefinitions(ws
+				.targets());
 	}
 
 	File freshCachedContent(Path path) {

@@ -612,13 +612,16 @@
   + make eclipse settings support >1 resource dirs
     * didn't even require further tests: compiler required a for loop
 
++ As @buildscriptauthor I want iwant to fail if I create different versions of Paths with same name so dependency tracking works correctly etc
+  + compare class
+  + compare content descriptor
+  + compare ingredients (bug in actual target code, descriptor should
+    catch this too)
+  + various null checks
+
 #################################################################
 = In progress
 #################################################################
-
-- As @buildscriptauthor I want iwant to fail if I create different versions of Paths with same name so dependency tracking works correctly etc
-  - compare class
-  - compare content descriptor
 
 - As @buildscriptauthor I want an easy way of creating emma targets (instr and coverage) from modules, without having to build their dependencies manually
   * a "from" factory method in both?
