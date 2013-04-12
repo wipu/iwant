@@ -672,6 +672,7 @@
   + use EmmaTargetsOfJavaModules
   + exclude mock wsroot
   + doh, fix: ant jars cannot be put to SortedSet
+  + doh2: instrs and coverages neither, when building report
   - reupgrade
   - enable filter
 

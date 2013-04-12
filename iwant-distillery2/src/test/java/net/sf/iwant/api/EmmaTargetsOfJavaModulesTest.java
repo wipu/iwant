@@ -192,4 +192,32 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				normalCoverage.ingredients().toString());
 	}
 
+	public void testTwoModulesWithCoverage() {
+		JavaSrcModule mod1 = JavaSrcModule.with().name("mod1").mainJava("src")
+				.testJava("test").end();
+		JavaSrcModule mod2 = JavaSrcModule.with().name("mod2").mainJava("src")
+				.testJava("test").mainDeps(mod1).end();
+
+		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
+				.emma(emma).antJars(ant, antLauncher).modules(mod2, mod1).end();
+
+		EmmaCoverage cov1 = emmaTargets.emmaCoverageOf(mod1);
+		assertEquals("[mocked-ant, mocked-ant-launcher, mocked-emma, "
+				+ "mod1-test-classes, mod1-main-classes.emma-instr, "
+				+ "mod1-test-class-names]", cov1.ingredients().toString());
+
+		EmmaCoverage cov2 = emmaTargets.emmaCoverageOf(mod2);
+		assertEquals("[mocked-ant, mocked-ant-launcher, mocked-emma, "
+				+ "mod2-test-classes, mod2-main-classes.emma-instr, "
+				+ "mod1-main-classes.emma-instr, mod2-test-class-names]", cov2
+				.ingredients().toString());
+
+		EmmaReport report = emmaTargets.emmaReport();
+		assertEquals(
+				"[mocked-emma, "
+						+ "mod1-main-classes.emma-instr, mod2-main-classes.emma-instr, "
+						+ "mod1.emmacoverage, mod2.emmacoverage]", report
+						.ingredients().toString());
+	}
+
 }

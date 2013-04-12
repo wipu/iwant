@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -163,8 +165,8 @@ public class EmmaTargetsOfJavaModules {
 	}
 
 	public EmmaReport emmaReport() {
-		SortedSet<EmmaInstrumentation> instrs = new TreeSet<EmmaInstrumentation>();
-		SortedSet<EmmaCoverage> coverages = new TreeSet<EmmaCoverage>();
+		Set<EmmaInstrumentation> instrs = new LinkedHashSet<EmmaInstrumentation>();
+		Set<EmmaCoverage> coverages = new LinkedHashSet<EmmaCoverage>();
 		for (JavaModule mod : modules) {
 			EmmaInstrumentation instr = emmaInstrumentationOf(mod);
 			if (instr != null) {
