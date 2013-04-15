@@ -172,17 +172,12 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaModule iwantMockWsroot() {
 		IwantSrcModuleSpex mod = iwantSrcModule("mock-wsroot").noMainJava()
 				.noTestJava();
-		mod.mainJava("iwant-api-javamodules/src/test/java");
 		mod.mainJava("iwant-api-javamodules/src/main/java");
 		mod.mainJava("iwant-apimocks/src/main/java");
-		mod.mainJava("iwant-api-model/src/test/java");
 		mod.mainJava("iwant-api-model/src/main/java");
-		mod.mainJava("iwant-coreservices/src/test/java");
 		mod.mainJava("iwant-coreservices/src/main/java");
-		mod.mainJava("iwant-distillery/src/test/java");
 		mod.mainJava("iwant-distillery/as-some-developer/with/java");
 		mod.mainJava("iwant-distillery/src/main/java");
-		mod.mainJava("iwant-distillery2/src/test/java");
 		mod.mainJava("iwant-distillery2/src/main/java");
 		mod.mainJava("iwant-testarea/src/main/java");
 		return mod.mainDeps(junit()).end();
