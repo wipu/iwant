@@ -707,6 +707,19 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want iwant to provide extra functionality with external dependencies as optional modules retrievable from an easy-to-use interface so I get functionality if and only if I need it
+  * see findbugs story: the first module implemented this way
+  - mark done when findbugs done
+
+- As @buildscriptauthor I want a findbugs report of my code so I can fix bugs and as @developer I want this implemented as separated module that directly depends on findbugs instead of running by reflection so I can practice implementing the story about optional modules with ext deps
+  - add the module and its dependency to downloaded findbugs
+  - tdd
+    - minimal run with default settings
+  - descript
+    - wsdefdef declares iwant-plugin-findbugs as dep to wsdef
+    - wsdef uses it on classes
+
+
 - @epic: As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead
   - reimplement features that are now only in the main branch
