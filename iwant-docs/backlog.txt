@@ -747,9 +747,14 @@
 
 - @enhancement: don't put duplicates of classes for emma coverage, even if they come from cumulative test and main deps
 
-- @enhancement: clean up the way JavaSrcModule defines test classes. Maybe better to just use a regex, whether it matches one suite or many classes
-  - just rename the string setter as testClassRegex and always use it
-  - use a sane default
+- @enhancement: clean up the way JavaSrcModule defines test classes.
+  * Maybe better to just use a regex, whether it matches one suite or many classes
+    * just rename the string setter as testClassRegex and always use it
+  * no, better to have exact name and regex as separate properties =>
+    exact name passed to junit as such, regex is used by ClassNameList
+  - use a sane default for the regex (*Test, not Abstract*) when
+    neither setting given (syserr this so the magic won't be completely
+    black)
 
 - @bugfix: As @buildscriptauthor I want combined sources updated when iwant sources are re-exported so I can see fresh sources when I develop using iwant-from a file
   * But keep it fast
