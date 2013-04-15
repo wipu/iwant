@@ -1,13 +1,12 @@
-package net.sf.iwant.api;
+package net.sf.iwant.apimocks;
 
 import java.io.File;
 
 import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.coreservices.IwantCoreServicesImpl;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry3.CachesMock;
-import net.sf.iwant.entry3.IwantCoreServicesImpl;
 
 public class TargetEvaluationContextMock implements TargetEvaluationContext {
 

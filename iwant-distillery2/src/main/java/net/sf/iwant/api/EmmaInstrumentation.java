@@ -5,13 +5,14 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.iwant.api.javamodules.JavaClassesAndSources;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry3.FileUtil;
 
 public class EmmaInstrumentation extends Target {
 

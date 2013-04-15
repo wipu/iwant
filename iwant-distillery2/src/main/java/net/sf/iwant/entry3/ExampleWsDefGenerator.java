@@ -2,6 +2,8 @@ package net.sf.iwant.entry3;
 
 import java.io.File;
 
+import net.sf.iwant.coreservices.FileUtil;
+
 class ExampleWsDefGenerator {
 
 	private static String exampleJava(File iwantWsRoot, String javaPath) {

@@ -1,10 +1,10 @@
-package net.sf.iwant.entry3;
+package net.sf.iwant.api.model;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-
+/**
+ * TODO move this to another "internal api" module, users don't really need this
+ */
 public interface Caches {
 
 	File contentOf(Path path);

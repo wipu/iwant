@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package net.sf.iwant.coreservices;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -13,7 +13,6 @@ import java.util.List;
 
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry2.Iwant2;
-import net.sf.iwant.io.StreamUtil;
 
 /**
  * TODO remove need for this class

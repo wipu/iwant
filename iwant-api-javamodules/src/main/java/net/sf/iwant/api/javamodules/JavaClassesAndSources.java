@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.javamodules;
 
 import java.util.Collections;
 import java.util.List;

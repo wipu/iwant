@@ -1,4 +1,4 @@
-package net.sf.iwant.io;
+package net.sf.iwant.coreservices;
 
 import java.io.Closeable;
 import java.io.IOException;

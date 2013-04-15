@@ -3,7 +3,6 @@ package net.sf.iwant.eclipsesettings;
 import java.io.File;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.TargetEvaluationContextMock;
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
 import net.sf.iwant.api.javamodules.CodeStyle;
 import net.sf.iwant.api.javamodules.CodeStylePolicy;
@@ -15,9 +14,10 @@ import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
+import net.sf.iwant.apimocks.CachesMock;
+import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entry3.CachesMock;
 import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 

@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.util.Properties;
 
 import net.sf.iwant.api.model.WsInfo;
+import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.entry.Iwant.IwantException;
 
 public class WsInfoFileImpl implements WsInfo {

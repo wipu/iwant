@@ -5,9 +5,10 @@ import java.io.File;
 import junit.framework.TestCase;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Target;
+import net.sf.iwant.apimocks.CachesMock;
+import net.sf.iwant.apimocks.TargetEvaluationContextMock;
+import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry3.CachesMock;
-import net.sf.iwant.io.StreamUtil;
 import net.sf.iwant.testing.IwantEntry3TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 

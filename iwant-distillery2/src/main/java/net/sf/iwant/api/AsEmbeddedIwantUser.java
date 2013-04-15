@@ -6,10 +6,10 @@ import java.io.OutputStream;
 
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
+import net.sf.iwant.api.model.Caches;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.WsInfo;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry3.Caches;
 import net.sf.iwant.entry3.CachesImpl;
 import net.sf.iwant.entry3.WishEvaluator;
 

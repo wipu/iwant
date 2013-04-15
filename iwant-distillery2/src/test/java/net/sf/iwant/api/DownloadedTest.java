@@ -6,8 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import net.sf.iwant.apimocks.CachesMock;
+import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry3.CachesMock;
 import net.sf.iwant.testing.IwantEntry3TestArea;
 
 public class DownloadedTest extends TestCase {

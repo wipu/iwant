@@ -26,7 +26,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {
-		return Arrays.asList(emmaCoverageReport());
+		return Arrays.asList(emmaCoverageReport(), listOfExternalDeps());
 	}
 
 	@Override
@@ -45,11 +45,12 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static SortedSet<JavaModule> allModules() {
-		return new TreeSet<JavaModule>(Arrays.asList(commonsMath(),
-				iwantApiJavamodules(), iwantApiModel(), iwantDistillery(),
+		return new TreeSet<JavaModule>(Arrays.asList(bcel(), commonsMath(),
+				findbugs(), iwantApiJavamodules(), iwantApimocks(),
+				iwantApiModel(), iwantCoreservices(), iwantDistillery(),
 				iwantDistillery2(), iwantDocs(), iwantExampleWsdef(),
-				iwantMockWsroot(), iwantTestarea(), iwantTestrunner(),
-				iwantTutorialWsdefs(), junit()));
+				iwantMockWsroot(), iwantPluginFindbugs(), iwantTestarea(),
+				iwantTestrunner(), iwantTutorialWsdefs(), junit()));
 	}
 
 	// the targets
@@ -76,11 +77,32 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return filter.end();
 	}
 
+	private static Target listOfExternalDeps() {
+		ConcatenatedBuilder deps = Concatenated.named("list-of-ext-deps");
+		deps.pathTo(bcel().mainArtifact()).string("\n");
+		deps.pathTo(commonsMath().mainArtifact()).string("\n");
+		deps.pathTo(findbugs().mainArtifact()).string("\n");
+		return deps.end();
+	}
+
 	// the modules
+
+	/**
+	 * TODO declare that findbugs depends on this
+	 */
+	private static JavaModule bcel() {
+		return JavaBinModule.providing(FromRepository.ibiblio()
+				.group("org/apache/bcel").name("bcel").version("5.2"));
+	}
 
 	private static JavaModule commonsMath() {
 		return JavaBinModule.providing(FromRepository.ibiblio()
 				.group("commons-math").name("commons-math").version("1.2"));
+	}
+
+	private static JavaModule findbugs() {
+		return JavaBinModule.providing(FromRepository.ibiblio()
+				.group("findbugs").name("findbugs").version("1.0.0"));
 	}
 
 	private static JavaSrcModule iwantApiJavamodules() {
@@ -92,9 +114,24 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.end();
 	}
 
+	private static JavaSrcModule iwantApimocks() {
+		return iwantSrcModule("apimocks")
+				.mainDeps(iwantApiModel(), iwantCoreservices(),
+						iwantDistillery()).noTestJava().end();
+	}
+
 	private static JavaSrcModule iwantApiModel() {
 		return iwantSrcModule("api-model").mainDeps().testDeps(junit())
 				.testSuiteName("net.sf.iwant.api.model.IwantApiModelSuite")
+				.end();
+	}
+
+	private static JavaSrcModule iwantCoreservices() {
+		return iwantSrcModule("coreservices")
+				.mainDeps(iwantApiModel(), iwantDistillery())
+				.testDeps(iwantTestarea(), junit())
+				.testSuiteName(
+						"net.sf.iwant.coreservices." + "IwantCoreservicesSuite")
 				.end();
 	}
 
@@ -115,9 +152,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantDistillery2() {
 		return iwantSrcModule("distillery2")
 				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
-						iwantDistillery())
-				.testDeps(iwantDistilleryClasspathMarker(), iwantTestarea(),
-						junit())
+						iwantCoreservices(), iwantDistillery())
+				.testDeps(iwantApimocks(), iwantDistilleryClasspathMarker(),
+						iwantTestarea(), junit())
 				.testSuiteName("net.sf.iwant.IwantDistillery2Suite").end();
 	}
 
@@ -137,8 +174,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.noTestJava();
 		mod.mainJava("iwant-api-javamodules/src/test/java");
 		mod.mainJava("iwant-api-javamodules/src/main/java");
+		mod.mainJava("iwant-apimocks/src/main/java");
 		mod.mainJava("iwant-api-model/src/test/java");
 		mod.mainJava("iwant-api-model/src/main/java");
+		mod.mainJava("iwant-coreservices/src/test/java");
+		mod.mainJava("iwant-coreservices/src/main/java");
 		mod.mainJava("iwant-distillery/src/test/java");
 		mod.mainJava("iwant-distillery/as-some-developer/with/java");
 		mod.mainJava("iwant-distillery/src/main/java");
@@ -147,6 +187,17 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		mod.mainJava("iwant-testarea/src/main/java");
 		mod.mainJava("iwant-testrunner/src/main/java");
 		return mod.mainDeps(junit()).end();
+	}
+
+	private static JavaModule iwantPluginFindbugs() {
+		return iwantSrcModule("plugin-findbugs")
+				.mainDeps(bcel(), iwantApiJavamodules(), iwantApiModel(),
+						findbugs())
+				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
+						iwantTestarea())
+				.testSuiteName(
+						"net.sf.iwant.plugin.findbugs."
+								+ "IwantPluginFindbugsSuite").end();
 	}
 
 	private static JavaSrcModule iwantTestarea() {

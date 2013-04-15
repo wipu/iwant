@@ -11,7 +11,7 @@ import java.util.List;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.io.StreamUtil;
+import net.sf.iwant.coreservices.StreamUtil;
 
 class TargetThatNeedsAnotherAsStream extends Target {
 

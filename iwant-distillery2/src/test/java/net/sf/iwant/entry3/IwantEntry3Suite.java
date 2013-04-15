@@ -9,7 +9,6 @@ public class IwantEntry3Suite {
 		TestSuite suite = new TestSuite("net.sf.iwant.entry3");
 		suite.addTestSuite(WsInfoTest.class);
 		suite.addTestSuite(CachesImplTest.class);
-		suite.addTestSuite(FileUtilTest.class);
 		suite.addTestSuite(ExampleWsDefGeneratorTest.class);
 		suite.addTestSuite(WishScriptGeneratorTest.class);
 		suite.addTestSuite(IngredientCheckingTargetEvaluationContextTest.class);

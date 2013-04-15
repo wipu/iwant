@@ -111,8 +111,11 @@ public class Iwant2 {
 		List<String> srcDirs = new ArrayList<String>();
 		srcDirs.add("iwant-api-javamodules/" + "src/test/java");
 		srcDirs.add("iwant-api-javamodules/" + "src/main/java");
+		srcDirs.add("iwant-apimocks/" + "src/main/java");
 		srcDirs.add("iwant-api-model/" + "src/test/java");
 		srcDirs.add("iwant-api-model/" + "src/main/java");
+		srcDirs.add("iwant-coreservices/" + "src/test/java");
+		srcDirs.add("iwant-coreservices/" + "src/main/java");
 		srcDirs.add("iwant-distillery/" + "src/test/java");
 		srcDirs.add("iwant-distillery/" + "as-some-developer/with/java");
 		srcDirs.add("iwant-distillery/" + "src/main/java");

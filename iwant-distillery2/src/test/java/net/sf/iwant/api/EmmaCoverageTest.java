@@ -9,14 +9,16 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.javamodules.JavaClasses;
+import net.sf.iwant.api.javamodules.JavaClassesAndSources;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
+import net.sf.iwant.apimocks.CachesMock;
+import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entry3.CachesMock;
 import net.sf.iwant.testing.IwantEntry3TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 

@@ -11,8 +11,8 @@ import net.sf.iwant.api.model.CacheScopeChoices;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry3.FileUtil;
 
 public class Downloaded extends Target {
 

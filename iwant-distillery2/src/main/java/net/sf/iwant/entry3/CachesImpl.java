@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 
 import net.sf.iwant.api.model.CacheScopeChoices;
+import net.sf.iwant.api.model.Caches;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;

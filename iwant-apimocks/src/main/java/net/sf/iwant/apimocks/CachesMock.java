@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package net.sf.iwant.apimocks;
 
 import java.io.File;
 import java.net.URL;
@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.iwant.api.model.CacheScopeChoices;
+import net.sf.iwant.api.model.Caches;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;

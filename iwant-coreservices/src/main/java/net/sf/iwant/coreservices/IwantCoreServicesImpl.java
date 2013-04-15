@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package net.sf.iwant.coreservices;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,6 @@ import java.util.List;
 
 import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.io.StreamUtil;
 
 public class IwantCoreServicesImpl implements IwantCoreServices {
 

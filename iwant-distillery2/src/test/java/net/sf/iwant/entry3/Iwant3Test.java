@@ -9,9 +9,10 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.IwantWorkspace;
-import net.sf.iwant.api.TargetEvaluationContextMock;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.apimocks.CachesMock;
+import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantWsRoot;

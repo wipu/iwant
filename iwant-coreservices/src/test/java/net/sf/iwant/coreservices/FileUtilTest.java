@@ -1,10 +1,9 @@
-package net.sf.iwant.entry3;
+package net.sf.iwant.coreservices;
 
 import java.io.File;
 import java.io.IOException;
 
 import junit.framework.TestCase;
-import net.sf.iwant.testing.IwantEntry3TestArea;
 
 public class FileUtilTest extends TestCase {
 
@@ -73,7 +72,7 @@ public class FileUtilTest extends TestCase {
 	}
 
 	public void testCopyMissingFilesExcludesSvnMetafiles() throws IOException {
-		IwantEntry3TestArea testArea = new IwantEntry3TestArea();
+		IwantCoreservicesTestArea testArea = new IwantCoreservicesTestArea();
 		File from = testArea.newDir("from");
 		testArea.newDir("from/.svn");
 		testArea.hasFile("from/A", "");

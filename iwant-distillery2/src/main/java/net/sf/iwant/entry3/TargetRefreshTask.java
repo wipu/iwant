@@ -6,9 +6,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+import net.sf.iwant.api.model.Caches;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.planner.Resource;
 import net.sf.iwant.planner.ResourcePool;

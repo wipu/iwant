@@ -703,22 +703,34 @@
   + ok, things have now started, and it's easy to create new modules so
     the rest can happen step by step from here: separate stories
 
+(- As @buildscriptauthor I want a findbugs report of my code so I can fix bugs and as @developer I want this implemented as separated module that directly depends on findbugs instead of running by reflection so I can practice implementing the story about optional modules with ext deps
+  + add the module and its dependency to downloaded findbugs
+  + split api mocks to separate module so testing of the target is possible
+  + also required: split coreutils, stuff needed by the mocks, and others
+  + tdd
+    + minimal run with default settings
+      * problem: requires findbugs.home (what for?!) so not good fit
+        for direct java-level, requires forking
+        => the part about plugin with ext deps: WONT IMPLEMENT
+  * at least this effort drove separation modules, and placeholder for findbugs,
+    and of course finding the ugly fact about home env var
+  + another story, only about findbugs)
+
 #################################################################
 = In progress
 #################################################################
 
 - As @buildscriptauthor I want iwant to provide extra functionality with external dependencies as optional modules retrievable from an easy-to-use interface so I get functionality if and only if I need it
-  * see findbugs story: the first module implemented this way
-  - mark done when findbugs done
+  * see untar story: the first module implemented this way
+  - mark done when the 1st story doing this is done
 
-- As @buildscriptauthor I want a findbugs report of my code so I can fix bugs and as @developer I want this implemented as separated module that directly depends on findbugs instead of running by reflection so I can practice implementing the story about optional modules with ext deps
-  - add the module and its dependency to downloaded findbugs
-  - tdd
-    - minimal run with default settings
+- As @developer I want target Untarred so I can untar findbugs distribution, which is required for using it, the standalone jar would require home env setting magic
+  * also try to use this as the 1st case for an iwant plugin with ext deps
+  - new module
+  - tdd functionality with compression=gz
   - descript
-    - wsdefdef declares iwant-plugin-findbugs as dep to wsdef
+    - wsdefdef declares iwant-plugin-ant as dep to wsdef
     - wsdef uses it on classes
-
 
 - @epic: As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead
@@ -733,6 +745,16 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptauthor I want a findbugs report of my code so I can fix bugs
+  - enable and fix test in iwant-plugin-findbugs
+    - use ant or something
+      - use full untarred distro of findbugs
+      - fork jvm, setting findbugs.home
+
+- As @buildscriptuser I want an easy (automatic) way of ensuring that eclipse settings refer to existing external dependencies so I don't get broken compilation
+  * should eclipse-settings always depend on them, why not?
+  - if so, make it possible for side-effect to depend on targets
 
 - @bugfix: fix: parallel script run sometimes fails with "text file busy"
   * may be caused by chmod!

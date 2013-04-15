@@ -28,12 +28,13 @@ import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.model.WsInfo;
+import net.sf.iwant.coreservices.FileUtil;
+import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.Iwant.UnmodifiableSource;
 import net.sf.iwant.entry2.Iwant2;
-import net.sf.iwant.io.StreamUtil;
 import net.sf.iwant.testing.WsRootFinder;
 
 public class Iwant3 {
