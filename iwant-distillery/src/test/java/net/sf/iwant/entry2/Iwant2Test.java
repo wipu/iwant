@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.lang.reflect.InvocationTargetException;
 import java.security.Permission;
 
 import junit.framework.TestCase;
@@ -118,85 +117,17 @@ public class Iwant2Test extends TestCase {
 		return err.toString();
 	}
 
-	private static String mockedIwantTestRunner() {
-		StringBuilder b = new StringBuilder();
-		b.append("package net.sf.iwant.testrunner;\n");
-		b.append("\n");
-		b.append("import java.util.Arrays;\n");
-		b.append("\n");
-		b.append("public class IwantTestRunner {\n");
-		b.append("\n");
-		b.append("	public static void main(String[] args) {\n");
-		b.append("		System.out.println(\"Mocked IwantTestRunner\");\n");
-		b.append("		System.out.println(\"args: \" + Arrays.toString(args));\n");
-		b.append("	}\n");
-		b.append("\n");
-		b.append("}\n");
-		return b.toString();
-	}
-
-	private static String mockedFailingIwantTestRunner() {
-		StringBuilder b = new StringBuilder();
-		b.append("package net.sf.iwant.testrunner;\n");
-		b.append("\n");
-		b.append("public class IwantTestRunner {\n");
-		b.append("\n");
-		b.append("  public static void main(String[] args) {\n");
-		b.append("    throw new IllegalStateException(\"Simulated failure.\");");
-		b.append("  }\n");
-		b.append("\n");
-		b.append("}\n");
-		return b.toString();
-	}
-
-	private static File mockedIwantRunnerJava() {
-		return new File(WsRootFinder.mockWsRoot(),
-				"iwant-testrunner/src/main/java/net/sf/iwant/testrunner/IwantTestRunner.java");
-	}
-
-	private static void mockedIwantRunnerShallSucceed() {
-		Iwant.newTextFile(mockedIwantRunnerJava(), mockedIwantTestRunner());
-	}
-
-	private static void mockedIwantRunnerShallFail() {
-		Iwant.newTextFile(mockedIwantRunnerJava(),
-				mockedFailingIwantTestRunner());
-	}
-
-	public void testIwant2CompilesIwantAndRunsTestSuiteAndFailsWhenItFails()
-			throws Exception {
+	public void testIwant2CompilesIwantAndCallsIwant3() throws Exception {
 		File iwantWsRoot = WsRootFinder.mockWsRoot();
 		network.usesRealJunitUrlAndCached();
 		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
 				"all-iwant-classes");
-		mockedIwantRunnerShallFail();
-
-		try {
-			iwant2.evaluate(iwantWsRoot, "args", "to be", "passed");
-			fail();
-		} catch (InvocationTargetException e) {
-			System.err.println(e);
-			IllegalStateException ise = (IllegalStateException) e.getCause();
-			assertEquals("Simulated failure.", ise.getMessage());
-		}
-
-		assertEquals("", out());
-	}
-
-	public void testIwant2CompilesIwantAndCallsIwant3AfterTestSuiteSuccess()
-			throws Exception {
-		File iwantWsRoot = WsRootFinder.mockWsRoot();
-		network.usesRealJunitUrlAndCached();
-		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
-				"all-iwant-classes");
-		mockedIwantRunnerShallSucceed();
 
 		iwant2.evaluate(WsRootFinder.mockWsRoot(), "args", "to be", "passed");
 
+		assertEquals(":        compiled -> all-iwant-classes\n", err());
 		assertEquals("Mocked net.sf.iwant.entry3.Iwant3\n" + "args: ["
 				+ iwantWsRoot + ", args, to be, passed]\n", out());
-		// we cannot assert mocked IwantTestRunner output, because we catch it
-		// (real junit is too chatty)
 	}
 
 	public void testIwant2CompilesIwantWithDebugInformation() throws Exception {
@@ -204,7 +135,6 @@ public class Iwant2Test extends TestCase {
 		network.usesRealJunitUrlAndCached();
 		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
 				"all-iwant-classes");
-		mockedIwantRunnerShallSucceed();
 
 		iwant2.evaluate(WsRootFinder.mockWsRoot());
 

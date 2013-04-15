@@ -6,12 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -69,37 +67,6 @@ public class Iwant2 {
 		List<File> classLocations = Arrays.asList(classpathMarker, testArea,
 				allIwantClasses, junitJar());
 
-		// no file results from test run:
-		File cachedTestResult = null;
-		TimestampHandler timestampHandler = new TimestampHandler(
-				cachedTestResult, new File(allIwantClasses.getAbsolutePath()
-						+ ".srcdescr-of-testrun"),
-				plainFilesRecursivelyUnder(Collections
-						.singleton(allIwantClasses)));
-		if (timestampHandler.needsRefresh()) {
-			Iwant.log("self-tested", allIwantClasses);
-			ByteArrayOutputStream errBytes = new ByteArrayOutputStream();
-			PrintStream err = new PrintStream(errBytes);
-			PrintStream origErr = System.err;
-			System.setErr(err);
-			boolean testsPassed = false;
-			try {
-				Iwant.runJavaMain(true, false,
-						"net.sf.iwant.testrunner.IwantTestRunner",
-						classLocations, "net.sf.iwant.IwantDistillery2Suite");
-				testsPassed = true;
-			} finally {
-				System.setErr(origErr);
-				if (!testsPassed) {
-					err.close();
-					System.err
-							.print("Tests failed => displaying combined out and err:\n"
-									+ errBytes.toString());
-				}
-			}
-			timestampHandler.markFresh();
-		}
-
 		String[] iwant3Args = new String[args.length + 1];
 		iwant3Args[0] = iwantWs.getCanonicalPath();
 		System.arraycopy(args, 0, iwant3Args, 1, args.length);
@@ -122,7 +89,6 @@ public class Iwant2 {
 		srcDirs.add("iwant-distillery2/" + "src/test/java");
 		srcDirs.add("iwant-distillery2/" + "src/main/java");
 		srcDirs.add("iwant-testarea/" + "src/main/java");
-		srcDirs.add("iwant-testrunner/" + "src/main/java");
 		return srcDirs;
 	}
 

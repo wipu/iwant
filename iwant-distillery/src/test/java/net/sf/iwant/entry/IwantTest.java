@@ -185,7 +185,7 @@ public class IwantTest extends TestCase {
 		File exportedWsRootAgain = Iwant.using(network)
 				.iwantWsrootOfWishedVersion(asSomeone);
 		assertEquals(exportedWsRoot, exportedWsRootAgain);
-		assertTrue(new File(exportedWsRoot, "iwant-testrunner").exists());
+		assertTrue(new File(exportedWsRoot, "iwant-api-model").exists());
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class IwantTest extends TestCase {
 				.iwantWsrootOfWishedVersion(asSomeone);
 		assertEquals(exportedWsRoot, exportedWsRootAgain);
 
-		assertTrue(new File(exportedWsRoot, "iwant-testrunner").exists());
+		assertTrue(new File(exportedWsRoot, "iwant-api-model").exists());
 		assertFalse(preExisting.exists());
 	}
 

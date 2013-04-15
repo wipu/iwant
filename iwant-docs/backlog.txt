@@ -746,6 +746,12 @@
 = Planned
 #################################################################
 
+- As @developer I want Iwant2 to no more run any tests during bootstrapping so it's easier to add new modules and because modularization has already reduced the coverage of distillery2 tests
+  * also the actual build of iwant already covers everything nicely
+  + do it
+  + delete testrunner for real and from mock wsroot
+  - don't even compile tests in Iwant2 and delete them from mock wsroot
+
 - As @buildscriptauthor I want a findbugs report of my code so I can fix bugs
   - enable and fix test in iwant-plugin-findbugs
     - use ant or something
