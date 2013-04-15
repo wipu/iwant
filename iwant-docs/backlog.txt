@@ -754,6 +754,8 @@
 = Planned
 #################################################################
 
+- As @buildscriptauthor I want a convenience method Untarred.from(src) that detects the compression to use and derives the target name from src so I don't have to type them 99% of the time
+
 - As @buildscriptauthor I want a findbugs report of my code so I can fix bugs
   - enable and fix test in iwant-plugin-findbugs
     - use ant or something
