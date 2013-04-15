@@ -732,8 +732,10 @@
 
 - As @developer I want target Untarred so I can untar findbugs distribution, which is required for using it, the standalone jar would require home env setting magic
   * also try to use this as the 1st case for an iwant plugin with ext deps
-  - new module
-  - tdd functionality with compression=gz
+  + new module
+  + tdd
+    + functionality without compression
+    + functionality with compression=gz
   - descript
     - wsdefdef declares iwant-plugin-ant as dep to wsdef
     - wsdef uses it on classes

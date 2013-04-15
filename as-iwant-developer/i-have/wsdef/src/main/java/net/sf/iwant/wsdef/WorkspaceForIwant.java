@@ -45,12 +45,13 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static SortedSet<JavaModule> allModules() {
-		return new TreeSet<JavaModule>(Arrays.asList(bcel(), commonsMath(),
-				findbugs(), iwantApiJavamodules(), iwantApimocks(),
-				iwantApiModel(), iwantCoreservices(), iwantDistillery(),
-				iwantDistillery2(), iwantDocs(), iwantExampleWsdef(),
-				iwantMockWsroot(), iwantPluginFindbugs(), iwantTestarea(),
-				iwantTutorialWsdefs(), junit()));
+		return new TreeSet<JavaModule>(Arrays.asList(ant(), bcel(),
+				commonsMath(), findbugs(), iwantApiJavamodules(),
+				iwantApimocks(), iwantApiModel(), iwantCoreservices(),
+				iwantDistillery(), iwantDistillery2(), iwantDocs(),
+				iwantExampleWsdef(), iwantMockWsroot(), iwantPluginAnt(),
+				iwantPluginFindbugs(), iwantTestarea(), iwantTutorialWsdefs(),
+				junit()));
 	}
 
 	// the targets
@@ -79,6 +80,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static Target listOfExternalDeps() {
 		ConcatenatedBuilder deps = Concatenated.named("list-of-ext-deps");
+		deps.pathTo(ant().mainArtifact()).string("\n");
 		deps.pathTo(bcel().mainArtifact()).string("\n");
 		deps.pathTo(commonsMath().mainArtifact()).string("\n");
 		deps.pathTo(findbugs().mainArtifact()).string("\n");
@@ -86,6 +88,16 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	// the modules
+
+	/**
+	 * TODO reuse with TestedIwantDependencies
+	 * 
+	 * @return
+	 */
+	private static JavaModule ant() {
+		return JavaBinModule.providing(FromRepository.ibiblio()
+				.group("org/apache/ant").name("ant").version("1.7.1"));
+	}
 
 	/**
 	 * TODO declare that findbugs depends on this
@@ -181,6 +193,16 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		mod.mainJava("iwant-distillery2/src/main/java");
 		mod.mainJava("iwant-testarea/src/main/java");
 		return mod.mainDeps(junit()).end();
+	}
+
+	private static JavaModule iwantPluginAnt() {
+		return iwantSrcModule("plugin-ant")
+				.testResources("src/test/resources")
+				.mainDeps(ant(), iwantApiModel())
+				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
+						iwantTestarea())
+				.testSuiteName("net.sf.iwant.plugin.ant.IwantPluginAntSuite")
+				.end();
 	}
 
 	private static JavaModule iwantPluginFindbugs() {
