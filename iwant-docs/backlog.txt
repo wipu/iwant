@@ -672,11 +672,7 @@
   + reupgrade
   + enable filter
 
-#################################################################
-= In progress
-#################################################################
-
-- @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
++ @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
   + new empty module: iwant-api-model
   + move a minimal amount of model to new module
     + move ?
@@ -700,34 +696,16 @@
     * this breaks real eclipse settings
     + clean up Iwant3 code that finds and creates iwant modules
       * just use SortedSet, not worth trying to test
-  - before adding modules make it easy by implementing story about
+  + before adding modules make it easy by implementing story about
     emma target building from modules and take into use
-  - test Concatenated and HelloTarget in their own modules
-    - also JavaBinModule
-    - maybe another module for these
-    - modularize test tools so testing is possible
-  - modularization
+  + modularization
     + abstract away dep to Iwant from api-model
+  + ok, things have now started, and it's easy to create new modules so
+    the rest can happen step by step from here: separate stories
 
-- @bugfix: fix: parallel script run sometimes fails with "text file busy"
-  * may be caused by chmod!
-  + cleanup closing in StreamUtil and FileUtil
-  + utilize pipe in copying of files
-  - incr numbers in WishEvaluatorTest.testScriptsWorkCorrectlyInParallel()
-  - test chmod in isolation
-  - fix, try to find even a workaround
-
-- @refactoring: As @developer and @buildscriptauthor I want test utilities, like mocks, for easy and nonverbose testing of iwant and iwant-based code
-  + new package: testing
-  + rehearse by moving a couple of test utilities there
-  - move all, creating a different package for entry2/3 stuff
-    + WsRootFinder
-    + test area 2
-    + all testareas
-    + reuse code btw testareas (could also combine,
-      but separation may be handy later)
-    - mocks
-  - object mothers/testworlds for nonverbose setUp and tearDown
+#################################################################
+= In progress
+#################################################################
 
 - @epic: As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead
@@ -742,6 +720,30 @@
 #################################################################
 = Planned
 #################################################################
+
+- @bugfix: fix: parallel script run sometimes fails with "text file busy"
+  * may be caused by chmod!
+  + cleanup closing in StreamUtil and FileUtil
+  + utilize pipe in copying of files
+  - incr numbers in WishEvaluatorTest.testScriptsWorkCorrectlyInParallel()
+  - test chmod in isolation
+  - fix, try to find even a workaround
+
++ @refactoring: As @developer and @buildscriptauthor I want test utilities, like mocks, for easy and nonverbose testing of iwant and iwant-based code
+  + new package: testing
+  + rehearse by moving a couple of test utilities there
+  + move all, creating a different package for entry2/3 stuff
+    + WsRootFinder
+    + test area 2
+    + all testareas
+    + reuse code btw testareas (could also combine,
+      but separation may be handy later)
+  - test Concatenated and HelloTarget in their own modules
+    - also JavaBinModule
+    - maybe another module for these
+    - modularize test tools so testing is possible
+  - reusable mocks of iwant interfaces/classes
+  - object mothers/testworlds for nonverbose setUp and tearDown
 
 - @enhancement: don't put duplicates of classes for emma coverage, even if they come from cumulative test and main deps
 
