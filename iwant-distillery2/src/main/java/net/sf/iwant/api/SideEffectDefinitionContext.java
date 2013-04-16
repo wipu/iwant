@@ -1,5 +1,7 @@
 package net.sf.iwant.api;
 
+import java.util.Set;
+
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 
@@ -9,6 +11,6 @@ public interface SideEffectDefinitionContext {
 
 	JavaSrcModule wsdefJavaModule();
 
-	JavaModule[] iwantApiModules();
+	Set<? extends JavaModule> iwantApiModules();
 
 }

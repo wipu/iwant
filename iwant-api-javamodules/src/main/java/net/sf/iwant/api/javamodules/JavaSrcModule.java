@@ -158,16 +158,22 @@ public class JavaSrcModule extends JavaModule {
 		}
 
 		public IwantSrcModuleSpex mainDeps(JavaModule... mainDeps) {
-			for (JavaModule mainDep : mainDeps) {
-				this.mainDeps.add(mainDep);
-			}
+			return mainDeps(Arrays.asList(mainDeps));
+		}
+
+		public IwantSrcModuleSpex mainDeps(
+				Collection<? extends JavaModule> mainDeps) {
+			this.mainDeps.addAll(mainDeps);
 			return this;
 		}
 
 		public IwantSrcModuleSpex testDeps(JavaModule... testDeps) {
-			for (JavaModule testDep : testDeps) {
-				this.testDeps.add(testDep);
-			}
+			return testDeps(Arrays.asList(testDeps));
+		}
+
+		public IwantSrcModuleSpex testDeps(
+				Collection<? extends JavaModule> testDeps) {
+			this.testDeps.addAll(testDeps);
 			return this;
 		}
 

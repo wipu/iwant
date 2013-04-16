@@ -3,6 +3,7 @@ package net.sf.iwant.entry3;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Set;
 
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.SideEffectDefinitionContext;
@@ -33,12 +34,12 @@ public class WishEvaluator {
 	private final int workerCount;
 	private final JavaSrcModule wsdefdefJavaModule;
 	private final JavaSrcModule wsdefJavaModule;
-	private final JavaModule[] iwantApiModules;
+	private final Set<? extends JavaModule> iwantApiModules;
 
 	public WishEvaluator(OutputStream out, OutputStream err, File wsRoot,
 			Iwant iwant, WsInfo wsInfo, Caches caches, int workerCount,
 			JavaSrcModule wsdefdefJavaModule, JavaSrcModule wsdefJavaModule,
-			JavaModule[] iwantApiModules) {
+			Set<? extends JavaModule> iwantApiModules) {
 		this.out = out;
 		this.err = err;
 		this.wsRoot = wsRoot;
@@ -199,7 +200,7 @@ public class WishEvaluator {
 		}
 
 		@Override
-		public JavaModule[] iwantApiModules() {
+		public Set<? extends JavaModule> iwantApiModules() {
 			return iwantApiModules;
 		}
 

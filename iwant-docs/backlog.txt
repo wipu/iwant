@@ -737,8 +737,9 @@
     + functionality without compression
     + functionality with compression=gz
   - tdd usage of iwant-opt-paths
-    - refactor: encapsulate current data inside WorkspaceDefinitionContext
+    + refactor: encapsulate current data inside WorkspaceDefinitionContext
       for defining the workspace
+      + also replace arrays of iwantApiModules with Set
     - add to ctx: IwantPlugins iwantPlugin()
     - add ant() to IwantPlugins
     - split module iwant-testresources, move test tars there

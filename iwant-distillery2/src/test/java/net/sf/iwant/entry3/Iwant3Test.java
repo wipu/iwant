@@ -373,6 +373,7 @@ public class Iwant3Test extends TestCase {
 		b.append("import java.util.Arrays;\n");
 		b.append("\n");
 		b.append("import net.sf.iwant.api.IwantWorkspaceProvider;\n");
+		b.append("import net.sf.iwant.api.WorkspaceDefinitionContext;\n");
 		b.append("import net.sf.iwant.api.javamodules.JavaModule;\n");
 		b.append("import net.sf.iwant.api.javamodules.JavaSrcModule;\n");
 		b.append("import net.sf.iwant.api.model.Path;\n");
@@ -381,10 +382,10 @@ public class Iwant3Test extends TestCase {
 		b.append("public class ExampleWsProvider implements IwantWorkspaceProvider {\n");
 		b.append("\n");
 		b.append("      @Override\n");
-		b.append("        public JavaSrcModule workspaceModule(JavaModule... iwantApiModules) {\n");
+		b.append("        public JavaSrcModule workspaceModule(WorkspaceDefinitionContext ctx) {\n");
 		b.append("          return JavaSrcModule.with().name(\"example-workspace\")\n");
 		b.append("            .locationUnderWsRoot(\"as-example-developer/i-have/wsdef\")\n");
-		b.append("            .mainJava(\"src/main/java\").mainDeps(iwantApiModules).end();\n");
+		b.append("            .mainJava(\"src/main/java\").mainDeps(ctx.iwantApiModules()).end();\n");
 		b.append("      }\n");
 		b.append("\n");
 		b.append("      @Override\n");

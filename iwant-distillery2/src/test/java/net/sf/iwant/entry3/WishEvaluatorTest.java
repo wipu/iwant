@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import junit.framework.TestCase;
@@ -47,8 +48,9 @@ public class WishEvaluatorTest extends TestCase {
 	private Caches caches;
 	private JavaSrcModule wsdefdefJavaModule;
 	private JavaSrcModule wsdefJavaModule;
-	private JavaModule[] iwantApiModules = { JavaBinModule.providing(Source
-			.underWsroot("mock-iwant-classes")) };
+	private Set<JavaBinModule> iwantApiModules = Collections
+			.singleton(JavaBinModule.providing(Source
+					.underWsroot("mock-iwant-classes")));
 
 	@Override
 	public void setUp() throws IOException {
@@ -537,7 +539,7 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	public void testSideEffectDefinitionContextPassesIwantApiClasses() {
-		final AtomicReference<JavaModule[]> fromCtx = new AtomicReference<JavaModule[]>();
+		final AtomicReference<Set<? extends JavaModule>> fromCtx = new AtomicReference<Set<? extends JavaModule>>();
 		IwantWorkspace ws = new IwantWorkspace() {
 
 			@Override

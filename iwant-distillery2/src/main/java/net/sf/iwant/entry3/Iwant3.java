@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -17,6 +18,7 @@ import net.sf.iwant.api.HelloSideEffect;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.IwantWorkspaceProvider;
 import net.sf.iwant.api.SideEffectDefinitionContext;
+import net.sf.iwant.api.WorkspaceDefinitionContext;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaModule;
@@ -65,7 +67,7 @@ public class Iwant3 {
 		return new Iwant3(network, iwantWs);
 	}
 
-	private JavaModule[] iwantApiModules(SortedSet<File> apiClassLocations)
+	private Set<JavaModule> iwantApiModules(SortedSet<File> apiClassLocations)
 			throws IOException {
 		Path combinedIwantSources = combinedIwantSources();
 		SortedSet<JavaModule> iwantApiModules = new TreeSet<JavaModule>();
@@ -73,7 +75,7 @@ public class Iwant3 {
 			iwantApiModules.add(JavaBinModule.providing(new ExternalSource(
 					apiClasses), combinedIwantSources));
 		}
-		return iwantApiModules.toArray(new JavaModule[0]);
+		return iwantApiModules;
 	}
 
 	public void evaluate(File asSomeone, String... args) throws Exception {
@@ -93,7 +95,7 @@ public class Iwant3 {
 		File wsDefdefClasses = new File(wsCache, "wsdefdef-classes");
 
 		SortedSet<File> apiClassLocations = iwantApiClassLocations();
-		JavaModule[] iwantApiModules = iwantApiModules(apiClassLocations);
+		Set<JavaModule> iwantApiModules = iwantApiModules(apiClassLocations);
 
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
 		iwant.compiledClasses(wsDefdefClasses, srcFiles, new ArrayList<File>(
@@ -109,8 +111,10 @@ public class Iwant3 {
 					.newInstance();
 
 			Iwant.fileLog("Refreshing wsdef classes");
+			WorkspaceDefinitionContext wsDefCtx = new WorkspaceDefinitionContextImpl(
+					iwantApiModules);
 			JavaSrcModule wsdDefClassesModule = wsDefdef
-					.workspaceModule(iwantApiModules);
+					.workspaceModule(wsDefCtx);
 			// TODO don't cast when no more necessary
 			JavaClasses wsDefClassesTarget = (JavaClasses) wsdDefClassesModule
 					.mainArtifact();
