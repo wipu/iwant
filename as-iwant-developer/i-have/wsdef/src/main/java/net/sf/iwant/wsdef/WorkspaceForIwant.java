@@ -50,8 +50,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				iwantApimocks(), iwantApiModel(), iwantCoreservices(),
 				iwantDistillery(), iwantDistillery2(), iwantDocs(),
 				iwantExampleWsdef(), iwantMockWsroot(), iwantPluginAnt(),
-				iwantPluginFindbugs(), iwantTestarea(), iwantTutorialWsdefs(),
-				junit()));
+				iwantPluginFindbugs(), iwantTestarea(), iwantTestresources(),
+				iwantTutorialWsdefs(), junit()));
 	}
 
 	// the targets
@@ -197,10 +197,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaModule iwantPluginAnt() {
 		return iwantSrcModule("plugin-ant")
-				.testResources("src/test/resources")
 				.mainDeps(ant(), iwantApiModel())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
-						iwantTestarea())
+						iwantTestarea(), iwantTestresources())
 				.testSuiteName("net.sf.iwant.plugin.ant.IwantPluginAntSuite")
 				.end();
 	}
@@ -224,6 +223,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaBinModule iwantTestareaClassdir() {
 		return JavaBinModule.providing(Source
 				.underWsroot("iwant-testarea/testarea-classdir"));
+	}
+
+	private static JavaModule iwantTestresources() {
+		return iwantSrcModule("testresources").noTestJava()
+				.mainResources("src/main/resources").end();
 	}
 
 	private static JavaModule iwantTutorialWsdefs() {

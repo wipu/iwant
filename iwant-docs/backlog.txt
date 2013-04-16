@@ -740,10 +740,10 @@
     + refactor: encapsulate current data inside WorkspaceDefinitionContext
       for defining the workspace
       + also replace arrays of iwantApiModules with Set
-    - add to ctx: IwantPlugins iwantPlugin()
-    - add ant() to IwantPlugins
-    - split module iwant-testresources, move test tars there
+    + split module iwant-testresources, move test tars there
     - test in WishEvaluatorTest using Untarred
+      - test wsdefdef calls ctx.iwantPlugin().ant()
+      - test wsdef uses Untarred
   - descript
     - wsdefdef declares iwant-plugin-ant as dep to wsdef
     - wsdef uses it on classes
