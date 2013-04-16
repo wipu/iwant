@@ -66,6 +66,18 @@ public class JavaBinModuleTest extends TestCase {
 		assertEquals("/libs/lib2-src.zip", lib.eclipseSourceReference(evCtx));
 	}
 
+	public void testSourceOfBinInsideProjectWhenGivenAndWhenNot() {
+		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
+		JavaBinModule lib = JavaBinModule.named("sourced.jar")
+				.source("sourced-src.zip").inside(libsModule);
+
+		Source src = (Source) lib.source();
+		assertEquals("libs/sourced-src.zip", src.name());
+
+		assertNull(JavaBinModule.named("unsourced.jar").inside(libsModule)
+				.source());
+	}
+
 	// path provider module
 
 	public void testBinModuleThatProvidesAMainArtifactTarget() {
@@ -102,6 +114,13 @@ public class JavaBinModuleTest extends TestCase {
 				.isEmpty());
 		assertTrue(JavaBinModule.providing(Source.underWsroot("lib"))
 				.mainDeps().isEmpty());
+	}
+
+	public void testSourcesOfProviderModule() {
+		Source src = Source.underWsroot("src");
+
+		assertSame(src, JavaBinModule.providing(Source.underWsroot("bin"), src)
+				.source());
 	}
 
 }

@@ -107,6 +107,20 @@ wsdef-edit v03scriptgeneratedtarget
 cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
 cmde "0 0" "as-distillery-developer/with/bash/iwant/target/scriptGenerated/as-path | xargs cat "
 
+section "Using an iwant-plugin (for untarring)"
+
+wsdefdef-edit v01iwantPluginAnt
+p "TODO instruct regenerating eclipse settings."
+wsdef-edit v04iwantPluginAnt
+
+cmd 'mkdir Untarred-test'
+cmd 'echo "hello" > Untarred-test/tarred-file'
+cmd 'tar czf Untarred-test.tar.gz Untarred-test/'
+cmd 'rm -rf Untarred-test'
+
+cmde "0" "as-distillery-developer/with/bash/iwant/list-of/targets"
+cmde "0 0" "as-distillery-developer/with/bash/iwant/target/Untarred-test/as-path | xargs find"
+
 }
 
 wsdef-edit() {

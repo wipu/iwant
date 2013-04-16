@@ -8,4 +8,6 @@ public interface WorkspaceDefinitionContext {
 
 	Set<JavaModule> iwantApiModules();
 
+	IwantPluginWishes iwantPlugin();
+
 }

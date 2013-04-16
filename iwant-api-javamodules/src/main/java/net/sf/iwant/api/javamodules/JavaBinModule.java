@@ -22,6 +22,8 @@ public abstract class JavaBinModule extends JavaModule {
 		return new PathProvider(mainArtifact, sources);
 	}
 
+	public abstract Path source();
+
 	public abstract String eclipseSourceReference(TargetEvaluationContext ctx);
 
 	public abstract String eclipseBinaryReference(TargetEvaluationContext ctx);
@@ -89,6 +91,15 @@ public abstract class JavaBinModule extends JavaModule {
 			return Collections.emptySet();
 		}
 
+		@Override
+		public Path source() {
+			if (srcZip == null) {
+				return null;
+			}
+			return Source.underWsroot(libsModule.locationUnderWsRoot() + "/"
+					+ srcZip);
+		}
+
 	}
 
 	private static class PathProvider extends JavaBinModule {
@@ -135,6 +146,11 @@ public abstract class JavaBinModule extends JavaModule {
 		@Override
 		public Set<JavaModule> mainDeps() {
 			return Collections.emptySet();
+		}
+
+		@Override
+		public Path source() {
+			return sources;
 		}
 
 	}

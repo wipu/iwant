@@ -112,7 +112,7 @@ public class Iwant3 {
 
 			Iwant.fileLog("Refreshing wsdef classes");
 			WorkspaceDefinitionContext wsDefCtx = new WorkspaceDefinitionContextImpl(
-					iwantApiModules);
+					iwantApiModules, iwantWs);
 			JavaSrcModule wsdDefClassesModule = wsDefdef
 					.workspaceModule(wsDefCtx);
 			// TODO don't cast when no more necessary

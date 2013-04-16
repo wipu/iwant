@@ -17,6 +17,7 @@ public class IwantEntry3Suite {
 		suite.addTestSuite(WishEvaluatorTest.class);
 		suite.addTestSuite(UserPrefsImplTest.class);
 		suite.addTestSuite(Iwant3Test.class);
+		suite.addTestSuite(WorkspaceDefinitionContextImplTest.class);
 		return suite;
 	}
 

@@ -722,29 +722,31 @@
   + delete testrunner for real and from mock wsroot
   + don't even compile tests in Iwant2 and delete them from mock wsroot
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I want iwant to provide extra functionality with external dependencies as optional modules retrievable from an easy-to-use interface so I get functionality if and only if I need it
++ As @buildscriptauthor I want iwant to provide extra functionality with external dependencies as optional modules retrievable from an easy-to-use interface so I get functionality if and only if I need it
   * see untar story: the first module implemented this way
-  - mark done when the 1st story doing this is done
+  + mark done when the 1st story doing this is done
 
-- As @developer I want target Untarred so I can untar findbugs distribution, which is required for using it, the standalone jar would require home env setting magic
++ As @developer I want target Untarred so I can untar findbugs distribution, which is required for using it, the standalone jar would require home env setting magic
   * also try to use this as the 1st case for an iwant plugin with ext deps
   + new module
   + tdd Untarred
     + functionality without compression
     + functionality with compression=gz
-  - tdd usage of iwant-opt-paths
+  + tdd usage of iwant-opt-paths
     + refactor: encapsulate current data inside WorkspaceDefinitionContext
       for defining the workspace
       + also replace arrays of iwantApiModules with Set
     + split module iwant-testresources, move test tars there
-  - drive with descript, tdd on lower levels
+  + drive with descript, tdd on lower levels
     * currently not easy to do purely in java starting from wsdefdef
-    - wsdefdef calls ctx.iwantPlugin().ant()
-    - wsdef uses Untarred
+    + wsdefdef calls ctx.iwantPlugin().ant().withDependencies()
+    + wsdef uses Untarred
+    + Iwant3 passes iwant wsroot to the ctx and it generates correct
+      bin modules
+
+#################################################################
+= In progress
+#################################################################
 
 - @epic: As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead

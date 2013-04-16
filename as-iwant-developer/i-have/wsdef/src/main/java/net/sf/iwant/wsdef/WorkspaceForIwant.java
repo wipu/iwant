@@ -236,7 +236,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.noTestJava()
 				.mainJava("src")
 				.mainDeps(commonsMath(), iwantApiJavamodules(),
-						iwantApiModel(), iwantDistillery2()).end();
+						iwantApiModel(), iwantDistillery2(), iwantPluginAnt())
+				.end();
 	}
 
 	private static JavaModule junit() {
