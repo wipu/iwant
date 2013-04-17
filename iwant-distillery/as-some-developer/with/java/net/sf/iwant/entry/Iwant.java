@@ -313,11 +313,11 @@ public class Iwant {
 				.cacheLocation(new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
 						iwantWs));
 		return compiledClasses(classes, iwantBootstrappingJavaSources(iwantWs),
-				Collections.<File> emptyList(), true);
+				Collections.<File> emptyList(), true, null);
 	}
 
 	public File compiledClasses(File dest, List<File> src,
-			List<File> classLocations, boolean debug) {
+			List<File> classLocations, boolean debug, Charset encoding) {
 		try {
 			StringBuilder cp = new StringBuilder();
 			for (Iterator<File> iterator = classLocations.iterator(); iterator
@@ -328,7 +328,7 @@ public class Iwant {
 					cp.append(pathSeparator());
 				}
 			}
-			return compiledClasses(dest, src, cp.toString(), debug);
+			return compiledClasses(dest, src, cp.toString(), debug, encoding);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -337,7 +337,7 @@ public class Iwant {
 	}
 
 	public File compiledClasses(File dest, List<File> src, String classpath,
-			boolean debug) {
+			boolean debug, Charset encoding) {
 		try {
 			debugLog("compiledClasses", "dest: " + dest, "src: " + src,
 					"classpath: " + classpath, "debug:" + debug);
@@ -350,9 +350,9 @@ public class Iwant {
 			}
 			DiagnosticListener<? super JavaFileObject> diagnosticListener = null;
 			Locale locale = null;
-			Charset charset = null;
 			StandardJavaFileManager fileManager = compiler
-					.getStandardFileManager(diagnosticListener, locale, charset);
+					.getStandardFileManager(diagnosticListener, locale,
+							encoding);
 			Iterable<? extends JavaFileObject> compilationUnits = fileManager
 					.getJavaFileObjectsFromFiles(src);
 			Writer compilerTaskOut = null;

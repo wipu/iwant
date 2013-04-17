@@ -1,6 +1,12 @@
 package net.sf.iwant.api;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
@@ -13,6 +19,7 @@ import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.CachesMock;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.coreservices.FileUtil;
+import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
@@ -30,6 +37,11 @@ public class JavaClassesTest extends TestCase {
 	private File wsRoot;
 	private File cached;
 	private CachesMock caches;
+	private InputStream originalIn;
+	private PrintStream originalOut;
+	private PrintStream originalErr;
+	private ByteArrayOutputStream out;
+	private ByteArrayOutputStream err;
 
 	@Override
 	public void setUp() {
@@ -42,6 +54,34 @@ public class JavaClassesTest extends TestCase {
 		ctx.hasWsRoot(wsRoot);
 		cached = new File(testArea.root(), "cached");
 		caches.cachesModifiableTargetsAt(cached);
+		originalIn = System.in;
+		originalOut = System.out;
+		originalErr = System.err;
+		startOfOutAndErrCapture();
+	}
+
+	private void startOfOutAndErrCapture() {
+		out = new ByteArrayOutputStream();
+		err = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(out));
+		System.setErr(new PrintStream(err));
+	}
+
+	private String out() {
+		return out.toString();
+	}
+
+	private String err() {
+		return err.toString();
+	}
+
+	@Override
+	public void tearDown() {
+		System.setIn(originalIn);
+		System.setOut(originalOut);
+		System.setErr(originalErr);
+		System.err.print("== out:\n" + out());
+		System.err.print("== err:\n" + err());
 	}
 
 	public void testSrcDirIsAnIgredient() {
@@ -356,6 +396,32 @@ public class JavaClassesTest extends TestCase {
 				testArea.contentOf(new File(cached, "classes/pak1/res1.txt")));
 		assertEquals("res2.txt content",
 				testArea.contentOf(new File(cached, "classes/pak2/res2.txt")));
+	}
+
+	public void testOverridingChracterEncoding() throws Exception {
+		Charset differentCharset = Charset.forName("ISO-8859-1");
+		assertFalse(differentCharset.equals(Charset.defaultCharset()));
+
+		new File(wsRoot, "src").mkdirs();
+		StringBuilder java = new StringBuilder();
+		java.append("public class Main {\n");
+		java.append("  public static void main(String[] args) {\n");
+		java.append("    System.out.println(\"aumlaut:ä\");\n");
+		java.append("  \n}");
+		java.append("}\n");
+		byte[] javaBytes = java.toString().getBytes(differentCharset);
+		StreamUtil.pipeAndClose(new ByteArrayInputStream(javaBytes),
+				new FileOutputStream(new File(wsRoot, "src/Main.java")));
+
+		JavaClasses classes = JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot("src")).encoding(differentCharset)
+				.end();
+		classes.path(ctx);
+
+		Iwant.runJavaMain(false, true, "Main",
+				Arrays.asList(ctx.cached(classes)));
+
+		assertEquals("aumlaut:ä\n", out());
 	}
 
 }

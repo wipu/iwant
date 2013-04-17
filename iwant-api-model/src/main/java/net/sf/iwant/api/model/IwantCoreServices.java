@@ -4,12 +4,13 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.List;
 
 public interface IwantCoreServices {
 
 	File compiledClasses(File dest, List<File> src, List<File> classLocations,
-			boolean debug);
+			boolean debug, Charset encoding);
 
 	int copyMissingFiles(File from, File to);
 

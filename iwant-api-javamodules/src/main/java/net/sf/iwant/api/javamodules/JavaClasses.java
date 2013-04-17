@@ -2,6 +2,7 @@ package net.sf.iwant.api.javamodules;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,15 +19,17 @@ public class JavaClasses extends Target {
 	private final Collection<? extends Path> resourceDirs;
 	private final Collection<? extends Path> classLocations;
 	private final boolean debug;
+	private final Charset encoding;
 
 	private JavaClasses(String name, Collection<? extends Path> srcDirs,
 			Collection<? extends Path> resourceDirs, List<Path> classLocations,
-			boolean debug) {
+			boolean debug, Charset encoding) {
 		super(name);
 		this.srcDirs = srcDirs;
 		this.resourceDirs = resourceDirs;
 		this.classLocations = classLocations;
 		this.debug = debug;
+		this.encoding = encoding;
 		this.ingredients = new ArrayList<Path>();
 		this.ingredients.addAll(srcDirs);
 		this.ingredients.addAll(resourceDirs);
@@ -44,6 +47,7 @@ public class JavaClasses extends Target {
 		private final List<Path> resourceDirs = new ArrayList<Path>();
 		private final List<Path> classLocations = new ArrayList<Path>();
 		private boolean debug;
+		private Charset encoding;
 
 		public JavaClassesSpex name(String name) {
 			this.name = name;
@@ -94,9 +98,14 @@ public class JavaClasses extends Target {
 			return this;
 		}
 
+		public JavaClassesSpex encoding(Charset encoding) {
+			this.encoding = encoding;
+			return this;
+		}
+
 		public JavaClasses end() {
 			return new JavaClasses(name, srcDirs, resourceDirs, classLocations,
-					debug);
+					debug, encoding);
 		}
 
 	}
@@ -138,7 +147,7 @@ public class JavaClasses extends Target {
 				classLocationDirs.add(classLocationDir);
 			}
 			ctx.iwant().compiledClasses(dest, javaFiles, classLocationDirs,
-					debug);
+					debug, encoding);
 		} else {
 			// create dest for resource copying
 			dest.mkdirs();

@@ -100,13 +100,6 @@ public class Iwant2Test extends TestCase {
 		System.setProperty(LINE_SEPARATOR_KEY, originalLineSeparator);
 		System.err.print("== out:\n" + out());
 		System.err.print("== err:\n" + err());
-
-		if (!out().isEmpty()) {
-			System.err.println("=== out:\n" + out());
-		}
-		if (!err().isEmpty()) {
-			System.err.println("=== err:\n" + err());
-		}
 	}
 
 	private String out() {

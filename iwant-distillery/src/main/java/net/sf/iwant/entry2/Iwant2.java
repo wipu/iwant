@@ -122,7 +122,7 @@ public class Iwant2 {
 
 		List<File> javaFileList = new ArrayList<File>(javaFiles);
 		iwant.compiledClasses(allIwantClasses, javaFileList,
-				Arrays.asList(junitJar()), true);
+				Arrays.asList(junitJar()), true, null);
 		timestampHandler.markFresh();
 		return allIwantClasses;
 	}

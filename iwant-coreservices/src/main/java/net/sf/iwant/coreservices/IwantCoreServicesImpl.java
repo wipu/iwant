@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import net.sf.iwant.api.model.IwantCoreServices;
@@ -20,8 +21,9 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 
 	@Override
 	public File compiledClasses(File dest, List<File> src,
-			List<File> classLocations, boolean debug) {
-		return iwant.compiledClasses(dest, src, classLocations, debug);
+			List<File> classLocations, boolean debug, Charset encoding) {
+		return iwant
+				.compiledClasses(dest, src, classLocations, debug, encoding);
 	}
 
 	@Override
