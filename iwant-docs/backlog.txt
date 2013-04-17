@@ -746,17 +746,19 @@
 
 + @enhancement: As @buildscriptuser I want a nice error message instead of NullPointerException when Iwant does not find the system java compiler so I know to switch from a JRE to JDK
 
-#################################################################
-= In progress
-#################################################################
-
-- @bugfix: replace backslashes with slashes in emma ant script, otherwise it won't work on Windows
++ @bugfix: replace backslashes with slashes in emma ant script, otherwise it won't work on Windows
   + try to test: changing file.separator does not reproduce the bug, because File.getCanonicalPath() does not obey it
     (keeping the method extract of script content)
   + just fix without testing (=:-O)
   + fix even the paths in the properties file of EmmaInstrumentation, that seems to be causing problems
-  - manually test on Windows
-  - add story about testing this after refactoring away raw Files or otherwise making this testable
+  + manually test on Windows
+  + add story about testing this after refactoring away raw Files or otherwise making this testable
+
+#################################################################
+= In progress
+#################################################################
+
+- @enhancement: As @buildscriptauthor I want to define the character encoding for JavaClasses so when it's different than the system default my classes will work
 
 - @epic: As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead
@@ -771,6 +773,10 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @developer I want a layer on top of File so I can test the emma backslash problems and also start making it more user-friendly than File
+  - make ctx.cached(Path) return new type
+  - follow the compiler
 
 - As @buildscriptauthor I want a convenience method Untarred.from(src) that detects the compression to use and derives the target name from src so I don't have to type them 99% of the time
 
