@@ -754,6 +754,7 @@
   + try to test: changing file.separator does not reproduce the bug, because File.getCanonicalPath() does not obey it
     (keeping the method extract of script content)
   + just fix without testing (=:-O)
+  + fix even the paths in the properties file of EmmaInstrumentation, that seems to be causing problems
   - manually test on Windows
   - add story about testing this after refactoring away raw Files or otherwise making this testable
 

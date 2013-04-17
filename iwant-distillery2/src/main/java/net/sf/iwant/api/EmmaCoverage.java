@@ -188,7 +188,7 @@ public class EmmaCoverage extends Target {
 	}
 
 	private static String wintoySafeCanonicalPath(File file) throws IOException {
-		return file.getCanonicalPath().replaceAll("\\\\", "/");
+		return BackslashFixer.wintoySafeCanonicalPath(file);
 	}
 
 	private interface ClasspathItem {
