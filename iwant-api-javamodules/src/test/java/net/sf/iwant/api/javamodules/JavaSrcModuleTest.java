@@ -1,5 +1,6 @@
 package net.sf.iwant.api.javamodules;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -304,6 +305,17 @@ public class JavaSrcModuleTest extends TestCase {
 				JavaSrcModule.with().name("suited").testJava("test")
 						.testSuiteName("com.example.TestSuite").end()
 						.testSuiteName());
+	}
+
+	public void testEncodingIsUsedToCompileMainAndTestClasses() {
+		Charset encoding = Charset.forName("ISO-8859-1");
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").encoding(encoding).end();
+
+		JavaClasses main = (JavaClasses) mod.mainArtifact();
+		assertSame(encoding, main.encoding());
+		JavaClasses test = (JavaClasses) mod.testArtifact();
+		assertSame(encoding, test.encoding());
 	}
 
 }

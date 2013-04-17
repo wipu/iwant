@@ -118,6 +118,10 @@ public class JavaClasses extends Target {
 		return srcDirs;
 	}
 
+	public Charset encoding() {
+		return encoding;
+	}
+
 	public Collection<? extends Path> resourceDirs() {
 		return resourceDirs;
 	}

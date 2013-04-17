@@ -756,6 +756,8 @@
 
 + @enhancement: As @buildscriptauthor I want to define the character encoding for JavaClasses so when it's different than the system default my classes will work
 
++ @enhancement: doh, encoding also for JavaSrcModule that defines JavaClasses
+
 #################################################################
 = In progress
 #################################################################

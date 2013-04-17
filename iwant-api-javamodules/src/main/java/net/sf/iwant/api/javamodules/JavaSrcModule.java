@@ -1,5 +1,6 @@
 package net.sf.iwant.api.javamodules;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,6 +29,7 @@ public class JavaSrcModule extends JavaModule {
 	private final CodeFormatterPolicy codeFormatterPolicy;
 	private final List<Source> generatorSourcesToFollow;
 	private final String testSuiteName;
+	private final Charset encoding;
 
 	public JavaSrcModule(String name, String locationUnderWsRoot,
 			List<String> mainJavas, List<String> mainResources,
@@ -36,7 +38,8 @@ public class JavaSrcModule extends JavaModule {
 			Target generatedClasses, Target generatedSrc,
 			List<Source> generatorSourcesToFollow,
 			CodeStylePolicy codeStylePolicy,
-			CodeFormatterPolicy codeFormatterPolicy, String testSuiteName) {
+			CodeFormatterPolicy codeFormatterPolicy, String testSuiteName,
+			Charset encoding) {
 		this.name = name;
 		this.generatorSourcesToFollow = generatorSourcesToFollow;
 		this.codeStylePolicy = codeStylePolicy;
@@ -47,6 +50,7 @@ public class JavaSrcModule extends JavaModule {
 		this.testResources = testResources;
 		this.codeFormatterPolicy = codeFormatterPolicy;
 		this.testSuiteName = testSuiteName;
+		this.encoding = encoding;
 		this.mainDeps = Collections.unmodifiableSet(mainDeps);
 		this.testDeps = Collections.unmodifiableSet(testDeps);
 		this.generatedClasses = generatedClasses;
@@ -75,6 +79,7 @@ public class JavaSrcModule extends JavaModule {
 		private CodeFormatterPolicy codeFormatterPolicy = new CodeFormatterPolicy();
 		private String locationUnderWsRoot;
 		private String testSuiteName;
+		private Charset encoding;
 
 		public JavaSrcModule end() {
 			if (locationUnderWsRoot != null && relativeParentDir != null) {
@@ -92,7 +97,7 @@ public class JavaSrcModule extends JavaModule {
 					mainResources, testJavas, testResources, mainDeps,
 					testDeps, generatedClasses, generatedSrc,
 					generatorSourcesToFollow, codeStylePolicy,
-					codeFormatterPolicy, testSuiteName);
+					codeFormatterPolicy, testSuiteName, encoding);
 		}
 
 		private static String normalizedRelativeParentDir(String value) {
@@ -159,6 +164,11 @@ public class JavaSrcModule extends JavaModule {
 
 		public IwantSrcModuleSpex mainDeps(JavaModule... mainDeps) {
 			return mainDeps(Arrays.asList(mainDeps));
+		}
+
+		public IwantSrcModuleSpex encoding(Charset encoding) {
+			this.encoding = encoding;
+			return this;
 		}
 
 		public IwantSrcModuleSpex mainDeps(
@@ -312,7 +322,7 @@ public class JavaSrcModule extends JavaModule {
 			}
 		}
 		return JavaClasses.with().name(name() + "-main-classes")
-				.srcDirs(mainJavasAsPaths())
+				.srcDirs(mainJavasAsPaths()).encoding(encoding)
 				.resourceDirs(mainResourcesAsPaths()).classLocations(classpath)
 				.end();
 	}
@@ -339,7 +349,7 @@ public class JavaSrcModule extends JavaModule {
 			}
 		}
 		return JavaClasses.with().name(name() + "-test-classes")
-				.srcDirs(testJavasAsPaths())
+				.srcDirs(testJavasAsPaths()).encoding(encoding)
 				.resourceDirs(testResourcesAsPaths()).classLocations(classpath)
 				.end();
 	}
