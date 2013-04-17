@@ -8,6 +8,7 @@ import java.net.URL;
 import java.security.Permission;
 
 import junit.framework.TestCase;
+import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
 import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantEntryTestArea;
@@ -287,6 +288,38 @@ public class IwantTest extends TestCase {
 				dir);
 		assertEquals(with.location().toExternalForm(), without.location()
 				.toExternalForm());
+	}
+
+	/**
+	 * This happens when JRE is used instead of JDK
+	 */
+	public void testIwantGivesNiceErrorMessageIfSystemJavaCompilerIsNotFound()
+			throws Exception {
+		File asSomeone = testArea.newDir("as-test");
+		File iHaveConf = testArea.newDir("as-test/i-have/conf");
+		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
+		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
+				+ iwantFrom + "\n");
+
+		IwantNetworkMock network = new IwantNetworkMock(testArea);
+		network.usesRealSvnkitUrlAndCacheAndUnzipped();
+		network.shallNotFindSystemJavaCompiler();
+
+		File exportedWsRoot = network.cachesUrlAt(iwantFrom,
+				"exported-iwant-wsroot");
+		network.cachesAt(
+				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
+						exportedWsRoot), "iwant-bootstrapper-classes");
+
+		try {
+			Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
+					"for", "entry two");
+			fail();
+		} catch (IwantException e) {
+			assertEquals(
+					"Cannot find system java compiler. Are you running a JRE instead of JDK?",
+					e.getMessage());
+		}
 	}
 
 }

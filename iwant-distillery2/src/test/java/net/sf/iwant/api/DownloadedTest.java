@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.tools.JavaCompiler;
+
 import junit.framework.TestCase;
 import net.sf.iwant.apimocks.CachesMock;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
@@ -124,6 +126,12 @@ public class DownloadedTest extends TestCase {
 
 				@Override
 				public File cacheLocation(UnmodifiableSource<?> src) {
+					throw new UnsupportedOperationException(
+							"TODO test and implement");
+				}
+
+				@Override
+				public JavaCompiler systemJavaCompiler() {
 					throw new UnsupportedOperationException(
 							"TODO test and implement");
 				}

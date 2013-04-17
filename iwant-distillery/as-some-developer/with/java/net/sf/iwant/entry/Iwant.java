@@ -68,6 +68,8 @@ public class Iwant {
 
 		URL junitUrl();
 
+		JavaCompiler systemJavaCompiler();
+
 	}
 
 	public static abstract class UnmodifiableSource<T> {
@@ -182,6 +184,11 @@ public class Iwant {
 			final String v = "4.8.2";
 			return url("http://mirrors.ibiblio.org/maven2" + "/junit/junit/"
 					+ v + "/junit-" + v + ".jar");
+		}
+
+		@Override
+		public JavaCompiler systemJavaCompiler() {
+			return ToolProvider.getSystemJavaCompiler();
 		}
 
 	}
@@ -336,7 +343,11 @@ public class Iwant {
 					"classpath: " + classpath, "debug:" + debug);
 			del(dest);
 			dest.mkdirs();
-			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+			JavaCompiler compiler = network.systemJavaCompiler();
+			if (compiler == null) {
+				throw new IwantException(
+						"Cannot find system java compiler. Are you running a JRE instead of JDK?");
+			}
 			DiagnosticListener<? super JavaFileObject> diagnosticListener = null;
 			Locale locale = null;
 			Charset charset = null;

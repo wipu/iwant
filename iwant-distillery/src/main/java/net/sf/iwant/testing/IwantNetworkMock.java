@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.tools.JavaCompiler;
+
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.Iwant.UnmodifiableSource;
@@ -19,6 +21,7 @@ public class IwantNetworkMock implements IwantNetwork {
 	private Map<UnmodifiableSource<?>, File> cachedUnmodifiables = new HashMap<UnmodifiableSource<?>, File>();
 	private URL junitUrl;
 	private URL svnkitUrl;
+	private boolean shallNotFindSystemJavaCompiler;
 
 	public IwantNetworkMock(TestArea testArea) {
 		this.testArea = testArea;
@@ -102,6 +105,18 @@ public class IwantNetworkMock implements IwantNetwork {
 
 		UnmodifiableZip zip = new UnmodifiableZip(Iwant.fileToUrl(downloaded));
 		cachesAt(zip, iwant.unmodifiableZipUnzipped(zip));
+	}
+
+	@Override
+	public JavaCompiler systemJavaCompiler() {
+		if (shallNotFindSystemJavaCompiler) {
+			return null;
+		}
+		return Iwant.usingRealNetwork().network().systemJavaCompiler();
+	}
+
+	public void shallNotFindSystemJavaCompiler() {
+		this.shallNotFindSystemJavaCompiler = true;
 	}
 
 }

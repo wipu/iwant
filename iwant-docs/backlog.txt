@@ -744,6 +744,8 @@
     + Iwant3 passes iwant wsroot to the ctx and it generates correct
       bin modules
 
++ @enhancement: As @buildscriptuser I want a nice error message instead of NullPointerException when Iwant does not find the system java compiler so I know to switch from a JRE to JDK
+
 #################################################################
 = In progress
 #################################################################
