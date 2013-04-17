@@ -167,7 +167,7 @@ public class EmmaCoverage extends Target {
 		}
 
 		script.append("      <sysproperty key='emma.coverage.out.file' value='")
-				.append(ec.getCanonicalPath()).append("' />\n");
+				.append(wintoySafeCanonicalPath(ec)).append("' />\n");
 
 		for (String arg : mainArgsToUse) {
 			script.append("      <arg value='").append(arg).append("' />\n");
@@ -178,7 +178,8 @@ public class EmmaCoverage extends Target {
 			cpItem.toAnt(ctx, script);
 		}
 		script.append("        <pathelement location='")
-				.append(ctx.cached(emma)).append("'/>\n");
+				.append(wintoySafeCanonicalPath(ctx.cached(emma)))
+				.append("'/>\n");
 		script.append("      </classpath>\n");
 		script.append("    </java>\n");
 		script.append("  </target>\n");
@@ -186,9 +187,14 @@ public class EmmaCoverage extends Target {
 		return script.toString();
 	}
 
+	private static String wintoySafeCanonicalPath(File file) throws IOException {
+		return file.getCanonicalPath().replaceAll("\\\\", "/");
+	}
+
 	private interface ClasspathItem {
 
-		void toAnt(TargetEvaluationContext ctx, StringBuilder script);
+		void toAnt(TargetEvaluationContext ctx, StringBuilder script)
+				throws IOException;
 
 		Path ingredient();
 
@@ -208,9 +214,10 @@ public class EmmaCoverage extends Target {
 		}
 
 		@Override
-		public void toAnt(TargetEvaluationContext ctx, StringBuilder script) {
+		public void toAnt(TargetEvaluationContext ctx, StringBuilder script)
+				throws IOException {
 			script.append("        <pathelement location='")
-					.append(ctx.cached(instrumentation))
+					.append(wintoySafeCanonicalPath(ctx.cached(instrumentation)))
 					.append("/instr-classes'/>\n");
 		}
 
@@ -230,9 +237,11 @@ public class EmmaCoverage extends Target {
 		}
 
 		@Override
-		public void toAnt(TargetEvaluationContext ctx, StringBuilder script) {
+		public void toAnt(TargetEvaluationContext ctx, StringBuilder script)
+				throws IOException {
 			script.append("        <pathelement location='")
-					.append(ctx.cached(classes)).append("'/>\n");
+					.append(wintoySafeCanonicalPath(ctx.cached(classes)))
+					.append("'/>\n");
 		}
 
 	}
