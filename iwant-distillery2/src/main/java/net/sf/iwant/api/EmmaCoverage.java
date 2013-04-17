@@ -1,6 +1,7 @@
 package net.sf.iwant.api;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -135,10 +136,21 @@ public class EmmaCoverage extends Target {
 		File dest = ctx.cached(this);
 		dest.mkdirs();
 
-		File ec = coverageFile(ctx);
+		String script = antScriptContent(ctx);
+		File scriptFile = Iwant
+				.newTextFile(new File(dest, "build.xml"), script);
 
+		List<File> cachedAntJars = new ArrayList<File>();
+		for (Path antJar : antJars) {
+			cachedAntJars.add(ctx.cached(antJar));
+		}
+		AntGenerated.runAnt(cachedAntJars, scriptFile);
+	}
+
+	private String antScriptContent(TargetEvaluationContext ctx)
+			throws IOException {
+		File ec = coverageFile(ctx);
 		List<String> mainArgsToUse = mainArgsToUse(ctx);
-		System.err.println(mainClass + " " + mainArgsToUse);
 
 		StringBuilder script = new StringBuilder();
 		script.append("<project name='emma-coverage' default='emma-coverage'>\n");
@@ -171,15 +183,7 @@ public class EmmaCoverage extends Target {
 		script.append("    </java>\n");
 		script.append("  </target>\n");
 		script.append("</project>\n");
-
-		File scriptFile = Iwant.newTextFile(new File(dest, "build.xml"),
-				script.toString());
-
-		List<File> cachedAntJars = new ArrayList<File>();
-		for (Path antJar : antJars) {
-			cachedAntJars.add(ctx.cached(antJar));
-		}
-		AntGenerated.runAnt(cachedAntJars, scriptFile);
+		return script.toString();
 	}
 
 	private interface ClasspathItem {
