@@ -1,6 +1,7 @@
 package net.sf.iwant.api;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,18 +89,18 @@ public class EmmaReport extends Target {
 
 		File reportTxt = new File(dest, "coverage.txt");
 		File reportHtml = new File(dest, "coverage/index.html");
-		File reportProps = Iwant.newTextFile(
-				new File(dest, "emma-report.properties"),
-				"report.txt.out.file=" + reportTxt.getCanonicalPath()
-						+ "\nreport.html.out.file="
-						+ reportHtml.getCanonicalPath() + "\n");
+		File reportProps = Iwant.newTextFile(new File(dest,
+				"emma-report.properties"), "report.txt.out.file="
+				+ wintoySafeCanonicalPath(reportTxt)
+				+ "\nreport.html.out.file="
+				+ wintoySafeCanonicalPath(reportHtml) + "\n");
 
 		List<String> reportArgs = new ArrayList<String>();
 		reportArgs.add("report");
 		reportArgs.add("-r");
 		reportArgs.add("txt,html");
 		reportArgs.add("-properties");
-		reportArgs.add(reportProps.getCanonicalPath());
+		reportArgs.add(wintoySafeCanonicalPath(reportProps));
 		for (EmmaInstrumentation instr : instrumentations) {
 			File em = instr.metadataFile(ctx);
 			if (!em.exists()) {
@@ -107,19 +108,23 @@ public class EmmaReport extends Target {
 				continue;
 			}
 			reportArgs.add("-in");
-			reportArgs.add(em.getCanonicalPath());
+			reportArgs.add(wintoySafeCanonicalPath(em));
 			for (Path source : instr.classesAndSources().sources()) {
 				reportArgs.add("-sp");
-				reportArgs.add(ctx.cached(source).getCanonicalPath());
+				reportArgs.add(wintoySafeCanonicalPath(ctx.cached(source)));
 			}
 		}
 		for (EmmaCoverage coverage : coverages) {
 			reportArgs.add("-in");
-			reportArgs.add(coverage.coverageFile(ctx).getCanonicalPath());
+			reportArgs.add(wintoySafeCanonicalPath(coverage.coverageFile(ctx)));
 		}
 
 		File emmaJar = ctx.cached(emma);
 		EmmaInstrumentation.runEmma(emmaJar, reportArgs.toArray(new String[0]));
+	}
+
+	private static String wintoySafeCanonicalPath(File file) throws IOException {
+		return BackslashFixer.wintoySafeCanonicalPath(file);
 	}
 
 	@Override

@@ -758,6 +758,9 @@
 
 + @enhancement: doh, encoding also for JavaSrcModule that defines JavaClasses
 
++ @bugfix: yet another: EmmaReport also needs backslash fix
+  * it's probably my fault, after all, properties files use backslash as escape?
+
 #################################################################
 = In progress
 #################################################################
