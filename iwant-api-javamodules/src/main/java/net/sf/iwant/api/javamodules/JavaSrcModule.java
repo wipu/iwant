@@ -30,6 +30,8 @@ public class JavaSrcModule extends JavaModule {
 	private final List<Source> generatorSourcesToFollow;
 	private final String testSuiteName;
 	private final Charset encoding;
+	private Path mainArtifact;
+	private Path testArtifact;
 
 	public JavaSrcModule(String name, String locationUnderWsRoot,
 			List<String> mainJavas, List<String> mainResources,
@@ -307,7 +309,14 @@ public class JavaSrcModule extends JavaModule {
 	}
 
 	@Override
-	public Path mainArtifact() {
+	public synchronized Path mainArtifact() {
+		if (mainArtifact == null) {
+			mainArtifact = newMainArtifact();
+		}
+		return mainArtifact;
+	}
+
+	private Path newMainArtifact() {
 		if (generatedClasses != null) {
 			return generatedClasses;
 		}
@@ -327,7 +336,14 @@ public class JavaSrcModule extends JavaModule {
 				.end();
 	}
 
-	public Path testArtifact() {
+	public synchronized Path testArtifact() {
+		if (testArtifact == null) {
+			testArtifact = newTestArtifact();
+		}
+		return testArtifact;
+	}
+
+	private Path newTestArtifact() {
 		if (testJavas.isEmpty()) {
 			return null;
 		}
