@@ -761,13 +761,13 @@
 + @bugfix: yet another: EmmaReport also needs backslash fix
   * it's probably my fault, after all, properties files use backslash as escape?
 
++ @enhancement: It's not enough to add permgenspace for emmaruns, the whole ant ui of iwant may need that in a big project
+  + add it and heap
+  + test in real project that fails without this when cache is empty
+
 #################################################################
 = In progress
 #################################################################
-
-- @enhancement: It's not enough to add permgenspace for emmaruns, the whole ant ui of iwant may need that in a big project
-  + add it and heap
-  - test in real project that fails without this when cache is empty
 
 - @bugfix: As a Windows user I want JavaSrcModule to cache main and test artifacts so I don't get out of heap
   + do it (remember synchronization)
