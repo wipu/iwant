@@ -25,6 +25,8 @@
 			<fail unless="entry-classes" />
 			<fail unless="as-someone" />
 			<java classpath="${entry-classes}" classname="net.sf.iwant.entry.Iwant" failonerror="true" fork="true">
+				<jvmarg value="-Xmx1024m" />
+				<jvmarg value="-XX:MaxPermSize=256m" />
 				<arg file="${as-someone}" />
 				<wish />
 			</java>
