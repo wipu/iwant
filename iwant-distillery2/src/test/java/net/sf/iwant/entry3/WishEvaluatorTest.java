@@ -602,4 +602,58 @@ public class WishEvaluatorTest extends TestCase {
 
 	}
 
+	/**
+	 * Bug: only source timestamps were checked, so if a refresh is interrupted,
+	 * it's not retried because no source ingredients are newer than the cached
+	 * descriptor, only cached target files.
+	 */
+	public void testTargetWithNonFreshTargetIngredientAndExistingCachedDescriptorStaysNonFreshEvenIfItFails() {
+		TargetMock ingredient = new TargetMock("ingredient");
+		ingredient.hasContentDescriptor("ingredient descr 1");
+		ingredient.hasContent("ingredient content");
+		ingredient.hasNoIngredients();
+
+		final TargetMock target = new TargetMock("failing");
+		target.hasContentDescriptor("failing");
+		target.hasContent("failing content");
+		target.hasIngredients(ingredient);
+
+		IwantWorkspace ws = new IwantWorkspace() {
+
+			@Override
+			public List<? extends Target> targets() {
+				return Arrays.asList(target);
+			}
+
+			@Override
+			public List<? extends SideEffect> sideEffects(
+					SideEffectDefinitionContext ctx) {
+				return Collections.emptyList();
+			}
+		};
+
+		// first a successful refresh so a cached descriptor exists
+		evaluator.iwant("target/failing/as-path", ws);
+
+		// then ingredient gets dirty and the failing target fails
+		ingredient.hasContentDescriptor("ingredient descr 2");
+		target.shallFailAfterCreatingCachedContent();
+
+		try {
+			evaluator.iwant("target/failing/as-path", ws);
+			fail();
+		} catch (IllegalStateException e) {
+			assertEquals("Simulated failure", e.getCause().getMessage());
+		}
+
+		// if there is a bug, no refresh is even retried here so no failure
+
+		try {
+			evaluator.iwant("target/failing/as-path", ws);
+			fail();
+		} catch (IllegalStateException e) {
+			assertEquals("Simulated failure", e.getCause().getMessage());
+		}
+	}
+
 }

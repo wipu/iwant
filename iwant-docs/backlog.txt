@@ -765,6 +765,10 @@
   + add it and heap
   + test in real project that fails without this when cache is empty
 
++ @bugfix: target that is dirty because of dirty target ingredient must stay dirty even if its refresh is interrupted
+  * target timestamps are not checked, so dirtiness is detected only during the same run that refreshed the ingredient
+  + delete descriptor when starting refresh, this way target stays dirty until a new descriptor is successfully written 
+
 #################################################################
 = In progress
 #################################################################

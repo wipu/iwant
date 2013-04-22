@@ -19,6 +19,7 @@ public class TargetMock extends Target {
 	private boolean shallNotBeToldToWriteFile;
 	private String contentDescriptor;
 	private boolean supportsParallelism = true;
+	private boolean shallFailAfterCreatingCachedContent;
 
 	public TargetMock(String name) {
 		super(name);
@@ -48,13 +49,18 @@ public class TargetMock extends Target {
 		this.content = content;
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public synchronized void path(TargetEvaluationContext ctx) throws Exception {
 		if (shallNotBeToldToWriteFile) {
 			throw new IllegalStateException(
 					"Should not have been told to write to file.");
 		}
-		StreamUtil.pipe(content(ctx), new FileOutputStream(ctx.cached(this)));
+		StreamUtil.pipeAndClose(content(ctx),
+				new FileOutputStream(ctx.cached(this)));
+		if (shallFailAfterCreatingCachedContent) {
+			throw new IllegalStateException("Simulated failure");
+		}
 	}
 
 	public synchronized void shallNotBeToldToWriteFile() {
@@ -88,12 +94,16 @@ public class TargetMock extends Target {
 	}
 
 	@Override
-	public boolean supportsParallelism() {
+	public synchronized boolean supportsParallelism() {
 		return supportsParallelism;
 	}
 
-	public void doesNotSupportParallelism() {
+	public synchronized void doesNotSupportParallelism() {
 		supportsParallelism = false;
+	}
+
+	public synchronized void shallFailAfterCreatingCachedContent() {
+		this.shallFailAfterCreatingCachedContent = true;
 	}
 
 }

@@ -41,6 +41,9 @@ public class TargetRefreshTask implements Task {
 	public void refresh(Map<ResourcePool, Resource> allocatedResources) {
 		File cachedDescriptor = cachedDescriptorFile();
 		cachedDescriptor.getParentFile().mkdirs();
+		// make sure refresh is retried even if it's interrupted
+		cachedDescriptor.delete();
+
 		File cachedTarget = ctx.cached(target);
 		cachedTarget.getParentFile().mkdirs();
 		if (target.expectsCachedTargetMissingBeforeRefresh()) {
