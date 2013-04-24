@@ -798,6 +798,8 @@
 = Planned
 #################################################################
 
+- @bugfix: EmmaReport must not fail by trying to access the nonexistent ec file, if a module has tests but they don't call any main code
+
 - As @developer I want a layer on top of File so I can test the emma backslash problems and also start making it more user-friendly than File
   - make ctx.cached(Path) return new type
   - follow the compiler
