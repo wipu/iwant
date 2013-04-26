@@ -774,15 +774,26 @@
     * again an untestable feature, not practically testable, but it's ok since this is basically a semantics-preserving optimization
   + manually test
 
++ @bugfix: It may not be enough to delete cached descriptor when refreshing, otherwise later targets in the build queue are not refreshed after interrupt
+  + test:
+    * src:a <- target:b <- target:c <- target:d
+    * successfully refresh d, touch a, tell b and d to fail, refresh d => b fails, tell b to succeed => assert d is retried and fails
+    (- fix if needed: before starting any refreshes delete descriptors of all targets that are going to be refreshed)
+    + it was ok: b deletes its descriptor so it will be dirty and cause c and d to be dirty
+  + test same set up, but successfully refresh c before d
+    * this revealed the bug, more direct test:
+  + test: target ingredient was refreshed directly on earlier run => dirty on next run
+    * so this bug was not only about interrupting, but just refreshing target ingredients before their dependant!
+    + fix
+      + not only compare descriptor timestamp to sources, also to target ingredient descriptors
+      + remember to be dirty if ingredient descriptor is missing
+      + this lead to another bugfix: missing source is another reason for dirtiness
+      + add symbols to the 2 new dirtiness reasons
+      + also test notdirty cases for both src and target ingredient cases
+
 #################################################################
 = In progress
 #################################################################
-
-- @bugfix: It may not be enough to delete cached descriptor when refreshing, otherwise later targets in the build queue are not refreshed after interrupt
-  - test:
-    * src:a <- target:b <- target:c
-    * successfully refresh c, touch a, tell b and c to fail, refresh c => b fails, tell b to succeed => assert c is retried and fails
-  - fix if needed: before starting any refreshes delete descriptors of all targets that are going to be refreshed 
 
 - @epic: As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead

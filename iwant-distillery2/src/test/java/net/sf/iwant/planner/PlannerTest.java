@@ -225,7 +225,7 @@ public class PlannerTest extends TestCase {
 		planner = new Planner(clean, 1);
 		assertEquals("(1/2    TaskMock:task1)",
 				planner.taskStartMessage(1, 2, clean));
-		// and this is what a target whose src has been touched looks like:
+		// and this is what a target whose src has been modified looks like:
 		TaskMock dirty = TaskMock.named("task2").dirty().noDeps();
 		planner = new Planner(dirty, 1);
 		assertEquals("(2/1 S~ TaskMock:task2)",
@@ -251,12 +251,19 @@ public class PlannerTest extends TestCase {
 				Planner.dirtinessToString(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED));
 		assertEquals(
 				"C!",
-				Planner.dirtinessToString(TaskDirtiness.DIRTY_NO_CACHED_CONTENT));
+				Planner.dirtinessToString(TaskDirtiness.DIRTY_CACHED_CONTENT_MISSING));
 		assertEquals(
 				"D!",
-				Planner.dirtinessToString(TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR));
-		assertEquals("S~",
-				Planner.dirtinessToString(TaskDirtiness.DIRTY_SRC_MODIFIED));
+				Planner.dirtinessToString(TaskDirtiness.DIRTY_CACHED_DESCRIPTOR_MISSING));
+		assertEquals(
+				"S~",
+				Planner.dirtinessToString(TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED));
+		assertEquals(
+				"S!",
+				Planner.dirtinessToString(TaskDirtiness.DIRTY_SRC_INGREDIENT_MISSING));
+		assertEquals(
+				"T~",
+				Planner.dirtinessToString(TaskDirtiness.DIRTY_TARGET_INGREDIENT_MODIFIED));
 	}
 
 }

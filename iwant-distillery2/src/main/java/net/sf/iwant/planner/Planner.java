@@ -83,12 +83,16 @@ public class Planner {
 		switch (dirtiness) {
 		case DIRTY_DESCRIPTOR_CHANGED:
 			return "D~";
-		case DIRTY_NO_CACHED_CONTENT:
+		case DIRTY_CACHED_CONTENT_MISSING:
 			return "C!";
-		case DIRTY_NO_CACHED_DESCRIPTOR:
+		case DIRTY_CACHED_DESCRIPTOR_MISSING:
 			return "D!";
-		case DIRTY_SRC_MODIFIED:
+		case DIRTY_SRC_INGREDIENT_MODIFIED:
 			return "S~";
+		case DIRTY_SRC_INGREDIENT_MISSING:
+			return "S!";
+		case DIRTY_TARGET_INGREDIENT_MODIFIED:
+			return "T~";
 		case NOT_DIRTY:
 			return "  ";
 		default:

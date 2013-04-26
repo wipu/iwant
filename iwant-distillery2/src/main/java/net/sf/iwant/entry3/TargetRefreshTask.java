@@ -68,19 +68,16 @@ public class TargetRefreshTask implements Task {
 	public TaskDirtiness dirtiness() {
 		String cachedDescriptor = cachedDescriptor();
 		if (cachedDescriptor == null) {
-			return TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR;
+			return TaskDirtiness.DIRTY_CACHED_DESCRIPTOR_MISSING;
 		}
 		if (!cachedDescriptor.equals(target.contentDescriptor())) {
 			return TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED;
 		}
 		File cachedContent = ctx.cached(target);
 		if (!cachedContent.exists()) {
-			return TaskDirtiness.DIRTY_NO_CACHED_CONTENT;
+			return TaskDirtiness.DIRTY_CACHED_CONTENT_MISSING;
 		}
-		if (isSourceModifiedSince(cachedDescriptorFile().lastModified())) {
-			return TaskDirtiness.DIRTY_SRC_MODIFIED;
-		}
-		return TaskDirtiness.NOT_DIRTY;
+		return isIngredientModifiedSince(cachedDescriptorFile().lastModified());
 	}
 
 	private String cachedDescriptor() {
@@ -91,18 +88,27 @@ public class TargetRefreshTask implements Task {
 		return FileUtil.contentAsString(file);
 	}
 
-	private boolean isSourceModifiedSince(long time) {
+	private TaskDirtiness isIngredientModifiedSince(long time) {
 		for (Path ingredient : target.ingredients()) {
 			if (ingredient instanceof Target) {
-				// targets are handled as dependency tasks
-				continue;
-			}
-			File src = ctx.cached(ingredient);
-			if (isModifiedSince(src, time)) {
-				return true;
+				Target targetIngredient = (Target) ingredient;
+				File ingredientDescriptor = caches
+						.contentDescriptorOf(targetIngredient);
+				if (!ingredientDescriptor.exists()
+						|| isModifiedSince(ingredientDescriptor, time)) {
+					return TaskDirtiness.DIRTY_TARGET_INGREDIENT_MODIFIED;
+				}
+			} else {
+				File src = ctx.cached(ingredient);
+				if (!src.exists()) {
+					return TaskDirtiness.DIRTY_SRC_INGREDIENT_MISSING;
+				}
+				if (isModifiedSince(src, time)) {
+					return TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED;
+				}
 			}
 		}
-		return false;
+		return TaskDirtiness.NOT_DIRTY;
 	}
 
 	/**

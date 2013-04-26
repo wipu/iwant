@@ -52,16 +52,18 @@ public class TargetRefreshTaskTest extends TestCase {
 		caches.cachesDesciptorsAt(cachedDescriptors);
 	}
 
-	private void cacheContainsContentOf(Target target) {
-		ctx.cached(target).mkdir();
+	private File cacheContainsContentOf(Target target) {
+		File cached = ctx.cached(target);
+		cached.mkdir();
+		return cached;
 	}
 
 	private void cacheContainsFreshDescriptor(Target target) {
 		cacheContainsDescriptor(target, target.contentDescriptor());
 	}
 
-	private void cacheContainsDescriptor(Target target, String cachedDescriptor) {
-		Iwant.newTextFile(new File(cachedDescriptors, target.name()),
+	private File cacheContainsDescriptor(Target target, String cachedDescriptor) {
+		return Iwant.newTextFile(new File(cachedDescriptors, target.name()),
 				cachedDescriptor);
 	}
 
@@ -147,7 +149,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		// no cached content
 		cacheContainsFreshDescriptor(target);
 
-		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_CONTENT, task(target)
+		assertEquals(TaskDirtiness.DIRTY_CACHED_CONTENT_MISSING, task(target)
 				.dirtiness());
 	}
 
@@ -209,8 +211,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		// no cached descriptor
 
-		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR, task(target)
-				.dirtiness());
+		assertEquals(TaskDirtiness.DIRTY_CACHED_DESCRIPTOR_MISSING,
+				task(target).dirtiness());
 	}
 
 	public void testTaskIsNotDirtyIfDescriptorNotChanged() {
@@ -237,7 +239,21 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		assertEquals(TaskDirtiness.DIRTY_SRC_MODIFIED, task(target).dirtiness());
+		assertEquals(TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED, task(target)
+				.dirtiness());
+	}
+
+	public void testTaskIsDirtyIfSourceIngredientIsMissing() throws IOException {
+		File srcDir = new File(testArea.root(), "non-existent");
+
+		TargetMock target = new TargetMock("target");
+		target.hasIngredients(new ExternalSource(srcDir));
+		target.hasContentDescriptor("current");
+		cacheContainsContentOf(target);
+		cacheContainsDescriptor(target, "current");
+
+		assertEquals(TaskDirtiness.DIRTY_SRC_INGREDIENT_MISSING, task(target)
+				.dirtiness());
 	}
 
 	public void testCleanTaskWithSourceIngredient() throws IOException {
@@ -248,6 +264,68 @@ public class TargetRefreshTaskTest extends TestCase {
 
 		TargetMock target = new TargetMock("target");
 		target.hasIngredients(new ExternalSource(srcDir));
+		target.hasContentDescriptor("current");
+		cacheContainsContentOf(target);
+		cacheContainsDescriptor(target, "current");
+
+		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
+	}
+
+	public void testTargetIsDirtyIfIngredientDescriptorIsNewer() {
+		TargetMock ingredient = new TargetMock("ingredient");
+		ingredient.hasNoIngredients();
+		ingredient.hasContent("current");
+		ingredient.hasContentDescriptor("current");
+		cacheContainsContentOf(ingredient).setLastModified(
+				System.currentTimeMillis() - 2000);
+		cacheContainsDescriptor(ingredient, "current").setLastModified(
+				System.currentTimeMillis() + 2000);
+
+		TargetMock target = new TargetMock("target");
+		target.hasIngredients(ingredient);
+		target.hasContentDescriptor("current");
+		cacheContainsContentOf(target);
+		cacheContainsDescriptor(target, "current");
+
+		new File(cachedDescriptors, "ingredient").setLastModified(System
+				.currentTimeMillis() + 2000);
+
+		assertEquals(TaskDirtiness.DIRTY_TARGET_INGREDIENT_MODIFIED,
+				task(target).dirtiness());
+	}
+
+	public void testTargetIsDirtyIfIngredientDescriptorIsMissing() {
+		TargetMock ingredient = new TargetMock("ingredient");
+		ingredient.hasNoIngredients();
+		ingredient.hasContent("current");
+		ingredient.hasContentDescriptor("current");
+		cacheContainsContentOf(ingredient).setLastModified(
+				System.currentTimeMillis() - 2000);
+
+		TargetMock target = new TargetMock("target");
+		target.hasIngredients(ingredient);
+		target.hasContentDescriptor("current");
+		cacheContainsContentOf(target);
+		cacheContainsDescriptor(target, "current");
+
+		new File(cachedDescriptors, "ingredient").setLastModified(System
+				.currentTimeMillis() + 2000);
+
+		assertEquals(TaskDirtiness.DIRTY_TARGET_INGREDIENT_MODIFIED,
+				task(target).dirtiness());
+	}
+
+	public void testCleanTaskWithTargetIngredient() {
+		TargetMock ingredient = new TargetMock("ingredient");
+		ingredient.hasNoIngredients();
+		ingredient.hasContent("current");
+		ingredient.hasContentDescriptor("current");
+		cacheContainsContentOf(ingredient);
+		cacheContainsDescriptor(ingredient, "current").setLastModified(
+				System.currentTimeMillis() - 2000);
+
+		TargetMock target = new TargetMock("target");
+		target.hasIngredients(ingredient);
 		target.hasContentDescriptor("current");
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
@@ -347,8 +425,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		target.expectsCachedTargetMissingBeforeRefresh(true);
 		target.willCreateFile("f1");
 
-		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR, task(target)
-				.dirtiness());
+		assertEquals(TaskDirtiness.DIRTY_CACHED_DESCRIPTOR_MISSING,
+				task(target).dirtiness());
 		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
 		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 		assertEquals("f1 content", testArea.contentOf("cached/target/f1"));
@@ -370,8 +448,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		target.expectsCachedTargetMissingBeforeRefresh(false);
 		target.willCreateFile("f1");
 
-		assertEquals(TaskDirtiness.DIRTY_NO_CACHED_DESCRIPTOR, task(target)
-				.dirtiness());
+		assertEquals(TaskDirtiness.DIRTY_CACHED_DESCRIPTOR_MISSING,
+				task(target).dirtiness());
 		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
 		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 		assertEquals("f1 content", testArea.contentOf("cached/target/f1"));

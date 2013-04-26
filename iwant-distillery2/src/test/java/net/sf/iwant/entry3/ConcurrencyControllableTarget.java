@@ -22,7 +22,7 @@ public class ConcurrencyControllableTarget extends Target {
 	public ConcurrencyControllableTarget(String name, Path... dependencies) {
 		super(name);
 		// let's utilize TaskMock for concurrency control inside here
-		task = new TaskMock(name, TaskDirtiness.DIRTY_SRC_MODIFIED,
+		task = new TaskMock(name, TaskDirtiness.DIRTY_SRC_INGREDIENT_MISSING,
 				Collections.<ResourcePool> emptyList(), true);
 		this.dependencies = Arrays.asList(dependencies);
 	}

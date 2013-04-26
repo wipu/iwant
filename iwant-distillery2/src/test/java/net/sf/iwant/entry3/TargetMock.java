@@ -19,7 +19,8 @@ public class TargetMock extends Target {
 	private boolean shallNotBeToldToWriteFile;
 	private String contentDescriptor;
 	private boolean supportsParallelism = true;
-	private boolean shallFailAfterCreatingCachedContent;
+	private String errorMessageToThrowAfterCreatingCachedContent;
+	private int timesPathWasCalled;
 
 	public TargetMock(String name) {
 		super(name);
@@ -49,17 +50,18 @@ public class TargetMock extends Target {
 		this.content = content;
 	}
 
-	@SuppressWarnings("resource")
 	@Override
 	public synchronized void path(TargetEvaluationContext ctx) throws Exception {
+		timesPathWasCalled++;
 		if (shallNotBeToldToWriteFile) {
 			throw new IllegalStateException(
 					"Should not have been told to write to file.");
 		}
 		StreamUtil.pipeAndClose(content(ctx),
 				new FileOutputStream(ctx.cached(this)));
-		if (shallFailAfterCreatingCachedContent) {
-			throw new IllegalStateException("Simulated failure");
+		if (errorMessageToThrowAfterCreatingCachedContent != null) {
+			throw new IllegalStateException(
+					errorMessageToThrowAfterCreatingCachedContent);
 		}
 	}
 
@@ -102,8 +104,17 @@ public class TargetMock extends Target {
 		supportsParallelism = false;
 	}
 
-	public synchronized void shallFailAfterCreatingCachedContent() {
-		this.shallFailAfterCreatingCachedContent = true;
+	public synchronized void shallFailAfterCreatingCachedContent(
+			String errorMessage) {
+		this.errorMessageToThrowAfterCreatingCachedContent = errorMessage;
+	}
+
+	public synchronized void shallNotFailAfterCreatingCachedContent() {
+		shallFailAfterCreatingCachedContent(null);
+	}
+
+	public synchronized int timesPathWasCalled() {
+		return timesPathWasCalled;
 	}
 
 }

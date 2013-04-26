@@ -57,7 +57,7 @@ public class TaskMock implements Task {
 		}
 
 		public TaskMockSpex dirty() {
-			dirtiness = TaskDirtiness.DIRTY_SRC_MODIFIED;
+			dirtiness = TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED;
 			return this;
 		}
 

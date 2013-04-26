@@ -75,6 +75,16 @@ public class WishEvaluatorTest extends TestCase {
 				iwantApiModules);
 	}
 
+	private void evaluateAndFail(String wish, IwantWorkspace ws,
+			String expectedErrorMessage) {
+		try {
+			evaluator.iwant(wish, ws);
+			fail();
+		} catch (IllegalStateException e) {
+			assertEquals(expectedErrorMessage, e.getCause().getMessage());
+		}
+	}
+
 	private class Hello implements IwantWorkspace {
 
 		@Override
@@ -619,7 +629,6 @@ public class WishEvaluatorTest extends TestCase {
 		target.hasIngredients(ingredient);
 
 		IwantWorkspace ws = new IwantWorkspace() {
-
 			@Override
 			public List<? extends Target> targets() {
 				return Arrays.asList(target);
@@ -634,26 +643,103 @@ public class WishEvaluatorTest extends TestCase {
 
 		// first a successful refresh so a cached descriptor exists
 		evaluator.iwant("target/failing/as-path", ws);
-
 		// then ingredient gets dirty and the failing target fails
 		ingredient.hasContentDescriptor("ingredient descr 2");
-		target.shallFailAfterCreatingCachedContent();
-
-		try {
-			evaluator.iwant("target/failing/as-path", ws);
-			fail();
-		} catch (IllegalStateException e) {
-			assertEquals("Simulated failure", e.getCause().getMessage());
-		}
-
+		target.shallFailAfterCreatingCachedContent("Simulated failure");
+		evaluateAndFail("target/failing/as-path", ws, "Simulated failure");
 		// if there is a bug, no refresh is even retried here so no failure
+		evaluateAndFail("target/failing/as-path", ws, "Simulated failure");
+	}
 
-		try {
-			evaluator.iwant("target/failing/as-path", ws);
-			fail();
-		} catch (IllegalStateException e) {
-			assertEquals("Simulated failure", e.getCause().getMessage());
-		}
+	public void testTargetRefreshIsRetriedEvenIfReasonWasDirtinessOfIngredientAndItsRefreshWasInterruptedEarlier() {
+		TargetMock a = new TargetMock("a");
+		a.hasContentDescriptor("a descr 1");
+		a.hasContent("a content");
+		a.hasNoIngredients();
+
+		TargetMock b = new TargetMock("b");
+		b.hasContentDescriptor("b descr 1");
+		b.hasContent("b content");
+		b.hasIngredients(a);
+
+		final TargetMock c = new TargetMock("c");
+		c.hasContentDescriptor("c");
+		c.hasContent("c content");
+		c.hasIngredients(b);
+
+		final TargetMock d = new TargetMock("d");
+		d.hasContentDescriptor("d");
+		d.hasContent("d content");
+		d.hasIngredients(c);
+
+		IwantWorkspace ws = new IwantWorkspace() {
+			@Override
+			public List<? extends Target> targets() {
+				return Arrays.asList(d);
+			}
+
+			@Override
+			public List<? extends SideEffect> sideEffects(
+					SideEffectDefinitionContext ctx) {
+				return Collections.emptyList();
+			}
+		};
+
+		// first a successful refresh so a cached descriptors exist
+		evaluator.iwant("target/d/as-path", ws);
+		// then ingredient gets dirty and the failing target fails
+		a.hasContentDescriptor("ingredient descr 2");
+		b.shallFailAfterCreatingCachedContent("b failure");
+		d.shallFailAfterCreatingCachedContent("d failure");
+		evaluateAndFail("target/d/as-path", ws, "b failure");
+
+		// at retry not only is b refreshed but also d, eventually
+		b.shallNotFailAfterCreatingCachedContent();
+		evaluateAndFail("target/d/as-path", ws, "d failure");
+	}
+
+	/**
+	 * Before the fix this failed, because only source timestamps were checked,
+	 * target dirtiness relied on refreshing them during the same run.
+	 */
+	public void testTargetIsRefreshedEvenIfATargetIngredientWasRefreshedDuringEarlierRun() {
+		TargetMock a = new TargetMock("a");
+		a.hasContentDescriptor("a descr 1");
+		a.hasContent("a content");
+		a.hasNoIngredients();
+
+		final TargetMock b = new TargetMock("b");
+		b.hasContentDescriptor("b descr 1");
+		b.hasContent("b content");
+		b.hasIngredients(a);
+
+		final TargetMock c = new TargetMock("c");
+		c.hasContentDescriptor("c");
+		c.hasContent("c content");
+		c.hasIngredients(b);
+
+		IwantWorkspace ws = new IwantWorkspace() {
+			@Override
+			public List<? extends Target> targets() {
+				return Arrays.asList(b, c);
+			}
+
+			@Override
+			public List<? extends SideEffect> sideEffects(
+					SideEffectDefinitionContext ctx) {
+				return Collections.emptyList();
+			}
+		};
+
+		// first a successful refresh so a cached descriptors exist
+		evaluator.iwant("target/c/as-path", ws);
+		// then ingredient b is refreshed directly
+		evaluator.iwant("target/b/as-path", ws);
+		// c as path requires a refresh even if no source ingredients were
+		// touched
+		assertEquals(1, c.timesPathWasCalled());
+		evaluator.iwant("target/c/as-path", ws);
+		assertEquals(2, c.timesPathWasCalled());
 	}
 
 }
