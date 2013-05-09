@@ -791,6 +791,10 @@
       + add symbols to the 2 new dirtiness reasons
       + also test notdirty cases for both src and target ingredient cases
 
++ As @buildscriptauthor I want targets as paths from side effect code so I can use lazily generated files in my imperative code e.g. deploy and test integration environments
+  + test with side effect that wants 2 targets to show laziness
+  + new method to ctx: iwantAsPath(Target)
+
 #################################################################
 = In progress
 #################################################################

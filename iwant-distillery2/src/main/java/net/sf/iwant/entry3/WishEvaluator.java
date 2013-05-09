@@ -204,6 +204,11 @@ public class WishEvaluator {
 			return iwantApiModules;
 		}
 
+		@Override
+		public File iwantAsPath(Target target) {
+			return freshCachedContent(target);
+		}
+
 	}
 
 }

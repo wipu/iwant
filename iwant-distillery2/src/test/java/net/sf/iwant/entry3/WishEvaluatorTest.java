@@ -3,6 +3,8 @@ package net.sf.iwant.entry3;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,8 +29,10 @@ import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
+import net.sf.iwant.api.model.SideEffectContext;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
+import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.testing.IwantEntry3TestArea;
@@ -51,6 +55,9 @@ public class WishEvaluatorTest extends TestCase {
 	private Set<JavaBinModule> iwantApiModules = Collections
 			.singleton(JavaBinModule.providing(Source
 					.underWsroot("mock-iwant-classes")));
+	private InputStream originalIn;
+	private PrintStream originalOut;
+	private PrintStream originalErr;
 
 	@Override
 	public void setUp() throws IOException {
@@ -59,8 +66,13 @@ public class WishEvaluatorTest extends TestCase {
 		iwant = Iwant.using(network);
 		asSomeone = testArea.newDir("as-" + getClass().getSimpleName());
 		wsRoot = testArea.newDir("wsroot");
+		originalIn = System.in;
+		originalOut = System.out;
+		originalErr = System.err;
 		out = new ByteArrayOutputStream();
 		err = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(out));
+		System.setErr(new PrintStream(err));
 		wsInfo = new WsInfoMock();
 		wsInfo.hasWsRoot(wsRoot);
 		wsdefdefJavaModule = JavaSrcModule.with().name("wsdefdef")
@@ -73,6 +85,28 @@ public class WishEvaluatorTest extends TestCase {
 		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
 				workerCount, wsdefdefJavaModule, wsdefJavaModule,
 				iwantApiModules);
+	}
+
+	private String out() {
+		return out.toString();
+	}
+
+	private String err() {
+		return err.toString();
+	}
+
+	@Override
+	public void tearDown() {
+		System.setIn(originalIn);
+		System.setOut(originalOut);
+		System.setErr(originalErr);
+
+		if (!out().isEmpty()) {
+			System.err.println("=== out:\n" + out());
+		}
+		if (!err().isEmpty()) {
+			System.err.println("=== err:\n" + err());
+		}
 	}
 
 	private void evaluateAndFail(String wish, IwantWorkspace ws,
@@ -740,6 +774,63 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals(1, c.timesPathWasCalled());
 		evaluator.iwant("target/c/as-path", ws);
 		assertEquals(2, c.timesPathWasCalled());
+	}
+
+	public void testSideEffectThatWantsAndUsesTargetsAsPaths() {
+		final Target target1 = new HelloTarget("target1", "target1 content");
+		final Target target2 = Concatenated.named("target2")
+				.string("target2 using ").contentOf(target1).end();
+		IwantWorkspace ws = new IwantWorkspace() {
+			@Override
+			public List<? extends Target> targets() {
+				return Arrays.asList(target1, target2);
+			}
+
+			@Override
+			public List<? extends SideEffect> sideEffects(
+					SideEffectDefinitionContext ctx) {
+				return Arrays.asList(new SideEffect() {
+
+					@Override
+					public String name() {
+						return "target-wanter";
+					}
+
+					@Override
+					public void mutate(SideEffectContext ctx) throws Exception {
+						want(target2, ctx);
+						want(target1, ctx);
+					}
+
+					private void want(final Target target1,
+							SideEffectContext ctx) {
+						System.err.println("Wanting " + target1);
+						File cachedTarget1 = ctx.iwantAsPath(target1);
+						String target1Content = FileUtil
+								.contentAsString(cachedTarget1);
+						System.err.println("Content:\n" + target1Content);
+					}
+
+				});
+			}
+		};
+
+		evaluator.iwant("side-effect/target-wanter/effective", ws);
+
+		StringBuilder expectedErr = new StringBuilder();
+		expectedErr.append("Wanting target2\n");
+		expectedErr
+				.append("(0/1 D! net.sf.iwant.api.model.HelloTarget target1)\n");
+		expectedErr
+				.append("(0/1 D! net.sf.iwant.api.model.Concatenated target2)\n");
+		expectedErr.append("Content:\n");
+		expectedErr.append("target2 using target1 content\n");
+		expectedErr.append("Wanting target1\n");
+		expectedErr.append("Content:\n");
+		expectedErr.append("target1 content\n");
+
+		assertEquals(expectedErr.toString(), err());
+		assertEquals("", out());
 	}
 
 }

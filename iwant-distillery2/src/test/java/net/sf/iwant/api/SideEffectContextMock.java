@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.OutputStream;
 
 import net.sf.iwant.api.model.SideEffectContext;
+import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.testarea.TestArea;
 
@@ -55,4 +56,8 @@ public class SideEffectContextMock implements SideEffectContext {
 		return evaluationCtx;
 	}
 
+	@Override
+	public File iwantAsPath(Target target) {
+		throw new UnsupportedOperationException("TODO test and implement");
+	}
 }
