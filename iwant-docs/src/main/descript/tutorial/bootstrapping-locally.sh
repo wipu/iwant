@@ -1,6 +1,4 @@
-doc() {
-
-html "<h1>iwant tutorial</h1>"
+doc-content() {
 
 section "Acquiring iwant bootstrapper by exporting from svn"
 

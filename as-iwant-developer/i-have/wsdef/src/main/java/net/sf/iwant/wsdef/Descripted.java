@@ -17,12 +17,15 @@ public class Descripted extends Target {
 	private final Source doc;
 	private final Source descript;
 	private final Source maybeIwantWsroot;
+	private final Source abstractArticle;
 
 	public Descripted(String docName, Source maybeIwantWsroot) {
 		super(docName + ".html");
 		this.maybeIwantWsroot = maybeIwantWsroot;
 		this.doc = Source.underWsroot("iwant-docs/src/main/descript/tutorial/"
 				+ docName + ".sh");
+		this.abstractArticle = Source
+				.underWsroot("iwant-docs/src/main/descript/tutorial/abstract-article.sh");
 		this.descript = Source.underWsroot("iwant-lib-descript/descript.sh");
 	}
 
@@ -35,6 +38,7 @@ public class Descripted extends Target {
 	public List<Path> ingredients() {
 		List<Path> ingredients = new ArrayList<Path>();
 		ingredients.add(doc);
+		ingredients.add(abstractArticle);
 		ingredients.add(descript);
 		if (maybeIwantWsroot != null) {
 			ingredients.add(maybeIwantWsroot);
@@ -50,8 +54,6 @@ public class Descripted extends Target {
 		File dest = ctx.cached(this);
 		dest.mkdirs();
 
-		File cachedDescript = ctx.cached(descript);
-		File cachedDoc = ctx.cached(doc);
 		File html = new File(dest, name());
 
 		File iwantWsRoot = maybeIwantWsroot == null ? null : ctx
@@ -63,7 +65,10 @@ public class Descripted extends Target {
 		if (iwantWsRoot != null) {
 			sh.append("export LOCAL_IWANT_WSROOT=" + iwantWsRoot + "\n");
 		}
-		sh.append("'" + cachedDescript + "' '" + cachedDoc + "' '" + html
+		sh.append("DOC=combined.sh\n");
+		sh.append("cat " + ctx.cached(abstractArticle) + " " + ctx.cached(doc)
+				+ " > \"$DOC\"\n");
+		sh.append("'" + ctx.cached(descript) + "' \"$DOC\" '" + html
 				+ "' true\n");
 
 		File script = Iwant.newTextFile(new File(dest, name() + ".sh"),
