@@ -27,7 +27,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	@Override
 	public List<? extends Target> targets() {
 		return Arrays.asList(emmaCoverageReport(), listOfExternalDeps(),
-				localTutorials(), remoteTutorials());
+				localTutorial(), remoteTutorial());
 	}
 
 	@Override
@@ -56,54 +56,6 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	// the targets
-
-	// tutorials
-
-	private static Target localTutorials() {
-		ConcatenatedBuilder list = Concatenated.named("local-tutorials");
-		list.pathTo(bootstrappingLocallyHtml());
-		Target empty = creatingWsdef("local-", bootstrappingLocallyHtml());
-		list.pathTo(empty);
-		list.pathTo(helloWorldWithEclipse("local-", empty));
-		return list.end();
-	}
-
-	private static Target remoteTutorials() {
-		ConcatenatedBuilder list = Concatenated.named("remote-tutorials");
-		list.pathTo(bootstrappingWithSvnexternalsHtml());
-		Target empty = creatingWsdef("remote-",
-				bootstrappingWithSvnexternalsHtml());
-		list.pathTo(empty);
-		list.pathTo(helloWorldWithEclipse("remote-", empty));
-		return list.end();
-	}
-
-	private static Target bootstrappingLocallyHtml() {
-		return new Descripted("", "bootstrapping-locally", tutorialWsdefSrc(),
-				Source.underWsroot(""), null);
-	}
-
-	private static Target bootstrappingWithSvnexternalsHtml() {
-		return new Descripted("", "bootstrapping-with-svnexternals",
-				tutorialWsdefSrc(), null, null);
-	}
-
-	private static Source tutorialWsdefSrc() {
-		return Source.underWsroot("iwant-tutorial-wsdefs/src");
-	}
-
-	private static Target creatingWsdef(String namePrefix, Target initialState) {
-		return new Descripted(namePrefix, "creating-wsdef", tutorialWsdefSrc(),
-				null, initialState);
-	}
-
-	private static Target helloWorldWithEclipse(String namePrefix,
-			Target initialState) {
-		return new Descripted(namePrefix, "helloworld-with-eclipse",
-				tutorialWsdefSrc(), null, initialState);
-	}
-
-	// others
 
 	private static Path emma() {
 		return TestedIwantDependencies.emma();
@@ -134,6 +86,14 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		deps.pathTo(commonsMath().mainArtifact()).string("\n");
 		deps.pathTo(findbugs().mainArtifact()).string("\n");
 		return deps.end();
+	}
+
+	private static Target localTutorial() {
+		return Tutorial.local();
+	}
+
+	private static Target remoteTutorial() {
+		return Tutorial.remote();
 	}
 
 	// the modules

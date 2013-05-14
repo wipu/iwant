@@ -63,7 +63,7 @@ public class Descripted extends Target {
 		File dest = ctx.cached(this);
 		dest.mkdirs();
 
-		File html = new File(dest, name());
+		File html = new File(dest, "doc.html");
 
 		File iwantWsRoot = maybeIwantWsroot == null ? null : ctx
 				.cached(maybeIwantWsroot);

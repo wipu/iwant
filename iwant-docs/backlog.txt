@@ -814,7 +814,7 @@
   + hello world with eclipse
     + continue from initial ws
     + move eclipse settings and modification here
-  - tutorial directory with index page
+  + tutorial directory with index page
   - one tutorial document per nontrivial feature
   - bootstrapping without svn:externals
   - remove the old files
