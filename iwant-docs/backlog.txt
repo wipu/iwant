@@ -805,7 +805,11 @@
   + one common wsdef creation wizard tutorial
     + cp -a given bootstrapped env
     + create wsdef and wish hello
-  - bootstrapping with svn using svn:externals
+  + bootstrapping with svn using svn:externals
+  - wsdef creation using both local and svnext
+    - make local create iwant-tutorial dir also, because svn version does
+    - in wsdef tutorial cd to iwant-tutorial
+    - in wsdef tutorial use iwant-tutorial as ws name
   - bootstrapping without svn:externals
   - one tutorial document per feature
     - 1st hello target

@@ -27,7 +27,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	@Override
 	public List<? extends Target> targets() {
 		return Arrays.asList(emmaCoverageReport(), listOfExternalDeps(),
-				localTutorials());
+				localTutorials(), remoteTutorials());
 	}
 
 	@Override
@@ -66,9 +66,20 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return list.end();
 	}
 
+	private static Target remoteTutorials() {
+		ConcatenatedBuilder list = Concatenated.named("remote-tutorials");
+		list.pathTo(bootstrappingWithSvnexternalsHtml());
+		return list.end();
+	}
+
 	private static Target bootstrappingLocallyHtml() {
 		return new Descripted("bootstrapping-locally", tutorialWsdefSrc(),
 				Source.underWsroot(""), null);
+	}
+
+	private static Target bootstrappingWithSvnexternalsHtml() {
+		return new Descripted("bootstrapping-with-svnexternals",
+				tutorialWsdefSrc(), null, null);
 	}
 
 	private static Source tutorialWsdefSrc() {
