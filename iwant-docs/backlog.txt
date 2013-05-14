@@ -802,9 +802,11 @@
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
   + bootstrapping from local iwant without versioning
+  + one common wsdef creation wizard tutorial
+    + cp -a given bootstrapped env
+    + create wsdef and wish hello
   - bootstrapping with svn using svn:externals
   - bootstrapping without svn:externals
-  - one common wsdef creation wizard tutorial
   - one tutorial document per feature
     - 1st hello target
       - copy bootstrapped environment

@@ -18,10 +18,15 @@ public class Descripted extends Target {
 	private final Source descript;
 	private final Source maybeIwantWsroot;
 	private final Source abstractArticle;
+	private final Path maybeInitialState;
+	private final Path tutorialWsdefSrc;
 
-	public Descripted(String docName, Source maybeIwantWsroot) {
+	public Descripted(String docName, Path tutorialWsdefSrc,
+			Source maybeIwantWsroot, Path maybeInitialState) {
 		super(docName + ".html");
+		this.tutorialWsdefSrc = tutorialWsdefSrc;
 		this.maybeIwantWsroot = maybeIwantWsroot;
+		this.maybeInitialState = maybeInitialState;
 		this.doc = Source.underWsroot("iwant-docs/src/main/descript/tutorial/"
 				+ docName + ".sh");
 		this.abstractArticle = Source
@@ -40,8 +45,12 @@ public class Descripted extends Target {
 		ingredients.add(doc);
 		ingredients.add(abstractArticle);
 		ingredients.add(descript);
+		ingredients.add(tutorialWsdefSrc);
 		if (maybeIwantWsroot != null) {
 			ingredients.add(maybeIwantWsroot);
+		}
+		if (maybeInitialState != null) {
+			ingredients.add(maybeInitialState);
 		}
 		ingredients.add(Source
 				.underWsroot("as-iwant-developer/i-have/wsdef/src/main/java/"
@@ -58,12 +67,19 @@ public class Descripted extends Target {
 
 		File iwantWsRoot = maybeIwantWsroot == null ? null : ctx
 				.cached(maybeIwantWsroot);
+		File initialState = maybeInitialState == null ? null : new File(
+				ctx.cached(maybeInitialState), "final-state.tar");
 
 		StringBuilder sh = new StringBuilder();
 		sh.append("#!/bin/bash\n");
 		sh.append("set -eu\n");
+		sh.append("export IWANT_TUTORIAL_WSDEF_SRC="
+				+ ctx.cached(tutorialWsdefSrc) + "\n");
 		if (iwantWsRoot != null) {
 			sh.append("export LOCAL_IWANT_WSROOT=" + iwantWsRoot + "\n");
+		}
+		if (initialState != null) {
+			sh.append("export INITIAL_STATE=" + initialState + "\n");
 		}
 		sh.append("DOC=combined.sh\n");
 		sh.append("cat " + ctx.cached(abstractArticle) + " " + ctx.cached(doc)

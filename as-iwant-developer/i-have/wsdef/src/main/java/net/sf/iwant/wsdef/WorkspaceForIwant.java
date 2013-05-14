@@ -26,8 +26,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {
-		return Arrays.asList(descripted("bootstrapping-locally"),
-				emmaCoverageReport(), listOfExternalDeps());
+		return Arrays.asList(emmaCoverageReport(), listOfExternalDeps(),
+				localTutorials());
 	}
 
 	@Override
@@ -57,9 +57,30 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	// the targets
 
-	private static Target descripted(String docName) {
-		return new Descripted(docName, Source.underWsroot(""));
+	// tutorials
+
+	private static Target localTutorials() {
+		ConcatenatedBuilder list = Concatenated.named("local-tutorials");
+		list.pathTo(bootstrappingLocallyHtml());
+		list.pathTo(creatingWsdef());
+		return list.end();
 	}
+
+	private static Target bootstrappingLocallyHtml() {
+		return new Descripted("bootstrapping-locally", tutorialWsdefSrc(),
+				Source.underWsroot(""), null);
+	}
+
+	private static Source tutorialWsdefSrc() {
+		return Source.underWsroot("iwant-tutorial-wsdefs/src");
+	}
+
+	private static Target creatingWsdef() {
+		return new Descripted("creating-wsdef", tutorialWsdefSrc(), null,
+				bootstrappingLocallyHtml());
+	}
+
+	// others
 
 	private static Path emma() {
 		return TestedIwantDependencies.emma();
