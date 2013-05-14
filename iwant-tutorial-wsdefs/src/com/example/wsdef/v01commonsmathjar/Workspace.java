@@ -17,12 +17,12 @@ public class Workspace implements IwantWorkspace {
 	@Override
 	public List<? extends Target> targets() {
 		return Arrays.asList(new HelloTarget("hello", "hello from iwant"),
-				hello2());
+				arithmeticWithExtLib());
 	}
 
-	private static Target hello2() {
-		return new HelloTarget("hello2", "1/2 + 2/4 = "
-				+ new Fraction(1, 2).add(new Fraction(2, 4)).intValue());
+	private static Target arithmeticWithExtLib() {
+		return new HelloTarget("arithmeticWithExtLib", "1/2 + 2/4 = "
+				+ new Fraction(1, 2).add(new Fraction(2, 4)).intValue() + "\n");
 	}
 
 	@Override

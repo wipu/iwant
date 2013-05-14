@@ -18,46 +18,34 @@ public class Tutorial extends Target {
 	private final Target bootstrappingDoc;
 	private final Target creatingWsdefDoc;
 	private final Target helloWithEclipseDoc;
+	private final Descripted extLibsDoc;
 
 	private Tutorial(String namePrefix, Target bootstrappingDoc) {
 		super(namePrefix + "tutorial");
 		this.bootstrappingDoc = bootstrappingDoc;
-		this.creatingWsdefDoc = creatingWsdef(namePrefix, bootstrappingDoc);
-		this.helloWithEclipseDoc = helloWorldWithEclipse(namePrefix,
+		this.creatingWsdefDoc = new Descripted(namePrefix, "creating-wsdef",
+				tutorialWsdefSrc(), null, bootstrappingDoc);
+		this.helloWithEclipseDoc = new Descripted(namePrefix,
+				"helloworld-with-eclipse", tutorialWsdefSrc(), null,
 				creatingWsdefDoc);
+		this.extLibsDoc = new Descripted(namePrefix, "ext-libs-in-wsdef",
+				tutorialWsdefSrc(), null, creatingWsdefDoc);
 	}
 
 	public static Tutorial local() {
-		return new Tutorial("local-", bootstrappingLocallyHtml());
+		return new Tutorial("local-", new Descripted("",
+				"bootstrapping-locally", tutorialWsdefSrc(),
+				Source.underWsroot(""), null));
 	}
 
 	public static Tutorial remote() {
-		return new Tutorial("remote-", bootstrappingWithSvnexternalsHtml());
-	}
-
-	private static Target bootstrappingLocallyHtml() {
-		return new Descripted("", "bootstrapping-locally", tutorialWsdefSrc(),
-				Source.underWsroot(""), null);
-	}
-
-	private static Target bootstrappingWithSvnexternalsHtml() {
-		return new Descripted("", "bootstrapping-with-svnexternals",
-				tutorialWsdefSrc(), null, null);
+		return new Tutorial("remote-", new Descripted("",
+				"bootstrapping-with-svnexternals", tutorialWsdefSrc(), null,
+				null));
 	}
 
 	private static Source tutorialWsdefSrc() {
 		return Source.underWsroot("iwant-tutorial-wsdefs/src");
-	}
-
-	private static Target creatingWsdef(String namePrefix, Target initialState) {
-		return new Descripted(namePrefix, "creating-wsdef", tutorialWsdefSrc(),
-				null, initialState);
-	}
-
-	private static Target helloWorldWithEclipse(String namePrefix,
-			Target initialState) {
-		return new Descripted(namePrefix, "helloworld-with-eclipse",
-				tutorialWsdefSrc(), null, initialState);
 	}
 
 	@Override
@@ -71,6 +59,7 @@ public class Tutorial extends Target {
 		ingredients.add(bootstrappingDoc);
 		ingredients.add(creatingWsdefDoc);
 		ingredients.add(helloWithEclipseDoc);
+		ingredients.add(extLibsDoc);
 		ingredients.add(Source
 				.underWsroot("as-iwant-developer/i-have/wsdef/src/main/java/"
 						+ "net/sf/iwant/wsdef/Tutorial.java"));
@@ -98,6 +87,10 @@ public class Tutorial extends Target {
 				helloWithEclipseDoc);
 		index.append("<a href='" + helloWithEclipse
 				+ "'>Hello world with Eclipse</a>\n");
+
+		String extLibs = page(ctx, "ext-libs-in-wsdef.html", extLibsDoc);
+		index.append("<a href='" + extLibs
+				+ "'>Using external libraries in workspace definition</a>\n");
 
 		index.append("</body></html>\n");
 
