@@ -1,5 +1,7 @@
 doc() {
 
+die "Disabled, work in progress has broken this"
+
 html "<h1>iwant tutorial</h1>"
 
 section "Acquiring iwant bootstrapper by exporting from svn"

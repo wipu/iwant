@@ -62,23 +62,25 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static Target localTutorials() {
 		ConcatenatedBuilder list = Concatenated.named("local-tutorials");
 		list.pathTo(bootstrappingLocallyHtml());
-		list.pathTo(creatingWsdef());
+		list.pathTo(creatingWsdef("local-", bootstrappingLocallyHtml()));
 		return list.end();
 	}
 
 	private static Target remoteTutorials() {
 		ConcatenatedBuilder list = Concatenated.named("remote-tutorials");
 		list.pathTo(bootstrappingWithSvnexternalsHtml());
+		list.pathTo(creatingWsdef("remote-",
+				bootstrappingWithSvnexternalsHtml()));
 		return list.end();
 	}
 
 	private static Target bootstrappingLocallyHtml() {
-		return new Descripted("bootstrapping-locally", tutorialWsdefSrc(),
+		return new Descripted("", "bootstrapping-locally", tutorialWsdefSrc(),
 				Source.underWsroot(""), null);
 	}
 
 	private static Target bootstrappingWithSvnexternalsHtml() {
-		return new Descripted("bootstrapping-with-svnexternals",
+		return new Descripted("", "bootstrapping-with-svnexternals",
 				tutorialWsdefSrc(), null, null);
 	}
 
@@ -86,9 +88,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return Source.underWsroot("iwant-tutorial-wsdefs/src");
 	}
 
-	private static Target creatingWsdef() {
-		return new Descripted("creating-wsdef", tutorialWsdefSrc(), null,
-				bootstrappingLocallyHtml());
+	private static Target creatingWsdef(String namePrefix, Target initialState) {
+		return new Descripted(namePrefix, "creating-wsdef", tutorialWsdefSrc(),
+				null, initialState);
 	}
 
 	// others

@@ -32,5 +32,5 @@ def-edit() {
   log "def-edit $TYPE $NAME $CLASS"
   cat "$IWANT_TUTORIAL_WSDEF_SRC/com/example/$TYPE/$NAME/${CLASS}.java" |
     sed "s/^package .*;/package com.example.${TYPE};/" |
-    edit as-distillery-developer/i-have/${TYPE}/src/main/java/com/example/$TYPE/${CLASS}.java "$TYPE-$NAME"
+    edit as-iwant-tutorial-developer/i-have/${TYPE}/src/main/java/com/example/$TYPE/${CLASS}.java "$TYPE-$NAME"
 }

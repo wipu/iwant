@@ -11,8 +11,10 @@ public class WorkspaceProvider implements IwantWorkspaceProvider {
 
 	@Override
 	public JavaSrcModule workspaceModule(WorkspaceDefinitionContext ctx) {
-		return JavaSrcModule.with().name("distillery-workspace")
-				.locationUnderWsRoot("as-distillery-developer/i-have/wsdef")
+		return JavaSrcModule
+				.with()
+				.name("iwant-tutorial-workspace")
+				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
 				.mainDeps(ctx.iwantPlugin().ant().withDependencies())
 				.mainDeps(JavaBinModule.providing(commonsMathJar())).end();

@@ -21,9 +21,9 @@ public class Descripted extends Target {
 	private final Path maybeInitialState;
 	private final Path tutorialWsdefSrc;
 
-	public Descripted(String docName, Path tutorialWsdefSrc,
+	public Descripted(String namePrefix, String docName, Path tutorialWsdefSrc,
 			Source maybeIwantWsroot, Path maybeInitialState) {
-		super(docName + ".html");
+		super(namePrefix + docName + ".html");
 		this.tutorialWsdefSrc = tutorialWsdefSrc;
 		this.maybeIwantWsroot = maybeIwantWsroot;
 		this.maybeInitialState = maybeInitialState;

@@ -2,20 +2,23 @@ doc-content() {
 
 section "Acquiring iwant bootstrapper by exporting from svn"
 
-cmd svn export "$LOCAL_IWANT_WSROOT/iwant-distillery/as-some-developer" as-distillery-developer
+cmd "mkdir iwant-tutorial"
+cmd "cd iwant-tutorial"
+
+cmd svn export "$LOCAL_IWANT_WSROOT/iwant-distillery/as-some-developer" as-iwant-tutorial-developer
 cmd 'find . -type f'
 
 section "Choosing url for iwant to use as engine"
 
-cmde 1 'as-distillery-developer/with/bash/iwant/help.sh'
-edit as-distillery-developer/i-have/conf/iwant-from "local-iwant-from" <<EOF
+cmde 1 'as-iwant-tutorial-developer/with/bash/iwant/help.sh'
+edit as-iwant-tutorial-developer/i-have/conf/iwant-from "local-iwant-from" <<EOF
 iwant-from=file://$LOCAL_IWANT_WSROOT
 EOF
-cmde "1" "as-distillery-developer/with/bash/iwant/help.sh 2>&1"
+cmde "1" "as-iwant-tutorial-developer/with/bash/iwant/help.sh 2>&1"
 
 p "This is an optimization for this tutorial:"
 
-edit as-distillery-developer/i-have/conf/iwant-from "iwant-re-export-optimization" <<EOF
+edit as-iwant-tutorial-developer/i-have/conf/iwant-from "iwant-re-export-optimization" <<EOF
 iwant-from=file://$LOCAL_IWANT_WSROOT
 # an optimization for this tutorial:
 re-export=false
