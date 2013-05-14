@@ -1,6 +1,7 @@
 package net.sf.iwant.api;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
@@ -57,8 +58,12 @@ public class ScriptGenerated extends Target {
 				ctx.cached(this).getCanonicalPath() };
 
 		Iwant.debugLog("ScriptGenerated", scriptSrc, Arrays.toString(cmd));
+		execute(tmpDir, cmd);
+	}
 
-		Process process = new ProcessBuilder(cmd).directory(tmpDir)
+	public static void execute(File dir, String[] cmd) throws IOException,
+			InterruptedException {
+		Process process = new ProcessBuilder(cmd).directory(dir)
 				.redirectErrorStream(true).start();
 		InputStream out = process.getInputStream();
 		StreamUtil.pipe(out, System.err);
