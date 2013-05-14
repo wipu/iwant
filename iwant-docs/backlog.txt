@@ -819,6 +819,7 @@
     + ext lib in wsdef
     + antgenerated
     + ant-cli
+    + scriptgenerated
   - bootstrapping without svn:externals
   - remove the old files
     - refresh.sh

@@ -34,6 +34,8 @@ public class Tutorial extends Target {
 				"Using external libraries in workspace definition"));
 		pages.add(new PageAboutUsingWsdef("antgenerated",
 				"Using ant to define target content"));
+		pages.add(new PageAboutUsingWsdef("scriptgenerated",
+				"Using a script/program define target content"));
 	}
 
 	public static Tutorial local() {
