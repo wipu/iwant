@@ -811,13 +811,12 @@
     + in wsdef tutorial cd to iwant-tutorial
     + in wsdef tutorial use iwant-tutorial as ws name
     + another wsdef creation target
+  + hello world with eclipse
+    + continue from initial ws
+    + move eclipse settings and modification here
+  - tutorial directory with index page
+  - one tutorial document per nontrivial feature
   - bootstrapping without svn:externals
-  - one tutorial document per feature
-    - 1st hello target
-      - copy bootstrapped environment
-      - document the target
-    - the rest
-  - tutorial index page
   - remove the old files
     - refresh.sh
     - article.sh bootstrapping-with-ant.sh bootstrapping-with-bash.sh edits

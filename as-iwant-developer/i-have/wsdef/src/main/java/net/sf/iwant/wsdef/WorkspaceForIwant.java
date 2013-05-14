@@ -62,15 +62,19 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static Target localTutorials() {
 		ConcatenatedBuilder list = Concatenated.named("local-tutorials");
 		list.pathTo(bootstrappingLocallyHtml());
-		list.pathTo(creatingWsdef("local-", bootstrappingLocallyHtml()));
+		Target empty = creatingWsdef("local-", bootstrappingLocallyHtml());
+		list.pathTo(empty);
+		list.pathTo(helloWorldWithEclipse("local-", empty));
 		return list.end();
 	}
 
 	private static Target remoteTutorials() {
 		ConcatenatedBuilder list = Concatenated.named("remote-tutorials");
 		list.pathTo(bootstrappingWithSvnexternalsHtml());
-		list.pathTo(creatingWsdef("remote-",
-				bootstrappingWithSvnexternalsHtml()));
+		Target empty = creatingWsdef("remote-",
+				bootstrappingWithSvnexternalsHtml());
+		list.pathTo(empty);
+		list.pathTo(helloWorldWithEclipse("remote-", empty));
 		return list.end();
 	}
 
@@ -91,6 +95,12 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static Target creatingWsdef(String namePrefix, Target initialState) {
 		return new Descripted(namePrefix, "creating-wsdef", tutorialWsdefSrc(),
 				null, initialState);
+	}
+
+	private static Target helloWorldWithEclipse(String namePrefix,
+			Target initialState) {
+		return new Descripted(namePrefix, "helloworld-with-eclipse",
+				tutorialWsdefSrc(), null, initialState);
 	}
 
 	// others
