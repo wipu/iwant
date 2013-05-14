@@ -26,6 +26,8 @@ public class Tutorial extends Target {
 		this.bootstrappingDoc = bootstrappingDoc;
 		this.creatingWsdefDoc = new Descripted(namePrefix, "creating-wsdef",
 				tutorialWsdefSrc(), null, bootstrappingDoc);
+		pages.add(new PageAboutUsingWsdef("ant-cli",
+				"Using ant cli instead of bash"));
 		pages.add(new PageAboutUsingWsdef("helloworld-with-eclipse",
 				"Hello world with Eclipse"));
 		pages.add(new PageAboutUsingWsdef("ext-libs-in-wsdef",
