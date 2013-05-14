@@ -815,12 +815,14 @@
     + continue from initial ws
     + move eclipse settings and modification here
   + tutorial directory with index page
-  - one tutorial document per nontrivial feature
+  + one tutorial document per nontrivial feature
     + ext lib in wsdef
     + antgenerated
     + ant-cli
     + scriptgenerated
+    + using-iwant-plugin-ant
   - bootstrapping without svn:externals
+  - bootstrapping with ant?
   - remove the old files
     - refresh.sh
     - article.sh bootstrapping-with-ant.sh bootstrapping-with-bash.sh edits

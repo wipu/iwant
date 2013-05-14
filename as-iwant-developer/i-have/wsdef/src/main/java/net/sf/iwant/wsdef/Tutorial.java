@@ -36,6 +36,8 @@ public class Tutorial extends Target {
 				"Using ant to define target content"));
 		pages.add(new PageAboutUsingWsdef("scriptgenerated",
 				"Using a script/program define target content"));
+		pages.add(new PageAboutUsingWsdef("using-iwant-plugin-ant",
+				"Using an iwant plugin (for untarring)"));
 	}
 
 	public static Tutorial local() {
