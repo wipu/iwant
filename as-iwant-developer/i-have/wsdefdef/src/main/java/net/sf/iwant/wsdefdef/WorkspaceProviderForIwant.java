@@ -1,16 +1,17 @@
 package net.sf.iwant.wsdefdef;
 
 import net.sf.iwant.api.IwantWorkspaceProvider;
-import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.WorkspaceDefinitionContext;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 
 public class WorkspaceProviderForIwant implements IwantWorkspaceProvider {
 
 	@Override
-	public JavaSrcModule workspaceModule(JavaModule... iwantApiModules) {
+	public JavaSrcModule workspaceModule(WorkspaceDefinitionContext ctx) {
 		return JavaSrcModule.with().name("iwant-workspace")
 				.locationUnderWsRoot("as-iwant-developer/i-have/wsdef")
-				.mainJava("src/main/java").mainDeps(iwantApiModules).end();
+				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
+				.end();
 	}
 
 	@Override

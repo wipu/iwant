@@ -801,15 +801,19 @@
 
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
-  - bootstrapping with svn:externals
+  + bootstrapping from local iwant without versioning
+  - bootstrapping with svn using svn:externals
   - bootstrapping without svn:externals
+  - one common wsdef creation wizard tutorial
   - one tutorial document per feature
     - 1st hello target
       - copy bootstrapped environment
       - document the target
     - the rest
   - tutorial index page
-  - remove the old refresh.sh etc  
+  - remove the old files
+    - refresh.sh
+    - article.sh bootstrapping-with-ant.sh bootstrapping-with-bash.sh edits
 
 - @epic: As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
   * don't split before deleting old code, otherwise it's difficult to see what is dead

@@ -26,7 +26,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {
-		return Arrays.asList(emmaCoverageReport(), listOfExternalDeps());
+		return Arrays.asList(descripted("bootstrapping-locally"),
+				emmaCoverageReport(), listOfExternalDeps());
 	}
 
 	@Override
@@ -55,6 +56,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	// the targets
+
+	private static Target descripted(String docName) {
+		return new Descripted(docName, Source.underWsroot(""));
+	}
 
 	private static Path emma() {
 		return TestedIwantDependencies.emma();
