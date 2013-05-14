@@ -817,6 +817,7 @@
   + tutorial directory with index page
   - one tutorial document per nontrivial feature
     + ext lib in wsdef
+    + antgenerated
   - bootstrapping without svn:externals
   - remove the old files
     - refresh.sh

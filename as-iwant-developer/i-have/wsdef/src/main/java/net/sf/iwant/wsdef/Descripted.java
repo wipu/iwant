@@ -40,6 +40,12 @@ public class Descripted extends Target {
 	}
 
 	@Override
+	public boolean supportsParallelism() {
+		// TODO return true when known to work
+		return false;
+	}
+
+	@Override
 	public List<Path> ingredients() {
 		List<Path> ingredients = new ArrayList<Path>();
 		ingredients.add(doc);

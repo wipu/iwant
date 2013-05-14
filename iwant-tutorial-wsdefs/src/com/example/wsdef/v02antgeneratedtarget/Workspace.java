@@ -14,34 +14,31 @@ import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
 
-import org.apache.commons.math.fraction.Fraction;
-
 public class Workspace implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {
 		return Arrays.asList(new HelloTarget("hello", "hello from iwant"),
-				hello2(), antGenerated());
+				antGenerated());
 	}
 
-	private static Target hello2() {
-		return new HelloTarget("hello2", "1/2 + 2/4 = "
-				+ new Fraction(1, 2).add(new Fraction(2, 4)).intValue());
+	private static HelloTarget justATargetUsedByAntScript() {
+		return new HelloTarget("justATargetUsedByAntScript",
+				"content of a target");
 	}
 
 	private static Target antScript() {
-		ConcatenatedBuilder scriptContent = Concatenated.named("script");
-		scriptContent.string("<project name='hello' default='hello'>\n");
-		scriptContent.string("  <target name='hello'>\n");
-		scriptContent
-				.string("    <echo message='Refreshing ${iwant-outfile}'/>\n");
-		scriptContent.string("    <copy file='").pathTo(hello2())
+		ConcatenatedBuilder xml = Concatenated.named("script");
+		xml.string("<project name='hello' default='hello'>\n");
+		xml.string("  <target name='hello'>\n");
+		xml.string("    <echo message='Refreshing ${iwant-outfile}'/>\n");
+		xml.string("    <copy file='").pathTo(justATargetUsedByAntScript())
 				.string("' tofile='${iwant-outfile}'/>\n");
-		scriptContent.string("    <echo file='${iwant-outfile}' append='true'"
+		xml.string("    <echo file='${iwant-outfile}' append='true'"
 				+ " message=' appended by ant.'/>\n");
-		scriptContent.string("  </target>\n");
-		scriptContent.string("</project>\n");
-		return scriptContent.end();
+		xml.string("  </target>\n");
+		xml.string("</project>\n");
+		return xml.end();
 	}
 
 	private static Target antGenerated() {

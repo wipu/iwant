@@ -17,19 +17,21 @@ public class Tutorial extends Target {
 
 	private final Target bootstrappingDoc;
 	private final Target creatingWsdefDoc;
-	private final Target helloWithEclipseDoc;
-	private final Descripted extLibsDoc;
+	private final String namePrefix;
+	private final List<PageAboutUsingWsdef> pages = new ArrayList<Tutorial.PageAboutUsingWsdef>();
 
 	private Tutorial(String namePrefix, Target bootstrappingDoc) {
 		super(namePrefix + "tutorial");
+		this.namePrefix = namePrefix;
 		this.bootstrappingDoc = bootstrappingDoc;
 		this.creatingWsdefDoc = new Descripted(namePrefix, "creating-wsdef",
 				tutorialWsdefSrc(), null, bootstrappingDoc);
-		this.helloWithEclipseDoc = new Descripted(namePrefix,
-				"helloworld-with-eclipse", tutorialWsdefSrc(), null,
-				creatingWsdefDoc);
-		this.extLibsDoc = new Descripted(namePrefix, "ext-libs-in-wsdef",
-				tutorialWsdefSrc(), null, creatingWsdefDoc);
+		pages.add(new PageAboutUsingWsdef("helloworld-with-eclipse",
+				"Hello world with Eclipse"));
+		pages.add(new PageAboutUsingWsdef("ext-libs-in-wsdef",
+				"Using external libraries in workspace definition"));
+		pages.add(new PageAboutUsingWsdef("antgenerated",
+				"Using ant to define target content"));
 	}
 
 	public static Tutorial local() {
@@ -48,6 +50,29 @@ public class Tutorial extends Target {
 		return Source.underWsroot("iwant-tutorial-wsdefs/src");
 	}
 
+	private class PageAboutUsingWsdef {
+
+		private String docName;
+		private final Descripted docTarget;
+		private String linkText;
+
+		PageAboutUsingWsdef(String docName, String linkText) {
+			this.docName = docName;
+			this.linkText = linkText;
+			this.docTarget = new Descripted(namePrefix, docName,
+					tutorialWsdefSrc(), null, creatingWsdefDoc);
+		}
+
+		private String fileName() {
+			return docName + ".html";
+		}
+
+		private String asLink() {
+			return "<a href='" + fileName() + "'>" + linkText + "</a><br/>\n";
+		}
+
+	}
+
 	@Override
 	public InputStream content(TargetEvaluationContext ctx) throws Exception {
 		throw new UnsupportedOperationException("TODO test and implement");
@@ -58,8 +83,9 @@ public class Tutorial extends Target {
 		List<Path> ingredients = new ArrayList<Path>();
 		ingredients.add(bootstrappingDoc);
 		ingredients.add(creatingWsdefDoc);
-		ingredients.add(helloWithEclipseDoc);
-		ingredients.add(extLibsDoc);
+		for (PageAboutUsingWsdef page : pages) {
+			ingredients.add(page.docTarget);
+		}
 		ingredients.add(Source
 				.underWsroot("as-iwant-developer/i-have/wsdef/src/main/java/"
 						+ "net/sf/iwant/wsdef/Tutorial.java"));
@@ -83,14 +109,10 @@ public class Tutorial extends Target {
 		index.append("<a href='" + creatingWsDef
 				+ "'>Creating a workspace definition</a>\n");
 
-		String helloWithEclipse = page(ctx, "helloworld-with-eclipse.html",
-				helloWithEclipseDoc);
-		index.append("<a href='" + helloWithEclipse
-				+ "'>Hello world with Eclipse</a>\n");
-
-		String extLibs = page(ctx, "ext-libs-in-wsdef.html", extLibsDoc);
-		index.append("<a href='" + extLibs
-				+ "'>Using external libraries in workspace definition</a>\n");
+		for (PageAboutUsingWsdef page : pages) {
+			page(ctx, page.fileName(), page.docTarget);
+			index.append(page.asLink());
+		}
 
 		index.append("</body></html>\n");
 
