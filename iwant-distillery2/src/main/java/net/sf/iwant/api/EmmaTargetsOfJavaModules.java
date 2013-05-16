@@ -15,6 +15,8 @@ import net.sf.iwant.api.EmmaCoverage.EmmaCoverageSpex;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.StringFilter;
+import net.sf.iwant.api.model.StringFilterByEquality;
 
 public class EmmaTargetsOfJavaModules {
 
@@ -135,14 +137,19 @@ public class EmmaTargetsOfJavaModules {
 		EmmaCoverageSpex coverage = EmmaCoverage.with()
 				.name(mod.name() + ".emmacoverage").emma(emma).antJars(antJars);
 		String mainClass = "org.junit.runner.JUnitCore";
-		if (mod.testSuiteName() != null) {
-			coverage.mainClassAndArguments(mainClass, mod.testSuiteName());
+
+		StringFilter classNameDef = mod.testClassNameDefinition();
+		if (classNameDef instanceof StringFilterByEquality) {
+			StringFilterByEquality suiteNameDef = (StringFilterByEquality) classNameDef;
+			coverage.mainClassAndArguments(mainClass, suiteNameDef.value());
 		} else {
 			ClassNameList testClassList = ClassNameList.with()
 					.name(mod.name() + "-test-class-names")
-					.classes(mod.testArtifact()).end();
+					.classes(mod.testArtifact())
+					.matching(mod.testClassNameDefinition()).end();
 			coverage.mainClassAndArguments(mainClass, testClassList);
 		}
+
 		// TODO avoid duplicates, same dep can come from main and tests
 		coverage.nonInstrumentedClasses(mod.testArtifact());
 		for (JavaModule testDep : mod.testDeps()) {

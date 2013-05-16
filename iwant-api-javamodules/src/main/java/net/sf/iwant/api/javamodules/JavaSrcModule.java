@@ -11,6 +11,8 @@ import java.util.Set;
 
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.StringFilter;
+import net.sf.iwant.api.model.StringFilterByEquality;
 import net.sf.iwant.api.model.Target;
 
 public class JavaSrcModule extends JavaModule {
@@ -28,7 +30,7 @@ public class JavaSrcModule extends JavaModule {
 	private final CodeStylePolicy codeStylePolicy;
 	private final CodeFormatterPolicy codeFormatterPolicy;
 	private final List<Source> generatorSourcesToFollow;
-	private final String testSuiteName;
+	private final StringFilter testClassNameFilter;
 	private final Charset encoding;
 	private Path mainArtifact;
 	private Path testArtifact;
@@ -40,8 +42,8 @@ public class JavaSrcModule extends JavaModule {
 			Target generatedClasses, Target generatedSrc,
 			List<Source> generatorSourcesToFollow,
 			CodeStylePolicy codeStylePolicy,
-			CodeFormatterPolicy codeFormatterPolicy, String testSuiteName,
-			Charset encoding) {
+			CodeFormatterPolicy codeFormatterPolicy,
+			StringFilter testClassNameFilter, Charset encoding) {
 		this.name = name;
 		this.generatorSourcesToFollow = generatorSourcesToFollow;
 		this.codeStylePolicy = codeStylePolicy;
@@ -51,7 +53,7 @@ public class JavaSrcModule extends JavaModule {
 		this.testJavas = testJavas;
 		this.testResources = testResources;
 		this.codeFormatterPolicy = codeFormatterPolicy;
-		this.testSuiteName = testSuiteName;
+		this.testClassNameFilter = testClassNameFilter;
 		this.encoding = encoding;
 		this.mainDeps = Collections.unmodifiableSet(mainDeps);
 		this.testDeps = Collections.unmodifiableSet(testDeps);
@@ -80,7 +82,7 @@ public class JavaSrcModule extends JavaModule {
 				.defaultsExcept().end();
 		private CodeFormatterPolicy codeFormatterPolicy = new CodeFormatterPolicy();
 		private String locationUnderWsRoot;
-		private String testSuiteName;
+		private StringFilter testClassNameFilter;
 		private Charset encoding;
 
 		public JavaSrcModule end() {
@@ -99,7 +101,7 @@ public class JavaSrcModule extends JavaModule {
 					mainResources, testJavas, testResources, mainDeps,
 					testDeps, generatedClasses, generatedSrc,
 					generatorSourcesToFollow, codeStylePolicy,
-					codeFormatterPolicy, testSuiteName, encoding);
+					codeFormatterPolicy, testClassNameFilter, encoding);
 		}
 
 		private static String normalizedRelativeParentDir(String value) {
@@ -214,8 +216,13 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
-		public IwantSrcModuleSpex testSuiteName(String testSuiteName) {
-			this.testSuiteName = testSuiteName;
+		public IwantSrcModuleSpex testedBy(String testSuiteName) {
+			this.testClassNameFilter = new StringFilterByEquality(testSuiteName);
+			return this;
+		}
+
+		public IwantSrcModuleSpex testedBy(StringFilter testClassNameFilter) {
+			this.testClassNameFilter = testClassNameFilter;
 			return this;
 		}
 
@@ -391,8 +398,8 @@ public class JavaSrcModule extends JavaModule {
 		return name;
 	}
 
-	public String testSuiteName() {
-		return testSuiteName;
+	public StringFilter testClassNameDefinition() {
+		return testClassNameFilter;
 	}
 
 }

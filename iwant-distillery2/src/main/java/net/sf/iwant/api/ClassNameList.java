@@ -134,4 +134,8 @@ public class ClassNameList extends Target {
 		return classes;
 	}
 
+	public StringFilter filter() {
+		return filter;
+	}
+
 }

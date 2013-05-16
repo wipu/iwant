@@ -9,6 +9,7 @@ import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.StringFilter;
 import net.sf.iwant.api.model.Target;
 
 public class JavaSrcModuleTest extends TestCase {
@@ -298,13 +299,34 @@ public class JavaSrcModuleTest extends TestCase {
 		assertEquals("[]", tests.classLocations().toString());
 	}
 
-	public void testTestSuiteName() {
-		assertNull(JavaSrcModule.with().name("suiteless").testJava("test")
-				.end().testSuiteName());
-		assertEquals("com.example.TestSuite",
-				JavaSrcModule.with().name("suited").testJava("test")
-						.testSuiteName("com.example.TestSuite").end()
-						.testSuiteName());
+	public void testTestedByNoClassesIfNotDefined() {
+		assertNull(JavaSrcModule.with().name("testless").testJava("test").end()
+				.testClassNameDefinition());
+	}
+
+	public void testTestedBySingleTestSuite() {
+		StringFilter testNames = JavaSrcModule.with().name("suited")
+				.testJava("test").testedBy("com.example.TestSuite").end()
+				.testClassNameDefinition();
+
+		assertTrue(testNames.matches("com.example.TestSuite"));
+		assertFalse(testNames.matches("com.example.SomethingElse"));
+	}
+
+	public void testTestedByManyTestsWithCustomNamingConvention() {
+		StringFilter filter = new StringFilter() {
+			@Override
+			public boolean matches(String candidate) {
+				return candidate.contains("a");
+			}
+		};
+
+		StringFilter testNames = JavaSrcModule.with().name("tested")
+				.testJava("test").testedBy(filter).end()
+				.testClassNameDefinition();
+
+		assertTrue(testNames.matches("a"));
+		assertFalse(testNames.matches("b"));
 	}
 
 	public void testEncodingIsUsedToCompileMainAndTestClasses() {

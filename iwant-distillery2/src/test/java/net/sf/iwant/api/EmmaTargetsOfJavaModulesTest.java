@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.StringFilter;
 
 public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
@@ -130,8 +131,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 	public void testMainClassAndArgumentsOfCoverageOfModuleWithTestSuiteName() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
-				.testJava("test").testSuiteName("org.oikarinen.TestSuite")
-				.end();
+				.testJava("test").testedBy("org.oikarinen.TestSuite").end();
 
 		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
 				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
@@ -144,7 +144,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				.toString());
 	}
 
-	public void testMainClassAndArgumentsFileOfCoverageOfModuleWithNoTestSuiteName() {
+	public void testMainClassAndArgumentsFileOfCoverageOfModuleWithNoTestClassDefinition() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
 				.testJava("test").end();
 
@@ -158,7 +158,30 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 		ClassNameList arg = (ClassNameList) coverage.mainClassArgumentsFile();
 		assertEquals("mod-test-class-names", arg.name());
 		assertEquals("mod-test-classes", arg.classes().toString());
+		assertNull(arg.filter());
+	}
 
+	public void testMainClassAndArgumentsFileOfCoverageOfModuleWithClassDefinitionAsFilter() {
+		StringFilter filter = new StringFilter() {
+			@Override
+			public boolean matches(String candidate) {
+				return candidate.contains("Test");
+			}
+		};
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").testedBy(filter).end();
+
+		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
+				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
+
+		EmmaCoverage coverage = emmaTargets.emmaCoverageOf(mod);
+		assertEquals("org.junit.runner.JUnitCore", coverage.mainClass());
+		assertNull(coverage.mainClassArguments());
+
+		ClassNameList arg = (ClassNameList) coverage.mainClassArgumentsFile();
+		assertEquals("mod-test-class-names", arg.name());
+		assertEquals("mod-test-classes", arg.classes().toString());
+		assertSame(filter, arg.filter());
 	}
 
 	public void testExcludingModuleFromInstrumentation() {
