@@ -2,8 +2,6 @@ doc-content() {
 
 cd iwant-tutorial
 
-section "Using Eclipse to edit your build definition"
-
 p "Before we try editing the wsdef, we'll tell iwant to generate eclipse settings."
 
 cmd "as-iwant-tutorial-developer/with/bash/iwant/list-of/side-effects"

@@ -821,6 +821,10 @@
     + ant-cli
     + scriptgenerated
     + using-iwant-plugin-ant
+  + use style.css file from tutorial index and descript docs
+  + define descript doc title in one place (java) and use as html page
+    title, section header and link text
+  + links: prev, up, next
   - bootstrapping without svn:externals
   - bootstrapping with ant?
   - remove the old files

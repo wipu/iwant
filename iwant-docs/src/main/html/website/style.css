@@ -1,8 +1,16 @@
-body {
-        background: white;
-        font: 12px verdana, arial, sans-serif;
-}
-
 #maintitle {
 	font-family: monospace;
 }
+
+body {background: white; font: 12px verdana, arial, sans-serif;}
+.text {width:65em;}
+.console {background-color:black;font-family:monospace;margin-left:33px;width:60em;}
+.prompt {font-weight:bold;color:green;}
+.cmd {color:white;}
+.output {color:gray;}
+.output-asserted {font-size:8px; background-color: #def9de;; margin-left:33px;}
+.editor {border-style:solid;border-width:1px;margin-left:30px;margin-top:5px;margin-bottom:5px;background-color: #ffffd0;;width:60em;padding:2px;}
+div.line {white-space:pre;margin-bottom:1px;min-height:1em;}
+div.add  {background-color: #def9de;;}
+div.del  {background-color: #f9dede;; text-decoration:line-through;}
+div.keep {background-color: #ffffff;;}

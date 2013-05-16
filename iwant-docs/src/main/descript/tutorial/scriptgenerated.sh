@@ -2,8 +2,6 @@ doc-content() {
 
 cd iwant-tutorial
 
-section "Using a script to define content for a target"
-
 p "In case java-based tools are not enough, you can use a script to define content for a target. Each script invocation gets a dedicated temporary directory in which to create temporary files, if needed."
 
 wsdef-edit v03scriptgeneratedtarget

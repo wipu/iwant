@@ -15,68 +15,70 @@ import org.apache.commons.io.FileUtils;
 
 public class Tutorial extends Target {
 
-	private final Target bootstrappingDoc;
-	private final Target creatingWsdefDoc;
+	private final Descripted bootstrappingDoc;
+	private final Descripted creatingWsdefDoc;
 	private final String namePrefix;
-	private final List<PageAboutUsingWsdef> pages = new ArrayList<Tutorial.PageAboutUsingWsdef>();
+	private final List<Descripted> pages = new ArrayList<Descripted>();
+	private final Path styleCss;
 
-	private Tutorial(String namePrefix, Target bootstrappingDoc) {
+	private Tutorial(String namePrefix, Descripted bootstrappingDoc) {
 		super(namePrefix + "tutorial");
 		this.namePrefix = namePrefix;
 		this.bootstrappingDoc = bootstrappingDoc;
+		pages.add(bootstrappingDoc);
+		this.styleCss = Source
+				.underWsroot("iwant-docs/src/main/html/website/style.css");
 		this.creatingWsdefDoc = new Descripted(namePrefix, "creating-wsdef",
-				tutorialWsdefSrc(), null, bootstrappingDoc);
-		pages.add(new PageAboutUsingWsdef("ant-cli",
+				"Creating the workspace definition", tutorialWsdefSrc(), null,
+				bootstrappingDoc);
+		pages.add(this.creatingWsdefDoc);
+		pages.add(pageAboutUsingWsdef("ant-cli",
 				"Using ant cli instead of bash"));
-		pages.add(new PageAboutUsingWsdef("helloworld-with-eclipse",
+		pages.add(pageAboutUsingWsdef("helloworld-with-eclipse",
 				"Hello world with Eclipse"));
-		pages.add(new PageAboutUsingWsdef("ext-libs-in-wsdef",
+		pages.add(pageAboutUsingWsdef("ext-libs-in-wsdef",
 				"Using external libraries in workspace definition"));
-		pages.add(new PageAboutUsingWsdef("antgenerated",
+		pages.add(pageAboutUsingWsdef("antgenerated",
 				"Using ant to define target content"));
-		pages.add(new PageAboutUsingWsdef("scriptgenerated",
+		pages.add(pageAboutUsingWsdef("scriptgenerated",
 				"Using a script/program define target content"));
-		pages.add(new PageAboutUsingWsdef("using-iwant-plugin-ant",
+		pages.add(pageAboutUsingWsdef("using-iwant-plugin-ant",
 				"Using an iwant plugin (for untarring)"));
 	}
 
 	public static Tutorial local() {
-		return new Tutorial("local-", new Descripted("",
-				"bootstrapping-locally", tutorialWsdefSrc(),
-				Source.underWsroot(""), null));
+		return new Tutorial(
+				"local-",
+				new Descripted(
+						"",
+						"bootstrapping-locally",
+						"Acquiring iwant bootstrapper by svn-exporting it from a local directory",
+						tutorialWsdefSrc(), Source.underWsroot(""), null));
 	}
 
 	public static Tutorial remote() {
 		return new Tutorial("remote-", new Descripted("",
-				"bootstrapping-with-svnexternals", tutorialWsdefSrc(), null,
-				null));
+				"bootstrapping-with-svnexternals",
+				"Acquiring iwant bootstrapper by using svn:externals",
+				tutorialWsdefSrc(), null, null));
 	}
 
 	private static Source tutorialWsdefSrc() {
 		return Source.underWsroot("iwant-tutorial-wsdefs/src");
 	}
 
-	private class PageAboutUsingWsdef {
+	private Descripted pageAboutUsingWsdef(String docName, String titleText) {
+		return new Descripted(namePrefix, docName, titleText,
+				tutorialWsdefSrc(), null, creatingWsdefDoc);
+	}
 
-		private String docName;
-		private final Descripted docTarget;
-		private String linkText;
+	private static String fileName(Descripted page) {
+		return page.docName() + ".html";
+	}
 
-		PageAboutUsingWsdef(String docName, String linkText) {
-			this.docName = docName;
-			this.linkText = linkText;
-			this.docTarget = new Descripted(namePrefix, docName,
-					tutorialWsdefSrc(), null, creatingWsdefDoc);
-		}
-
-		private String fileName() {
-			return docName + ".html";
-		}
-
-		private String asLink() {
-			return "<a href='" + fileName() + "'>" + linkText + "</a><br/>\n";
-		}
-
+	private static String asLink(Descripted page) {
+		return "<a href='" + fileName(page) + "'>" + page.titleText()
+				+ "</a><br/>\n";
 	}
 
 	@Override
@@ -89,8 +91,9 @@ public class Tutorial extends Target {
 		List<Path> ingredients = new ArrayList<Path>();
 		ingredients.add(bootstrappingDoc);
 		ingredients.add(creatingWsdefDoc);
-		for (PageAboutUsingWsdef page : pages) {
-			ingredients.add(page.docTarget);
+		ingredients.add(styleCss);
+		for (Descripted page : pages) {
+			ingredients.add(page);
 		}
 		ingredients.add(Source
 				.underWsroot("as-iwant-developer/i-have/wsdef/src/main/java/"
@@ -104,36 +107,61 @@ public class Tutorial extends Target {
 		dest.mkdirs();
 
 		StringBuilder index = new StringBuilder();
-		index.append("<html><body>\n");
+		index.append("<html>\n");
+		index.append("<head>\n");
+		index.append("<title>iwant tutorial</title>\n");
+		index.append("<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" charset=\"utf-8\" />\n");
+		index.append("</head>\n");
+		index.append("<body>\n");
 
-		String bootstrapping = page(ctx, "bootstrapping.html", bootstrappingDoc);
-		index.append("<a href='" + bootstrapping
-				+ "'>Bootstrapping iwant for the workspace</a>\n");
-
-		String creatingWsDef = page(ctx, "creating-wsdef.html",
-				creatingWsdefDoc);
-		index.append("<a href='" + creatingWsDef
-				+ "'>Creating a workspace definition</a>\n");
-
-		for (PageAboutUsingWsdef page : pages) {
-			page(ctx, page.fileName(), page.docTarget);
-			index.append(page.asLink());
+		Descripted prev = null;
+		for (int i = 0; i < pages.size(); i++) {
+			Descripted page = pages.get(i);
+			Descripted next = i + 1 < pages.size() ? pages.get(i + 1) : null;
+			page(ctx, fileName(page), page, prev, next);
+			index.append(asLink(page));
+			prev = page;
 		}
 
 		index.append("</body></html>\n");
 
 		FileUtils.writeStringToFile(new File(dest, "index.html"),
 				index.toString());
+
+		FileUtils.copyFileToDirectory(ctx.cached(styleCss), dest);
 	}
 
 	private String page(TargetEvaluationContext ctx, String fileName,
-			Path fromPath) throws IOException {
+			Path fromPath, Descripted prev, Descripted next) throws IOException {
 		File dest = ctx.cached(this);
 		File to = new File(dest, fileName);
 		File from = new File(ctx.cached(fromPath), "doc.html");
 		System.err.println(to.getName() + " <- " + from);
-		FileUtils.copyFile(from, to);
+		String content = FileUtils.readFileToString(from);
+		content = content.replaceAll("NAVIGATION_LINK_PANEL_PLACEHOLDER",
+				navigationPanel(prev, next));
+		FileUtils.writeStringToFile(to, content);
 		return fileName;
+	}
+
+	private static String navigationPanel(Descripted prev, Descripted next) {
+		StringBuilder html = new StringBuilder();
+		html.append("<div>");
+		if (prev != null) {
+			html.append("<a href='").append(fileName(prev)).append("'>");
+			html.append("<< ").append(prev.titleText());
+			html.append("</a> | ");
+		}
+		html.append("<a href='index.html'>");
+		html.append("^ Tutorial index ^");
+		html.append("</a>");
+		if (next != null) {
+			html.append(" | <a href='").append(fileName(next)).append("'>");
+			html.append(next.titleText()).append(" >>");
+			html.append("</a>");
+		}
+		html.append("</div>\n");
+		return html.toString();
 	}
 
 	@Override

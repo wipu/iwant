@@ -2,8 +2,6 @@ doc-content() {
 
 cd iwant-tutorial
 
-section "Using ant cli instead of bash"
-
 p "In addition to the shell user interface there is also an ant interface. It is handy not only for Windows users, but also for calling iwant from java applications like Eclipse."
 
 cmd "cd as-iwant-tutorial-developer/with/ant/iw"

@@ -1,7 +1,5 @@
 doc-content() {
 
-section "Acquiring iwant bootstrapper by exporting from svn"
-
 cmd "mkdir iwant-tutorial"
 cmd "cd iwant-tutorial"
 

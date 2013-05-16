@@ -2,8 +2,6 @@ doc-content() {
 
 cd iwant-tutorial
 
-section "Using external libraries in your build"
-
 p "Next we add downloaded classes to be used in the workspace definition."
 wsdefdef-edit v00commonsmathjar
 

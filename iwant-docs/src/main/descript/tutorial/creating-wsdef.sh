@@ -2,8 +2,6 @@ doc-content() {
 
 cd iwant-tutorial
 
-section "Defining your workspace and its build basics"
-
 p "Now we start defining our workspace and its build definition."
 
 edit as-iwant-tutorial-developer/i-have/conf/ws-info "no-changes" <<EOF

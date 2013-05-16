@@ -2,8 +2,6 @@ doc-content() {
 
 cd iwant-tutorial
 
-section "Using ant to define content for a target"
-
 p "Let's write another target using ant, downloaded from ibiblio.org. The ant script refers to another target."
 
 wsdef-edit v02antgeneratedtarget

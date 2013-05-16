@@ -20,10 +20,15 @@ public class Descripted extends Target {
 	private final Source abstractArticle;
 	private final Path maybeInitialState;
 	private final Path tutorialWsdefSrc;
+	private final String titleText;
+	private final String docName;
 
-	public Descripted(String namePrefix, String docName, Path tutorialWsdefSrc,
-			Source maybeIwantWsroot, Path maybeInitialState) {
+	public Descripted(String namePrefix, String docName, String titleText,
+			Path tutorialWsdefSrc, Source maybeIwantWsroot,
+			Path maybeInitialState) {
 		super(namePrefix + docName + ".html");
+		this.docName = docName;
+		this.titleText = titleText;
 		this.tutorialWsdefSrc = tutorialWsdefSrc;
 		this.maybeIwantWsroot = maybeIwantWsroot;
 		this.maybeInitialState = maybeInitialState;
@@ -32,6 +37,14 @@ public class Descripted extends Target {
 		this.abstractArticle = Source
 				.underWsroot("iwant-docs/src/main/descript/tutorial/abstract-article.sh");
 		this.descript = Source.underWsroot("iwant-lib-descript/descript.sh");
+	}
+
+	public String titleText() {
+		return titleText;
+	}
+
+	public String docName() {
+		return docName;
 	}
 
 	@Override
@@ -69,7 +82,10 @@ public class Descripted extends Target {
 		File dest = ctx.cached(this);
 		dest.mkdirs();
 
-		File html = new File(dest, "doc.html");
+		File htmlHeader = newHtmlHeaderFile(dest);
+		File htmlFooter = newHtmlFooterFile(dest);
+		File htmlBodyContent = new File(dest, "body-content.html");
+		File fullHtml = new File(dest, "doc.html");
 
 		File iwantWsRoot = maybeIwantWsroot == null ? null : ctx
 				.cached(maybeIwantWsroot);
@@ -90,14 +106,42 @@ public class Descripted extends Target {
 		sh.append("DOC=combined.sh\n");
 		sh.append("cat " + ctx.cached(abstractArticle) + " " + ctx.cached(doc)
 				+ " > \"$DOC\"\n");
-		sh.append("'" + ctx.cached(descript) + "' \"$DOC\" '" + html
-				+ "' true\n");
+		sh.append("echo \"export PAGETITLE='" + titleText + "'\" >> \"$DOC\"\n");
+		sh.append("'" + ctx.cached(descript) + "' \"$DOC\" '" + htmlBodyContent
+				+ "' false\n");
+		sh.append("cat '" + htmlHeader + "' '" + htmlBodyContent + "' '"
+				+ htmlFooter + "' > '" + fullHtml + "'\n");
 
 		File script = Iwant.newTextFile(new File(dest, name() + ".sh"),
 				sh.toString());
 		script.setExecutable(true);
 		ScriptGenerated.execute(dest,
 				new String[] { script.getCanonicalPath() });
+	}
+
+	private File newHtmlHeaderFile(File dest) {
+		StringBuilder html = new StringBuilder();
+		html.append("<html>\n");
+		html.append("<head>\n");
+		html.append("<title>" + titleText + "</title>\n");
+		html.append("<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" charset=\"utf-8\" />\n");
+		html.append("</head>\n");
+		html.append("<body>\n");
+		appendNavigationLinkPanelPlaceholder(html);
+		return Iwant
+				.newTextFile(new File(dest, "header.html"), html.toString());
+	}
+
+	private static void appendNavigationLinkPanelPlaceholder(StringBuilder html) {
+		html.append("NAVIGATION_LINK_PANEL_PLACEHOLDER\n");
+	}
+
+	private static File newHtmlFooterFile(File dest) {
+		StringBuilder html = new StringBuilder();
+		appendNavigationLinkPanelPlaceholder(html);
+		html.append("</body></html>\n");
+		return Iwant
+				.newTextFile(new File(dest, "footer.html"), html.toString());
 	}
 
 	@Override

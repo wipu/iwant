@@ -1,7 +1,5 @@
 doc-content() {
 
-section "Acquiring iwant bootstrapper by using svn:externals"
-
 p "Let's create a local svn repository and check it out."
 
 cmd "svnadmin create svn-repo"

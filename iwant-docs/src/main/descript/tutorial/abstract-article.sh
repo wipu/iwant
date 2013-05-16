@@ -4,7 +4,10 @@ doc() {
     tar xf "$INITIAL_STATE"
   } 
   IWANT_DOC_DIR=$(pwd)
+  
+  section "$PAGETITLE"
   doc-content
+
   cd "$IWANT_DOC_DIR"
   SAVED_STATE=$(readlink -f ../../final-state.tar)
   log "Saving state to $SAVED_STATE"
