@@ -799,6 +799,10 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want to define the test classnames for my java src modules so iwant does not try to run non-test classes even when I define emmacoverage using EmmaTargetsOfJavaModules instead of directly defining individual EmmaCoverage targets
+  + refactor: move StringFilter to api model so it can be used to define the classnames
+  - create default usable testname filter to javamodules module
+
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
   + bootstrapping from local iwant without versioning
