@@ -184,9 +184,6 @@ public class EmmaTargetsOfJavaModules {
 				coverages.add(coverage);
 			}
 		}
-		if (coverages.isEmpty()) {
-			return null;
-		}
 		return EmmaReport.with().name("emma-coverage").emma(emma)
 				.instrumentations(instrs).coverages(coverages).end();
 	}

@@ -199,4 +199,23 @@ public class EmmaReportTest extends TestCase {
 		assertTrue(new File(ctx.cached(report), "coverage/index.html").exists());
 	}
 
+	public void testEmptyReportDirectoryIsGeneratedWhenNoCoveragesAreGiven()
+			throws Exception {
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "JunitReferrer",
+				"System.err.println(\"found \"+Class.forName(\"org.junit.runner.JUnitCore\"));");
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.using(emma());
+		instr.path(ctx);
+
+		EmmaReport report = EmmaReport.with().name("report").emma(emma())
+				.instrumentations(instr).coverages().end();
+		report.path(ctx);
+
+		assertTrue(ctx.cached(report).exists());
+		assertFalse(new File(ctx.cached(report), "coverage.txt").exists());
+		assertFalse(new File(ctx.cached(report), "coverage/index.html")
+				.exists());
+	}
+
 }

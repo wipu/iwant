@@ -800,6 +800,11 @@
   + classname filter support to java src module
   + testsuite => constant filter (StringFilterByEquality)
 
++ @bugfix: EmmaCoverage created by EmmaTargetsOfJavaModules must not try to test a src module without testJava
+  + test: not reproducible, it was an user error (there really were testJava)
+  + but, make the returned EmmaReport not null even here, it's less surprising
+    * the target just produces an empty directory
+
 #################################################################
 = In progress
 #################################################################

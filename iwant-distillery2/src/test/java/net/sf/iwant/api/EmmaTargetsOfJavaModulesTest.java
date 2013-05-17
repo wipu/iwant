@@ -33,7 +33,9 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 		assertNull(emmaTargets.emmaCoverageOf(mod));
 
-		assertNull(emmaTargets.emmaReport());
+		EmmaReport report = emmaTargets.emmaReport();
+		assertEquals("[mocked-emma, mod-main-classes.emma-instr]", report
+				.ingredients().toString());
 	}
 
 	public void testTargetsFromOneMinimalCodelessModule() {
@@ -46,7 +48,8 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 		assertNull(emmaTargets.emmaCoverageOf(mod));
 
-		assertNull(emmaTargets.emmaReport());
+		EmmaReport report = emmaTargets.emmaReport();
+		assertEquals("[mocked-emma]", report.ingredients().toString());
 	}
 
 	public void testTargetsFromOneBinaryModule() {
@@ -59,7 +62,8 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 		assertNull(emmaTargets.emmaCoverageOf(mod));
 
-		assertNull(emmaTargets.emmaReport());
+		EmmaReport report = emmaTargets.emmaReport();
+		assertEquals("[mocked-emma]", report.ingredients().toString());
 	}
 
 	public void testFilteredInstrumentationOfMinimalModule() {
@@ -98,6 +102,26 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 		assertEquals("[mocked-emma, "
 				+ "mod-main-classes.emma-instr, mod.emmacoverage]", report
 				.ingredients().toString());
+	}
+
+	public void testCoveragesAndReportFromOneTestedAndOneUntestedModule() {
+		JavaSrcModule tested = JavaSrcModule.with().name("tested")
+				.mainJava("src").testJava("test").end();
+		JavaSrcModule untested = JavaSrcModule.with().name("untested")
+				.mainJava("src").end();
+
+		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
+				.emma(emma).antJars(ant, antLauncher).modules(tested, untested)
+				.end();
+
+		assertNotNull(emmaTargets.emmaCoverageOf(tested));
+		assertNull(emmaTargets.emmaCoverageOf(untested));
+
+		EmmaReport report = emmaTargets.emmaReport();
+		assertEquals("emma-coverage", report.name());
+		assertEquals("[mocked-emma, tested-main-classes.emma-instr,"
+				+ " untested-main-classes.emma-instr, tested.emmacoverage]",
+				report.ingredients().toString());
 	}
 
 	public void testCoverageOfJavaSrcModuleWithCumulativeDeps() {
