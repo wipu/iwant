@@ -111,14 +111,6 @@ public class Iwant3 {
 					.newInstance();
 
 			Iwant.fileLog("Refreshing wsdef classes");
-			WorkspaceDefinitionContext wsDefCtx = new WorkspaceDefinitionContextImpl(
-					iwantApiModules, iwantWs);
-			JavaSrcModule wsdDefClassesModule = wsDefdef
-					.workspaceModule(wsDefCtx);
-			// TODO don't cast when no more necessary
-			JavaClasses wsDefClassesTarget = (JavaClasses) wsdDefClassesModule
-					.mainArtifact();
-
 			String wsdefdefRelativeToWsRoot = FileUtil
 					.relativePathOfFileUnderParent(wsInfo.wsdefdefModule(),
 							wsInfo.wsRoot());
@@ -126,6 +118,14 @@ public class Iwant3 {
 					.name(wsInfo.wsName() + "-wsdefdef")
 					.locationUnderWsRoot(wsdefdefRelativeToWsRoot)
 					.mainJava("src/main/java").mainDeps(iwantApiModules).end();
+			WorkspaceDefinitionContext wsDefCtx = new WorkspaceDefinitionContextImpl(
+					iwantApiModules, iwantWs, wsdefdefJavaModule);
+			JavaSrcModule wsdDefClassesModule = wsDefdef
+					.workspaceModule(wsDefCtx);
+			// TODO don't cast when no more necessary
+			JavaClasses wsDefClassesTarget = (JavaClasses) wsdDefClassesModule
+					.mainArtifact();
+
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
 					System.err, wsInfo.wsRoot(), iwant, wsInfo, caches,
 					userPrefs.workerCount(), wsdefdefJavaModule,

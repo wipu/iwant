@@ -13,6 +13,7 @@ public class WorkspaceProvider implements IwantWorkspaceProvider {
 				.name("iwant-tutorial-workspace")
 				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
+				.mainDeps(ctx.wsdefdefModule())
 				.mainDeps(ctx.iwantPlugin().ant().withDependencies()).end();
 	}
 

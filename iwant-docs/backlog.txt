@@ -805,6 +805,11 @@
   + but, make the returned EmmaReport not null even here, it's less surprising
     * the target just produces an empty directory
 
++ As @buildscriptauthor I want my wsdefdef in by wsdef classpath so I can define some modules in wsdefdef, making them available already build-time, not only from other modules
+  + just pass it to the wsdefctx
+  + make example wsdefdef pass it, not only iwant api classes
+  + test by descripting
+
 #################################################################
 = In progress
 #################################################################

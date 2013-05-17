@@ -32,6 +32,7 @@ public class Tutorial extends Target {
 				"Creating the workspace definition", tutorialWsdefSrc(), null,
 				bootstrappingDoc);
 		pages.add(this.creatingWsdefDoc);
+
 		pages.add(pageAboutUsingWsdef("ant-cli",
 				"Using ant cli instead of bash"));
 		pages.add(pageAboutUsingWsdef("helloworld-with-eclipse",
@@ -44,6 +45,8 @@ public class Tutorial extends Target {
 				"Using a script/program define target content"));
 		pages.add(pageAboutUsingWsdef("using-iwant-plugin-ant",
 				"Using an iwant plugin (for untarring)"));
+		pages.add(pageAboutUsingWsdef("usingmoduleinbuild",
+				"Using a module of the workspace in the build"));
 	}
 
 	public static Tutorial local() {

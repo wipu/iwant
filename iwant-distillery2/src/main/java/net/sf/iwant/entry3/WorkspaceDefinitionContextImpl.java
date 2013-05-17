@@ -21,16 +21,23 @@ public class WorkspaceDefinitionContextImpl implements
 
 	private final Set<JavaModule> iwantApiModules;
 	private final File iwantWs;
+	private final JavaModule wsdefdefModule;
 
 	public WorkspaceDefinitionContextImpl(Set<JavaModule> iwantApiModules,
-			File iwantWs) {
+			File iwantWs, JavaModule wsdefdefModule) {
 		this.iwantApiModules = iwantApiModules;
 		this.iwantWs = iwantWs;
+		this.wsdefdefModule = wsdefdefModule;
 	}
 
 	@Override
 	public Set<JavaModule> iwantApiModules() {
 		return iwantApiModules;
+	}
+
+	@Override
+	public JavaModule wsdefdefModule() {
+		return wsdefdefModule;
 	}
 
 	@Override

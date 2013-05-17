@@ -15,8 +15,10 @@ public class WorkspaceProvider implements IwantWorkspaceProvider {
 				.with()
 				.name("iwant-tutorial-workspace")
 				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")
-				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
-				.mainDeps(JavaBinModule.providing(commonsMathJar())).end();
+				.mainJava("src/main/java")
+				.mainDeps(ctx.iwantApiModules())
+				.mainDeps(JavaBinModule.providing(commonsMathJar()),
+						ctx.wsdefdefModule()).end();
 	}
 
 	@Override

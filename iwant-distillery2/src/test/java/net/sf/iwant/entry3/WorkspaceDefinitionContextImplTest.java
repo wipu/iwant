@@ -21,6 +21,7 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 	private WorkspaceDefinitionContext ctx;
 	private JavaBinModule iwantApiModule1;
 	private JavaBinModule iwantApiModule2;
+	private JavaBinModule wsdefdefModule;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -28,17 +29,24 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				.underWsroot("iwant-api-1"));
 		iwantApiModule2 = JavaBinModule.providing(Source
 				.underWsroot("iwant-api-2"));
+		wsdefdefModule = JavaBinModule
+				.providing(Source.underWsroot("wsdefdef"));
 
 		apiModules = new LinkedHashSet<JavaModule>();
 		apiModules.add(iwantApiModule1);
 		apiModules.add(iwantApiModule2);
 
 		iwantWs = new File("iwantWs");
-		ctx = new WorkspaceDefinitionContextImpl(apiModules, iwantWs);
+		ctx = new WorkspaceDefinitionContextImpl(apiModules, iwantWs,
+				wsdefdefModule);
 	}
 
 	public void testApiModulesIsGivenAsSuch() {
 		assertSame(apiModules, ctx.iwantApiModules());
+	}
+
+	public void testWsdefdefModuleIsGivenAsSuch() {
+		assertSame(wsdefdefModule, ctx.wsdefdefModule());
 	}
 
 	public void testIwantPluginAntWithDependenciesContainsCorrectModules() {

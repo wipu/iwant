@@ -28,12 +28,23 @@ wsdefdef-edit() {
   def-edit wsdefdef "$NAME" WorkspaceProvider
 }
 
+module-edit() {
+  local MODULE=$1
+  local SRCDIR=$2
+  local NAME=$3
+  local CLASS=$4
+  log "module-edit $MODULE $SRCDIR $NAME $CLASS"
+  cat "$IWANT_TUTORIAL_WSDEF_SRC/com/example/$MODULE/$NAME/${CLASS}.java" |
+    sed "s:\.$NAME::g" |
+    edit example-$MODULE/${SRCDIR}/com/example/$MODULE/${CLASS}.java "$MODULE-$NAME"
+}
+
 def-edit() {
   local TYPE=$1
   local NAME=$2
   local CLASS=$3
   log "def-edit $TYPE $NAME $CLASS"
   cat "$IWANT_TUTORIAL_WSDEF_SRC/com/example/$TYPE/$NAME/${CLASS}.java" |
-    sed "s/^package .*;/package com.example.${TYPE};/" |
+    sed "s:\.$NAME::g" |
     edit as-iwant-tutorial-developer/i-have/${TYPE}/src/main/java/com/example/$TYPE/${CLASS}.java "$TYPE-$NAME"
 }
