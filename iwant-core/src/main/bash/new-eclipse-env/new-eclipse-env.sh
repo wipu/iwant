@@ -312,6 +312,6 @@ targetdir
 pristine-eclipse
 workspace
 select-workspace
-#subclipse
+subclipse
 #custom-formatting
 #m2-repo
