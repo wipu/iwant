@@ -50,33 +50,33 @@ CACHE=$NEEHOME/cache
 TARGETDIR=$1
 ARCH=$2
 
-ECL_CODENAME=juno
-ECL_REL=SR1
+ECL_CODENAME=kepler
+ECL_REL=R
 ECL_DISTBASE=eclipse-java-$ECL_CODENAME-$ECL_REL
 ECL_URLBASE='http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/'$ECL_CODENAME/$ECL_REL
 
 eclipse-url-linux32() {
   DISTNAME=$ECL_DISTBASE-linux-gtk.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='6047f8c34745016e3329e6248e487e4f'
+  DISTMD5='87d80f6ca8800cee92d159d0d8c4c5db'
 }
 
 eclipse-url-linux64() {
   DISTNAME=$ECL_DISTBASE-linux-gtk-x86_64.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='8f9d32687f2350042f6c754b11f81e7f'
+  DISTMD5='280a63f83f1df0932bec656c5e2ac595'
 }
 
 eclipse-url-win32() {
   DISTNAME=$ECL_DISTBASE-win32.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='b2057e0aaab5be19205c399d740ca85a'
+  DISTMD5='51d69f035a770a8514c4dee2cbea1c1e'
 }
 
 eclipse-url-win64() {
   DISTNAME=$ECL_DISTBASE-win32-x86_64.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='9f32991030b4a7f73c6248512ff47682'
+  DISTMD5='39283f577b5f17c99e5f8a806520ac0a'
 }
 
 eclipse-dist() {
@@ -312,6 +312,6 @@ targetdir
 pristine-eclipse
 workspace
 select-workspace
-subclipse
+#subclipse
 #custom-formatting
 #m2-repo

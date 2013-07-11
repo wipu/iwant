@@ -810,6 +810,8 @@
   + make example wsdefdef pass it, not only iwant api classes
   + test by descripting
 
++ As eclipse user I want new-eclipse-env.sh to use Kepler, because it has finally fixed broken refactoring with big workspaces
+
 #################################################################
 = In progress
 #################################################################
@@ -900,7 +902,7 @@
   - test chmod in isolation
   - fix, try to find even a workaround
 
-+ @refactoring: As @developer and @buildscriptauthor I want test utilities, like mocks, for easy and nonverbose testing of iwant and iwant-based code
+- @refactoring: As @developer and @buildscriptauthor I want test utilities, like mocks, for easy and nonverbose testing of iwant and iwant-based code
   + new package: testing
   + rehearse by moving a couple of test utilities there
   + move all, creating a different package for entry2/3 stuff
