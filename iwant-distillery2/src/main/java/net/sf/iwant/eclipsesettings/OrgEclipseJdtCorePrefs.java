@@ -173,6 +173,8 @@ public class OrgEclipseJdtCorePrefs {
 			return disableable("unusedParameterWhenOverridingConcrete", value);
 		case UNUSED_PRIVATE_MEMBER:
 			return ignoreable("unusedPrivateMember", value);
+		case UNUSED_TYPE_PARAMETER:
+			return ignoreable("unusedTypeParameter", value);
 		case UNUSED_WARNING_TOKEN:
 			return ignoreable("unusedWarningToken", value);
 		case VARARGS_ARGUMENT_NEED_CAST:

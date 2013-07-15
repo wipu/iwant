@@ -73,6 +73,7 @@ import static net.sf.iwant.api.javamodules.CodeStyle.UNUSED_PARAMETER_INCLUDE_DO
 import static net.sf.iwant.api.javamodules.CodeStyle.UNUSED_PARAMETER_WHEN_IMPLEMENTING_ABSTRACT;
 import static net.sf.iwant.api.javamodules.CodeStyle.UNUSED_PARAMETER_WHEN_OVERRIDING_CONCRETE;
 import static net.sf.iwant.api.javamodules.CodeStyle.UNUSED_PRIVATE_MEMBER;
+import static net.sf.iwant.api.javamodules.CodeStyle.UNUSED_TYPE_PARAMETER;
 import static net.sf.iwant.api.javamodules.CodeStyle.UNUSED_WARNING_TOKEN;
 import static net.sf.iwant.api.javamodules.CodeStyle.VARARGS_ARGUMENT_NEED_CAST;
 
@@ -164,6 +165,7 @@ public class CodeStylePolicy {
 		d.ignore(UNUSED_PARAMETER_WHEN_IMPLEMENTING_ABSTRACT);
 		d.ignore(UNUSED_PARAMETER_WHEN_OVERRIDING_CONCRETE);
 		d.warn(UNUSED_PRIVATE_MEMBER);
+		d.warn(UNUSED_TYPE_PARAMETER);
 		d.warn(UNUSED_WARNING_TOKEN);
 		d.warn(VARARGS_ARGUMENT_NEED_CAST);
 

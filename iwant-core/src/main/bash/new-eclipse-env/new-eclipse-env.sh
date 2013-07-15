@@ -221,6 +221,8 @@ java_bracket=127,127,127
 java_string=0,204,0
 semanticHighlighting.abstractMethodInvocation.color=77,77,77
 semanticHighlighting.abstractMethodInvocation.enabled=true
+semanticHighlighting.annotationElementReference.color=77,77,77
+semanticHighlighting.annotationElementReference.enabled=true
 semanticHighlighting.localVariable.color=30,144,255
 semanticHighlighting.localVariable.enabled=true
 semanticHighlighting.localVariableDeclaration.color=30,144,255
@@ -276,6 +278,7 @@ org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownExceptionIncludeDocCom
 org.eclipse.jdt.core.compiler.problem.unusedObjectAllocation=warning
 org.eclipse.jdt.core.compiler.problem.unusedParameter=warning
 org.eclipse.jdt.core.compiler.problem.unusedParameterIncludeDocCommentReference=disabled
+org.eclipse.jdt.core.compiler.problem.unusedTypeParameter=warning
 org.eclipse.jdt.core.timeoutForParameterNameFromAttachedJavadoc=50
 EOF
 }

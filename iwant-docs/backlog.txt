@@ -812,6 +812,10 @@
 
 + As eclipse user I want new-eclipse-env.sh to use Kepler, because it has finally fixed broken refactoring with big workspaces
 
++ As eclipse user I want support for the new unusedTypeParameter and also warning by default, because more is more here
+
++ As eclipse user I want some syntax colour for annotation keys, because also here more is more
+
 #################################################################
 = In progress
 #################################################################

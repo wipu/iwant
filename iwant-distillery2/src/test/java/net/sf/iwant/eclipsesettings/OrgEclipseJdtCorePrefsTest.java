@@ -162,6 +162,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		b.append("org.eclipse.jdt.core.compiler.problem.unusedParameterWhenImplementingAbstract=disabled\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.unusedParameterWhenOverridingConcrete=disabled\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.unusedPrivateMember=warning\n");
+		b.append("org.eclipse.jdt.core.compiler.problem.unusedTypeParameter=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.unusedWarningToken=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.problem.varargsArgumentNeedCast=warning\n");
 		b.append("org.eclipse.jdt.core.compiler.source=1.6\n");
