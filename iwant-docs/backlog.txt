@@ -816,6 +816,8 @@
 
 + As eclipse user I want some syntax colour for annotation keys, because also here more is more
 
++ @bugfix new-eclipse-env.sh must put recent workspace path in native format i.e. in cygwin it must be cygpath -a -m so the carefully crafted workspace will be used instead of a fresh one elsewhere
+
 #################################################################
 = In progress
 #################################################################

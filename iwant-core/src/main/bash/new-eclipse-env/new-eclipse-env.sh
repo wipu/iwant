@@ -36,6 +36,14 @@ downloaded-tool() {
   eval "$VARNAME='$CACHED'"
 }
 
+native-path() {
+  local IN=$1
+  case "$(uname)" in
+    CYGWIN*) cygpath -a -m "$IN" ;;
+    *) echo "$IN" ;;
+  esac
+}
+
 NEESCRIPT=$(readlink -f "$0")
 NEEHOME=$(dirname "$NEESCRIPT")
 NEEHOME=$(readlink -f "$NEEHOME")
@@ -141,7 +149,7 @@ RECENT_WORKSPACES_PROTOCOL=3
 MAX_RECENT_WORKSPACES=5
 SHOW_WORKSPACE_SELECTION_DIALOG=false
 eclipse.preferences.version=1
-RECENT_WORKSPACES=$WORKSPACE
+RECENT_WORKSPACES=$(native-path "$WORKSPACE")
 EOF
 }
 
