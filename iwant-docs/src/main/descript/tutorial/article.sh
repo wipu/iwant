@@ -18,13 +18,13 @@ EOF
 conf-iwant-from-sfnet() {
 p 'TODO use a tag here.'
 edit "$REL_IHAVE/iwant-from.conf" use-remote-iwant <<EOF
-iwant-url=https://iwant.svn.sourceforge.net/svnroot/iwant/trunk
+iwant-url=https://svn.code.sf.net/p/iwant/code/trunk
 EOF
 }
 
 svn-bootstrapper() {
-BOOTSTRAPPER_REV=199
-cmd "svn export -r $BOOTSTRAPPER_REV https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/as-someone/with"
+BOOTSTRAPPER_REV=557
+cmd "svn export -r $BOOTSTRAPPER_REV https://svn.code.sf.net/p/iwant/code/trunk/iwant-bootstrapper/as-someone/with"
 out-was <<EOF
 A    with
 A    with/ant

@@ -200,7 +200,7 @@ public class IwantWorkspace implements WorkspaceDefinition {
 			b.string("TIME=$2\n");
 			b.string("\n");
 			b.string("TAG=\"${TIME}-website-update\"\n");
-			b.string("SVNBASE=https://iwant.svn.sourceforge.net/svnroot/iwant\n");
+			b.string("SVNBASE=https://svn.code.sf.net/p/iwant/code\n");
 			b.string("\n");
 			b.string("echo \"# Assuming the website target is up to date, pipe this a shell:\"\n");
 			b.string("echo svn cp -r $REV \"$SVNBASE/trunk\" \"$SVNBASE/tags/$TAG\""

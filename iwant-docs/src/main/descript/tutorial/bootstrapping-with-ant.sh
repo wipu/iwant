@@ -10,8 +10,8 @@ EOF
 }
 
 remote-get-phase1() {
-local REV=199
-cmd "svn export -r $REV https://iwant.svn.sourceforge.net/svnroot/iwant/trunk/iwant-bootstrapper/as-someone/with"
+local REV=557
+cmd "svn export -r $REV https://svn.code.sf.net/p/iwant/code/trunk/iwant-bootstrapper/as-someone/with"
 out-was <<EOF
 A    with
 A    with/ant
@@ -114,7 +114,7 @@ phase1-run-with-iwant-from-sfnet() {
 section "We'll use iwant HEAD."
 
 edit "$REL_IHAVE/iwant-from.conf" use-local-iwant <<EOF
-iwant-url=https://iwant.svn.sourceforge.net/svnroot/iwant/trunk
+iwant-url=https://svn.code.sf.net/p/iwant/code/trunk
 EOF
 }
 
