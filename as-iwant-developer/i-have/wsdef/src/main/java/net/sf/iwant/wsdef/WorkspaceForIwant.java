@@ -130,7 +130,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return iwantSrcModule("api-javamodules")
 				.mainDeps(iwantApiModel())
 				.testDeps(junit())
-				.testSuiteName(
+				.testedBy(
 						"net.sf.iwant.api.javamodules.IwantApiJavamodulesSuite")
 				.end();
 	}
@@ -143,15 +143,14 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaSrcModule iwantApiModel() {
 		return iwantSrcModule("api-model").mainDeps().testDeps(junit())
-				.testSuiteName("net.sf.iwant.api.model.IwantApiModelSuite")
-				.end();
+				.testedBy("net.sf.iwant.api.model.IwantApiModelSuite").end();
 	}
 
 	private static JavaSrcModule iwantCoreservices() {
 		return iwantSrcModule("coreservices")
 				.mainDeps(iwantApiModel(), iwantDistillery())
 				.testDeps(iwantTestarea(), junit())
-				.testSuiteName(
+				.testedBy(
 						"net.sf.iwant.coreservices." + "IwantCoreservicesSuite")
 				.end();
 	}
@@ -162,7 +161,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.testResources("src/test/resources")
 				.mainDeps(iwantTestarea(), junit())
 				.testDeps(iwantDistilleryClasspathMarker())
-				.testSuiteName("net.sf.iwant.IwantDistillerySuite").end();
+				.testedBy("net.sf.iwant.IwantDistillerySuite").end();
 	}
 
 	private static JavaBinModule iwantDistilleryClasspathMarker() {
@@ -176,7 +175,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						iwantCoreservices(), iwantDistillery())
 				.testDeps(iwantApimocks(), iwantDistilleryClasspathMarker(),
 						iwantTestarea(), junit())
-				.testSuiteName("net.sf.iwant.IwantDistillery2Suite").end();
+				.testedBy("net.sf.iwant.IwantDistillery2Suite").end();
 	}
 
 	private static JavaModule iwantDocs() {
@@ -209,8 +208,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainDeps(ant(), iwantApiModel())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
 						iwantTestarea(), iwantTestresources())
-				.testSuiteName("net.sf.iwant.plugin.ant.IwantPluginAntSuite")
-				.end();
+				.testedBy("net.sf.iwant.plugin.ant.IwantPluginAntSuite").end();
 	}
 
 	private static JavaModule iwantPluginFindbugs() {
@@ -219,7 +217,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						findbugs())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
 						iwantTestarea())
-				.testSuiteName(
+				.testedBy(
 						"net.sf.iwant.plugin.findbugs."
 								+ "IwantPluginFindbugsSuite").end();
 	}
