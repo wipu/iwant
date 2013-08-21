@@ -87,11 +87,11 @@ public class UnzippingTest extends TestCase {
 		assertEquals(testArea.root() + "/unzipped", unzipped.getCanonicalPath());
 		assertTrue(unzipped.isDirectory());
 
-		assertEquals("[svnkit-1.3.5.7406]", Arrays.toString(unzipped.list()));
-		assertEquals(1907786,
-				new File(unzipped, "svnkit-1.3.5.7406/svnkit.jar").length());
-		assertEquals(320051, new File(unzipped,
-				"svnkit-1.3.5.7406/svnkit-cli.jar").length());
+		assertEquals("[svnkit-1.7.10]", Arrays.toString(unzipped.list()));
+		assertEquals(3382479, new File(unzipped,
+				"svnkit-1.7.10/lib/svnkit-1.7.10.jar").length());
+		assertEquals(339120, new File(unzipped,
+				"svnkit-1.7.10/lib/svnkit-cli-1.7.10.jar").length());
 	}
 
 }

@@ -186,6 +186,34 @@ public class EmmaCoverageTest extends TestCase {
 				coverage.contentDescriptor());
 	}
 
+	public void testJvmArgsContainsSaneDefaultsIfNotSpecified()
+			throws Exception {
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "Hello");
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.using(emma());
+		EmmaCoverage coverage = EmmaCoverage.with()
+				.name("instrtest-emma-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("Hello").instrumentations(instr).end();
+
+		assertEquals("[-XX:-UseSplitVerifier]", coverage.jvmargs().toString());
+	}
+
+	public void testDefaultJvmArgsCanBeCleared() throws Exception {
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "Hello");
+		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
+				.using(emma());
+		EmmaCoverage coverage = EmmaCoverage.with()
+				.name("instrtest-emma-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("Hello").noJvmArgs()
+				.instrumentations(instr).end();
+
+		assertEquals(0, coverage.jvmargs().size());
+	}
+
 	public void testEmmaCoverageProducesTheRequestedEcFile() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Hello");

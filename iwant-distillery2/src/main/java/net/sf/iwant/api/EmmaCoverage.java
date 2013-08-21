@@ -53,6 +53,10 @@ public class EmmaCoverage extends Target {
 		private Path mainClassArgumentsFile;
 		private final List<String> jvmargs = new ArrayList<String>();
 
+		public EmmaCoverageSpex() {
+			jvmArgs("-XX:-UseSplitVerifier");
+		}
+
 		public EmmaCoverageSpex name(String name) {
 			this.name = name;
 			return this;
@@ -105,6 +109,11 @@ public class EmmaCoverage extends Target {
 			for (Path classes : nonInstrumentedDeps) {
 				this.classpath.add(new NonInstrumentedClasspathItem(classes));
 			}
+			return this;
+		}
+
+		public EmmaCoverageSpex noJvmArgs() {
+			jvmargs.clear();
 			return this;
 		}
 
@@ -309,6 +318,10 @@ public class EmmaCoverage extends Target {
 
 	public Path mainClassArgumentsFile() {
 		return mainClassArgumentsFile;
+	}
+
+	public List<String> jvmargs() {
+		return jvmargs;
 	}
 
 }

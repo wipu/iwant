@@ -176,7 +176,7 @@ public class Iwant {
 		@Override
 		public URL svnkitUrl() {
 			return url("http://www.svnkit.com/"
-					+ "org.tmatesoft.svn_1.3.5.standalone.nojna.zip");
+					+ "org.tmatesoft.svn_1.7.10.standalone.nojna.zip");
 		}
 
 		@Override
@@ -774,13 +774,11 @@ public class Iwant {
 				urlString = url.getFile();
 			}
 			File svnkit = unzippedSvnkit();
-			File svnkitJar = new File(svnkit, "svnkit-1.3.5.7406/svnkit.jar");
-			File svnkitCliJar = new File(svnkit,
-					"svnkit-1.3.5.7406/svnkit-cli.jar");
+			File svnkitLib = new File(svnkit, "svnkit-1.7.10/lib");
+			List<File> svnkitJars = Arrays.asList(svnkitLib.listFiles());
 			enableHttpProxy();
-			runJavaMain(true, false, "org.tmatesoft.svn.cli.SVN",
-					Arrays.asList(svnkitJar, svnkitCliJar), "export",
-					urlString, exported.getCanonicalPath());
+			runJavaMain(true, false, "org.tmatesoft.svn.cli.SVN", svnkitJars,
+					"export", urlString, exported.getCanonicalPath());
 			return exported;
 		} catch (RuntimeException e) {
 			throw e;

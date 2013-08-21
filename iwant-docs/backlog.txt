@@ -818,9 +818,16 @@
 
 + @bugfix new-eclipse-env.sh must put recent workspace path in native format i.e. in cygwin it must be cygpath -a -m so the carefully crafted workspace will be used instead of a fresh one elsewhere
 
++ As svn 1.7 user I want iwant to use a newer svnkit so it works with the newer working copy format
+
 #################################################################
 = In progress
 #################################################################
+
+- As @developer and @buildscriptuser I want -XX:-UseSplitVerifier added automatically to EmmaCoverage jvm args so my tests don't crash when using Oracle JDK 1.7
+  + add in spex constructor
+  + make it also possible to clear the default
+  - upgrade iwant for iwant to make own tests pass again on 1.7
 
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased

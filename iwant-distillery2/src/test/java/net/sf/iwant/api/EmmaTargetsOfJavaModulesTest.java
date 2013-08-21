@@ -267,4 +267,15 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 						.ingredients().toString());
 	}
 
+	public void testEmmaCoverageDefaultJvmArgsContainsUseSplitVerifierSoJava17CanBeUsed() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").end();
+
+		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
+				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
+
+		EmmaCoverage coverage = emmaTargets.emmaCoverageOf(mod);
+		assertTrue(coverage.jvmargs().contains("-XX:-UseSplitVerifier"));
+	}
+
 }

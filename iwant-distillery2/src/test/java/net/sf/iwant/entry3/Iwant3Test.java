@@ -580,8 +580,8 @@ public class Iwant3Test extends TestCase {
 		assertEquals(
 				testArea.root()
 						+ "/as-example-developer/i-have/wsdefdef/src/main/java/com/example/wsdef/ExampleWs.java"
-						+ ":1: reached end of file while parsing\n" + "crap\n"
-						+ "^\n" + "1 error\n", errIgnoringDebugLog());
+						+ ":1: error: reached end of file while parsing\n"
+						+ "crap\n" + "^\n" + "1 error\n", errIgnoringDebugLog());
 	}
 
 	/**
