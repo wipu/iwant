@@ -95,7 +95,7 @@ public class TargetRefreshTask implements Task {
 				File ingredientDescriptor = caches
 						.contentDescriptorOf(targetIngredient);
 				if (!ingredientDescriptor.exists()
-						|| isModifiedSince(ingredientDescriptor, time)) {
+						|| ingredientDescriptor.lastModified() > time) {
 					return TaskDirtiness.DIRTY_TARGET_INGREDIENT_MODIFIED;
 				}
 			} else {

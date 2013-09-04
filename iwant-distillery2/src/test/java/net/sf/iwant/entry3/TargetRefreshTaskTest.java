@@ -243,6 +243,21 @@ public class TargetRefreshTaskTest extends TestCase {
 				.dirtiness());
 	}
 
+	public void testTaskIsDirtyIfFileUnderSourceDirWasModifiedAtTheSameTimeAsDescriptor()
+			throws IOException {
+		File srcDir = testArea.newDir("src");
+		testArea.hasFile("src/src-file", "src-content");
+
+		TargetMock target = new TargetMock("target");
+		target.hasIngredients(new ExternalSource(srcDir));
+		target.hasContentDescriptor("current");
+		cacheContainsContentOf(target);
+		cacheContainsDescriptor(target, "current");
+
+		assertEquals(TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED, task(target)
+				.dirtiness());
+	}
+
 	public void testTaskIsDirtyIfSourceIngredientIsMissing() throws IOException {
 		File srcDir = new File(testArea.root(), "non-existent");
 
@@ -292,6 +307,31 @@ public class TargetRefreshTaskTest extends TestCase {
 
 		assertEquals(TaskDirtiness.DIRTY_TARGET_INGREDIENT_MODIFIED,
 				task(target).dirtiness());
+	}
+
+	/**
+	 * Often refresh is so fast that we want to optimize like this
+	 */
+	public void testTargetIsCleanIfIngredientDescriptorIsAsNewAsTargetsOwnDescriptor() {
+		TargetMock ingredient = new TargetMock("ingredient");
+		ingredient.hasNoIngredients();
+		ingredient.hasContent("current");
+		ingredient.hasContentDescriptor("current");
+		cacheContainsContentOf(ingredient).setLastModified(
+				System.currentTimeMillis() - 2000);
+		cacheContainsDescriptor(ingredient, "current").setLastModified(
+				System.currentTimeMillis() + 2000);
+
+		TargetMock target = new TargetMock("target");
+		target.hasIngredients(ingredient);
+		target.hasContentDescriptor("current");
+		cacheContainsContentOf(target);
+		File ownDescriptor = cacheContainsDescriptor(target, "current");
+
+		new File(cachedDescriptors, "ingredient").setLastModified(ownDescriptor
+				.lastModified());
+
+		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 	}
 
 	public void testTargetIsDirtyIfIngredientDescriptorIsMissing() {

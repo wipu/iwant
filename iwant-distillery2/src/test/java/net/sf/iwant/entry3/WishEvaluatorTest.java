@@ -736,7 +736,8 @@ public class WishEvaluatorTest extends TestCase {
 	 * Before the fix this failed, because only source timestamps were checked,
 	 * target dirtiness relied on refreshing them during the same run.
 	 */
-	public void testTargetIsRefreshedEvenIfATargetIngredientWasRefreshedDuringEarlierRun() {
+	public void testTargetIsRefreshedEvenIfATargetIngredientWasRefreshedDuringEarlierRun()
+			throws InterruptedException {
 		TargetMock a = new TargetMock("a");
 		a.hasContentDescriptor("a descr 1");
 		a.hasContent("a content");
@@ -767,11 +768,20 @@ public class WishEvaluatorTest extends TestCase {
 
 		// first a successful refresh so a cached descriptors exist
 		evaluator.iwant("target/c/as-path", ws);
-		// then ingredient b is refreshed directly
+		assertEquals(1, c.timesPathWasCalled());
+		assertEquals(1, b.timesPathWasCalled());
+		assertEquals(1, a.timesPathWasCalled());
+
+		// then time passes and ingredient b is refreshed directly
+		b.hasContentDescriptor("modified b");
+		Thread.sleep(1000L);
 		evaluator.iwant("target/b/as-path", ws);
+		assertEquals(1, c.timesPathWasCalled());
+		assertEquals(2, b.timesPathWasCalled());
+		assertEquals(1, a.timesPathWasCalled());
+
 		// c as path requires a refresh even if no source ingredients were
 		// touched
-		assertEquals(1, c.timesPathWasCalled());
 		evaluator.iwant("target/c/as-path", ws);
 		assertEquals(2, c.timesPathWasCalled());
 	}
