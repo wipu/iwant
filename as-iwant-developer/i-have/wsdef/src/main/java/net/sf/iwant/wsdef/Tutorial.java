@@ -128,7 +128,7 @@ public class Tutorial extends Target {
 
 		index.append("</body></html>\n");
 
-		FileUtils.writeStringToFile(new File(dest, "index.html"),
+		FileUtils.writeStringToFile(new File(dest, "tutorial.html"),
 				index.toString());
 
 		FileUtils.copyFileToDirectory(ctx.cached(styleCss), dest);

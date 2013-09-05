@@ -7,32 +7,35 @@
 <body>
 <h1 id="maintitle">iwant</h1>
 
-<p>
-"As a developer, I don't tell my build script what to <code>do</code>,
-I tell what <code>iwant</code>." 
+<p class="text">
+"As a developer, I don't want to tell my build script what to <i>do</i>,
+I want to just tell <i>what (file) I want</i> so the script can then decide what really needs to be done." 
 </p>
 
-<p>
-<code>iwant</code> is not yet ready for use, but you can track its progress and plans in the
+<p class="text">
+<code>iwant</code> is a build system. Some of its key features are:
+<ul class="text">
+<li>The build programs are written in Java, which gives the author access to the full power of IDEs and Java libraries.</li>
+<li>The API for writing build programs is fluent, resulting in compact and readable code.</li>
+<li>The build script author does not need to declare dependencies. If a target (a file with dynamically defined content) refers to another path (source or target) in its definition, <code>iwant</code> automatically tracks this as a dependency.</li>
+<li>Multi-threaded building is supported by default, transparently. It only needs to be disabled for targets that don't support it (for example because they use shared resources.)</li>
+<li>Command-line user interface utilizes bash completion so the user can avoid a lot of typing by using <code>tab</code></li>
+<li><code>iwant</code> bootstraps itself from a specific revision, so the build system itself is also under configuration management, resulting in repeatable build results.</li>
+<li>Target evaluation is <i>referentially transparent</i>, which enables maximal laziness. Side effects (like deployments) are explicitly declared in a different way.</li>
+</ul>
+</p>
+
+<p class="text">
+Some of the most important features, like <i>taking </i><code>iwant</code> <i>into use</i>, are documented in the <a href="tutorial.html">tutorial</a>, in a <i>documentation driven</i> manner
+(by <a href="http://descript.sf.net/">descript</a>). 
+</p>
+
+<p class="text">You can track the project progress and plans in the
 <a href="http://iwant.svn.sourceforge.net/viewvc/iwant/trunk/iwant-docs/backlog.txt?view=markup">
 backlog.txt</a>.
 </p>
 
-<p>
-All implemented features are also documented in the <a href="tutorial.html">tutorial</a>, since
-this project is <i>documentation driven</i>
-(by <a href="http://descript.sf.net/">descript</a>). 
-</p>
-
-<p>
-Alternative bootstrapping tutorial: <a href="bootstrapping-with-ant.html">Bootstrapping iwant with ant</a>.
-</p>
-
-<p>
-New bootstrapping tutorial for bash, work in progress: <a href="bootstrapping-with-bash.html">Bootstrapping iwant with bash</a>.
-</p>
-
-<p>
+<p class="text">
 <a href="http://sourceforge.net/projects/iwant"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=277479&amp;type=10" width="80" height="15" alt="Get iwant at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>
 </p>
 

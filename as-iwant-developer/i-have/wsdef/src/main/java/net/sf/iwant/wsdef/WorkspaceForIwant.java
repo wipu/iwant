@@ -27,7 +27,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	@Override
 	public List<? extends Target> targets() {
 		return Arrays.asList(emmaCoverageReport(), listOfExternalDeps(),
-				localTutorial(), remoteTutorial());
+				localWebsite(), remoteTutorial());
 	}
 
 	@Override
@@ -92,6 +92,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return Tutorial.local();
 	}
 
+	private static Target localWebsite() {
+		return new Website("local-website", localTutorial());
+	}
+	
 	private static Target remoteTutorial() {
 		return Tutorial.remote();
 	}

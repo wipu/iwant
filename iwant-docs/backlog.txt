@@ -837,8 +837,11 @@
 
 - As @developer I want fresh documentation on the project website so I can gradually start promoting the project
   + grep away svn co output in local bootstrapping tutorial
-  - target for full website, not only tutorial
+  + target for full website, not only tutorial
   - website content improvements
+    + main features
+  - remote website
+  - deploy (manually)
 
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
