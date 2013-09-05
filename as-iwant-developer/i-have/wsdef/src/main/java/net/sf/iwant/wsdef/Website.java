@@ -5,12 +5,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+
+import org.apache.commons.io.FileUtils;
 
 public class Website extends Target {
 
@@ -49,7 +49,7 @@ public class Website extends Target {
 
 	@Override
 	public String contentDescriptor() {
-		return getClass().getCanonicalName()+":"+ingredients();
+		return getClass().getCanonicalName() + ":" + ingredients();
 	}
 
 }
