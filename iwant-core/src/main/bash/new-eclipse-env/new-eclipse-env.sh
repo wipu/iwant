@@ -92,7 +92,7 @@ eclipse-dist() {
   downloaded-tool ECLIPSEDIST "$DISTURL" "$DISTNAME" "$DISTMD5" "$CACHE"
 }
 
-downloaded-tool SUBCLIPSEDIST 'http://subclipse.tigris.org/files/documents/906/47653/site-1.6.12.zip' subclipse-site-1.6.12.zip "77a844be91a76d39d1957e6eec1a6e2b" "$CACHE"
+downloaded-tool SUBCLIPSEDIST 'http://subclipse.tigris.org/files/documents/906/49336/site-1.10.2.zip' subclipse-site-1.10.2.zip "690f45551c1d5f9827c3080221dbb294" "$CACHE"
 
 targetdir() {
   [ -e "$TARGETDIR" ] && die "Refusing to touch the existing TARGETDIR: $TARGETDIR"
@@ -156,19 +156,8 @@ EOF
 subclipse() {
   log "Unzipping subclipse"
   unzip -q "$SUBCLIPSEDIST" \
-    features/com.collabnet.subversion.merge.feature_2.1.0.jar \
-    features/org.tigris.subversion.clientadapter.feature_1.6.12.jar \
-    features/org.tigris.subversion.clientadapter.javahl.feature_1.6.12.jar \
-    features/org.tigris.subversion.subclipse.graph.feature_1.0.8.jar \
-    features/org.tigris.subversion.subclipse_1.6.12.jar \
-    plugins/com.collabnet.subversion.merge_2.1.0.jar \
-    plugins/org.tigris.subversion.clientadapter.javahl_1.6.12.jar \
-    plugins/org.tigris.subversion.clientadapter_1.6.12.jar \
-    plugins/org.tigris.subversion.subclipse.core_1.6.12.jar \
-    plugins/org.tigris.subversion.subclipse.core_1.6.8.jar \
-    plugins/org.tigris.subversion.subclipse.doc_1.3.0.jar \
-    plugins/org.tigris.subversion.subclipse.graph_1.0.8.jar \
-    plugins/org.tigris.subversion.subclipse.ui_1.6.12.jar \
+    "features/*.jar" \
+    "plugins/*.jar" \
   -d "$ECLIPSE/"
 }
 

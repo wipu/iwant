@@ -839,6 +839,10 @@
   + remote website
   + deploy (manually)
 
++ As svn+eclipse user I want a newer subclipse version for the script-generated eclipse so it no more complains about javahl, after some os-level upgrade I have made
+  + upgrade
+  + simplify unzip function to not mention jars by name
+
 #################################################################
 = In progress
 #################################################################
