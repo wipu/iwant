@@ -843,6 +843,10 @@
   + upgrade
   + simplify unzip function to not mention jars by name
 
++ @bugfix escape special characters in recently used workspace path, UTF-8 does not work
+  * thanks Geir Sande for the report
+  + use native2ascii (comes with JDK)
+
 #################################################################
 = In progress
 #################################################################
