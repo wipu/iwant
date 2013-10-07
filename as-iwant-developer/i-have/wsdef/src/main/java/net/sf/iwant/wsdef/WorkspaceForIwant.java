@@ -213,6 +213,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaModule iwantPluginAnt() {
 		return iwantSrcModule("plugin-ant")
+				.testResources("src/test/resources")
 				.mainDeps(ant(), iwantApiModel())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
 						iwantTestarea(), iwantTestresources())

@@ -847,6 +847,10 @@
   * thanks Geir Sande for the report
   + use native2ascii (comes with JDK)
 
++ As @buildscriptauthor I want to define a Jar target so I can publish my classes as jars
+  + also Unzipped, to test the jar
+  + tdd it
+
 #################################################################
 = In progress
 #################################################################

@@ -31,7 +31,7 @@ public class UntarredTest extends TestCase {
 		caches = new CachesMock(wsRoot);
 		ctx = new TargetEvaluationContextMock(iwant, caches);
 		ctx.hasWsRoot(wsRoot);
-		cached = new File(testArea.root(), "cached");
+		cached = testArea.newDir("cached");
 		caches.cachesModifiableTargetsAt(cached);
 	}
 
