@@ -6,6 +6,9 @@ import junit.framework.TestCase;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
+import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionCode;
+import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionConfiguration;
+import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionRuntimeData;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
@@ -78,11 +81,23 @@ public class JavaBinModuleTest extends TestCase {
 				.source());
 	}
 
+	public void testCharacteristicsForBinaryModuleInsideLibraryModule() {
+		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
+		JavaBinModule bin = JavaBinModule.named("mod.jar")
+				.has(ProductionCode.class).inside(libsModule);
+
+		assertEquals(
+				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$ProductionCode]",
+				bin.characteristics().toString());
+		assertTrue(bin.doesHave(ProductionRuntimeData.class));
+	}
+
 	// path provider module
 
 	public void testBinModuleThatProvidesAMainArtifactTarget() {
 		Target libJar = new HelloTarget("lib.jar", "");
-		JavaBinModule libJarModule = JavaBinModule.providing(libJar, null);
+		JavaBinModule libJarModule = JavaBinModule.providing(libJar, null)
+				.end();
 
 		assertEquals("lib.jar", libJarModule.name());
 		assertSame(libJar, libJarModule.mainArtifact());
@@ -90,7 +105,7 @@ public class JavaBinModuleTest extends TestCase {
 
 	public void testEclipsePathsOfModuleThatProvidesAMainArtifactTarget() {
 		Target libJar = new HelloTarget("lib.jar", "");
-		JavaBinModule libJarModule = JavaBinModule.providing(libJar);
+		JavaBinModule libJarModule = JavaBinModule.providing(libJar).end();
 
 		assertEquals(cachedTargets + "/lib.jar",
 				libJarModule.eclipseBinaryReference(evCtx));
@@ -100,7 +115,8 @@ public class JavaBinModuleTest extends TestCase {
 	public void testEclipsePathsOfModuleThatProvidesAMainArtifactTargetWithSources() {
 		Target libJar = new HelloTarget("lib.jar", "");
 		Target libSrc = new HelloTarget("lib-src.zip", "");
-		JavaBinModule libJarModule = JavaBinModule.providing(libJar, libSrc);
+		JavaBinModule libJarModule = JavaBinModule.providing(libJar, libSrc)
+				.end();
 
 		assertEquals(cachedTargets + "/lib.jar",
 				libJarModule.eclipseBinaryReference(evCtx));
@@ -112,7 +128,7 @@ public class JavaBinModuleTest extends TestCase {
 		assertTrue(JavaBinModule.named("lib")
 				.inside(JavaSrcModule.with().name("libs").end()).mainDeps()
 				.isEmpty());
-		assertTrue(JavaBinModule.providing(Source.underWsroot("lib"))
+		assertTrue(JavaBinModule.providing(Source.underWsroot("lib")).end()
 				.mainDeps().isEmpty());
 	}
 
@@ -120,7 +136,18 @@ public class JavaBinModuleTest extends TestCase {
 		Source src = Source.underWsroot("src");
 
 		assertSame(src, JavaBinModule.providing(Source.underWsroot("bin"), src)
-				.source());
+				.end().source());
+	}
+
+	public void testCharacteristicsOfProviderModule() {
+		JavaBinModule mod = JavaBinModule
+				.providing(new HelloTarget("lib.jar", ""), null)
+				.has(ProductionConfiguration.class).end();
+
+		assertEquals(
+				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$ProductionConfiguration]",
+				mod.characteristics().toString());
+		assertTrue(mod.doesHave(ProductionRuntimeData.class));
 	}
 
 }

@@ -53,8 +53,8 @@ public class WishEvaluatorTest extends TestCase {
 	private JavaSrcModule wsdefdefJavaModule;
 	private JavaSrcModule wsdefJavaModule;
 	private Set<JavaBinModule> iwantApiModules = Collections
-			.singleton(JavaBinModule.providing(Source
-					.underWsroot("mock-iwant-classes")));
+			.singleton(JavaBinModule.providing(
+					Source.underWsroot("mock-iwant-classes")).end());
 	private InputStream originalIn;
 	private PrintStream originalOut;
 	private PrintStream originalErr;

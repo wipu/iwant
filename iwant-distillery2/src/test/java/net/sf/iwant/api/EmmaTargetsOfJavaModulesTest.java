@@ -53,7 +53,8 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 	}
 
 	public void testTargetsFromOneBinaryModule() {
-		JavaBinModule mod = JavaBinModule.providing(Source.underWsroot("lib"));
+		JavaBinModule mod = JavaBinModule.providing(Source.underWsroot("lib"))
+				.end();
 
 		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
 				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
@@ -126,15 +127,15 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 	public void testCoverageOfJavaSrcModuleWithCumulativeDeps() {
 		JavaBinModule bin1 = JavaBinModule
-				.providing(Source.underWsroot("bin1"));
+				.providing(Source.underWsroot("bin1")).end();
 		JavaSrcModule src1 = JavaSrcModule.with().name("src1").mainJava("src")
 				.mainDeps(bin1).end();
 		JavaSrcModule src2 = JavaSrcModule.with().name("src2").mainJava("src")
 				.end();
 		JavaBinModule bin2 = JavaBinModule
-				.providing(Source.underWsroot("bin2"));
-		JavaBinModule testLib = JavaBinModule.providing(Source
-				.underWsroot("testLib"));
+				.providing(Source.underWsroot("bin2")).end();
+		JavaBinModule testLib = JavaBinModule.providing(
+				Source.underWsroot("testLib")).end();
 
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
 				.testJava("test").mainDeps(src1, bin2, src2).testDeps(testLib)

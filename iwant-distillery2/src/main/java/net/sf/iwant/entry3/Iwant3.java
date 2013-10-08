@@ -72,8 +72,10 @@ public class Iwant3 {
 		Path combinedIwantSources = combinedIwantSources();
 		SortedSet<JavaModule> iwantApiModules = new TreeSet<JavaModule>();
 		for (File apiClasses : apiClassLocations) {
-			iwantApiModules.add(JavaBinModule.providing(new ExternalSource(
-					apiClasses), combinedIwantSources));
+			iwantApiModules
+					.add(JavaBinModule.providing(
+							new ExternalSource(apiClasses),
+							combinedIwantSources).end());
 		}
 		return iwantApiModules;
 	}

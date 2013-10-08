@@ -2,6 +2,7 @@ package net.sf.iwant.api.javamodules;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import net.sf.iwant.api.model.Path;
@@ -10,16 +11,21 @@ import net.sf.iwant.api.model.TargetEvaluationContext;
 
 public abstract class JavaBinModule extends JavaModule {
 
+	private JavaBinModule(
+			Set<Class<? extends JavaModuleCharacteristic>> characteristics) {
+		super(characteristics);
+	}
+
 	public static IwantBinModuleSpex named(String name) {
 		return new IwantBinModuleSpex(name);
 	}
 
-	public static JavaBinModule providing(Path mainArtifact) {
+	public static PathProviderSpex providing(Path mainArtifact) {
 		return providing(mainArtifact, null);
 	}
 
-	public static JavaBinModule providing(Path mainArtifact, Path sources) {
-		return new PathProvider(mainArtifact, sources);
+	public static PathProviderSpex providing(Path mainArtifact, Path sources) {
+		return new PathProviderSpex(mainArtifact, sources);
 	}
 
 	public abstract Path source();
@@ -32,6 +38,7 @@ public abstract class JavaBinModule extends JavaModule {
 
 		private String name;
 		private String src;
+		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<Class<? extends JavaModuleCharacteristic>>();
 
 		public IwantBinModuleSpex(String name) {
 			this.name = name;
@@ -42,8 +49,15 @@ public abstract class JavaBinModule extends JavaModule {
 			return this;
 		}
 
+		public IwantBinModuleSpex has(
+				Class<? extends JavaModuleCharacteristic> characteristic) {
+			this.characteristics.add(characteristic);
+			return this;
+		}
+
 		public JavaBinModule inside(JavaSrcModule libsModule) {
-			return new ProvidedBySrcModule(name, libsModule, src);
+			return new ProvidedBySrcModule(name, libsModule, src,
+					characteristics);
 		}
 
 	}
@@ -55,7 +69,9 @@ public abstract class JavaBinModule extends JavaModule {
 		private String srcZip;
 
 		public ProvidedBySrcModule(String name, JavaSrcModule libsModule,
-				String srcZip) {
+				String srcZip,
+				Set<Class<? extends JavaModuleCharacteristic>> characteristics) {
+			super(characteristics);
 			this.name = name;
 			this.libsModule = libsModule;
 			this.srcZip = srcZip;
@@ -102,12 +118,37 @@ public abstract class JavaBinModule extends JavaModule {
 
 	}
 
+	public static class PathProviderSpex {
+
+		private final Path mainArtifact;
+		private final Path sources;
+		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<Class<? extends JavaModuleCharacteristic>>();
+
+		private PathProviderSpex(Path mainArtifact, Path sources) {
+			this.mainArtifact = mainArtifact;
+			this.sources = sources;
+		}
+
+		public PathProviderSpex has(
+				Class<? extends JavaModuleCharacteristic> characteristic) {
+			this.characteristics.add(characteristic);
+			return this;
+		}
+
+		public JavaBinModule end() {
+			return new PathProvider(mainArtifact, sources, characteristics);
+		}
+
+	}
+
 	private static class PathProvider extends JavaBinModule {
 
 		private final Path mainArtifact;
 		private final Path sources;
 
-		public PathProvider(Path mainArtifact, Path sources) {
+		public PathProvider(Path mainArtifact, Path sources,
+				Set<Class<? extends JavaModuleCharacteristic>> characteristics) {
+			super(characteristics);
 			this.mainArtifact = mainArtifact;
 			this.sources = sources;
 		}

@@ -80,9 +80,9 @@ public class WorkspaceDefinitionContextImpl implements
 
 				Set<JavaModule> mods = new LinkedHashSet<JavaModule>();
 				mods.add(JavaBinModule.providing(antPluginClasses.end(),
-						antPluginJava));
+						antPluginJava).end());
 				mods.addAll(iwantApiModules);
-				mods.add(JavaBinModule.providing(antJar));
+				mods.add(JavaBinModule.providing(antJar).end());
 				return mods;
 			}
 

@@ -5,6 +5,13 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import net.sf.iwant.api.javamodules.StandardCharacteristics.BuildUtility;
+import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionCode;
+import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionConfiguration;
+import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionRuntimeData;
+import net.sf.iwant.api.javamodules.StandardCharacteristics.TestCode;
+import net.sf.iwant.api.javamodules.StandardCharacteristics.TestRuntimeData;
+import net.sf.iwant.api.javamodules.StandardCharacteristics.TestUtility;
 import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
@@ -277,11 +284,11 @@ public class JavaSrcModuleTest extends TestCase {
 				.mainJava("src")
 				.mainDeps(
 						JavaBinModule.providing(
-								Source.underWsroot("main-lib.jar"), null))
+								Source.underWsroot("main-lib.jar"), null).end())
 				.testJava("test")
 				.testDeps(
 						JavaBinModule.providing(
-								Source.underWsroot("test-lib.jar"), null))
+								Source.underWsroot("test-lib.jar"), null).end())
 				.end().testArtifact();
 
 		assertEquals("tested2-test-classes", tests.name());
@@ -338,6 +345,60 @@ public class JavaSrcModuleTest extends TestCase {
 		assertSame(encoding, main.encoding());
 		JavaClasses test = (JavaClasses) mod.testArtifact();
 		assertSame(encoding, test.encoding());
+	}
+
+	public void testNoCharacteristicsByDefault() {
+		assertTrue(JavaSrcModule.with().name("mod").mainJava("src").end()
+				.characteristics().isEmpty());
+	}
+
+	public void testCharacteristicsReturnsGivenStandardCharacteristics() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.has(ProductionConfiguration.class).has(ProductionCode.class)
+				.end();
+
+		assertEquals(
+				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$ProductionCode,"
+						+ " interface net.sf.iwant.api.javamodules.StandardCharacteristics$ProductionConfiguration]",
+				mod.characteristics().toString());
+	}
+
+	public void testDoesHaveTellsIfModuleHasTheAskedCharacteristicOrItsSubType() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.has(ProductionCode.class).end();
+
+		assertTrue(mod.doesHave(ProductionCode.class));
+		assertTrue(mod.doesHave(ProductionRuntimeData.class));
+		assertTrue(mod.doesHave(JavaModuleCharacteristic.class));
+
+		assertFalse(mod.doesHave(ProductionConfiguration.class));
+		assertFalse(mod.doesHave(TestUtility.class));
+	}
+
+	public void testHavingCharacteristicDoesNotImplyHavingItsSubType() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.has(ProductionRuntimeData.class).end();
+
+		assertFalse(mod.doesHave(ProductionCode.class));
+	}
+
+	private interface CustomCharacteristic extends TestRuntimeData {
+		// just a marker
+	}
+
+	public void testCustomCharacteristic() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.has(CustomCharacteristic.class).has(BuildUtility.class).end();
+
+		assertEquals(
+				"[interface net.sf.iwant.api.javamodules.JavaSrcModuleTest$CustomCharacteristic,"
+						+ " interface net.sf.iwant.api.javamodules.StandardCharacteristics$BuildUtility]",
+				mod.characteristics().toString());
+		assertTrue(mod.doesHave(CustomCharacteristic.class));
+		assertTrue(mod.doesHave(TestRuntimeData.class));
+		assertTrue(mod.doesHave(BuildUtility.class));
+
+		assertFalse(mod.doesHave(TestCode.class));
 	}
 
 }

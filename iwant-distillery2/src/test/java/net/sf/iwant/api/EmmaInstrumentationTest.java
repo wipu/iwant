@@ -301,8 +301,8 @@ public class EmmaInstrumentationTest extends TestCase {
 	}
 
 	public void testCreationFromJavaBinModule() throws IOException {
-		JavaBinModule mod = JavaBinModule.providing(Source
-				.underWsroot("lib.jar"));
+		JavaBinModule mod = JavaBinModule.providing(
+				Source.underWsroot("lib.jar")).end();
 
 		EmmaInstrumentation instr = EmmaInstrumentation.of(mod).using(emma());
 

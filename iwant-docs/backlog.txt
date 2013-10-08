@@ -851,6 +851,12 @@
   + also Unzipped, to test the jar
   + tdd it
 
++ As @buildscriptauthor I want to define characteristics for my java modules so I can for example make sure only deployable modules go into each deployment
+  + interfaces
+  + test extending with own
+  + src module support
+  + bin module support, requires changes to fluent specification
+
 #################################################################
 = In progress
 #################################################################

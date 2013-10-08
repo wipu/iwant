@@ -89,7 +89,7 @@ public class EclipseSettingsTest extends TestCase {
 	public void testMutationUsingWsdefdefAndWsdefAndAnotherModuleUsedByWsdef() {
 		JavaModule iwantClasses = JavaBinModule.providing(
 				TargetMock.ingredientless("iwant-classes"),
-				TargetMock.ingredientless("combined-iwant-sources"));
+				TargetMock.ingredientless("combined-iwant-sources")).end();
 		JavaModule wsdefdef = JavaSrcModule.with().name("test-wsdefdef")
 				.locationUnderWsRoot("as-someone/i-have/wsdefdef")
 				.mainJava("src/main/java").mainDeps(iwantClasses).end();
@@ -150,9 +150,9 @@ public class EclipseSettingsTest extends TestCase {
 	public void testTestJavaAndTestDepsAffectDotClasspath() {
 		JavaModule testTools1 = JavaBinModule.providing(
 				TargetMock.ingredientless("test-tools-1"),
-				TargetMock.ingredientless("test-tools-1-src"));
+				TargetMock.ingredientless("test-tools-1-src")).end();
 		JavaModule testTools2 = JavaBinModule.providing(
-				TargetMock.ingredientless("test-tools-2-srcless"), null);
+				TargetMock.ingredientless("test-tools-2-srcless"), null).end();
 
 		JavaModule mod1 = JavaSrcModule.with().name("mod1")
 				.locationUnderWsRoot("mod1").mainJava("src").testJava("tests1")

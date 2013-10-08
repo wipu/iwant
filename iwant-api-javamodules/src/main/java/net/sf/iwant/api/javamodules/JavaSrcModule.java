@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,7 +44,9 @@ public class JavaSrcModule extends JavaModule {
 			List<Source> generatorSourcesToFollow,
 			CodeStylePolicy codeStylePolicy,
 			CodeFormatterPolicy codeFormatterPolicy,
-			StringFilter testClassNameFilter, Charset encoding) {
+			StringFilter testClassNameFilter, Charset encoding,
+			Set<Class<? extends JavaModuleCharacteristic>> characteristics) {
+		super(characteristics);
 		this.name = name;
 		this.generatorSourcesToFollow = generatorSourcesToFollow;
 		this.codeStylePolicy = codeStylePolicy;
@@ -84,6 +87,7 @@ public class JavaSrcModule extends JavaModule {
 		private String locationUnderWsRoot;
 		private StringFilter testClassNameFilter;
 		private Charset encoding;
+		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<Class<? extends JavaModuleCharacteristic>>();
 
 		public JavaSrcModule end() {
 			if (locationUnderWsRoot != null && relativeParentDir != null) {
@@ -101,7 +105,8 @@ public class JavaSrcModule extends JavaModule {
 					mainResources, testJavas, testResources, mainDeps,
 					testDeps, generatedClasses, generatedSrc,
 					generatorSourcesToFollow, codeStylePolicy,
-					codeFormatterPolicy, testClassNameFilter, encoding);
+					codeFormatterPolicy, testClassNameFilter, encoding,
+					characteristics);
 		}
 
 		private static String normalizedRelativeParentDir(String value) {
@@ -223,6 +228,12 @@ public class JavaSrcModule extends JavaModule {
 
 		public IwantSrcModuleSpex testedBy(StringFilter testClassNameFilter) {
 			this.testClassNameFilter = testClassNameFilter;
+			return this;
+		}
+
+		public IwantSrcModuleSpex has(
+				Class<? extends JavaModuleCharacteristic> characteristic) {
+			this.characteristics.add(characteristic);
 			return this;
 		}
 

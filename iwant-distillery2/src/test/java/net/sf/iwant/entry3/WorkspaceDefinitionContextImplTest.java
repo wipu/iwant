@@ -25,12 +25,12 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		iwantApiModule1 = JavaBinModule.providing(Source
-				.underWsroot("iwant-api-1"));
-		iwantApiModule2 = JavaBinModule.providing(Source
-				.underWsroot("iwant-api-2"));
+		iwantApiModule1 = JavaBinModule.providing(
+				Source.underWsroot("iwant-api-1")).end();
+		iwantApiModule2 = JavaBinModule.providing(
+				Source.underWsroot("iwant-api-2")).end();
 		wsdefdefModule = JavaBinModule
-				.providing(Source.underWsroot("wsdefdef"));
+				.providing(Source.underWsroot("wsdefdef")).end();
 
 		apiModules = new LinkedHashSet<JavaModule>();
 		apiModules.add(iwantApiModule1);
