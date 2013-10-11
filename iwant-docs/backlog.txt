@@ -857,6 +857,10 @@
   + src module support
   + bin module support, requires changes to fluent specification
 
++ @bugfix: JavaBinModule toString must be the main artifact name
+  + test both implementations
+  + implement once in superclass
+
 #################################################################
 = In progress
 #################################################################

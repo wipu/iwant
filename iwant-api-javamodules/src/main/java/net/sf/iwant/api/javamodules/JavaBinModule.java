@@ -11,9 +11,12 @@ import net.sf.iwant.api.model.TargetEvaluationContext;
 
 public abstract class JavaBinModule extends JavaModule {
 
-	private JavaBinModule(
+	private final String name;
+
+	private JavaBinModule(String name,
 			Set<Class<? extends JavaModuleCharacteristic>> characteristics) {
 		super(characteristics);
+		this.name = name;
 	}
 
 	public static IwantBinModuleSpex named(String name) {
@@ -26,6 +29,16 @@ public abstract class JavaBinModule extends JavaModule {
 
 	public static PathProviderSpex providing(Path mainArtifact, Path sources) {
 		return new PathProviderSpex(mainArtifact, sources);
+	}
+
+	@Override
+	public final String name() {
+		return name;
+	}
+
+	@Override
+	public final String toString() {
+		return name();
 	}
 
 	public abstract Path source();
@@ -64,27 +77,20 @@ public abstract class JavaBinModule extends JavaModule {
 
 	private static class ProvidedBySrcModule extends JavaBinModule {
 
-		private final String name;
 		private JavaSrcModule libsModule;
 		private String srcZip;
 
 		public ProvidedBySrcModule(String name, JavaSrcModule libsModule,
 				String srcZip,
 				Set<Class<? extends JavaModuleCharacteristic>> characteristics) {
-			super(characteristics);
-			this.name = name;
+			super(name, characteristics);
 			this.libsModule = libsModule;
 			this.srcZip = srcZip;
 		}
 
 		@Override
-		public String name() {
-			return name;
-		}
-
-		@Override
 		public String eclipseBinaryReference(TargetEvaluationContext ctx) {
-			return eclipseRef(name);
+			return eclipseRef(name());
 		}
 
 		private String eclipseRef(String name) {
@@ -99,7 +105,7 @@ public abstract class JavaBinModule extends JavaModule {
 		@Override
 		public Path mainArtifact() {
 			return Source.underWsroot(libsModule.locationUnderWsRoot() + "/"
-					+ name);
+					+ name());
 		}
 
 		@Override
@@ -148,7 +154,7 @@ public abstract class JavaBinModule extends JavaModule {
 
 		public PathProvider(Path mainArtifact, Path sources,
 				Set<Class<? extends JavaModuleCharacteristic>> characteristics) {
-			super(characteristics);
+			super(mainArtifact.name(), characteristics);
 			this.mainArtifact = mainArtifact;
 			this.sources = sources;
 		}
@@ -172,11 +178,6 @@ public abstract class JavaBinModule extends JavaModule {
 			} catch (IOException e) {
 				throw new IllegalArgumentException(e);
 			}
-		}
-
-		@Override
-		public String name() {
-			return mainArtifact.name();
 		}
 
 		@Override

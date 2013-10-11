@@ -44,6 +44,13 @@ public class JavaBinModuleTest extends TestCase {
 
 	// provided by src module
 
+	public void testToStringOfProjectProvidedBinIsTheName() {
+		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
+		JavaModule lib = JavaBinModule.named("lib.jar").inside(libsModule);
+
+		assertEquals("lib.jar", lib.toString());
+	}
+
 	public void testMainArtifactOfBinModuleIsTheJarAsSource() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaModule lib = JavaBinModule.named("lib.jar").inside(libsModule);
@@ -93,6 +100,14 @@ public class JavaBinModuleTest extends TestCase {
 	}
 
 	// path provider module
+
+	public void testToStringOfPathProviderBinIsTheName() {
+		Target libJar = new HelloTarget("lib.jar", "");
+		JavaBinModule libJarModule = JavaBinModule.providing(libJar, null)
+				.end();
+
+		assertEquals("lib.jar", libJarModule.toString());
+	}
 
 	public void testBinModuleThatProvidesAMainArtifactTarget() {
 		Target libJar = new HelloTarget("lib.jar", "");
