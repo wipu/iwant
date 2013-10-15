@@ -867,13 +867,13 @@
   + publish the plugins via side-effect definition ctx
   + real test
 
++ @bugfix: equals/hashCode for JavaModule that uses name() so Collection.contains(), HashSet etc work correctly
+  + test equals and hashCode and impl
+  + real test
+
 #################################################################
 = In progress
 #################################################################
-
-- @bugfix: equals/hashCode for JavaModule that uses name() so Collection.contains(), HashSet etc work correctly
-  + test equals and hashCode and impl
-  - real test
 
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
