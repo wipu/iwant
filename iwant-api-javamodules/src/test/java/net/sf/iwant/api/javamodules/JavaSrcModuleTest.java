@@ -26,6 +26,25 @@ public class JavaSrcModuleTest extends TestCase {
 		assertEquals("m2", JavaSrcModule.with().name("m2").end().toString());
 	}
 
+	public void testEqualsUsesNameAndClass() {
+		assertTrue(JavaSrcModule.with().name("a").end()
+				.equals(JavaSrcModule.with().name("a").end()));
+		assertTrue(JavaSrcModule.with().name("a").end()
+				.equals(JavaSrcModule.with().name("a").mainJava("src").end()));
+
+		assertFalse(JavaSrcModule.with().name("a").end()
+				.equals(JavaBinModule.providing(Source.underWsroot("a")).end()));
+		assertFalse(JavaSrcModule.with().name("a").end()
+				.equals(JavaSrcModule.with().name("b").end()));
+	}
+
+	public void testHashCodeIsSameIfNameIsSame() {
+		assertTrue(JavaSrcModule.with().name("a").end().hashCode() == JavaSrcModule
+				.with().name("a").end().hashCode());
+		assertTrue(JavaSrcModule.with().name("a").end().hashCode() == JavaBinModule
+				.providing(Source.underWsroot("a")).end().hashCode());
+	}
+
 	public void testParentDirectoryNormalizationAffectsLocationUnderWsRoot() {
 		assertEquals("a", JavaSrcModule.with().name("a").end()
 				.locationUnderWsRoot());

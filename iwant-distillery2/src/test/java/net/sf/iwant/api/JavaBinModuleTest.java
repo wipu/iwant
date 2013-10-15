@@ -51,6 +51,24 @@ public class JavaBinModuleTest extends TestCase {
 		assertEquals("lib.jar", lib.toString());
 	}
 
+	public void testEqualsUsesNameAndClass() {
+		assertTrue(JavaBinModule.providing(Source.underWsroot("a")).end()
+				.equals(JavaBinModule.providing(Source.underWsroot("a")).end()));
+
+		assertFalse(JavaBinModule.providing(Source.underWsroot("a")).end()
+				.equals(JavaSrcModule.with().name("a").end()));
+		assertFalse(JavaBinModule.providing(Source.underWsroot("a")).end()
+				.equals(JavaBinModule.providing(Source.underWsroot("b")).end()));
+	}
+
+	public void testHashCodeIsSameIfNameIsSame() {
+		assertTrue(JavaBinModule.providing(Source.underWsroot("a")).end()
+				.hashCode() == JavaBinModule.providing(Source.underWsroot("a"))
+				.end().hashCode());
+		assertTrue(JavaBinModule.providing(Source.underWsroot("a")).end()
+				.hashCode() == JavaSrcModule.with().name("a").end().hashCode());
+	}
+
 	public void testMainArtifactOfBinModuleIsTheJarAsSource() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaModule lib = JavaBinModule.named("lib.jar").inside(libsModule);
