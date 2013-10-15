@@ -131,7 +131,7 @@ public class Iwant3 {
 			WishEvaluator wishEvaluator = new WishEvaluator(System.out,
 					System.err, wsInfo.wsRoot(), iwant, wsInfo, caches,
 					userPrefs.workerCount(), wsdefdefJavaModule,
-					wsdDefClassesModule, iwantApiModules);
+					wsdDefClassesModule, wsDefCtx);
 
 			File wsDefClasses = wishEvaluator
 					.freshCachedContent(wsDefClassesTarget);

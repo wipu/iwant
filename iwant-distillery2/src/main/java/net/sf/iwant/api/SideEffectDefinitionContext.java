@@ -13,4 +13,6 @@ public interface SideEffectDefinitionContext {
 
 	Set<? extends JavaModule> iwantApiModules();
 
+	IwantPluginWishes iwantPlugin();
+
 }

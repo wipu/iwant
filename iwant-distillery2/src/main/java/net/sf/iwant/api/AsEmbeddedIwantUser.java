@@ -3,9 +3,7 @@ package net.sf.iwant.api;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
-import java.util.Set;
 
-import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Caches;
 import net.sf.iwant.api.model.Target;
@@ -71,11 +69,10 @@ public class AsEmbeddedIwantUser {
 						int workerCount = 1;
 						JavaSrcModule wsdefdefJavaModule = null;
 						JavaSrcModule wsdefJavaModule = null;
-						Set<? extends JavaModule> iwantApiModules = null;
+						WorkspaceDefinitionContext wsdefCtx = null;
 						WishEvaluator evaluator = new WishEvaluator(out, err,
 								wsRoot, iwant, wsInfo, caches, workerCount,
-								wsdefdefJavaModule, wsdefJavaModule,
-								iwantApiModules);
+								wsdefdefJavaModule, wsdefJavaModule, wsdefCtx);
 						evaluator.asPath(target);
 						out.close();
 						String cachedTarget = out.toString();

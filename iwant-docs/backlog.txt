@@ -865,6 +865,12 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want to add iwant-plugin-ant as a dependency to my module so I can delegate some build code out of the wsdef module
+  + test a side effect that reads ant plugin from ctx and prints its modules
+  + inject wsdefcontext to wishevaluator
+  + publish the plugins via side-effect definition ctx
+  - real test
+
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
   + bootstrapping from local iwant without versioning

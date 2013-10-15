@@ -18,6 +18,7 @@ import net.sf.iwant.api.HelloSideEffect;
 import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.ScriptGenerated;
 import net.sf.iwant.api.SideEffectDefinitionContext;
+import net.sf.iwant.api.WorkspaceDefinitionContext;
 import net.sf.iwant.api.WsInfoMock;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
@@ -52,12 +53,15 @@ public class WishEvaluatorTest extends TestCase {
 	private Caches caches;
 	private JavaSrcModule wsdefdefJavaModule;
 	private JavaSrcModule wsdefJavaModule;
-	private Set<JavaBinModule> iwantApiModules = Collections
-			.singleton(JavaBinModule.providing(
+	private Set<JavaModule> iwantApiModules = Collections
+			.<JavaModule> singleton(JavaBinModule.providing(
 					Source.underWsroot("mock-iwant-classes")).end());
 	private InputStream originalIn;
 	private PrintStream originalOut;
 	private PrintStream originalErr;
+	private WorkspaceDefinitionContext wsdefCtx;
+	private File iwantWs;
+	private JavaModule wsdefdefModule;
 
 	@Override
 	public void setUp() throws IOException {
@@ -82,9 +86,12 @@ public class WishEvaluatorTest extends TestCase {
 		caches = new CachesImpl(new File(asSomeone, ".i-cached"),
 				wsInfo.wsRoot(), network);
 		int workerCount = 1;
+		iwantWs = testArea.newDir("iwant-ws");
+		wsdefdefModule = JavaSrcModule.with().name("wsdefdef").end();
+		wsdefCtx = new WorkspaceDefinitionContextImpl(iwantApiModules, iwantWs,
+				wsdefdefModule);
 		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
-				workerCount, wsdefdefJavaModule, wsdefJavaModule,
-				iwantApiModules);
+				workerCount, wsdefdefJavaModule, wsdefJavaModule, wsdefCtx);
 	}
 
 	private String out() {
@@ -458,8 +465,7 @@ public class WishEvaluatorTest extends TestCase {
 	public void testConcurrencyWorksEndToEnd() throws InterruptedException {
 		final int workerCount = 2;
 		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
-				workerCount, wsdefdefJavaModule, wsdefJavaModule,
-				iwantApiModules);
+				workerCount, wsdefdefJavaModule, wsdefJavaModule, wsdefCtx);
 
 		ConcurrencyControllableTarget part1 = new ConcurrencyControllableTarget(
 				"part1");
@@ -554,8 +560,7 @@ public class WishEvaluatorTest extends TestCase {
 	public void testScriptsWorkCorrectlyInParallel() {
 		final int workerCount = 8;
 		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
-				workerCount, wsdefdefJavaModule, wsdefJavaModule,
-				iwantApiModules);
+				workerCount, wsdefdefJavaModule, wsdefJavaModule, wsdefCtx);
 
 		final int partCount = 20;
 		List<Target> parts = new ArrayList<Target>();
@@ -841,6 +846,35 @@ public class WishEvaluatorTest extends TestCase {
 
 		assertEquals(expectedErr.toString(), err());
 		assertEquals("", out());
+	}
+
+	private class IwantPluginReferenceInSideEffectDefinition implements
+			IwantWorkspace {
+
+		@Override
+		public List<? extends Target> targets() {
+			return Arrays.asList(new HelloTarget("hello", "content"));
+		}
+
+		@Override
+		public List<? extends SideEffect> sideEffects(
+				SideEffectDefinitionContext ctx) {
+			Set<JavaModule> antPluginModules = ctx.iwantPlugin().ant()
+					.withDependencies();
+			return Arrays.asList(new HelloSideEffect("ant-plugin-print",
+					"ant-plugin modules: " + antPluginModules));
+		}
+
+	}
+
+	public void testSideEffectThatReferencesIwantPlugin() {
+		IwantWorkspace hellos = new IwantPluginReferenceInSideEffectDefinition();
+
+		evaluator.iwant("side-effect/ant-plugin-print/effective", hellos);
+
+		assertEquals("ant-plugin-print mutating.\n"
+				+ "ant-plugin modules: [iwant-plugin-ant,"
+				+ " mock-iwant-classes, ant-1.7.1]", err.toString());
 	}
 
 }
