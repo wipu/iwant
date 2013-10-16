@@ -47,6 +47,8 @@ public class Tutorial extends Target {
 				"Using an iwant plugin (for untarring)"));
 		pages.add(pageAboutUsingWsdef("usingmoduleinbuild",
 				"Using a module of the workspace in the build"));
+		pages.add(pageAboutUsingWsdef("ws-symlink",
+				"Using a symbolic link for the workspace"));
 	}
 
 	public static Tutorial local() {

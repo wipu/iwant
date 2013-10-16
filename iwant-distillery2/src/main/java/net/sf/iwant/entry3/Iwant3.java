@@ -81,6 +81,10 @@ public class Iwant3 {
 	}
 
 	public void evaluate(File asSomeone, String... args) throws Exception {
+		doEvaluate(asSomeone.getCanonicalFile(), args);
+	}
+
+	private void doEvaluate(File asSomeone, String... args) throws Exception {
 		File iHave = new File(asSomeone, "i-have");
 		iHave.mkdirs();
 		File iHaveConf = new File(iHave, "conf");

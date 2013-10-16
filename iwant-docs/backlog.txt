@@ -875,6 +875,12 @@
 = In progress
 #################################################################
 
+- @bugfix: wish scripts must work even if cwd is a symlink that points to the workspace
+  + descript
+  + fix failing parts
+    * Iwant3 asSomeone
+  - real test
+
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
   + bootstrapping from local iwant without versioning
