@@ -54,6 +54,18 @@ public class PmdReportTest extends TestCase {
 		return reportFileContent;
 	}
 
+	private void srcDirHasPmdFodder(File srcDir) throws IOException {
+		final String packageDirName = "net/sf/iwant/plugin/pmd/testfodder";
+		File packageDir = new File(srcDir, packageDirName);
+		packageDir.mkdirs();
+
+		String javaFileName = "ClassWithPmdIssues";
+		FileUtils.copyFile(
+				FileUtils.toFile(getClass().getResource(
+						"/" + packageDirName + "/" + javaFileName + ".txt")),
+				new File(packageDir, javaFileName + ".java"));
+	}
+
 	// -----------------------------------------------------
 	// the tests
 	// -----------------------------------------------------
@@ -78,6 +90,17 @@ public class PmdReportTest extends TestCase {
 
 		assertTrue(report.contentDescriptor().contains(src1.name()));
 		assertTrue(report.contentDescriptor().contains(src2.name()));
+	}
+
+	public void testRulesetIsInIngredientsIffDefined() {
+		Path src = Source.underWsroot("src");
+		Path rules = Source.underWsroot("rules.xml");
+
+		assertTrue(PmdReport.with().name("with").from(src).ruleset(rules).end()
+				.ingredients().contains(rules));
+		// no "null" here:
+		assertEquals("[src]", PmdReport.with().name("without").from(src).end()
+				.ingredients().toString());
 	}
 
 	public void testReportOfZeroSrcDirectoriesProducesReportFiles()
@@ -109,15 +132,7 @@ public class PmdReportTest extends TestCase {
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDir.mkdirs();
-		final String packageDirName = "net/sf/iwant/plugin/pmd/testfodder";
-		File packageDir = new File(srcDir, packageDirName);
-		packageDir.mkdirs();
-
-		String javaFileName = "ClassWithPmdIssues";
-		FileUtils.copyFile(
-				FileUtils.toFile(getClass().getResource(
-						"/" + packageDirName + "/" + javaFileName + ".txt")),
-				new File(packageDir, javaFileName + ".java"));
+		srcDirHasPmdFodder(srcDir);
 
 		PmdReport report = PmdReport.with().name("pmd-report")
 				.from(Source.underWsroot("src")).end();
@@ -141,4 +156,30 @@ public class PmdReportTest extends TestCase {
 				.contains("net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:17"
 						+ "	Document empty method"));
 	}
+
+	public void testReportOnlyContainsIssuesDefinedInGivenRulesPath()
+			throws Exception {
+		File srcDir = new File(wsRoot, "src");
+		srcDir.mkdirs();
+		srcDirHasPmdFodder(srcDir);
+
+		FileUtils.copyFile(FileUtils.toFile(getClass().getResource(
+				"ruleset-with-naming-only.xml")), new File(wsRoot,
+				"custom-ruleset.xml"));
+
+		PmdReport report = PmdReport.with().name("pmd-report")
+				.from(Source.underWsroot("src"))
+				.ruleset(Source.underWsroot("custom-ruleset.xml")).end();
+		report.path(ctx);
+
+		String txtReportContent = txtReportContent(report);
+		assertFalse(txtReportContent
+				.contains("Avoid reassigning parameters such as 'parameter'"));
+		assertTrue(txtReportContent
+				.contains("Method names should not start with capital letters"));
+		assertFalse(txtReportContent
+				.contains("Avoid unused private methods such as 'deadMethod()'."));
+		assertFalse(txtReportContent.contains("Document empty method"));
+	}
+
 }

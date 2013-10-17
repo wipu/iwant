@@ -1,6 +1,7 @@
 package net.sf.iwant.plugin.pmd;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,10 +22,12 @@ import org.apache.tools.ant.types.FileSet;
 public class PmdReport extends Target {
 
 	private final List<Path> srcDirectories;
+	private final Path ruleset;
 
-	private PmdReport(String name, List<Path> srcDirectories) {
+	private PmdReport(String name, List<Path> srcDirectories, Path ruleset) {
 		super(name);
 		this.srcDirectories = srcDirectories;
+		this.ruleset = ruleset;
 	}
 
 	public static PmdReportSpex with() {
@@ -35,6 +38,7 @@ public class PmdReport extends Target {
 
 		private String name;
 		private final List<Path> srcDirectories = new ArrayList<Path>();
+		private Path ruleset;
 
 		public PmdReportSpex name(String name) {
 			this.name = name;
@@ -50,8 +54,13 @@ public class PmdReport extends Target {
 			return this;
 		}
 
+		public PmdReportSpex ruleset(Path ruleset) {
+			this.ruleset = ruleset;
+			return this;
+		}
+
 		public PmdReport end() {
-			return new PmdReport(name, srcDirectories);
+			return new PmdReport(name, srcDirectories, ruleset);
 		}
 
 	}
@@ -65,6 +74,9 @@ public class PmdReport extends Target {
 	public List<Path> ingredients() {
 		List<Path> ingredients = new ArrayList<Path>();
 		ingredients.addAll(srcDirectories);
+		if (ruleset != null) {
+			ingredients.add(ruleset);
+		}
 		return ingredients;
 	}
 
@@ -73,16 +85,15 @@ public class PmdReport extends Target {
 		File dest = ctx.cached(this);
 		dest.mkdirs();
 
-		File rulesetXml = new File(dest, "ruleset.xml");
-		FileUtils.writeStringToFile(rulesetXml, rulesetXml());
+		File rulesetXml = rulesetFile(ctx, dest);
 
 		PMDTask task = new PMDTask();
 		task.setProject(new Project());
 		task.setShortFilenames(true);
 
-		RuleSetWrapper ruleset = new RuleSetWrapper();
-		ruleset.addText(rulesetXml.getCanonicalPath());
-		task.addRuleset(ruleset);
+		RuleSetWrapper rulesetWrapper = new RuleSetWrapper();
+		rulesetWrapper.addText(rulesetXml.getCanonicalPath());
+		task.addRuleset(rulesetWrapper);
 
 		Formatter htmlFormatter = new Formatter();
 		htmlFormatter.setType("betterhtml");
@@ -106,6 +117,21 @@ public class PmdReport extends Target {
 		System.err.println("Running PMD on " + srcDirectories.size()
 				+ " source directories.");
 		task.execute();
+	}
+
+	private File rulesetFile(TargetEvaluationContext ctx, File dest)
+			throws IOException {
+		if (ruleset == null) {
+			return generatedRuleset(dest);
+		} else {
+			return ctx.cached(ruleset);
+		}
+	}
+
+	private File generatedRuleset(File dest) throws IOException {
+		File generated = new File(dest, "ruleset.xml");
+		FileUtils.writeStringToFile(generated, rulesetXml());
+		return generated;
 	}
 
 	private String rulesetXml() {

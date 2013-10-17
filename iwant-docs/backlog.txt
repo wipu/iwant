@@ -887,11 +887,11 @@
   + expose as plugin module
   + real test
 
++ As @buildscriptauthor I want to use a Path to a PMD ruleset in PMD analysis so I get only the warnings that have been defined as problems in my project
+
 #################################################################
 = In progress
 #################################################################
-
-- As @buildscriptauthor I want to use a Path to a PMD ruleset in PMD analysis so I get only the warnings that have been defined as problems in my project
 
 - As @buildscriptauthor I want to define (fluently) a ruleset for PMD so I get only the warnings that really are an issue in my code
 
