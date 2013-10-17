@@ -2,9 +2,7 @@ package net.sf.iwant.entry3;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import net.sf.iwant.api.FromRepository;
@@ -57,38 +55,39 @@ public class WorkspaceDefinitionContextImpl implements
 		}
 	}
 
+	private Set<JavaModule> pluginWithDependencies(String pluginName,
+			Path... dependencies) {
+		Path pluginJava = pluginMainJava(pluginName);
+		JavaClassesSpex pluginClasses = JavaClasses.with().name(pluginName)
+				.srcDirs(pluginJava).debug(true);
+		for (JavaModule iwantApiModule : iwantApiModules) {
+			pluginClasses.classLocations(iwantApiModule.mainArtifact());
+		}
+		pluginClasses.classLocations(dependencies);
+
+		Set<JavaModule> mods = new LinkedHashSet<JavaModule>();
+		mods.add(JavaBinModule.providing(pluginClasses.end(), pluginJava).end());
+		mods.addAll(iwantApiModules);
+		for (Path dep : dependencies) {
+			mods.add(JavaBinModule.providing(dep).end());
+		}
+		return mods;
+	}
+
+	/**
+	 * TODO reuse the dependencies with iwant's own build
+	 */
 	private class IwantPluginWishesImpl implements IwantPluginWishes {
 
 		@Override
 		public IwantPluginWish ant() {
-			return new Ant();
-		}
-
-		private class Ant implements IwantPluginWish {
-
-			@Override
-			public Set<JavaModule> withDependencies() {
-				String pluginName = "iwant-plugin-ant";
-
-				Path antJar = TestedIwantDependencies.antJar();
-
-				Path antPluginJava = pluginMainJava(pluginName);
-				JavaClassesSpex antPluginClasses = JavaClasses.with()
-						.name(pluginName).srcDirs(antPluginJava).debug(true);
-				for (JavaModule iwantApiModule : iwantApiModules) {
-					antPluginClasses.classLocations(iwantApiModule
-							.mainArtifact());
+			return new IwantPluginWish() {
+				@Override
+				public Set<JavaModule> withDependencies() {
+					return pluginWithDependencies("iwant-plugin-ant",
+							TestedIwantDependencies.antJar());
 				}
-				antPluginClasses.classLocations(antJar);
-
-				Set<JavaModule> mods = new LinkedHashSet<JavaModule>();
-				mods.add(JavaBinModule.providing(antPluginClasses.end(),
-						antPluginJava).end());
-				mods.addAll(iwantApiModules);
-				mods.add(JavaBinModule.providing(antJar).end());
-				return mods;
-			}
-
+			};
 		}
 
 		@Override
@@ -96,10 +95,8 @@ public class WorkspaceDefinitionContextImpl implements
 			return new IwantPluginWish() {
 				@Override
 				public Set<JavaModule> withDependencies() {
-					String pluginName = "iwant-plugin-pmd";
-
-					// TODO reuse with iwant's own build:
-					List<Path> extDeps = Arrays.asList(
+					return pluginWithDependencies(
+							"iwant-plugin-pmd",
 							TestedIwantDependencies.antJar(),
 							FromRepository.ibiblio().group("asm").name("asm")
 									.version("3.2"),
@@ -110,25 +107,6 @@ public class WorkspaceDefinitionContextImpl implements
 									.name("jaxen").version("1.1.4"),
 							FromRepository.ibiblio().group("pmd").name("pmd")
 									.version("4.3"));
-
-					Path pmdPluginJava = pluginMainJava(pluginName);
-					JavaClassesSpex pmdPluginClasses = JavaClasses.with()
-							.name(pluginName).srcDirs(pmdPluginJava)
-							.debug(true);
-					for (JavaModule iwantApiModule : iwantApiModules) {
-						pmdPluginClasses.classLocations(iwantApiModule
-								.mainArtifact());
-					}
-					pmdPluginClasses.classLocations(extDeps);
-
-					Set<JavaModule> mods = new LinkedHashSet<JavaModule>();
-					mods.add(JavaBinModule.providing(pmdPluginClasses.end(),
-							pmdPluginJava).end());
-					mods.addAll(iwantApiModules);
-					for (Path extDep : extDeps) {
-						mods.add(JavaBinModule.providing(extDep).end());
-					}
-					return mods;
 				}
 			};
 		}
