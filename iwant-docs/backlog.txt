@@ -877,11 +877,7 @@
     * Iwant3 asSomeone
   + real test
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I want a target in a plugin for running a PMD analysis on my java source directories so I can improve their quality
++ As @buildscriptauthor I want a target in a plugin for running a PMD analysis on my java source directories so I can improve their quality
   + plugin module
   + pmd target with default rules
   + html report
@@ -889,7 +885,11 @@
   + assert issues found from example java file
   + descript
   + expose as plugin module
-  - real test
+  + real test
+
+#################################################################
+= In progress
+#################################################################
 
 - As @buildscriptauthor I want to use a Path to a PMD ruleset in PMD analysis so I get only the warnings that have been defined as problems in my project
 
