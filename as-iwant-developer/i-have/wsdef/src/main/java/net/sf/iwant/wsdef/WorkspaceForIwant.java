@@ -279,8 +279,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.noTestJava()
 				.mainJava("src")
 				.mainDeps(commonsMath(), iwantApiJavamodules(),
-						iwantApiModel(), iwantDistillery2(), iwantPluginAnt())
-				.end();
+						iwantApiModel(), iwantDistillery2(), iwantPluginAnt(),
+						iwantPluginPmd()).end();
 	}
 
 	private static JavaModule jaxen() {

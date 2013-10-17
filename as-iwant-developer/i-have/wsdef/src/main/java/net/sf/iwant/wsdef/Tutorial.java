@@ -49,6 +49,8 @@ public class Tutorial extends Target {
 				"Using a module of the workspace in the build"));
 		pages.add(pageAboutUsingWsdef("ws-symlink",
 				"Using a symbolic link for the workspace"));
+		pages.add(pageAboutUsingWsdef("pmdreport",
+				"Static code analysis report using PMD"));
 	}
 
 	public static Tutorial local() {

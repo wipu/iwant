@@ -2,9 +2,12 @@ package net.sf.iwant.entry3;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
+import net.sf.iwant.api.FromRepository;
 import net.sf.iwant.api.IwantPluginWish;
 import net.sf.iwant.api.IwantPluginWishes;
 import net.sf.iwant.api.TestedIwantDependencies;
@@ -86,6 +89,48 @@ public class WorkspaceDefinitionContextImpl implements
 				return mods;
 			}
 
+		}
+
+		@Override
+		public IwantPluginWish pmd() {
+			return new IwantPluginWish() {
+				@Override
+				public Set<JavaModule> withDependencies() {
+					String pluginName = "iwant-plugin-pmd";
+
+					// TODO reuse with iwant's own build:
+					List<Path> extDeps = Arrays.asList(
+							TestedIwantDependencies.antJar(),
+							FromRepository.ibiblio().group("asm").name("asm")
+									.version("3.2"),
+							FromRepository.ibiblio()
+									.group("org/apache/commons")
+									.name("commons-io").version("1.3.2"),
+							FromRepository.ibiblio().group("jaxen")
+									.name("jaxen").version("1.1.4"),
+							FromRepository.ibiblio().group("pmd").name("pmd")
+									.version("4.3"));
+
+					Path pmdPluginJava = pluginMainJava(pluginName);
+					JavaClassesSpex pmdPluginClasses = JavaClasses.with()
+							.name(pluginName).srcDirs(pmdPluginJava)
+							.debug(true);
+					for (JavaModule iwantApiModule : iwantApiModules) {
+						pmdPluginClasses.classLocations(iwantApiModule
+								.mainArtifact());
+					}
+					pmdPluginClasses.classLocations(extDeps);
+
+					Set<JavaModule> mods = new LinkedHashSet<JavaModule>();
+					mods.add(JavaBinModule.providing(pmdPluginClasses.end(),
+							pmdPluginJava).end());
+					mods.addAll(iwantApiModules);
+					for (Path extDep : extDeps) {
+						mods.add(JavaBinModule.providing(extDep).end());
+					}
+					return mods;
+				}
+			};
 		}
 
 	}

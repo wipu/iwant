@@ -4,4 +4,6 @@ public interface IwantPluginWishes {
 
 	IwantPluginWish ant();
 
+	IwantPluginWish pmd();
+
 }
