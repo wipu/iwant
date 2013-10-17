@@ -1,0 +1,21 @@
+package net.sf.iwant.plugin.pmd.testfodder;
+
+public class ClassWithPmdIssues {
+
+	public void methodThatWritesParameter(String parameter) {
+		parameter = "new value";
+	}
+
+	public void MethodWithDiscouragedName() {
+		// nothing to do
+	}
+
+	private void deadMethod() {
+		// nothing to do
+	}
+
+	public void emptyUncommentedBlock() {
+
+	}
+
+}

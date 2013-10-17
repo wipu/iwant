@@ -881,6 +881,19 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want a target in a plugin for running a PMD analysis on my java source directories so I can improve their quality
+  + plugin module
+  + pmd target with default rules
+  + html report
+  + txt report
+  + assert issues found from example java file
+  - expose as plugin module
+  - real test
+
+- As @buildscriptauthor I want to use a Path to a PMD ruleset in PMD analysis so I get only the warnings that have been defined as problems in my project
+
+- As @buildscriptauthor I want to define (fluently) a ruleset for PMD so I get only the warnings that really are an issue in my code
+
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
   + bootstrapping from local iwant without versioning

@@ -51,8 +51,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				iwantApimocks(), iwantApiModel(), iwantCoreservices(),
 				iwantDistillery(), iwantDistillery2(), iwantDocs(),
 				iwantExampleWsdef(), iwantMockWsroot(), iwantPluginAnt(),
-				iwantPluginFindbugs(), iwantTestarea(), iwantTestresources(),
-				iwantTutorialWsdefs(), junit()));
+				iwantPluginFindbugs(), iwantPluginPmd(), iwantTestarea(),
+				iwantTestresources(), iwantTutorialWsdefs(), junit()));
 	}
 
 	// the targets
@@ -82,9 +82,14 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static Target listOfExternalDeps() {
 		ConcatenatedBuilder deps = Concatenated.named("list-of-ext-deps");
 		deps.pathTo(ant().mainArtifact()).string("\n");
+		deps.pathTo(asm().mainArtifact()).string("\n");
 		deps.pathTo(bcel().mainArtifact()).string("\n");
+		deps.pathTo(commonsIo().mainArtifact()).string("\n");
 		deps.pathTo(commonsMath().mainArtifact()).string("\n");
 		deps.pathTo(findbugs().mainArtifact()).string("\n");
+		deps.pathTo(jaxen().mainArtifact()).string("\n");
+		deps.pathTo(junit().mainArtifact()).string("\n");
+		deps.pathTo(pmd().mainArtifact()).string("\n");
 		return deps.end();
 	}
 
@@ -116,12 +121,23 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.group("org/apache/ant").name("ant").version("1.7.1"));
 	}
 
+	private static JavaModule asm() {
+		return JavaBinModule.providing(FromRepository.ibiblio().group("asm")
+				.name("asm").version("3.2"));
+	}
+
 	/**
 	 * TODO declare that findbugs depends on this
 	 */
 	private static JavaModule bcel() {
 		return JavaBinModule.providing(FromRepository.ibiblio()
 				.group("org/apache/bcel").name("bcel").version("5.2"));
+	}
+
+	private static JavaModule commonsIo() {
+		return JavaBinModule.providing(FromRepository.ibiblio()
+				.group("org/apache/commons").name("commons-io")
+				.version("1.3.2"));
 	}
 
 	private static JavaModule commonsMath() {
@@ -231,6 +247,17 @@ public class WorkspaceForIwant implements IwantWorkspace {
 								+ "IwantPluginFindbugsSuite").end();
 	}
 
+	private static JavaModule iwantPluginPmd() {
+		// TODO don't depend directly on asm, jaxen, pmd depend on them
+		return iwantSrcModule("plugin-pmd")
+				.testResources("src/test/resources")
+				.mainDeps(ant(), asm(), commonsIo(), iwantApiModel(), jaxen(),
+						pmd())
+				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
+						iwantTestarea(), iwantTestresources())
+				.testedBy("net.sf.iwant.plugin.pmd.IwantPluginPmdSuite").end();
+	}
+
 	private static JavaSrcModule iwantTestarea() {
 		return iwantSrcModule("testarea").noTestJava()
 				.mainDeps(iwantTestareaClassdir()).end();
@@ -256,9 +283,20 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.end();
 	}
 
+	private static JavaModule jaxen() {
+		return JavaBinModule.providing(FromRepository.ibiblio().group("jaxen")
+				.name("jaxen").version("1.1.4"));
+	}
+
 	private static JavaModule junit() {
 		return JavaBinModule.providing(FromRepository.ibiblio().group("junit")
 				.name("junit").version("4.8.2"));
+	}
+
+	private static JavaModule pmd() {
+		// TODO document dependency to asm, jaxen
+		return JavaBinModule.providing(FromRepository.ibiblio().group("pmd")
+				.name("pmd").version("4.3"));
 	}
 
 }
