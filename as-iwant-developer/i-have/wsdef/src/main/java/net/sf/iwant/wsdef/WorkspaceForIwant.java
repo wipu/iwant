@@ -117,37 +117,42 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	 * @return
 	 */
 	private static JavaModule ant() {
-		return JavaBinModule.providing(FromRepository.ibiblio()
-				.group("org/apache/ant").name("ant").version("1.7.1"));
+		return JavaBinModule.providing(
+				FromRepository.ibiblio().group("org/apache/ant").name("ant")
+						.version("1.7.1")).end();
 	}
 
 	private static JavaModule asm() {
-		return JavaBinModule.providing(FromRepository.ibiblio().group("asm")
-				.name("asm").version("3.2"));
+		return JavaBinModule.providing(
+				FromRepository.ibiblio().group("asm").name("asm")
+						.version("3.2")).end();
 	}
 
 	/**
 	 * TODO declare that findbugs depends on this
 	 */
 	private static JavaModule bcel() {
-		return JavaBinModule.providing(FromRepository.ibiblio()
-				.group("org/apache/bcel").name("bcel").version("5.2"));
+		return JavaBinModule.providing(
+				FromRepository.ibiblio().group("org/apache/bcel").name("bcel")
+						.version("5.2")).end();
 	}
 
 	private static JavaModule commonsIo() {
-		return JavaBinModule.providing(FromRepository.ibiblio()
-				.group("org/apache/commons").name("commons-io")
-				.version("1.3.2"));
+		return JavaBinModule.providing(
+				FromRepository.ibiblio().group("org/apache/commons")
+						.name("commons-io").version("1.3.2")).end();
 	}
 
 	private static JavaModule commonsMath() {
-		return JavaBinModule.providing(FromRepository.ibiblio()
-				.group("commons-math").name("commons-math").version("1.2"));
+		return JavaBinModule.providing(
+				FromRepository.ibiblio().group("commons-math")
+						.name("commons-math").version("1.2")).end();
 	}
 
 	private static JavaModule findbugs() {
-		return JavaBinModule.providing(FromRepository.ibiblio()
-				.group("findbugs").name("findbugs").version("1.0.0"));
+		return JavaBinModule.providing(
+				FromRepository.ibiblio().group("findbugs").name("findbugs")
+						.version("1.0.0")).end();
 	}
 
 	private static JavaSrcModule iwantApiJavamodules() {
@@ -189,8 +194,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaBinModule iwantDistilleryClasspathMarker() {
-		return JavaBinModule.providing(Source
-				.underWsroot("iwant-distillery/classpath-marker"));
+		return JavaBinModule.providing(
+				Source.underWsroot("iwant-distillery/classpath-marker")).end();
 	}
 
 	private static JavaSrcModule iwantDistillery2() {
@@ -264,8 +269,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaBinModule iwantTestareaClassdir() {
-		return JavaBinModule.providing(Source
-				.underWsroot("iwant-testarea/testarea-classdir"));
+		return JavaBinModule.providing(
+				Source.underWsroot("iwant-testarea/testarea-classdir")).end();
 	}
 
 	private static JavaModule iwantTestresources() {
@@ -284,19 +289,22 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaModule jaxen() {
-		return JavaBinModule.providing(FromRepository.ibiblio().group("jaxen")
-				.name("jaxen").version("1.1.4"));
+		return JavaBinModule.providing(
+				FromRepository.ibiblio().group("jaxen").name("jaxen")
+						.version("1.1.4")).end();
 	}
 
 	private static JavaModule junit() {
-		return JavaBinModule.providing(FromRepository.ibiblio().group("junit")
-				.name("junit").version("4.8.2"));
+		return JavaBinModule.providing(
+				FromRepository.ibiblio().group("junit").name("junit")
+						.version("4.8.2")).end();
 	}
 
 	private static JavaModule pmd() {
 		// TODO document dependency to asm, jaxen
-		return JavaBinModule.providing(FromRepository.ibiblio().group("pmd")
-				.name("pmd").version("4.3"));
+		return JavaBinModule.providing(
+				FromRepository.ibiblio().group("pmd").name("pmd")
+						.version("4.3")).end();
 	}
 
 }
