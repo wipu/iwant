@@ -42,8 +42,8 @@ public class CopyPasteReport extends Target {
 			return this;
 		}
 
-		public CopyPasteReportSpex from(Path... classes) {
-			return from(Arrays.asList(classes));
+		public CopyPasteReportSpex from(Path... srcDirectories) {
+			return from(Arrays.asList(srcDirectories));
 		}
 
 		public CopyPasteReportSpex from(

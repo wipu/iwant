@@ -45,8 +45,8 @@ public class PmdReport extends Target {
 			return this;
 		}
 
-		public PmdReportSpex from(Path... classes) {
-			return from(Arrays.asList(classes));
+		public PmdReportSpex from(Path... srcDirectories) {
+			return from(Arrays.asList(srcDirectories));
 		}
 
 		public PmdReportSpex from(Collection<? extends Path> srcDirectories) {
