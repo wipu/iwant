@@ -893,7 +893,7 @@
 = In progress
 #################################################################
 
-- As @buildscriptauthor I want to define (fluently) a ruleset for PMD so I get only the warnings that really are an issue in my code
+- As @buildscriptauthor I want a PMD copypaste analysis so I can improve my code
 
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
@@ -940,6 +940,8 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptauthor I want to define (fluently) a ruleset for PMD so I get only the warnings that really are an issue in my code
 
 - As a @buildscriptauthor I want a convenience filter for the typical test names so I don't have to implement it myself in all my projects
 
