@@ -114,8 +114,7 @@ public class PmdReport extends Target {
 			task.addFileset(fileSet);
 		}
 
-		System.err.println("Running PMD on " + srcDirectories.size()
-				+ " source directories.");
+		System.err.println("Running PMD on " + srcDirectories);
 		task.execute();
 	}
 

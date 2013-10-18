@@ -894,6 +894,9 @@
 #################################################################
 
 - As @buildscriptauthor I want a PMD copypaste analysis so I can improve my code
+  + base class for test
+  + just for fun: better syserr msg for PmdReport
+  - tdd copypaste report of 2 src dirs
 
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
