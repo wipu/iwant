@@ -889,14 +889,17 @@
 
 + As @buildscriptauthor I want to use a Path to a PMD ruleset in PMD analysis so I get only the warnings that have been defined as problems in my project
 
++ As @buildscriptauthor I want a PMD copypaste analysis so I can improve my code
+  + base class for test
+  + just for fun: better syserr msg for PmdReport
+  + tdd copypaste report of
+    + 0 and 1 src dir
+    + 2 src dirs
+  + minimumTokenCount
+
 #################################################################
 = In progress
 #################################################################
-
-- As @buildscriptauthor I want a PMD copypaste analysis so I can improve my code
-  + base class for test
-  + just for fun: better syserr msg for PmdReport
-  - tdd copypaste report of 2 src dirs
 
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased

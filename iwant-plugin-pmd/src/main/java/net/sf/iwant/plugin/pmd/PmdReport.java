@@ -158,7 +158,7 @@ public class PmdReport extends Target {
 		b.append(getClass().getCanonicalName()).append(" {\n");
 		b.append("  ingredients {\n");
 		for (Path ingredient : ingredients()) {
-			b.append("    ").append(ingredient);
+			b.append("    ").append(ingredient).append("\n");
 		}
 		b.append("  }\n");
 		b.append("}\n");

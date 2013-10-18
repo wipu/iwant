@@ -14,10 +14,6 @@ public class PmdReportTest extends PmdTestBase {
 		return reportContent(report, "html");
 	}
 
-	private String txtReportContent(PmdReport report) throws IOException {
-		return reportContent(report, "txt");
-	}
-
 	// -----------------------------------------------------
 	// the tests
 	// -----------------------------------------------------
@@ -83,8 +79,7 @@ public class PmdReportTest extends PmdTestBase {
 	public void testReportOfOneClassesDirWithOneClassWithIssues()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDir.mkdirs();
-		srcDirHasPmdFodder(srcDir);
+		srcDirHasPmdFodder(srcDir, "testfodder", "ClassWithPmdIssues");
 
 		PmdReport report = PmdReport.with().name("pmd-report")
 				.from(Source.underWsroot("src")).end();
@@ -112,8 +107,7 @@ public class PmdReportTest extends PmdTestBase {
 	public void testReportOnlyContainsIssuesDefinedInGivenRulesPath()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDir.mkdirs();
-		srcDirHasPmdFodder(srcDir);
+		srcDirHasPmdFodder(srcDir, "testfodder", "ClassWithPmdIssues");
 
 		FileUtils.copyFile(FileUtils.toFile(getClass().getResource(
 				"ruleset-with-naming-only.xml")), new File(wsRoot,

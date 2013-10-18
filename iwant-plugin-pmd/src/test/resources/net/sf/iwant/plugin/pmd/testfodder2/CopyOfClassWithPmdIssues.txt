@@ -1,0 +1,20 @@
+package net.sf.iwant.plugin.pmd.testfodder2;
+
+public class CopyOfClassWithPmdIssues {
+
+	public void methodThatWritesParameter(String parameter) {
+		parameter = "new value";
+	}
+
+	public void MethodWithDiscouragedName() {
+		// nothing to do
+	}
+
+	// removed a method from here to make copy-paste analysis that much more
+	// interesting
+
+	public void emptyUncommentedBlock() {
+
+	}
+
+}
