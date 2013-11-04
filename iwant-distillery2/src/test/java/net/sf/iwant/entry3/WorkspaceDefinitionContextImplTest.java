@@ -52,13 +52,14 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 	public void testIwantPluginAntWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().ant().withDependencies();
 
-		assertEquals(4, mods.size());
+		assertEquals(5, mods.size());
 		Iterator<JavaModule> iterator = mods.iterator();
 
 		assertEquals("iwant-plugin-ant", iterator.next().name());
 		assertSame(iwantApiModule1, iterator.next());
 		assertSame(iwantApiModule2, iterator.next());
-		assertEquals("ant-1.7.1", iterator.next().name());
+		assertEquals("ant-1.7.1.jar", iterator.next().name());
+		assertEquals("ant-launcher-1.7.1.jar", iterator.next().name());
 	}
 
 	public void testIwantPluginAntMainClassesHasCorrectCompilationClasspath() {
@@ -70,7 +71,7 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 
 		assertSame(iwantApiModule1.mainArtifact(), iterator.next());
 		assertSame(iwantApiModule2.mainArtifact(), iterator.next());
-		assertEquals("ant-1.7.1", iterator.next().name());
+		assertEquals("ant-1.7.1.jar", iterator.next().name());
 	}
 
 	public void testIwantPluginAntContainsSources() {
@@ -87,8 +88,16 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		Set<JavaModule> mods = ctx.iwantPlugin().pmd().withDependencies();
 
 		assertEquals("[iwant-plugin-pmd, iwant-api-1, iwant-api-2,"
-				+ " ant-1.7.1, asm-3.2, commons-io-1.3.2,"
-				+ " jaxen-1.1.4, pmd-4.3]", mods.toString());
+				+ " ant-1.7.1.jar, asm-3.2.jar, commons-io-1.3.2.jar,"
+				+ " jaxen-1.1.4.jar, pmd-4.3.jar]", mods.toString());
+	}
+
+	public void testIwantPluginFindbugsWithDependenciesContainsCorrectModules() {
+		Set<JavaModule> mods = ctx.iwantPlugin().findbugs().withDependencies();
+
+		assertEquals("[iwant-plugin-findbugs, iwant-api-1, iwant-api-2,"
+				+ " commons-io-1.3.2.jar, iwant-plugin-ant, ant-1.7.1.jar,"
+				+ " ant-launcher-1.7.1.jar]", mods.toString());
 	}
 
 }

@@ -51,6 +51,8 @@ public class Tutorial extends Target {
 				"Using a symbolic link for the workspace"));
 		pages.add(pageAboutUsingWsdef("pmdreport",
 				"Static code analysis report using PMD"));
+		pages.add(pageAboutUsingWsdef("findbugsreport",
+				"Static code analysis report using findbugs"));
 	}
 
 	public static Tutorial local() {

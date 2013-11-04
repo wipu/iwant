@@ -46,13 +46,13 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static SortedSet<JavaModule> allModules() {
-		return new TreeSet<JavaModule>(Arrays.asList(ant(), bcel(),
-				commonsMath(), findbugs(), iwantApiJavamodules(),
-				iwantApimocks(), iwantApiModel(), iwantCoreservices(),
-				iwantDistillery(), iwantDistillery2(), iwantDocs(),
-				iwantExampleWsdef(), iwantMockWsroot(), iwantPluginAnt(),
-				iwantPluginFindbugs(), iwantPluginPmd(), iwantTestarea(),
-				iwantTestresources(), iwantTutorialWsdefs(), junit()));
+		return new TreeSet<JavaModule>(Arrays.asList(ant(), commonsMath(),
+				iwantApiJavamodules(), iwantApimocks(), iwantApiModel(),
+				iwantCoreservices(), iwantDistillery(), iwantDistillery2(),
+				iwantDocs(), iwantExampleWsdef(), iwantMockWsroot(),
+				iwantPluginAnt(), iwantPluginFindbugs(), iwantPluginPmd(),
+				iwantTestarea(), iwantTestresources(), iwantTutorialWsdefs(),
+				junit()));
 	}
 
 	// the targets
@@ -82,11 +82,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static Target listOfExternalDeps() {
 		ConcatenatedBuilder deps = Concatenated.named("list-of-ext-deps");
 		deps.pathTo(ant().mainArtifact()).string("\n");
+		deps.pathTo(antLauncher().mainArtifact()).string("\n");
 		deps.pathTo(asm().mainArtifact()).string("\n");
-		deps.pathTo(bcel().mainArtifact()).string("\n");
 		deps.pathTo(commonsIo().mainArtifact()).string("\n");
 		deps.pathTo(commonsMath().mainArtifact()).string("\n");
-		deps.pathTo(findbugs().mainArtifact()).string("\n");
 		deps.pathTo(jaxen().mainArtifact()).string("\n");
 		deps.pathTo(junit().mainArtifact()).string("\n");
 		deps.pathTo(pmd().mainArtifact()).string("\n");
@@ -122,19 +121,21 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						.version("1.7.1")).end();
 	}
 
+	/**
+	 * TODO reuse with TestedIwantDependencies
+	 * 
+	 * @return
+	 */
+	private static JavaModule antLauncher() {
+		return JavaBinModule.providing(
+				FromRepository.ibiblio().group("org/apache/ant")
+						.name("ant-launcher").version("1.7.1")).end();
+	}
+
 	private static JavaModule asm() {
 		return JavaBinModule.providing(
 				FromRepository.ibiblio().group("asm").name("asm")
 						.version("3.2")).end();
-	}
-
-	/**
-	 * TODO declare that findbugs depends on this
-	 */
-	private static JavaModule bcel() {
-		return JavaBinModule.providing(
-				FromRepository.ibiblio().group("org/apache/bcel").name("bcel")
-						.version("5.2")).end();
 	}
 
 	private static JavaModule commonsIo() {
@@ -147,12 +148,6 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return JavaBinModule.providing(
 				FromRepository.ibiblio().group("commons-math")
 						.name("commons-math").version("1.2")).end();
-	}
-
-	private static JavaModule findbugs() {
-		return JavaBinModule.providing(
-				FromRepository.ibiblio().group("findbugs").name("findbugs")
-						.version("1.0.0")).end();
 	}
 
 	private static JavaSrcModule iwantApiJavamodules() {
@@ -235,7 +230,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaModule iwantPluginAnt() {
 		return iwantSrcModule("plugin-ant")
 				.testResources("src/test/resources")
-				.mainDeps(ant(), iwantApiModel())
+				.mainDeps(ant(), antLauncher(), iwantApiModel())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
 						iwantTestarea(), iwantTestresources())
 				.testedBy("net.sf.iwant.plugin.ant.IwantPluginAntSuite").end();
@@ -243,8 +238,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaModule iwantPluginFindbugs() {
 		return iwantSrcModule("plugin-findbugs")
-				.mainDeps(bcel(), iwantApiJavamodules(), iwantApiModel(),
-						findbugs())
+				.testResources("src/test/resources")
+				.mainDeps(commonsIo(), iwantApiJavamodules(), iwantApiModel(),
+						iwantDistillery2(), iwantPluginAnt())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
 						iwantTestarea())
 				.testedBy(
@@ -253,7 +249,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaModule iwantPluginPmd() {
-		// TODO don't depend directly on asm, jaxen, pmd depend on them
+		// TODO don't depend directly on asm, jaxen: pmd depends on them
 		return iwantSrcModule("plugin-pmd")
 				.testResources("src/test/resources")
 				.mainDeps(ant(), asm(), commonsIo(), iwantApiModel(), jaxen(),
@@ -285,7 +281,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainJava("src")
 				.mainDeps(commonsMath(), iwantApiJavamodules(),
 						iwantApiModel(), iwantDistillery2(), iwantPluginAnt(),
-						iwantPluginPmd()).end();
+						iwantPluginFindbugs(), iwantPluginPmd()).end();
 	}
 
 	private static JavaModule jaxen() {

@@ -15,10 +15,10 @@ public class TestedIwantDependenciesTest extends TestCase {
 
 	public void testNamesOfDownloadedTargets() {
 		// this documents the names, change when upgrading:
-		assertEquals("ant-1.7.1", TestedIwantDependencies.antJar().name());
-		assertEquals("ant-launcher-1.7.1", TestedIwantDependencies
+		assertEquals("ant-1.7.1.jar", TestedIwantDependencies.antJar().name());
+		assertEquals("ant-launcher-1.7.1.jar", TestedIwantDependencies
 				.antLauncherJar().name());
-		assertEquals("emma-2.0.5312", TestedIwantDependencies.emma().name());
+		assertEquals("emma-2.0.5312.jar", TestedIwantDependencies.emma().name());
 		assertEquals("junit-4.8.2.jar", TestedIwantDependencies.junit().name());
 	}
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import net.sf.iwant.api.Downloaded;
 import net.sf.iwant.api.FromRepository;
 import net.sf.iwant.api.IwantPluginWish;
 import net.sf.iwant.api.IwantPluginWishes;
@@ -57,20 +58,29 @@ public class WorkspaceDefinitionContextImpl implements
 
 	private Set<JavaModule> pluginWithDependencies(String pluginName,
 			Path... dependencies) {
+		Set<JavaModule> depModules = new LinkedHashSet<JavaModule>();
+		for (Path dependency : dependencies) {
+			depModules.add(JavaBinModule.providing(dependency).end());
+		}
+		return pluginWithDependencies(pluginName, depModules);
+	}
+
+	private Set<JavaModule> pluginWithDependencies(String pluginName,
+			Set<JavaModule> dependencies) {
 		Path pluginJava = pluginMainJava(pluginName);
 		JavaClassesSpex pluginClasses = JavaClasses.with().name(pluginName)
 				.srcDirs(pluginJava).debug(true);
 		for (JavaModule iwantApiModule : iwantApiModules) {
 			pluginClasses.classLocations(iwantApiModule.mainArtifact());
 		}
-		pluginClasses.classLocations(dependencies);
+		for (JavaModule dependency : dependencies) {
+			pluginClasses.classLocations(dependency.mainArtifact());
+		}
 
 		Set<JavaModule> mods = new LinkedHashSet<JavaModule>();
 		mods.add(JavaBinModule.providing(pluginClasses.end(), pluginJava).end());
 		mods.addAll(iwantApiModules);
-		for (Path dep : dependencies) {
-			mods.add(JavaBinModule.providing(dep).end());
-		}
+		mods.addAll(dependencies);
 		return mods;
 	}
 
@@ -84,9 +94,26 @@ public class WorkspaceDefinitionContextImpl implements
 			return new IwantPluginWish() {
 				@Override
 				public Set<JavaModule> withDependencies() {
-					return pluginWithDependencies("iwant-plugin-ant",
-							TestedIwantDependencies.antJar());
+					// launcher needed in case the user of this plugin also
+					// wants to use AntGenerated that dynamically loads ant
+					// (unless we already have a smarter classloader)
+					return pluginWithDependencies("iwant-plugin-ant", antJar(),
+							antLauncherJar());
 				}
+			};
+		}
+
+		@Override
+		public IwantPluginWish findbugs() {
+			return new IwantPluginWish() {
+				@Override
+				public Set<JavaModule> withDependencies() {
+					Set<JavaModule> deps = new LinkedHashSet<JavaModule>();
+					deps.add(JavaBinModule.providing(commonsIoJar()).end());
+					deps.addAll(ant().withDependencies());
+					return pluginWithDependencies("iwant-plugin-findbugs", deps);
+				}
+
 			};
 		}
 
@@ -97,20 +124,32 @@ public class WorkspaceDefinitionContextImpl implements
 				public Set<JavaModule> withDependencies() {
 					return pluginWithDependencies(
 							"iwant-plugin-pmd",
-							TestedIwantDependencies.antJar(),
+							antJar(),
 							FromRepository.ibiblio().group("asm").name("asm")
 									.version("3.2"),
-							FromRepository.ibiblio()
-									.group("org/apache/commons")
-									.name("commons-io").version("1.3.2"),
+							commonsIoJar(),
 							FromRepository.ibiblio().group("jaxen")
 									.name("jaxen").version("1.1.4"),
 							FromRepository.ibiblio().group("pmd").name("pmd")
 									.version("4.3"));
 				}
+
 			};
 		}
 
+	}
+
+	private static Path antJar() {
+		return TestedIwantDependencies.antJar();
+	}
+
+	private static Path antLauncherJar() {
+		return TestedIwantDependencies.antLauncherJar();
+	}
+
+	private static Downloaded commonsIoJar() {
+		return FromRepository.ibiblio().group("org/apache/commons")
+				.name("commons-io").version("1.3.2");
 	}
 
 }

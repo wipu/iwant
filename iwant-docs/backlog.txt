@@ -897,6 +897,19 @@
     + 2 src dirs
   + minimumTokenCount
 
++ As @buildscriptauthor I want to define a findbugs report of my classes so I can fix my bugs
+  * cannot use in the simple way, we need the "full distribution" and a home variable (sigh) so it's easiest to generate an ant script
+  + descript
+  + FindbugsDistribution.ofVersion("2.0.2")
+    + test contains directory findbugs-2.0.2 and some jars
+    + download and untar
+  + FindbugsReport.with().name("fbr")
+      .using(findbugs(), antJars())
+      .from(mainClassesAndTheirDepsFrom(allSrcModules()))
+      .end();
+  + fix classpath issue and write a classloader story of it (ant-launcher needed in iwant-plugin-ant, otherwise iwant-plugin-findbugs cannot use it AND dynamically run ant)
+  + also added repo1.maven.org to FromRepository, thought we'll download findbugs jar from there, but a full distro is needed
+
 #################################################################
 = In progress
 #################################################################
@@ -946,6 +959,14 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptauthor I want to define aux classes for findbugs report so it can report something better (what?)
+
+- As @developer I want a reliable classloader so that I can use AntGenerated even if I have ant.jar without ant-launcher.jar in my classpath
+  * case: AntGenerated fails to load ant classes, if ant.jar is in classpath without ant-launcher.jar
+  * this is because urlclassloader delegates to parent, and it will fail to load the main class because it refers to another class in the missing ant-launcher.jar
+  * the child classloader (urlclassloader) never gets an opportunity to load the class that it would be capable of loading
+  - a classloader that can load missing classes from the given urls and at the same time load system defaults from the parent (quite an @epic I guess, unless we use a 3rd party utility, and only use the current simple classloader for bootstrapping)
 
 - As @buildscriptauthor I want to define (fluently) a ruleset for PMD so I get only the warnings that really are an issue in my code
 

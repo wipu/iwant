@@ -10,6 +10,10 @@ public class FromRepository {
 		return new ArtifactGroup("http://mirrors.ibiblio.org/maven2/");
 	}
 
+	public static ArtifactGroup repo1MavenOrg() {
+		return new ArtifactGroup("http://repo1.maven.org/maven2/");
+	}
+
 	public static class ArtifactGroup {
 
 		private final String urlPrefix;
@@ -39,13 +43,17 @@ public class FromRepository {
 			public Downloaded version(String version) {
 				URL url = url(version);
 				// TODO specify checksum urls when supported
-				return Downloaded.withName(name + "-" + version)
+				return Downloaded.withName(jarName(version))
 						.url(url.toString()).noCheck();
+			}
+
+			private String jarName(String version) {
+				return name + "-" + version + ".jar";
 			}
 
 			private URL url(String version) {
 				return Iwant.url(urlPrefix + group + "/" + name + "/" + version
-						+ "/" + name + "-" + version + ".jar");
+						+ "/" + jarName(version));
 			}
 
 		}

@@ -31,4 +31,9 @@ public class JavaClassesAndSources {
 		return sources;
 	}
 
+	@Override
+	public String toString() {
+		return "JavaClassesAndSources {" + classes() + " " + sources() + "}";
+	}
+
 }

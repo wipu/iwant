@@ -67,10 +67,13 @@ public class Untarred extends Target {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.cached(this);
+		untarTo(ctx.cached(from), dest, compression);
+	}
 
+	public static void untarTo(File tar, File dest, String compression) {
 		Untar untar = new Untar();
 		untar.setDest(dest);
-		untar.setSrc(ctx.cached(from));
+		untar.setSrc(tar);
 		if (compression != null) {
 			UntarCompressionMethod compressionMethod = new UntarCompressionMethod();
 			compressionMethod.setValue(compression);
