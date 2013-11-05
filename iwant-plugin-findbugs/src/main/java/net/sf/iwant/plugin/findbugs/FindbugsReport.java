@@ -20,15 +20,18 @@ import org.apache.commons.io.FileUtils;
 public class FindbugsReport extends Target {
 
 	private final List<JavaClassesAndSources> classesToAnalyze;
+	private final List<Path> auxClasses;
 	private final FindbugsDistribution findbugs;
 	private final Path antJar;
 	private final Path antLauncherJar;
 
 	public FindbugsReport(String name,
 			List<JavaClassesAndSources> classesToAnalyze,
-			FindbugsDistribution findbugs, Path antJar, Path antLauncherJar) {
+			List<Path> auxClasses, FindbugsDistribution findbugs, Path antJar,
+			Path antLauncherJar) {
 		super(name);
 		this.classesToAnalyze = classesToAnalyze;
+		this.auxClasses = auxClasses;
 		if (findbugs == null) {
 			throw new IllegalArgumentException(
 					"Please specify the findbugs distribution to use.");
@@ -46,13 +49,14 @@ public class FindbugsReport extends Target {
 
 		private String name;
 		private final List<JavaClassesAndSources> classesToAnalyze = new ArrayList<JavaClassesAndSources>();
+		private final List<Path> auxClasses = new ArrayList<Path>();
 		private FindbugsDistribution findbugs;
 		private Path antJar;
 		private Path antLauncherJar;
 
 		public FindbugsReport end() {
-			return new FindbugsReport(name, classesToAnalyze, findbugs, antJar,
-					antLauncherJar);
+			return new FindbugsReport(name, classesToAnalyze, auxClasses,
+					findbugs, antJar, antLauncherJar);
 		}
 
 		public FindbugsReportSpex name(String name) {
@@ -79,6 +83,16 @@ public class FindbugsReport extends Target {
 			return this;
 		}
 
+		public FindbugsReportSpex auxClasses(Path... auxClasses) {
+			return auxClasses(Arrays.asList(auxClasses));
+		}
+
+		public FindbugsReportSpex auxClasses(
+				Collection<? extends Path> auxClasses) {
+			this.auxClasses.addAll(auxClasses);
+			return this;
+		}
+
 	}
 
 	@Override
@@ -96,6 +110,7 @@ public class FindbugsReport extends Target {
 			ingredients.add(cs.classes());
 			ingredients.addAll(cs.sources());
 		}
+		ingredients.addAll(auxClasses);
 		return ingredients;
 	}
 
@@ -113,6 +128,12 @@ public class FindbugsReport extends Target {
 		b.append("  classesToAnalyze: {\n");
 		for (JavaClassesAndSources cs : classesToAnalyze) {
 			b.append("    ").append(cs).append("\n");
+		}
+		b.append("  }\n");
+
+		b.append("  auxClasses: {\n");
+		for (Path aux : auxClasses) {
+			b.append("    ").append(aux).append("\n");
 		}
 		b.append("  }\n");
 
@@ -176,11 +197,11 @@ public class FindbugsReport extends Target {
 						.append("\" />\n");
 			}
 		}
-		// for (Path aux : auxClasses) {
-		// xml.append("            <auxclasspath path=\"")
-		// .append(wintoySafeCanonicalPath(ctx.cached(aux)))
-		// .append("\" />\n");
-		// }
+		for (Path aux : auxClasses) {
+			xml.append("            <auxclasspath path=\"")
+					.append(wintoySafeCanonicalPath(ctx.cached(aux)))
+					.append("\" />\n");
+		}
 
 		xml.append("       </findbugs>\n");
 		xml.append("    </target>\n");

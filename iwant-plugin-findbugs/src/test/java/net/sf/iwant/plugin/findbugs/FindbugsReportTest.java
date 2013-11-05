@@ -122,6 +122,7 @@ public class FindbugsReportTest extends TestCase {
 	public void testIngredientsAndContentDescriptor() throws IOException {
 		Path emptySrc = Source.underWsroot("empty-src");
 		Path emptyClasses = Source.underWsroot("empty-classes");
+		Path bin = Source.underWsroot("bin.jar");
 
 		Target report = FindbugsReport
 				.with()
@@ -129,18 +130,19 @@ public class FindbugsReportTest extends TestCase {
 				.using(distroToTest(), antJar(), antLauncherJar())
 				.classesToAnalyze(
 						new JavaClassesAndSources(emptyClasses, emptySrc))
-				.end();
+				.auxClasses(bin).end();
 
 		assertEquals("[findbugs-2.0.2, " + antJar() + ", " + antLauncherJar()
-				+ ", empty-classes, empty-src]", report.ingredients()
+				+ ", empty-classes, empty-src, bin.jar]", report.ingredients()
 				.toString());
 		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport {\n"
 				+ "  ingredients: {\n" + "    findbugs-2.0.2\n" + "    "
 				+ antJar() + "\n" + "    " + antLauncherJar() + "\n"
-				+ "    empty-classes\n" + "    empty-src\n" + "  }\n"
-				+ "  classesToAnalyze: {\n"
+				+ "    empty-classes\n" + "    empty-src\n    bin.jar\n"
+				+ "  }\n" + "  classesToAnalyze: {\n"
 				+ "    JavaClassesAndSources {empty-classes [empty-src]}\n"
-				+ "  }\n" + "}\n" + "", report.contentDescriptor().toString());
+				+ "  }\n  auxClasses: {\n" + "    bin.jar\n" + "  }\n" + ""
+				+ "}\n" + "", report.contentDescriptor().toString());
 	}
 
 	public void testDefaultReportFromEmptyClasses() throws Exception {
@@ -187,6 +189,74 @@ public class FindbugsReportTest extends TestCase {
 				.contains("<td>Null pointer dereference of ? in "
 						+ "net.sf.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues."
 						+ "nullReference(Object)</td>"));
+	}
+
+	public void testReportDoesNotDetectProblemIfDependencyNotInAuxclasses()
+			throws Exception {
+		File src1Dir = new File(wsRoot, "src1");
+		srcDirHasFindbugsFodder(src1Dir, "testfodder",
+				"ClassWithBugUsingBinaryDependency");
+		File src2Dir = new File(wsRoot, "src2");
+		srcDirHasFindbugsFodder(src2Dir, "testfodder2", "BinaryDependency");
+
+		Source src2 = Source.underWsroot("src2");
+		JavaClasses classes2 = JavaClasses.with().name("classes2")
+				.srcDirs(src2).end();
+		classes2.path(ctx);
+		Source src1 = Source.underWsroot("src1");
+		JavaClasses classes1 = JavaClasses.with().name("classes1")
+				.srcDirs(src1).classLocations(classes2).end();
+		classes1.path(ctx);
+
+		distroToTest().path(ctx);
+
+		FindbugsReport report = FindbugsReport.with()
+				.name("without-auxclasses")
+				.using(distroToTest(), antJar(), antLauncherJar())
+				.classesToAnalyze(new JavaClassesAndSources(classes1, src1))
+				.end();
+		report.path(ctx);
+
+		String htmlReportContent = htmlReportContent(report);
+		assertFalse(htmlReportContent
+				.contains(warningAboutBugUsingBinaryDependency()));
+	}
+
+	private static final String warningAboutBugUsingBinaryDependency() {
+		return "<td>Null pointer dereference of "
+				+ "net.sf.iwant.plugin.findbugs.testfodder2.BinaryDependency.NULL_STRING "
+				+ "in net.sf.iwant.plugin.findbugs.testfodder.ClassWithBugUsingBinaryDependency."
+				+ "nullReferenceOfValueFromBinaryDependency()</td>";
+	}
+
+	public void testReportDetectsProblemIfDependencyIsInAuxclasses()
+			throws Exception {
+		File src1Dir = new File(wsRoot, "src1");
+		srcDirHasFindbugsFodder(src1Dir, "testfodder",
+				"ClassWithBugUsingBinaryDependency");
+		File src2Dir = new File(wsRoot, "src2");
+		srcDirHasFindbugsFodder(src2Dir, "testfodder2", "BinaryDependency");
+
+		Source src2 = Source.underWsroot("src2");
+		JavaClasses classes2 = JavaClasses.with().name("classes2")
+				.srcDirs(src2).end();
+		classes2.path(ctx);
+		Source src1 = Source.underWsroot("src1");
+		JavaClasses classes1 = JavaClasses.with().name("classes1")
+				.srcDirs(src1).classLocations(classes2).end();
+		classes1.path(ctx);
+
+		distroToTest().path(ctx);
+
+		FindbugsReport report = FindbugsReport.with().name("with-auxclasses")
+				.using(distroToTest(), antJar(), antLauncherJar())
+				.classesToAnalyze(new JavaClassesAndSources(classes1, src1))
+				.auxClasses(classes2).end();
+		report.path(ctx);
+
+		String htmlReportContent = htmlReportContent(report);
+		assertTrue(htmlReportContent
+				.contains(warningAboutBugUsingBinaryDependency()));
 	}
 
 }

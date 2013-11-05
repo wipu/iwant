@@ -910,6 +910,8 @@
   + fix classpath issue and write a classloader story of it (ant-launcher needed in iwant-plugin-ant, otherwise iwant-plugin-findbugs cannot use it AND dynamically run ant)
   + also added repo1.maven.org to FromRepository, thought we'll download findbugs jar from there, but a full distro is needed
 
++ As @buildscriptauthor I want to define aux classes for findbugs report so it can report bugs that can only be detected by looking in the binary dependencies
+
 #################################################################
 = In progress
 #################################################################
@@ -959,8 +961,6 @@
 #################################################################
 = Planned
 #################################################################
-
-- As @buildscriptauthor I want to define aux classes for findbugs report so it can report something better (what?)
 
 - As @developer I want a reliable classloader so that I can use AntGenerated even if I have ant.jar without ant-launcher.jar in my classpath
   * case: AntGenerated fails to load ant classes, if ant.jar is in classpath without ant-launcher.jar

@@ -1,0 +1,7 @@
+package net.sf.iwant.plugin.findbugs.testfodder2;
+
+public class BinaryDependency {
+
+	public static final String NULL_STRING = null;
+	
+}
