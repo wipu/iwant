@@ -40,8 +40,8 @@ public class EclipseProject {
 		}
 
 		Set<JavaModule> allDeps = new LinkedHashSet<JavaModule>();
-		allDeps.addAll(module.mainDeps());
-		allDeps.addAll(module.testDeps());
+		allDeps.addAll(module.mainDepsForCompilation());
+		allDeps.addAll(module.testDepsForCompilationExcludingMainDeps());
 		for (JavaModule dep : allDeps) {
 			dcp = dep(dcp, dep);
 		}

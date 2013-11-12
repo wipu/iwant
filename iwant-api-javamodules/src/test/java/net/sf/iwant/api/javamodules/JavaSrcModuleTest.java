@@ -420,4 +420,228 @@ public class JavaSrcModuleTest extends TestCase {
 		assertFalse(mod.doesHave(TestCode.class));
 	}
 
+	// -------------------------------------------
+	// dependencies
+	// -------------------------------------------
+
+	// direct getters
+
+	public void testDirectDepGettersWhenModuleHasNoDeps() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").end();
+
+		assertEquals("[]", mod.mainDepsForCompilation().toString());
+		assertEquals("[]", mod.mainDepsForRunOnly().toString());
+
+		assertEquals("[]", mod.testDepsForCompilationExcludingMainDeps()
+				.toString());
+		assertEquals("[]", mod.testDepsForRunOnlyExcludingMainDeps().toString());
+	}
+
+	public void testDirectDepGettersWhenModuleHasAllKindsOfDeps() {
+		JavaBinModule mainCompDep = JavaBinModule.providing(
+				Source.underWsroot("mainCompDep.jar")).end();
+		JavaBinModule mainRuntimeDep = JavaBinModule.providing(
+				Source.underWsroot("mainRuntimeDep.jar")).end();
+		JavaBinModule testCompDep = JavaBinModule.providing(
+				Source.underWsroot("testCompDep.jar")).end();
+		JavaBinModule testtimeDep = JavaBinModule.providing(
+				Source.underWsroot("testtimeDep.jar")).end();
+
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").mainDeps(mainCompDep)
+				.mainRuntimeDeps(mainRuntimeDep).testDeps(testCompDep)
+				.testRuntimeDeps(testtimeDep).end();
+
+		assertEquals("[mainCompDep.jar]", mod.mainDepsForCompilation()
+				.toString());
+		assertEquals("[mainRuntimeDep.jar]", mod.mainDepsForRunOnly()
+				.toString());
+
+		assertEquals("[testCompDep.jar]", mod
+				.testDepsForCompilationExcludingMainDeps().toString());
+		assertEquals("[testtimeDep.jar]", mod
+				.testDepsForRunOnlyExcludingMainDeps().toString());
+	}
+
+	// non-cumulative cases
+
+	public void testEffectiveDepsWhenModuleHasOnlyCompileTimeDeps() {
+		JavaBinModule compDep = JavaBinModule.providing(
+				Source.underWsroot("compDep.jar")).end();
+
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.mainDeps(compDep).testJava("test").end();
+
+		assertEquals("[compDep.jar]", mod.effectivePathForMainForCompile()
+				.toString());
+		assertEquals("[mod, compDep.jar]", mod.effectivePathForMainRuntime()
+				.toString());
+		assertEquals("[mod, compDep.jar]", mod.effectivePathForTestCompile()
+				.toString());
+		assertEquals("[mod, compDep.jar]", mod.effectivePathForTestRuntime()
+				.toString());
+	}
+
+	public void testEffectiveDepsWhenModuleHasCompileAndRuntimeDeps() {
+		JavaBinModule compDep = JavaBinModule.providing(
+				Source.underWsroot("compDep.jar")).end();
+		JavaBinModule runDep = JavaBinModule.providing(
+				Source.underWsroot("runDep.jar")).end();
+
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").mainDeps(compDep).mainRuntimeDeps(runDep)
+				.end();
+
+		assertEquals("[compDep.jar]", mod.effectivePathForMainForCompile()
+				.toString());
+		assertEquals("[mod, compDep.jar, runDep.jar]", mod
+				.effectivePathForMainRuntime().toString());
+		assertEquals("[mod, compDep.jar]", mod.effectivePathForTestCompile()
+				.toString());
+		assertEquals("[mod, compDep.jar, runDep.jar]", mod
+				.effectivePathForTestRuntime().toString());
+	}
+
+	public void testEffectiveDepsWhenModuleHasOnlyTestCompileDeps() {
+		JavaBinModule testCompDep = JavaBinModule.providing(
+				Source.underWsroot("testCompDep.jar")).end();
+
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").testDeps(testCompDep).end();
+
+		assertEquals("[]", mod.effectivePathForMainForCompile().toString());
+		assertEquals("[mod]", mod.effectivePathForMainRuntime().toString());
+		assertEquals("[testCompDep.jar, mod]", mod
+				.effectivePathForTestCompile().toString());
+		assertEquals("[testCompDep.jar, mod]", mod
+				.effectivePathForTestRuntime().toString());
+	}
+
+	public void testEffectiveDepsWhenModuleHasOnlyTestCompileAndTestRuntimeDeps() {
+		JavaBinModule testCompDep = JavaBinModule.providing(
+				Source.underWsroot("testCompDep.jar")).end();
+		JavaBinModule testtimeDep = JavaBinModule.providing(
+				Source.underWsroot("testtimeDep.jar")).end();
+
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").testDeps(testCompDep)
+				.testRuntimeDeps(testtimeDep).end();
+
+		assertEquals("[]", mod.effectivePathForMainForCompile().toString());
+		assertEquals("[mod]", mod.effectivePathForMainRuntime().toString());
+		assertEquals("[testCompDep.jar, mod]", mod
+				.effectivePathForTestCompile().toString());
+		assertEquals("[testCompDep.jar, testtimeDep.jar, mod]", mod
+				.effectivePathForTestRuntime().toString());
+	}
+
+	public void testEffectiveDepsWhenModuleHasAllKindsOfDeps() {
+		JavaBinModule mainCompDep = JavaBinModule.providing(
+				Source.underWsroot("mainCompDep.jar")).end();
+		JavaBinModule mainRuntimeDep = JavaBinModule.providing(
+				Source.underWsroot("mainRuntimeDep.jar")).end();
+		JavaBinModule testCompDep = JavaBinModule.providing(
+				Source.underWsroot("testCompDep.jar")).end();
+		JavaBinModule testtimeDep = JavaBinModule.providing(
+				Source.underWsroot("testtimeDep.jar")).end();
+
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").mainDeps(mainCompDep)
+				.mainRuntimeDeps(mainRuntimeDep).testDeps(testCompDep)
+				.testRuntimeDeps(testtimeDep).end();
+
+		assertEquals("[mainCompDep.jar]", mod.effectivePathForMainForCompile()
+				.toString());
+		assertEquals("[mod, mainCompDep.jar, mainRuntimeDep.jar]", mod
+				.effectivePathForMainRuntime().toString());
+		assertEquals("[testCompDep.jar, mod, mainCompDep.jar]", mod
+				.effectivePathForTestCompile().toString());
+		assertEquals(
+				"[testCompDep.jar, testtimeDep.jar, mod, mainCompDep.jar, mainRuntimeDep.jar]",
+				mod.effectivePathForTestRuntime().toString());
+	}
+
+	// cumulative deps
+
+	// main dep of main dep
+
+	public void testEffectiveDepsWithCompileDepOfCompileDep() {
+		JavaBinModule utilOfProdUtilJar = JavaBinModule.providing(
+				Source.underWsroot("utilOfProdUtil.jar")).end();
+		JavaSrcModule prodUtil = JavaSrcModule.with().name("prodUtil")
+				.mainJava("src").mainDeps(utilOfProdUtilJar).testJava("test")
+				.end();
+
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").mainDeps(prodUtil).end();
+
+		assertEquals("[prodUtil]", mod.effectivePathForMainForCompile()
+				.toString());
+		assertEquals("[mod, prodUtil, utilOfProdUtil.jar]", mod
+				.effectivePathForMainRuntime().toString());
+		assertEquals("[mod, prodUtil]", mod.effectivePathForTestCompile()
+				.toString());
+		assertEquals("[mod, prodUtil, utilOfProdUtil.jar]", mod
+				.effectivePathForTestRuntime().toString());
+	}
+
+	public void testEffectiveRuntimeDepsWithRuntimeDepOfCompileDep() {
+		JavaBinModule utilOfProdUtilJar = JavaBinModule.providing(
+				Source.underWsroot("utilOfProdUtil.jar")).end();
+		JavaBinModule prodUtilJar = JavaBinModule
+				.providing(Source.underWsroot("prodUtil.jar"))
+				.runtimeDeps(utilOfProdUtilJar).end();
+
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").mainDeps(prodUtilJar).testJava("test").end();
+
+		assertEquals("[prodUtil.jar]", mod.effectivePathForMainForCompile()
+				.toString());
+		assertEquals("[mod, prodUtil.jar, utilOfProdUtil.jar]", mod
+				.effectivePathForMainRuntime().toString());
+		assertEquals("[mod, prodUtil.jar]", mod.effectivePathForTestCompile()
+				.toString());
+		assertEquals("[mod, prodUtil.jar, utilOfProdUtil.jar]", mod
+				.effectivePathForTestRuntime().toString());
+	}
+
+	// main dep of test dep
+
+	public void testEffectiveRuntimeDepsWithCompileDepOfTestCompileDep() {
+		JavaBinModule utilOfTestUtilJar = JavaBinModule.providing(
+				Source.underWsroot("utilOfTestUtil.jar")).end();
+		JavaSrcModule testUtil = JavaSrcModule.with().name("testUtil")
+				.mainJava("src").testJava("test").mainDeps(utilOfTestUtilJar)
+				.end();
+
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").testDeps(testUtil).end();
+
+		assertEquals("[]", mod.effectivePathForMainForCompile().toString());
+		assertEquals("[mod]", mod.effectivePathForMainRuntime().toString());
+		assertEquals("[testUtil, mod]", mod.effectivePathForTestCompile()
+				.toString());
+		assertEquals("[testUtil, utilOfTestUtil.jar, mod]", mod
+				.effectivePathForTestRuntime().toString());
+	}
+
+	public void testEffectiveRuntimeDepsWithRuntimeDepOfTestCompileDep() {
+		JavaBinModule utilOfTestUtilJar = JavaBinModule.providing(
+				Source.underWsroot("utilOfTestUtil.jar")).end();
+		JavaBinModule testUtilJar = JavaBinModule
+				.providing(Source.underWsroot("testUtil.jar"))
+				.runtimeDeps(utilOfTestUtilJar).end();
+
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").testJava("test").testDeps(testUtilJar).end();
+
+		assertEquals("[]", mod.effectivePathForMainForCompile().toString());
+		assertEquals("[mod]", mod.effectivePathForMainRuntime().toString());
+		assertEquals("[testUtil.jar, mod]", mod.effectivePathForTestCompile()
+				.toString());
+		assertEquals("[testUtil.jar, utilOfTestUtil.jar, mod]", mod
+				.effectivePathForTestRuntime().toString());
+	}
+
 }

@@ -117,6 +117,29 @@ public class JavaBinModuleTest extends TestCase {
 		assertTrue(bin.doesHave(ProductionRuntimeData.class));
 	}
 
+	public void testObservableDepsOfBinInsideLibraryModuleThatHasRuntimeDeps() {
+		JavaBinModule dep1 = JavaBinModule.providing(
+				Source.underWsroot("dep1.jar")).end();
+		JavaBinModule dep2 = JavaBinModule.providing(
+				Source.underWsroot("dep2.jar")).end();
+
+		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
+		JavaBinModule lib = JavaBinModule.named("lib.jar")
+				.runtimeDeps(dep2, dep1, dep1).inside(libsModule);
+
+		assertEquals("[]", lib.mainDepsForCompilation().toString());
+		assertEquals("[dep2.jar, dep1.jar]", lib.mainDepsForRunOnly()
+				.toString());
+		assertEquals("[lib.jar, dep2.jar, dep1.jar]", lib
+				.effectivePathForMainRuntime().toString());
+		assertEquals("[]", lib.testDepsForCompilationExcludingMainDeps()
+				.toString());
+		assertEquals("[]", lib.testDepsForRunOnlyExcludingMainDeps().toString());
+		assertEquals("[]", lib.effectivePathForTestCompile().toString());
+		// bin module itself is not tested so no effective deps either:
+		assertEquals("[]", lib.effectivePathForTestRuntime().toString());
+	}
+
 	// path provider module
 
 	public void testToStringOfPathProviderBinIsTheName() {
@@ -157,12 +180,36 @@ public class JavaBinModuleTest extends TestCase {
 				libJarModule.eclipseSourceReference(evCtx));
 	}
 
-	public void testBinaryModulesDontHaveMainDeps() {
+	public void testBinaryModulesDontHaveMainDepsForCompilation() {
 		assertTrue(JavaBinModule.named("lib")
-				.inside(JavaSrcModule.with().name("libs").end()).mainDeps()
-				.isEmpty());
+				.inside(JavaSrcModule.with().name("libs").end())
+				.mainDepsForCompilation().isEmpty());
+
 		assertTrue(JavaBinModule.providing(Source.underWsroot("lib")).end()
-				.mainDeps().isEmpty());
+				.mainDepsForCompilation().isEmpty());
+	}
+
+	public void testBinaryModulesDontHaveTestDepsOfAnyKind() {
+		JavaBinModule binInsideLibs = JavaBinModule.named("lib").inside(
+				JavaSrcModule.with().name("libs").end());
+		assertTrue(binInsideLibs.testDepsForCompilationExcludingMainDeps()
+				.isEmpty());
+		assertTrue(binInsideLibs.testDepsForRunOnlyExcludingMainDeps()
+				.isEmpty());
+		assertEquals("[]", binInsideLibs.effectivePathForTestCompile()
+				.toString());
+		assertEquals("[]", binInsideLibs.effectivePathForTestRuntime()
+				.toString());
+
+		JavaBinModule binProvider = JavaBinModule.providing(
+				Source.underWsroot("lib")).end();
+		assertTrue(binProvider.testDepsForCompilationExcludingMainDeps()
+				.isEmpty());
+		assertTrue(binProvider.testDepsForRunOnlyExcludingMainDeps().isEmpty());
+		assertEquals("[]", binInsideLibs.effectivePathForTestCompile()
+				.toString());
+		assertEquals("[]", binInsideLibs.effectivePathForTestRuntime()
+				.toString());
 	}
 
 	public void testSourcesOfProviderModule() {
@@ -181,6 +228,29 @@ public class JavaBinModuleTest extends TestCase {
 				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$ProductionConfiguration]",
 				mod.characteristics().toString());
 		assertTrue(mod.doesHave(ProductionRuntimeData.class));
+	}
+
+	public void testObservableDepsOfPathProviderModuleThatHasRuntimeDeps() {
+		JavaBinModule dep1 = JavaBinModule.providing(
+				Source.underWsroot("dep1.jar")).end();
+		JavaBinModule dep2 = JavaBinModule.providing(
+				Source.underWsroot("dep2.jar")).end();
+
+		JavaBinModule lib = JavaBinModule
+				.providing(Source.underWsroot("lib.jar"))
+				.runtimeDeps(dep2, dep1, dep1).end();
+
+		assertEquals("[]", lib.mainDepsForCompilation().toString());
+		assertEquals("[dep2.jar, dep1.jar]", lib.mainDepsForRunOnly()
+				.toString());
+		assertEquals("[lib.jar, dep2.jar, dep1.jar]", lib
+				.effectivePathForMainRuntime().toString());
+		assertEquals("[]", lib.testDepsForCompilationExcludingMainDeps()
+				.toString());
+		assertEquals("[]", lib.testDepsForRunOnlyExcludingMainDeps().toString());
+		assertEquals("[]", lib.effectivePathForTestCompile().toString());
+		// bin module itself is not tested so no effective deps either:
+		assertEquals("[]", lib.effectivePathForTestRuntime().toString());
 	}
 
 }

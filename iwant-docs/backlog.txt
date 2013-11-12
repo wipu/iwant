@@ -912,6 +912,15 @@
 
 + As @buildscriptauthor I want to define aux classes for findbugs report so it can report bugs that can only be detected by looking in the binary dependencies
 
++ As @buildscriptauthor I want to define runtime and testtime dependencies to my java modules so that I can more easily build classpaths
+
++ As @buildscriptauthor I want JavaModule to give me effective compile and run module paths for main and test so I don't need to build them myself
+  * compile always before run so it's possible to override
+  * test always before main so it's possible to override
+  * compile implies runtime
+  * runtime is cumulative
+  * compile is not cumulative
+
 #################################################################
 = In progress
 #################################################################
@@ -961,6 +970,12 @@
 #################################################################
 = Planned
 #################################################################
+
+- @anticipated As @buildscriptauthor I want full control over the java module runtime path order so I can use fragile enterprise modules like xml parsers
+
+- @epic As @buildscriptauthor I want all observable collections of api implementations to be protected against mutation after building them so I don't accidentaly cause bugs
+  - JavaModule impls
+  - Targets
 
 - As @developer I want a reliable classloader so that I can use AntGenerated even if I have ant.jar without ant-launcher.jar in my classpath
   * case: AntGenerated fails to load ant classes, if ant.jar is in classpath without ant-launcher.jar

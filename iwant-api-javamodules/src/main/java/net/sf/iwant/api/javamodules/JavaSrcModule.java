@@ -24,8 +24,10 @@ public class JavaSrcModule extends JavaModule {
 	private final List<String> mainResources;
 	private final List<String> testJavas;
 	private final List<String> testResources;
-	private final Set<JavaModule> mainDeps;
-	private final Set<JavaModule> testDeps;
+	private final Set<JavaModule> mainDepsForCompilation;
+	private final Set<JavaModule> mainDepsForRunOnly;
+	private final Set<JavaModule> testDepsForCompilationExcludingMainDeps;
+	private final Set<JavaModule> testDepsForRunOnlyExcludingMainDeps;
 	private final Target generatedClasses;
 	private final Target generatedSrc;
 	private final CodeStylePolicy codeStylePolicy;
@@ -39,7 +41,10 @@ public class JavaSrcModule extends JavaModule {
 	public JavaSrcModule(String name, String locationUnderWsRoot,
 			List<String> mainJavas, List<String> mainResources,
 			List<String> testJavas, List<String> testResources,
-			Set<JavaModule> mainDeps, Set<JavaModule> testDeps,
+			Set<JavaModule> mainDepsForCompilation,
+			Set<JavaModule> mainDepsForRunOnly,
+			Set<JavaModule> testDepsForCompilationExcludingMainDeps,
+			Set<JavaModule> testDepsForRunOnlyExcludingMainDeps,
 			Target generatedClasses, Target generatedSrc,
 			List<Source> generatorSourcesToFollow,
 			CodeStylePolicy codeStylePolicy,
@@ -58,8 +63,14 @@ public class JavaSrcModule extends JavaModule {
 		this.codeFormatterPolicy = codeFormatterPolicy;
 		this.testClassNameFilter = testClassNameFilter;
 		this.encoding = encoding;
-		this.mainDeps = Collections.unmodifiableSet(mainDeps);
-		this.testDeps = Collections.unmodifiableSet(testDeps);
+		this.mainDepsForCompilation = Collections
+				.unmodifiableSet(mainDepsForCompilation);
+		this.mainDepsForRunOnly = Collections
+				.unmodifiableSet(mainDepsForRunOnly);
+		this.testDepsForCompilationExcludingMainDeps = Collections
+				.unmodifiableSet(testDepsForCompilationExcludingMainDeps);
+		this.testDepsForRunOnlyExcludingMainDeps = Collections
+				.unmodifiableSet(testDepsForRunOnlyExcludingMainDeps);
 		this.generatedClasses = generatedClasses;
 		this.generatedSrc = generatedSrc;
 	}
@@ -76,8 +87,10 @@ public class JavaSrcModule extends JavaModule {
 		private final List<String> mainResources = new ArrayList<String>();
 		private final List<String> testJavas = new ArrayList<String>();
 		private final List<String> testResources = new ArrayList<String>();
-		private final Set<JavaModule> mainDeps = new LinkedHashSet<JavaModule>();
-		private final Set<JavaModule> testDeps = new LinkedHashSet<JavaModule>();
+		private final Set<JavaModule> mainDepsForCompilation = new LinkedHashSet<JavaModule>();
+		private final Set<JavaModule> mainDepsForRunOnly = new LinkedHashSet<JavaModule>();
+		private final Set<JavaModule> testDepsForCompilationExcludingMainDeps = new LinkedHashSet<JavaModule>();
+		private final Set<JavaModule> testDepsForRunOnlyExcludingMainDeps = new LinkedHashSet<JavaModule>();
 		private Target generatedClasses;
 		private Target generatedSrc;
 		private final List<Source> generatorSourcesToFollow = new ArrayList<Source>();
@@ -102,9 +115,11 @@ public class JavaSrcModule extends JavaModule {
 						+ name;
 			}
 			return new JavaSrcModule(name, locationUnderWsRootToUse, mainJavas,
-					mainResources, testJavas, testResources, mainDeps,
-					testDeps, generatedClasses, generatedSrc,
-					generatorSourcesToFollow, codeStylePolicy,
+					mainResources, testJavas, testResources,
+					mainDepsForCompilation, mainDepsForRunOnly,
+					testDepsForCompilationExcludingMainDeps,
+					testDepsForRunOnlyExcludingMainDeps, generatedClasses,
+					generatedSrc, generatorSourcesToFollow, codeStylePolicy,
 					codeFormatterPolicy, testClassNameFilter, encoding,
 					characteristics);
 		}
@@ -171,28 +186,55 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
-		public IwantSrcModuleSpex mainDeps(JavaModule... mainDeps) {
-			return mainDeps(Arrays.asList(mainDeps));
+		public IwantSrcModuleSpex mainDeps(JavaModule... mainDepsForCompilation) {
+			return mainDeps(Arrays.asList(mainDepsForCompilation));
+		}
+
+		public IwantSrcModuleSpex mainDeps(
+				Collection<? extends JavaModule> mainDepsForCompilation) {
+			this.mainDepsForCompilation.addAll(mainDepsForCompilation);
+			return this;
+		}
+
+		public IwantSrcModuleSpex mainRuntimeDeps(
+				JavaModule... mainDepsForRunOnly) {
+			return mainRuntimeDeps(Arrays.asList(mainDepsForRunOnly));
+		}
+
+		public IwantSrcModuleSpex mainRuntimeDeps(
+				Collection<? extends JavaModule> mainDepsForRunOnly) {
+			this.mainDepsForRunOnly.addAll(mainDepsForRunOnly);
+			return this;
+		}
+
+		public IwantSrcModuleSpex testDeps(
+				JavaModule... testDepsForCompilationExcludingMainDeps) {
+			return testDeps(Arrays
+					.asList(testDepsForCompilationExcludingMainDeps));
+		}
+
+		public IwantSrcModuleSpex testDeps(
+				Collection<? extends JavaModule> testDepsForCompilationExcludingMainDeps) {
+			this.testDepsForCompilationExcludingMainDeps
+					.addAll(testDepsForCompilationExcludingMainDeps);
+			return this;
+		}
+
+		public IwantSrcModuleSpex testRuntimeDeps(
+				JavaModule... testDepsForRunOnlyExcludingMainDeps) {
+			return testRuntimeDeps(Arrays
+					.asList(testDepsForRunOnlyExcludingMainDeps));
+		}
+
+		public IwantSrcModuleSpex testRuntimeDeps(
+				Collection<? extends JavaModule> testDepsForRunOnlyExcludingMainDeps) {
+			this.testDepsForRunOnlyExcludingMainDeps
+					.addAll(testDepsForRunOnlyExcludingMainDeps);
+			return this;
 		}
 
 		public IwantSrcModuleSpex encoding(Charset encoding) {
 			this.encoding = encoding;
-			return this;
-		}
-
-		public IwantSrcModuleSpex mainDeps(
-				Collection<? extends JavaModule> mainDeps) {
-			this.mainDeps.addAll(mainDeps);
-			return this;
-		}
-
-		public IwantSrcModuleSpex testDeps(JavaModule... testDeps) {
-			return testDeps(Arrays.asList(testDeps));
-		}
-
-		public IwantSrcModuleSpex testDeps(
-				Collection<? extends JavaModule> testDeps) {
-			this.testDeps.addAll(testDeps);
 			return this;
 		}
 
@@ -261,12 +303,23 @@ public class JavaSrcModule extends JavaModule {
 	}
 
 	@Override
-	public Set<JavaModule> mainDeps() {
-		return mainDeps;
+	public Set<JavaModule> mainDepsForCompilation() {
+		return mainDepsForCompilation;
 	}
 
-	public Set<JavaModule> testDeps() {
-		return testDeps;
+	@Override
+	public Set<JavaModule> mainDepsForRunOnly() {
+		return mainDepsForRunOnly;
+	}
+
+	@Override
+	public Set<JavaModule> testDepsForCompilationExcludingMainDeps() {
+		return testDepsForCompilationExcludingMainDeps;
+	}
+
+	@Override
+	public Set<JavaModule> testDepsForRunOnlyExcludingMainDeps() {
+		return testDepsForRunOnlyExcludingMainDeps;
 	}
 
 	public Target generatedClasses() {
@@ -342,7 +395,7 @@ public class JavaSrcModule extends JavaModule {
 			return null;
 		}
 		Collection<Path> classpath = new ArrayList<Path>();
-		for (JavaModule mainDep : mainDeps) {
+		for (JavaModule mainDep : mainDepsForCompilation()) {
 			Path depArtifact = mainDep.mainArtifact();
 			if (depArtifact != null) {
 				classpath.add(depArtifact);
@@ -370,13 +423,13 @@ public class JavaSrcModule extends JavaModule {
 		if (mainClasses != null) {
 			classpath.add(mainClasses);
 		}
-		for (JavaModule mainDep : mainDeps) {
+		for (JavaModule mainDep : mainDepsForCompilation()) {
 			Path depArtifact = mainDep.mainArtifact();
 			if (depArtifact != null) {
 				classpath.add(depArtifact);
 			}
 		}
-		for (JavaModule testDep : testDeps) {
+		for (JavaModule testDep : testDepsForCompilationExcludingMainDeps()) {
 			Path depArtifact = testDep.mainArtifact();
 			if (depArtifact != null) {
 				classpath.add(depArtifact);

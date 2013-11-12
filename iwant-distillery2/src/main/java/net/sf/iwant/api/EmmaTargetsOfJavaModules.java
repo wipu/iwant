@@ -150,12 +150,11 @@ public class EmmaTargetsOfJavaModules {
 			coverage.mainClassAndArguments(mainClass, testClassList);
 		}
 
-		// TODO avoid duplicates, same dep can come from main and tests
 		coverage.nonInstrumentedClasses(mod.testArtifact());
-		for (JavaModule testDep : mod.testDeps()) {
-			dep(coverage, testDep);
+		for (JavaModule dep : mod.effectivePathForTestRuntime()) {
+			dep(coverage, dep);
 		}
-		dep(coverage, mod);
+
 		return coverage.end();
 	}
 
@@ -165,9 +164,6 @@ public class EmmaTargetsOfJavaModules {
 			coverage.instrumentations(instr);
 		} else {
 			coverage.nonInstrumentedClasses(mod.mainArtifact());
-		}
-		for (JavaModule dep : mod.mainDeps()) {
-			dep(coverage, dep);
 		}
 	}
 

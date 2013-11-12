@@ -1,6 +1,7 @@
 package net.sf.iwant.api.javamodules;
 
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -11,6 +12,10 @@ public abstract class JavaModule implements Comparable<JavaModule> {
 
 	private final SortedSet<Class<? extends JavaModuleCharacteristic>> characteristics = new TreeSet<Class<? extends JavaModuleCharacteristic>>(
 			new ClassComparator());
+	private Set<JavaModule> effectiveMainDepsForCompile;
+	private Set<JavaModule> effectiveMainDepsForRun;
+	private Set<JavaModule> effectiveTestDepsForCompile;
+	private Set<JavaModule> effectiveTestDepsForRun;
 
 	public JavaModule(
 			Set<Class<? extends JavaModuleCharacteristic>> characteristics) {
@@ -26,7 +31,72 @@ public abstract class JavaModule implements Comparable<JavaModule> {
 		return name().compareTo(o.name());
 	}
 
-	public abstract Set<JavaModule> mainDeps();
+	public abstract Set<JavaModule> mainDepsForCompilation();
+
+	public final Set<JavaModule> effectivePathForMainForCompile() {
+		if (effectiveMainDepsForCompile == null) {
+			effectiveMainDepsForCompile = new LinkedHashSet<JavaModule>();
+			effectiveMainDepsForCompile.addAll(mainDepsForCompilation());
+		}
+		return effectiveMainDepsForCompile;
+	}
+
+	public abstract Set<JavaModule> mainDepsForRunOnly();
+
+	public final synchronized Set<JavaModule> effectivePathForMainRuntime() {
+		if (effectiveMainDepsForRun == null) {
+			effectiveMainDepsForRun = new LinkedHashSet<JavaModule>();
+			effectiveMainDepsForRun.add(this);
+			for (JavaModule dep : mainDepsForCompilation()) {
+				addWithEffectiveRuntimeDeps(effectiveMainDepsForRun, dep);
+			}
+			for (JavaModule dep : mainDepsForRunOnly()) {
+				addWithEffectiveRuntimeDeps(effectiveMainDepsForRun, dep);
+			}
+		}
+		return effectiveMainDepsForRun;
+	}
+
+	private static void addWithEffectiveRuntimeDeps(Set<JavaModule> deps,
+			JavaModule dep) {
+		if (deps.contains(dep)) {
+			return;
+		}
+		deps.add(dep);
+		for (JavaModule depOfDep : dep.effectivePathForMainRuntime()) {
+			addWithEffectiveRuntimeDeps(deps, depOfDep);
+		}
+	}
+
+	public abstract Set<JavaModule> testDepsForCompilationExcludingMainDeps();
+
+	public abstract Set<JavaModule> testDepsForRunOnlyExcludingMainDeps();
+
+	public synchronized Set<JavaModule> effectivePathForTestCompile() {
+		if (effectiveTestDepsForCompile == null) {
+			effectiveTestDepsForCompile = new LinkedHashSet<JavaModule>();
+			effectiveTestDepsForCompile
+					.addAll(testDepsForCompilationExcludingMainDeps());
+			effectiveTestDepsForCompile.add(this);
+			effectiveTestDepsForCompile
+					.addAll(effectivePathForMainForCompile());
+		}
+		return effectiveTestDepsForCompile;
+	}
+
+	public synchronized Set<JavaModule> effectivePathForTestRuntime() {
+		if (effectiveTestDepsForRun == null) {
+			effectiveTestDepsForRun = new LinkedHashSet<JavaModule>();
+			for (JavaModule dep : testDepsForCompilationExcludingMainDeps()) {
+				addWithEffectiveRuntimeDeps(effectiveTestDepsForRun, dep);
+			}
+			for (JavaModule dep : testDepsForRunOnlyExcludingMainDeps()) {
+				addWithEffectiveRuntimeDeps(effectiveTestDepsForRun, dep);
+			}
+			effectiveTestDepsForRun.addAll(effectivePathForMainRuntime());
+		}
+		return effectiveTestDepsForRun;
+	}
 
 	public final SortedSet<Class<? extends JavaModuleCharacteristic>> characteristics() {
 		return characteristics;
