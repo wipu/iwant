@@ -48,6 +48,16 @@ public class DownloadedTest extends TestCase {
 						.md5("any").contentDescriptor());
 	}
 
+	/**
+	 * Most repositories limit the number of concurrent downloads so this is the
+	 * simplest way to avoid failed downloads because of server refusing the
+	 * connection.
+	 */
+	public void testParallelRefreshIsDisabled() {
+		assertFalse(Downloaded.withName("any").url("http://any.com/file")
+				.noCheck().supportsParallelism());
+	}
+
 	public void testDownloadSucceedsWithoutDigestCheck() throws Exception {
 		URL url = Iwant.url("http://localhost");
 		caches.cachesUrlAt(url, cached);

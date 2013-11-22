@@ -63,6 +63,16 @@ public class Downloaded extends Target {
 		throw new UnsupportedOperationException("TODO test and implement");
 	}
 
+	/**
+	 * Most repositories limit the number of concurrent downloads so this is the
+	 * simplest way to avoid failed downloads because of server refusing the
+	 * connection.
+	 */
+	@Override
+	public boolean supportsParallelism() {
+		return false;
+	}
+
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.cached(this);
