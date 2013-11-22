@@ -921,14 +921,15 @@
   * runtime is cumulative
   * compile is not cumulative
 
++ @bugfix disable parallel download, now there are failures if many downloads from the same repository
+  + unittest and fix
+    * very trivial unit test, but maybe shields against some refactoring
+  + real testing with gluent that has lots of downloads
+  + real testing with iwant itself
+
 #################################################################
 = In progress
 #################################################################
-
-- @bugfix disable parallel download, now there are failures if many downloads from the same repository
-  + unittest and fix
-    * very trivial unit test, but maybe shields against some refactoring
-  - real testing with gluent that has lots of downloads
 
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
