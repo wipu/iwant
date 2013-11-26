@@ -171,7 +171,7 @@ public class EclipseProjectTest extends TestCase {
 
 	public void testDotClasspathWithOneDepToBinModuleProvidedBySrcModule() {
 		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
-		JavaModule util = JavaBinModule.named("util.jar").inside(libs);
+		JavaModule util = JavaBinModule.named("util.jar").inside(libs).end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainDeps(util).end();
 		EclipseProject project = new EclipseProject(module, evCtx);
@@ -186,7 +186,7 @@ public class EclipseProjectTest extends TestCase {
 	public void testDotClasspathWithOneDepToBinModuleWithSourcesProvidedBySrcModule() {
 		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
 		JavaModule util = JavaBinModule.named("util.jar")
-				.source("util-src.zip").inside(libs);
+				.source("util-src.zip").inside(libs).end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainDeps(util).end();
 		EclipseProject project = new EclipseProject(module, evCtx);

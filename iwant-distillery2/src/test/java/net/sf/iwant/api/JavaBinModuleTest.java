@@ -9,6 +9,7 @@ import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionCode;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionConfiguration;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionRuntimeData;
+import net.sf.iwant.api.javamodules.StandardCharacteristics.TestUtility;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
@@ -46,7 +47,8 @@ public class JavaBinModuleTest extends TestCase {
 
 	public void testToStringOfProjectProvidedBinIsTheName() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
-		JavaModule lib = JavaBinModule.named("lib.jar").inside(libsModule);
+		JavaModule lib = JavaBinModule.named("lib.jar").inside(libsModule)
+				.end();
 
 		assertEquals("lib.jar", lib.toString());
 	}
@@ -71,7 +73,8 @@ public class JavaBinModuleTest extends TestCase {
 
 	public void testMainArtifactOfBinModuleIsTheJarAsSource() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
-		JavaModule lib = JavaBinModule.named("lib.jar").inside(libsModule);
+		JavaModule lib = JavaBinModule.named("lib.jar").inside(libsModule)
+				.end();
 
 		Source artifact = (Source) lib.mainArtifact();
 		assertEquals("libs/lib.jar", artifact.name());
@@ -79,7 +82,8 @@ public class JavaBinModuleTest extends TestCase {
 
 	public void testEclipsePathsOfBinInsideLibProject() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
-		JavaBinModule lib = JavaBinModule.named("lib.jar").inside(libsModule);
+		JavaBinModule lib = JavaBinModule.named("lib.jar").inside(libsModule)
+				.end();
 
 		assertEquals("/libs/lib.jar", lib.eclipseBinaryReference(evCtx));
 		assertEquals(null, lib.eclipseSourceReference(evCtx));
@@ -88,7 +92,7 @@ public class JavaBinModuleTest extends TestCase {
 	public void testEclipsePathsOfBinInsideLibProjectAndWithSources() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaBinModule lib = JavaBinModule.named("lib2.jar")
-				.source("lib2-src.zip").inside(libsModule);
+				.source("lib2-src.zip").inside(libsModule).end();
 
 		assertEquals("/libs/lib2.jar", lib.eclipseBinaryReference(evCtx));
 		assertEquals("/libs/lib2-src.zip", lib.eclipseSourceReference(evCtx));
@@ -97,19 +101,19 @@ public class JavaBinModuleTest extends TestCase {
 	public void testSourceOfBinInsideProjectWhenGivenAndWhenNot() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaBinModule lib = JavaBinModule.named("sourced.jar")
-				.source("sourced-src.zip").inside(libsModule);
+				.source("sourced-src.zip").inside(libsModule).end();
 
 		Source src = (Source) lib.source();
 		assertEquals("libs/sourced-src.zip", src.name());
 
 		assertNull(JavaBinModule.named("unsourced.jar").inside(libsModule)
-				.source());
+				.end().source());
 	}
 
 	public void testCharacteristicsForBinaryModuleInsideLibraryModule() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaBinModule bin = JavaBinModule.named("mod.jar")
-				.has(ProductionCode.class).inside(libsModule);
+				.has(ProductionCode.class).inside(libsModule).end();
 
 		assertEquals(
 				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$ProductionCode]",
@@ -125,7 +129,7 @@ public class JavaBinModuleTest extends TestCase {
 
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaBinModule lib = JavaBinModule.named("lib.jar")
-				.runtimeDeps(dep2, dep1, dep1).inside(libsModule);
+				.runtimeDeps(dep2, dep1, dep1).inside(libsModule).end();
 
 		assertEquals("[]", lib.mainDepsForCompilation().toString());
 		assertEquals("[dep2.jar, dep1.jar]", lib.mainDepsForRunOnly()
@@ -138,6 +142,27 @@ public class JavaBinModuleTest extends TestCase {
 		assertEquals("[]", lib.effectivePathForTestCompile().toString());
 		// bin module itself is not tested so no effective deps either:
 		assertEquals("[]", lib.effectivePathForTestRuntime().toString());
+	}
+
+	public void testModuleLikeABinUnderLibsIsReallyLikeIt() {
+		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
+		JavaBinModule m1 = JavaBinModule
+				.named("bin.jar")
+				.has(TestUtility.class)
+				.runtimeDeps(
+						JavaBinModule.providing(
+								Source.underWsroot("runtime.jar")).end())
+				.source("bin-src.zip").inside(libs).end();
+
+		JavaBinModule m2 = JavaBinModule.likeBinUnderLibs(m1).end();
+
+		assertEquals("bin.jar", m2.name());
+		assertEquals(
+				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$TestUtility]",
+				m2.characteristics().toString());
+		assertEquals("libs/bin.jar", m2.mainArtifact().toString());
+		assertEquals("[runtime.jar]", m2.mainDepsForRunOnly().toString());
+		assertEquals("libs/libs/bin-src.zip", m2.source().toString());
 	}
 
 	// path provider module
@@ -182,7 +207,7 @@ public class JavaBinModuleTest extends TestCase {
 
 	public void testBinaryModulesDontHaveMainDepsForCompilation() {
 		assertTrue(JavaBinModule.named("lib")
-				.inside(JavaSrcModule.with().name("libs").end())
+				.inside(JavaSrcModule.with().name("libs").end()).end()
 				.mainDepsForCompilation().isEmpty());
 
 		assertTrue(JavaBinModule.providing(Source.underWsroot("lib")).end()
@@ -190,8 +215,8 @@ public class JavaBinModuleTest extends TestCase {
 	}
 
 	public void testBinaryModulesDontHaveTestDepsOfAnyKind() {
-		JavaBinModule binInsideLibs = JavaBinModule.named("lib").inside(
-				JavaSrcModule.with().name("libs").end());
+		JavaBinModule binInsideLibs = JavaBinModule.named("lib")
+				.inside(JavaSrcModule.with().name("libs").end()).end();
 		assertTrue(binInsideLibs.testDepsForCompilationExcludingMainDeps()
 				.isEmpty());
 		assertTrue(binInsideLibs.testDepsForRunOnlyExcludingMainDeps()
@@ -251,6 +276,26 @@ public class JavaBinModuleTest extends TestCase {
 		assertEquals("[]", lib.effectivePathForTestCompile().toString());
 		// bin module itself is not tested so no effective deps either:
 		assertEquals("[]", lib.effectivePathForTestRuntime().toString());
+	}
+
+	public void testModuleLikeAPathProviderIsReallyLikeIt() {
+		JavaBinModule m1 = JavaBinModule
+				.providing(Source.underWsroot("lib.jar"),
+						Source.underWsroot("lib-src.zip"))
+				.has(TestUtility.class)
+				.runtimeDeps(
+						JavaBinModule.providing(
+								Source.underWsroot("runtime.jar")).end()).end();
+
+		JavaBinModule m2 = JavaBinModule.likePathProvider(m1).end();
+
+		assertEquals("lib.jar", m2.name());
+		assertEquals(
+				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$TestUtility]",
+				m2.characteristics().toString());
+		assertEquals("lib.jar", m2.mainArtifact().toString());
+		assertEquals("[runtime.jar]", m2.mainDepsForRunOnly().toString());
+		assertEquals("lib-src.zip", m2.source().toString());
 	}
 
 }

@@ -37,6 +37,28 @@ public abstract class JavaBinModule extends JavaModule {
 		return new PathProviderSpex(mainArtifact, sources);
 	}
 
+	public static IwantBinModuleSpex likeBinUnderLibs(JavaBinModule mod) {
+		ProvidedBySrcModule m = (ProvidedBySrcModule) mod;
+		IwantBinModuleSpex clone = named(m.name());
+		for (Class<? extends JavaModuleCharacteristic> c : m.characteristics()) {
+			clone.has(c);
+		}
+		clone.inside(m.libsModule);
+		clone.runtimeDeps(m.mainDepsForRunOnly());
+		clone.source(m.source().name());
+		return clone;
+	}
+
+	public static PathProviderSpex likePathProvider(JavaBinModule mod) {
+		PathProvider m = (PathProvider) mod;
+		PathProviderSpex clone = providing(mod.mainArtifact(), mod.source());
+		for (Class<? extends JavaModuleCharacteristic> c : m.characteristics()) {
+			clone.has(c);
+		}
+		clone.runtimeDeps(m.mainDepsForRunOnly());
+		return clone;
+	}
+
 	@Override
 	public final String name() {
 		return name;
@@ -89,6 +111,7 @@ public abstract class JavaBinModule extends JavaModule {
 		private String src;
 		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<Class<? extends JavaModuleCharacteristic>>();
 		private final Set<JavaModule> runtimeDeps = new LinkedHashSet<JavaModule>();
+		private JavaSrcModule libsModule;
 
 		public IwantBinModuleSpex(String name) {
 			this.name = name;
@@ -115,7 +138,12 @@ public abstract class JavaBinModule extends JavaModule {
 			return this;
 		}
 
-		public JavaBinModule inside(JavaSrcModule libsModule) {
+		public IwantBinModuleSpex inside(JavaSrcModule libsModule) {
+			this.libsModule = libsModule;
+			return this;
+		}
+
+		public JavaBinModule end() {
 			return new ProvidedBySrcModule(name, libsModule, src,
 					characteristics, runtimeDeps);
 		}

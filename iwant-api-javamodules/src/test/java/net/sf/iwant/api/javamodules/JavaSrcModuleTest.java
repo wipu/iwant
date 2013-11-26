@@ -270,7 +270,7 @@ public class JavaSrcModuleTest extends TestCase {
 	public void testModulesAreComparedByName() {
 		JavaModule srcA = JavaSrcModule.with().name("a").end();
 		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
-		JavaModule binA = JavaBinModule.named("a").inside(libs);
+		JavaModule binA = JavaBinModule.named("a").inside(libs).end();
 
 		assertTrue(srcA.compareTo(binA) == 0);
 		assertTrue(binA.compareTo(srcA) == 0);
@@ -418,6 +418,60 @@ public class JavaSrcModuleTest extends TestCase {
 		assertTrue(mod.doesHave(BuildUtility.class));
 
 		assertFalse(mod.doesHave(TestCode.class));
+	}
+
+	public void testJavaSrcModuleLikeAnotherIsReallyLikeIt() {
+		JavaSrcModule m1 = JavaSrcModule
+				.with()
+				.codeFormatter(new CodeFormatterPolicy())
+				.codeStyle(
+						CodeStylePolicy.defaultsExcept()
+								.fail(CodeStyle.DEAD_CODE).end())
+				.encoding(Charset.forName("ISO-8859-15"))
+				.has(TestCode.class)
+				.locationUnderWsRoot("mods/mod")
+				.mainDeps(
+						JavaBinModule.providing(Source.underWsroot("bin.jar"))
+								.end())
+				.mainJava("src")
+				.mainResources("res")
+				.mainRuntimeDeps(
+						JavaBinModule.providing(
+								Source.underWsroot("runbin.jar")).end())
+				.name("mod")
+				.testDeps(
+						JavaBinModule.providing(
+								Source.underWsroot("testbin.jar")).end())
+				.testedBy("com.example.TestSuite")
+				.testJava("test")
+				.testResources("testres")
+				.testRuntimeDeps(
+						JavaBinModule.providing(
+								Source.underWsroot("testrunbin.jar")).end())
+				.end();
+
+		JavaSrcModule m2 = JavaSrcModule.like(m1).end();
+
+		assertSame(m1.codeFormatterPolicy(), m2.codeFormatterPolicy());
+		assertSame(m1.codeStylePolicy(), m2.codeStylePolicy());
+		assertSame(m1.encoding(), m2.encoding());
+		assertEquals(
+				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$TestCode]",
+				m2.characteristics().toString());
+		assertEquals(m1.locationUnderWsRoot(), m2.locationUnderWsRoot());
+		assertEquals("[bin.jar]", m2.mainDepsForCompilation().toString());
+		assertEquals("[src]", m2.mainJavas().toString());
+		assertEquals("[res]", m2.mainResources().toString());
+		assertEquals("[runbin.jar]", m2.mainDepsForRunOnly().toString());
+		assertEquals("mod", m2.name());
+		assertEquals("[testbin.jar]", m2
+				.testDepsForCompilationExcludingMainDeps().toString());
+		assertEquals("StringFilterByEquality:com.example.TestSuite", m2
+				.testClassNameDefinition().toString());
+		assertEquals("[test]", m2.testJavas().toString());
+		assertEquals("[testres]", m2.testResources().toString());
+		assertEquals("[testrunbin.jar]", m2
+				.testDepsForRunOnlyExcludingMainDeps().toString());
 	}
 
 	// -------------------------------------------

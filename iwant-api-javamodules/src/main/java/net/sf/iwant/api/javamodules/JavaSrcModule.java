@@ -79,6 +79,36 @@ public class JavaSrcModule extends JavaModule {
 		return new IwantSrcModuleSpex();
 	}
 
+	public static IwantSrcModuleSpex like(JavaSrcModule m) {
+		IwantSrcModuleSpex clone = with();
+		clone.codeFormatter(m.codeFormatterPolicy());
+		clone.codeStyle(m.codeStylePolicy());
+		clone.encoding(m.encoding());
+		for (Class<? extends JavaModuleCharacteristic> c : m.characteristics()) {
+			clone.has(c);
+		}
+		clone.locationUnderWsRoot(m.locationUnderWsRoot());
+		clone.mainDeps(m.mainDepsForCompilation());
+		for (String mj : m.mainJavas()) {
+			clone.mainJava(mj);
+		}
+		for (String mr : m.mainResources()) {
+			clone.mainResources(mr);
+		}
+		clone.mainRuntimeDeps(m.mainDepsForRunOnly());
+		clone.name(m.name());
+		clone.testDeps(m.testDepsForCompilationExcludingMainDeps());
+		clone.testedBy(m.testClassNameDefinition());
+		for (String tj : m.testJavas()) {
+			clone.testJava(tj);
+		}
+		for (String tr : m.testResources()) {
+			clone.testResources(tr);
+		}
+		clone.testRuntimeDeps(m.testDepsForRunOnlyExcludingMainDeps());
+		return clone;
+	}
+
 	public static class IwantSrcModuleSpex {
 
 		private String name;
@@ -336,6 +366,10 @@ public class JavaSrcModule extends JavaModule {
 
 	public CodeFormatterPolicy codeFormatterPolicy() {
 		return codeFormatterPolicy;
+	}
+
+	public Charset encoding() {
+		return encoding;
 	}
 
 	public String relativeWsRoot() {

@@ -927,6 +927,13 @@
   + real testing with gluent that has lots of downloads
   + real testing with iwant itself
 
++ As @buildscriptauthor I want to define a java module like another (auto-shoveling spec) so I can reuse a module defined in wsdefdef but make some enhancements during the actual build (like characteristics)
+  + JavaSrcModule
+  + JavaBinModule
+    + both cases separately
+    + change the spex interface of the other
+    * the spex api of these really starts hurting
+
 #################################################################
 = In progress
 #################################################################
