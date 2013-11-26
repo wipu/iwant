@@ -933,6 +933,9 @@
     + both cases separately
     + change the spex interface of the other
     * the spex api of these really starts hurting
+  * btw, this didn't help: dependencies won't be cloned this way
+    so instead I made it possible for wsdef to decorate the buildtime
+    modules during their definition it uses from the wsdefdef
 
 #################################################################
 = In progress
