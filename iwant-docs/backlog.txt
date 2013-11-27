@@ -937,6 +937,9 @@
     so instead I made it possible for wsdef to decorate the buildtime
     modules during their definition it uses from the wsdefdef
 
++ As @buildscriptauthor I want to pass a collection of generator sources to follow for a srcmodule so that I don't have to convert it into an array (currently supported)
+  + just do it, the overloaded method uses it so no need to test it directly
+
 #################################################################
 = In progress
 #################################################################

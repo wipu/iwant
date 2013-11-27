@@ -277,8 +277,13 @@ public class JavaSrcModule extends JavaModule {
 
 		public IwantSrcModuleSpex generatorSourcesToFollow(
 				Source... generatorSourcesToFollow) {
-			this.generatorSourcesToFollow.addAll(Arrays
+			return generatorSourcesToFollow(Arrays
 					.asList(generatorSourcesToFollow));
+		}
+
+		public IwantSrcModuleSpex generatorSourcesToFollow(
+				Collection<? extends Source> generatorSourcesToFollow) {
+			this.generatorSourcesToFollow.addAll(generatorSourcesToFollow);
 			return this;
 		}
 
