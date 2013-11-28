@@ -940,6 +940,10 @@
 + As @buildscriptauthor I want to pass a collection of generator sources to follow for a srcmodule so that I don't have to convert it into an array (currently supported)
   + just do it, the overloaded method uses it so no need to test it directly
 
++ As @buildscriptauthor I want to clear main and test resources during specification of java src module so that I can override defaults set in my project-specific utility
+  * for example a project uses mavenLayout by default, and individual modules
+    can then declare they don't have resources
+
 #################################################################
 = In progress
 #################################################################

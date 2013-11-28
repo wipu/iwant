@@ -201,6 +201,11 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
+		public IwantSrcModuleSpex noMainResources() {
+			this.mainResources.clear();
+			return this;
+		}
+
 		public IwantSrcModuleSpex testJava(String testJava) {
 			this.testJavas.add(testJava);
 			return this;
@@ -213,6 +218,11 @@ public class JavaSrcModule extends JavaModule {
 
 		public IwantSrcModuleSpex testResources(String testResources) {
 			this.testResources.add(testResources);
+			return this;
+		}
+
+		public IwantSrcModuleSpex noTestResources() {
+			this.testResources.clear();
 			return this;
 		}
 

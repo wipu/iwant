@@ -221,6 +221,14 @@ public class JavaSrcModuleTest extends TestCase {
 		assertEquals("[dual-src/src2]", mainArtifact.srcDirs().toString());
 	}
 
+	public void testMainResourcesCollectionCanBeEmptiedDuringSpecification() {
+		JavaSrcModule module = JavaSrcModule.with().name("dual-res")
+				.mainResources("res1").noMainResources().mainResources("res2")
+				.mainDeps().end();
+
+		assertEquals("[res2]", module.mainResources().toString());
+	}
+
 	public void testTestArtifactOfOfSrcModuleThatHasManyTestJavas() {
 		JavaSrcModule module = JavaSrcModule.with().name("dual-test")
 				.testJava("test1").testJava("test2").mainDeps().end();
@@ -239,6 +247,14 @@ public class JavaSrcModuleTest extends TestCase {
 		JavaClasses testArtifact = (JavaClasses) module.testArtifact();
 
 		assertEquals("[dual-test/test2]", testArtifact.srcDirs().toString());
+	}
+
+	public void testTestResourcesCollectionCanBeEmptiedDuringSpecification() {
+		JavaSrcModule module = JavaSrcModule.with().name("dual-res")
+				.testResources("res1").noTestResources().testResources("res2")
+				.mainDeps().end();
+
+		assertEquals("[res2]", module.testResources().toString());
 	}
 
 	public void testMainResourcesArePassedToMainClassesWhileTestResourcesAreMissing() {
