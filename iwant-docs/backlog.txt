@@ -944,9 +944,20 @@
   * for example a project uses mavenLayout by default, and individual modules
     can then declare they don't have resources
 
++ As eclipse user I want new-eclipse-env.sh to enable svn and git plugins if and only if I enable them on the command-line so I don't have to tolerate their problems when I don't need the good parts
+  * for example egit is buggy with submodules
+  + impl as optional opts
+  + conditional install of subclipse
+  + conditional _uninstall_ of egit (included by default)
+
 #################################################################
 = In progress
 #################################################################
+
+- As eclipse user I want to have .classpath files that are identical on all workstations so I can version them so solving eclipse settings problems is easier (for example after iwant upgrade)
+  * afaik this requires classpath variables
+  + new-eclipse-env.sh defines USER_HOME
+  - optional setting for EclipseSettings to use the variable
 
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased

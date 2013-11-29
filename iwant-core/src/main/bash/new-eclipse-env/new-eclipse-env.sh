@@ -59,9 +59,43 @@ CACHE=$NEEHOME/cache
   mkdir -p "$CACHE"
 }
 
-[ $# == 2 ] || die "Usage: $0 TARGETDIR linux32|linux64|win32|win64"
+OPT_SUBCLIPSE=false
+OPT_EGIT=false
+
+if [ $# -lt 2 ]; then
+  log "Usage: $0 TARGETDIR linux32|linux64|win32|win64 [OPTS...]"
+  log "Supported OPTS:"
+  log "  --egit      : enable git plugin (disabled by default)"
+  log "  --subclipse : enable svn plugin (disabled by default)"
+  die ""
+fi
 TARGETDIR=$1
-ARCH=$2
+shift
+ARCH=$1
+shift
+
+log "Arguments: TARGETDIR=$TARGETDIR, ARCH=$ARCH"
+
+while [ $# -gt 0 ]; do
+  OPT=$1
+  shift
+  case "$OPT" in
+  "--egit")
+    log "OPT --egit requested"
+    OPT_EGIT=true
+    ;;
+  "--subclipse")
+    log "OPT --subclipse requested"
+    OPT_SUBCLIPSE=true
+    ;;
+  *) die "Unsupported OPT: $OPT"
+  esac
+done
+
+log "Requested options:"
+log "OPT_SUBCLIPSE=$OPT_SUBCLIPSE"
+log "OPT_EGIT=$OPT_EGIT"
+
 
 ECL_CODENAME=kepler
 ECL_REL=R
@@ -166,16 +200,35 @@ subclipse() {
   -d "$ECLIPSE/"
 }
 
+# currently egit works incorrectly with submodules so:
+disable-egit() {
+  log "Disabling egit plugin"
+  local DIR=$ECLIPSE/plugins
+  rm -v "$DIR"/org.eclipse.egit*
+  rm -v "$DIR"/org.eclipse.mylyn.git*
+}
+
 custom-formatting() {
   log "Configuring formatter"
   cd "$TARGETDIR"
   patch -p0 < "$NEEHOME/patches/custom-formatting.diff"
 }
 
-m2-repo() {
-  log "Configuring M2REPO variable"
-  local M2REPO=$(readlink -f ~/.m2/repository)
-  echo "org.eclipse.jdt.core.classpathVariable.M2_REPO=$M2REPO" >> "$WORKSPACE/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs"
+# eclipse already does this automatically
+addvar-m2-repo() {
+  local M2_REPO=$(readlink -f ~/.m2/repository)
+  add-classpath-var M2_REPO "$M2_REPO"
+}
+
+addvar-user-home() {
+  add-classpath-var USER_HOME "$HOME"
+}
+
+add-classpath-var() {
+  local KEY=$1
+  local VALUE=$2
+  log "Adding classpath variable $KEY=$VALUE"
+  echo "org.eclipse.jdt.core.classpathVariable.$KEY=$VALUE" >> "$WORKSPACE/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs"
 }
 
 workspace() {
@@ -317,6 +370,8 @@ targetdir
 pristine-eclipse
 workspace
 select-workspace
-subclipse
+[ "true" == "$OPT_SUBCLIPSE" ] && subclipse
+[ "true" == "$OPT_EGIT" ] || disable-egit
+addvar-user-home
 #custom-formatting
 #m2-repo
