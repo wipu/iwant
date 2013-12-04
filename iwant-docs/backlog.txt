@@ -954,11 +954,6 @@
 = In progress
 #################################################################
 
-- As eclipse user I want to have .classpath files that are identical on all workstations so I can version them so solving eclipse settings problems is easier (for example after iwant upgrade)
-  * afaik this requires classpath variables
-  + new-eclipse-env.sh defines USER_HOME
-  - optional setting for EclipseSettings to use the variable
-
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
   + bootstrapping from local iwant without versioning
@@ -1004,6 +999,12 @@
 #################################################################
 = Planned
 #################################################################
+
+- As eclipse user I want to have .classpath files that are identical on all workstations so I can version them so solving eclipse settings problems is easier (for example after iwant upgrade)
+  * afaik this requires classpath variables
+  + new-eclipse-env.sh defines USER_HOME
+  - optional setting for EclipseSettings to use the variable
+  * postponed, because this is a bit too laborous to normalize at this point: /home/wipu/.net.sf.iwant/cached/ClassesFromUnmodifiableIwantWsRoot/%2Fhome/wipu/.net.sf.iwant/cached/UnmodifiableUrl/http%253A/%252Fsvn.code.sf.net/p/iwant/code/trunk%2540595
 
 - @anticipated As @buildscriptauthor I want full control over the java module runtime path order so I can use fragile enterprise modules like xml parsers
 
