@@ -24,6 +24,11 @@ public class Source implements Path {
 	}
 
 	@Override
+	public boolean isNameAWorkspaceRelativePathToFreshContent() {
+		return true;
+	}
+
+	@Override
 	public File cachedAt(CacheScopeChoices cachedAt) {
 		return cachedAt.source(this);
 	}

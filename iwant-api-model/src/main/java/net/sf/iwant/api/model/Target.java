@@ -15,6 +15,11 @@ public abstract class Target implements Path {
 		return name;
 	}
 
+	@Override
+	public boolean isNameAWorkspaceRelativePathToFreshContent() {
+		return false;
+	}
+
 	public abstract void path(TargetEvaluationContext ctx) throws Exception;
 
 	public abstract String contentDescriptor();

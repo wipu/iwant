@@ -8,6 +8,8 @@ public interface Path {
 
 	String name();
 
+	boolean isNameAWorkspaceRelativePathToFreshContent();
+
 	InputStream content(TargetEvaluationContext ctx) throws Exception;
 
 	File cachedAt(CacheScopeChoices cachedAt);

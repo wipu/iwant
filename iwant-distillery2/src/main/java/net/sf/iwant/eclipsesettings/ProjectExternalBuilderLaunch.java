@@ -23,7 +23,7 @@ public class ProjectExternalBuilderLaunch {
 			relativeInputPaths.add(genSrc.wsRootRelativePath());
 		}
 		for (Path ingredient : generatedJavaSrc.ingredients()) {
-			if (ingredient instanceof Source) {
+			if (ingredient.isNameAWorkspaceRelativePathToFreshContent()) {
 				relativeInputPaths.add(ingredient.name());
 			}
 		}

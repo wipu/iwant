@@ -22,6 +22,11 @@ public class ExternalSource implements Path {
 	}
 
 	@Override
+	public boolean isNameAWorkspaceRelativePathToFreshContent() {
+		return false;
+	}
+
+	@Override
 	public InputStream content(TargetEvaluationContext ctx) throws Exception {
 		System.err.println("TODO content");
 		throw new UnsupportedOperationException("TODO test and implement");
