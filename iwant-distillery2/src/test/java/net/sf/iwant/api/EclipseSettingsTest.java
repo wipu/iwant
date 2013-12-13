@@ -180,7 +180,88 @@ public class EclipseSettingsTest extends TestCase {
 		assertDotClasspathContains("mod2",
 				"<classpathentry kind=\"lib\" path=\"" + cacheDir
 						+ "/test-tools-2-srcless\"/>");
+	}
 
+	public void testSetOfAllMainAndTestDependencyBinaryClassesAndSourcesGetsRefreshedSoEclipseWontComplainAboutMissingRefs() {
+		// 2 modules depend on this, but it's mentioned only once in refs:
+		JavaModule binWithoutSources = JavaBinModule.providing(
+				TargetMock.ingredientless("binWithoutSources")).end();
+		// sources of this shall also be refreshed, they are dynamic:
+		JavaModule binWithSources = JavaBinModule.providing(
+				TargetMock.ingredientless("binWithSources"),
+				TargetMock.ingredientless("binWithSources-src")).end();
+		// source dep shall not be refreshed, eclipse can do that by itself:
+		JavaSrcModule srcDep = JavaSrcModule.with().name("srcDep")
+				.locationUnderWsRoot("srcDep").mainJava("src")
+				.mainDeps(binWithoutSources).end();
+		// not only main, but test deps also:
+		JavaModule testUtilWithSources = JavaBinModule.providing(
+				TargetMock.ingredientless("testUtilWithSources"),
+				TargetMock.ingredientless("testUtilWithSources-src")).end();
+		JavaModule mod = JavaSrcModule.with().name("mod")
+				.locationUnderWsRoot("mod").mainJava("src").testJava("test")
+				.mainDeps(binWithoutSources, binWithSources, srcDep)
+				.testDeps(testUtilWithSources).end();
+
+		EclipseSettings es = EclipseSettings.with().modules(mod, srcDep)
+				.name("es").end();
+		es.mutate(ctx);
+
+		assertEquals(1, ctx.targetsWantedAsPath().size());
+		assertEquals("Concatenated {\n"
+				+ "path-of:binWithoutSources\nstring:'\n'\n"
+				+ "path-of:binWithSources\nstring:'\n'\n"
+				+ "path-of:binWithSources-src\nstring:'\n'\n"
+				+ "path-of:testUtilWithSources\nstring:'\n'\n"
+				+ "path-of:testUtilWithSources-src\nstring:'\n'\n" + "}\n", ctx
+				.targetsWantedAsPath().get(0).contentDescriptor());
+	}
+
+	public void testClasspathIsGeneratedButWithWarningIfRefreshOfDepsFails() {
+		JavaModule util = JavaBinModule.providing(
+				TargetMock.ingredientless("util"),
+				TargetMock.ingredientless("util-src")).end();
+		JavaModule mod = JavaSrcModule.with().name("mod")
+				.locationUnderWsRoot("mod").mainJava("src").mainDeps(util)
+				.end();
+
+		ctx.shallFailIwantAsPathWith(new RuntimeException(
+				"compilation of util classes failed"));
+		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
+				.end();
+		es.mutate(ctx);
+
+		assertEquals(1, ctx.targetsWantedAsPath().size());
+		assertEquals("Concatenated {\n" + "path-of:util\nstring:'\n'\n"
+				+ "path-of:util-src\nstring:'\n'\n" + "}\n", ctx
+				.targetsWantedAsPath().get(0).contentDescriptor());
+
+		assertDotClasspathContains("mod",
+				"<classpathentry kind=\"lib\" path=\"" + cacheDir
+						+ "/util\" sourcepath=\"" + cacheDir + "/util-src\"/>");
+		assertEquals(
+				"WARNING: Refresh of eclipse settings references failed:\n"
+						+ "java.lang.RuntimeException: compilation of util classes failed\n"
+						+ "", ctx.err().toString());
+	}
+
+	public void testNameOfBinDepRefreshTarget() {
+		JavaModule util = JavaBinModule.providing(
+				TargetMock.ingredientless("util"),
+				TargetMock.ingredientless("util-src")).end();
+		JavaModule mod = JavaSrcModule.with().name("mod")
+				.locationUnderWsRoot("mod").mainJava("src").mainDeps(util)
+				.end();
+
+		EclipseSettings es1 = EclipseSettings.with().modules(mod).name("es1")
+				.end();
+		es1.mutate(ctx);
+		EclipseSettings es2 = EclipseSettings.with().modules(mod).name("es2")
+				.end();
+		es2.mutate(ctx);
+
+		assertEquals("es1.bin-refs", ctx.targetsWantedAsPath().get(0).name());
+		assertEquals("es2.bin-refs", ctx.targetsWantedAsPath().get(1).name());
 	}
 
 }

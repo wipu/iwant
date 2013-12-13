@@ -26,7 +26,7 @@ public class TargetMock extends Target {
 		super(name);
 	}
 
-	public static Path ingredientless(String name) {
+	public static TargetMock ingredientless(String name) {
 		TargetMock jar = new TargetMock(name);
 		jar.hasNoIngredients();
 		return jar;

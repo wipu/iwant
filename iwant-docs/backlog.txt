@@ -950,6 +950,8 @@
   + conditional install of subclipse
   + conditional _uninstall_ of egit (included by default)
 
++ As eclipse user I want eclipse-settings side-effect to refresh all binary references (classes and sources) so Eclipse won't complaing about missing references
+
 #################################################################
 = In progress
 #################################################################

@@ -1,7 +1,10 @@
 package net.sf.iwant.api;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.sf.iwant.api.model.SideEffectContext;
 import net.sf.iwant.api.model.Target;
@@ -15,6 +18,10 @@ public class SideEffectContextMock implements SideEffectContext {
 	private WsInfoMock wsInfo;
 	private File wsRoot;
 	private final TargetEvaluationContextMock evaluationCtx;
+	private final List<Target> targetsWantedAsPath = new ArrayList<Target>();
+	private File resultForTargetAsPath;
+	private RuntimeException failureForIwantAsPath;
+	private final ByteArrayOutputStream err = new ByteArrayOutputStream();
 
 	public SideEffectContextMock(TestArea testArea,
 			TargetEvaluationContextMock evaluationCtx) {
@@ -48,7 +55,7 @@ public class SideEffectContextMock implements SideEffectContext {
 
 	@Override
 	public OutputStream err() {
-		throw new UnsupportedOperationException("TODO test and implement");
+		return err;
 	}
 
 	@Override
@@ -56,8 +63,26 @@ public class SideEffectContextMock implements SideEffectContext {
 		return evaluationCtx;
 	}
 
+	public void shallReturnToIwantAsPath(File nextResultForTargetAsPath) {
+		this.resultForTargetAsPath = nextResultForTargetAsPath;
+	}
+
+	public void shallFailIwantAsPathWith(
+			RuntimeException failureForNextIwantAsPath) {
+		this.failureForIwantAsPath = failureForNextIwantAsPath;
+	}
+
 	@Override
 	public File iwantAsPath(Target target) {
-		throw new UnsupportedOperationException("TODO test and implement");
+		targetsWantedAsPath.add(target);
+		if (failureForIwantAsPath != null) {
+			throw failureForIwantAsPath;
+		}
+		return resultForTargetAsPath;
 	}
+
+	public List<Target> targetsWantedAsPath() {
+		return targetsWantedAsPath;
+	}
+
 }
