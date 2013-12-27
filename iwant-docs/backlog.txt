@@ -952,6 +952,18 @@
 
 + As eclipse user I want eclipse-settings side-effect to refresh all binary references (classes and sources) so Eclipse won't complaing about missing references
 
++ As a web app developer I want an easy way of defining a web archive (war) so I don't have to generate an ant script for it
+  + plugin
+  + War target
+    + minimal
+    + web.xml under a directory Path so I can generate confs and use web.xml
+      from under it
+    + libs
+    + classes
+    + resources
+    + excludes
+  + descript, to make sure plugin classpath is right
+
 #################################################################
 = In progress
 #################################################################

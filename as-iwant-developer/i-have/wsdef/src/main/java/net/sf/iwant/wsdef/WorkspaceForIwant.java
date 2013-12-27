@@ -51,8 +51,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				iwantCoreservices(), iwantDistillery(), iwantDistillery2(),
 				iwantDocs(), iwantExampleWsdef(), iwantMockWsroot(),
 				iwantPluginAnt(), iwantPluginFindbugs(), iwantPluginPmd(),
-				iwantTestarea(), iwantTestresources(), iwantTutorialWsdefs(),
-				junit()));
+				iwantPluginWar(), iwantTestarea(), iwantTestresources(),
+				iwantTutorialWsdefs(), junit()));
 	}
 
 	// the targets
@@ -259,6 +259,14 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.testedBy("net.sf.iwant.plugin.pmd.IwantPluginPmdSuite").end();
 	}
 
+	private static JavaModule iwantPluginWar() {
+		return iwantSrcModule("plugin-war")
+				.mainDeps(ant(), antLauncher(), iwantApiModel())
+				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
+						iwantPluginAnt(), iwantTestarea(), iwantTestresources())
+				.testedBy("net.sf.iwant.plugin.war.IwantPluginWarSuite").end();
+	}
+
 	private static JavaSrcModule iwantTestarea() {
 		return iwantSrcModule("testarea").noTestJava()
 				.mainDeps(iwantTestareaClassdir()).end();
@@ -281,7 +289,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainJava("src")
 				.mainDeps(commonsMath(), iwantApiJavamodules(),
 						iwantApiModel(), iwantDistillery2(), iwantPluginAnt(),
-						iwantPluginFindbugs(), iwantPluginPmd()).end();
+						iwantPluginFindbugs(), iwantPluginPmd(),
+						iwantPluginWar()).end();
 	}
 
 	private static JavaModule jaxen() {

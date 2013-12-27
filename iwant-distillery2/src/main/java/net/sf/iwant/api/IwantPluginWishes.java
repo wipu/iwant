@@ -8,4 +8,6 @@ public interface IwantPluginWishes {
 
 	IwantPluginWish pmd();
 
+	IwantPluginWish war();
+
 }

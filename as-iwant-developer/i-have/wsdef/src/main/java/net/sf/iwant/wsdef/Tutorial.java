@@ -53,6 +53,8 @@ public class Tutorial extends Target {
 				"Static code analysis report using PMD"));
 		pages.add(pageAboutUsingWsdef("findbugsreport",
 				"Static code analysis report using findbugs"));
+		pages.add(pageAboutUsingWsdef("using-iwant-plugin-war",
+				"Defining a web archive (war)"));
 	}
 
 	public static Tutorial local() {

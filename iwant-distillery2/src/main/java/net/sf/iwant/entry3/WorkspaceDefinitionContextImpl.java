@@ -137,6 +137,16 @@ public class WorkspaceDefinitionContextImpl implements
 			};
 		}
 
+		@Override
+		public IwantPluginWish war() {
+			return new IwantPluginWish() {
+				@Override
+				public Set<JavaModule> withDependencies() {
+					return pluginWithDependencies("iwant-plugin-war", antJar());
+				}
+			};
+		}
+
 	}
 
 	private static Path antJar() {
