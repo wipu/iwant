@@ -197,7 +197,8 @@ public class EmmaCoverageTest extends TestCase {
 				.antJars(antJar(), antLauncherJar()).emma(emma())
 				.mainClassAndArguments("Hello").instrumentations(instr).end();
 
-		assertEquals("[-XX:-UseSplitVerifier]", coverage.jvmargs().toString());
+		assertEquals("[-XX:-UseSplitVerifier, -Demma.rt.control=false]",
+				coverage.jvmargs().toString());
 	}
 
 	public void testDefaultJvmArgsCanBeCleared() throws Exception {

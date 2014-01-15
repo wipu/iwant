@@ -54,7 +54,7 @@ public class EmmaCoverage extends Target {
 		private final List<String> jvmargs = new ArrayList<String>();
 
 		public EmmaCoverageSpex() {
-			jvmArgs("-XX:-UseSplitVerifier");
+			jvmArgs("-XX:-UseSplitVerifier", "-Demma.rt.control=false");
 		}
 
 		public EmmaCoverageSpex name(String name) {
