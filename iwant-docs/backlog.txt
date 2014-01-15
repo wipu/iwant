@@ -964,13 +964,13 @@
     + excludes
   + descript, to make sure plugin classpath is right
 
++ As emma user I want emma.rt.control=false by default in EmmaCoverage so that tests don't fail if the happen to open that port and because I cannot find any good use for the control port
+  + add to default jvmargs
+  + real test in a project with test failures
+
 #################################################################
 = In progress
 #################################################################
-
-- As emma user I want emma.rt.control=false by default in EmmaCoverage so that tests don't fail if the happen to open that port and because I cannot find any good use for the control port
-  + add to default jvmargs
-  - real test in a project with test failures
 
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
