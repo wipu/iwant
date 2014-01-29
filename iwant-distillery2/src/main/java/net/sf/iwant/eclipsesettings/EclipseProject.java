@@ -71,7 +71,7 @@ public class EclipseProject {
 
 	public OrgEclipseJdtCorePrefs orgEclipseJdtCorePrefs() {
 		return new OrgEclipseJdtCorePrefs(module.codeStylePolicy(),
-				module.codeFormatterPolicy());
+				module.codeFormatterPolicy(), module.javaCompliance());
 	}
 
 	private boolean hasExternalBuilder() {

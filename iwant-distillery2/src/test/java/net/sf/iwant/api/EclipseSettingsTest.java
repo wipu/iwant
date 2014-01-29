@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaCompliance;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.apimocks.CachesMock;
@@ -262,6 +263,35 @@ public class EclipseSettingsTest extends TestCase {
 
 		assertEquals("es1.bin-refs", ctx.targetsWantedAsPath().get(0).name());
 		assertEquals("es2.bin-refs", ctx.targetsWantedAsPath().get(1).name());
+	}
+
+	public void testDefaultJavaComplianceIs16() {
+		JavaModule mod = JavaSrcModule.with().name("mod")
+				.locationUnderWsRoot("mod").mainJava("src").end();
+
+		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
+				.end();
+		es.mutate(ctx);
+
+		String corePrefs = "mod/.settings/org.eclipse.jdt.core.prefs";
+		assertFileContains(corePrefs, "targetPlatform=1.6");
+		assertFileContains(corePrefs, "compiler.compliance=1.6");
+		assertFileContains(corePrefs, "compiler.source=1.6");
+	}
+
+	public void testJavaComplianceCanBeDefinedAs17() {
+		JavaModule mod = JavaSrcModule.with().name("mod")
+				.javaCompliance(JavaCompliance.JAVA_1_7)
+				.locationUnderWsRoot("mod").mainJava("src").end();
+
+		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
+				.end();
+		es.mutate(ctx);
+
+		String corePrefs = "mod/.settings/org.eclipse.jdt.core.prefs";
+		assertFileContains(corePrefs, "targetPlatform=1.7");
+		assertFileContains(corePrefs, "compiler.compliance=1.7");
+		assertFileContains(corePrefs, "compiler.source=1.7");
 	}
 
 }

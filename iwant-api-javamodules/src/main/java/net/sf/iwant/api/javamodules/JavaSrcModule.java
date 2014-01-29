@@ -32,6 +32,7 @@ public class JavaSrcModule extends JavaModule {
 	private final Target generatedSrc;
 	private final CodeStylePolicy codeStylePolicy;
 	private final CodeFormatterPolicy codeFormatterPolicy;
+	private final JavaCompliance javaCompliance;
 	private final List<Source> generatorSourcesToFollow;
 	private final StringFilter testClassNameFilter;
 	private final Charset encoding;
@@ -49,7 +50,8 @@ public class JavaSrcModule extends JavaModule {
 			List<Source> generatorSourcesToFollow,
 			CodeStylePolicy codeStylePolicy,
 			CodeFormatterPolicy codeFormatterPolicy,
-			StringFilter testClassNameFilter, Charset encoding,
+			JavaCompliance javaCompliance, StringFilter testClassNameFilter,
+			Charset encoding,
 			Set<Class<? extends JavaModuleCharacteristic>> characteristics) {
 		super(characteristics);
 		this.name = name;
@@ -61,6 +63,7 @@ public class JavaSrcModule extends JavaModule {
 		this.testJavas = testJavas;
 		this.testResources = testResources;
 		this.codeFormatterPolicy = codeFormatterPolicy;
+		this.javaCompliance = javaCompliance;
 		this.testClassNameFilter = testClassNameFilter;
 		this.encoding = encoding;
 		this.mainDepsForCompilation = Collections
@@ -127,6 +130,7 @@ public class JavaSrcModule extends JavaModule {
 		private CodeStylePolicy codeStylePolicy = CodeStylePolicy
 				.defaultsExcept().end();
 		private CodeFormatterPolicy codeFormatterPolicy = new CodeFormatterPolicy();
+		private JavaCompliance javaCompliance = JavaCompliance.JAVA_1_6;
 		private String locationUnderWsRoot;
 		private StringFilter testClassNameFilter;
 		private Charset encoding;
@@ -150,8 +154,8 @@ public class JavaSrcModule extends JavaModule {
 					testDepsForCompilationExcludingMainDeps,
 					testDepsForRunOnlyExcludingMainDeps, generatedClasses,
 					generatedSrc, generatorSourcesToFollow, codeStylePolicy,
-					codeFormatterPolicy, testClassNameFilter, encoding,
-					characteristics);
+					codeFormatterPolicy, javaCompliance, testClassNameFilter,
+					encoding, characteristics);
 		}
 
 		private static String normalizedRelativeParentDir(String value) {
@@ -308,6 +312,11 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
+		public IwantSrcModuleSpex javaCompliance(JavaCompliance javaCompliance) {
+			this.javaCompliance = javaCompliance;
+			return this;
+		}
+
 		public IwantSrcModuleSpex testedBy(String testSuiteName) {
 			this.testClassNameFilter = new StringFilterByEquality(testSuiteName);
 			return this;
@@ -381,6 +390,10 @@ public class JavaSrcModule extends JavaModule {
 
 	public CodeFormatterPolicy codeFormatterPolicy() {
 		return codeFormatterPolicy;
+	}
+
+	public JavaCompliance javaCompliance() {
+		return javaCompliance;
 	}
 
 	public Charset encoding() {

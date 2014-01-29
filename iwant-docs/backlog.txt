@@ -968,6 +968,10 @@
   + add to default jvmargs
   + real test in a project with test failures
 
++ As eclipse user I want eclipse settings with java compliance 1.7 so that I can use the pretty diamond syntax instead of redundantly defining generic types
+  + module takes JavaCompliance, default is 1.6
+  + core prefs uses it for the 3 places that currently have 1.6 hardcoded
+
 #################################################################
 = In progress
 #################################################################

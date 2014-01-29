@@ -6,6 +6,7 @@ import net.sf.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
 import net.sf.iwant.api.javamodules.CodeStyle;
 import net.sf.iwant.api.javamodules.CodeStylePolicy;
 import net.sf.iwant.api.javamodules.CodeStylePolicy.CodeStylePolicySpex;
+import net.sf.iwant.api.javamodules.JavaCompliance;
 
 public class OrgEclipseJdtCorePrefsTest extends TestCase {
 
@@ -14,7 +15,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
-				formatter);
+				formatter, JavaCompliance.JAVA_1_6);
 
 		assertEquals(
 				"org.eclipse.jdt.core.compiler.problem.deadCode=warning\n",
@@ -37,7 +38,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
-				formatter);
+				formatter, JavaCompliance.JAVA_1_6);
 
 		assertEquals("org.eclipse.jdt.core.compiler.problem.deadCode=ignore\n",
 				prefs.asPropertyLine(CodeStyle.DEAD_CODE));
@@ -59,17 +60,20 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 				"org.eclipse.jdt.core.compiler.problem."
 						+ "missingOverrideAnnotationForInterfaceMethodImplementation=disabled\n",
 				new OrgEclipseJdtCorePrefs(CodeStylePolicy.defaultsExcept()
-						.ignore(style).end(), formatter).asPropertyLine(style));
+						.ignore(style).end(), formatter,
+						JavaCompliance.JAVA_1_6).asPropertyLine(style));
 		assertEquals(
 				"org.eclipse.jdt.core.compiler.problem."
 						+ "missingOverrideAnnotationForInterfaceMethodImplementation=enabled\n",
 				new OrgEclipseJdtCorePrefs(CodeStylePolicy.defaultsExcept()
-						.warn(style).end(), formatter).asPropertyLine(style));
+						.warn(style).end(), formatter, JavaCompliance.JAVA_1_6)
+						.asPropertyLine(style));
 		assertEquals(
 				"org.eclipse.jdt.core.compiler.problem."
 						+ "missingOverrideAnnotationForInterfaceMethodImplementation=enabled\n",
 				new OrgEclipseJdtCorePrefs(CodeStylePolicy.defaultsExcept()
-						.fail(style).end(), formatter).asPropertyLine(style));
+						.fail(style).end(), formatter, JavaCompliance.JAVA_1_6)
+						.asPropertyLine(style));
 	}
 
 	public void testDefaultsAsFileContent() {
@@ -77,7 +81,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
-				formatter);
+				formatter, JavaCompliance.JAVA_1_6);
 
 		StringBuilder b = new StringBuilder();
 		b.append("#Fri Jan 13 10:19:42 EET 2012\n");
@@ -457,7 +461,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
-				formatter);
+				formatter, JavaCompliance.JAVA_1_6);
 
 		String fileContent = prefs.asFileContent();
 
@@ -477,7 +481,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		formatter.tabulationChar = TabulationCharValue.SPACE;
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
-				formatter);
+				formatter, JavaCompliance.JAVA_1_6);
 
 		String fileContent = prefs.asFileContent();
 
@@ -487,6 +491,30 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		assertFalse(fileContent.contains(tabKey + "=tab\n"));
 		assertTrue(fileContent.contains(alignmentKey + "=48\n"));
 		assertTrue(fileContent.contains(tabKey + "=space\n"));
+	}
+
+	public void testJavaCompliance17() {
+		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
+		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
+
+		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
+				formatter, JavaCompliance.JAVA_1_7);
+
+		String content = prefs.asFileContent();
+
+		assertFalse(content
+				.contains("org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6\n"));
+		assertFalse(content
+				.contains("org.eclipse.jdt.core.compiler.compliance=1.6\n"));
+		assertFalse(content
+				.contains("org.eclipse.jdt.core.compiler.source=1.6\n"));
+
+		assertTrue(content
+				.contains("org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.7\n"));
+		assertTrue(content
+				.contains("org.eclipse.jdt.core.compiler.compliance=1.7\n"));
+		assertTrue(content
+				.contains("org.eclipse.jdt.core.compiler.source=1.7\n"));
 	}
 
 }

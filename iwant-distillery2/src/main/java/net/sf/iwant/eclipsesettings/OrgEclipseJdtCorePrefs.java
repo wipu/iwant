@@ -4,16 +4,19 @@ import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
 import net.sf.iwant.api.javamodules.CodeStyle;
 import net.sf.iwant.api.javamodules.CodeStylePolicy;
 import net.sf.iwant.api.javamodules.CodeStyleValue;
+import net.sf.iwant.api.javamodules.JavaCompliance;
 
 public class OrgEclipseJdtCorePrefs {
 
 	private final CodeStylePolicy codeStylePolicy;
 	private final CodeFormatterPolicy formatterPolicy;
+	private final JavaCompliance javaCompliance;
 
 	public OrgEclipseJdtCorePrefs(CodeStylePolicy codeStylePolicy,
-			CodeFormatterPolicy formatterPolicy) {
+			CodeFormatterPolicy formatterPolicy, JavaCompliance javaCompliance) {
 		this.codeStylePolicy = codeStylePolicy;
 		this.formatterPolicy = formatterPolicy;
+		this.javaCompliance = javaCompliance;
 	}
 
 	private static String asPropertyLine(CodeStyle style, CodeStyleValue value) {
@@ -223,9 +226,11 @@ public class OrgEclipseJdtCorePrefs {
 		b.append("#Fri Jan 13 10:19:42 EET 2012\n");
 		b.append("eclipse.preferences.version=1\n");
 		b.append("org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled\n");
-		b.append("org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6\n");
+		b.append("org.eclipse.jdt.core.compiler.codegen.targetPlatform="
+				+ javaCompliance.prettyName() + "\n");
 		b.append("org.eclipse.jdt.core.compiler.codegen.unusedLocal=preserve\n");
-		b.append("org.eclipse.jdt.core.compiler.compliance=1.6\n");
+		b.append("org.eclipse.jdt.core.compiler.compliance="
+				+ javaCompliance.prettyName() + "\n");
 		b.append("org.eclipse.jdt.core.compiler.debug.lineNumber=generate\n");
 		b.append("org.eclipse.jdt.core.compiler.debug.localVariable=generate\n");
 		b.append("org.eclipse.jdt.core.compiler.debug.sourceFile=generate\n");
@@ -234,7 +239,8 @@ public class OrgEclipseJdtCorePrefs {
 			b.append(asPropertyLine(style));
 		}
 
-		b.append("org.eclipse.jdt.core.compiler.source=1.6\n");
+		b.append("org.eclipse.jdt.core.compiler.source="
+				+ javaCompliance.prettyName() + "\n");
 		b.append("org.eclipse.jdt.core.formatter.align_type_members_on_columns=false\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression=16\n");
 		b.append("org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation=0\n");
