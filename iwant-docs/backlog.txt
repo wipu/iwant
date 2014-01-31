@@ -972,6 +972,8 @@
   + module takes JavaCompliance, default is 1.6
   + core prefs uses it for the 3 places that currently have 1.6 hardcoded
 
++ As eclipse user I want new-eclipse.sh to skip downloading subclipse unless I want to enable it so that I save a lot of time in slow networks
+
 #################################################################
 = In progress
 #################################################################
