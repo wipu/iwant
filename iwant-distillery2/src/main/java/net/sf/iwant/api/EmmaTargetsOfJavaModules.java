@@ -167,7 +167,7 @@ public class EmmaTargetsOfJavaModules {
 		}
 	}
 
-	public EmmaReport emmaReport() {
+	public EmmaReport emmaReport(String name) {
 		Set<EmmaInstrumentation> instrs = new LinkedHashSet<EmmaInstrumentation>();
 		Set<EmmaCoverage> coverages = new LinkedHashSet<EmmaCoverage>();
 		for (JavaModule mod : modules) {
@@ -180,8 +180,8 @@ public class EmmaTargetsOfJavaModules {
 				coverages.add(coverage);
 			}
 		}
-		return EmmaReport.with().name("emma-coverage").emma(emma)
-				.instrumentations(instrs).coverages(coverages).end();
+		return EmmaReport.with().name(name).emma(emma).instrumentations(instrs)
+				.coverages(coverages).end();
 	}
 
 }

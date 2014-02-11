@@ -33,9 +33,18 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 		assertNull(emmaTargets.emmaCoverageOf(mod));
 
-		EmmaReport report = emmaTargets.emmaReport();
+		EmmaReport report = emmaTargets.emmaReport("emma-coverage");
 		assertEquals("[mocked-emma, mod-main-classes.emma-instr]", report
 				.ingredients().toString());
+	}
+
+	public void testEmmaReportName() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").end();
+		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
+				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
+
+		assertEquals("name1", emmaTargets.emmaReport("name1").name());
+		assertEquals("name2", emmaTargets.emmaReport("name2").name());
 	}
 
 	public void testTargetsFromOneMinimalCodelessModule() {
@@ -48,7 +57,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 		assertNull(emmaTargets.emmaCoverageOf(mod));
 
-		EmmaReport report = emmaTargets.emmaReport();
+		EmmaReport report = emmaTargets.emmaReport("emma-coverage");
 		assertEquals("[mocked-emma]", report.ingredients().toString());
 	}
 
@@ -63,7 +72,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 		assertNull(emmaTargets.emmaCoverageOf(mod));
 
-		EmmaReport report = emmaTargets.emmaReport();
+		EmmaReport report = emmaTargets.emmaReport("emma-coverage");
 		assertEquals("[mocked-emma]", report.ingredients().toString());
 	}
 
@@ -98,7 +107,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				+ "mod-test-classes, mod-main-classes.emma-instr, "
 				+ "mod-test-class-names]", coverage.ingredients().toString());
 
-		EmmaReport report = emmaTargets.emmaReport();
+		EmmaReport report = emmaTargets.emmaReport("emma-coverage");
 		assertEquals("emma-coverage", report.name());
 		assertEquals("[mocked-emma, "
 				+ "mod-main-classes.emma-instr, mod.emmacoverage]", report
@@ -118,7 +127,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 		assertNotNull(emmaTargets.emmaCoverageOf(tested));
 		assertNull(emmaTargets.emmaCoverageOf(untested));
 
-		EmmaReport report = emmaTargets.emmaReport();
+		EmmaReport report = emmaTargets.emmaReport("emma-coverage");
 		assertEquals("emma-coverage", report.name());
 		assertEquals("[mocked-emma, tested-main-classes.emma-instr,"
 				+ " untested-main-classes.emma-instr, tested.emmacoverage]",
@@ -260,7 +269,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 				+ "mod1-main-classes.emma-instr, mod2-test-class-names]", cov2
 				.ingredients().toString());
 
-		EmmaReport report = emmaTargets.emmaReport();
+		EmmaReport report = emmaTargets.emmaReport("emma-coverage");
 		assertEquals(
 				"[mocked-emma, "
 						+ "mod1-main-classes.emma-instr, mod2-main-classes.emma-instr, "
