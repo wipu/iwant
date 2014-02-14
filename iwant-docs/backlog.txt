@@ -976,6 +976,8 @@
 
 + As @buildscriptauthor I want to define the name of emma report so I can define many of them, for different sets of modules
 
++ As @buildscriptauthor I want to define other outputformats than the default html for findbugs report so I can analyze it by other programs
+
 #################################################################
 = In progress
 #################################################################

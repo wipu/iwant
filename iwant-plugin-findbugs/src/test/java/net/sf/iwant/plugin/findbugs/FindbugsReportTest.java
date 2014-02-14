@@ -71,6 +71,14 @@ public class FindbugsReportTest extends TestCase {
 		return reportContent(report, "html");
 	}
 
+	protected String xmlReportContent(Target report) throws IOException {
+		return reportContent(report, "xml");
+	}
+
+	protected String textReportContent(Target report) throws IOException {
+		return reportContent(report, "text");
+	}
+
 	protected String reportContent(Target report, String extension)
 			throws IOException {
 		File reportFile = new File(ctx.cached(report), "findbugs-report/"
@@ -136,13 +144,51 @@ public class FindbugsReportTest extends TestCase {
 				+ ", empty-classes, empty-src, bin.jar]", report.ingredients()
 				.toString());
 		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport {\n"
-				+ "  ingredients: {\n" + "    findbugs-2.0.2\n" + "    "
-				+ antJar() + "\n" + "    " + antLauncherJar() + "\n"
-				+ "    empty-classes\n" + "    empty-src\n    bin.jar\n"
-				+ "  }\n" + "  classesToAnalyze: {\n"
+				+ "  output-format:html\n" + "  ingredients: {\n"
+				+ "    findbugs-2.0.2\n" + "    " + antJar() + "\n" + "    "
+				+ antLauncherJar() + "\n" + "    empty-classes\n"
+				+ "    empty-src\n    bin.jar\n" + "  }\n"
+				+ "  classesToAnalyze: {\n"
 				+ "    JavaClassesAndSources {empty-classes [empty-src]}\n"
 				+ "  }\n  auxClasses: {\n" + "    bin.jar\n" + "  }\n" + ""
-				+ "}\n" + "", report.contentDescriptor().toString());
+				+ "}\n" + "", report.contentDescriptor());
+	}
+
+	public void testExplicitHtmlOutputFormat() throws IOException {
+		Path emptySrc = Source.underWsroot("empty-src");
+		Path emptyClasses = Source.underWsroot("empty-classes");
+		Target report = FindbugsReport
+				.with()
+				.name("fb-empty")
+				.outputFormat(FindbugsOutputFormat.HTML)
+				.using(distroToTest(), antJar(), antLauncherJar())
+				.classesToAnalyze(
+						new JavaClassesAndSources(emptyClasses, emptySrc))
+				.end();
+
+		assertTrue(report.contentDescriptor().contains("output-format:html"));
+	}
+
+	public void testContentDescriptorWithXmlOutputFormat() throws IOException {
+		Path emptySrc = Source.underWsroot("empty-src");
+		Path emptyClasses = Source.underWsroot("empty-classes");
+		Target report = FindbugsReport
+				.with()
+				.name("fb-empty")
+				.outputFormat(FindbugsOutputFormat.XML)
+				.using(distroToTest(), antJar(), antLauncherJar())
+				.classesToAnalyze(
+						new JavaClassesAndSources(emptyClasses, emptySrc))
+				.end();
+
+		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport {\n"
+				+ "  output-format:xml\n" + "  ingredients: {\n"
+				+ "    findbugs-2.0.2\n" + "    " + antJar() + "\n" + "    "
+				+ antLauncherJar() + "\n" + "    empty-classes\n"
+				+ "    empty-src\n" + "  }\n" + "  classesToAnalyze: {\n"
+				+ "    JavaClassesAndSources {empty-classes [empty-src]}\n"
+				+ "  }\n" + "  auxClasses: {\n" + "  }\n" + "}\n" + "",
+				report.contentDescriptor());
 	}
 
 	public void testDefaultReportFromEmptyClasses() throws Exception {
@@ -257,6 +303,59 @@ public class FindbugsReportTest extends TestCase {
 		String htmlReportContent = htmlReportContent(report);
 		assertTrue(htmlReportContent
 				.contains(warningAboutBugUsingBinaryDependency()));
+	}
+
+	public void testReportUsesXmlFormatWhenExplicitlyRequested()
+			throws Exception {
+		File srcDir = new File(wsRoot, "src");
+		srcDirHasFindbugsFodder(srcDir, "testfodder", "ClassWithFindbugsIssues");
+
+		Source src = Source.underWsroot("src");
+		JavaClasses classes = JavaClasses.with().name("classes").srcDirs(src)
+				.end();
+		classes.path(ctx);
+
+		distroToTest().path(ctx);
+
+		FindbugsReport report = FindbugsReport.with().name("oneclass-report")
+				.outputFormat(FindbugsOutputFormat.XML)
+				.using(distroToTest(), antJar(), antLauncherJar())
+				.classesToAnalyze(new JavaClassesAndSources(classes, src))
+				.end();
+		report.path(ctx);
+
+		String xmlReportContent = xmlReportContent(report);
+		assertTrue(xmlReportContent
+				.contains("<Method classname="
+						+ "\"net.sf.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues\""
+						+ " name=\"nullReference\""));
+	}
+
+	public void testReportUsesTextFormatWhenExplicitlyRequested()
+			throws Exception {
+		File srcDir = new File(wsRoot, "src");
+		srcDirHasFindbugsFodder(srcDir, "testfodder", "ClassWithFindbugsIssues");
+
+		Source src = Source.underWsroot("src");
+		JavaClasses classes = JavaClasses.with().name("classes").srcDirs(src)
+				.end();
+		classes.path(ctx);
+
+		distroToTest().path(ctx);
+
+		FindbugsReport report = FindbugsReport.with().name("oneclass-report")
+				.outputFormat(FindbugsOutputFormat.TEXT)
+				.using(distroToTest(), antJar(), antLauncherJar())
+				.classesToAnalyze(new JavaClassesAndSources(classes, src))
+				.end();
+		report.path(ctx);
+
+		String textReportContent = textReportContent(report);
+		System.err.println(textReportContent);
+		assertTrue(textReportContent
+				.contains("H C NP: Null pointer dereference of ? in "
+						+ "net.sf.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues.nullReference(Object)"
+						+ "  Dereferenced at ClassWithFindbugsIssues.java:[line 7]\n"));
 	}
 
 }

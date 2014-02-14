@@ -24,14 +24,16 @@ public class FindbugsReport extends Target {
 	private final FindbugsDistribution findbugs;
 	private final Path antJar;
 	private final Path antLauncherJar;
+	private final FindbugsOutputFormat outputFormat;
 
 	public FindbugsReport(String name,
 			List<JavaClassesAndSources> classesToAnalyze,
 			List<Path> auxClasses, FindbugsDistribution findbugs, Path antJar,
-			Path antLauncherJar) {
+			Path antLauncherJar, FindbugsOutputFormat outputFormat) {
 		super(name);
 		this.classesToAnalyze = classesToAnalyze;
 		this.auxClasses = auxClasses;
+		this.outputFormat = outputFormat;
 		if (findbugs == null) {
 			throw new IllegalArgumentException(
 					"Please specify the findbugs distribution to use.");
@@ -53,10 +55,11 @@ public class FindbugsReport extends Target {
 		private FindbugsDistribution findbugs;
 		private Path antJar;
 		private Path antLauncherJar;
+		private FindbugsOutputFormat outputFormat = FindbugsOutputFormat.HTML;
 
 		public FindbugsReport end() {
 			return new FindbugsReport(name, classesToAnalyze, auxClasses,
-					findbugs, antJar, antLauncherJar);
+					findbugs, antJar, antLauncherJar, outputFormat);
 		}
 
 		public FindbugsReportSpex name(String name) {
@@ -93,6 +96,11 @@ public class FindbugsReport extends Target {
 			return this;
 		}
 
+		public FindbugsReportSpex outputFormat(FindbugsOutputFormat outputFormat) {
+			this.outputFormat = outputFormat;
+			return this;
+		}
+
 	}
 
 	@Override
@@ -118,6 +126,8 @@ public class FindbugsReport extends Target {
 	public String contentDescriptor() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getCanonicalName()).append(" {\n");
+
+		b.append("  output-format:").append(outputFormat).append("\n");
 
 		b.append("  ingredients: {\n");
 		for (Path ingredient : ingredients()) {
@@ -183,8 +193,9 @@ public class FindbugsReport extends Target {
 				+ destString + "/findbugs-report\" />\n");
 		xml.append("        <delete dir=\"${findbugs-report}\" />\n");
 		xml.append("        <mkdir dir=\"${findbugs-report}\" />\n");
-		xml.append("        <findbugs home=\"${findbugs-home}\" output=\"html\" outputfile=\"${findbugs-report}/"
-				+ name() + ".html\">\n");
+		xml.append("        <findbugs home=\"${findbugs-home}\" output=\""
+				+ outputFormat + "\" outputfile=\"${findbugs-report}/" + name()
+				+ "." + outputFormat + "\">\n");
 		xml.append("\n");
 
 		for (JavaClassesAndSources cs : classesToAnalyze) {
