@@ -122,6 +122,10 @@ public class JavaClasses extends Target {
 		return encoding;
 	}
 
+	public boolean debug() {
+		return debug;
+	}
+
 	public Collection<? extends Path> resourceDirs() {
 		return resourceDirs;
 	}

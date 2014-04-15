@@ -714,4 +714,20 @@ public class JavaSrcModuleTest extends TestCase {
 				.effectivePathForTestRuntime().toString());
 	}
 
+	public void testMainClassesHaveDebugEnabledByDefault() {
+		JavaSrcModule mod = JavaSrcModule.with().name("simple").mainJava("src")
+				.end();
+		JavaClasses classes = (JavaClasses) mod.mainArtifact();
+
+		assertTrue(classes.debug());
+	}
+
+	public void testTestClassesHaveDebugEnabledByDefault() {
+		JavaSrcModule mod = JavaSrcModule.with().name("simple").mainJava("src")
+				.testJava("test").end();
+		JavaClasses classes = (JavaClasses) mod.testArtifact();
+
+		assertTrue(classes.debug());
+	}
+
 }

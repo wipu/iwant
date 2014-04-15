@@ -978,6 +978,8 @@
 
 + As @buildscriptauthor I want to define other outputformats than the default html for findbugs report so I can analyze it by other programs
 
++ As @buildscriptuser I want java source modules to have debug enabled in the java classes so tools like emma and findbugs work better
+
 #################################################################
 = In progress
 #################################################################
@@ -1027,6 +1029,11 @@
 #################################################################
 = Planned
 #################################################################
+
+- stories about defining java classes with different settings (e.g. no debug) for java src modules
+
+- As @buildscriptauthor I want iwant to give a friendly error message during compilation at the latest if a resource directory is missing so I can fix the module definition
+  * currently throws NPE
 
 - As eclipse user I want to have .classpath files that are identical on all workstations so I can version them so solving eclipse settings problems is easier (for example after iwant upgrade)
   * afaik this requires classpath variables

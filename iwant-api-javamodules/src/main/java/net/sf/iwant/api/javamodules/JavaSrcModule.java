@@ -466,7 +466,7 @@ public class JavaSrcModule extends JavaModule {
 		return JavaClasses.with().name(name() + "-main-classes")
 				.srcDirs(mainJavasAsPaths()).encoding(encoding)
 				.resourceDirs(mainResourcesAsPaths()).classLocations(classpath)
-				.end();
+				.debug(true).end();
 	}
 
 	public synchronized Path testArtifact() {
@@ -500,7 +500,7 @@ public class JavaSrcModule extends JavaModule {
 		return JavaClasses.with().name(name() + "-test-classes")
 				.srcDirs(testJavasAsPaths()).encoding(encoding)
 				.resourceDirs(testResourcesAsPaths()).classLocations(classpath)
-				.end();
+				.debug(true).end();
 	}
 
 	public String locationUnderWsRoot() {
