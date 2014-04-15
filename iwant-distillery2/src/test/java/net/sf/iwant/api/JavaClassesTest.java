@@ -126,21 +126,27 @@ public class JavaClassesTest extends TestCase {
 		assertTrue(target.ingredients().contains(src2));
 	}
 
-	public void testSrcDirsAndResourcesAreInContentDescriptor() {
+	public void testRelevantSettingsAreMentionedInContentDescriptor() {
 		assertEquals(
-				"net.sf.iwant.api.javamodules.JavaClasses {\n  src:src\n}",
+				"net.sf.iwant.api.javamodules.JavaClasses {\n" + "  src:src\n"
+						+ "  debug:false\n" + "  encoding:UTF-8\n" + "}",
 				JavaClasses.with().name("classes")
 						.srcDirs(Source.underWsroot("src")).classLocations()
-						.end().contentDescriptor());
+						.debug(false).encoding(Charset.forName("UTF-8")).end()
+						.contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.javamodules.JavaClasses {\n  src:src2\n  src:src3\n  res:res\n}",
+				"net.sf.iwant.api.javamodules.JavaClasses {\n" + "  src:src2\n"
+						+ "  src:src3\n" + "  res:res\n" + "  debug:true\n"
+						+ "  encoding:ISO-8859-1\n" + "}",
 				JavaClasses
 						.with()
 						.name("classes2")
 						.srcDirs(Source.underWsroot("src2"),
 								Source.underWsroot("src3"))
 						.resourceDirs(Source.underWsroot("res"))
-						.classLocations().end().contentDescriptor());
+						.classLocations().debug(true)
+						.encoding(Charset.forName("ISO-8859-1")).end()
+						.contentDescriptor());
 	}
 
 	public void testCrapToPathFails() throws Exception {
@@ -254,8 +260,9 @@ public class JavaClassesTest extends TestCase {
 				.srcDirs(Source.underWsroot("src")).classLocations(dep1, dep2)
 				.end();
 
-		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n  src:src\n"
-				+ "  classes:dep1\n  classes:dep2\n" + "}",
+		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n"
+				+ "  src:src\n" + "  classes:dep1\n" + "  classes:dep2\n"
+				+ "  debug:false\n" + "  encoding:null\n" + "}",
 				target.contentDescriptor());
 	}
 

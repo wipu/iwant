@@ -980,6 +980,8 @@
 
 + As @buildscriptuser I want java source modules to have debug enabled in the java classes so tools like emma and findbugs work better
 
++ @bugfix: add debug and encoding to JavaClasses content descriptor so they get refreshed when the settings change
+
 #################################################################
 = In progress
 #################################################################

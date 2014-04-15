@@ -208,6 +208,8 @@ public class JavaClasses extends Target {
 		for (Path classLocation : classLocations) {
 			b.append("  classes:").append(classLocation).append("\n");
 		}
+		b.append("  debug:").append(debug()).append("\n");
+		b.append("  encoding:").append(encoding()).append("\n");
 		b.append("}");
 		return b.toString();
 	}
