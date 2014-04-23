@@ -164,6 +164,7 @@ public class EmmaReportTest extends TestCase {
 
 		assertTrue(new File(ctx.cached(report), "coverage.txt").exists());
 		assertTrue(new File(ctx.cached(report), "coverage/index.html").exists());
+		assertTrue(new File(ctx.cached(report), "coverage.xml").exists());
 	}
 
 	public void testFilteredOutModuleDoesNotBreakReportBuilding()
@@ -197,6 +198,7 @@ public class EmmaReportTest extends TestCase {
 
 		assertTrue(new File(ctx.cached(report), "coverage.txt").exists());
 		assertTrue(new File(ctx.cached(report), "coverage/index.html").exists());
+		assertTrue(new File(ctx.cached(report), "coverage.xml").exists());
 	}
 
 	public void testEmptyReportDirectoryIsGeneratedWhenNoCoveragesAreGiven()
@@ -216,6 +218,7 @@ public class EmmaReportTest extends TestCase {
 		assertFalse(new File(ctx.cached(report), "coverage.txt").exists());
 		assertFalse(new File(ctx.cached(report), "coverage/index.html")
 				.exists());
+		assertFalse(new File(ctx.cached(report), "coverage.xml").exists());
 	}
 
 }

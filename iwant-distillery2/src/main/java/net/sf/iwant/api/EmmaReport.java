@@ -89,16 +89,19 @@ public class EmmaReport extends Target {
 
 		File reportTxt = new File(dest, "coverage.txt");
 		File reportHtml = new File(dest, "coverage/index.html");
+		File reportXml = new File(dest, "coverage.xml");
 		File reportProps = Iwant.newTextFile(new File(dest,
 				"emma-report.properties"), "report.txt.out.file="
 				+ wintoySafeCanonicalPath(reportTxt)
 				+ "\nreport.html.out.file="
-				+ wintoySafeCanonicalPath(reportHtml) + "\n");
+				+ wintoySafeCanonicalPath(reportHtml)
+				+ "\nreport.xml.out.file=" + wintoySafeCanonicalPath(reportXml)
+				+ "\n");
 
 		List<String> reportArgs = new ArrayList<String>();
 		reportArgs.add("report");
 		reportArgs.add("-r");
-		reportArgs.add("txt,html");
+		reportArgs.add("html,txt,xml");
 		reportArgs.add("-properties");
 		reportArgs.add(wintoySafeCanonicalPath(reportProps));
 		for (EmmaInstrumentation instr : instrumentations) {

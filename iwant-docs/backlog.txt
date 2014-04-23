@@ -986,6 +986,10 @@
 = In progress
 #################################################################
 
+- As @buildscriptuser I want emma report in xml format, in addition to txt and html, so I can analyze it with e.g. a CI server
+  + tdd
+  - real test by upgrading iwant for iwant
+
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
   + bootstrapping from local iwant without versioning
