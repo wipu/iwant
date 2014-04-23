@@ -8,6 +8,7 @@ import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaCompliance;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
+import net.sf.iwant.api.model.Source;
 import net.sf.iwant.apimocks.CachesMock;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
@@ -292,6 +293,38 @@ public class EclipseSettingsTest extends TestCase {
 		assertFileContains(corePrefs, "targetPlatform=1.7");
 		assertFileContains(corePrefs, "compiler.compliance=1.7");
 		assertFileContains(corePrefs, "compiler.source=1.7");
+	}
+
+	public void testJavaAndResourceDirsAreCreated() {
+		JavaModule modWithAll = JavaSrcModule.with().name("mod-with-all")
+				.locationUnderWsRoot("mod-with-all").mavenLayout().end();
+		JavaModule modWithNone = JavaSrcModule.with().name("mod-with-none")
+				.locationUnderWsRoot("mod-with-all").end();
+		JavaBinModule binToBeExcluded = JavaBinModule.providing(
+				Source.underWsroot("bin")).end();
+
+		EclipseSettings es = EclipseSettings.with()
+				.modules(modWithAll, modWithNone, binToBeExcluded).name("es")
+				.end();
+		es.mutate(ctx);
+
+		assertFalse(new File(testArea.root(), "mod-with-none/src/main/java")
+				.exists());
+		assertFalse(new File(testArea.root(),
+				"mod-with-none/src/main/resources").exists());
+		assertFalse(new File(testArea.root(), "mod-with-none/src/test/java")
+				.exists());
+		assertFalse(new File(testArea.root(),
+				"mod-with-none/src/test/resources").exists());
+
+		assertTrue(new File(testArea.root(), "mod-with-all/src/main/java")
+				.exists());
+		assertTrue(new File(testArea.root(), "mod-with-all/src/main/resources")
+				.exists());
+		assertTrue(new File(testArea.root(), "mod-with-all/src/test/java")
+				.exists());
+		assertTrue(new File(testArea.root(), "mod-with-all/src/test/resources")
+				.exists());
 	}
 
 }

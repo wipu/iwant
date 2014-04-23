@@ -989,6 +989,8 @@
 + As @buildscriptuser I want pmd report in xml format, in addition to txt and html, so I can analyze it with e.g. a CI server
   + tdd
 
++ As @buildscriptauthor I want EclipseSettings to ensure java and resource dirs of my modules exist so I can just define them, run the side-effect, refresh/import to Eclipse and start adding packages and java files
+
 #################################################################
 = In progress
 #################################################################

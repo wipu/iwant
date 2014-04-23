@@ -1,10 +1,12 @@
 package net.sf.iwant.api;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -43,6 +45,7 @@ public class EclipseSettings implements SideEffect {
 		Exception refreshFailure = bestEffortToEnsureFreshReferences(ctx);
 		try {
 			generateEclipseSettings(ctx);
+			ensureSrcDirs(ctx);
 			if (refreshFailure != null) {
 				PrintWriter err = new PrintWriter(ctx.err());
 				err.println("WARNING: Refresh of eclipse settings references failed:\n"
@@ -53,6 +56,29 @@ public class EclipseSettings implements SideEffect {
 			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException("Eclipse settings generation failed.", e);
+		}
+	}
+
+	private void ensureSrcDirs(SideEffectContext ctx) {
+		for (JavaModule mod : javaModules) {
+			if (mod instanceof JavaSrcModule) {
+				ensureSrcDirs(ctx, (JavaSrcModule) mod);
+			}
+		}
+	}
+
+	private static void ensureSrcDirs(SideEffectContext ctx, JavaSrcModule mod) {
+		File modDir = new File(ctx.wsRoot(), mod.locationUnderWsRoot());
+		ensureSrcDirs(modDir, mod.mainJavas());
+		ensureSrcDirs(modDir, mod.mainResources());
+		ensureSrcDirs(modDir, mod.testJavas());
+		ensureSrcDirs(modDir, mod.testResources());
+	}
+
+	private static void ensureSrcDirs(File modDir, List<String> relativeSrcDirs) {
+		for (String relativeSrcDir : relativeSrcDirs) {
+			File srcDir = new File(modDir, relativeSrcDir);
+			srcDir.mkdirs();
 		}
 	}
 
