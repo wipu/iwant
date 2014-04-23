@@ -68,7 +68,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						TestedIwantDependencies.antLauncherJar()).emma(emma())
 				.modules(allModules()).butNotInstrumenting(iwantMockWsroot())
 				.filter(emmaFilter()).end();
-		return emmaTargets.emmaReport();
+		return emmaTargets.emmaReport("emma-coverage");
 
 	}
 
