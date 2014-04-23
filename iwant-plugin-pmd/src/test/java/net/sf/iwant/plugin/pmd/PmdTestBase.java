@@ -40,6 +40,10 @@ public abstract class PmdTestBase extends TestCase {
 		return reportContent(report, "txt");
 	}
 
+	protected String xmlReportContent(Target report) throws IOException {
+		return reportContent(report, "xml");
+	}
+
 	protected String reportContent(Target report, String extension)
 			throws IOException {
 		File reportFile = new File(ctx.cached(report), report.name() + "."

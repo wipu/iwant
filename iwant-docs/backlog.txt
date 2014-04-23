@@ -986,6 +986,9 @@
   + tdd
   + real test by upgrading iwant for iwant
 
++ As @buildscriptuser I want pmd report in xml format, in addition to txt and html, so I can analyze it with e.g. a CI server
+  + tdd
+
 #################################################################
 = In progress
 #################################################################

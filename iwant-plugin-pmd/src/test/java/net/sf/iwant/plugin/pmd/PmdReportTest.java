@@ -76,7 +76,7 @@ public class PmdReportTest extends PmdTestBase {
 		assertTrue(txtReportContent(report).length() > 0);
 	}
 
-	public void testReportOfOneClassesDirWithOneClassWithIssues()
+	public void testAllReportFormatsOfOneClassesDirWithOneClassWithIssues()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDirHasPmdFodder(srcDir, "testfodder", "ClassWithPmdIssues");
@@ -102,6 +102,12 @@ public class PmdReportTest extends PmdTestBase {
 		assertTrue(txtReportContent
 				.contains("net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:17"
 						+ "	Document empty method"));
+
+		String xmlReportContent = xmlReportContent(report);
+		assertTrue(xmlReportContent.contains("ClassWithPmdIssues.java\">\n"
+				+ "<violation beginline=\"5\" endline=\"5\""
+				+ " begincolumn=\"54\" endcolumn=\"62\""
+				+ " rule=\"AvoidReassigningParameters\""));
 	}
 
 	public void testReportOnlyContainsIssuesDefinedInGivenRulesPath()

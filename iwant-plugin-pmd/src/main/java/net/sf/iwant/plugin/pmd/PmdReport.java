@@ -107,6 +107,12 @@ public class PmdReport extends Target {
 		textFormatter.setToFile(textReport);
 		task.addFormatter(textFormatter);
 
+		Formatter xmlFormatter = new Formatter();
+		xmlFormatter.setType("xml");
+		File xmlReport = new File(dest, name() + ".xml");
+		xmlFormatter.setToFile(xmlReport);
+		task.addFormatter(xmlFormatter);
+
 		for (Path srcDirectory : srcDirectories) {
 			FileSet fileSet = new FileSet();
 			fileSet.setDir(ctx.cached(srcDirectory));
