@@ -13,7 +13,6 @@ import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.SideEffectDefinitionContext;
 import net.sf.iwant.api.TestedIwantDependencies;
 import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaClassesAndSources;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
@@ -26,7 +25,6 @@ import net.sf.iwant.api.model.Target;
 import net.sf.iwant.plugin.findbugs.FindbugsDistribution;
 import net.sf.iwant.plugin.findbugs.FindbugsOutputFormat;
 import net.sf.iwant.plugin.findbugs.FindbugsReport;
-import net.sf.iwant.plugin.findbugs.FindbugsReport.FindbugsReportSpex;
 
 public class WorkspaceForIwant implements IwantWorkspace {
 
@@ -102,30 +100,13 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private FindbugsReport findbugsReport(String name,
 			Collection<JavaSrcModule> modules, FindbugsOutputFormat outputFormat) {
-		FindbugsReportSpex report = FindbugsReport
+		return FindbugsReport
 				.with()
 				.name(name)
 				.outputFormat(outputFormat)
 				.using(findbugs, TestedIwantDependencies.antJar(),
-						TestedIwantDependencies.antLauncherJar());
-		for (JavaSrcModule mod : modules) {
-			if (mod.mainArtifact() != null) {
-				JavaClassesAndSources main = new JavaClassesAndSources(
-						mod.mainArtifact(), mod.mainJavasAsPaths());
-				report.classesToAnalyze(main);
-			}
-			if (mod.testArtifact() != null) {
-				JavaClassesAndSources test = new JavaClassesAndSources(
-						mod.testArtifact(), mod.testJavasAsPaths());
-				report.classesToAnalyze(test);
-			}
-			for (JavaModule aux : mod.effectivePathForTestRuntime()) {
-				if (aux instanceof JavaBinModule) {
-					report.auxClasses(aux.mainArtifact());
-				}
-			}
-		}
-		return report.end();
+						TestedIwantDependencies.antLauncherJar())
+				.modulesToAnalyze(modules).end();
 	}
 
 	private static Target listOfExternalDeps() {
