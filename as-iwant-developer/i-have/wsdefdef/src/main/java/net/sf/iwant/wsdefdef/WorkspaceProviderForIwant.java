@@ -14,6 +14,7 @@ public class WorkspaceProviderForIwant implements IwantWorkspaceProvider {
 		return JavaSrcModule.with().name("iwant-workspace")
 				.locationUnderWsRoot("as-iwant-developer/i-have/wsdef")
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
+				.mainDeps(ctx.iwantPlugin().findbugs().withDependencies())
 				.mainDeps(commonsIo()).end();
 	}
 

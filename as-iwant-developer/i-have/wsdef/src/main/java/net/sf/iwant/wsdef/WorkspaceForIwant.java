@@ -1,6 +1,7 @@
 package net.sf.iwant.wsdef;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -12,6 +13,7 @@ import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.SideEffectDefinitionContext;
 import net.sf.iwant.api.TestedIwantDependencies;
 import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaClassesAndSources;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
@@ -21,13 +23,20 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
+import net.sf.iwant.plugin.findbugs.FindbugsDistribution;
+import net.sf.iwant.plugin.findbugs.FindbugsOutputFormat;
+import net.sf.iwant.plugin.findbugs.FindbugsReport;
+import net.sf.iwant.plugin.findbugs.FindbugsReport.FindbugsReportSpex;
 
 public class WorkspaceForIwant implements IwantWorkspace {
 
+	private final FindbugsDistribution findbugs = FindbugsDistribution
+			.ofVersion("2.0.3");
+
 	@Override
 	public List<? extends Target> targets() {
-		return Arrays.asList(emmaCoverageReport(), listOfExternalDeps(),
-				localWebsite(), remoteWebsite());
+		return Arrays.asList(emmaCoverageReport(), findbugsReport(),
+				listOfExternalDeps(), localWebsite(), remoteWebsite());
 	}
 
 	@Override
@@ -45,14 +54,20 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.testJava("src/test/java");
 	}
 
+	private static SortedSet<JavaSrcModule> allSrcModules() {
+		return new TreeSet<JavaSrcModule>(Arrays.asList(iwantApiJavamodules(),
+				iwantApimocks(), iwantApiModel(), iwantCoreservices(),
+				iwantDistillery(), iwantDistillery2(), iwantDocs(),
+				iwantExampleWsdef(), iwantMockWsroot(), iwantPluginAnt(),
+				iwantPluginFindbugs(), iwantPluginPmd(), iwantPluginWar(),
+				iwantTestarea(), iwantTestresources(), iwantTutorialWsdefs()));
+	}
+
 	private static SortedSet<JavaModule> allModules() {
-		return new TreeSet<JavaModule>(Arrays.asList(ant(), commonsMath(),
-				iwantApiJavamodules(), iwantApimocks(), iwantApiModel(),
-				iwantCoreservices(), iwantDistillery(), iwantDistillery2(),
-				iwantDocs(), iwantExampleWsdef(), iwantMockWsroot(),
-				iwantPluginAnt(), iwantPluginFindbugs(), iwantPluginPmd(),
-				iwantPluginWar(), iwantTestarea(), iwantTestresources(),
-				iwantTutorialWsdefs(), junit()));
+		SortedSet<JavaModule> all = new TreeSet<JavaModule>();
+		all.addAll(allSrcModules());
+		all.addAll(Arrays.asList(ant(), commonsMath(), junit()));
+		return all;
 	}
 
 	// the targets
@@ -77,6 +92,40 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		// only used in the tutorial, not "real" code:
 		filter.string("-com.example.*\n");
 		return filter.end();
+	}
+
+	private Target findbugsReport() {
+		return findbugsReport("findbugs-report", allSrcModules(),
+				FindbugsOutputFormat.HTML);
+
+	}
+
+	private FindbugsReport findbugsReport(String name,
+			Collection<JavaSrcModule> modules, FindbugsOutputFormat outputFormat) {
+		FindbugsReportSpex report = FindbugsReport
+				.with()
+				.name(name)
+				.outputFormat(outputFormat)
+				.using(findbugs, TestedIwantDependencies.antJar(),
+						TestedIwantDependencies.antLauncherJar());
+		for (JavaSrcModule mod : modules) {
+			if (mod.mainArtifact() != null) {
+				JavaClassesAndSources main = new JavaClassesAndSources(
+						mod.mainArtifact(), mod.mainJavasAsPaths());
+				report.classesToAnalyze(main);
+			}
+			if (mod.testArtifact() != null) {
+				JavaClassesAndSources test = new JavaClassesAndSources(
+						mod.testArtifact(), mod.testJavasAsPaths());
+				report.classesToAnalyze(test);
+			}
+			for (JavaModule aux : mod.effectivePathForTestRuntime()) {
+				if (aux instanceof JavaBinModule) {
+					report.auxClasses(aux.mainArtifact());
+				}
+			}
+		}
+		return report.end();
 	}
 
 	private static Target listOfExternalDeps() {
@@ -202,18 +251,18 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.testedBy("net.sf.iwant.IwantDistillery2Suite").end();
 	}
 
-	private static JavaModule iwantDocs() {
+	private static JavaSrcModule iwantDocs() {
 		return iwantSrcModule("docs").noMainJava().noTestJava().end();
 	}
 
-	private static JavaModule iwantExampleWsdef() {
+	private static JavaSrcModule iwantExampleWsdef() {
 		return iwantSrcModule("example-wsdef")
 				.noTestJava()
 				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
 						iwantDistillery2()).end();
 	}
 
-	private static JavaModule iwantMockWsroot() {
+	private static JavaSrcModule iwantMockWsroot() {
 		IwantSrcModuleSpex mod = iwantSrcModule("mock-wsroot").noMainJava()
 				.noTestJava();
 		mod.mainJava("iwant-api-javamodules/src/main/java");
@@ -227,7 +276,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return mod.mainDeps(junit()).end();
 	}
 
-	private static JavaModule iwantPluginAnt() {
+	private static JavaSrcModule iwantPluginAnt() {
 		return iwantSrcModule("plugin-ant")
 				.testResources("src/test/resources")
 				.mainDeps(ant(), antLauncher(), iwantApiModel())
@@ -236,7 +285,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.testedBy("net.sf.iwant.plugin.ant.IwantPluginAntSuite").end();
 	}
 
-	private static JavaModule iwantPluginFindbugs() {
+	private static JavaSrcModule iwantPluginFindbugs() {
 		return iwantSrcModule("plugin-findbugs")
 				.testResources("src/test/resources")
 				.mainDeps(commonsIo(), iwantApiJavamodules(), iwantApiModel(),
@@ -248,7 +297,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 								+ "IwantPluginFindbugsSuite").end();
 	}
 
-	private static JavaModule iwantPluginPmd() {
+	private static JavaSrcModule iwantPluginPmd() {
 		// TODO don't depend directly on asm, jaxen: pmd depends on them
 		return iwantSrcModule("plugin-pmd")
 				.testResources("src/test/resources")
@@ -259,7 +308,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.testedBy("net.sf.iwant.plugin.pmd.IwantPluginPmdSuite").end();
 	}
 
-	private static JavaModule iwantPluginWar() {
+	private static JavaSrcModule iwantPluginWar() {
 		return iwantSrcModule("plugin-war")
 				.mainDeps(ant(), antLauncher(), iwantApiModel())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
@@ -277,12 +326,12 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				Source.underWsroot("iwant-testarea/testarea-classdir")).end();
 	}
 
-	private static JavaModule iwantTestresources() {
+	private static JavaSrcModule iwantTestresources() {
 		return iwantSrcModule("testresources").noTestJava()
 				.mainResources("src/main/resources").end();
 	}
 
-	private static JavaModule iwantTutorialWsdefs() {
+	private static JavaSrcModule iwantTutorialWsdefs() {
 		return iwantSrcModule("tutorial-wsdefs")
 				.noMainJava()
 				.noTestJava()
