@@ -6,8 +6,10 @@ import java.io.IOException;
 import junit.framework.TestCase;
 import net.sf.iwant.api.AsEmbeddedIwantUser;
 import net.sf.iwant.api.TestedIwantDependencies;
+import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
@@ -356,6 +358,36 @@ public class FindbugsReportTest extends TestCase {
 				.contains("H C NP: Null pointer dereference of ? in "
 						+ "net.sf.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues.nullReference(Object)"
 						+ "  Dereferenced at ClassWithFindbugsIssues.java:[line 7]\n"));
+	}
+
+	public void testModulesToAnalyzeMeansSrcsAnalyzedUsingBins()
+			throws IOException {
+		JavaBinModule bin1 = JavaBinModule
+				.providing(Source.underWsroot("bin1")).end();
+
+		JavaSrcModule javaless = JavaSrcModule.with().name("javaless").end();
+		JavaSrcModule mainless = JavaSrcModule.with().name("mainless")
+				.testJava("test").end();
+		JavaSrcModule testless = JavaSrcModule.with().name("testless")
+				.mainJava("src").end();
+		JavaSrcModule modWithTestRuntimeDeps = JavaSrcModule.with()
+				.name("modWithTestRuntimeDeps").mainJava("src")
+				.testJava("test").testRuntimeDeps(bin1).end();
+
+		FindbugsReport report = FindbugsReport
+				.with()
+				.name("with-auxclasses")
+				.using(distroToTest(), antJar(), antLauncherJar())
+				.modulesToAnalyze(javaless, mainless, testless,
+						modWithTestRuntimeDeps).end();
+
+		assertEquals(
+				"[JavaClassesAndSources {mainless-test-classes [mainless/test]},"
+						+ " JavaClassesAndSources {testless-main-classes [testless/src]},"
+						+ " JavaClassesAndSources {modWithTestRuntimeDeps-main-classes [modWithTestRuntimeDeps/src]},"
+						+ " JavaClassesAndSources {modWithTestRuntimeDeps-test-classes [modWithTestRuntimeDeps/test]}]",
+				report.classesToAnalyze().toString());
+		assertEquals("[bin1]", report.auxClasses().toString());
 	}
 
 }

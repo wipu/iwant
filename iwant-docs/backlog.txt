@@ -999,6 +999,10 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want to list my java src modules to findbugs so that I don't need to iterate them myself and add their optional main and test javas and runtime deps myself
+  + tdd that adding modules leads to correct analyze fodder and aux
+  - real test with iwant
+
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
   + bootstrapping from local iwant without versioning

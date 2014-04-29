@@ -10,7 +10,10 @@ import java.util.List;
 
 import net.sf.iwant.api.AntGenerated;
 import net.sf.iwant.api.BackslashFixer;
+import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
+import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
@@ -83,6 +86,32 @@ public class FindbugsReport extends Target {
 		public FindbugsReportSpex classesToAnalyze(
 				Collection<? extends JavaClassesAndSources> classLocations) {
 			this.classesToAnalyze.addAll(classLocations);
+			return this;
+		}
+
+		public FindbugsReportSpex modulesToAnalyze(JavaSrcModule... modules) {
+			return modulesToAnalyze(Arrays.asList(modules));
+		}
+
+		public FindbugsReportSpex modulesToAnalyze(
+				Collection<? extends JavaSrcModule> modules) {
+			for (JavaSrcModule mod : modules) {
+				if (mod.mainArtifact() != null) {
+					JavaClassesAndSources main = new JavaClassesAndSources(
+							mod.mainArtifact(), mod.mainJavasAsPaths());
+					classesToAnalyze(main);
+				}
+				if (mod.testArtifact() != null) {
+					JavaClassesAndSources test = new JavaClassesAndSources(
+							mod.testArtifact(), mod.testJavasAsPaths());
+					classesToAnalyze(test);
+				}
+				for (JavaModule aux : mod.effectivePathForTestRuntime()) {
+					if (aux instanceof JavaBinModule) {
+						auxClasses(aux.mainArtifact());
+					}
+				}
+			}
 			return this;
 		}
 
@@ -223,6 +252,14 @@ public class FindbugsReport extends Target {
 
 	private static String wintoySafeCanonicalPath(File file) throws IOException {
 		return BackslashFixer.wintoySafeCanonicalPath(file);
+	}
+
+	public List<JavaClassesAndSources> classesToAnalyze() {
+		return classesToAnalyze;
+	}
+
+	public List<Path> auxClasses() {
+		return auxClasses;
 	}
 
 }
