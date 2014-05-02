@@ -992,8 +992,8 @@
 + As @buildscriptauthor I want EclipseSettings to ensure java and resource dirs of my modules exist so I can just define them, run the side-effect, refresh/import to Eclipse and start adding packages and java files
 
 + As @developer I want a findbugs report so I can improve the quality of iwant and also eat some dogfood
-  - initial report
-  - filter
+  + initial report
+  + story about filter
 
 + As @buildscriptauthor I want to list my java src modules to findbugs so that I don't need to iterate them myself and add their optional main and test javas and runtime deps myself
   + tdd that adding modules leads to correct analyze fodder and aux
@@ -1054,6 +1054,10 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @developer I want to exclude findbugs testfodder etc from the findbugs report of iwant so I don't get false positives
+  - support for findbugs filter
+  - use it
 
 - stories about defining java classes with different settings (e.g. no debug) for java src modules
 
