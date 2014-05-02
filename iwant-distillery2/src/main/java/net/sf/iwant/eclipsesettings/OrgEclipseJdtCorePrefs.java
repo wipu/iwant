@@ -509,7 +509,8 @@ public class OrgEclipseJdtCorePrefs {
 		b.append("org.eclipse.jdt.core.formatter.keep_empty_array_initializer_on_one_line=false\n");
 		b.append("org.eclipse.jdt.core.formatter.keep_imple_if_on_one_line=false\n");
 		b.append("org.eclipse.jdt.core.formatter.keep_then_statement_on_same_line=false\n");
-		b.append("org.eclipse.jdt.core.formatter.lineSplit=80\n");
+		b.append("org.eclipse.jdt.core.formatter.lineSplit="
+				+ formatterPolicy.lineSplit + "\n");
 		b.append("org.eclipse.jdt.core.formatter.never_indent_block_comments_on_first_column=false\n");
 		b.append("org.eclipse.jdt.core.formatter.never_indent_line_comments_on_first_column=false\n");
 		b.append("org.eclipse.jdt.core.formatter.number_of_blank_lines_at_beginning_of_method_body=0\n");

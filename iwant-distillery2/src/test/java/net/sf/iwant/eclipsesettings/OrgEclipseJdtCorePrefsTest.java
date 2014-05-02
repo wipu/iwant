@@ -479,6 +479,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 		formatter.alignmentForEnumConstants = 48;
 		formatter.tabulationChar = TabulationCharValue.SPACE;
+		formatter.lineSplit = 120;
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
 				formatter, JavaCompliance.JAVA_1_6);
@@ -487,10 +488,15 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 
 		String alignmentKey = "org.eclipse.jdt.core.formatter.alignment_for_enum_constants";
 		String tabKey = "org.eclipse.jdt.core.formatter.tabulation.char";
+		String lineSplitKey = "org.eclipse.jdt.core.formatter.lineSplit";
+
 		assertFalse(fileContent.contains(alignmentKey + "=0\n"));
 		assertFalse(fileContent.contains(tabKey + "=tab\n"));
+		assertFalse(fileContent.contains(lineSplitKey + "=80\n"));
+
 		assertTrue(fileContent.contains(alignmentKey + "=48\n"));
 		assertTrue(fileContent.contains(tabKey + "=space\n"));
+		assertTrue(fileContent.contains(lineSplitKey + "=120\n"));
 	}
 
 	public void testJavaCompliance17() {

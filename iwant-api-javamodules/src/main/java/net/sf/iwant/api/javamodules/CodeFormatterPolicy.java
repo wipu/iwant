@@ -4,6 +4,7 @@ public class CodeFormatterPolicy {
 
 	public Integer alignmentForEnumConstants = 0;
 	public TabulationCharValue tabulationChar = TabulationCharValue.TAB;
+	public Integer lineSplit = 80;
 
 	public enum TabulationCharValue {
 
