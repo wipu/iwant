@@ -999,15 +999,15 @@
   + tdd that adding modules leads to correct analyze fodder and aux
   + real test with iwant
 
-#################################################################
-= In progress
-#################################################################
-
-- As an @eclipseuser I want to define a bigger value for formatter line length so I can type long lines and use autoformatting
++ As an @eclipseuser I want to define a bigger value for formatter line length so I can type long lines and use autoformatting
   * line in file org.eclipse.jdt.core.prefs:
     org.eclipse.jdt.core.formatter.lineSplit=120
   + tdd
-  - real test
+  + real test
+
+#################################################################
+= In progress
+#################################################################
 
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
