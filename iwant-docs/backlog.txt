@@ -1005,6 +1005,8 @@
   + tdd
   + real test
 
++ As @developer I want to mention reusing code between build-time and run-time on the webpage for advertisement
+
 #################################################################
 = In progress
 #################################################################

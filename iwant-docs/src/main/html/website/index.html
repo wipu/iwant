@@ -15,7 +15,7 @@ I want to just tell <i>what (file) I want</i> so the script can then decide what
 <p class="text">
 <code>iwant</code> is a build system. Some of its key features are:
 <ul class="text">
-<li>The build programs are written in Java, which gives the author access to the full power of IDEs and Java libraries.</li>
+<li>The build programs are written in Java, which gives the author access to the full power of IDEs and Java libraries, including those being built by the build program (reusing code between build-time and run-time).
 <li>The API for writing build programs is fluent, resulting in compact and readable code.</li>
 <li>The build script author does not need to declare dependencies. If a target (a file with dynamically defined content) refers to another path (source or target) in its definition, <code>iwant</code> automatically tracks this as a dependency.</li>
 <li>Multi-threaded building is supported by default, transparently. It only needs to be disabled for targets that don't support it (for example because they use shared resources.)</li>
