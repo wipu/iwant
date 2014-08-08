@@ -1007,6 +1007,8 @@
 
 + As @developer I want to mention reusing code between build-time and run-time on the webpage for advertisement
 
++ As @developer I want svnkit upgraded to 1.8.3 so it works with the current svn workingcopy version
+
 #################################################################
 = In progress
 #################################################################
