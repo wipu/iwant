@@ -75,4 +75,8 @@ public class Unzipped extends Target {
 		return getClass().getCanonicalName() + ":" + ingredients();
 	}
 
+	public Path from() {
+		return from;
+	}
+
 }

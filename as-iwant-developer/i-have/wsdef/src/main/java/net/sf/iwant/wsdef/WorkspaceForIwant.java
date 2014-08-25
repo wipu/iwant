@@ -57,8 +57,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				iwantApimocks(), iwantApiModel(), iwantCoreservices(),
 				iwantDistillery(), iwantDistillery2(), iwantDocs(),
 				iwantExampleWsdef(), iwantMockWsroot(), iwantPluginAnt(),
-				iwantPluginFindbugs(), iwantPluginPmd(), iwantPluginWar(),
-				iwantTestarea(), iwantTestresources(), iwantTutorialWsdefs()));
+				iwantPluginFindbugs(), iwantPluginGithub(), iwantPluginPmd(),
+				iwantPluginWar(), iwantTestarea(), iwantTestresources(),
+				iwantTutorialWsdefs()));
 	}
 
 	private static SortedSet<JavaModule> allModules() {
@@ -278,6 +279,14 @@ public class WorkspaceForIwant implements IwantWorkspace {
 								+ "IwantPluginFindbugsSuite").end();
 	}
 
+	private static JavaSrcModule iwantPluginGithub() {
+		return iwantSrcModule("plugin-github")
+				.mainDeps(iwantApiModel(), iwantDistillery2(), iwantPluginAnt())
+				.testDeps(junit())
+				.testedBy("net.sf.iwant.plugin.github.IwantPluginGithubSuite")
+				.end();
+	}
+
 	private static JavaSrcModule iwantPluginPmd() {
 		// TODO don't depend directly on asm, jaxen: pmd depends on them
 		return iwantSrcModule("plugin-pmd")
@@ -319,8 +328,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainJava("src")
 				.mainDeps(commonsMath(), iwantApiJavamodules(),
 						iwantApiModel(), iwantDistillery2(), iwantPluginAnt(),
-						iwantPluginFindbugs(), iwantPluginPmd(),
-						iwantPluginWar()).end();
+						iwantPluginFindbugs(), iwantPluginGithub(),
+						iwantPluginPmd(), iwantPluginWar()).end();
 	}
 
 	private static JavaModule jaxen() {

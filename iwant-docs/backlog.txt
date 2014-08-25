@@ -1013,6 +1013,12 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want a Target of a downloaded and unzipped github commit so I can use the code in it
+  + a convenience class around downloaded, unzipped...
+  + and also a new concept: SubPath, because the github zip has a directory in it
+  + descript to verify the actual effect
+  - descript the real "so that": classes compiled from code from github
+
 - As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
   * and also maintainability is increased
   + bootstrapping from local iwant without versioning

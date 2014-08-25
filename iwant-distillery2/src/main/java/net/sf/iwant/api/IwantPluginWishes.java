@@ -6,6 +6,8 @@ public interface IwantPluginWishes {
 
 	IwantPluginWish findbugs();
 
+	IwantPluginWish github();
+
 	IwantPluginWish pmd();
 
 	IwantPluginWish war();

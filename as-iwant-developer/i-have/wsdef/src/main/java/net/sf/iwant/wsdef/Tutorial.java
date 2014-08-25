@@ -55,6 +55,7 @@ public class Tutorial extends Target {
 				"Static code analysis report using findbugs"));
 		pages.add(pageAboutUsingWsdef("using-iwant-plugin-war",
 				"Defining a web archive (war)"));
+		pages.add(pageAboutUsingWsdef("fromgithub", "(Code) from github"));
 	}
 
 	public static Tutorial local() {
