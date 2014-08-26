@@ -4,17 +4,17 @@ import java.io.File;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.model.HelloTarget;
-import net.sf.iwant.testing.IwantEntry3TestArea;
+import net.sf.iwant.testarea.TestArea;
 
 public class AsEmbeddedIwantUserTest extends TestCase {
 
-	private IwantEntry3TestArea testArea;
+	private TestArea testArea;
 	private File cacheDir;
 	private File wsRoot;
 
 	@Override
 	public void setUp() {
-		testArea = new IwantEntry3TestArea();
+		testArea = TestArea.forTest(this);
 		wsRoot = testArea.newDir("wsRoot");
 		cacheDir = testArea.newDir("cached");
 	}

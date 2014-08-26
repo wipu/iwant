@@ -17,7 +17,7 @@ import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantWsRoot;
-import net.sf.iwant.testing.IwantEntry3TestArea;
+import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 import net.sf.iwant.testing.WsRootFinder;
 
@@ -25,7 +25,7 @@ public class Iwant3Test extends TestCase {
 
 	private static final String LINE_SEPARATOR_KEY = "line.separator";
 
-	private IwantEntry3TestArea testArea;
+	private TestArea testArea;
 	private IwantNetworkMock network;
 	private Iwant3 iwant3;
 	private File wsRoot;
@@ -44,7 +44,7 @@ public class Iwant3Test extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		testArea = new IwantEntry3TestArea();
+		testArea = TestArea.forTest(this);
 		testArea.hasFile("wsroot/as-example-developer/with/bash/iwant/help.sh",
 				"#!/bin/bash\njust a mock because this exists in real life\n");
 		network = new IwantNetworkMock(testArea);

@@ -6,19 +6,19 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
-import net.sf.iwant.testing.IwantEntryTestArea;
+import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 import net.sf.iwant.testing.WsRootFinder;
 
 public class ExportedFromSvnTest extends TestCase {
 
-	private IwantEntryTestArea testArea;
+	private TestArea testArea;
 	private IwantNetworkMock network;
 	private Iwant iwant;
 
 	@Override
 	public void setUp() {
-		testArea = new IwantEntryTestArea();
+		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
 		iwant = Iwant.using(network);

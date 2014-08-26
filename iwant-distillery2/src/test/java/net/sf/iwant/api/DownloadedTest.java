@@ -11,11 +11,11 @@ import junit.framework.TestCase;
 import net.sf.iwant.apimocks.CachesMock;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.testing.IwantEntry3TestArea;
+import net.sf.iwant.testarea.TestArea;
 
 public class DownloadedTest extends TestCase {
 
-	private IwantEntry3TestArea testArea;
+	private TestArea testArea;
 	private CachesMock caches;
 	private File wsRoot;
 	private IwantMock iwantMock;
@@ -24,7 +24,7 @@ public class DownloadedTest extends TestCase {
 
 	@Override
 	public void setUp() {
-		testArea = new IwantEntry3TestArea();
+		testArea = TestArea.forTest(this);
 		wsRoot = testArea.newDir("wsroot");
 		caches = new CachesMock(wsRoot);
 		iwantMock = new IwantMock();

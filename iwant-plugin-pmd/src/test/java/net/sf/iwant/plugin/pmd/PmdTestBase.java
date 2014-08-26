@@ -9,13 +9,14 @@ import net.sf.iwant.apimocks.CachesMock;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
+import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
 import org.apache.commons.io.FileUtils;
 
 public abstract class PmdTestBase extends TestCase {
 
-	private IwantPluginPmdTestArea testArea;
+	private TestArea testArea;
 	protected TargetEvaluationContextMock ctx;
 	private IwantNetwork network;
 	private Iwant iwant;
@@ -25,7 +26,7 @@ public abstract class PmdTestBase extends TestCase {
 
 	@Override
 	public void setUp() {
-		testArea = new IwantPluginPmdTestArea();
+		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		wsRoot = new File(testArea.root(), "wsRoot");

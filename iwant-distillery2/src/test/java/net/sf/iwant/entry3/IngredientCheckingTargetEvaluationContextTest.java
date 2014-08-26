@@ -12,7 +12,6 @@ import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantEntry3TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
 public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
@@ -27,7 +26,7 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 
 	@Override
 	public void setUp() {
-		TestArea testArea = new IwantEntry3TestArea();
+		TestArea testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		wsRoot = testArea.root();

@@ -1,19 +1,19 @@
 package net.sf.iwant.entry3;
 
 import junit.framework.TestCase;
-import net.sf.iwant.testing.IwantEntry3TestArea;
+import net.sf.iwant.testarea.TestArea;
 
 public class ExampleWsDefGeneratorTest extends TestCase {
 
 	private StringBuilder expectedWsdefdefStart;
 	private StringBuilder expectedWsdefStart;
-	private IwantEntry3TestArea testArea;
+	private TestArea testArea;
 
 	@Override
 	public void setUp() {
 		expectedWsdefdefStart = new StringBuilder();
 		expectedWsdefStart = new StringBuilder();
-		testArea = new IwantEntry3TestArea();
+		testArea = TestArea.forTest(this);
 	}
 
 	private void assertChangeWsdefdefTo(String newPackage, String newName,

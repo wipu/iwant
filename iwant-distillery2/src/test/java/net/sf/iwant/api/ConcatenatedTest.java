@@ -10,12 +10,12 @@ import net.sf.iwant.apimocks.CachesMock;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.testing.IwantEntry3TestArea;
+import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
 public class ConcatenatedTest extends TestCase {
 
-	private IwantEntry3TestArea testArea;
+	private TestArea testArea;
 	private Iwant iwant;
 	private IwantNetwork network;
 	private CachesMock caches;
@@ -25,7 +25,7 @@ public class ConcatenatedTest extends TestCase {
 
 	@Override
 	public void setUp() {
-		testArea = new IwantEntry3TestArea();
+		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		wsRoot = testArea.root();

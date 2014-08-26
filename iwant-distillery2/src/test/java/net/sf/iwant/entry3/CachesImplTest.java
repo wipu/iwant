@@ -12,12 +12,12 @@ import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
-import net.sf.iwant.testing.IwantEntry3TestArea;
+import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
 public class CachesImplTest extends TestCase {
 
-	private IwantEntry3TestArea testArea;
+	private TestArea testArea;
 	private File cacheDir;
 	private Caches caches;
 	private File wsRoot;
@@ -25,7 +25,7 @@ public class CachesImplTest extends TestCase {
 
 	@Override
 	public void setUp() {
-		testArea = new IwantEntry3TestArea();
+		testArea = TestArea.forTest(this);
 		wsRoot = testArea.newDir("wsroot");
 		cacheDir = testArea.newDir("cacheDir");
 		network = new IwantNetworkMock(testArea);

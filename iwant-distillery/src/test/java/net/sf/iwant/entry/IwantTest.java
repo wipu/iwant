@@ -11,7 +11,6 @@ import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
 import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantEntryTestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 import net.sf.iwant.testing.WsRootFinder;
 
@@ -40,7 +39,7 @@ public class IwantTest extends TestCase {
 	 */
 	@Override
 	public void setUp() {
-		testArea = new IwantEntryTestArea();
+		testArea = TestArea.forTest(this);
 		origSecman = System.getSecurityManager();
 		System.setSecurityManager(new ExitCatcher());
 		originalIn = System.in;

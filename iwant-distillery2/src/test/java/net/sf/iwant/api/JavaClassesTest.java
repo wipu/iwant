@@ -25,12 +25,11 @@ import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry3.TargetMock;
 import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantEntry3TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
 public class JavaClassesTest extends TestCase {
 
-	private IwantEntry3TestArea testArea;
+	private TestArea testArea;
 	private TargetEvaluationContextMock ctx;
 	private IwantNetwork network;
 	private Iwant iwant;
@@ -45,7 +44,7 @@ public class JavaClassesTest extends TestCase {
 
 	@Override
 	public void setUp() {
-		testArea = new IwantEntry3TestArea();
+		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		wsRoot = new File(testArea.root(), "wsRoot");

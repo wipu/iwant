@@ -24,12 +24,12 @@ import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.planner.Resource;
 import net.sf.iwant.planner.ResourcePool;
 import net.sf.iwant.planner.TaskDirtiness;
-import net.sf.iwant.testing.IwantEntry3TestArea;
+import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
 public class TargetRefreshTaskTest extends TestCase {
 
-	private IwantEntry3TestArea testArea;
+	private TestArea testArea;
 	private IwantNetwork network;
 	private Iwant iwant;
 	private TargetEvaluationContextMock ctx;
@@ -40,7 +40,7 @@ public class TargetRefreshTaskTest extends TestCase {
 
 	@Override
 	public void setUp() {
-		testArea = new IwantEntry3TestArea();
+		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		wsRoot = testArea.newDir("wsroot");

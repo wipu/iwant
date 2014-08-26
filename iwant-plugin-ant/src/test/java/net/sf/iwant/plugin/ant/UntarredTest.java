@@ -10,11 +10,12 @@ import net.sf.iwant.apimocks.CachesMock;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
+import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
 public class UntarredTest extends TestCase {
 
-	private IwantPluginAntTestArea testArea;
+	private TestArea testArea;
 	private TargetEvaluationContextMock ctx;
 	private IwantNetwork network;
 	private Iwant iwant;
@@ -24,7 +25,7 @@ public class UntarredTest extends TestCase {
 
 	@Override
 	public void setUp() {
-		testArea = new IwantPluginAntTestArea();
+		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		wsRoot = new File(testArea.root(), "wsRoot");

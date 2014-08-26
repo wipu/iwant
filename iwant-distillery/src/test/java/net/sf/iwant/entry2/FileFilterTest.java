@@ -5,15 +5,15 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import junit.framework.TestCase;
-import net.sf.iwant.testing.IwantEntry2TestArea;
+import net.sf.iwant.testarea.TestArea;
 
 public class FileFilterTest extends TestCase {
 
-	private IwantEntry2TestArea testArea;
+	private TestArea testArea;
 
 	@Override
 	public void setUp() {
-		testArea = new IwantEntry2TestArea();
+		testArea = TestArea.forTest(this);
 	}
 
 	private static void assertResult(Collection<File> actual, File... expected) {

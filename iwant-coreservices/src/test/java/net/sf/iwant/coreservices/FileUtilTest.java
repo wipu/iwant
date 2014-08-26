@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import junit.framework.TestCase;
+import net.sf.iwant.testarea.TestArea;
 
 public class FileUtilTest extends TestCase {
 
@@ -72,7 +73,7 @@ public class FileUtilTest extends TestCase {
 	}
 
 	public void testCopyMissingFilesExcludesSvnMetafiles() throws IOException {
-		IwantCoreservicesTestArea testArea = new IwantCoreservicesTestArea();
+		TestArea testArea = TestArea.forTest(this);
 		File from = testArea.newDir("from");
 		testArea.newDir("from/.svn");
 		testArea.hasFile("from/A", "");

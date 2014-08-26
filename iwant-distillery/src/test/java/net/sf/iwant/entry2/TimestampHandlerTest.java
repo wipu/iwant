@@ -7,15 +7,15 @@ import java.util.TreeSet;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry2.Iwant2.TimestampHandler;
-import net.sf.iwant.testing.IwantEntry2TestArea;
+import net.sf.iwant.testarea.TestArea;
 
 public class TimestampHandlerTest extends TestCase {
 
-	private IwantEntry2TestArea testArea;
+	private TestArea testArea;
 
 	@Override
 	public void setUp() {
-		testArea = new IwantEntry2TestArea();
+		testArea = TestArea.forTest(this);
 	}
 
 	private File fileIsMissing(String path) {

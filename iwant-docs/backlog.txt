@@ -1011,6 +1011,8 @@
 
 + As @developer I want testarea root to be found by file path, not as resource from classpath so a classpath directory won't be touched by tests and emma report target is dirty only if I have really touched ingredients (sources)
 
++ As @developer I want TestArea to be final and all subclasses deleted, to save some LOCs
+
 #################################################################
 = In progress
 #################################################################

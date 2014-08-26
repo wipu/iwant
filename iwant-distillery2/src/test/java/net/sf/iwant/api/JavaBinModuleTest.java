@@ -15,7 +15,6 @@ import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.CachesMock;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
-import net.sf.iwant.eclipsesettings.EclipseSettingsTestArea;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.testarea.TestArea;
@@ -33,7 +32,7 @@ public class JavaBinModuleTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		testArea = new EclipseSettingsTestArea();
+		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		wsRoot = testArea.root();

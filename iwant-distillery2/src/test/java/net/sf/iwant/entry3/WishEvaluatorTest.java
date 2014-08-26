@@ -36,12 +36,12 @@ import net.sf.iwant.api.model.Target;
 import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
-import net.sf.iwant.testing.IwantEntry3TestArea;
+import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
 public class WishEvaluatorTest extends TestCase {
 
-	private IwantEntry3TestArea testArea;
+	private TestArea testArea;
 	private File asSomeone;
 	private File wsRoot;
 	private ByteArrayOutputStream out;
@@ -65,7 +65,7 @@ public class WishEvaluatorTest extends TestCase {
 
 	@Override
 	public void setUp() throws IOException {
-		testArea = new IwantEntry3TestArea();
+		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		asSomeone = testArea.newDir("as-" + getClass().getSimpleName());

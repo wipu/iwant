@@ -5,18 +5,18 @@ import java.net.URL;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-import net.sf.iwant.testing.IwantEntryTestArea;
+import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
 public class UnzippedSvnkitTest extends TestCase {
 
-	private IwantEntryTestArea testArea;
+	private TestArea testArea;
 	private IwantNetworkMock network;
 	private Iwant iwant;
 
 	@Override
 	public void setUp() {
-		testArea = new IwantEntryTestArea();
+		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 	}

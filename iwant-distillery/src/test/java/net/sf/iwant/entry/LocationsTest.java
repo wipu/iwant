@@ -7,7 +7,6 @@ import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
 import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantEntryTestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
 public class LocationsTest extends TestCase {
@@ -17,7 +16,7 @@ public class LocationsTest extends TestCase {
 	}
 
 	public void testNetworkGetter() {
-		TestArea testArea = new IwantEntryTestArea();
+		TestArea testArea = TestArea.forTest(this);
 		IwantNetwork network = new IwantNetworkMock(testArea);
 		Iwant iwant = Iwant.using(network);
 
@@ -25,7 +24,7 @@ public class LocationsTest extends TestCase {
 	}
 
 	public void testSvnkitUrlConvenienceGetter() throws MalformedURLException {
-		TestArea testArea = new IwantEntryTestArea();
+		TestArea testArea = TestArea.forTest(this);
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
 		Iwant iwant = Iwant.using(network);
 

@@ -10,7 +10,6 @@ import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantWsRoot;
 import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantEntry2TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 import net.sf.iwant.testing.WsRootFinder;
 
@@ -50,7 +49,7 @@ public class Iwant2Test extends TestCase {
 		originalLineSeparator = System.getProperty(LINE_SEPARATOR_KEY);
 		System.setProperty(LINE_SEPARATOR_KEY, "\n");
 		startOfOutAndErrCapture();
-		testArea = new IwantEntry2TestArea();
+		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant2 = Iwant2.using(network);
 	}

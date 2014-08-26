@@ -2,15 +2,24 @@ package net.sf.iwant.testarea;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.URISyntaxException;
 
-public abstract class TestArea {
+import junit.framework.Assert;
+
+import org.apache.commons.io.FileUtils;
+
+public final class TestArea {
 
 	private final File testArea;
 
-	public TestArea() {
+	public static TestArea forTest(Object test) {
+		return new TestArea(test.getClass());
+	}
+
+	private TestArea(Class<?> testClass) {
 		File testAreaRoot = testAreaRoot();
-		this.testArea = new File(testAreaRoot, getClass().getCanonicalName());
+		this.testArea = new File(testAreaRoot, testClass.getCanonicalName());
 		ensureEmpty(testArea);
 	}
 
@@ -74,6 +83,7 @@ public abstract class TestArea {
 		return contentOf(file);
 	}
 
+	@SuppressWarnings("static-method")
 	public String contentOf(File file) {
 		try {
 			FileReader reader = new FileReader(file);
@@ -107,6 +117,24 @@ public abstract class TestArea {
 			}
 		}
 		return true;
+	}
+
+	public File hasFile(String path, String content) {
+		File file = new File(root(), path);
+		try {
+			FileUtils.writeStringToFile(file, content);
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
+		return file;
+	}
+
+	public void shallContainFragmentIn(String path, String fragment) {
+		String actual = contentOf(path);
+		if (!actual.contains(fragment)) {
+			Assert.assertEquals("File " + path + "\nshould contain:\n"
+					+ fragment, actual);
+		}
 	}
 
 }

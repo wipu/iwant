@@ -28,7 +28,7 @@ public class EclipseSettingsWriterTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		testArea = new EclipseSettingsTestArea();
+		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
 		wsRoot = testArea.root();
