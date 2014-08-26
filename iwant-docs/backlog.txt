@@ -1009,6 +1009,8 @@
 
 + As @developer I want svnkit upgraded to 1.8.3 so it works with the current svn workingcopy version
 
++ As @developer I want testarea root to be found by file path, not as resource from classpath so a classpath directory won't be touched by tests and emma report target is dirty only if I have really touched ingredients (sources)
+
 #################################################################
 = In progress
 #################################################################

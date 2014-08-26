@@ -2,16 +2,34 @@ package net.sf.iwant.testarea;
 
 import java.io.File;
 import java.io.FileReader;
+import java.net.URISyntaxException;
 
 public abstract class TestArea {
 
 	private final File testArea;
 
 	public TestArea() {
-		File testAreas = new File(getClass().getResource("/iwant-testareas")
-				.getPath());
-		this.testArea = new File(testAreas, getClass().getCanonicalName());
+		File testAreaRoot = testAreaRoot();
+		this.testArea = new File(testAreaRoot, getClass().getCanonicalName());
 		ensureEmpty(testArea);
+	}
+
+	private File testAreaRoot() {
+		try {
+			File wsRootCandidate = new File(getClass().getResource(
+					getClass().getSimpleName() + ".class").toURI());
+			while (wsRootCandidate.getParentFile() != null) {
+				wsRootCandidate = wsRootCandidate.getParentFile();
+				File testAreaRootCandidate = new File(wsRootCandidate,
+						"iwant-testarea/testarea-root");
+				if (testAreaRootCandidate.exists()) {
+					return testAreaRootCandidate;
+				}
+			}
+			throw new IllegalStateException("Cannot find testarea root");
+		} catch (URISyntaxException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	public File root() {

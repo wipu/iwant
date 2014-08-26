@@ -307,13 +307,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaSrcModule iwantTestarea() {
-		return iwantSrcModule("testarea").noTestJava()
-				.mainDeps(iwantTestareaClassdir()).end();
-	}
-
-	private static JavaBinModule iwantTestareaClassdir() {
-		return JavaBinModule.providing(
-				Source.underWsroot("iwant-testarea/testarea-classdir")).end();
+		return iwantSrcModule("testarea").noTestJava().mainDeps().end();
 	}
 
 	private static JavaSrcModule iwantTestresources() {
