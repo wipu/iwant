@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 
-import junit.framework.TestCase;
 import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.model.ExternalSource;
@@ -14,23 +13,11 @@ import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
+import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.ExitCalledException;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
 
-public class AntGeneratedTest extends TestCase {
-
-	private TestArea testArea;
-	private Iwant iwant;
-	private IwantNetwork network;
-	private CachesMock caches;
-	private File wsRoot;
-	private TargetEvaluationContextMock ctx;
-	private File cacheDir;
+public class AntGeneratedTest extends IwantTestCase {
 
 	private PrintStream oldOut;
 
@@ -42,15 +29,7 @@ public class AntGeneratedTest extends TestCase {
 
 	@Override
 	public void setUp() {
-		testArea = TestArea.forTest(this);
-		network = new IwantNetworkMock(testArea);
-		iwant = Iwant.using(network);
-		wsRoot = testArea.root();
-		caches = new CachesMock(wsRoot);
-		cacheDir = testArea.newDir("cache");
-		caches.cachesModifiableTargetsAt(cacheDir);
-		ctx = new TargetEvaluationContextMock(iwant, caches);
-
+		super.setUp();
 		oldOut = System.out;
 		oldErr = System.err;
 		out = new ByteArrayOutputStream();

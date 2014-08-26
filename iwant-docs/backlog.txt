@@ -1017,6 +1017,13 @@
 = In progress
 #################################################################
 
+- As @developer I want utility code to handle mock environment so I can reduce LOC in tests
+  + env that encapsulates mocks
+  + optional base class for tests that makes refs to env parts easy (zero diff)
+  + one test uses it
+  - stdout and stderr capture
+  - use everywhere
+
 - As @buildscriptauthor I want a Target of a downloaded and unzipped github commit so I can use the code in it
   + a convenience class around downloaded, unzipped...
   + and also a new concept: SubPath, because the github zip has a directory in it
