@@ -2,12 +2,11 @@ package net.sf.iwant.testarea;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
 import junit.framework.Assert;
-
-import org.apache.commons.io.FileUtils;
 
 public final class TestArea {
 
@@ -122,11 +121,30 @@ public final class TestArea {
 	public File hasFile(String path, String content) {
 		File file = new File(root(), path);
 		try {
-			FileUtils.writeStringToFile(file, content);
+			tryToWriteTextFile(file, content);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
 		return file;
+	}
+
+	/**
+	 * Copied from Iwant.java. TODO Iwant2 must be able to put commons-io in
+	 * classpath when compiling this.
+	 */
+	private static File tryToWriteTextFile(File file, String content)
+			throws IOException {
+		file.getParentFile().mkdirs();
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(file);
+			writer.append(content);
+			return file;
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
 	}
 
 	public void shallContainFragmentIn(String path, String fragment) {

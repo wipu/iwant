@@ -308,8 +308,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaSrcModule iwantTestarea() {
-		return iwantSrcModule("testarea").noTestJava()
-				.mainDeps(commonsIo(), junit()).end();
+		return iwantSrcModule("testarea").noTestJava().mainDeps(junit()).end();
 	}
 
 	private static JavaSrcModule iwantTestresources() {
