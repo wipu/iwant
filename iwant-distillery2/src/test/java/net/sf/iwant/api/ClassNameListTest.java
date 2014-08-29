@@ -53,64 +53,60 @@ public class ClassNameListTest extends IwantTestCase {
 	}
 
 	public void testAllClassesFromEmptyDirectory() throws Exception {
-		testArea.newDir("classes");
+		wsRootHasDirectory("classes");
 
 		ClassNameList list = ClassNameList.with().name("list")
 				.classes(Source.underWsroot("classes")).end();
 		list.path(ctx);
 
-		assertEquals("", testArea.contentOf(ctx.cached(list)));
+		assertEquals("", contentOf(ctx.cached(list)));
 	}
 
 	public void testAllClassesFromDirectoryWithOneClassInDefaultPackage()
 			throws Exception {
-		testArea.newDir("classes");
-		testArea.hasFile("classes/A.class", "whatever");
+		wsRootHasFile("classes/A.class", "whatever");
 
 		ClassNameList list = ClassNameList.with().name("list")
 				.classes(Source.underWsroot("classes")).end();
 		list.path(ctx);
 
-		assertEquals("A\n", testArea.contentOf(ctx.cached(list)));
+		assertEquals("A\n", contentOf(ctx.cached(list)));
 	}
 
 	public void testAllClassesFromDirectoryWithClassInManyPackages()
 			throws Exception {
-		testArea.newDir("classes");
-		testArea.hasFile("classes/A.class", "whatever");
-		testArea.hasFile("classes/b/B.class", "whatever");
-		testArea.hasFile("classes/c/subc/C.class", "whatever");
+		wsRootHasFile("classes/A.class", "whatever");
+		wsRootHasFile("classes/b/B.class", "whatever");
+		wsRootHasFile("classes/c/subc/C.class", "whatever");
 
 		ClassNameList list = ClassNameList.with().name("list")
 				.classes(Source.underWsroot("classes")).end();
 		list.path(ctx);
 
-		assertEquals("A\nb.B\nc.subc.C\n", testArea.contentOf(ctx.cached(list)));
+		assertEquals("A\nb.B\nc.subc.C\n", contentOf(ctx.cached(list)));
 	}
 
 	public void testNonClassFilesAreExcludedAutomatically() throws Exception {
-		testArea.newDir("classes");
-		testArea.hasFile("classes/A.notclass", "whatever");
-		testArea.hasFile("classes/b/B1.class", "whatever");
-		testArea.hasFile("classes/b/B2.notclass", "whatever");
-		testArea.hasFile("classes/c/subc/C1.class", "whatever");
-		testArea.hasFile("classes/c/subc/C2.notclass", "whatever");
+		wsRootHasFile("classes/A.notclass", "whatever");
+		wsRootHasFile("classes/b/B1.class", "whatever");
+		wsRootHasFile("classes/b/B2.notclass", "whatever");
+		wsRootHasFile("classes/c/subc/C1.class", "whatever");
+		wsRootHasFile("classes/c/subc/C2.notclass", "whatever");
 
 		ClassNameList list = ClassNameList.with().name("list")
 				.classes(Source.underWsroot("classes")).end();
 		list.path(ctx);
 
-		assertEquals("b.B1\nc.subc.C1\n", testArea.contentOf(ctx.cached(list)));
+		assertEquals("b.B1\nc.subc.C1\n", contentOf(ctx.cached(list)));
 	}
 
 	public void testFilterIsAppliedIfGiven() throws Exception {
-		testArea.newDir("classes");
-		testArea.hasFile("classes/a/A.class", "whatever");
-		testArea.hasFile("classes/a/ATest.class", "whatever");
-		testArea.hasFile("classes/a/AbstractATest.class", "whatever");
-		testArea.hasFile("classes/b/B.class", "whatever");
-		testArea.hasFile("classes/b/BTest.class", "whatever");
-		testArea.hasFile("classes/b/AbstractBTest.class", "whatever");
+		wsRootHasFile("classes/a/A.class", "whatever");
+		wsRootHasFile("classes/a/ATest.class", "whatever");
+		wsRootHasFile("classes/a/AbstractATest.class", "whatever");
+		wsRootHasFile("classes/b/B.class", "whatever");
+		wsRootHasFile("classes/b/BTest.class", "whatever");
+		wsRootHasFile("classes/b/AbstractBTest.class", "whatever");
 
 		StringFilter filter = new StringFilter() {
 			@Override
@@ -124,7 +120,7 @@ public class ClassNameListTest extends IwantTestCase {
 				.classes(Source.underWsroot("classes")).matching(filter).end();
 		list.path(ctx);
 
-		assertEquals("a.ATest\nb.BTest\n", testArea.contentOf(ctx.cached(list)));
+		assertEquals("a.ATest\nb.BTest\n", contentOf(ctx.cached(list)));
 	}
 
 }

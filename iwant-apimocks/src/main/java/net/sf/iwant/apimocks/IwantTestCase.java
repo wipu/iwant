@@ -8,11 +8,12 @@ import net.sf.iwant.testarea.TestArea;
 public abstract class IwantTestCase extends TestCase {
 
 	private IwantMockEnvironment e;
-	protected TestArea testArea;
+	private TestArea testArea;
 	protected File wsRoot;
 	protected File cacheDir;
 	protected TargetEvaluationContextMock ctx;
-	private boolean captureOn;
+	protected CachesMock caches;
+	private boolean captureOn = false;
 
 	@Override
 	public final void setUp() {
@@ -21,9 +22,15 @@ public abstract class IwantTestCase extends TestCase {
 		wsRoot = e.wsRoot();
 		cacheDir = e.cacheDir();
 		ctx = e.ctx();
+		caches = e.caches();
 		if (mustCaptureSystemOutAndErr()) {
 			startSystemOutAndErrCapture();
 		}
+		moreSetUp();
+	}
+
+	protected void moreSetUp() {
+		// override if needed
 	}
 
 	@Override
@@ -53,6 +60,18 @@ public abstract class IwantTestCase extends TestCase {
 
 	protected String err() {
 		return e.err();
+	}
+
+	protected void wsRootHasFile(String relativePath, String content) {
+		testArea.fileHasContent(new File(wsRoot, relativePath), content);
+	}
+
+	protected void wsRootHasDirectory(String relativePath) {
+		new File(wsRoot, relativePath).mkdirs();
+	}
+
+	protected String contentOf(File file) {
+		return testArea.contentOf(file);
 	}
 
 }

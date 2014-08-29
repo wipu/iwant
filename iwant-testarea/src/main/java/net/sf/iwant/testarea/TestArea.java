@@ -120,6 +120,11 @@ public final class TestArea {
 
 	public File hasFile(String path, String content) {
 		File file = new File(root(), path);
+		return fileHasContent(file, content);
+	}
+
+	@SuppressWarnings("static-method")
+	public File fileHasContent(File file, String content) {
 		try {
 			tryToWriteTextFile(file, content);
 		} catch (IOException e) {

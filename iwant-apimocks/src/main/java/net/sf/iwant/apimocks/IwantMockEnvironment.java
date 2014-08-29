@@ -59,11 +59,10 @@ public class IwantMockEnvironment {
 			this.wsRoot = testArea.newDir("wsroot");
 			this.network = new IwantNetworkMock(testArea);
 			this.iwant = Iwant.using(network);
-			this.caches = new CachesMock(testArea.root());
+			this.caches = new CachesMock(wsRoot);
 			this.cacheDir = testArea.newDir("caches");
 			this.caches.cachesModifiableTargetsAt(cacheDir);
-			this.tmpDir = new File(testArea.root(), "tmpDir");
-			this.tmpDir.mkdirs();
+			this.tmpDir = testArea.newDir("tmpDir");
 			this.caches.providesTemporaryDirectoryAt(tmpDir);
 			this.ctx = new TargetEvaluationContextMock(iwant, caches);
 		}

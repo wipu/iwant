@@ -167,7 +167,7 @@ public class AntGeneratedTest extends IwantTestCase {
 		assertContains(err(), "[copy]");
 
 		assertEquals("ingredient1 content appended with ingredient2 content",
-				testArea.contentOf(new File(cacheDir, "ant")));
+				contentOf(new File(cacheDir, "ant")));
 	}
 
 }

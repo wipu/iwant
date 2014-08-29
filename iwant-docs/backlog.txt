@@ -1028,6 +1028,8 @@
   + one test uses it
   + stdout and stderr capture
   + tmpDir
+  + wsRoot related methods in IwantTestCase, to minimize diff to modified tests
+    and the risk of confusion between testarea root and wsroot
   - use everywhere
 
 - As @buildscriptauthor I want a Target of a downloaded and unzipped github commit so I can use the code in it

@@ -2,38 +2,12 @@ package net.sf.iwant.api;
 
 import java.io.File;
 
-import junit.framework.TestCase;
 import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
+import net.sf.iwant.apimocks.IwantTestCase;
 
-public class ConcatenatedTest extends TestCase {
-
-	private TestArea testArea;
-	private Iwant iwant;
-	private IwantNetwork network;
-	private CachesMock caches;
-	private File wsRoot;
-	private TargetEvaluationContextMock ctx;
-	private File cacheDir;
-
-	@Override
-	public void setUp() {
-		testArea = TestArea.forTest(this);
-		network = new IwantNetworkMock(testArea);
-		iwant = Iwant.using(network);
-		wsRoot = testArea.root();
-		caches = new CachesMock(wsRoot);
-		cacheDir = testArea.newDir("cache");
-		caches.cachesModifiableTargetsAt(cacheDir);
-		ctx = new TargetEvaluationContextMock(iwant, caches);
-	}
+public class ConcatenatedTest extends IwantTestCase {
 
 	public void testIngredients() {
 		assertEquals("[]",
@@ -63,11 +37,11 @@ public class ConcatenatedTest extends TestCase {
 		Concatenated c = Concatenated.named("empty").end();
 		c.path(ctx);
 
-		assertEquals("", testArea.contentOf(new File(cacheDir, "empty")));
+		assertEquals("", contentOf(new File(cacheDir, "empty")));
 	}
 
 	public void testPathToConcatenationOfAllKinds() throws Exception {
-		testArea.hasFile("src", "src-content");
+		wsRootHasFile("src", "src-content");
 		Source src = Source.underWsroot("src");
 		HelloTarget target = new HelloTarget("target", "target-content");
 		target.path(ctx);
@@ -79,8 +53,8 @@ public class ConcatenatedTest extends TestCase {
 		c.path(ctx);
 
 		assertEquals("AB\n" + wsRoot + "/src:src-content\n" + cacheDir
-				+ "/target:target-content\n",
-				testArea.contentOf(new File(cacheDir, "all")));
+				+ "/target:target-content\n", contentOf(new File(cacheDir,
+				"all")));
 	}
 
 }
