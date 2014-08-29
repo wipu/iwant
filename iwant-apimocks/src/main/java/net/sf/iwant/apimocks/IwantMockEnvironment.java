@@ -22,15 +22,17 @@ public class IwantMockEnvironment {
 	private final PrintStream originalErr;
 	private ByteArrayOutputStream out;
 	private ByteArrayOutputStream err;
+	private final File tmpDir;
 
 	private IwantMockEnvironment(IwantNetwork network, TestArea testArea,
-			Iwant iwant, CachesMock caches, File cacheDir, File wsRoot,
-			TargetEvaluationContextMock ctx) {
+			Iwant iwant, CachesMock caches, File cacheDir, File tmpDir,
+			File wsRoot, TargetEvaluationContextMock ctx) {
 		this.network = network;
 		this.testArea = testArea;
 		this.iwant = iwant;
 		this.caches = caches;
 		this.cacheDir = cacheDir;
+		this.tmpDir = tmpDir;
 		this.wsRoot = wsRoot;
 		this.ctx = ctx;
 		this.originalOut = System.out;
@@ -48,6 +50,7 @@ public class IwantMockEnvironment {
 		private Iwant iwant;
 		private CachesMock caches;
 		private File cacheDir;
+		private File tmpDir;
 		private TargetEvaluationContextMock ctx;
 		private File wsRoot;
 
@@ -58,8 +61,11 @@ public class IwantMockEnvironment {
 			this.iwant = Iwant.using(network);
 			this.caches = new CachesMock(testArea.root());
 			this.cacheDir = testArea.newDir("caches");
-			caches.cachesModifiableTargetsAt(cacheDir);
-			ctx = new TargetEvaluationContextMock(iwant, caches);
+			this.caches.cachesModifiableTargetsAt(cacheDir);
+			this.tmpDir = new File(testArea.root(), "tmpDir");
+			this.tmpDir.mkdirs();
+			this.caches.providesTemporaryDirectoryAt(tmpDir);
+			this.ctx = new TargetEvaluationContextMock(iwant, caches);
 		}
 
 		public IwantMockEnvironmentPlease network(IwantNetwork network) {
@@ -74,7 +80,7 @@ public class IwantMockEnvironment {
 
 		public IwantMockEnvironment end() {
 			return new IwantMockEnvironment(network, testArea, iwant, caches,
-					cacheDir, wsRoot, ctx);
+					cacheDir, tmpDir, wsRoot, ctx);
 		}
 
 	}
@@ -97,6 +103,10 @@ public class IwantMockEnvironment {
 
 	public File cacheDir() {
 		return cacheDir;
+	}
+
+	public File tmpDir() {
+		return tmpDir;
 	}
 
 	public File wsRoot() {

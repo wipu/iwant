@@ -1027,6 +1027,7 @@
   + optional base class for tests that makes refs to env parts easy (zero diff)
   + one test uses it
   + stdout and stderr capture
+  + tmpDir
   - use everywhere
 
 - As @buildscriptauthor I want a Target of a downloaded and unzipped github commit so I can use the code in it
