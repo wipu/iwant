@@ -1,6 +1,8 @@
 package net.sf.iwant.apimocks;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.PrintStream;
 
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
@@ -16,6 +18,10 @@ public class IwantMockEnvironment {
 	private final File cacheDir;
 	private final File wsRoot;
 	private final TargetEvaluationContextMock ctx;
+	private final PrintStream originalOut;
+	private final PrintStream originalErr;
+	private ByteArrayOutputStream out;
+	private ByteArrayOutputStream err;
 
 	private IwantMockEnvironment(IwantNetwork network, TestArea testArea,
 			Iwant iwant, CachesMock caches, File cacheDir, File wsRoot,
@@ -27,6 +33,8 @@ public class IwantMockEnvironment {
 		this.cacheDir = cacheDir;
 		this.wsRoot = wsRoot;
 		this.ctx = ctx;
+		this.originalOut = System.out;
+		this.originalErr = System.err;
 	}
 
 	public static IwantMockEnvironmentPlease forTest(Object test) {
@@ -97,6 +105,28 @@ public class IwantMockEnvironment {
 
 	public TargetEvaluationContextMock ctx() {
 		return ctx;
+	}
+
+	public void startSystemOutAndErrCapture() {
+		out = new ByteArrayOutputStream();
+		err = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(out));
+		System.setErr(new PrintStream(err));
+	}
+
+	public String out() {
+		return out.toString();
+	}
+
+	public String err() {
+		return err.toString();
+	}
+
+	public void restoreSystemOutAndErr() {
+		System.setErr(originalErr);
+		System.setOut(originalOut);
+		System.err.print("== out:\n" + out());
+		System.err.print("== err:\n" + err());
 	}
 
 }

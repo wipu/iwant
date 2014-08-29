@@ -1,9 +1,7 @@
 package net.sf.iwant.api;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 
 import net.sf.iwant.api.model.Concatenated;
@@ -18,39 +16,6 @@ import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.ExitCalledException;
 
 public class AntGeneratedTest extends IwantTestCase {
-
-	private PrintStream oldOut;
-
-	private PrintStream oldErr;
-
-	private ByteArrayOutputStream out;
-
-	private ByteArrayOutputStream err;
-
-	@Override
-	public void setUp() {
-		super.setUp();
-		oldOut = System.out;
-		oldErr = System.err;
-		out = new ByteArrayOutputStream();
-		err = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(out));
-		System.setErr(new PrintStream(err));
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		System.setErr(oldErr);
-		System.setOut(oldOut);
-	}
-
-	private String out() {
-		return out.toString();
-	}
-
-	private String err() {
-		return err.toString();
-	}
 
 	private static void assertContains(String full, String fragment) {
 		if (!full.contains(fragment)) {
