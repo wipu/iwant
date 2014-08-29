@@ -1015,6 +1015,9 @@
 
 + @bugfix: emma coverage must not contain a null artifact if a dependency (e.g. the module itself, if it's an integration test) has no main artifact
 
++ @bugfix: emma report must succeed even if some module has no ec file because of zero coverage (and the report must contain the non-covered code)
+  * it's an unfortunate feature of emma to not write the ec file in this corner case
+
 #################################################################
 = In progress
 #################################################################

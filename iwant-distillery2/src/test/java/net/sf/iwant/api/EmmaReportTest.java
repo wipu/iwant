@@ -99,6 +99,7 @@ public class EmmaReportTest extends TestCase {
 		File srcDir = new File(wsRoot, srcDirString);
 
 		StringBuilder code = new StringBuilder();
+		code.append("package " + name + ";\n");
 		code.append("public class " + className + " {\n");
 		code.append("  public static void main(String[] args) throws Throwable {\n");
 		for (String codeLine : codeLinesForMain) {
@@ -154,8 +155,8 @@ public class EmmaReportTest extends TestCase {
 		EmmaCoverage coverage = EmmaCoverage.with()
 				.name("instrtest-emma-coverage")
 				.antJars(antJar(), antLauncherJar()).emma(emma())
-				.mainClassAndArguments("JunitReferrer").instrumentations(instr)
-				.nonInstrumentedClasses(junit()).end();
+				.mainClassAndArguments("instrtest.JunitReferrer")
+				.instrumentations(instr).nonInstrumentedClasses(junit()).end();
 		coverage.path(ctx);
 
 		EmmaReport report = EmmaReport.with().name("report").emma(emma())
@@ -188,7 +189,7 @@ public class EmmaReportTest extends TestCase {
 		EmmaCoverage coverage = EmmaCoverage.with()
 				.name("instrtest-emma-coverage")
 				.antJars(antJar(), antLauncherJar()).emma(emma())
-				.mainClassAndArguments("NonFiltered")
+				.mainClassAndArguments("nonfiltered.NonFiltered")
 				.instrumentations(instr1, instr2).end();
 		coverage.path(ctx);
 
@@ -219,6 +220,53 @@ public class EmmaReportTest extends TestCase {
 		assertFalse(new File(ctx.cached(report), "coverage/index.html")
 				.exists());
 		assertFalse(new File(ctx.cached(report), "coverage.xml").exists());
+	}
+
+	public void testMissingEcCausedByZeroCoverageIsIgnoredAndEmmaReportReportsZeroCoverage()
+			throws Exception {
+		JavaClassesAndSources badTest = newJavaClassesAndSources("badtest",
+				"BadTest", "System.err.println(\"This test covers nothing.\");");
+		JavaClassesAndSources goodTest = newJavaClassesAndSources("goodtest",
+				"GoodTest", "System.err.println(\"This test covers code.\");",
+				"Class.forName(\"goodmain.GoodMain\").newInstance();");
+		JavaClassesAndSources badMain = newJavaClassesAndSources("badmain",
+				"BadMain", "System.err.println(\"This class is not covered\");");
+		JavaClassesAndSources goodMain = newJavaClassesAndSources("goodmain",
+				"GoodMain",
+				"System.err.println(\"This class is covered (some)\");");
+		EmmaInstrumentation badInstr = EmmaInstrumentation.of(badMain).using(
+				emma());
+		badInstr.path(ctx);
+		EmmaInstrumentation goodInstr = EmmaInstrumentation.of(goodMain).using(
+				emma());
+		goodInstr.path(ctx);
+
+		EmmaCoverage badCoverage = EmmaCoverage.with().name("bad-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("badtest.BadTest")
+				.instrumentations(badInstr)
+				.nonInstrumentedClasses(badTest.classes()).end();
+		badCoverage.path(ctx);
+
+		EmmaCoverage goodCoverage = EmmaCoverage.with().name("good-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("goodtest.GoodTest")
+				.instrumentations(goodInstr)
+				.nonInstrumentedClasses(goodTest.classes()).end();
+		goodCoverage.path(ctx);
+
+		EmmaReport report = EmmaReport.with().name("report").emma(emma())
+				.instrumentations(badInstr, goodInstr)
+				.coverages(badCoverage, goodCoverage).end();
+		report.path(ctx);
+
+		File coverageTxt = new File(ctx.cached(report), "coverage.txt");
+		assertTrue(coverageTxt.exists());
+
+		assertTrue(testArea.contentOf(coverageTxt).contains(
+				"0%   (0/1)!	0%   (0/2)!	0%   (0/7)!	0%   (0/3)!	badmain"));
+		assertTrue(testArea.contentOf(coverageTxt).contains(
+				"100% (1/1)	50%  (1/2)!	43%  (3/7)!	33%  (1/3)!	goodmain"));
 	}
 
 }

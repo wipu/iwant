@@ -524,4 +524,39 @@ public class EmmaCoverageTest extends TestCase {
 				classpath.toString());
 	}
 
+	/**
+	 * This is an unfortunate feature of emma
+	 */
+	public void testEcFileGetsCreatedOnlyIfTestCreatesCoverage()
+			throws Exception {
+		JavaClassesAndSources uselessTest = newJavaClassesAndSources(
+				"uselesstest", "UselessTest",
+				"System.err.println(\"This test covers nothing.\");");
+		JavaClassesAndSources usefulTest = newJavaClassesAndSources(
+				"usefultest", "UsefulTest",
+				"System.err.println(\"This test covers\");",
+				"Class.forName(\"ProdMain\").newInstance();");
+		JavaClassesAndSources main = newJavaClassesAndSources("main",
+				"ProdMain",
+				"System.err.println(\"found \"+Class.forName(\"org.junit.runner.JUnitCore\"));");
+		EmmaInstrumentation instr = EmmaInstrumentation.of(main).using(emma());
+		instr.path(ctx);
+
+		String ecFileName = "coverage.ec";
+
+		EmmaCoverage zeroCoverage = EmmaCoverage.with().name("zero-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("UselessTest").instrumentations(instr)
+				.nonInstrumentedClasses(uselessTest.classes()).end();
+		zeroCoverage.path(ctx);
+		assertFalse(new File(ctx.cached(zeroCoverage), ecFileName).exists());
+
+		EmmaCoverage goodCoverage = EmmaCoverage.with().name("good-coverage")
+				.antJars(antJar(), antLauncherJar()).emma(emma())
+				.mainClassAndArguments("UsefulTest").instrumentations(instr)
+				.nonInstrumentedClasses(usefulTest.classes()).end();
+		goodCoverage.path(ctx);
+		assertTrue(new File(ctx.cached(goodCoverage), ecFileName).exists());
+	}
+
 }

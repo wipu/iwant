@@ -118,8 +118,13 @@ public class EmmaReport extends Target {
 			}
 		}
 		for (EmmaCoverage coverage : coverages) {
+			File coverageFile = coverage.coverageFile(ctx);
+			if (!coverageFile.exists()) {
+				// emma produces no ec when coverage is zero
+				continue;
+			}
 			reportArgs.add("-in");
-			reportArgs.add(wintoySafeCanonicalPath(coverage.coverageFile(ctx)));
+			reportArgs.add(wintoySafeCanonicalPath(coverageFile));
 		}
 
 		File emmaJar = ctx.cached(emma);
