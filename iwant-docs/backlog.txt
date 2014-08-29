@@ -1013,6 +1013,8 @@
 
 + As @developer I want TestArea to be final and all subclasses deleted, to save some LOCs
 
++ @bugfix: emma coverage must not contain a null artifact if a dependency (e.g. the module itself, if it's an integration test) has no main artifact
+
 #################################################################
 = In progress
 #################################################################

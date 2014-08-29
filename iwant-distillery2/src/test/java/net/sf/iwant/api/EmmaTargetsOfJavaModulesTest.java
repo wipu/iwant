@@ -61,6 +61,26 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 		assertEquals("[mocked-emma]", report.ingredients().toString());
 	}
 
+	public void testTargetsFromOneMinimalTestOnlyModule() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
+				.end();
+
+		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
+				.emma(emma).antJars(ant, antLauncher).modules(mod).end();
+
+		assertNull(emmaTargets.emmaInstrumentationOf(mod));
+
+		EmmaCoverage coverage = emmaTargets.emmaCoverageOf(mod);
+		assertEquals("mod.emmacoverage", coverage.name());
+		assertEquals("[mocked-ant, mocked-ant-launcher, mocked-emma, "
+				+ "mod-test-classes, mod-test-class-names]", coverage
+				.ingredients().toString());
+
+		EmmaReport report = emmaTargets.emmaReport("emma-coverage");
+		assertEquals("[mocked-emma, mod.emmacoverage]", report.ingredients()
+				.toString());
+	}
+
 	public void testTargetsFromOneBinaryModule() {
 		JavaBinModule mod = JavaBinModule.providing(Source.underWsroot("lib"))
 				.end();

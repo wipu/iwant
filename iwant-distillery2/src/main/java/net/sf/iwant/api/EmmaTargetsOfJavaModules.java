@@ -162,7 +162,7 @@ public class EmmaTargetsOfJavaModules {
 		EmmaInstrumentation instr = emmaInstrumentationOf(mod);
 		if (instr != null) {
 			coverage.instrumentations(instr);
-		} else {
+		} else if (mod.mainArtifact() != null) {
 			coverage.nonInstrumentedClasses(mod.mainArtifact());
 		}
 	}
