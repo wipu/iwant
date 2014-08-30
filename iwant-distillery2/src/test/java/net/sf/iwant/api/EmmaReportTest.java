@@ -206,9 +206,9 @@ public class EmmaReportTest extends IwantTestCase {
 		File coverageTxt = new File(ctx.cached(report), "coverage.txt");
 		assertTrue(coverageTxt.exists());
 
-		assertTrue(testArea.contentOf(coverageTxt).contains(
+		assertTrue(contentOf(coverageTxt).contains(
 				"0%   (0/1)!	0%   (0/2)!	0%   (0/7)!	0%   (0/3)!	badmain"));
-		assertTrue(testArea.contentOf(coverageTxt).contains(
+		assertTrue(contentOf(coverageTxt).contains(
 				"100% (1/1)	50%  (1/2)!	43%  (3/7)!	33%  (1/3)!	goodmain"));
 	}
 

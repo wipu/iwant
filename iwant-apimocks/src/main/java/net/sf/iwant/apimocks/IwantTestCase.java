@@ -1,8 +1,12 @@
 package net.sf.iwant.apimocks;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 import junit.framework.TestCase;
+import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.testarea.TestArea;
 
 public abstract class IwantTestCase extends TestCase {
@@ -78,6 +82,15 @@ public abstract class IwantTestCase extends TestCase {
 		testArea.fileHasContent(new File(wsRoot, relativePath), content);
 	}
 
+	protected void wsRootHasFile(String relativePath, byte[] content) {
+		try {
+			StreamUtil.pipeAndClose(new ByteArrayInputStream(content),
+					new FileOutputStream(new File(wsRoot, relativePath)));
+		} catch (FileNotFoundException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 	protected void wsRootHasDirectory(String relativePath) {
 		new File(wsRoot, relativePath).mkdirs();
 	}
@@ -88,6 +101,10 @@ public abstract class IwantTestCase extends TestCase {
 
 	protected String contentOfCached(String targetName) {
 		return testArea.contentOf(new File(cached, targetName));
+	}
+
+	protected File anExistingDirectory(String path) {
+		return testArea.newDir("misc/" + path);
 	}
 
 }

@@ -10,12 +10,11 @@ import net.sf.iwant.apimocks.IwantTestCase;
 public class JarTest extends IwantTestCase {
 
 	private void assertJarContainsTestStuff(File cachedJar) {
-		File tmp = testArea.newDir("tmp");
+		File tmp = anExistingDirectory("tmp");
 		Unzipped.unzipTo(cachedJar, tmp);
 
 		assertTrue(new File(tmp, "a.txt").exists());
-		assertEquals("Mock A.class\n",
-				testArea.contentOf(new File(tmp, "a.txt")));
+		assertEquals("Mock A.class\n", contentOf(new File(tmp, "a.txt")));
 		assertTrue(new File(tmp, "META-INF/MANIFEST.MF").exists());
 	}
 

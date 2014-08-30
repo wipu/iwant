@@ -123,7 +123,7 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 		assertEquals("metadata.out.file=" + instrDir + "/emma.em\n"
 				+ "verbosity.level=warning\n" + "coverage.out.file=" + instrDir
 				+ "/please-override-when-running-tests.ec\n",
-				testArea.contentOf(new File(instrDir, "emma-instr.properties")));
+				contentOf(new File(instrDir, "emma-instr.properties")));
 		assertTrue(new File(instrDir, "emma.em").exists());
 		assertTrue(new File(instrDir, "instr-classes/Hello.class").exists());
 	}

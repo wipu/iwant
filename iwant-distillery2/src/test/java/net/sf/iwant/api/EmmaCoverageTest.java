@@ -432,8 +432,7 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.jvmArgs("-Xmx1024m", "-XX:MaxPermSize=256m").end();
 		coverage.path(ctx);
 
-		String xml = testArea
-				.contentOf(new File(cacheDir, "coverage/build.xml"));
+		String xml = contentOfCached("coverage/build.xml");
 
 		assertTrue(xml.contains("<jvmarg value=\"-Xmx1024m\"/>\n"));
 		assertTrue(xml.contains("<jvmarg value=\"-XX:MaxPermSize=256m\"/>\n"));

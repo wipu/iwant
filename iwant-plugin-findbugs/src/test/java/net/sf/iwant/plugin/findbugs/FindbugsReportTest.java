@@ -89,8 +89,8 @@ public class FindbugsReportTest extends IwantTestCase {
 	// -----------------------------------------------------
 
 	public void testDistroMustBeGiven() {
-		testArea.newDir("empty-src");
-		testArea.newDir("empty-classes");
+		wsRootHasDirectory("empty-src");
+		wsRootHasDirectory("empty-classes");
 		Path emptySrc = Source.underWsroot("empty-src");
 		Path emptyClasses = Source.underWsroot("empty-classes");
 
@@ -173,8 +173,8 @@ public class FindbugsReportTest extends IwantTestCase {
 	}
 
 	public void testDefaultReportFromEmptyClasses() throws Exception {
-		testArea.newDir("empty-src");
-		testArea.newDir("empty-classes");
+		wsRootHasDirectory("empty-src");
+		wsRootHasDirectory("empty-classes");
 		Path emptySrc = Source.underWsroot("empty-src");
 		Path emptyClasses = Source.underWsroot("empty-classes");
 

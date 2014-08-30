@@ -1,8 +1,6 @@
 package net.sf.iwant.api;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -14,7 +12,6 @@ import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.coreservices.FileUtil;
-import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry3.TargetMock;
@@ -88,8 +85,7 @@ public class JavaClassesTest extends IwantTestCase {
 	}
 
 	public void testCrapToPathFails() throws Exception {
-		File srcDir = new File(wsRoot, "src");
-		Iwant.newTextFile(new File(srcDir, "Crap.java"), "crap");
+		wsRootHasFile("src/Crap.java", "crap");
 		Source src = Source.underWsroot("src");
 		Target target = JavaClasses.with().name("crap").srcDirs(src)
 				.classLocations().end();
@@ -103,8 +99,7 @@ public class JavaClassesTest extends IwantTestCase {
 	}
 
 	public void testValidToPathCompiles() throws Exception {
-		File srcDir = new File(wsRoot, "src");
-		Iwant.newTextFile(new File(srcDir, "Valid.java"), "class Valid {}");
+		wsRootHasFile("src/Valid.java", "class Valid {}");
 		Source src = Source.underWsroot("src");
 		Target target = JavaClasses.with().name("valid").srcDirs(src)
 				.classLocations().end();
@@ -115,12 +110,11 @@ public class JavaClassesTest extends IwantTestCase {
 	}
 
 	public void testToPathCompilesFromMultiplePackages() throws Exception {
-		File srcDir = new File(wsRoot, "src");
-		Iwant.newTextFile(new File(srcDir, "Caller.java"),
+		wsRootHasFile("src/Caller.java",
 				"class Caller {pak1.Callee1 callee1;pak2.Callee2 callee2;}");
-		Iwant.newTextFile(new File(srcDir, "pak1/Callee1.java"),
+		wsRootHasFile("src/pak1/Callee1.java",
 				"package pak1;\npublic class Callee1 {}");
-		Iwant.newTextFile(new File(srcDir, "pak2/Callee2.java"),
+		wsRootHasFile("src/pak2/Callee2.java",
 				"package pak2;\npublic class Callee2 {}");
 		Source src = Source.underWsroot("src");
 		Target target = JavaClasses.with().name("multiple").srcDirs(src)
@@ -218,9 +212,7 @@ public class JavaClassesTest extends IwantTestCase {
 
 	public void testSourceDirectoryWithJustDotKeepInItProducesEmptyClasses()
 			throws Exception {
-		File srcDir = new File(wsRoot, "src");
-		srcDir.mkdirs();
-		testArea.hasFile("src/.keep", "");
+		wsRootHasFile("src/.keep", "");
 
 		Source src = Source.underWsroot("src");
 		Target target = JavaClasses.with().name("empty").srcDirs(src)
@@ -310,9 +302,8 @@ public class JavaClassesTest extends IwantTestCase {
 
 	public void testResourcesAreCopiedAlongsideCompilationFromTheOneDirectoryGiven()
 			throws Exception {
-		Iwant.newTextFile(new File(wsRoot, "src/Foo.java"),
-				"public class Foo {}");
-		Iwant.newTextFile(new File(wsRoot, "res/res.txt"), "res.txt content");
+		wsRootHasFile("src/Foo.java", "public class Foo {}");
+		wsRootHasFile("res/res.txt", "res.txt content");
 
 		JavaClasses classes = JavaClasses.with().name("classes")
 				.srcDirs(Source.underWsroot("src"))
@@ -320,8 +311,7 @@ public class JavaClassesTest extends IwantTestCase {
 		classes.path(ctx);
 
 		assertTrue(new File(cached, "classes/Foo.class").exists());
-		assertEquals("res.txt content",
-				testArea.contentOf(new File(cached, "classes/res.txt")));
+		assertEquals("res.txt content", contentOfCached("classes/res.txt"));
 	}
 
 	public void testTwoResourceDirsAndNoSrc() throws Exception {
@@ -338,16 +328,16 @@ public class JavaClassesTest extends IwantTestCase {
 		classes.path(ctx);
 
 		assertEquals("res1.txt content",
-				testArea.contentOf(new File(cached, "classes/pak1/res1.txt")));
+				contentOfCached("classes/pak1/res1.txt"));
 		assertEquals("res2.txt content",
-				testArea.contentOf(new File(cached, "classes/pak2/res2.txt")));
+				contentOfCached("classes/pak2/res2.txt"));
 	}
 
 	public void testOverridingChracterEncoding() throws Exception {
 		Charset differentCharset = Charset.forName("ISO-8859-1");
 		assertFalse(differentCharset.equals(Charset.defaultCharset()));
 
-		new File(wsRoot, "src").mkdirs();
+		wsRootHasDirectory("src");
 		StringBuilder java = new StringBuilder();
 		java.append("public class Main {\n");
 		java.append("  public static void main(String[] args) {\n");
@@ -355,8 +345,7 @@ public class JavaClassesTest extends IwantTestCase {
 		java.append("  \n}");
 		java.append("}\n");
 		byte[] javaBytes = java.toString().getBytes(differentCharset);
-		StreamUtil.pipeAndClose(new ByteArrayInputStream(javaBytes),
-				new FileOutputStream(new File(wsRoot, "src/Main.java")));
+		wsRootHasFile("src/Main.java", javaBytes);
 
 		JavaClasses classes = JavaClasses.with().name("classes")
 				.srcDirs(Source.underWsroot("src")).encoding(differentCharset)
