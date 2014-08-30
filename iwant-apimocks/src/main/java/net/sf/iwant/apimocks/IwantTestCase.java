@@ -8,7 +8,7 @@ import net.sf.iwant.testarea.TestArea;
 public abstract class IwantTestCase extends TestCase {
 
 	private IwantMockEnvironment e;
-	private TestArea testArea;
+	protected TestArea testArea;
 	protected File wsRoot;
 	protected File cacheDir;
 	protected TargetEvaluationContextMock ctx;
