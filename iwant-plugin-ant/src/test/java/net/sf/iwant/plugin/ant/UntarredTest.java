@@ -39,8 +39,7 @@ public class UntarredTest extends IwantTestCase {
 		untarred.path(ctx);
 
 		assertTrue(new File(cached, "untarred/dir").exists());
-		assertEquals("file content\n",
-				testArea.contentOf(new File(cached, "untarred/dir/file")));
+		assertEquals("file content\n", contentOfCached("untarred/dir/file"));
 	}
 
 	public void testSuccessfullyUntarringDirAndFileTarGz() throws Exception {
@@ -53,8 +52,7 @@ public class UntarredTest extends IwantTestCase {
 		untarred.path(ctx);
 
 		assertTrue(new File(cached, "untarred/dir").exists());
-		assertEquals("file content\n",
-				testArea.contentOf(new File(cached, "untarred/dir/file")));
+		assertEquals("file content\n", contentOfCached("untarred/dir/file"));
 	}
 
 }

@@ -11,7 +11,7 @@ public class WarTest extends IwantTestCase {
 
 	private File newTmpDirWithUnzippedContentOf(War war) {
 		File cachedWar = new File(cached, war.name());
-		File tmp = testArea.newDir("tmp");
+		File tmp = anExistingDirectory("tmp");
 		Unzipped.unzipTo(cachedWar, tmp);
 		return tmp;
 	}
@@ -78,8 +78,8 @@ public class WarTest extends IwantTestCase {
 
 		File tmp = newTmpDirWithUnzippedContentOf(war);
 
-		assertEquals("web.xml content",
-				testArea.contentOf(new File(tmp, "WEB-INF/web.xml")));
+		assertEquals("web.xml content", contentOf(new File(tmp,
+				"WEB-INF/web.xml")));
 	}
 
 	public void testWebXmlUnderGivenDirectory() throws Exception {
@@ -100,8 +100,8 @@ public class WarTest extends IwantTestCase {
 
 		File tmp = newTmpDirWithUnzippedContentOf(war);
 
-		assertEquals("generated web.xml content",
-				testArea.contentOf(new File(tmp, "WEB-INF/web.xml")));
+		assertEquals("generated web.xml content", contentOf(new File(tmp,
+				"WEB-INF/web.xml")));
 	}
 
 	public void testNonEmptyBasedirWithFilesToExclude() throws Exception {
@@ -127,12 +127,12 @@ public class WarTest extends IwantTestCase {
 
 		File tmp = newTmpDirWithUnzippedContentOf(war);
 
-		assertEquals("web.xml content to use",
-				testArea.contentOf(new File(tmp, "WEB-INF/web.xml")));
+		assertEquals("web.xml content to use", contentOf(new File(tmp,
+				"WEB-INF/web.xml")));
 		assertEquals("index.html content",
-				testArea.contentOf(new File(tmp, "index.html")));
-		assertEquals("file.html content",
-				testArea.contentOf(new File(tmp, "subdir/file.html")));
+				contentOf(new File(tmp, "index.html")));
+		assertEquals("file.html content", contentOf(new File(tmp,
+				"subdir/file.html")));
 
 		assertFalse(new File(tmp, "file-to-exclude").exists());
 		assertFalse(new File(tmp, "subdir/another-file-to-exclude").exists());
@@ -156,16 +156,15 @@ public class WarTest extends IwantTestCase {
 
 		File tmp = newTmpDirWithUnzippedContentOf(war);
 
-		assertEquals("a.jar content",
-				testArea.contentOf(new File(tmp, "WEB-INF/lib/a.jar")));
-		assertEquals("b.jar content",
-				testArea.contentOf(new File(tmp, "WEB-INF/lib/b.jar")));
-		assertEquals("A.class content",
-				testArea.contentOf(new File(tmp, "WEB-INF/classes/A.class")));
-		assertEquals("B.class content",
-				testArea.contentOf(new File(tmp, "WEB-INF/classes/B.class")));
-		assertEquals("a.txt content",
-				testArea.contentOf(new File(tmp, "a.txt")));
+		assertEquals("a.jar content", contentOf(new File(tmp,
+				"WEB-INF/lib/a.jar")));
+		assertEquals("b.jar content", contentOf(new File(tmp,
+				"WEB-INF/lib/b.jar")));
+		assertEquals("A.class content", contentOf(new File(tmp,
+				"WEB-INF/classes/A.class")));
+		assertEquals("B.class content", contentOf(new File(tmp,
+				"WEB-INF/classes/B.class")));
+		assertEquals("a.txt content", contentOf(new File(tmp, "a.txt")));
 	}
 
 }

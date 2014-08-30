@@ -1034,7 +1034,8 @@
 
 - As @developer I want IwantTestCase fields private so I can be more confident that the subclass intentions are still valid, especially regarding test area root versus wsroot
   + hide fields temporarily and replace some direct refs with method calls
-  - hide fields permanently and fix all refs
+  + hide testArea, fix refs
+  - hide wsRoot permanently and fix all refs
 
 - As @buildscriptauthor I want a Target of a downloaded and unzipped github commit so I can use the code in it
   + a convenience class around downloaded, unzipped...

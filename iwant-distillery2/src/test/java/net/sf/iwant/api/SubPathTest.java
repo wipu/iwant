@@ -1,7 +1,5 @@
 package net.sf.iwant.api;
 
-import java.io.File;
-
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
@@ -39,8 +37,7 @@ public class SubPathTest extends IwantTestCase {
 		Target target = new SubPath("s", parent, "file");
 		target.path(ctx);
 
-		assertEquals("file content",
-				testArea.contentOf(new File(cacheDir, "s")));
+		assertEquals("file content", contentOfCached("s"));
 	}
 
 	public void testDirectorySubPathAsPath() throws Exception {
@@ -51,10 +48,8 @@ public class SubPathTest extends IwantTestCase {
 		Target target = new SubPath("s", parent, "subdir");
 		target.path(ctx);
 
-		assertEquals("subfile1 content",
-				testArea.contentOf(new File(cacheDir, "s/subfile1")));
-		assertEquals("subfile2 content",
-				testArea.contentOf(new File(cacheDir, "s/subfile2")));
+		assertEquals("subfile1 content", contentOfCached("s/subfile1"));
+		assertEquals("subfile2 content", contentOfCached("s/subfile2"));
 	}
 
 }

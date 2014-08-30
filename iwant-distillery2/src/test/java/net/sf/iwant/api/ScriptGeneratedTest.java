@@ -1,7 +1,5 @@
 package net.sf.iwant.api;
 
-import java.io.File;
-
 import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.model.Source;
@@ -51,8 +49,7 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		assertEquals("", out());
 		assertEquals("", err());
 
-		assertEquals("hello from script\n",
-				testArea.contentOf(new File(cacheDir, "sg")));
+		assertEquals("hello from script\n", contentOfCached("sg"));
 	}
 
 	public void testScriptThatDemonstratesItsEnvironment() throws Exception {
@@ -76,8 +73,7 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		assertEquals("$0=" + tmpDir + "/script\n" + "$1=" + cacheDir
 				+ "/sg\ncwd=" + tmpDir + "\n" + "stderr\n", err());
 
-		assertEquals("hello from env demo\n",
-				testArea.contentOf(new File(cacheDir, "sg")));
+		assertEquals("hello from env demo\n", contentOfCached("sg"));
 	}
 
 	public void testFailingScript() throws Exception {
@@ -103,8 +99,7 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		assertEquals("", out());
 		assertEquals("First generating some content\nThen failing\n", err());
 
-		assertEquals("hello from failing script\n",
-				testArea.contentOf(new File(cacheDir, "sg")));
+		assertEquals("hello from failing script\n", contentOfCached("sg"));
 	}
 
 }

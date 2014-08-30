@@ -30,11 +30,10 @@ public class UnzippedTest extends IwantTestCase {
 		unzipped.path(ctx);
 
 		assertTrue(new File(cached, "unzipped/file").exists());
-		assertEquals("file\n",
-				testArea.contentOf(new File(cached, "unzipped/file")));
+		assertEquals("file\n", contentOfCached("unzipped/file"));
 		assertTrue(new File(cached, "unzipped/dir/file-under-dir").exists());
-		assertEquals("file-under-dir\n", testArea.contentOf(new File(cached,
-				"unzipped/dir/file-under-dir")));
+		assertEquals("file-under-dir\n",
+				contentOfCached("unzipped/dir/file-under-dir"));
 	}
 
 }

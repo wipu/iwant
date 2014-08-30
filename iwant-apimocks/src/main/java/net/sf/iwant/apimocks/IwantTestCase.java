@@ -12,7 +12,7 @@ import net.sf.iwant.testarea.TestArea;
 public abstract class IwantTestCase extends TestCase {
 
 	private IwantMockEnvironment e;
-	protected TestArea testArea;
+	private TestArea testArea;
 	protected File wsRoot;
 	/**
 	 * TODO only one name
