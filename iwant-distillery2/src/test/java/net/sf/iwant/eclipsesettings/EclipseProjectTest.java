@@ -1,8 +1,5 @@
 package net.sf.iwant.eclipsesettings;
 
-import java.io.File;
-
-import junit.framework.TestCase;
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
 import net.sf.iwant.api.javamodules.CodeStyle;
 import net.sf.iwant.api.javamodules.CodeStylePolicy;
@@ -14,35 +11,13 @@ import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
+import net.sf.iwant.apimocks.IwantTestCase;
 
-public class EclipseProjectTest extends TestCase {
-
-	private TestArea testArea;
-	private IwantNetwork network;
-	private Iwant iwant;
-	private File wsRoot;
-	private CachesMock caches;
-	private TargetEvaluationContextMock evCtx;
-
-	@Override
-	protected void setUp() throws Exception {
-		testArea = TestArea.forTest(this);
-		network = new IwantNetworkMock(testArea);
-		iwant = Iwant.using(network);
-		wsRoot = testArea.newDir("wsroot");
-		caches = new CachesMock(wsRoot);
-		evCtx = new TargetEvaluationContextMock(iwant, caches);
-	}
+public class EclipseProjectTest extends IwantTestCase {
 
 	public void testSimpleSrcModuleDotProject() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotProject dotProject = project.eclipseDotProject();
 
@@ -51,7 +26,7 @@ public class EclipseProjectTest extends TestCase {
 
 	public void testMinimalDotClasspath() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
@@ -62,7 +37,7 @@ public class EclipseProjectTest extends TestCase {
 	public void testDotClasspathWithMainJavaOnly() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
@@ -75,7 +50,7 @@ public class EclipseProjectTest extends TestCase {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainResources("res").testJava("test")
 				.testResources("testRes").end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
@@ -90,7 +65,7 @@ public class EclipseProjectTest extends TestCase {
 	public void testDotClasspathWithMavenLayout() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mavenLayout().end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
@@ -108,7 +83,7 @@ public class EclipseProjectTest extends TestCase {
 				.end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainDeps(util).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
@@ -124,7 +99,7 @@ public class EclipseProjectTest extends TestCase {
 				.mainJava("src").end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainDeps(util1, util2).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
@@ -141,7 +116,7 @@ public class EclipseProjectTest extends TestCase {
 				.mainJava("src").end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainDeps(mainUtil).testDeps(testUtil).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
@@ -159,7 +134,7 @@ public class EclipseProjectTest extends TestCase {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainDeps(mainUtil)
 				.testDeps(mainUtil, testUtil).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
@@ -174,7 +149,7 @@ public class EclipseProjectTest extends TestCase {
 		JavaModule util = JavaBinModule.named("util.jar").inside(libs).end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainDeps(util).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
@@ -189,7 +164,7 @@ public class EclipseProjectTest extends TestCase {
 				.source("util-src.zip").inside(libs).end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainDeps(util).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
@@ -209,7 +184,7 @@ public class EclipseProjectTest extends TestCase {
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module")
 				.exportsClasses(generatedClasses, generatedSrc).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotProject dotProject = project.eclipseDotProject();
 
@@ -225,7 +200,7 @@ public class EclipseProjectTest extends TestCase {
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module")
 				.exportsClasses(generatedClasses, generatedSrc).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
@@ -236,7 +211,7 @@ public class EclipseProjectTest extends TestCase {
 
 	public void testProjectExternalBuilderLaunchIsNullWithoutCodeGeneration() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		assertNull(project.externalBuilderLaunch());
 	}
@@ -250,7 +225,7 @@ public class EclipseProjectTest extends TestCase {
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module")
 				.exportsClasses(generatedClasses, generatedSrc).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		ProjectExternalBuilderLaunch launch = project.externalBuilderLaunch();
 
@@ -271,7 +246,7 @@ public class EclipseProjectTest extends TestCase {
 				.name("code-generating-module").relativeParentDir("parent-dir")
 				.mainResources("src/main/resources")
 				.exportsClasses(generatedClasses, generatedSrc).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		ProjectExternalBuilderLaunch launch = project.externalBuilderLaunch();
 
@@ -304,7 +279,7 @@ public class EclipseProjectTest extends TestCase {
 				.exportsClasses(generatedClasses, generatedSrc)
 				.generatorSourcesToFollow(generatorMainJava,
 						generatorMainResources).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		ProjectExternalBuilderLaunch launch = project.externalBuilderLaunch();
 
@@ -317,7 +292,7 @@ public class EclipseProjectTest extends TestCase {
 
 	public void testEclipseAntScriptIsNullWithoutCodeGeneration() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		assertNull(project.eclipseAntScript("as-ws-developer"));
 	}
@@ -331,7 +306,7 @@ public class EclipseProjectTest extends TestCase {
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module")
 				.exportsClasses(generatedClasses, generatedSrc).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		EclipseAntScript antScript = project
 				.eclipseAntScript("as-ws-developer");
@@ -354,7 +329,7 @@ public class EclipseProjectTest extends TestCase {
 				.name("code-generating-module")
 				.relativeParentDir("subdir1/subdir2")
 				.exportsClasses(generatedClasses, generatedSrc).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		EclipseAntScript antScript = project
 				.eclipseAntScript("as-ws-developer");
@@ -368,7 +343,7 @@ public class EclipseProjectTest extends TestCase {
 	public void testDefaultCompilerSettings() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		OrgEclipseJdtCorePrefs prefs = project.orgEclipseJdtCorePrefs();
 
@@ -387,7 +362,7 @@ public class EclipseProjectTest extends TestCase {
 
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").codeStyle(policy.end()).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		OrgEclipseJdtCorePrefs prefs = project.orgEclipseJdtCorePrefs();
 
@@ -403,7 +378,7 @@ public class EclipseProjectTest extends TestCase {
 	public void testDefaultFormatterSettings() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		OrgEclipseJdtCorePrefs prefs = project.orgEclipseJdtCorePrefs();
 		CodeFormatterPolicy policy = prefs.codeFormatterPolicy();
@@ -417,7 +392,7 @@ public class EclipseProjectTest extends TestCase {
 
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").codeFormatter(policy).end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		OrgEclipseJdtCorePrefs prefs = project.orgEclipseJdtCorePrefs();
 		CodeFormatterPolicy policyAgain = prefs.codeFormatterPolicy();
@@ -430,7 +405,7 @@ public class EclipseProjectTest extends TestCase {
 	public void testProjectGivesUiPrefs() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").end();
-		EclipseProject project = new EclipseProject(module, evCtx);
+		EclipseProject project = new EclipseProject(module, ctx);
 
 		OrgEclipseJdtUiPrefs uiPrefs = project.orgEclipseJdtUiPrefs();
 
