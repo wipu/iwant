@@ -10,7 +10,11 @@ public abstract class IwantTestCase extends TestCase {
 	private IwantMockEnvironment e;
 	protected TestArea testArea;
 	protected File wsRoot;
+	/**
+	 * TODO only one name
+	 */
 	protected File cacheDir;
+	protected File cached;
 	protected TargetEvaluationContextMock ctx;
 	protected CachesMock caches;
 	private boolean captureOn = false;
@@ -21,6 +25,7 @@ public abstract class IwantTestCase extends TestCase {
 		testArea = e.testArea();
 		wsRoot = e.wsRoot();
 		cacheDir = e.cacheDir();
+		cached = cacheDir;
 		ctx = e.ctx();
 		caches = e.caches();
 		if (mustCaptureSystemOutAndErr()) {
