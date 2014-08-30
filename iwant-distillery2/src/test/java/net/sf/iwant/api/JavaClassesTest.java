@@ -1,87 +1,26 @@
 package net.sf.iwant.api;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-import junit.framework.TestCase;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
+import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry3.TargetMock;
 import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
 
-public class JavaClassesTest extends TestCase {
-
-	private TestArea testArea;
-	private TargetEvaluationContextMock ctx;
-	private IwantNetwork network;
-	private Iwant iwant;
-	private File wsRoot;
-	private File cached;
-	private CachesMock caches;
-	private InputStream originalIn;
-	private PrintStream originalOut;
-	private PrintStream originalErr;
-	private ByteArrayOutputStream out;
-	private ByteArrayOutputStream err;
-
-	@Override
-	public void setUp() {
-		testArea = TestArea.forTest(this);
-		network = new IwantNetworkMock(testArea);
-		iwant = Iwant.using(network);
-		wsRoot = new File(testArea.root(), "wsRoot");
-		caches = new CachesMock(wsRoot);
-		ctx = new TargetEvaluationContextMock(iwant, caches);
-		ctx.hasWsRoot(wsRoot);
-		cached = new File(testArea.root(), "cached");
-		caches.cachesModifiableTargetsAt(cached);
-		originalIn = System.in;
-		originalOut = System.out;
-		originalErr = System.err;
-		startOfOutAndErrCapture();
-	}
-
-	private void startOfOutAndErrCapture() {
-		out = new ByteArrayOutputStream();
-		err = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(out));
-		System.setErr(new PrintStream(err));
-	}
-
-	private String out() {
-		return out.toString();
-	}
-
-	private String err() {
-		return err.toString();
-	}
-
-	@Override
-	public void tearDown() {
-		System.setIn(originalIn);
-		System.setOut(originalOut);
-		System.setErr(originalErr);
-		System.err.print("== out:\n" + out());
-		System.err.print("== err:\n" + err());
-	}
+public class JavaClassesTest extends IwantTestCase {
 
 	public void testSrcDirIsAnIgredient() {
 		Path src = Source.underWsroot("src");

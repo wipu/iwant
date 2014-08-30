@@ -1,74 +1,14 @@
 package net.sf.iwant.api;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.PrintStream;
 
-import junit.framework.TestCase;
 import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.model.Source;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
+import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
 
-public class ScriptGeneratedTest extends TestCase {
-
-	private TestArea testArea;
-	private Iwant iwant;
-	private IwantNetwork network;
-	private File tmpDir;
-	private CachesMock caches;
-	private File wsRoot;
-	private TargetEvaluationContextMock ctx;
-	private File cacheDir;
-
-	private PrintStream oldOut;
-
-	private PrintStream oldErr;
-
-	private ByteArrayOutputStream out;
-
-	private ByteArrayOutputStream err;
-
-	@Override
-	public void setUp() {
-		testArea = TestArea.forTest(this);
-		network = new IwantNetworkMock(testArea);
-		iwant = Iwant.using(network);
-		wsRoot = testArea.root();
-		caches = new CachesMock(wsRoot);
-		cacheDir = testArea.newDir("cache");
-		caches.cachesModifiableTargetsAt(cacheDir);
-		tmpDir = new File(testArea.root(), "tmpDir");
-		tmpDir.mkdirs();
-		caches.providesTemporaryDirectoryAt(tmpDir);
-		ctx = new TargetEvaluationContextMock(iwant, caches);
-
-		oldOut = System.out;
-		oldErr = System.err;
-		out = new ByteArrayOutputStream();
-		err = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(out));
-		System.setErr(new PrintStream(err));
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		System.setErr(oldErr);
-		System.setOut(oldOut);
-	}
-
-	private String out() {
-		return out.toString();
-	}
-
-	private String err() {
-		return err.toString();
-	}
+public class ScriptGeneratedTest extends IwantTestCase {
 
 	public void testContentDescriptor() {
 		assertEquals(

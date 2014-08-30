@@ -2,38 +2,12 @@ package net.sf.iwant.api;
 
 import java.io.File;
 
-import junit.framework.TestCase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
+import net.sf.iwant.apimocks.IwantTestCase;
 
-public class SubPathTest extends TestCase {
-
-	private TestArea testArea;
-	private Iwant iwant;
-	private IwantNetwork network;
-	private CachesMock caches;
-	private File wsRoot;
-	private TargetEvaluationContextMock ctx;
-	private File cacheDir;
-
-	@Override
-	public void setUp() {
-		testArea = TestArea.forTest(this);
-		network = new IwantNetworkMock(testArea);
-		iwant = Iwant.using(network);
-		wsRoot = testArea.root();
-		caches = new CachesMock(wsRoot);
-		cacheDir = testArea.newDir("cache");
-		caches.cachesModifiableTargetsAt(cacheDir);
-		ctx = new TargetEvaluationContextMock(iwant, caches);
-	}
+public class SubPathTest extends IwantTestCase {
 
 	public void testParentAndRelativePath() {
 		Path parent = Source.underWsroot("parent");
@@ -59,7 +33,7 @@ public class SubPathTest extends TestCase {
 	}
 
 	public void testNonDirectorySubPathAsPath() throws Exception {
-		testArea.hasFile("parent/file", "file content");
+		wsRootHasFile("parent/file", "file content");
 		Source parent = Source.underWsroot("parent");
 
 		Target target = new SubPath("s", parent, "file");
@@ -70,8 +44,8 @@ public class SubPathTest extends TestCase {
 	}
 
 	public void testDirectorySubPathAsPath() throws Exception {
-		testArea.hasFile("parent/subdir/subfile1", "subfile1 content");
-		testArea.hasFile("parent/subdir/subfile2", "subfile2 content");
+		wsRootHasFile("parent/subdir/subfile1", "subfile1 content");
+		wsRootHasFile("parent/subdir/subfile2", "subfile2 content");
 		Source parent = Source.underWsroot("parent");
 
 		Target target = new SubPath("s", parent, "subdir");

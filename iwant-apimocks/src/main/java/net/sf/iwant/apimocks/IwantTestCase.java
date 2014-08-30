@@ -21,6 +21,7 @@ public abstract class IwantTestCase extends TestCase {
 	 */
 	protected TargetEvaluationContextMock evCtx;
 	protected CachesMock caches;
+	protected File tmpDir;
 	private boolean captureOn = false;
 
 	@Override
@@ -33,6 +34,7 @@ public abstract class IwantTestCase extends TestCase {
 		ctx = e.ctx();
 		evCtx = ctx;
 		caches = e.caches();
+		tmpDir = e.tmpDir();
 		if (mustCaptureSystemOutAndErr()) {
 			startSystemOutAndErrCapture();
 		}
