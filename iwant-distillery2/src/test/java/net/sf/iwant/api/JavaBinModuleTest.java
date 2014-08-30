@@ -1,8 +1,5 @@
 package net.sf.iwant.api;
 
-import java.io.File;
-
-import junit.framework.TestCase;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
@@ -13,34 +10,9 @@ import net.sf.iwant.api.javamodules.StandardCharacteristics.TestUtility;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
+import net.sf.iwant.apimocks.IwantTestCase;
 
-public class JavaBinModuleTest extends TestCase {
-
-	private TestArea testArea;
-	private IwantNetwork network;
-	private Iwant iwant;
-	private File wsRoot;
-	private CachesMock caches;
-	private File cachedTargets;
-	private TargetEvaluationContextMock evCtx;
-
-	@Override
-	protected void setUp() throws Exception {
-		testArea = TestArea.forTest(this);
-		network = new IwantNetworkMock(testArea);
-		iwant = Iwant.using(network);
-		wsRoot = testArea.root();
-		caches = new CachesMock(wsRoot);
-		cachedTargets = testArea.newDir("cached-targets");
-		caches.cachesModifiableTargetsAt(cachedTargets);
-		evCtx = new TargetEvaluationContextMock(iwant, caches);
-	}
+public class JavaBinModuleTest extends IwantTestCase {
 
 	// provided by src module
 
@@ -187,7 +159,7 @@ public class JavaBinModuleTest extends TestCase {
 		Target libJar = new HelloTarget("lib.jar", "");
 		JavaBinModule libJarModule = JavaBinModule.providing(libJar).end();
 
-		assertEquals(cachedTargets + "/lib.jar",
+		assertEquals(cached + "/lib.jar",
 				libJarModule.eclipseBinaryReference(evCtx));
 		assertEquals(null, libJarModule.eclipseSourceReference(evCtx));
 	}
@@ -198,9 +170,9 @@ public class JavaBinModuleTest extends TestCase {
 		JavaBinModule libJarModule = JavaBinModule.providing(libJar, libSrc)
 				.end();
 
-		assertEquals(cachedTargets + "/lib.jar",
+		assertEquals(cached + "/lib.jar",
 				libJarModule.eclipseBinaryReference(evCtx));
-		assertEquals(cachedTargets + "/lib-src.zip",
+		assertEquals(cached + "/lib-src.zip",
 				libJarModule.eclipseSourceReference(evCtx));
 	}
 

@@ -16,6 +16,10 @@ public abstract class IwantTestCase extends TestCase {
 	protected File cacheDir;
 	protected File cached;
 	protected TargetEvaluationContextMock ctx;
+	/**
+	 * TODO only one name
+	 */
+	protected TargetEvaluationContextMock evCtx;
 	protected CachesMock caches;
 	private boolean captureOn = false;
 
@@ -27,6 +31,7 @@ public abstract class IwantTestCase extends TestCase {
 		cacheDir = e.cacheDir();
 		cached = cacheDir;
 		ctx = e.ctx();
+		evCtx = ctx;
 		caches = e.caches();
 		if (mustCaptureSystemOutAndErr()) {
 			startSystemOutAndErrCapture();
@@ -77,6 +82,10 @@ public abstract class IwantTestCase extends TestCase {
 
 	protected String contentOf(File file) {
 		return testArea.contentOf(file);
+	}
+
+	protected String contentOfCached(String targetName) {
+		return testArea.contentOf(new File(cached, targetName));
 	}
 
 }
