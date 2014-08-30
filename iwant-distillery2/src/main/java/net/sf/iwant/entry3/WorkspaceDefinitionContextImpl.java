@@ -7,16 +7,16 @@ import java.util.Set;
 
 import net.sf.iwant.api.Downloaded;
 import net.sf.iwant.api.FromRepository;
-import net.sf.iwant.api.IwantPluginWish;
-import net.sf.iwant.api.IwantPluginWishes;
 import net.sf.iwant.api.TestedIwantDependencies;
-import net.sf.iwant.api.WorkspaceDefinitionContext;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.wsdef.IwantPluginWish;
+import net.sf.iwant.api.wsdef.IwantPluginWishes;
+import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
 
 public class WorkspaceDefinitionContextImpl implements
 		WorkspaceDefinitionContext {

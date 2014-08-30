@@ -1037,6 +1037,23 @@
   + hide testArea, fix refs
   - hide wsRoot permanently and fix all refs
 
+- As @developer I want to split distillery2 so it will help me in the later split into bootstrapper/core/plugins and also in understanding and maintaining clean design
+  + move interfaces for wsdef and wsdefdef (with deps) to a new module, iwant-api-wsdef
+    * cannot be in api-model, they need javamodule
+  + fix Iwant2
+  + fix textual java sources in tests
+  + create same module in mock wsroot
+  + fix ref in Iwant3.iwantApiClassLocations
+    + and add ref to another class in distillery2, with todo comment to remove
+      when no more really part of api
+  + fix textual refs to other moved types
+  + fix textual ref in Iwant3Test
+  + move mocked IwantWorkspace (just in case)
+  + fix dummy project (manual testing)
+  + test tutorial works
+  - commit and fix/notify workspaces using iwant
+  - delete mocked IwantWorkspace if not needed
+
 - As @buildscriptauthor I want a Target of a downloaded and unzipped github commit so I can use the code in it
   + a convenience class around downloaded, unzipped...
   + and also a new concept: SubPath, because the github zip has a directory in it

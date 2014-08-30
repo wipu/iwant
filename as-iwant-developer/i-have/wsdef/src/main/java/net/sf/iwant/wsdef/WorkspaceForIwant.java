@@ -54,12 +54,12 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static SortedSet<JavaSrcModule> allSrcModules() {
 		return new TreeSet<JavaSrcModule>(Arrays.asList(iwantApiJavamodules(),
-				iwantApimocks(), iwantApiModel(), iwantCoreservices(),
-				iwantDistillery(), iwantDistillery2(), iwantDocs(),
-				iwantExampleWsdef(), iwantMockWsroot(), iwantPluginAnt(),
-				iwantPluginFindbugs(), iwantPluginGithub(), iwantPluginPmd(),
-				iwantPluginWar(), iwantTestarea(), iwantTestresources(),
-				iwantTutorialWsdefs()));
+				iwantApimocks(), iwantApiModel(), iwantApiWsdef(),
+				iwantCoreservices(), iwantDistillery(), iwantDistillery2(),
+				iwantDocs(), iwantExampleWsdef(), iwantMockWsroot(),
+				iwantPluginAnt(), iwantPluginFindbugs(), iwantPluginGithub(),
+				iwantPluginPmd(), iwantPluginWar(), iwantTestarea(),
+				iwantTestresources(), iwantTutorialWsdefs()));
 	}
 
 	private static SortedSet<JavaModule> allModules() {
@@ -202,6 +202,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.testedBy("net.sf.iwant.api.model.IwantApiModelSuite").end();
 	}
 
+	private static JavaSrcModule iwantApiWsdef() {
+		return iwantSrcModule("api-wsdef").noTestJava()
+				.mainDeps(iwantApiModel(), iwantApiJavamodules()).end();
+	}
+
 	private static JavaSrcModule iwantCoreservices() {
 		return iwantSrcModule("coreservices")
 				.mainDeps(iwantApiModel(), iwantDistillery())
@@ -228,7 +233,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantDistillery2() {
 		return iwantSrcModule("distillery2")
 				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
-						iwantCoreservices(), iwantDistillery())
+						iwantApiWsdef(), iwantCoreservices(), iwantDistillery())
 				.testDeps(iwantApimocks(), iwantDistilleryClasspathMarker(),
 						iwantTestarea(), junit())
 				.testedBy("net.sf.iwant.IwantDistillery2Suite").end();
@@ -242,7 +247,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return iwantSrcModule("example-wsdef")
 				.noTestJava()
 				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
-						iwantDistillery2()).end();
+						iwantApiWsdef(), iwantDistillery2()).end();
 	}
 
 	private static JavaSrcModule iwantMockWsroot() {
@@ -251,6 +256,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		mod.mainJava("iwant-api-javamodules/src/main/java");
 		mod.mainJava("iwant-apimocks/src/main/java");
 		mod.mainJava("iwant-api-model/src/main/java");
+		mod.mainJava("iwant-api-wsdef/src/main/java");
 		mod.mainJava("iwant-coreservices/src/main/java");
 		mod.mainJava("iwant-distillery/as-some-developer/with/java");
 		mod.mainJava("iwant-distillery/src/main/java");
@@ -322,9 +328,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.noTestJava()
 				.mainJava("src")
 				.mainDeps(commonsMath(), iwantApiJavamodules(),
-						iwantApiModel(), iwantDistillery2(), iwantPluginAnt(),
-						iwantPluginFindbugs(), iwantPluginGithub(),
-						iwantPluginPmd(), iwantPluginWar()).end();
+						iwantApiModel(), iwantApiWsdef(), iwantDistillery2(),
+						iwantPluginAnt(), iwantPluginFindbugs(),
+						iwantPluginGithub(), iwantPluginPmd(), iwantPluginWar())
+				.end();
 	}
 
 	private static JavaModule jaxen() {

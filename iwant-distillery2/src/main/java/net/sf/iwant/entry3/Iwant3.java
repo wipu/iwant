@@ -15,10 +15,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.sf.iwant.api.HelloSideEffect;
-import net.sf.iwant.api.IwantWorkspace;
-import net.sf.iwant.api.IwantWorkspaceProvider;
-import net.sf.iwant.api.SideEffectDefinitionContext;
-import net.sf.iwant.api.WorkspaceDefinitionContext;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaModule;
@@ -30,6 +26,10 @@ import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.model.WsInfo;
+import net.sf.iwant.api.wsdef.IwantWorkspace;
+import net.sf.iwant.api.wsdef.IwantWorkspaceProvider;
+import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
+import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
 import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.entry.Iwant;
@@ -265,7 +265,10 @@ public class Iwant3 {
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
 				+ "api/model/Path.class"));
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
-				+ "api/IwantWorkspace.class"));
+				+ "api/wsdef/IwantWorkspace.class"));
+		// TODO remove EclipseSettings from api and move to a plugin:
+		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
+				+ "api/EclipseSettings.class"));
 		return apiClassLocations;
 	}
 

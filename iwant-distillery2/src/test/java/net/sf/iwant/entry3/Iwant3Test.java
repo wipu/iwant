@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.IwantWorkspace;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.apimocks.CachesMock;
@@ -336,7 +335,7 @@ public class Iwant3Test extends TestCase {
 		assertTrue(new File(combinedIwantSrc, "net/sf/iwant/entry2/Iwant2.java")
 				.exists());
 		assertTrue(new File(combinedIwantSrc,
-				"net/sf/iwant/api/IwantWorkspace.java").exists());
+				"net/sf/iwant/api/wsdef/MockedApiWsdef.java").exists());
 	}
 
 	private static String modifiedExampleWsDef() {
@@ -346,11 +345,11 @@ public class Iwant3Test extends TestCase {
 		wsdef.append("import java.util.Arrays;\n");
 		wsdef.append("import java.util.List;\n");
 		wsdef.append("import net.sf.iwant.api.EclipseSettings;\n");
-		wsdef.append("import net.sf.iwant.api.IwantWorkspace;\n");
-		wsdef.append("import net.sf.iwant.api.SideEffectDefinitionContext;\n");
 		wsdef.append("import net.sf.iwant.api.model.HelloTarget;\n");
 		wsdef.append("import net.sf.iwant.api.model.SideEffect;\n");
 		wsdef.append("import net.sf.iwant.api.model.Target;\n");
+		wsdef.append("import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;\n");
+		wsdef.append("import net.sf.iwant.api.wsdef.IwantWorkspace;\n");
 		wsdef.append("\n");
 		wsdef.append("public class ExampleWs implements IwantWorkspace {\n");
 		wsdef.append("\n");
@@ -381,12 +380,12 @@ public class Iwant3Test extends TestCase {
 		b.append("\n");
 		b.append("import java.util.Arrays;\n");
 		b.append("\n");
-		b.append("import net.sf.iwant.api.IwantWorkspaceProvider;\n");
-		b.append("import net.sf.iwant.api.WorkspaceDefinitionContext;\n");
 		b.append("import net.sf.iwant.api.javamodules.JavaModule;\n");
 		b.append("import net.sf.iwant.api.javamodules.JavaSrcModule;\n");
 		b.append("import net.sf.iwant.api.model.Path;\n");
 		b.append("import net.sf.iwant.api.model.Source;\n");
+		b.append("import net.sf.iwant.api.wsdef.IwantWorkspaceProvider;\n");
+		b.append("import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;\n");
 		b.append("\n");
 		b.append("public class ExampleWsProvider implements IwantWorkspaceProvider {\n");
 		b.append("\n");
@@ -611,19 +610,20 @@ public class Iwant3Test extends TestCase {
 	 */
 	public void testToLearnThatEvenTwoInstancesOfSameClassloaderLoadIncompatibleClasses()
 			throws Exception {
-		File classes = new File(Iwant3.class.getResource(
-				"/net/sf/iwant/api/IwantWorkspace.class").toURI())
+		Class<?> exampleClass = Iwant3.class;
+		File classes = new File(exampleClass.getResource(
+				"/net/sf/iwant/entry3/Iwant3.class").toURI()).getParentFile()
 				.getParentFile().getParentFile().getParentFile()
-				.getParentFile().getParentFile();
+				.getParentFile();
 
 		List<File> locations = Arrays.asList(classes);
-		String className = IwantWorkspace.class.getCanonicalName();
+		String className = exampleClass.getCanonicalName();
 		Class<?> c1 = Iwant.classLoader(true, locations).loadClass(className);
 		Class<?> c2 = Iwant.classLoader(true, locations).loadClass(className);
 		assertEquals(className, c1.getCanonicalName());
 		assertEquals(className, c2.getCanonicalName());
 		assertFalse(c1 == c2);
-		assertFalse(IwantWorkspace.class.isAssignableFrom(c1));
+		assertFalse(exampleClass.isAssignableFrom(c1));
 		assertFalse(c1.isAssignableFrom(c2));
 	}
 

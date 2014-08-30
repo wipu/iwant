@@ -2,7 +2,7 @@ package net.sf.iwant.entry3;
 
 import java.util.Arrays;
 
-import net.sf.iwant.api.IwantWorkspace;
+import net.sf.iwant.api.wsdef.IwantWorkspace;
 
 /**
  * Mock

@@ -79,6 +79,7 @@ public class Iwant2 {
 		srcDirs.add("iwant-api-javamodules/" + "src/main/java");
 		srcDirs.add("iwant-apimocks/" + "src/main/java");
 		srcDirs.add("iwant-api-model/" + "src/main/java");
+		srcDirs.add("iwant-api-wsdef/" + "src/main/java");
 		srcDirs.add("iwant-coreservices/" + "src/main/java");
 		srcDirs.add("iwant-distillery/" + "as-some-developer/with/java");
 		srcDirs.add("iwant-distillery/" + "src/main/java");

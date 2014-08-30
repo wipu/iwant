@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.wsdef;
 
 import java.util.List;
 
