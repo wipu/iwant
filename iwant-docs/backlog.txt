@@ -1051,8 +1051,9 @@
   + move mocked IwantWorkspace (just in case)
   + fix dummy project (manual testing)
   + test tutorial works
-  - commit and fix/notify workspaces using iwant
+  + commit and fix/notify workspaces using iwant
   - delete mocked IwantWorkspace if not needed
+  - more splitting, either in this story or a new one
 
 - As @buildscriptauthor I want a Target of a downloaded and unzipped github commit so I can use the code in it
   + a convenience class around downloaded, unzipped...
