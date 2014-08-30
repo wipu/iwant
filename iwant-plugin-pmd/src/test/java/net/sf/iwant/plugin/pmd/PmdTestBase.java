@@ -3,39 +3,12 @@ package net.sf.iwant.plugin.pmd;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
+import net.sf.iwant.apimocks.IwantTestCase;
 
 import org.apache.commons.io.FileUtils;
 
-public abstract class PmdTestBase extends TestCase {
-
-	private TestArea testArea;
-	protected TargetEvaluationContextMock ctx;
-	private IwantNetwork network;
-	private Iwant iwant;
-	protected File wsRoot;
-	private File cached;
-	private CachesMock caches;
-
-	@Override
-	public void setUp() {
-		testArea = TestArea.forTest(this);
-		network = new IwantNetworkMock(testArea);
-		iwant = Iwant.using(network);
-		wsRoot = new File(testArea.root(), "wsRoot");
-		caches = new CachesMock(wsRoot);
-		ctx = new TargetEvaluationContextMock(iwant, caches);
-		ctx.hasWsRoot(wsRoot);
-		cached = testArea.newDir("cached");
-		caches.cachesModifiableTargetsAt(cached);
-	}
+public abstract class PmdTestBase extends IwantTestCase {
 
 	protected String txtReportContent(Target report) throws IOException {
 		return reportContent(report, "txt");

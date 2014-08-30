@@ -3,7 +3,6 @@ package net.sf.iwant.plugin.findbugs;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
 import net.sf.iwant.api.AsEmbeddedIwantUser;
 import net.sf.iwant.api.TestedIwantDependencies;
 import net.sf.iwant.api.javamodules.JavaBinModule;
@@ -14,36 +13,15 @@ import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
+import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
 
 import org.apache.commons.io.FileUtils;
 
-public class FindbugsReportTest extends TestCase {
-
-	private TestArea testArea;
-	private TargetEvaluationContextMock ctx;
-	private IwantNetwork network;
-	private Iwant iwant;
-	private File wsRoot;
-	private File cached;
-	private CachesMock caches;
+public class FindbugsReportTest extends IwantTestCase {
 
 	@Override
-	public void setUp() {
-		testArea = TestArea.forTest(this);
-		network = new IwantNetworkMock(testArea);
-		iwant = Iwant.using(network);
-		wsRoot = new File(testArea.root(), "wsRoot");
-		caches = new CachesMock(wsRoot);
-		ctx = new TargetEvaluationContextMock(iwant, caches);
-		ctx.hasWsRoot(wsRoot);
-		cached = new File(testArea.root(), "cached");
-		caches.cachesModifiableTargetsAt(cached);
+	protected void moreSetUp() {
 		caches.cachesUrlAt(distroToTest().tarGz().url(), cachedFindbugsTarGz());
 	}
 
