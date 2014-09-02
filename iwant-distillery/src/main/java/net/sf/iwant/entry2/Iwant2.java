@@ -61,10 +61,9 @@ public class Iwant2 {
 		File allIwantClasses = allIwantClasses(iwantWs);
 
 		File testArea = new File(iwantWs, "iwant-testarea/testarea-classdir");
-		File classpathMarker = new File(iwantWs,
-				"iwant-distillery/classpath-marker");
+		File wsRootMarker = new File(iwantWs, "iwant-wsroot-marker");
 
-		List<File> classLocations = Arrays.asList(classpathMarker, testArea,
+		List<File> classLocations = Arrays.asList(wsRootMarker, testArea,
 				allIwantClasses, junitJar());
 
 		String[] iwant3Args = new String[args.length + 1];
@@ -84,6 +83,7 @@ public class Iwant2 {
 		srcDirs.add("iwant-distillery/" + "as-some-developer/with/java");
 		srcDirs.add("iwant-distillery/" + "src/main/java");
 		srcDirs.add("iwant-distillery2/" + "src/main/java");
+		srcDirs.add("iwant-iwant-wsroot-finder/" + "src/main/java");
 		srcDirs.add("iwant-testarea/" + "src/main/java");
 		return srcDirs;
 	}

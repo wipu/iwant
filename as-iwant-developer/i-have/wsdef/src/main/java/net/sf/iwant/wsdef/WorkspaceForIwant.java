@@ -56,10 +56,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return new TreeSet<JavaSrcModule>(Arrays.asList(iwantApiJavamodules(),
 				iwantApimocks(), iwantApiModel(), iwantApiWsdef(),
 				iwantCoreservices(), iwantDistillery(), iwantDistillery2(),
-				iwantDocs(), iwantExampleWsdef(), iwantMockWsroot(),
-				iwantPluginAnt(), iwantPluginFindbugs(), iwantPluginGithub(),
-				iwantPluginPmd(), iwantPluginWar(), iwantTestarea(),
-				iwantTestresources(), iwantTutorialWsdefs()));
+				iwantDocs(), iwantExampleWsdef(), iwantIwantWsrootFinder(),
+				iwantMockWsroot(), iwantPluginAnt(), iwantPluginFindbugs(),
+				iwantPluginGithub(), iwantPluginPmd(), iwantPluginWar(),
+				iwantTestarea(), iwantTestresources(), iwantTutorialWsdefs()));
 	}
 
 	private static SortedSet<JavaModule> allModules() {
@@ -221,21 +221,16 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainJava("as-some-developer/with/java")
 				.testResources("src/test/resources")
 				.mainDeps(iwantTestarea(), junit())
-				.testDeps(iwantDistilleryClasspathMarker())
+				.testDeps(iwantIwantWsrootFinder())
 				.testedBy("net.sf.iwant.IwantDistillerySuite").end();
-	}
-
-	private static JavaBinModule iwantDistilleryClasspathMarker() {
-		return JavaBinModule.providing(
-				Source.underWsroot("iwant-distillery/classpath-marker")).end();
 	}
 
 	private static JavaSrcModule iwantDistillery2() {
 		return iwantSrcModule("distillery2")
 				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
-						iwantApiWsdef(), iwantCoreservices(), iwantDistillery())
-				.testDeps(iwantApimocks(), iwantDistilleryClasspathMarker(),
-						iwantTestarea(), junit())
+						iwantApiWsdef(), iwantCoreservices(),
+						iwantDistillery(), iwantIwantWsrootFinder())
+				.testDeps(iwantApimocks(), iwantTestarea(), junit())
 				.testedBy("net.sf.iwant.IwantDistillery2Suite").end();
 	}
 
@@ -261,6 +256,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		mod.mainJava("iwant-distillery/as-some-developer/with/java");
 		mod.mainJava("iwant-distillery/src/main/java");
 		mod.mainJava("iwant-distillery2/src/main/java");
+		mod.mainJava("iwant-iwant-wsroot-finder/src/main/java");
 		mod.mainJava("iwant-testarea/src/main/java");
 		return mod.mainDeps(junit()).end();
 	}
@@ -332,6 +328,16 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						iwantPluginAnt(), iwantPluginFindbugs(),
 						iwantPluginGithub(), iwantPluginPmd(), iwantPluginWar())
 				.end();
+	}
+
+	private static JavaSrcModule iwantIwantWsrootFinder() {
+		return iwantSrcModule("iwant-wsroot-finder").noTestJava()
+				.mainDeps(iwantWsRootMarker()).end();
+	}
+
+	private static JavaBinModule iwantWsRootMarker() {
+		return JavaBinModule.providing(
+				Source.underWsroot("iwant-wsroot-marker")).end();
 	}
 
 	private static JavaModule jaxen() {

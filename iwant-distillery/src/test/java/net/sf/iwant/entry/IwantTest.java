@@ -10,9 +10,9 @@ import java.security.Permission;
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
+import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
-import net.sf.iwant.testing.WsRootFinder;
 
 public class IwantTest extends TestCase {
 
@@ -173,7 +173,7 @@ public class IwantTest extends TestCase {
 	public void testIwantIsSvnExportedWhenNotExported() {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
-		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
+		URL iwantFrom = Iwant.fileToUrl(IwantWsRootFinder.mockWsRoot());
 		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
 				+ iwantFrom + "\n");
 
@@ -194,7 +194,7 @@ public class IwantTest extends TestCase {
 	public void testExistingIwantIsSvnReExportedFromFile() {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
-		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
+		URL iwantFrom = Iwant.fileToUrl(IwantWsRootFinder.mockWsRoot());
 		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
 				+ iwantFrom + "\n");
 
@@ -219,7 +219,7 @@ public class IwantTest extends TestCase {
 	public void testExistingIwantIsNotSvnReExportedFromFileWhenToldNotTo() {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
-		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
+		URL iwantFrom = Iwant.fileToUrl(IwantWsRootFinder.mockWsRoot());
 		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
 				+ iwantFrom + "\nre-export=false\n");
 
@@ -242,7 +242,7 @@ public class IwantTest extends TestCase {
 			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
-		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
+		URL iwantFrom = Iwant.fileToUrl(IwantWsRootFinder.mockWsRoot());
 		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
 				+ iwantFrom + "\n");
 
@@ -296,7 +296,7 @@ public class IwantTest extends TestCase {
 			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
-		URL iwantFrom = Iwant.fileToUrl(WsRootFinder.mockWsRoot());
+		URL iwantFrom = Iwant.fileToUrl(IwantWsRootFinder.mockWsRoot());
 		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
 				+ iwantFrom + "\n");
 

@@ -37,7 +37,7 @@ import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.entry.Iwant.UnmodifiableSource;
 import net.sf.iwant.entry2.Iwant2;
-import net.sf.iwant.testing.WsRootFinder;
+import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
 
 public class Iwant3 {
 
@@ -208,7 +208,7 @@ public class Iwant3 {
 
 	private static IwantException createExampleWsdefdefAndWsdef(File asSomeone,
 			File iHave, WsInfo wsInfo) {
-		File iwantWsRoot = WsRootFinder.wsRoot();
+		File iwantWsRoot = IwantWsRootFinder.wsRoot();
 		FileUtil.newTextFile(
 				wsInfo.wsdefdefJava(),
 				ExampleWsDefGenerator.exampleWsdefdef(iwantWsRoot,

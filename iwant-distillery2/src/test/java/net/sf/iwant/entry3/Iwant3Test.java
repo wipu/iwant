@@ -16,9 +16,9 @@ import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantWsRoot;
+import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
-import net.sf.iwant.testing.WsRootFinder;
 
 public class Iwant3Test extends TestCase {
 
@@ -48,7 +48,7 @@ public class Iwant3Test extends TestCase {
 				"#!/bin/bash\njust a mock because this exists in real life\n");
 		network = new IwantNetworkMock(testArea);
 		combinedIwantSrc = new File(testArea.root(), "combined-iwant-src");
-		iwantWs = WsRootFinder.mockWsRoot();
+		iwantWs = IwantWsRootFinder.mockWsRoot();
 		network.cachesAt(new CombinedSrcFromUnmodifiableIwantWsRoot(iwantWs),
 				combinedIwantSrc);
 		iwant3 = Iwant3.using(network, iwantWs);

@@ -9,9 +9,9 @@ import java.security.Permission;
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantWsRoot;
+import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
-import net.sf.iwant.testing.WsRootFinder;
 
 public class Iwant2Test extends TestCase {
 
@@ -110,12 +110,13 @@ public class Iwant2Test extends TestCase {
 	}
 
 	public void testIwant2CompilesIwantAndCallsIwant3() throws Exception {
-		File iwantWsRoot = WsRootFinder.mockWsRoot();
+		File iwantWsRoot = IwantWsRootFinder.mockWsRoot();
 		network.usesRealJunitUrlAndCached();
 		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
 				"all-iwant-classes");
 
-		iwant2.evaluate(WsRootFinder.mockWsRoot(), "args", "to be", "passed");
+		iwant2.evaluate(IwantWsRootFinder.mockWsRoot(), "args", "to be",
+				"passed");
 
 		assertEquals(":        compiled -> all-iwant-classes\n", err());
 		assertEquals("Mocked net.sf.iwant.entry3.Iwant3\n" + "args: ["
@@ -123,12 +124,12 @@ public class Iwant2Test extends TestCase {
 	}
 
 	public void testIwant2CompilesIwantWithDebugInformation() throws Exception {
-		File iwantWsRoot = WsRootFinder.mockWsRoot();
+		File iwantWsRoot = IwantWsRootFinder.mockWsRoot();
 		network.usesRealJunitUrlAndCached();
 		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
 				"all-iwant-classes");
 
-		iwant2.evaluate(WsRootFinder.mockWsRoot());
+		iwant2.evaluate(IwantWsRootFinder.mockWsRoot());
 
 		File iwantClasses = new File(testArea.root(), "all-iwant-classes");
 		File classWithVars = new File(iwantClasses,

@@ -6,9 +6,9 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
+import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
-import net.sf.iwant.testing.WsRootFinder;
 
 public class ExportedFromSvnTest extends TestCase {
 
@@ -25,7 +25,7 @@ public class ExportedFromSvnTest extends TestCase {
 	}
 
 	public void testExportReturnsDifferentFileFromSourceWithCorrectContent() {
-		File remote = WsRootFinder.mockWsRoot();
+		File remote = IwantWsRootFinder.mockWsRoot();
 		URL remoteUrl = Iwant.fileToUrl(remote);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
 		network.cachesUrlAt(remoteUrl, "svn-exported");
@@ -41,7 +41,7 @@ public class ExportedFromSvnTest extends TestCase {
 	}
 
 	public void testExportIsDoneFromFileEvenWithoutReExportPermissionWhenLocalDoesNotExist() {
-		File remote = WsRootFinder.mockWsRoot();
+		File remote = IwantWsRootFinder.mockWsRoot();
 		URL remoteUrl = Iwant.fileToUrl(remote);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
 		network.cachesUrlAt(remoteUrl, "svn-exported");
@@ -98,7 +98,7 @@ public class ExportedFromSvnTest extends TestCase {
 	 * each time for change to be effective.
 	 */
 	public void testExportIsRedoneIfUrlSchemeIsFile() throws IOException {
-		File remote = WsRootFinder.mockWsRoot();
+		File remote = IwantWsRootFinder.mockWsRoot();
 		URL remoteUrl = Iwant.fileToUrl(remote);
 		File exported = testArea.newDir("exported");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exported);
@@ -121,7 +121,7 @@ public class ExportedFromSvnTest extends TestCase {
 	 */
 	public void testExportIsNotRedoneEvenIfUrlSchemeIsFileWhenReExportDisabled()
 			throws IOException {
-		File remote = WsRootFinder.mockWsRoot();
+		File remote = IwantWsRootFinder.mockWsRoot();
 		URL remoteUrl = Iwant.fileToUrl(remote);
 		File exported = testArea.newDir("exported");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exported);
