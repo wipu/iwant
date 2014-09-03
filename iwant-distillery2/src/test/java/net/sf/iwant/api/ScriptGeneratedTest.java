@@ -109,8 +109,8 @@ public class ScriptGeneratedTest extends IwantTestCase {
 
 	public void testExecutionEnvUsesProperWrapperWhenCygwinBashExeExists()
 			throws Exception {
-		ctx.iwant().shallFindCygwinBashExeAt(
-				new File("C:\\mockcygwin\\bin\\bash.exe"));
+		File mockCygwinBashExe = new File("mock-bash.exe");
+		ctx.iwant().shallFindCygwinBashExeAt(mockCygwinBashExe);
 		ctx.iwant().shallMockWintoySafePaths();
 
 		ConcatenatedBuilder scriptContent = Concatenated.named("script");
@@ -122,9 +122,9 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		ExecutionEnvironment env = sg.prepareExecutionEnvironment(ctx);
 
 		File wrapper = new File(tmpDir, "script-cygwinwrapper.sh");
-		assertEquals("[C:\\mockcygwin\\bin\\bash.exe, " + wrapper
-				+ ", mock-unix-path:" + new File(cacheDir, "sg") + "]",
-				Arrays.toString(env.cmdLine));
+		assertEquals("[" + mockCygwinBashExe.getCanonicalPath() + ", "
+				+ wrapper.getCanonicalPath() + ", mock-unix-path:"
+				+ new File(cacheDir, "sg") + "]", Arrays.toString(env.cmdLine));
 
 		assertEquals("#!/bin/bash\n" + "SCRIPT=$(cygpath --unix -a '"
 				+ new File(tmpDir, "script") + "')\n"
