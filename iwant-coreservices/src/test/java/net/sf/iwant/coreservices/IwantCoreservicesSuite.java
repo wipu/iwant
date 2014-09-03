@@ -9,6 +9,7 @@ public class IwantCoreservicesSuite {
 		TestSuite suite = new TestSuite("net.sf.iwant.coreservices");
 		suite.addTestSuite(StreamUtilTest.class);
 		suite.addTestSuite(FileUtilTest.class);
+		suite.addTestSuite(IwantCoreServicesImplTest.class);
 		return suite;
 	}
 

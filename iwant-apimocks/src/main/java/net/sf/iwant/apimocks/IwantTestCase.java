@@ -107,4 +107,8 @@ public abstract class IwantTestCase extends TestCase {
 		return testArea.newDir("misc/" + path);
 	}
 
+	protected String unixPathOf(File file) {
+		return ctx.iwant().unixPathOf(file);
+	}
+
 }

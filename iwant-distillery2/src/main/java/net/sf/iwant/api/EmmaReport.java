@@ -1,7 +1,6 @@
 package net.sf.iwant.api;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,18 +91,18 @@ public class EmmaReport extends Target {
 		File reportXml = new File(dest, "coverage.xml");
 		File reportProps = Iwant.newTextFile(new File(dest,
 				"emma-report.properties"), "report.txt.out.file="
-				+ wintoySafeCanonicalPath(reportTxt)
+				+ ctx.iwant().pathWithoutBackslashes(reportTxt)
 				+ "\nreport.html.out.file="
-				+ wintoySafeCanonicalPath(reportHtml)
-				+ "\nreport.xml.out.file=" + wintoySafeCanonicalPath(reportXml)
-				+ "\n");
+				+ ctx.iwant().pathWithoutBackslashes(reportHtml)
+				+ "\nreport.xml.out.file="
+				+ ctx.iwant().pathWithoutBackslashes(reportXml) + "\n");
 
 		List<String> reportArgs = new ArrayList<String>();
 		reportArgs.add("report");
 		reportArgs.add("-r");
 		reportArgs.add("html,txt,xml");
 		reportArgs.add("-properties");
-		reportArgs.add(wintoySafeCanonicalPath(reportProps));
+		reportArgs.add(ctx.iwant().pathWithoutBackslashes(reportProps));
 		for (EmmaInstrumentation instr : instrumentations) {
 			File em = instr.metadataFile(ctx);
 			if (!em.exists()) {
@@ -111,10 +110,11 @@ public class EmmaReport extends Target {
 				continue;
 			}
 			reportArgs.add("-in");
-			reportArgs.add(wintoySafeCanonicalPath(em));
+			reportArgs.add(ctx.iwant().pathWithoutBackslashes(em));
 			for (Path source : instr.classesAndSources().sources()) {
 				reportArgs.add("-sp");
-				reportArgs.add(wintoySafeCanonicalPath(ctx.cached(source)));
+				reportArgs.add(ctx.iwant().pathWithoutBackslashes(
+						ctx.cached(source)));
 			}
 		}
 		for (EmmaCoverage coverage : coverages) {
@@ -124,15 +124,11 @@ public class EmmaReport extends Target {
 				continue;
 			}
 			reportArgs.add("-in");
-			reportArgs.add(wintoySafeCanonicalPath(coverageFile));
+			reportArgs.add(ctx.iwant().pathWithoutBackslashes(coverageFile));
 		}
 
 		File emmaJar = ctx.cached(emma);
 		EmmaInstrumentation.runEmma(emmaJar, reportArgs.toArray(new String[0]));
-	}
-
-	private static String wintoySafeCanonicalPath(File file) throws IOException {
-		return BackslashFixer.wintoySafeCanonicalPath(file);
 	}
 
 	@Override

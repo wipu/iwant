@@ -1,7 +1,6 @@
 package net.sf.iwant.api;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,9 +83,9 @@ public class EmmaInstrumentation extends Target {
 		String emmaLogLevel = "warning";
 		File instrProps = Iwant.newTextFile(new File(dir,
 				"emma-instr.properties"), "metadata.out.file="
-				+ wintoySafeCanonicalPath(em) + "\nverbosity.level="
+				+ ctx.iwant().pathWithoutBackslashes(em) + "\nverbosity.level="
 				+ emmaLogLevel + "\n" + "coverage.out.file="
-				+ wintoySafeCanonicalPath(ec) + "\n");
+				+ ctx.iwant().pathWithoutBackslashes(ec) + "\n");
 
 		File cachedClasses = ctx.cached(classesAndSources.classes());
 		File cachedEmma = ctx.cached(emma);
@@ -109,10 +108,6 @@ public class EmmaInstrumentation extends Target {
 				instrClasses);
 		System.err.println("Copied " + nOfFileCopied
 				+ " files emma excluded from instrumented classes.");
-	}
-
-	private static String wintoySafeCanonicalPath(File file) throws IOException {
-		return BackslashFixer.wintoySafeCanonicalPath(file);
 	}
 
 	public File metadataFile(TargetEvaluationContext ctx) {

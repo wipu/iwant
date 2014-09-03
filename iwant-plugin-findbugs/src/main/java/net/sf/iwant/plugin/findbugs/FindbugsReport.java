@@ -1,7 +1,6 @@
 package net.sf.iwant.plugin.findbugs;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +8,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sf.iwant.api.AntGenerated;
-import net.sf.iwant.api.BackslashFixer;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
 import net.sf.iwant.api.javamodules.JavaModule;
@@ -195,10 +193,11 @@ public class FindbugsReport extends Target {
 		AntGenerated.runAnt(cachedAnts, buildXml);
 	}
 
-	private String antScript(TargetEvaluationContext ctx) throws IOException {
-		String findbugsHomeString = wintoySafeCanonicalPath(findbugs
-				.homeDirectory(ctx));
-		String destString = wintoySafeCanonicalPath(ctx.cached(this));
+	private String antScript(TargetEvaluationContext ctx) {
+		String findbugsHomeString = ctx.iwant().pathWithoutBackslashes(
+				findbugs.homeDirectory(ctx));
+		String destString = ctx.iwant()
+				.pathWithoutBackslashes(ctx.cached(this));
 
 		StringBuilder xml = new StringBuilder();
 		xml.append("<project name=\"findbugs\" basedir=\".\" default=\"findbugs-report\">\n");
@@ -229,17 +228,17 @@ public class FindbugsReport extends Target {
 
 		for (JavaClassesAndSources cs : classesToAnalyze) {
 			xml.append("            <class location=\"")
-					.append(wintoySafeCanonicalPath(ctx.cached(cs.classes())))
-					.append("\" />\n");
+					.append(ctx.iwant().pathWithoutBackslashes(
+							ctx.cached(cs.classes()))).append("\" />\n");
 			for (Path src : cs.sources()) {
 				xml.append("            <sourcepath path=\"")
-						.append(wintoySafeCanonicalPath(ctx.cached(src)))
-						.append("\" />\n");
+						.append(ctx.iwant().pathWithoutBackslashes(
+								ctx.cached(src))).append("\" />\n");
 			}
 		}
 		for (Path aux : auxClasses) {
 			xml.append("            <auxclasspath path=\"")
-					.append(wintoySafeCanonicalPath(ctx.cached(aux)))
+					.append(ctx.iwant().pathWithoutBackslashes(ctx.cached(aux)))
 					.append("\" />\n");
 		}
 
@@ -248,10 +247,6 @@ public class FindbugsReport extends Target {
 		xml.append("\n");
 		xml.append("</project>\n");
 		return xml.toString();
-	}
-
-	private static String wintoySafeCanonicalPath(File file) throws IOException {
-		return BackslashFixer.wintoySafeCanonicalPath(file);
 	}
 
 	public List<JavaClassesAndSources> classesToAnalyze() {

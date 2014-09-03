@@ -3,6 +3,7 @@ package net.sf.iwant.api;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +48,12 @@ public class ScriptGenerated extends Target {
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
+		ExecutionEnvironment env = prepareExecutionEnvironment(ctx);
+		execute(env.dir, env.cmdLine);
+	}
+
+	ExecutionEnvironment prepareExecutionEnvironment(TargetEvaluationContext ctx)
+			throws IOException {
 		File tmpDir = ctx.freshTemporaryDirectory();
 		File tmpScript = new File(tmpDir.getCanonicalPath(), "script");
 
@@ -54,16 +61,55 @@ public class ScriptGenerated extends Target {
 		FileUtil.copyFile(scriptSrc, tmpScript);
 		tmpScript.setExecutable(true);
 
-		String[] cmd = { tmpScript.getCanonicalPath(),
-				ctx.cached(this).getCanonicalPath() };
+		List<String> cmdLine = new ArrayList<String>();
+		File cygwinBashExe = ctx.iwant().cygwinBashExe();
+		if (cygwinBashExe != null) {
+			Iwant.debugLog("ScriptGenerated", "Using wrapper for "
+					+ cygwinBashExe);
+			cmdLine.add(cygwinBashExe.getCanonicalPath());
 
-		Iwant.debugLog("ScriptGenerated", scriptSrc, Arrays.toString(cmd));
-		execute(tmpDir, cmd);
+			File wrapper = FileUtil
+					.newTextFile(new File(tmpDir, tmpScript.getName()
+							+ "-cygwinwrapper.sh"),
+							cygwinBashWrapperFor(tmpScript, tmpDir));
+			cmdLine.add(wrapper.getCanonicalPath());
+			cmdLine.add(ctx.iwant().unixPathOf(ctx.cached(this)));
+		} else {
+			cmdLine.add(tmpScript.getCanonicalPath());
+			cmdLine.add(ctx.cached(this).getCanonicalPath());
+		}
+		Iwant.debugLog("ScriptGenerated", scriptSrc, cmdLine);
+		return new ExecutionEnvironment(tmpDir, cmdLine.toArray(new String[0]));
 	}
 
-	public static void execute(File dir, String[] cmd) throws IOException,
+	public static class ExecutionEnvironment {
+
+		final File dir;
+		final String[] cmdLine;
+
+		public ExecutionEnvironment(File dir, String[] cmdLine) {
+			this.dir = dir;
+			this.cmdLine = cmdLine;
+		}
+
+	}
+
+	private static String cygwinBashWrapperFor(File script, File runDir)
+			throws IOException {
+		StringBuilder sh = new StringBuilder();
+		sh.append("#!/bin/bash\n");
+		sh.append("SCRIPT=$(cygpath --unix -a '" + script.getCanonicalPath()
+				+ "')\n");
+		sh.append("RUNDIR=$(cygpath --unix -a '" + runDir.getCanonicalPath()
+				+ "')\n");
+		sh.append("cd \"$RUNDIR\"\n");
+		sh.append("\"$SCRIPT\" \"$@\"\n");
+		return sh.toString();
+	}
+
+	public static void execute(File dir, String[] cmdLine) throws IOException,
 			InterruptedException {
-		Process process = new ProcessBuilder(cmd).directory(dir)
+		Process process = new ProcessBuilder(cmdLine).directory(dir)
 				.redirectErrorStream(true).start();
 		InputStream out = process.getInputStream();
 		StreamUtil.pipe(out, System.err);

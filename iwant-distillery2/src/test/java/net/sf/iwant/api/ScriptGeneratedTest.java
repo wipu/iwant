@@ -1,5 +1,9 @@
 package net.sf.iwant.api;
 
+import java.io.File;
+import java.util.Arrays;
+
+import net.sf.iwant.api.ScriptGenerated.ExecutionEnvironment;
 import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.model.Source;
@@ -70,8 +74,9 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		sg.path(ctx);
 
 		assertEquals("", out());
-		assertEquals("$0=" + tmpDir + "/script\n" + "$1=" + cacheDir
-				+ "/sg\ncwd=" + tmpDir + "\n" + "stderr\n", err());
+		assertEquals("$0=" + unixPathOf(tmpDir) + "/script\n" + "$1="
+				+ unixPathOf(cacheDir) + "/sg\ncwd=" + unixPathOf(tmpDir)
+				+ "\n" + "stderr\n", err());
 
 		assertEquals("hello from env demo\n", contentOfCached("sg"));
 	}
@@ -100,6 +105,50 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		assertEquals("First generating some content\nThen failing\n", err());
 
 		assertEquals("hello from failing script\n", contentOfCached("sg"));
+	}
+
+	public void testExecutionEnvUsesProperWrapperWhenCygwinBashExeExists()
+			throws Exception {
+		ctx.iwant().shallFindCygwinBashExeAt(
+				new File("C:\\mockcygwin\\bin\\bash.exe"));
+		ctx.iwant().shallMockWintoySafePaths();
+
+		ConcatenatedBuilder scriptContent = Concatenated.named("script");
+		scriptContent.string("whatever\n");
+		Concatenated script = scriptContent.end();
+		script.path(ctx);
+
+		ScriptGenerated sg = ScriptGenerated.named("sg").byScript(script);
+		ExecutionEnvironment env = sg.prepareExecutionEnvironment(ctx);
+
+		File wrapper = new File(tmpDir, "script-cygwinwrapper.sh");
+		assertEquals("[C:\\mockcygwin\\bin\\bash.exe, " + wrapper
+				+ ", mock-unix-path:" + new File(cacheDir, "sg") + "]",
+				Arrays.toString(env.cmdLine));
+
+		assertEquals("#!/bin/bash\n" + "SCRIPT=$(cygpath --unix -a '"
+				+ new File(tmpDir, "script") + "')\n"
+				+ "RUNDIR=$(cygpath --unix -a '" + tmpDir + "')\n"
+				+ "cd \"$RUNDIR\"\n" + "\"$SCRIPT\" \"$@\"\n" + "",
+				contentOf(wrapper));
+	}
+
+	public void testExecutionEnvDoesNotUseWrapperWhenCygwinBashExeDoesNotExist()
+			throws Exception {
+		ctx.iwant().shallNotFindCygwinBash();
+		// we shall not see this effective in the command line:
+		ctx.iwant().shallMockWintoySafePaths();
+
+		ConcatenatedBuilder scriptContent = Concatenated.named("script");
+		scriptContent.string("whatever\n");
+		Concatenated script = scriptContent.end();
+		script.path(ctx);
+
+		ScriptGenerated sg = ScriptGenerated.named("sg").byScript(script);
+		ExecutionEnvironment env = sg.prepareExecutionEnvironment(ctx);
+
+		assertEquals("[" + new File(tmpDir, "script") + ", "
+				+ new File(cacheDir, "sg") + "]", Arrays.toString(env.cmdLine));
 	}
 
 }

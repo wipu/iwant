@@ -22,4 +22,10 @@ public interface IwantCoreServices {
 
 	void pipeAndClose(InputStream in, OutputStream out);
 
+	File cygwinBashExe();
+
+	String pathWithoutBackslashes(File file);
+
+	String unixPathOf(File file);
+
 }

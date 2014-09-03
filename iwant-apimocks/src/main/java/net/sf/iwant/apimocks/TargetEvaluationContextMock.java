@@ -2,7 +2,6 @@ package net.sf.iwant.apimocks;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.coreservices.IwantCoreServicesImpl;
@@ -12,11 +11,13 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext {
 
 	private File wsRoot;
 	private final CachesMock caches;
-	private final IwantCoreServices iwantCoreServices;
+	private final IwantCoreServicesMock iwantCoreServices;
 
 	public TargetEvaluationContextMock(Iwant iwant, CachesMock caches) {
 		this.caches = caches;
-		this.iwantCoreServices = new IwantCoreServicesImpl(iwant);
+		// TODO dependency injection:
+		this.iwantCoreServices = new IwantCoreServicesMock(
+				new IwantCoreServicesImpl(iwant));
 	}
 
 	private <T> T nonNull(T value, Object request) {
@@ -37,7 +38,7 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext {
 	}
 
 	@Override
-	public IwantCoreServices iwant() {
+	public IwantCoreServicesMock iwant() {
 		return iwantCoreServices;
 	}
 

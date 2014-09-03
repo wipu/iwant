@@ -1032,6 +1032,17 @@
 = In progress
 #################################################################
 
+- As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
+  + use Windows to develop the wrapper
+  + fix ScriptGenerated test to tolerate Windows paths in output
+  + abstract path mangling so it can be mocked
+  + abstract os detection so it can be mocked
+  + tdd finding cygwin bash.exe
+  + test correct wrapping is used if and only if on Windows
+  - real testing
+  - test tests are still green on linux
+  - either make all tests pass on Windows or write a story about it
+
 - As @developer I want IwantTestCase fields private so I can be more confident that the subclass intentions are still valid, especially regarding test area root versus wsroot
   + hide fields temporarily and replace some direct refs with method calls
   + hide testArea, fix refs

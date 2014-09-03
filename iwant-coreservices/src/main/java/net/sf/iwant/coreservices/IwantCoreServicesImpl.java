@@ -7,16 +7,26 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Properties;
 
 import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.entry.Iwant;
 
 public class IwantCoreServicesImpl implements IwantCoreServices {
 
-	private Iwant iwant;
+	private final Iwant iwant;
+	private final File cRoot;
+	private final Properties systemProperties;
+
+	public IwantCoreServicesImpl(Iwant iwant, File cRoot,
+			Properties systemProperties) {
+		this.iwant = iwant;
+		this.cRoot = cRoot;
+		this.systemProperties = systemProperties;
+	}
 
 	public IwantCoreServicesImpl(Iwant iwant) {
-		this.iwant = iwant;
+		this(iwant, new File("C:"), System.getProperties());
 	}
 
 	@Override
@@ -53,6 +63,36 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 	@Override
 	public void pipeAndClose(InputStream in, OutputStream out) {
 		StreamUtil.pipeAndClose(in, out);
+	}
+
+	@Override
+	public File cygwinBashExe() {
+		if (!systemProperties.getProperty("os.name").startsWith("Windows")) {
+			return null;
+		}
+		File bash = new File(cRoot, "cygwin64/bin/bash.exe");
+		if (bash.exists()) {
+			return bash;
+		}
+		bash = new File(cRoot, "cygwin/bin/bash.exe");
+		if (bash.exists()) {
+			return bash;
+		}
+		throw new IllegalStateException("Cannot find cygwin bash.exe");
+	}
+
+	@Override
+	public String pathWithoutBackslashes(File file) {
+		try {
+			return file.getCanonicalPath().replaceAll("\\\\", "/");
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	@Override
+	public String unixPathOf(File file) {
+		return pathWithoutBackslashes(file).replaceFirst("^C:", "/cygdrive/c");
 	}
 
 }

@@ -176,7 +176,8 @@ public class EmmaCoverage extends Target {
 		}
 
 		script.append("      <sysproperty key='emma.coverage.out.file' value='")
-				.append(wintoySafeCanonicalPath(ec)).append("' />\n");
+				.append(ctx.iwant().pathWithoutBackslashes(ec))
+				.append("' />\n");
 
 		for (String arg : mainArgsToUse) {
 			script.append("      <arg value='").append(arg).append("' />\n");
@@ -187,17 +188,13 @@ public class EmmaCoverage extends Target {
 			cpItem.toAnt(ctx, script);
 		}
 		script.append("        <pathelement location='")
-				.append(wintoySafeCanonicalPath(ctx.cached(emma)))
+				.append(ctx.iwant().pathWithoutBackslashes(ctx.cached(emma)))
 				.append("'/>\n");
 		script.append("      </classpath>\n");
 		script.append("    </java>\n");
 		script.append("  </target>\n");
 		script.append("</project>\n");
 		return script.toString();
-	}
-
-	private static String wintoySafeCanonicalPath(File file) throws IOException {
-		return BackslashFixer.wintoySafeCanonicalPath(file);
 	}
 
 	private interface ClasspathItem {
@@ -226,7 +223,8 @@ public class EmmaCoverage extends Target {
 		public void toAnt(TargetEvaluationContext ctx, StringBuilder script)
 				throws IOException {
 			script.append("        <pathelement location='")
-					.append(wintoySafeCanonicalPath(ctx.cached(instrumentation)))
+					.append(ctx.iwant().pathWithoutBackslashes(
+							ctx.cached(instrumentation)))
 					.append("/instr-classes'/>\n");
 		}
 
@@ -249,8 +247,8 @@ public class EmmaCoverage extends Target {
 		public void toAnt(TargetEvaluationContext ctx, StringBuilder script)
 				throws IOException {
 			script.append("        <pathelement location='")
-					.append(wintoySafeCanonicalPath(ctx.cached(classes)))
-					.append("'/>\n");
+					.append(ctx.iwant().pathWithoutBackslashes(
+							ctx.cached(classes))).append("'/>\n");
 		}
 
 	}
