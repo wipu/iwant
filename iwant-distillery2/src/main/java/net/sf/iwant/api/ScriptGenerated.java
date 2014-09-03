@@ -49,7 +49,7 @@ public class ScriptGenerated extends Target {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		ExecutionEnvironment env = prepareExecutionEnvironment(ctx);
-		execute(env.dir, env.cmdLine);
+		execute(env);
 	}
 
 	ExecutionEnvironment prepareExecutionEnvironment(TargetEvaluationContext ctx)
@@ -61,35 +61,49 @@ public class ScriptGenerated extends Target {
 		FileUtil.copyFile(scriptSrc, tmpScript);
 		tmpScript.setExecutable(true);
 
-		List<String> cmdLine = new ArrayList<String>();
+		List<String> args = new ArrayList<String>();
+		args.add(ctx.iwant().unixPathOf(ctx.cached(this)));
+		return prepareExecutionEnvironment(ctx, tmpDir, tmpScript,
+				args.toArray(new String[0]));
+	}
+
+	private static ExecutionEnvironment prepareExecutionEnvironment(
+			TargetEvaluationContext ctx, File dir, File userExecutable,
+			String[] userArgs) throws IOException {
+		List<String> args = new ArrayList<String>();
 		File cygwinBashExe = ctx.iwant().cygwinBashExe();
+		File executable;
 		if (cygwinBashExe != null) {
 			Iwant.debugLog("ScriptGenerated", "Using wrapper for "
 					+ cygwinBashExe);
-			cmdLine.add(cygwinBashExe.getCanonicalPath());
+			executable = cygwinBashExe;
 
-			File wrapper = FileUtil
-					.newTextFile(new File(tmpDir, tmpScript.getName()
+			File wrapper = FileUtil.newTextFile(
+					new File(dir, userExecutable.getName()
 							+ "-cygwinwrapper.sh"),
-							cygwinBashWrapperFor(tmpScript, tmpDir));
-			cmdLine.add(wrapper.getCanonicalPath());
-			cmdLine.add(ctx.iwant().unixPathOf(ctx.cached(this)));
+					cygwinBashWrapperFor(userExecutable, dir));
+			args.add(wrapper.getCanonicalPath());
 		} else {
-			cmdLine.add(tmpScript.getCanonicalPath());
-			cmdLine.add(ctx.cached(this).getCanonicalPath());
+			executable = userExecutable;
 		}
-		Iwant.debugLog("ScriptGenerated", scriptSrc, cmdLine);
-		return new ExecutionEnvironment(tmpDir, cmdLine.toArray(new String[0]));
+		for (String arg : userArgs) {
+			args.add(arg);
+		}
+		Iwant.debugLog("ScriptGenerated", dir, executable, args);
+		return new ExecutionEnvironment(dir, executable,
+				args.toArray(new String[0]));
 	}
 
 	public static class ExecutionEnvironment {
 
 		final File dir;
-		final String[] cmdLine;
+		final File executable;
+		final String[] args;
 
-		public ExecutionEnvironment(File dir, String[] cmdLine) {
+		public ExecutionEnvironment(File dir, File executable, String[] args) {
 			this.dir = dir;
-			this.cmdLine = cmdLine;
+			this.executable = executable;
+			this.args = args;
 		}
 
 	}
@@ -107,9 +121,14 @@ public class ScriptGenerated extends Target {
 		return sh.toString();
 	}
 
-	public static void execute(File dir, String[] cmdLine) throws IOException,
+	private static void execute(ExecutionEnvironment env) throws IOException,
 			InterruptedException {
-		Process process = new ProcessBuilder(cmdLine).directory(dir)
+		List<String> cmdLine = new ArrayList<String>();
+		cmdLine.add(env.executable.getCanonicalPath());
+		for (String arg : env.args) {
+			cmdLine.add(arg);
+		}
+		Process process = new ProcessBuilder(cmdLine).directory(env.dir)
 				.redirectErrorStream(true).start();
 		InputStream out = process.getInputStream();
 		StreamUtil.pipe(out, System.err);
@@ -119,6 +138,14 @@ public class ScriptGenerated extends Target {
 			throw new Iwant.IwantException(
 					"Script exited with non-zero status " + result);
 		}
+	}
+
+	public static void execute(TargetEvaluationContext ctx, File dir,
+			File executable, String[] args) throws IOException,
+			InterruptedException {
+		ExecutionEnvironment env = prepareExecutionEnvironment(ctx, dir,
+				executable, args);
+		execute(env);
 	}
 
 	@Override
