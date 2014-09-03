@@ -1043,7 +1043,9 @@
   + real testing
   + fix: ScriptGenerated.execute used by other targets must prepare
     execution env like SG itself does
-  - again testing
+  + again testing => usable
+  - tell story about making it easier to run unix commands in path, now
+    caller of execute needs to prepare a script for it
   - either make all tests pass on Windows or write a story about it
 
 - As @developer I want IwantTestCase fields private so I can be more confident that the subclass intentions are still valid, especially regarding test area root versus wsroot
