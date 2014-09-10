@@ -266,9 +266,9 @@ public class Iwant3 {
 				+ "api/model/Path.class"));
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
 				+ "api/wsdef/IwantWorkspace.class"));
-		// TODO remove EclipseSettings from api and move to a plugin:
+		// TODO maybe make eclipse-settings an optional plugin
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
-				+ "api/EclipseSettings.class"));
+				+ "eclipsesettings/EclipseSettings.class"));
 		return apiClassLocations;
 	}
 

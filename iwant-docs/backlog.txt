@@ -1028,6 +1028,12 @@
     and the risk of confusion between testarea root and wsroot
   + use everywhere (except in some more special tests)
 
++ As @developer I want EclipseSettingsTest to inherit IwantTestCase to reduce LOC
+  + move SideEffectContextMock and WsInfoMock to apimocks
+  + do it
+
++ The same for EclipseSettingsWriterTest
+
 #################################################################
 = In progress
 #################################################################
@@ -1119,6 +1125,15 @@
     * JunitResult seems to be thread-unsafe so let's skip it
       ( it uses ant and suppresses sysout)
     + checksum of downloaded: any tests to copy?
+  - split distillery2
+    + api
+    + planner, planner-api and planner-mocks
+    + eclipse-settings
+    - remove all Suite classes, by now it's clear they are not needed
+      - remove refs in module defs
+      - remove the classes
+      - verify test coverage still the same
+    - what else
   - after split, take WsRootFinder and ExampleWsDefGenerator into use in Iwant3Test
     * actually, no split needed, but no need for WsRootFinder
 

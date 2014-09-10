@@ -7,6 +7,7 @@ import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.apimocks.TargetMock;
 import net.sf.iwant.entry.Iwant;
 
 public class PathDefinitionConflictCheckerTest extends TestCase {

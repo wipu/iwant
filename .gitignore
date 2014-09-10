@@ -3,3 +3,4 @@
 .settings
 /iwant-testarea/testarea-root/*
 !/iwant-testarea/testarea-root/.keep
+**/classes/

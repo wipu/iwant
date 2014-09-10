@@ -12,10 +12,10 @@ import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.planner.Resource;
-import net.sf.iwant.planner.ResourcePool;
-import net.sf.iwant.planner.Task;
-import net.sf.iwant.planner.TaskDirtiness;
+import net.sf.iwant.plannerapi.Resource;
+import net.sf.iwant.plannerapi.ResourcePool;
+import net.sf.iwant.plannerapi.Task;
+import net.sf.iwant.plannerapi.TaskDirtiness;
 
 public class TargetRefreshTask implements Task {
 

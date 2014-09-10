@@ -13,7 +13,6 @@ public class IwantApiSuite extends TestCase {
 		suite.addTestSuite(DownloadedTest.class);
 		suite.addTestSuite(CodeStylePolicyTest.class);
 		suite.addTestSuite(JavaBinModuleTest.class);
-		suite.addTestSuite(EclipseSettingsTest.class);
 		suite.addTestSuite(ConcatenatedTest.class);
 		suite.addTestSuite(FromRepositoryTest.class);
 		suite.addTestSuite(AsEmbeddedIwantUserTest.class);

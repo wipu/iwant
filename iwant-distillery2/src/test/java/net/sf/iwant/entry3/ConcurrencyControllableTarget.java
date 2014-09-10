@@ -9,10 +9,10 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.planner.Resource;
-import net.sf.iwant.planner.ResourcePool;
-import net.sf.iwant.planner.TaskDirtiness;
-import net.sf.iwant.planner.TaskMock;
+import net.sf.iwant.plannerapi.Resource;
+import net.sf.iwant.plannerapi.ResourcePool;
+import net.sf.iwant.plannerapi.TaskDirtiness;
+import net.sf.iwant.plannermocks.TaskMock;
 
 public class ConcurrencyControllableTarget extends Target {
 

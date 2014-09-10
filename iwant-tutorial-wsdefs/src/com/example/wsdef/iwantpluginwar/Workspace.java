@@ -3,7 +3,6 @@ package com.example.wsdef.iwantpluginwar;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.iwant.api.EclipseSettings;
 import net.sf.iwant.api.model.Concatenated;
 import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.model.HelloTarget;
@@ -13,6 +12,7 @@ import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
+import net.sf.iwant.eclipsesettings.EclipseSettings;
 import net.sf.iwant.plugin.war.War;
 
 public class Workspace implements IwantWorkspace {

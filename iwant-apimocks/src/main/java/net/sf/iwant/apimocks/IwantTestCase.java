@@ -7,7 +7,9 @@ import java.io.FileOutputStream;
 
 import junit.framework.TestCase;
 import net.sf.iwant.coreservices.StreamUtil;
+import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.testarea.TestArea;
+import net.sf.iwant.testing.IwantNetworkMock;
 
 public abstract class IwantTestCase extends TestCase {
 
@@ -27,6 +29,9 @@ public abstract class IwantTestCase extends TestCase {
 	protected CachesMock caches;
 	protected File tmpDir;
 	private boolean captureOn = false;
+	protected SideEffectContextMock seCtx;
+	private IwantNetworkMock network;
+	private Iwant iwant;
 
 	@Override
 	public final void setUp() {
@@ -39,6 +44,11 @@ public abstract class IwantTestCase extends TestCase {
 		evCtx = ctx;
 		caches = e.caches();
 		tmpDir = e.tmpDir();
+		network = new IwantNetworkMock(testArea);
+		iwant = Iwant.using(network);
+		seCtx = new SideEffectContextMock(testArea,
+				new TargetEvaluationContextMock(iwant, caches));
+		seCtx.hasWsRoot(wsRoot);
 		if (mustCaptureSystemOutAndErr()) {
 			startSystemOutAndErrCapture();
 		}
@@ -91,8 +101,10 @@ public abstract class IwantTestCase extends TestCase {
 		}
 	}
 
-	protected void wsRootHasDirectory(String relativePath) {
-		new File(wsRoot, relativePath).mkdirs();
+	protected File wsRootHasDirectory(String relativePath) {
+		File dir = new File(wsRoot, relativePath);
+		dir.mkdirs();
+		return dir;
 	}
 
 	protected String contentOf(File file) {
@@ -101,6 +113,10 @@ public abstract class IwantTestCase extends TestCase {
 
 	protected String contentOfCached(String targetName) {
 		return testArea.contentOf(new File(cached, targetName));
+	}
+
+	protected String contentOfFileUnderWsRoot(String relativePath) {
+		return testArea.contentOf(new File(wsRoot, relativePath));
 	}
 
 	protected File anExistingDirectory(String path) {

@@ -3,12 +3,12 @@ package com.example.wsdef;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.iwant.api.EclipseSettings;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
+import net.sf.iwant.eclipsesettings.EclipseSettings;
 
 public class Workspace implements IwantWorkspace {
 

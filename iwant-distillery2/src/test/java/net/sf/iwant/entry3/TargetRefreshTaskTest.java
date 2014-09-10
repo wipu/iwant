@@ -19,11 +19,12 @@ import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.apimocks.CachesMock;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
+import net.sf.iwant.apimocks.TargetMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.planner.Resource;
-import net.sf.iwant.planner.ResourcePool;
-import net.sf.iwant.planner.TaskDirtiness;
+import net.sf.iwant.plannerapi.Resource;
+import net.sf.iwant.plannerapi.ResourcePool;
+import net.sf.iwant.plannerapi.TaskDirtiness;
 import net.sf.iwant.testarea.TestArea;
 import net.sf.iwant.testing.IwantNetworkMock;
 
@@ -88,8 +89,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		t2.hasNoIngredients();
 		HelloTarget hello = new HelloTarget("hello", "whatever");
 
-		assertEquals("net.sf.iwant.entry3.TargetMock t1", task(t1).toString());
-		assertEquals("net.sf.iwant.entry3.TargetMock t2", task(t2).toString());
+		assertEquals("net.sf.iwant.apimocks.TargetMock t1", task(t1).toString());
+		assertEquals("net.sf.iwant.apimocks.TargetMock t2", task(t2).toString());
 		assertEquals("net.sf.iwant.api.model.HelloTarget hello", task(hello)
 				.toString());
 	}
