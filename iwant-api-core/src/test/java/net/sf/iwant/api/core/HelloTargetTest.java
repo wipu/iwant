@@ -1,6 +1,5 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.core;
 
-import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.coreservices.StreamUtil;

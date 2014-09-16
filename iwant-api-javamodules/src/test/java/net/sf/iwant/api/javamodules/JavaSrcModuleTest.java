@@ -4,6 +4,8 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.core.Concatenated;
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.BuildUtility;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionCode;
@@ -12,8 +14,6 @@ import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionRuntimeDat
 import net.sf.iwant.api.javamodules.StandardCharacteristics.TestCode;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.TestRuntimeData;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.TestUtility;
-import net.sf.iwant.api.model.Concatenated;
-import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.StringFilter;

@@ -3,8 +3,8 @@ package net.sf.iwant.entry3;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.model.Concatenated;
-import net.sf.iwant.api.model.HelloTarget;
+import net.sf.iwant.api.core.Concatenated;
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.apimocks.TargetMock;
@@ -45,10 +45,9 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 		Concatenated concatenatedA = Concatenated.named("a").end();
 
 		assertError("Two conflicting definitions for Path name a:\n"
-				+ "One is of\n"
-				+ " class net.sf.iwant.api.model.Concatenated\n"
+				+ "One is of\n" + " class net.sf.iwant.api.core.Concatenated\n"
 				+ "and another is of\n"
-				+ " class net.sf.iwant.api.model.HelloTarget", helloA,
+				+ " class net.sf.iwant.api.core.HelloTarget", helloA,
 				concatenatedA);
 	}
 
@@ -58,7 +57,7 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 		Path a = Concatenated.named("a").pathTo(sourceB).end();
 
 		assertError("Two conflicting definitions for Path name b:\n"
-				+ "One is of\n" + " class net.sf.iwant.api.model.HelloTarget\n"
+				+ "One is of\n" + " class net.sf.iwant.api.core.HelloTarget\n"
 				+ "and another is of\n"
 				+ " class net.sf.iwant.api.model.Source", a, targetB);
 	}
@@ -147,7 +146,7 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 		Path path = new HelloTarget(null, "");
 
 		assertError("A Path of class "
-				+ "net.sf.iwant.api.model.HelloTarget has null name.", path);
+				+ "net.sf.iwant.api.core.HelloTarget has null name.", path);
 	}
 
 }

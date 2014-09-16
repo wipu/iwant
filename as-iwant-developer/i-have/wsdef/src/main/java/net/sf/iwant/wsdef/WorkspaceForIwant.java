@@ -209,8 +209,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaSrcModule iwantApiJavamodules() {
-		return iwantSrcModule("api-javamodules").mainDeps(iwantApiModel())
-				.testDeps(junit()).end();
+		return iwantSrcModule("api-javamodules")
+				.mainDeps(iwantApiCore(), iwantApiModel()).testDeps(junit())
+				.end();
 	}
 
 	private static JavaSrcModule iwantApimocks() {
@@ -252,8 +253,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaSrcModule iwantDistillery2() {
 		return iwantSrcModule("distillery2")
-				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
-						iwantApiWsdef(), iwantCoreDownload(),
+				.mainDeps(iwantApiCore(), iwantApiJavamodules(),
+						iwantApiModel(), iwantApiWsdef(), iwantCoreDownload(),
 						iwantCoreservices(), iwantDistillery(),
 						iwantIwantWsrootFinder(), iwantPlanner(),
 						iwantPlannerApi())
@@ -267,16 +268,16 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaSrcModule iwantEclipseSettings() {
 		return iwantSrcModule("eclipse-settings")
-				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
-						iwantDistillery()).testDeps(iwantApimocks(), junit())
-				.end();
+				.mainDeps(iwantApiCore(), iwantApiJavamodules(),
+						iwantApiModel(), iwantDistillery())
+				.testDeps(iwantApimocks(), junit()).end();
 	}
 
 	private static JavaSrcModule iwantExampleWsdef() {
 		return iwantSrcModule("example-wsdef")
 				.noTestJava()
-				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
-						iwantApiWsdef(), iwantDistillery2(),
+				.mainDeps(iwantApiCore(), iwantApiJavamodules(),
+						iwantApiModel(), iwantApiWsdef(), iwantDistillery2(),
 						iwantEclipseSettings()).end();
 	}
 
@@ -369,7 +370,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.noMainJava()
 				.noTestJava()
 				.mainJava("src")
-				.mainDeps(commonsMath(), iwantApiJavamodules(),
+				.mainDeps(commonsMath(), iwantApiCore(), iwantApiJavamodules(),
 						iwantApiModel(), iwantApiWsdef(), iwantCoreDownload(),
 						iwantDistillery2(), iwantEclipseSettings(),
 						iwantPluginAnt(), iwantPluginFindbugs(),

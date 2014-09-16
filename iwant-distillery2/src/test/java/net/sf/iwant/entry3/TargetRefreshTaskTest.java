@@ -10,8 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
@@ -91,7 +91,7 @@ public class TargetRefreshTaskTest extends TestCase {
 
 		assertEquals("net.sf.iwant.apimocks.TargetMock t1", task(t1).toString());
 		assertEquals("net.sf.iwant.apimocks.TargetMock t2", task(t2).toString());
-		assertEquals("net.sf.iwant.api.model.HelloTarget hello", task(hello)
+		assertEquals("net.sf.iwant.api.core.HelloTarget hello", task(hello)
 				.toString());
 	}
 

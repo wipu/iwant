@@ -10,10 +10,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.sf.iwant.api.core.StringFilterByEquality;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.StringFilter;
-import net.sf.iwant.api.model.StringFilterByEquality;
 import net.sf.iwant.api.model.Target;
 
 public class JavaSrcModule extends JavaModule {

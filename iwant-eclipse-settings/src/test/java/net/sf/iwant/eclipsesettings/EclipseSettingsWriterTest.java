@@ -1,9 +1,9 @@
 package net.sf.iwant.eclipsesettings;
 
+import net.sf.iwant.api.core.Concatenated;
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Concatenated;
-import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
 

@@ -1088,6 +1088,10 @@
         + Downloaded
         + FromRepository
         + TestedIwantDependencies
+      + more to api-core
+        + Concatenated
+        + HelloTarget
+        + StringFilterByEquality
       - other? 
   - delete mocked IwantWorkspace if not needed
   - delete other unnecessary "compiler fodder" from mock root

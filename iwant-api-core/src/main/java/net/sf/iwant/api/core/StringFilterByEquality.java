@@ -1,4 +1,6 @@
-package net.sf.iwant.api.model;
+package net.sf.iwant.api.core;
+
+import net.sf.iwant.api.model.StringFilter;
 
 public class StringFilterByEquality implements StringFilter {
 

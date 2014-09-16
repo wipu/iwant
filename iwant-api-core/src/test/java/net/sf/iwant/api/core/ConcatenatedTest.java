@@ -1,9 +1,7 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.core;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.Concatenated;
-import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.apimocks.IwantTestCase;
 

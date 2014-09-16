@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.net.URL;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.model.Caches;
 import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.entry.Iwant;

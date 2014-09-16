@@ -15,12 +15,12 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.sf.iwant.api.HelloSideEffect;
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
@@ -260,6 +260,8 @@ public class Iwant3 {
 
 	private static SortedSet<File> iwantApiClassLocations() {
 		SortedSet<File> apiClassLocations = new TreeSet<File>();
+		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
+				+ "api/core/HelloTarget.class"));
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
 				+ "api/javamodules/JavaModule.class"));
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"

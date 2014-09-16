@@ -345,7 +345,7 @@ public class Iwant3Test extends TestCase {
 		wsdef.append("\n");
 		wsdef.append("import java.util.Arrays;\n");
 		wsdef.append("import java.util.List;\n");
-		wsdef.append("import net.sf.iwant.api.model.HelloTarget;\n");
+		wsdef.append("import net.sf.iwant.api.core.HelloTarget;\n");
 		wsdef.append("import net.sf.iwant.api.model.SideEffect;\n");
 		wsdef.append("import net.sf.iwant.api.model.Target;\n");
 		wsdef.append("import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;\n");

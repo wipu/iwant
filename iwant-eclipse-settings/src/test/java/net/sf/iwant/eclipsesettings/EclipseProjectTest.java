@@ -1,5 +1,7 @@
 package net.sf.iwant.eclipsesettings;
 
+import net.sf.iwant.api.core.Concatenated;
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
 import net.sf.iwant.api.javamodules.CodeStyle;
 import net.sf.iwant.api.javamodules.CodeStylePolicy;
@@ -7,8 +9,6 @@ import net.sf.iwant.api.javamodules.CodeStylePolicy.CodeStylePolicySpex;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Concatenated;
-import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;

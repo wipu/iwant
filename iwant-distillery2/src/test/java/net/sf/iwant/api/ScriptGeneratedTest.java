@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.Arrays;
 
 import net.sf.iwant.api.ScriptGenerated.ExecutionEnvironment;
-import net.sf.iwant.api.model.Concatenated;
-import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
+import net.sf.iwant.api.core.Concatenated;
+import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.entry.Iwant;

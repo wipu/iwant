@@ -1,4 +1,4 @@
-package net.sf.iwant.api.model;
+package net.sf.iwant.api.core;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,6 +11,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.model.TargetEvaluationContext;
 
 public class Concatenated extends Target {
 

@@ -1,5 +1,6 @@
 package net.sf.iwant.api;
 
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
@@ -7,7 +8,6 @@ import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionCode;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionConfiguration;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionRuntimeData;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.TestUtility;
-import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;

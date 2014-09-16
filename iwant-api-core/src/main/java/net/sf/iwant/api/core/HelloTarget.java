@@ -1,4 +1,4 @@
-package net.sf.iwant.api.model;
+package net.sf.iwant.api.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -6,6 +6,10 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.model.TargetEvaluationContext;
 
 public class HelloTarget extends Target {
 

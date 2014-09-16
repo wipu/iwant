@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import net.sf.iwant.api.model.Concatenated;
-import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
+import net.sf.iwant.api.core.Concatenated;
+import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;

@@ -15,14 +15,14 @@ import java.util.concurrent.atomic.AtomicReference;
 import junit.framework.TestCase;
 import net.sf.iwant.api.HelloSideEffect;
 import net.sf.iwant.api.ScriptGenerated;
+import net.sf.iwant.api.core.Concatenated;
+import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Caches;
-import net.sf.iwant.api.model.Concatenated;
-import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
-import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.SideEffectContext;
@@ -645,7 +645,7 @@ public class WishEvaluatorTest extends TestCase {
 		} catch (Iwant.IwantException e) {
 			assertEquals("Two conflicting definitions for Path name b:\n"
 					+ "One is of\n"
-					+ " class net.sf.iwant.api.model.HelloTarget\n"
+					+ " class net.sf.iwant.api.core.HelloTarget\n"
 					+ "and another is of\n"
 					+ " class net.sf.iwant.api.model.Source", e.getMessage());
 		}
@@ -836,9 +836,9 @@ public class WishEvaluatorTest extends TestCase {
 		StringBuilder expectedErr = new StringBuilder();
 		expectedErr.append("Wanting target2\n");
 		expectedErr
-				.append("(0/1 D! net.sf.iwant.api.model.HelloTarget target1)\n");
+				.append("(0/1 D! net.sf.iwant.api.core.HelloTarget target1)\n");
 		expectedErr
-				.append("(0/1 D! net.sf.iwant.api.model.Concatenated target2)\n");
+				.append("(0/1 D! net.sf.iwant.api.core.Concatenated target2)\n");
 		expectedErr.append("Content:\n");
 		expectedErr.append("target2 using target1 content\n");
 		expectedErr.append("Wanting target1\n");

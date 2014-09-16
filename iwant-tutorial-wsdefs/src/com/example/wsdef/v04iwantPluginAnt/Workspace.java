@@ -3,7 +3,7 @@ package com.example.wsdef.v04iwantPluginAnt;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.iwant.api.model.HelloTarget;
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;

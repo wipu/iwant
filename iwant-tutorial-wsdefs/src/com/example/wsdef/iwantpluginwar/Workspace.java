@@ -3,9 +3,9 @@ package com.example.wsdef.iwantpluginwar;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.iwant.api.model.Concatenated;
-import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
-import net.sf.iwant.api.model.HelloTarget;
+import net.sf.iwant.api.core.Concatenated;
+import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Source;
