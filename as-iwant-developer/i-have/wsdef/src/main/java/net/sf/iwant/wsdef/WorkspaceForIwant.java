@@ -21,12 +21,15 @@ import net.sf.iwant.api.model.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.StringFilter;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.plugin.findbugs.FindbugsDistribution;
 import net.sf.iwant.plugin.findbugs.FindbugsOutputFormat;
 import net.sf.iwant.plugin.findbugs.FindbugsReport;
 
 public class WorkspaceForIwant implements IwantWorkspace {
+
+	private static final StringFilter testClassNameFilter = new TestClassNameFilter();
 
 	private final FindbugsDistribution findbugs = FindbugsDistribution
 			.ofVersion("2.0.3");
@@ -49,7 +52,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		String fullName = "iwant-" + subName;
 		return JavaSrcModule.with().name(fullName)
 				.locationUnderWsRoot(fullName).mainJava("src/main/java")
-				.testJava("src/test/java");
+				.testJava("src/test/java").testedBy(testClassNameFilter);
 	}
 
 	private static SortedSet<JavaSrcModule> allSrcModules() {
@@ -70,6 +73,21 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		all.addAll(allSrcModules());
 		all.addAll(Arrays.asList(ant(), commonsMath(), junit()));
 		return all;
+	}
+
+	private static class TestClassNameFilter implements StringFilter {
+
+		@Override
+		public boolean matches(String candidate) {
+			return candidate.matches(".*Test$")
+					&& !candidate.matches(".*Abstract[^.]*Test$");
+		}
+
+		@Override
+		public String toString() {
+			return getClass().getCanonicalName();
+		}
+
 	}
 
 	// the targets
@@ -187,17 +205,12 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantApiCore() {
 		return iwantSrcModule("api-core")
 				.mainDeps(iwantApiModel(), iwantCoreservices())
-				.testDeps(iwantApimocks(), junit())
-				.testedBy("net.sf.iwant.api.core.IwantApiCoreSuite").end();
+				.testDeps(iwantApimocks(), junit()).end();
 	}
 
 	private static JavaSrcModule iwantApiJavamodules() {
-		return iwantSrcModule("api-javamodules")
-				.mainDeps(iwantApiModel())
-				.testDeps(junit())
-				.testedBy(
-						"net.sf.iwant.api.javamodules.IwantApiJavamodulesSuite")
-				.end();
+		return iwantSrcModule("api-javamodules").mainDeps(iwantApiModel())
+				.testDeps(junit()).end();
 	}
 
 	private static JavaSrcModule iwantApimocks() {
@@ -208,8 +221,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static JavaSrcModule iwantApiModel() {
-		return iwantSrcModule("api-model").mainDeps().testDeps(junit())
-				.testedBy("net.sf.iwant.api.model.IwantApiModelSuite").end();
+		return iwantSrcModule("api-model").mainDeps().testDeps(junit()).end();
 	}
 
 	private static JavaSrcModule iwantApiWsdef() {
@@ -221,18 +233,13 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return iwantSrcModule("core-download")
 				.mainDeps(iwantApiModel(), iwantCoreservices(),
 						iwantDistillery())
-				.testDeps(iwantApimocks(), iwantTestarea(), junit())
-				.testedBy("net.sf.iwant.core.download.IwantCoreDownloadSuite")
-				.end();
+				.testDeps(iwantApimocks(), iwantTestarea(), junit()).end();
 	}
 
 	private static JavaSrcModule iwantCoreservices() {
 		return iwantSrcModule("coreservices")
 				.mainDeps(iwantApiModel(), iwantDistillery())
-				.testDeps(iwantTestarea(), junit())
-				.testedBy(
-						"net.sf.iwant.coreservices." + "IwantCoreservicesSuite")
-				.end();
+				.testDeps(iwantTestarea(), junit()).end();
 	}
 
 	private static JavaSrcModule iwantDistillery() {
@@ -240,8 +247,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainJava("as-some-developer/with/java")
 				.testResources("src/test/resources")
 				.mainDeps(iwantTestarea(), junit())
-				.testDeps(iwantIwantWsrootFinder())
-				.testedBy("net.sf.iwant.IwantDistillerySuite").end();
+				.testDeps(iwantIwantWsrootFinder()).end();
 	}
 
 	private static JavaSrcModule iwantDistillery2() {
@@ -252,8 +258,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						iwantIwantWsrootFinder(), iwantPlanner(),
 						iwantPlannerApi())
 				.testDeps(iwantApimocks(), iwantEclipseSettings(),
-						iwantPlannerMocks(), iwantTestarea(), junit())
-				.testedBy("net.sf.iwant.IwantDistillery2Suite").end();
+						iwantPlannerMocks(), iwantTestarea(), junit()).end();
 	}
 
 	private static JavaSrcModule iwantDocs() {
@@ -263,10 +268,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantEclipseSettings() {
 		return iwantSrcModule("eclipse-settings")
 				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
-						iwantDistillery())
-				.testDeps(iwantApimocks(), junit())
-				.testedBy(
-						"net.sf.iwant.eclipsesettings.IwantEclipseSettingsSuite")
+						iwantDistillery()).testDeps(iwantApimocks(), junit())
 				.end();
 	}
 
@@ -299,8 +301,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.testResources("src/test/resources")
 				.mainDeps(ant(), antLauncher(), iwantApiModel())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
-						iwantTestarea(), iwantTestresources())
-				.testedBy("net.sf.iwant.plugin.ant.IwantPluginAntSuite").end();
+						iwantTestarea(), iwantTestresources()).end();
 	}
 
 	private static JavaSrcModule iwantPluginFindbugs() {
@@ -310,17 +311,13 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						iwantCoreDownload(), iwantDistillery2(),
 						iwantPluginAnt())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
-						iwantTestarea())
-				.testedBy(
-						"net.sf.iwant.plugin.findbugs."
-								+ "IwantPluginFindbugsSuite").end();
+						iwantTestarea()).end();
 	}
 
 	private static JavaSrcModule iwantPluginGithub() {
 		return iwantSrcModule("plugin-github")
 				.mainDeps(iwantApiCore(), iwantApiModel(), iwantCoreDownload(),
 						iwantDistillery2(), iwantPluginAnt()).testDeps(junit())
-				.testedBy("net.sf.iwant.plugin.github.IwantPluginGithubSuite")
 				.end();
 	}
 
@@ -331,8 +328,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainDeps(ant(), asm(), commonsIo(), iwantApiModel(), jaxen(),
 						pmd())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
-						iwantTestarea(), iwantTestresources())
-				.testedBy("net.sf.iwant.plugin.pmd.IwantPluginPmdSuite").end();
+						iwantTestarea(), iwantTestresources()).end();
 	}
 
 	private static JavaSrcModule iwantPluginWar() {
@@ -340,14 +336,13 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainDeps(ant(), antLauncher(), iwantApiModel())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
 						iwantPluginAnt(), iwantTestarea(), iwantTestresources())
-				.testedBy("net.sf.iwant.plugin.war.IwantPluginWarSuite").end();
+				.end();
 	}
 
 	private static JavaSrcModule iwantPlanner() {
 		return iwantSrcModule("planner")
 				.mainDeps(iwantDistillery(), iwantPlannerApi())
-				.testDeps(iwantPlannerMocks(), junit())
-				.testedBy("net.sf.iwant.planner.IwantPlannerSuite").end();
+				.testDeps(iwantPlannerMocks(), junit()).end();
 	}
 
 	private static JavaSrcModule iwantPlannerApi() {

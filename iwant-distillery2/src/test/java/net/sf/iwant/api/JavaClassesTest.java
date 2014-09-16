@@ -154,13 +154,12 @@ public class JavaClassesTest extends IwantTestCase {
 	}
 
 	public void testClassWithDepToClassesCompiles() throws Exception {
+		Class<?> superClass = SuperClassForJavaClassesTestSubclass.class;
 		File superClassFile = new File(getClass().getResource(
-				"SuperClassForJavaClassesTest.class").toURI());
+				superClass.getSimpleName() + ".class").toURI());
 		File srcDir = new File(wsRoot, "src");
-		Iwant.newTextFile(
-				new File(srcDir, "Subclass.java"),
-				"class Subclass extends "
-						+ SuperClassForJavaClassesTest.class.getCanonicalName()
+		Iwant.newTextFile(new File(srcDir, "Subclass.java"),
+				"class Subclass extends " + superClass.getCanonicalName()
 						+ "{}");
 		Source src = Source.underWsroot("src");
 		File superClassClasses = superClassFile.getParentFile().getParentFile()

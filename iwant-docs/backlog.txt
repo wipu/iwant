@@ -1034,6 +1034,10 @@
 
 + The same for EclipseSettingsWriterTest
 
++ As @developer I want a test class name filter instead of suites for tests
+  of iwant so the module splitting will be easier, and also adding new
+  tests
+
 #################################################################
 = In progress
 #################################################################
@@ -1148,6 +1152,10 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptauthor I want a default test classname filter that
+  detects typically named tests so I don't have to type the same filter
+  over and over again
 
 - As @developer I want to exclude findbugs testfodder etc from the findbugs report of iwant so I don't get false positives
   - support for findbugs filter
