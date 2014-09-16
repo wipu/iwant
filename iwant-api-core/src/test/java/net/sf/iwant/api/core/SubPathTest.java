@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.core;
 
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
@@ -24,9 +24,9 @@ public class SubPathTest extends IwantTestCase {
 		assertEquals("[parent]", s.ingredients().toString());
 		assertEquals("[parent2]", s2.ingredients().toString());
 
-		assertEquals("net.sf.iwant.api.SubPath:parent:rel", s
+		assertEquals("net.sf.iwant.api.core.SubPath:parent:rel", s
 				.contentDescriptor().toString());
-		assertEquals("net.sf.iwant.api.SubPath:parent2:rel2", s2
+		assertEquals("net.sf.iwant.api.core.SubPath:parent2:rel2", s2
 				.contentDescriptor().toString());
 	}
 

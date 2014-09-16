@@ -5,10 +5,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.iwant.api.Downloaded;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.plugin.ant.Untarred;
 
 public class FindbugsDistribution extends Target {

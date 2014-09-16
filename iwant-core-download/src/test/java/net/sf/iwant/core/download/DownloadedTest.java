@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.core.download;
 
 import java.io.File;
 import java.net.URL;
@@ -39,11 +39,11 @@ public class DownloadedTest extends TestCase {
 
 	public void testContentDescriptor() {
 		assertEquals(
-				"net.sf.iwant.api.Downloaded {\n  url:http://localhost/url1\n}\n",
+				"net.sf.iwant.core.download.Downloaded {\n  url:http://localhost/url1\n}\n",
 				Downloaded.withName("any").url("http://localhost/url1")
 						.md5("any").contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.Downloaded {\n  url:http://localhost/url2\n}\n",
+				"net.sf.iwant.core.download.Downloaded {\n  url:http://localhost/url2\n}\n",
 				Downloaded.withName("any").url("http://localhost/url2")
 						.md5("any").contentDescriptor());
 	}

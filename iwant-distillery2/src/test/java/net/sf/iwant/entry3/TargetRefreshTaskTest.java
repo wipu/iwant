@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.Downloaded;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Path;
@@ -20,6 +19,7 @@ import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.apimocks.CachesMock;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.apimocks.TargetMock;
+import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
 import net.sf.iwant.plannerapi.Resource;

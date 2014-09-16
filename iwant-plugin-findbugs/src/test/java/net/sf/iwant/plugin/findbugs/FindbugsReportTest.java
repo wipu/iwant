@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import net.sf.iwant.api.AsEmbeddedIwantUser;
-import net.sf.iwant.api.TestedIwantDependencies;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
@@ -14,6 +13,7 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
+import net.sf.iwant.core.download.TestedIwantDependencies;
 import net.sf.iwant.entry.Iwant;
 
 import org.apache.commons.io.FileUtils;

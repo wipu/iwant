@@ -3,8 +3,8 @@ package net.sf.iwant.plugin.findbugs;
 import java.io.File;
 import java.io.IOException;
 
-import net.sf.iwant.api.Downloaded;
 import net.sf.iwant.apimocks.IwantTestCase;
+import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.entry.Iwant;
 
 public class FindbugsDistributionTest extends IwantTestCase {

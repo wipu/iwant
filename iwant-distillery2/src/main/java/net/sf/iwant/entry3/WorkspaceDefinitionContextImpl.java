@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import net.sf.iwant.api.Downloaded;
-import net.sf.iwant.api.FromRepository;
-import net.sf.iwant.api.TestedIwantDependencies;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
@@ -17,6 +14,9 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.wsdef.IwantPluginWish;
 import net.sf.iwant.api.wsdef.IwantPluginWishes;
 import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.core.download.Downloaded;
+import net.sf.iwant.core.download.FromRepository;
+import net.sf.iwant.core.download.TestedIwantDependencies;
 
 public class WorkspaceDefinitionContextImpl implements
 		WorkspaceDefinitionContext {

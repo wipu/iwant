@@ -1,9 +1,9 @@
 package net.sf.iwant.plugin.github;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.Downloaded;
-import net.sf.iwant.api.SubPath;
+import net.sf.iwant.api.core.SubPath;
 import net.sf.iwant.api.model.Target;
+import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.plugin.ant.Unzipped;
 
 public class FromGithubTest extends TestCase {

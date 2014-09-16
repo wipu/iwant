@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.net.URL;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.Downloaded;
 import net.sf.iwant.api.model.Caches;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.HelloTarget;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
 import net.sf.iwant.testarea.TestArea;

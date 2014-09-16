@@ -53,10 +53,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static SortedSet<JavaSrcModule> allSrcModules() {
-		return new TreeSet<JavaSrcModule>(Arrays.asList(iwantApiJavamodules(),
-				iwantApimocks(), iwantApiModel(), iwantApiWsdef(),
-				iwantCoreservices(), iwantDistillery(), iwantDistillery2(),
-				iwantDocs(), iwantEclipseSettings(), iwantExampleWsdef(),
+		return new TreeSet<JavaSrcModule>(Arrays.asList(iwantApiCore(),
+				iwantApiJavamodules(), iwantApimocks(), iwantApiModel(),
+				iwantApiWsdef(), iwantCoreDownload(), iwantCoreservices(),
+				iwantDistillery(), iwantDistillery2(), iwantDocs(),
+				iwantEclipseSettings(), iwantExampleWsdef(),
 				iwantIwantWsrootFinder(), iwantMockWsroot(), iwantPlanner(),
 				iwantPlannerApi(), iwantPlannerMocks(), iwantPluginAnt(),
 				iwantPluginFindbugs(), iwantPluginGithub(), iwantPluginPmd(),
@@ -183,6 +184,13 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						.name("commons-math").version("1.2")).end();
 	}
 
+	private static JavaSrcModule iwantApiCore() {
+		return iwantSrcModule("api-core")
+				.mainDeps(iwantApiModel(), iwantCoreservices())
+				.testDeps(iwantApimocks(), junit())
+				.testedBy("net.sf.iwant.api.core.IwantApiCoreSuite").end();
+	}
+
 	private static JavaSrcModule iwantApiJavamodules() {
 		return iwantSrcModule("api-javamodules")
 				.mainDeps(iwantApiModel())
@@ -209,6 +217,15 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainDeps(iwantApiModel(), iwantApiJavamodules()).end();
 	}
 
+	private static JavaSrcModule iwantCoreDownload() {
+		return iwantSrcModule("core-download")
+				.mainDeps(iwantApiModel(), iwantCoreservices(),
+						iwantDistillery())
+				.testDeps(iwantApimocks(), iwantTestarea(), junit())
+				.testedBy("net.sf.iwant.core.download.IwantCoreDownloadSuite")
+				.end();
+	}
+
 	private static JavaSrcModule iwantCoreservices() {
 		return iwantSrcModule("coreservices")
 				.mainDeps(iwantApiModel(), iwantDistillery())
@@ -230,9 +247,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantDistillery2() {
 		return iwantSrcModule("distillery2")
 				.mainDeps(iwantApiJavamodules(), iwantApiModel(),
-						iwantApiWsdef(), iwantCoreservices(),
-						iwantDistillery(), iwantIwantWsrootFinder(),
-						iwantPlanner(), iwantPlannerApi())
+						iwantApiWsdef(), iwantCoreDownload(),
+						iwantCoreservices(), iwantDistillery(),
+						iwantIwantWsrootFinder(), iwantPlanner(),
+						iwantPlannerApi())
 				.testDeps(iwantApimocks(), iwantEclipseSettings(),
 						iwantPlannerMocks(), iwantTestarea(), junit())
 				.testedBy("net.sf.iwant.IwantDistillery2Suite").end();
@@ -289,7 +307,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return iwantSrcModule("plugin-findbugs")
 				.testResources("src/test/resources")
 				.mainDeps(commonsIo(), iwantApiJavamodules(), iwantApiModel(),
-						iwantDistillery2(), iwantPluginAnt())
+						iwantCoreDownload(), iwantDistillery2(),
+						iwantPluginAnt())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
 						iwantTestarea())
 				.testedBy(
@@ -299,8 +318,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaSrcModule iwantPluginGithub() {
 		return iwantSrcModule("plugin-github")
-				.mainDeps(iwantApiModel(), iwantDistillery2(), iwantPluginAnt())
-				.testDeps(junit())
+				.mainDeps(iwantApiCore(), iwantApiModel(), iwantCoreDownload(),
+						iwantDistillery2(), iwantPluginAnt()).testDeps(junit())
 				.testedBy("net.sf.iwant.plugin.github.IwantPluginGithubSuite")
 				.end();
 	}
@@ -356,10 +375,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.noTestJava()
 				.mainJava("src")
 				.mainDeps(commonsMath(), iwantApiJavamodules(),
-						iwantApiModel(), iwantApiWsdef(), iwantDistillery2(),
-						iwantEclipseSettings(), iwantPluginAnt(),
-						iwantPluginFindbugs(), iwantPluginGithub(),
-						iwantPluginPmd(), iwantPluginWar()).end();
+						iwantApiModel(), iwantApiWsdef(), iwantCoreDownload(),
+						iwantDistillery2(), iwantEclipseSettings(),
+						iwantPluginAnt(), iwantPluginFindbugs(),
+						iwantPluginGithub(), iwantPluginPmd(), iwantPluginWar())
+				.end();
 	}
 
 	private static JavaSrcModule iwantIwantWsrootFinder() {

@@ -1077,6 +1077,14 @@
   - more splitting, either in this story or a new one
     * well, why not now
     + iwant wsroot finder
+    - split target impls from distillery2 and api-model
+      + api-core
+        + SubPath
+      + core-download
+        + Downloaded
+        + FromRepository
+        + TestedIwantDependencies
+      - other? 
   - delete mocked IwantWorkspace if not needed
   - delete other unnecessary "compiler fodder" from mock root
 

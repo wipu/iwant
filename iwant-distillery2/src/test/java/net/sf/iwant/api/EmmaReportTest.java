@@ -10,6 +10,7 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
+import net.sf.iwant.core.download.TestedIwantDependencies;
 import net.sf.iwant.entry.Iwant;
 
 public class EmmaReportTest extends IwantTestCase {
