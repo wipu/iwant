@@ -72,9 +72,14 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 		EmmaCoverage coverage = emmaTargets.emmaCoverageOf(mod);
 		assertEquals("mod.emmacoverage", coverage.name());
-		assertEquals("[mocked-ant, mocked-ant-launcher, mocked-emma, "
-				+ "mod-test-classes, mod-test-class-names]", coverage
-				.ingredients().toString());
+		assertEquals("net.sf.iwant.api.EmmaCoverage {\n" + "emma:mocked-emma\n"
+				+ "antJars:[mocked-ant, mocked-ant-launcher]\n"
+				+ "mainClass:org.junit.runner.JUnitCore\n"
+				+ "mainClassArguments:null\n"
+				+ "mainClassArgumentsFile:mod-test-class-names\n"
+				+ "classpath:[noninstr:mod-test-classes]\n"
+				+ "jvmargs:[-XX:-UseSplitVerifier, -Demma.rt.control=false]\n"
+				+ "", coverage.contentDescriptor());
 
 		EmmaReport report = emmaTargets.emmaReport("emma-coverage");
 		assertEquals("[mocked-emma, mod.emmacoverage]", report.ingredients()
@@ -123,9 +128,16 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 		EmmaCoverage coverage = emmaTargets.emmaCoverageOf(mod);
 		assertEquals("mod.emmacoverage", coverage.name());
-		assertEquals("[mocked-ant, mocked-ant-launcher, mocked-emma, "
-				+ "mod-test-classes, mod-main-classes.emma-instr, "
-				+ "mod-test-class-names]", coverage.ingredients().toString());
+		assertEquals(
+				"net.sf.iwant.api.EmmaCoverage {\n"
+						+ "emma:mocked-emma\n"
+						+ "antJars:[mocked-ant, mocked-ant-launcher]\n"
+						+ "mainClass:org.junit.runner.JUnitCore\n"
+						+ "mainClassArguments:null\n"
+						+ "mainClassArgumentsFile:mod-test-class-names\n"
+						+ "classpath:[noninstr:mod-test-classes, instr:mod-main-classes]\n"
+						+ "jvmargs:[-XX:-UseSplitVerifier, -Demma.rt.control=false]\n"
+						+ "", coverage.contentDescriptor());
 
 		EmmaReport report = emmaTargets.emmaReport("emma-coverage");
 		assertEquals("emma-coverage", report.name());

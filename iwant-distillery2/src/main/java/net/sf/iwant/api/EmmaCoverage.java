@@ -228,6 +228,11 @@ public class EmmaCoverage extends Target {
 					.append("/instr-classes'/>\n");
 		}
 
+		@Override
+		public String toString() {
+			return "instr:" + instrumentation.classesAndSources().classes();
+		}
+
 	}
 
 	private static class NonInstrumentedClasspathItem implements ClasspathItem {
@@ -249,6 +254,11 @@ public class EmmaCoverage extends Target {
 			script.append("        <pathelement location='")
 					.append(ctx.iwant().pathWithoutBackslashes(
 							ctx.cached(classes))).append("'/>\n");
+		}
+
+		@Override
+		public String toString() {
+			return "noninstr:" + classes;
 		}
 
 	}
@@ -287,14 +297,14 @@ public class EmmaCoverage extends Target {
 	public String contentDescriptor() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClass().getCanonicalName()).append(" {\n");
-		b.append("  ingredients:").append(ingredients()).append("\n");
-		b.append("  mainClass:").append(mainClass);
-		if (mainClassArguments != null) {
-			for (String arg : mainClassArguments) {
-				b.append("  mainClassArgument:").append(arg).append("\n");
-			}
-		}
-		b.append("}\n");
+		b.append("emma:").append(emma).append("\n");
+		b.append("antJars:").append(antJars).append("\n");
+		b.append("mainClass:").append(mainClass).append("\n");
+		b.append("mainClassArguments:").append(mainClassArguments).append("\n");
+		b.append("mainClassArgumentsFile:").append(mainClassArgumentsFile)
+				.append("\n");
+		b.append("classpath:").append(classpath).append("\n");
+		b.append("jvmargs:").append(jvmargs).append("\n");
 		return b.toString();
 	}
 

@@ -116,4 +116,13 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				mods.toString());
 	}
 
+	public void testIwantPluginJacocoWithDependenciesContainsCorrectModules() {
+		Set<JavaModule> mods = ctx.iwantPlugin().jacoco().withDependencies();
+
+		assertEquals("[iwant-plugin-jacoco, iwant-api-1, iwant-api-2,"
+				+ " iwant-plugin-ant, ant-1.7.1.jar,"
+				+ " ant-launcher-1.7.1.jar, commons-io-1.3.2.jar]",
+				mods.toString());
+	}
+
 }

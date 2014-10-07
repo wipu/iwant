@@ -8,6 +8,8 @@ public interface IwantPluginWishes {
 
 	IwantPluginWish github();
 
+	IwantPluginWish jacoco();
+
 	IwantPluginWish pmd();
 
 	IwantPluginWish war();

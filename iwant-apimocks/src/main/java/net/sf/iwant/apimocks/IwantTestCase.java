@@ -34,7 +34,7 @@ public abstract class IwantTestCase extends TestCase {
 	private Iwant iwant;
 
 	@Override
-	public final void setUp() {
+	public final void setUp() throws Exception {
 		e = IwantMockEnvironment.forTest(this).end();
 		testArea = e.testArea();
 		wsRoot = e.wsRoot();
@@ -55,7 +55,7 @@ public abstract class IwantTestCase extends TestCase {
 		moreSetUp();
 	}
 
-	protected void moreSetUp() {
+	protected void moreSetUp() throws Exception {
 		// override if needed
 	}
 

@@ -131,6 +131,20 @@ public class WorkspaceDefinitionContextImpl implements
 		}
 
 		@Override
+		public IwantPluginWish jacoco() {
+			return new IwantPluginWish() {
+				@Override
+				public Set<JavaModule> withDependencies() {
+					Set<JavaModule> deps = new LinkedHashSet<JavaModule>();
+					deps.addAll(ant().withDependencies());
+					deps.add(JavaBinModule.providing(commonsIoJar()).end());
+					return pluginWithDependencies("iwant-plugin-jacoco", deps);
+				}
+
+			};
+		}
+
+		@Override
 		public IwantPluginWish pmd() {
 			return new IwantPluginWish() {
 				@Override

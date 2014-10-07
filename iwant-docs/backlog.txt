@@ -1038,9 +1038,30 @@
   of iwant so the module splitting will be easier, and also adding new
   tests
 
++ As @buildscriptauthor I want a coverage report using jacoco so that I can use an alive project instead of the dead emma
+  * also: @bugfix emma fails if path contains special characters (case völundr.sf.net)
+  + create module iwant-plugins-jacoco
+  + tdd
+    + distribution by version, unzipped, jars from it
+    + jacoco distro, jars from it
+    + instr
+    + exec
+    + report
+    + convenience creation from javamodules
+    + real test
+
 #################################################################
 = In progress
 #################################################################
+
+- As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
+  - filter
+  - other features?
+    - read through emma tests and find what is missing
+  - refactor
+    - reuse ant generator code
+    - reuse test setup code
+
 
 - As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
   + use Windows to develop the wrapper
@@ -1092,6 +1113,11 @@
         + Concatenated
         + HelloTarget
         + StringFilterByEquality
+      - iwant-plugin-emma
+        - split
+        - recommend jacoco in its tutorial
+      - AsEmbeddedIwantUser.java
+      - AntGenerated
       - other? 
   - delete mocked IwantWorkspace if not needed
   - delete other unnecessary "compiler fodder" from mock root
@@ -1156,6 +1182,21 @@
 #################################################################
 = Planned
 #################################################################
+
+- @epic As @buildscriptauthor I want external dependencies to handle their dependencies automatically so I don't need to define them
+  * example: jacoco distribution depends on a certain version of asm
+
+- As @buildscriptauthor I want a tutorial for defining java modules so I know how to do it easily
+  - descript
+    - define modules
+      - "autolisting module def" used in some projects
+    - generate eclipse settings
+    - create code
+    - define list of jars
+      - publish "helper"
+    - want jars in tutorial
+
+- As @buildscriptauthor I want a tutorial for defining a jacoco coverage report so I know how to do it easily 
 
 - As @buildscriptauthor I want a default test classname filter that
   detects typically named tests so I don't have to type the same filter

@@ -122,12 +122,14 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.mainClassAndArguments("Hello", "arg1", "arg2")
 				.instrumentations(instr).end();
 
-		assertEquals("net.sf.iwant.api.EmmaCoverage {\n  ingredients:["
-				+ antJar() + ", " + antLauncherJar() + ", " + emma()
-				+ ", instrtest-classes.emma-instr]\n"
-				+ "  mainClass:Hello  mainClassArgument:arg1\n"
-				+ "  mainClassArgument:arg2\n" + "}\n",
-				coverage.contentDescriptor());
+		assertEquals("net.sf.iwant.api.EmmaCoverage {\n" + "emma:" + emma()
+				+ "\n" + "antJars:[" + antJar() + ", " + antLauncherJar()
+				+ "]\n" + "mainClass:Hello\n"
+				+ "mainClassArguments:[arg1, arg2]\n"
+				+ "mainClassArgumentsFile:null\n"
+				+ "classpath:[instr:instrtest-classes]\n"
+				+ "jvmargs:[-XX:-UseSplitVerifier, -Demma.rt.control=false]\n"
+				+ "", coverage.contentDescriptor());
 	}
 
 	public void testJvmArgsContainsSaneDefaultsIfNotSpecified()
