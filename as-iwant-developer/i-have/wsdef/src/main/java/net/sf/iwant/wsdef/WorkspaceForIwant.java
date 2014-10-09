@@ -326,7 +326,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return iwantSrcModule("plugin-jacoco")
 				.mainDeps(commonsIo(), iwantApiCore(), iwantApiModel(),
 						iwantApiJavamodules(), iwantCoreDownload(),
-						iwantDistillery2(), iwantPluginAnt())
+						iwantCoreservices(), iwantDistillery2(),
+						iwantPluginAnt())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
 						iwantTestarea()).end();
 	}

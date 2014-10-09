@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import net.sf.iwant.api.AsEmbeddedIwantUser;
 import net.sf.iwant.api.javamodules.JavaClasses;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
@@ -103,6 +104,33 @@ public class JacocoInstrumentationTest extends IwantTestCase {
 		assertTrue(instrClass.exists());
 
 		assertFalse(FileUtils.contentEquals(originalClass, instrClass));
+	}
+
+	public void testInstrumentationCreatesAModifiedClassAndCopiesResource()
+			throws Exception {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.mainResources("res").end();
+		wsRootHasFile("mod/src/pak/Foo.java",
+				"package pak;\npublic class Foo {}\n");
+		wsRootHasFile("mod/res/pak/res.txt", "resource content\n");
+		Target classes = (Target) mod.mainArtifact();
+		classes.path(ctx);
+		File originalClass = new File(ctx.cached(classes), "pak/Foo.class");
+		File originalResource = new File(ctx.cached(classes), "pak/res.txt");
+		assertTrue(originalClass.exists());
+		assertTrue(originalResource.exists());
+
+		JacocoInstrumentation instr = JacocoInstrumentation.of(classes)
+				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+		instr.path(ctx);
+
+		File instrClass = new File(ctx.cached(instr), "pak/Foo.class");
+		assertTrue(instrClass.exists());
+		assertFalse(FileUtils.contentEquals(originalClass, instrClass));
+
+		File instrResource = new File(ctx.cached(instr), "pak/res.txt");
+		assertTrue(instrResource.exists());
+		assertTrue(FileUtils.contentEquals(originalResource, instrResource));
 	}
 
 }

@@ -1055,6 +1055,7 @@
 #################################################################
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
+  + @bugfix: copy missing files (resources)
   - filter
   - other features?
     - read through emma tests and find what is missing
