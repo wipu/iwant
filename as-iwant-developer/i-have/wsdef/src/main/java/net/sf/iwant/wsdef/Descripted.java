@@ -115,8 +115,7 @@ public class Descripted extends Target {
 		File script = Iwant.newTextFile(new File(dest, name() + ".sh"),
 				sh.toString());
 		script.setExecutable(true);
-		ScriptGenerated.execute(dest,
-				new String[] { script.getCanonicalPath() });
+		ScriptGenerated.execute(ctx, dest, script, new String[] {});
 	}
 
 	private File newHtmlHeaderFile(File dest) {

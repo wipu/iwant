@@ -1,11 +1,11 @@
 package net.sf.iwant.wsdefdef;
 
-import net.sf.iwant.api.FromRepository;
-import net.sf.iwant.api.IwantWorkspaceProvider;
-import net.sf.iwant.api.WorkspaceDefinitionContext;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
+import net.sf.iwant.api.wsdef.IwantWorkspaceProvider;
+import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.core.download.FromRepository;
 
 public class WorkspaceProviderForIwant implements IwantWorkspaceProvider {
 
