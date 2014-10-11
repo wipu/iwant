@@ -1,10 +1,12 @@
-package net.sf.iwant.api;
+package net.sf.iwant.deprecated.emma;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import net.sf.iwant.api.AsEmbeddedIwantUser;
+import net.sf.iwant.api.ClassNameList;
 import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
@@ -122,9 +124,9 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.mainClassAndArguments("Hello", "arg1", "arg2")
 				.instrumentations(instr).end();
 
-		assertEquals("net.sf.iwant.api.EmmaCoverage {\n" + "emma:" + emma()
-				+ "\n" + "antJars:[" + antJar() + ", " + antLauncherJar()
-				+ "]\n" + "mainClass:Hello\n"
+		assertEquals("net.sf.iwant.deprecated.emma.EmmaCoverage {\n" + "emma:"
+				+ emma() + "\n" + "antJars:[" + antJar() + ", "
+				+ antLauncherJar() + "]\n" + "mainClass:Hello\n"
 				+ "mainClassArguments:[arg1, arg2]\n"
 				+ "mainClassArgumentsFile:null\n"
 				+ "classpath:[instr:instrtest-classes]\n"

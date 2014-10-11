@@ -1,6 +1,7 @@
-package net.sf.iwant.api;
+package net.sf.iwant.deprecated.emma;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.ClassNameList;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Source;
@@ -72,7 +73,8 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 
 		EmmaCoverage coverage = emmaTargets.emmaCoverageOf(mod);
 		assertEquals("mod.emmacoverage", coverage.name());
-		assertEquals("net.sf.iwant.api.EmmaCoverage {\n" + "emma:mocked-emma\n"
+		assertEquals("net.sf.iwant.deprecated.emma.EmmaCoverage {\n"
+				+ "emma:mocked-emma\n"
 				+ "antJars:[mocked-ant, mocked-ant-launcher]\n"
 				+ "mainClass:org.junit.runner.JUnitCore\n"
 				+ "mainClassArguments:null\n"
@@ -129,7 +131,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 		EmmaCoverage coverage = emmaTargets.emmaCoverageOf(mod);
 		assertEquals("mod.emmacoverage", coverage.name());
 		assertEquals(
-				"net.sf.iwant.api.EmmaCoverage {\n"
+				"net.sf.iwant.deprecated.emma.EmmaCoverage {\n"
 						+ "emma:mocked-emma\n"
 						+ "antJars:[mocked-ant, mocked-ant-launcher]\n"
 						+ "mainClass:org.junit.runner.JUnitCore\n"

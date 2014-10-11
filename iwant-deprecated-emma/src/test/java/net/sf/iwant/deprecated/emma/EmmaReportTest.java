@@ -1,8 +1,9 @@
-package net.sf.iwant.api;
+package net.sf.iwant.deprecated.emma;
 
 import java.io.File;
 import java.io.IOException;
 
+import net.sf.iwant.api.AsEmbeddedIwantUser;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
 import net.sf.iwant.api.model.ExternalSource;
@@ -82,7 +83,7 @@ public class EmmaReportTest extends IwantTestCase {
 		assertEquals("[" + emma()
 				+ ", classes.emma-instr, instrtest-emma-coverage]", report
 				.ingredients().toString());
-		assertEquals("net.sf.iwant.api.EmmaReport:[" + emma()
+		assertEquals("net.sf.iwant.deprecated.emma.EmmaReport:[" + emma()
 				+ ", classes.emma-instr, instrtest-emma-coverage]",
 				report.contentDescriptor());
 

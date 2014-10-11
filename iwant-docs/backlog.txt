@@ -1118,9 +1118,7 @@
         + Concatenated
         + HelloTarget
         + StringFilterByEquality
-      - iwant-plugin-emma
-        - split
-        - recommend jacoco in its tutorial
+      + emma => iwant-deprecated-emma
       - AsEmbeddedIwantUser.java
       - AntGenerated
       - other? 

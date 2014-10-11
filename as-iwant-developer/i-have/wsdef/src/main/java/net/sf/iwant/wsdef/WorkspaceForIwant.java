@@ -59,8 +59,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return new TreeSet<JavaSrcModule>(Arrays.asList(iwantApiCore(),
 				iwantApiJavamodules(), iwantApimocks(), iwantApiModel(),
 				iwantApiWsdef(), iwantCoreDownload(), iwantCoreservices(),
-				iwantDistillery(), iwantDistillery2(), iwantDocs(),
-				iwantEclipseSettings(), iwantExampleWsdef(),
+				iwantDeprecatedEmma(), iwantDistillery(), iwantDistillery2(),
+				iwantDocs(), iwantEclipseSettings(), iwantExampleWsdef(),
 				iwantIwantWsrootFinder(), iwantMockWsroot(), iwantPlanner(),
 				iwantPlannerApi(), iwantPlannerMocks(), iwantPluginAnt(),
 				iwantPluginFindbugs(), iwantPluginGithub(),
@@ -249,6 +249,14 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.testResources("src/test/resources")
 				.mainDeps(iwantTestarea(), junit())
 				.testDeps(iwantIwantWsrootFinder()).end();
+	}
+
+	private static JavaSrcModule iwantDeprecatedEmma() {
+		return iwantSrcModule("deprecated-emma")
+				.mainDeps(iwantApiCore(), iwantApiJavamodules(),
+						iwantApiModel(), iwantCoreservices(),
+						iwantDistillery(), iwantDistillery2())
+				.testDeps(iwantApimocks(), iwantCoreDownload(), junit()).end();
 	}
 
 	private static JavaSrcModule iwantDistillery2() {

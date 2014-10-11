@@ -1,9 +1,10 @@
-package net.sf.iwant.api;
+package net.sf.iwant.deprecated.emma;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import net.sf.iwant.api.AsEmbeddedIwantUser;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
@@ -97,14 +98,16 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 
 	public void testDescriptor() throws IOException {
 		assertEquals(
-				"net.sf.iwant.api.EmmaInstrumentation:[" + emma() + ", one]",
+				"net.sf.iwant.deprecated.emma.EmmaInstrumentation:[" + emma()
+						+ ", one]",
 				EmmaInstrumentation
 						.of(new JavaClassesAndSources(
 								Source.underWsroot("one"), Source
 										.underWsroot("irrelevant")))
 						.using(emma()).contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.EmmaInstrumentation:[" + emma() + ", two]",
+				"net.sf.iwant.deprecated.emma.EmmaInstrumentation:[" + emma()
+						+ ", two]",
 				EmmaInstrumentation
 						.of(new JavaClassesAndSources(
 								Source.underWsroot("two"), Source

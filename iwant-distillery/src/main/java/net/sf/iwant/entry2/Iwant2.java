@@ -82,6 +82,7 @@ public class Iwant2 {
 		srcDirs.add("iwant-api-wsdef/" + "src/main/java");
 		srcDirs.add("iwant-core-download/" + "src/main/java");
 		srcDirs.add("iwant-coreservices/" + "src/main/java");
+		srcDirs.add("iwant-deprecated-emma/" + "src/main/java");
 		srcDirs.add("iwant-distillery/" + "as-some-developer/with/java");
 		srcDirs.add("iwant-distillery/" + "src/main/java");
 		srcDirs.add("iwant-distillery2/" + "src/main/java");

@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.deprecated.emma;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,12 +11,13 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sf.iwant.api.EmmaCoverage.EmmaCoverageSpex;
+import net.sf.iwant.api.ClassNameList;
 import net.sf.iwant.api.core.StringFilterByEquality;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.StringFilter;
+import net.sf.iwant.deprecated.emma.EmmaCoverage.EmmaCoverageSpex;
 
 public class EmmaTargetsOfJavaModules {
 
