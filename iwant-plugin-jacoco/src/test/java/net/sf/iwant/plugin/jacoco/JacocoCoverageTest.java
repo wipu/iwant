@@ -5,82 +5,16 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import net.sf.iwant.api.AsEmbeddedIwantUser;
 import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
-import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.core.download.FromRepository;
-import net.sf.iwant.core.download.TestedIwantDependencies;
-import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.ExitCalledException;
 
 import org.apache.commons.io.FileUtils;
 
-public class JacocoCoverageTest extends IwantTestCase {
-
-	@Override
-	protected void moreSetUp() throws Exception {
-		caches.cachesUrlAt(jacoco().zip().url(), cachedJacocoZip());
-		jacoco().path(ctx);
-	}
-
-	private Path downloaded(Path downloaded) throws IOException {
-		return new ExternalSource(AsEmbeddedIwantUser.with()
-				.workspaceAt(wsRoot).cacheAt(cacheDir).iwant()
-				.target((Target) downloaded).asPath());
-	}
-
-	private static JacocoDistribution jacoco() {
-		return JacocoDistribution.newestTestedVersion();
-	}
-
-	private static File cachedJacocoZip() {
-		return Iwant.usingRealNetwork().downloaded(jacoco().zip().url());
-	}
-
-	private Path asm() throws IOException {
-		return downloaded(FromRepository.repo1MavenOrg().group("org/ow2/asm")
-				.name("asm-all").version("5.0.1"));
-	}
-
-	private Path antJar() throws IOException {
-		return downloaded(TestedIwantDependencies.antJar());
-	}
-
-	private Path antLauncherJar() throws IOException {
-		return downloaded(TestedIwantDependencies.antLauncherJar());
-	}
-
-	private JavaClassesAndSources newJavaClassesAndSources(String name,
-			String className, String... codeLinesForMain) throws Exception {
-		String srcDirString = name + "-src";
-		File srcDir = new File(wsRoot, srcDirString);
-
-		StringBuilder code = new StringBuilder();
-		code.append("public class " + className + " {\n");
-		code.append("  public static void main(String[] args) throws Throwable {\n");
-		for (String codeLine : codeLinesForMain) {
-			code.append(codeLine).append("\n");
-		}
-		code.append("  }\n");
-		code.append("}\n");
-
-		Iwant.newTextFile(new File(srcDir, className + ".java"),
-				code.toString());
-		JavaClasses classes = JavaClasses.with().name(name + "-classes")
-				.srcDirs(Source.underWsroot(srcDirString)).classLocations()
-				.end();
-		classes.path(ctx);
-		return new JavaClassesAndSources(classes,
-				Source.underWsroot(srcDirString));
-	}
-
-	// the tests
+public class JacocoCoverageTest extends JacocoTestBase {
 
 	public void testParallelismIsDisabledUntilProvenByPracticeItDoesNotCauseProblems()
 			throws IOException {
@@ -107,7 +41,7 @@ public class JacocoCoverageTest extends IwantTestCase {
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
 				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("Main", "arg0", "arg1").end();
+				.mainClassAndArguments("instrtest.Main", "arg0", "arg1").end();
 
 		assertEquals("[instrtest-classes.jacoco-instr, " + antJar() + ", "
 				+ antLauncherJar() + ", " + jacoco() + ", " + asm() + "]",
@@ -116,8 +50,9 @@ public class JacocoCoverageTest extends IwantTestCase {
 				+ "jacoco:jacoco-0.7.2.201409121644\n" + "deps:[" + asm()
 				+ "]\n" + "antJars:[" + antJar() + ", " + antLauncherJar()
 				+ "]\n" + "classLocations:[instrtest-classes.jacoco-instr]\n"
-				+ "mainClassName:Main\n" + "mainClassArgs:[arg0, arg1]\n"
-				+ "mainClassArgsFile:null\n" + "", coverage.contentDescriptor());
+				+ "mainClassName:instrtest.Main\n"
+				+ "mainClassArgs:[arg0, arg1]\n" + "mainClassArgsFile:null\n"
+				+ "", coverage.contentDescriptor());
 	}
 
 	public void testIngredientsAndDescriptorWithMainClassArgsGivenAsPath()
@@ -133,7 +68,7 @@ public class JacocoCoverageTest extends IwantTestCase {
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
 				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("Main", args).end();
+				.mainClassAndArguments("instrtest.Main", args).end();
 
 		assertEquals("[instrtest-classes.jacoco-instr, " + antJar() + ", "
 				+ antLauncherJar() + ", " + jacoco() + ", " + asm()
@@ -142,7 +77,7 @@ public class JacocoCoverageTest extends IwantTestCase {
 				+ "jacoco:jacoco-0.7.2.201409121644\n" + "deps:[" + asm()
 				+ "]\n" + "antJars:[" + antJar() + ", " + antLauncherJar()
 				+ "]\n" + "classLocations:[instrtest-classes.jacoco-instr]\n"
-				+ "mainClassName:Main\n" + "mainClassArgs:null\n"
+				+ "mainClassName:instrtest.Main\n" + "mainClassArgs:null\n"
 				+ "mainClassArgsFile:args-file\n" + "",
 				coverage.contentDescriptor());
 	}
@@ -157,8 +92,8 @@ public class JacocoCoverageTest extends IwantTestCase {
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm()).mainClassAndArguments("Hello")
-				.end();
+				.jacocoWithDeps(jacoco(), asm())
+				.mainClassAndArguments("instrtest.Hello").end();
 		coverage.path(ctx);
 
 		File cachedExec = new File(cacheDir, "coverage.exec");
@@ -181,7 +116,8 @@ public class JacocoCoverageTest extends IwantTestCase {
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
 				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("ArgChecker", "a0", "a1").end();
+				.mainClassAndArguments("instrtest.ArgChecker", "a0", "a1")
+				.end();
 		coverage.path(ctx);
 
 		assertTrue(new File(cacheDir, "coverage.exec").exists());
@@ -205,7 +141,7 @@ public class JacocoCoverageTest extends IwantTestCase {
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
 				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("ArgChecker", args).end();
+				.mainClassAndArguments("instrtest.ArgChecker", args).end();
 		coverage.path(ctx);
 
 		assertTrue(new File(cacheDir, "coverage.exec").exists());
@@ -222,7 +158,7 @@ public class JacocoCoverageTest extends IwantTestCase {
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
 				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("Failer").end();
+				.mainClassAndArguments("instrtest.Failer").end();
 
 		try {
 			coverage.path(ctx);

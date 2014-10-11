@@ -1062,11 +1062,11 @@
     + whole module: just don't pass uninteresting modules when building JacocoTargetsOfJavaModules
       * test it works  even if interesting modules depend on the uninteresting
     * filtering by classname requires online instrumentation => new story
+  - refactor
+    + reuse test setup code
+    - reuse ant generator code
   - other features?
     - read through emma tests and find what is missing
-  - refactor
-    - reuse ant generator code
-    - reuse test setup code
 
 - As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
   + use Windows to develop the wrapper
