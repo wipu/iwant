@@ -6,6 +6,7 @@ import java.io.IOException;
 import net.sf.iwant.api.AsEmbeddedIwantUser;
 import net.sf.iwant.api.ClassNameList;
 import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
@@ -50,6 +51,11 @@ public class JacocoTargetsOfJavaModulesTest extends IwantTestCase {
 
 	private Path antLauncherJar() throws IOException {
 		return downloaded(TestedIwantDependencies.antLauncherJar());
+	}
+
+	private JavaModule junit() throws IOException {
+		return JavaBinModule.providing(
+				downloaded(TestedIwantDependencies.junit())).end();
 	}
 
 	// the tests
@@ -233,6 +239,62 @@ public class JacocoTargetsOfJavaModulesTest extends IwantTestCase {
 				+ " src1-main-classes.jacoco-instr, bin1, bin2,"
 				+ " src2-main-classes.jacoco-instr]", coverage.classLocations()
 				.toString());
+	}
+
+	public void testCoverageOfSubsetOfSrcModulesWithDepToModuleOutsideTheSubset()
+			throws Exception {
+		JavaSrcModule uninteresting = JavaSrcModule.with()
+				.name("uninteresting").mainJava("src").end();
+		JavaSrcModule interesting1 = JavaSrcModule.with().name("interesting1")
+				.mainJava("src").testJava("test").mainDeps(uninteresting)
+				.testDeps(junit()).end();
+		JavaSrcModule interesting2 = JavaSrcModule.with().name("interesting2")
+				.mainJava("src").testJava("test").testDeps(junit()).end();
+
+		wsRootHasFile("uninteresting/src/uninteresting/Uninteresting.java",
+				"package uninteresting;\npublic class Uninteresting {"
+						+ "public static int value() {return 1;}}\n");
+
+		wsRootHasFile(
+				"interesting1/src/interesting1/Interesting1.java",
+				"package interesting1;\npublic class Interesting1 {"
+						+ "public static int value() {return 2 + uninteresting.Uninteresting.value();}}\n");
+		wsRootHasFile(
+				"interesting1/test/interesting1/Interesting1Test.java",
+				"package interesting1;import org.junit.Test;\nimport static org.junit.Assert.*;\n"
+						+ "\npublic class Interesting1Test {"
+						+ "@Test public void test() {assertEquals(3, Interesting1.value());}}\n");
+
+		wsRootHasFile("interesting2/src/interesting2/Interesting2.java",
+				"package interesting2;\npublic class Interesting2 {"
+						+ "public static int value() {return 4;}}\n");
+		wsRootHasFile(
+				"interesting2/test/interesting2/Interesting2Test.java",
+				"package interesting2;import org.junit.Test;\nimport static org.junit.Assert.*;\n"
+						+ "\npublic class Interesting2Test {"
+						+ "@Test public void test() {assertEquals(4, Interesting2.value());}}\n");
+
+		((Target) uninteresting.mainArtifact()).path(ctx);
+		((Target) interesting1.mainArtifact()).path(ctx);
+		((Target) interesting1.testArtifact()).path(ctx);
+		((Target) interesting2.mainArtifact()).path(ctx);
+		((Target) interesting2.testArtifact()).path(ctx);
+
+		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
+				.with().jacocoWithDeps(jacoco(), asm())
+				.antJars(antJar(), antLauncherJar())
+				.modules(interesting1, interesting2).end();
+
+		JacocoReport report = jacocoTargets.jacocoReport("report");
+		report.path(ctx);
+
+		// uninteresting not included:
+		assertEquals(
+				"GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED\n"
+						+ "report,interesting2,Interesting2,5,0,0,0,1,0,2,0,2,0\n"
+						+ "report,interesting1,Interesting1,7,0,0,0,1,0,2,0,2,0\n"
+						+ "", contentOf(new File(ctx.cached(report),
+						"report.csv")));
 	}
 
 }

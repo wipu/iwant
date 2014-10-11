@@ -11,7 +11,6 @@ import net.sf.iwant.api.AntGenerated;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.coreservices.FileUtil;
 
 import org.apache.commons.io.FileUtils;
 
@@ -123,11 +122,6 @@ public class JacocoInstrumentation extends Target {
 			cachedAntJars.add(ctx.cached(antJar));
 		}
 		AntGenerated.runAnt(cachedAntJars, antScript);
-
-		int nOfFileCopied = FileUtil.copyMissingFiles(ctx.cached(classes),
-				ctx.cached(this));
-		System.err.println("Copied " + nOfFileCopied
-				+ " files jacoco excluded from instrumented classes.");
 	}
 
 	private String antScript(TargetEvaluationContext ctx) {
@@ -154,7 +148,7 @@ public class JacocoInstrumentation extends Target {
 		b.append("              <jacoco:instrument destdir=\""
 				+ ctx.cached(this) + "\">\n");
 		b.append("                      <fileset dir=\"" + ctx.cached(classes)
-				+ "\" includes=\"**/*.class\" />\n");
+				+ "\" includes=\"**/*\" />\n");
 		b.append("              </jacoco:instrument>\n");
 		b.append("      </target>\n");
 		b.append("\n");
