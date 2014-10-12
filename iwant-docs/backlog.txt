@@ -1062,6 +1062,7 @@
     + whole module: just don't pass uninteresting modules when building JacocoTargetsOfJavaModules
       * test it works  even if interesting modules depend on the uninteresting
     * filtering by classname requires online instrumentation => new story
+  + use in iwant
   - refactor
     + reuse test setup code
     - reuse ant generator code

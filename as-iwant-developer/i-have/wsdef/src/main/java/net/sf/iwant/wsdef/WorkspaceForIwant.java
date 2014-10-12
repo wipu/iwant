@@ -26,6 +26,8 @@ import net.sf.iwant.eclipsesettings.EclipseSettings;
 import net.sf.iwant.plugin.findbugs.FindbugsDistribution;
 import net.sf.iwant.plugin.findbugs.FindbugsOutputFormat;
 import net.sf.iwant.plugin.findbugs.FindbugsReport;
+import net.sf.iwant.plugin.jacoco.JacocoDistribution;
+import net.sf.iwant.plugin.jacoco.JacocoTargetsOfJavaModules;
 
 public class WorkspaceForIwant implements IwantWorkspace {
 
@@ -37,7 +39,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	@Override
 	public List<? extends Target> targets() {
 		return Arrays.asList(emmaCoverageReport(), findbugsReport(),
-				listOfExternalDeps(), localWebsite(), remoteWebsite());
+				jacocoReport(), listOfExternalDeps(), localWebsite(),
+				remoteWebsite());
 	}
 
 	@Override
@@ -68,6 +71,14 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				iwantTestarea(), iwantTestresources(), iwantTutorialWsdefs()));
 	}
 
+	private static SortedSet<JavaSrcModule> modulesForCoverage() {
+		SortedSet<JavaSrcModule> mods = allSrcModules();
+		mods.remove(iwantExampleWsdef());
+		mods.remove(iwantMockWsroot());
+		mods.remove(iwantTutorialWsdefs());
+		return mods;
+	}
+
 	private static SortedSet<JavaModule> allModules() {
 		SortedSet<JavaModule> all = new TreeSet<JavaModule>();
 		all.addAll(allSrcModules());
@@ -94,6 +105,21 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static Path emma() {
 		return TestedIwantDependencies.emma();
+	}
+
+	private static JacocoDistribution jacoco() {
+		return JacocoDistribution.newestTestedVersion();
+	}
+
+	private static Target jacocoReport() {
+		return JacocoTargetsOfJavaModules
+				.with()
+				.jacocoWithDeps(jacoco(), asm501Jar())
+				.antJars(TestedIwantDependencies.antJar(),
+						TestedIwantDependencies.antLauncherJar())
+				.modules(modulesForCoverage()).end()
+				.jacocoReport("jacoco-report");
+
 	}
 
 	private static Target emmaCoverageReport() {
@@ -188,6 +214,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return JavaBinModule.providing(
 				FromRepository.ibiblio().group("asm").name("asm")
 						.version("3.2")).end();
+	}
+
+	private static Path asm501Jar() {
+		return FromRepository.repo1MavenOrg().group("org/ow2/asm")
+				.name("asm-all").version("5.0.1");
 	}
 
 	private static JavaModule commonsIo() {
