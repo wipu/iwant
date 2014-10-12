@@ -60,10 +60,9 @@ public class Iwant2 {
 		Iwant.debugLog("evaluate", (Object[]) args);
 		File allIwantClasses = allIwantClasses(iwantWs);
 
-		File testArea = new File(iwantWs, "iwant-testarea/testarea-classdir");
 		File wsRootMarker = new File(iwantWs, "iwant-wsroot-marker");
 
-		List<File> classLocations = Arrays.asList(wsRootMarker, testArea,
+		List<File> classLocations = Arrays.asList(wsRootMarker,
 				allIwantClasses, junitJar());
 
 		String[] iwant3Args = new String[args.length + 1];
@@ -80,13 +79,14 @@ public class Iwant2 {
 		srcDirs.add("iwant-apimocks/" + "src/main/java");
 		srcDirs.add("iwant-api-model/" + "src/main/java");
 		srcDirs.add("iwant-api-wsdef/" + "src/main/java");
+		srcDirs.add("iwant-core-ant/" + "src/main/java");
 		srcDirs.add("iwant-core-download/" + "src/main/java");
 		srcDirs.add("iwant-coreservices/" + "src/main/java");
 		srcDirs.add("iwant-deprecated-emma/" + "src/main/java");
 		srcDirs.add("iwant-distillery/" + "as-some-developer/with/java");
 		srcDirs.add("iwant-distillery/" + "src/main/java");
-		srcDirs.add("iwant-distillery2/" + "src/main/java");
 		srcDirs.add("iwant-eclipse-settings/" + "src/main/java");
+		srcDirs.add("iwant-entry3/" + "src/main/java");
 		srcDirs.add("iwant-iwant-wsroot-finder/" + "src/main/java");
 		srcDirs.add("iwant-planner/" + "src/main/java");
 		srcDirs.add("iwant-planner-api/" + "src/main/java");
