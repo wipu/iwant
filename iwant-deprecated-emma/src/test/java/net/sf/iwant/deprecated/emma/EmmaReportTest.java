@@ -3,7 +3,6 @@ package net.sf.iwant.deprecated.emma;
 import java.io.File;
 import java.io.IOException;
 
-import net.sf.iwant.api.AsEmbeddedIwantUser;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
 import net.sf.iwant.api.model.ExternalSource;
@@ -12,6 +11,7 @@ import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.core.download.TestedIwantDependencies;
+import net.sf.iwant.embedded.AsEmbeddedIwantUser;
 import net.sf.iwant.entry.Iwant;
 
 public class EmmaReportTest extends IwantTestCase {

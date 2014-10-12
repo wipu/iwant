@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import net.sf.iwant.api.AsEmbeddedIwantUser;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
@@ -16,6 +15,7 @@ import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.core.download.TestedIwantDependencies;
 import net.sf.iwant.coreservices.FileUtil;
+import net.sf.iwant.embedded.AsEmbeddedIwantUser;
 import net.sf.iwant.entry.Iwant;
 
 public class EmmaInstrumentationTest extends IwantTestCase {

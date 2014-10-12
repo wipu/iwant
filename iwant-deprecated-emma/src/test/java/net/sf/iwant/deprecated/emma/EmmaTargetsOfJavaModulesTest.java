@@ -1,7 +1,7 @@
 package net.sf.iwant.deprecated.emma;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.ClassNameList;
+import net.sf.iwant.api.core.ClassNameList;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Source;

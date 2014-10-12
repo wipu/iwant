@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.core.ant;
 
 import java.io.File;
 import java.io.InputStream;

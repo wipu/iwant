@@ -3,7 +3,6 @@ package com.example.wsdef.v02antgeneratedtarget;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.iwant.api.AntGenerated;
 import net.sf.iwant.api.core.Concatenated;
 import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.core.HelloTarget;
@@ -11,6 +10,7 @@ import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
+import net.sf.iwant.core.ant.AntGenerated;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 

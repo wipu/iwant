@@ -1,11 +1,10 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.core;
 
 import java.io.File;
 import java.util.Arrays;
 
-import net.sf.iwant.api.ScriptGenerated.ExecutionEnvironment;
-import net.sf.iwant.api.core.Concatenated;
 import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import net.sf.iwant.api.core.ScriptGenerated.ExecutionEnvironment;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.entry.Iwant;
@@ -14,12 +13,12 @@ public class ScriptGeneratedTest extends IwantTestCase {
 
 	public void testContentDescriptor() {
 		assertEquals(
-				"net.sf.iwant.api.ScriptGenerated:src1.sh",
+				"net.sf.iwant.api.core.ScriptGenerated:src1.sh",
 				ScriptGenerated.named("s1")
 						.byScript(Source.underWsroot("src1.sh"))
 						.contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.ScriptGenerated:src2.sh",
+				"net.sf.iwant.api.core.ScriptGenerated:src2.sh",
 				ScriptGenerated.named("s2")
 						.byScript(Source.underWsroot("src2.sh"))
 						.contentDescriptor());

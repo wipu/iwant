@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.iwant.api.AsEmbeddedIwantUser;
-import net.sf.iwant.api.ClassNameList;
+import net.sf.iwant.api.core.ClassNameList;
 import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
@@ -16,6 +15,7 @@ import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.core.download.TestedIwantDependencies;
+import net.sf.iwant.embedded.AsEmbeddedIwantUser;
 import net.sf.iwant.entry.Iwant;
 
 public class EmmaCoverageTest extends IwantTestCase {

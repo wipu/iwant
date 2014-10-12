@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.core;
 
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
@@ -22,7 +22,7 @@ public class ClassNameListTest extends IwantTestCase {
 		ClassNameList list = ClassNameList.with().name("list").classes(classes)
 				.end();
 
-		assertEquals("net.sf.iwant.api.ClassNameList {\n"
+		assertEquals("net.sf.iwant.api.core.ClassNameList {\n"
 				+ "  classes:classes\n" + "}\n", list.contentDescriptor());
 	}
 
@@ -46,7 +46,7 @@ public class ClassNameListTest extends IwantTestCase {
 		ClassNameList list = ClassNameList.with().name("list").classes(classes)
 				.matching(new TestFilter()).end();
 
-		assertEquals("net.sf.iwant.api.ClassNameList {\n"
+		assertEquals("net.sf.iwant.api.core.ClassNameList {\n"
 				+ "  classes:classes2\n"
 				+ "  filter:TestFilter to test descriptor\n}\n",
 				list.contentDescriptor());

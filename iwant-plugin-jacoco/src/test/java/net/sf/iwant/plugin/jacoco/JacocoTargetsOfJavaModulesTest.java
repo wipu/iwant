@@ -3,7 +3,7 @@ package net.sf.iwant.plugin.jacoco;
 import java.io.File;
 import java.io.IOException;
 
-import net.sf.iwant.api.ClassNameList;
+import net.sf.iwant.api.core.ClassNameList;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Source;
@@ -156,7 +156,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertNull(coverageOfManyClasses.mainClassArgs());
 		ClassNameList testNames = (ClassNameList) coverageOfManyClasses
 				.mainClassArgsFile();
-		assertEquals("net.sf.iwant.api.ClassNameList {\n"
+		assertEquals("net.sf.iwant.api.core.ClassNameList {\n"
 				+ "  classes:testedByClassnameFilter-test-classes\n"
 				+ "  filter:just-a-filter\n" + "}\n" + "",
 				testNames.contentDescriptor());

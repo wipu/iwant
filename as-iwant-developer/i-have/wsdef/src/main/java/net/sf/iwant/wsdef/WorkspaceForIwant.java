@@ -61,14 +61,15 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static SortedSet<JavaSrcModule> allSrcModules() {
 		return new TreeSet<JavaSrcModule>(Arrays.asList(iwantApiCore(),
 				iwantApiJavamodules(), iwantApimocks(), iwantApiModel(),
-				iwantApiWsdef(), iwantCoreDownload(), iwantCoreservices(),
-				iwantDeprecatedEmma(), iwantDistillery(), iwantDistillery2(),
-				iwantDocs(), iwantEclipseSettings(), iwantExampleWsdef(),
-				iwantIwantWsrootFinder(), iwantMockWsroot(), iwantPlanner(),
-				iwantPlannerApi(), iwantPlannerMocks(), iwantPluginAnt(),
-				iwantPluginFindbugs(), iwantPluginGithub(),
-				iwantPluginJacoco(), iwantPluginPmd(), iwantPluginWar(),
-				iwantTestarea(), iwantTestresources(), iwantTutorialWsdefs()));
+				iwantApiWsdef(), iwantCoreAnt(), iwantCoreDownload(),
+				iwantCoreservices(), iwantDeprecatedEmma(), iwantDistillery(),
+				iwantDistillery2(), iwantDocs(), iwantEclipseSettings(),
+				iwantEmbedded(), iwantExampleWsdef(), iwantIwantWsrootFinder(),
+				iwantMockWsroot(), iwantPlanner(), iwantPlannerApi(),
+				iwantPlannerMocks(), iwantPluginAnt(), iwantPluginFindbugs(),
+				iwantPluginGithub(), iwantPluginJacoco(), iwantPluginPmd(),
+				iwantPluginWar(), iwantTestarea(), iwantTestresources(),
+				iwantTutorialWsdefs()));
 	}
 
 	private static SortedSet<JavaSrcModule> modulesForCoverage() {
@@ -235,8 +236,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaSrcModule iwantApiCore() {
 		return iwantSrcModule("api-core")
-				.mainDeps(iwantApiModel(), iwantCoreservices())
-				.testDeps(iwantApimocks(), junit()).end();
+				.mainDeps(iwantApiModel(), iwantCoreservices(),
+						iwantDistillery()).testDeps(iwantApimocks(), junit())
+				.end();
 	}
 
 	private static JavaSrcModule iwantApiJavamodules() {
@@ -259,6 +261,14 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantApiWsdef() {
 		return iwantSrcModule("api-wsdef").noTestJava()
 				.mainDeps(iwantApiModel(), iwantApiJavamodules()).end();
+	}
+
+	private static JavaSrcModule iwantCoreAnt() {
+		return iwantSrcModule("core-ant")
+				.mainDeps(iwantApiModel(), iwantCoreservices(),
+						iwantDistillery())
+				.testDeps(iwantApiCore(), iwantApimocks(), iwantCoreDownload(),
+						iwantEmbedded(), iwantTestarea(), junit()).end();
 	}
 
 	private static JavaSrcModule iwantCoreDownload() {
@@ -285,9 +295,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantDeprecatedEmma() {
 		return iwantSrcModule("deprecated-emma")
 				.mainDeps(iwantApiCore(), iwantApiJavamodules(),
-						iwantApiModel(), iwantCoreservices(),
+						iwantApiModel(), iwantCoreAnt(), iwantCoreservices(),
 						iwantDistillery(), iwantDistillery2())
-				.testDeps(iwantApimocks(), iwantCoreDownload(), junit()).end();
+				.testDeps(iwantApimocks(), iwantCoreDownload(),
+						iwantEmbedded(), junit()).end();
 	}
 
 	private static JavaSrcModule iwantDistillery2() {
@@ -310,6 +321,15 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.mainDeps(iwantApiCore(), iwantApiJavamodules(),
 						iwantApiModel(), iwantDistillery())
 				.testDeps(iwantApimocks(), junit()).end();
+	}
+
+	private static JavaSrcModule iwantEmbedded() {
+		return iwantSrcModule("embedded")
+				.mainDeps(iwantApiModel(), iwantApiJavamodules(),
+						iwantApiWsdef(), iwantCoreservices(),
+						iwantDistillery(), iwantDistillery2())
+				.testDeps(iwantApimocks(), iwantApiCore(), iwantTestarea(),
+						junit()).end();
 	}
 
 	private static JavaSrcModule iwantExampleWsdef() {
@@ -347,11 +367,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantPluginFindbugs() {
 		return iwantSrcModule("plugin-findbugs")
 				.testResources("src/test/resources")
-				.mainDeps(commonsIo(), iwantApiJavamodules(), iwantApiModel(),
-						iwantCoreDownload(), iwantDistillery2(),
-						iwantPluginAnt())
+				.mainDeps(commonsIo(), iwantApiCore(), iwantApiJavamodules(),
+						iwantApiModel(), iwantCoreAnt(), iwantCoreDownload(),
+						iwantDistillery2(), iwantPluginAnt())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
-						iwantTestarea()).end();
+						iwantEmbedded(), iwantTestarea()).end();
 	}
 
 	private static JavaSrcModule iwantPluginGithub() {
@@ -364,10 +384,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantPluginJacoco() {
 		return iwantSrcModule("plugin-jacoco")
 				.mainDeps(commonsIo(), iwantApiCore(), iwantApiModel(),
-						iwantApiJavamodules(), iwantCoreDownload(),
-						iwantDistillery2(), iwantPluginAnt())
+						iwantApiJavamodules(), iwantCoreAnt(),
+						iwantCoreDownload(), iwantDistillery2(),
+						iwantPluginAnt())
 				.testDeps(junit(), iwantApimocks(), iwantDistillery(),
-						iwantTestarea()).end();
+						iwantEmbedded(), iwantTestarea()).end();
 	}
 
 	private static JavaSrcModule iwantPluginPmd() {
@@ -419,11 +440,12 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.noTestJava()
 				.mainJava("src")
 				.mainDeps(commonsMath(), iwantApiCore(), iwantApiJavamodules(),
-						iwantApiModel(), iwantApiWsdef(), iwantCoreDownload(),
-						iwantDistillery2(), iwantEclipseSettings(),
-						iwantPluginAnt(), iwantPluginFindbugs(),
-						iwantPluginGithub(), iwantPluginJacoco(),
-						iwantPluginPmd(), iwantPluginWar()).end();
+						iwantApiModel(), iwantApiWsdef(), iwantCoreAnt(),
+						iwantCoreDownload(), iwantDistillery2(),
+						iwantEclipseSettings(), iwantPluginAnt(),
+						iwantPluginFindbugs(), iwantPluginGithub(),
+						iwantPluginJacoco(), iwantPluginPmd(), iwantPluginWar())
+				.end();
 	}
 
 	private static JavaSrcModule iwantIwantWsrootFinder() {

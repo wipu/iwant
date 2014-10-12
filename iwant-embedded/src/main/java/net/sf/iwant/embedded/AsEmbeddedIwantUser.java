@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.embedded;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

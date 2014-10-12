@@ -1120,8 +1120,10 @@
         + HelloTarget
         + StringFilterByEquality
       + emma => iwant-deprecated-emma
-      - AsEmbeddedIwantUser.java
-      - AntGenerated
+      + AsEmbeddedIwantUser.java
+      + AntGenerated
+      + whole api package (prod)
+      - tests of api package
       - other? 
   - delete mocked IwantWorkspace if not needed
   - delete other unnecessary "compiler fodder" from mock root

@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sf.iwant.api.HelloSideEffect;
+import net.sf.iwant.api.core.HelloSideEffect;
 import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;

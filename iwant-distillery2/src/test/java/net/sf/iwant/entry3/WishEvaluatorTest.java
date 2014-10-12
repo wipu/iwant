@@ -13,11 +13,11 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.HelloSideEffect;
-import net.sf.iwant.api.ScriptGenerated;
 import net.sf.iwant.api.core.Concatenated;
 import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import net.sf.iwant.api.core.HelloSideEffect;
 import net.sf.iwant.api.core.HelloTarget;
+import net.sf.iwant.api.core.ScriptGenerated;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaModule;

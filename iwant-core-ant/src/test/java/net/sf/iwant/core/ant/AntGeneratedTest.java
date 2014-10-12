@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package net.sf.iwant.core.ant;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +13,7 @@ import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.core.download.TestedIwantDependencies;
+import net.sf.iwant.embedded.AsEmbeddedIwantUser;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.ExitCalledException;
 
@@ -40,7 +41,7 @@ public class AntGeneratedTest extends IwantTestCase {
 
 	public void testContentDescriptor() throws IOException {
 		assertEquals(
-				"net.sf.iwant.api.AntGenerated {\n"
+				"net.sf.iwant.core.ant.AntGenerated {\n"
 						+ "  ant-jar:"
 						+ Iwant.IWANT_USER_DIR
 						+ "/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/org/apache/ant/ant/1.7.1/ant-1.7.1.jar\n"
@@ -49,8 +50,8 @@ public class AntGeneratedTest extends IwantTestCase {
 						.script(Source.underWsroot("script")).end()
 						.contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.AntGenerated {\n" + "  ant-jar:" + antJar()
-						+ "\n" + "  ant-jar:another-ant.jar\n"
+				"net.sf.iwant.core.ant.AntGenerated {\n" + "  ant-jar:"
+						+ antJar() + "\n" + "  ant-jar:another-ant.jar\n"
 						+ "  script:another-script\n" + "}\n" + "",
 				AntGenerated
 						.with()

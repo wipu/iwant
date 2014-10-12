@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import net.sf.iwant.api.AntGenerated;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.core.ant.AntGenerated;
 
 import org.apache.commons.io.FileUtils;
 
