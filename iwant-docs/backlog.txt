@@ -1125,8 +1125,9 @@
       + whole api package (prod)
       + tests of api package
       - other? 
-  - delete mocked IwantWorkspace if not needed
-  - delete other unnecessary "compiler fodder" from mock root
+  + delete unnecessary "compiler fodder" from mock root
+  - other?
+  - rename distillery2 to engine-main or something
 
 - As @buildscriptauthor I want a Target of a downloaded and unzipped github commit so I can use the code in it
   + a convenience class around downloaded, unzipped...
