@@ -86,6 +86,7 @@ public class Iwant2 {
 		srcDirs.add("iwant-distillery/" + "as-some-developer/with/java");
 		srcDirs.add("iwant-distillery/" + "src/main/java");
 		srcDirs.add("iwant-eclipse-settings/" + "src/main/java");
+		srcDirs.add("iwant-entry2/" + "src/main/java");
 		srcDirs.add("iwant-entry3/" + "src/main/java");
 		srcDirs.add("iwant-iwant-wsroot-finder/" + "src/main/java");
 		srcDirs.add("iwant-planner/" + "src/main/java");

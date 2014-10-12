@@ -63,13 +63,13 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				iwantApiJavamodules(), iwantApimocks(), iwantApiModel(),
 				iwantApiWsdef(), iwantCoreAnt(), iwantCoreDownload(),
 				iwantCoreservices(), iwantDeprecatedEmma(), iwantDistillery(),
-				iwantEntry3(), iwantDocs(), iwantEclipseSettings(),
-				iwantEmbedded(), iwantExampleWsdef(), iwantIwantWsrootFinder(),
-				iwantMockWsroot(), iwantPlanner(), iwantPlannerApi(),
-				iwantPlannerMocks(), iwantPluginAnt(), iwantPluginFindbugs(),
-				iwantPluginGithub(), iwantPluginJacoco(), iwantPluginPmd(),
-				iwantPluginWar(), iwantTestarea(), iwantTestresources(),
-				iwantTutorialWsdefs()));
+				iwantEntry2(), iwantEntry3(), iwantDocs(),
+				iwantEclipseSettings(), iwantEmbedded(), iwantExampleWsdef(),
+				iwantIwantWsrootFinder(), iwantMockWsroot(), iwantPlanner(),
+				iwantPlannerApi(), iwantPlannerMocks(), iwantPluginAnt(),
+				iwantPluginFindbugs(), iwantPluginGithub(),
+				iwantPluginJacoco(), iwantPluginPmd(), iwantPluginWar(),
+				iwantTestarea(), iwantTestresources(), iwantTutorialWsdefs()));
 	}
 
 	private static SortedSet<JavaSrcModule> modulesForCoverage() {
@@ -281,7 +281,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaSrcModule iwantCoreservices() {
 		return iwantSrcModule("coreservices")
-				.mainDeps(iwantApiModel(), iwantDistillery())
+				.mainDeps(iwantApiModel(), iwantDistillery(), iwantEntry2())
 				.testDeps(iwantTestarea(), junit()).end();
 	}
 
@@ -322,11 +322,17 @@ public class WorkspaceForIwant implements IwantWorkspace {
 						junit()).end();
 	}
 
+	private static JavaSrcModule iwantEntry2() {
+		return iwantSrcModule("entry2").mainDeps(iwantDistillery())
+				.testDeps(iwantIwantWsrootFinder(), iwantTestarea(), junit())
+				.end();
+	}
+
 	private static JavaSrcModule iwantEntry3() {
 		return iwantSrcModule("entry3")
 				.mainDeps(iwantApiCore(), iwantApiJavamodules(),
 						iwantApiModel(), iwantApiWsdef(), iwantCoreDownload(),
-						iwantCoreservices(), iwantDistillery(),
+						iwantCoreservices(), iwantDistillery(), iwantEntry2(),
 						iwantIwantWsrootFinder(), iwantPlanner(),
 						iwantPlannerApi())
 				.testDeps(iwantApimocks(), iwantEclipseSettings(),

@@ -1091,6 +1091,13 @@
 = In progress
 #################################################################
 
+- As @buildscriptuser I want iwant to only checkout the code it really needs so I don't need to wait for all the plugins I don't need
+  - split distillery
+    + entry2
+    - the rest
+  - restructure dirs so essentials one and plugins another dir
+  - finalize
+
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
   + @bugfix: copy missing files (resources)
   + simplify resource copying of instrumentation: don't follow the example in jacoco tutorial (**/*.class)
