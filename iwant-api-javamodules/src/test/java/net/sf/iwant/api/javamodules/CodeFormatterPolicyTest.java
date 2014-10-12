@@ -1,7 +1,6 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.javamodules;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy.FormatterSettingsListener;
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
 

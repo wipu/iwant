@@ -1,10 +1,9 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.javamodules;
 
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
 import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
@@ -164,7 +163,7 @@ public class JavaClassesTest extends IwantTestCase {
 		Source src = Source.underWsroot("src");
 		File superClassClasses = superClassFile.getParentFile().getParentFile()
 				.getParentFile().getParentFile().getParentFile()
-				.getAbsoluteFile();
+				.getParentFile().getAbsoluteFile();
 		Target target = JavaClasses.with().name("valid").srcDirs(src)
 				.classLocations(new ExternalSource(superClassClasses)).end();
 

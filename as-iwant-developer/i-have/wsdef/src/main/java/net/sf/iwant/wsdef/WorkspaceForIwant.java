@@ -243,8 +243,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaSrcModule iwantApiJavamodules() {
 		return iwantSrcModule("api-javamodules")
-				.mainDeps(iwantApiCore(), iwantApiModel()).testDeps(junit())
-				.end();
+				.mainDeps(iwantApiCore(), iwantApiModel())
+				.testDeps(iwantApimocks(), iwantCoreservices(),
+						iwantDistillery(), iwantTestarea(), junit()).end();
 	}
 
 	private static JavaSrcModule iwantApimocks() {

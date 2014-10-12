@@ -1,9 +1,6 @@
-package net.sf.iwant.api;
+package net.sf.iwant.api.javamodules;
 
 import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionCode;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionConfiguration;
 import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionRuntimeData;
