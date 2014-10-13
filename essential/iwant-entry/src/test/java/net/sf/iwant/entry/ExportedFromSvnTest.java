@@ -36,7 +36,7 @@ public class ExportedFromSvnTest extends TestCase {
 		assertTrue(new File(exported, "iwant-entry2/src/main/java/"
 				+ "net/sf/iwant/entry2/Iwant2.java").exists());
 		assertTrue(new File(exported,
-				"iwant-distillery/as-some-developer/with/java/"
+				"essential/iwant-entry/as-some-developer/with/java/"
 						+ "net/sf/iwant/entry/Iwant.java").exists());
 	}
 
@@ -52,7 +52,7 @@ public class ExportedFromSvnTest extends TestCase {
 		assertTrue(new File(exported, "iwant-entry2/src/main/java/"
 				+ "net/sf/iwant/entry2/Iwant2.java").exists());
 		assertTrue(new File(exported,
-				"iwant-distillery/as-some-developer/with/java/"
+				"essential/iwant-entry/as-some-developer/with/java/"
 						+ "net/sf/iwant/entry/Iwant.java").exists());
 	}
 

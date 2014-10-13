@@ -3,7 +3,7 @@ doc-content() {
 cmd "mkdir iwant-tutorial"
 cmd "cd iwant-tutorial"
 
-cmd svn export "$LOCAL_IWANT_WSROOT/iwant-distillery/as-some-developer" as-iwant-tutorial-developer
+cmd svn export "$LOCAL_IWANT_WSROOT/essential/iwant-entry/as-some-developer" as-iwant-tutorial-developer
 cmd 'find . -type f'
 
 section "Choosing url for iwant to use as engine"

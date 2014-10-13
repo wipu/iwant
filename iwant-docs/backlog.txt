@@ -1092,10 +1092,17 @@
 #################################################################
 
 - As @buildscriptuser I want iwant to only checkout the code it really needs so I don't need to wait for all the plugins I don't need
-  - split distillery
+  + split distillery
     + entry2
-    - the rest
+    + entry
+    + the rest (test utils for entry)
   - restructure dirs so essentials one and plugins another dir
+    * essential and optional
+    + put entry under essential
+    - put the rest under essential
+    - plugins under optional
+  - fix external (users') references to entry
+  - only checkout essential, plugins are checked out if used
   - finalize
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
