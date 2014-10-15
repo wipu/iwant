@@ -16,7 +16,7 @@ public class Descripted extends Target {
 
 	private final Source doc;
 	private final Source descript;
-	private final Source maybeIwantWsroot;
+	private final Path maybeIwantWsroot;
 	private final Source abstractArticle;
 	private final Path maybeInitialState;
 	private final Path tutorialWsdefSrc;
@@ -24,8 +24,7 @@ public class Descripted extends Target {
 	private final String docName;
 
 	public Descripted(String namePrefix, String docName, String titleText,
-			Path tutorialWsdefSrc, Source maybeIwantWsroot,
-			Path maybeInitialState) {
+			Path tutorialWsdefSrc, Path maybeIwantWsroot, Path maybeInitialState) {
 		super(namePrefix + docName + ".html");
 		this.docName = docName;
 		this.titleText = titleText;

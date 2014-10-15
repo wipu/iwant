@@ -91,4 +91,43 @@ public class FileUtilTest extends TestCase {
 		assertTrue(new File(to, "b/B").exists());
 	}
 
+	public void testCopyRecursivelyIncludesSvnMetafilesIfToldSo()
+			throws IOException {
+		TestArea testArea = TestArea.forTest(this);
+		File from = testArea.newDir("from");
+		testArea.newDir("from/.svn");
+		testArea.hasFile("from/A", "");
+		testArea.newDir("from/b");
+		testArea.newDir("from/b/.svn");
+		testArea.hasFile("from/b/B", "");
+
+		File to = testArea.newDir("to");
+
+		FileUtil.copyRecursively(from, to, true);
+
+		assertTrue(new File(to, ".svn").exists());
+		assertTrue(new File(to, "A").exists());
+		assertTrue(new File(to, "b/.svn").exists());
+		assertTrue(new File(to, "b/B").exists());
+	}
+
+	public void testCopyRecursivelyPreservedXFlag() throws IOException {
+		TestArea testArea = TestArea.forTest(this);
+		File from = testArea.newDir("from");
+		testArea.hasFile("from/x", "").setExecutable(true);
+		testArea.hasFile("from/nonx", "");
+		testArea.newDir("from/b");
+		testArea.hasFile("from/b/x", "").setExecutable(true);
+		testArea.hasFile("from/b/nonx", "");
+
+		File to = testArea.newDir("to");
+
+		FileUtil.copyRecursively(from, to, true);
+
+		assertTrue(new File(to, "x").canExecute());
+		assertFalse(new File(to, "nonx").canExecute());
+		assertTrue(new File(to, "b/x").canExecute());
+		assertFalse(new File(to, "b/nonx").canExecute());
+	}
+
 }

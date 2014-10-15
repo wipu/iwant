@@ -101,7 +101,12 @@ public class FileUtil {
 	}
 
 	public static int copyRecursively(File from, File to) throws IOException {
-		if (".svn".equals(from.getName())) {
+		return copyRecursively(from, to, false);
+	}
+
+	public static int copyRecursively(File from, File to, boolean includeSvnDirs)
+			throws IOException {
+		if (!includeSvnDirs && ".svn".equals(from.getName())) {
 			// TODO handle svn filtering only once
 			return 0;
 		}
@@ -110,11 +115,12 @@ public class FileUtil {
 			to.mkdir();
 			for (File child : from.listFiles()) {
 				File toChild = new File(to, child.getName());
-				count += copyRecursively(child, toChild);
+				count += copyRecursively(child, toChild, includeSvnDirs);
 			}
 			return count;
 		} else {
 			FileUtil.copyFile(from, to);
+			to.setExecutable(from.canExecute());
 			return 1;
 		}
 	}

@@ -67,31 +67,31 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static SortedSet<JavaSrcModule> allSrcModules() {
-		return new TreeSet<JavaSrcModule>(Arrays.asList(iwantApiCore(),
-				iwantApiJavamodules(), iwantApimocks(), iwantApiModel(),
-				iwantApiWsdef(), iwantCoreAnt(), iwantCoreDownload(),
-				iwantCoreservices(), iwantDeprecatedEmma(), iwantEntry(),
-				iwantEntry2(), iwantEntry3(), iwantDocs(),
-				iwantEclipseSettings(), iwantEmbedded(), iwantExampleWsdef(),
-				iwantIwantWsrootFinder(), iwantMockWsroot(), iwantPlanner(),
-				iwantPlannerApi(), iwantPlannerMocks(), iwantPluginAnt(),
-				iwantPluginFindbugs(), iwantPluginGithub(),
-				iwantPluginJacoco(), iwantPluginPmd(), iwantPluginWar(),
-				iwantTestarea(), iwantTestresources(), iwantTutorialWsdefs()));
+		return new TreeSet<JavaSrcModule>(Arrays.asList(iwantApiCore,
+				iwantApiJavamodules, iwantApimocks, iwantApiModel,
+				iwantApiWsdef, iwantCoreAnt, iwantCoreDownload,
+				iwantCoreservices, iwantDeprecatedEmma, iwantEntry,
+				iwantEntry2, iwantEntry3, iwantDocs, iwantEclipseSettings,
+				iwantEmbedded, iwantExampleWsdef, iwantIwantWsrootFinder,
+				iwantMockWsroot(), iwantPlanner, iwantPlannerApi,
+				iwantPlannerMocks, iwantPluginAnt, iwantPluginFindbugs,
+				iwantPluginGithub, iwantPluginJacoco, iwantPluginPmd,
+				iwantPluginWar, iwantTestarea, iwantTestresources,
+				iwantTutorialWsdefs));
 	}
 
 	private static SortedSet<JavaSrcModule> modulesForCoverage() {
 		SortedSet<JavaSrcModule> mods = allSrcModules();
-		mods.remove(iwantExampleWsdef());
+		mods.remove(iwantExampleWsdef);
 		mods.remove(iwantMockWsroot());
-		mods.remove(iwantTutorialWsdefs());
+		mods.remove(iwantTutorialWsdefs);
 		return mods;
 	}
 
 	private static SortedSet<JavaModule> allModules() {
 		SortedSet<JavaModule> all = new TreeSet<JavaModule>();
 		all.addAll(allSrcModules());
-		all.addAll(Arrays.asList(ant(), commonsMath(), junit()));
+		all.addAll(Arrays.asList(ant, commonsMath, junit));
 		return all;
 	}
 
@@ -123,7 +123,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static Target jacocoReport() {
 		return JacocoTargetsOfJavaModules
 				.with()
-				.jacocoWithDeps(jacoco(), asm501Jar())
+				.jacocoWithDeps(jacoco(), asm501Jar)
 				.antJars(TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar())
 				.modules(modulesForCoverage()).end()
@@ -168,14 +168,14 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static Target listOfExternalDeps() {
 		ConcatenatedBuilder deps = Concatenated.named("list-of-ext-deps");
-		deps.pathTo(ant().mainArtifact()).string("\n");
-		deps.pathTo(antLauncher().mainArtifact()).string("\n");
-		deps.pathTo(asm().mainArtifact()).string("\n");
-		deps.pathTo(commonsIo().mainArtifact()).string("\n");
-		deps.pathTo(commonsMath().mainArtifact()).string("\n");
-		deps.pathTo(jaxen().mainArtifact()).string("\n");
-		deps.pathTo(junit().mainArtifact()).string("\n");
-		deps.pathTo(pmd().mainArtifact()).string("\n");
+		deps.pathTo(ant.mainArtifact()).string("\n");
+		deps.pathTo(antLauncher.mainArtifact()).string("\n");
+		deps.pathTo(asm.mainArtifact()).string("\n");
+		deps.pathTo(commonsIo.mainArtifact()).string("\n");
+		deps.pathTo(commonsMath.mainArtifact()).string("\n");
+		deps.pathTo(jaxen.mainArtifact()).string("\n");
+		deps.pathTo(junit.mainArtifact()).string("\n");
+		deps.pathTo(pmd.mainArtifact()).string("\n");
 		return deps.end();
 	}
 
@@ -202,153 +202,144 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	 * 
 	 * @return
 	 */
-	private static JavaModule ant() {
-		return JavaBinModule.providing(
-				FromRepository.ibiblio().group("org/apache/ant").name("ant")
-						.version("1.7.1")).end();
-	}
+	private static JavaModule ant = JavaBinModule.providing(
+			FromRepository.ibiblio().group("org/apache/ant").name("ant")
+					.version("1.7.1")).end();
 
 	/**
 	 * TODO reuse with TestedIwantDependencies
 	 * 
 	 * @return
 	 */
-	private static JavaModule antLauncher() {
-		return JavaBinModule.providing(
-				FromRepository.ibiblio().group("org/apache/ant")
-						.name("ant-launcher").version("1.7.1")).end();
-	}
+	private static JavaModule antLauncher = JavaBinModule.providing(
+			FromRepository.ibiblio().group("org/apache/ant")
+					.name("ant-launcher").version("1.7.1")).end();
 
-	private static JavaModule asm() {
-		return JavaBinModule.providing(
-				FromRepository.ibiblio().group("asm").name("asm")
-						.version("3.2")).end();
-	}
+	private static JavaModule asm = JavaBinModule.providing(
+			FromRepository.ibiblio().group("asm").name("asm").version("3.2"))
+			.end();
 
-	private static Path asm501Jar() {
-		return FromRepository.repo1MavenOrg().group("org/ow2/asm")
-				.name("asm-all").version("5.0.1");
-	}
+	private static Path asm501Jar = FromRepository.repo1MavenOrg()
+			.group("org/ow2/asm").name("asm-all").version("5.0.1");
 
-	private static JavaModule commonsIo() {
-		return JavaBinModule.providing(
-				FromRepository.ibiblio().group("org/apache/commons")
-						.name("commons-io").version("1.3.2")).end();
-	}
+	private static JavaModule commonsIo = JavaBinModule.providing(
+			FromRepository.ibiblio().group("org/apache/commons")
+					.name("commons-io").version("1.3.2")).end();
 
-	private static JavaModule commonsMath() {
-		return JavaBinModule.providing(
-				FromRepository.ibiblio().group("commons-math")
-						.name("commons-math").version("1.2")).end();
-	}
+	private static JavaModule commonsMath = JavaBinModule.providing(
+			FromRepository.ibiblio().group("commons-math").name("commons-math")
+					.version("1.2")).end();
 
-	private static JavaSrcModule iwantApiCore() {
-		return iwantSrcModule("api-core")
-				.mainDeps(iwantApiModel(), iwantCoreservices(), iwantEntry())
-				.testDeps(iwantApimocks(), junit()).end();
-	}
+	private static JavaModule jaxen = JavaBinModule.providing(
+			FromRepository.ibiblio().group("jaxen").name("jaxen")
+					.version("1.1.4")).end();
 
-	private static JavaSrcModule iwantApiJavamodules() {
-		return iwantSrcModule("api-javamodules")
-				.mainDeps(iwantApiCore(), iwantApiModel())
-				.testDeps(iwantApimocks(), iwantCoreservices(), iwantEntry(),
-						iwantTestarea(), junit()).end();
-	}
+	private static JavaModule junit = JavaBinModule.providing(
+			FromRepository.ibiblio().group("junit").name("junit")
+					.version("4.8.2")).end();
 
-	private static JavaSrcModule iwantApimocks() {
-		return iwantSrcModule("apimocks")
-				.mainDeps(iwantApiModel(), iwantCoreservices(), iwantEntry(),
-						iwantTestarea(), junit()).noTestJava().end();
-	}
+	// TODO document dependency to asm, jaxen
+	private static JavaModule pmd = JavaBinModule.providing(
+			FromRepository.ibiblio().group("pmd").name("pmd").version("4.3"))
+			.end();
 
-	private static JavaSrcModule iwantApiModel() {
-		return iwantSrcModule("api-model").mainDeps().testDeps(junit()).end();
-	}
+	private static JavaSrcModule iwantApiModel = iwantSrcModule("api-model")
+			.mainDeps().testDeps(junit).end();
 
-	private static JavaSrcModule iwantApiWsdef() {
-		return iwantSrcModule("api-wsdef").noTestJava()
-				.mainDeps(iwantApiModel(), iwantApiJavamodules()).end();
-	}
+	private static JavaSrcModule iwantTestarea = iwantSrcModule("testarea")
+			.noTestJava().mainDeps(junit).end();
 
-	private static JavaSrcModule iwantCoreAnt() {
-		return iwantSrcModule("core-ant")
-				.mainDeps(iwantApiModel(), iwantCoreservices(), iwantEntry())
-				.testDeps(iwantApiCore(), iwantApimocks(), iwantCoreDownload(),
-						iwantEmbedded(), iwantTestarea(), junit()).end();
-	}
+	private static JavaBinModule iwantWsRootMarker = JavaBinModule.providing(
+			Source.underWsroot("iwant-wsroot-marker")).end();
 
-	private static JavaSrcModule iwantCoreDownload() {
-		return iwantSrcModule("core-download")
-				.mainDeps(iwantApiModel(), iwantCoreservices(), iwantEntry())
-				.testDeps(iwantApimocks(), iwantTestarea(), junit()).end();
-	}
+	private static JavaSrcModule iwantIwantWsrootFinder = iwantSrcModule(
+			"iwant-wsroot-finder").noTestJava().mainDeps(iwantWsRootMarker)
+			.end();
 
-	private static JavaSrcModule iwantCoreservices() {
-		return iwantSrcModule("coreservices")
-				.mainDeps(iwantApiModel(), iwantEntry(), iwantEntry2())
-				.testDeps(iwantTestarea(), junit()).end();
-	}
+	private static JavaSrcModule iwantEntry = essentialModule("entry")
+			.testResources("src/test/resources")
+			.mainJava("as-some-developer/with/java").mainDeps(iwantTestarea)
+			.testDeps(iwantIwantWsrootFinder, junit).end();
 
-	private static JavaSrcModule iwantDeprecatedEmma() {
-		return iwantSrcModule("deprecated-emma")
-				.mainDeps(iwantApiCore(), iwantApiJavamodules(),
-						iwantApiModel(), iwantCoreAnt(), iwantCoreservices(),
-						iwantEntry(), iwantEntry3())
-				.testDeps(iwantApimocks(), iwantCoreDownload(),
-						iwantEmbedded(), junit()).end();
-	}
+	private static JavaSrcModule iwantEntry2 = iwantSrcModule("entry2")
+			.mainDeps(iwantEntry)
+			.testDeps(iwantIwantWsrootFinder, iwantTestarea, junit).end();
 
-	private static JavaSrcModule iwantDocs() {
-		return iwantSrcModule("docs").noMainJava().noTestJava().end();
-	}
+	private static JavaSrcModule iwantCoreservices = iwantSrcModule(
+			"coreservices").mainDeps(iwantApiModel, iwantEntry, iwantEntry2)
+			.testDeps(iwantTestarea, junit).end();
 
-	private static JavaSrcModule iwantEclipseSettings() {
-		return iwantSrcModule("eclipse-settings")
-				.mainDeps(iwantApiCore(), iwantApiJavamodules(),
-						iwantApiModel(), iwantEntry())
-				.testDeps(iwantApimocks(), junit()).end();
-	}
+	private static JavaSrcModule iwantApimocks = iwantSrcModule("apimocks")
+			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry,
+					iwantTestarea, junit).noTestJava().end();
 
-	private static JavaSrcModule iwantEmbedded() {
-		return iwantSrcModule("embedded")
-				.mainDeps(iwantApiModel(), iwantApiJavamodules(),
-						iwantApiWsdef(), iwantCoreservices(), iwantEntry(),
-						iwantEntry3())
-				.testDeps(iwantApimocks(), iwantApiCore(), iwantTestarea(),
-						junit()).end();
-	}
+	private static JavaSrcModule iwantApiCore = iwantSrcModule("api-core")
+			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
+			.testDeps(iwantApimocks, junit).end();
 
-	private static JavaSrcModule iwantEntry() {
-		return essentialModule("entry").testResources("src/test/resources")
-				.mainJava("as-some-developer/with/java")
-				.mainDeps(iwantTestarea())
-				.testDeps(iwantIwantWsrootFinder(), junit()).end();
-	}
+	private static JavaSrcModule iwantApiJavamodules = iwantSrcModule(
+			"api-javamodules")
+			.mainDeps(iwantApiCore, iwantApiModel)
+			.testDeps(iwantApimocks, iwantCoreservices, iwantEntry,
+					iwantTestarea, junit).end();
 
-	private static JavaSrcModule iwantEntry2() {
-		return iwantSrcModule("entry2").mainDeps(iwantEntry())
-				.testDeps(iwantIwantWsrootFinder(), iwantTestarea(), junit())
-				.end();
-	}
+	private static JavaSrcModule iwantApiWsdef = iwantSrcModule("api-wsdef")
+			.noTestJava().mainDeps(iwantApiModel, iwantApiJavamodules).end();
 
-	private static JavaSrcModule iwantEntry3() {
-		return iwantSrcModule("entry3")
-				.mainDeps(iwantApiCore(), iwantApiJavamodules(),
-						iwantApiModel(), iwantApiWsdef(), iwantCoreDownload(),
-						iwantCoreservices(), iwantEntry(), iwantEntry2(),
-						iwantIwantWsrootFinder(), iwantPlanner(),
-						iwantPlannerApi())
-				.testDeps(iwantApimocks(), iwantEclipseSettings(),
-						iwantPlannerMocks(), iwantTestarea(), junit()).end();
-	}
+	private static JavaSrcModule iwantCoreDownload = iwantSrcModule(
+			"core-download")
+			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
+			.testDeps(iwantApimocks, iwantTestarea, junit).end();
 
-	private static JavaSrcModule iwantExampleWsdef() {
-		return iwantSrcModule("example-wsdef")
-				.noTestJava()
-				.mainDeps(iwantApiCore(), iwantApiJavamodules(),
-						iwantApiModel(), iwantApiWsdef(), iwantEntry3(),
-						iwantEclipseSettings()).end();
-	}
+	private static JavaSrcModule iwantPlannerApi = iwantSrcModule("planner-api")
+			.mainDeps(iwantEntry).testDeps(junit).end();
+
+	private static JavaSrcModule iwantPlannerMocks = iwantSrcModule(
+			"planner-mocks").noTestJava().mainDeps(iwantPlannerApi, junit)
+			.end();
+
+	private static JavaSrcModule iwantPlanner = iwantSrcModule("planner")
+			.mainDeps(iwantEntry, iwantPlannerApi)
+			.testDeps(iwantPlannerMocks, junit).end();
+
+	private static JavaSrcModule iwantEclipseSettings = iwantSrcModule(
+			"eclipse-settings")
+			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
+					iwantEntry).testDeps(iwantApimocks, junit).end();
+
+	private static JavaSrcModule iwantEntry3 = iwantSrcModule("entry3")
+			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
+					iwantApiWsdef, iwantCoreDownload, iwantCoreservices,
+					iwantEntry, iwantEntry2, iwantIwantWsrootFinder,
+					iwantPlanner, iwantPlannerApi)
+			.testDeps(iwantApimocks, iwantEclipseSettings, iwantPlannerMocks,
+					iwantTestarea, junit).end();
+
+	private static JavaSrcModule iwantEmbedded = iwantSrcModule("embedded")
+			.mainDeps(iwantApiModel, iwantApiJavamodules, iwantApiWsdef,
+					iwantCoreservices, iwantEntry, iwantEntry3)
+			.testDeps(iwantApimocks, iwantApiCore, iwantTestarea, junit).end();
+
+	private static JavaSrcModule iwantCoreAnt = iwantSrcModule("core-ant")
+			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
+			.testDeps(iwantApiCore, iwantApimocks, iwantCoreDownload,
+					iwantEmbedded, iwantTestarea, junit).end();
+
+	private static JavaSrcModule iwantDeprecatedEmma = iwantSrcModule(
+			"deprecated-emma")
+			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
+					iwantCoreAnt, iwantCoreservices, iwantEntry, iwantEntry3)
+			.testDeps(iwantApimocks, iwantCoreDownload, iwantEmbedded, junit)
+			.end();
+
+	private static JavaSrcModule iwantDocs = iwantSrcModule("docs")
+			.noMainJava().noTestJava().end();
+
+	private static JavaSrcModule iwantExampleWsdef = iwantSrcModule(
+			"example-wsdef")
+			.noTestJava()
+			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
+					iwantApiWsdef, iwantEntry3, iwantEclipseSettings).end();
 
 	private static JavaSrcModule iwantMockWsroot() {
 		IwantSrcModuleSpex mod = iwantSrcModule("mock-wsroot").noMainJava()
@@ -363,127 +354,62 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		mod.mainJava("iwant-entry3/src/main/java");
 		mod.mainJava("iwant-iwant-wsroot-finder/src/main/java");
 		mod.mainJava("iwant-testarea/src/main/java");
-		return mod.mainDeps(junit()).end();
+		return mod.mainDeps(junit).end();
 	}
 
-	private static JavaSrcModule iwantPluginAnt() {
-		return iwantSrcModule("plugin-ant")
-				.testResources("src/test/resources")
-				.mainDeps(ant(), antLauncher(), iwantApiModel())
-				.testDeps(junit(), iwantApimocks(), iwantEntry(),
-						iwantTestarea(), iwantTestresources()).end();
-	}
+	private static JavaSrcModule iwantTestresources = iwantSrcModule(
+			"testresources").noTestJava().mainResources("src/main/resources")
+			.end();
 
-	private static JavaSrcModule iwantPluginFindbugs() {
-		return iwantSrcModule("plugin-findbugs")
-				.testResources("src/test/resources")
-				.mainDeps(commonsIo(), iwantApiCore(), iwantApiJavamodules(),
-						iwantApiModel(), iwantCoreAnt(), iwantCoreDownload(),
-						iwantEntry3(), iwantPluginAnt())
-				.testDeps(junit(), iwantApimocks(), iwantEntry(),
-						iwantEmbedded(), iwantTestarea()).end();
-	}
+	private static JavaSrcModule iwantPluginAnt = iwantSrcModule("plugin-ant")
+			.testResources("src/test/resources")
+			.mainDeps(ant, antLauncher, iwantApiModel)
+			.testDeps(junit, iwantApimocks, iwantEntry, iwantTestarea,
+					iwantTestresources).end();
 
-	private static JavaSrcModule iwantPluginGithub() {
-		return iwantSrcModule("plugin-github")
-				.mainDeps(iwantApiCore(), iwantApiModel(), iwantCoreDownload(),
-						iwantEntry3(), iwantPluginAnt()).testDeps(junit())
-				.end();
-	}
+	private static JavaSrcModule iwantPluginFindbugs = iwantSrcModule(
+			"plugin-findbugs")
+			.testResources("src/test/resources")
+			.mainDeps(commonsIo, iwantApiCore, iwantApiJavamodules,
+					iwantApiModel, iwantCoreAnt, iwantCoreDownload,
+					iwantEntry3, iwantPluginAnt)
+			.testDeps(junit, iwantApimocks, iwantEntry, iwantEmbedded,
+					iwantTestarea).end();
 
-	private static JavaSrcModule iwantPluginJacoco() {
-		return iwantSrcModule("plugin-jacoco")
-				.mainDeps(commonsIo(), iwantApiCore(), iwantApiModel(),
-						iwantApiJavamodules(), iwantCoreAnt(),
-						iwantCoreDownload(), iwantEntry3(), iwantPluginAnt())
-				.testDeps(junit(), iwantApimocks(), iwantEntry(),
-						iwantEmbedded(), iwantTestarea()).end();
-	}
+	private static JavaSrcModule iwantPluginGithub = iwantSrcModule(
+			"plugin-github")
+			.mainDeps(iwantApiCore, iwantApiModel, iwantCoreDownload,
+					iwantEntry3, iwantPluginAnt).testDeps(junit).end();
 
-	private static JavaSrcModule iwantPluginPmd() {
-		// TODO don't depend directly on asm, jaxen: pmd depends on them
-		return iwantSrcModule("plugin-pmd")
-				.testResources("src/test/resources")
-				.mainDeps(ant(), asm(), commonsIo(), iwantApiModel(), jaxen(),
-						pmd())
-				.testDeps(junit(), iwantApimocks(), iwantEntry(),
-						iwantTestarea(), iwantTestresources()).end();
-	}
+	private static JavaSrcModule iwantPluginJacoco = iwantSrcModule(
+			"plugin-jacoco")
+			.mainDeps(commonsIo, iwantApiCore, iwantApiModel,
+					iwantApiJavamodules, iwantCoreAnt, iwantCoreDownload,
+					iwantEntry3, iwantPluginAnt)
+			.testDeps(junit, iwantApimocks, iwantEntry, iwantEmbedded,
+					iwantTestarea).end();
 
-	private static JavaSrcModule iwantPluginWar() {
-		return iwantSrcModule("plugin-war")
-				.mainDeps(ant(), antLauncher(), iwantApiModel())
-				.testDeps(junit(), iwantApimocks(), iwantEntry(),
-						iwantPluginAnt(), iwantTestarea(), iwantTestresources())
-				.end();
-	}
+	// TODO don't depend directly on asm, jaxen: pmd depends on them
+	private static JavaSrcModule iwantPluginPmd = iwantSrcModule("plugin-pmd")
+			.testResources("src/test/resources")
+			.mainDeps(ant, asm, commonsIo, iwantApiModel, jaxen, pmd)
+			.testDeps(junit, iwantApimocks, iwantEntry, iwantTestarea,
+					iwantTestresources).end();
 
-	private static JavaSrcModule iwantPlanner() {
-		return iwantSrcModule("planner")
-				.mainDeps(iwantEntry(), iwantPlannerApi())
-				.testDeps(iwantPlannerMocks(), junit()).end();
-	}
+	private static JavaSrcModule iwantPluginWar = iwantSrcModule("plugin-war")
+			.mainDeps(ant, antLauncher, iwantApiModel)
+			.testDeps(junit, iwantApimocks, iwantEntry, iwantPluginAnt,
+					iwantTestarea, iwantTestresources).end();
 
-	private static JavaSrcModule iwantPlannerApi() {
-		return iwantSrcModule("planner-api").mainDeps(iwantEntry())
-				.testDeps(junit()).end();
-	}
-
-	private static JavaSrcModule iwantPlannerMocks() {
-		return iwantSrcModule("planner-mocks").noTestJava()
-				.mainDeps(iwantPlannerApi(), junit()).end();
-	}
-
-	private static JavaSrcModule iwantTestarea() {
-		return iwantSrcModule("testarea").noTestJava().mainDeps(junit()).end();
-	}
-
-	private static JavaSrcModule iwantTestresources() {
-		return iwantSrcModule("testresources").noTestJava()
-				.mainResources("src/main/resources").end();
-	}
-
-	private static JavaSrcModule iwantTutorialWsdefs() {
-		return iwantSrcModule("tutorial-wsdefs")
-				.noMainJava()
-				.noTestJava()
-				.mainJava("src")
-				.mainDeps(commonsMath(), iwantApiCore(), iwantApiJavamodules(),
-						iwantApiModel(), iwantApiWsdef(), iwantCoreAnt(),
-						iwantCoreDownload(), iwantEntry3(),
-						iwantEclipseSettings(), iwantPluginAnt(),
-						iwantPluginFindbugs(), iwantPluginGithub(),
-						iwantPluginJacoco(), iwantPluginPmd(), iwantPluginWar())
-				.end();
-	}
-
-	private static JavaSrcModule iwantIwantWsrootFinder() {
-		return iwantSrcModule("iwant-wsroot-finder").noTestJava()
-				.mainDeps(iwantWsRootMarker()).end();
-	}
-
-	private static JavaBinModule iwantWsRootMarker() {
-		return JavaBinModule.providing(
-				Source.underWsroot("iwant-wsroot-marker")).end();
-	}
-
-	private static JavaModule jaxen() {
-		return JavaBinModule.providing(
-				FromRepository.ibiblio().group("jaxen").name("jaxen")
-						.version("1.1.4")).end();
-	}
-
-	private static JavaModule junit() {
-		return JavaBinModule.providing(
-				FromRepository.ibiblio().group("junit").name("junit")
-						.version("4.8.2")).end();
-	}
-
-	private static JavaModule pmd() {
-		// TODO document dependency to asm, jaxen
-		return JavaBinModule.providing(
-				FromRepository.ibiblio().group("pmd").name("pmd")
-						.version("4.3")).end();
-	}
+	private static JavaSrcModule iwantTutorialWsdefs = iwantSrcModule(
+			"tutorial-wsdefs")
+			.noMainJava()
+			.noTestJava()
+			.mainJava("src")
+			.mainDeps(commonsMath, iwantApiCore, iwantApiJavamodules,
+					iwantApiModel, iwantApiWsdef, iwantCoreAnt,
+					iwantCoreDownload, iwantEntry3, iwantEclipseSettings,
+					iwantPluginAnt, iwantPluginFindbugs, iwantPluginGithub,
+					iwantPluginJacoco, iwantPluginPmd, iwantPluginWar).end();
 
 }

@@ -20,6 +20,7 @@ public class Tutorial extends Target {
 	private final String namePrefix;
 	private final List<Descripted> pages = new ArrayList<Descripted>();
 	private final Path styleCss;
+	private static final Path copyOfLocalIwantWs = new CopyOfLocalIwantWsForTutorial();
 
 	private Tutorial(String namePrefix, Descripted bootstrappingDoc) {
 		super(namePrefix + "tutorial");
@@ -65,7 +66,7 @@ public class Tutorial extends Target {
 						"",
 						"bootstrapping-locally",
 						"Acquiring iwant bootstrapper by svn-exporting it from a local directory",
-						tutorialWsdefSrc(), Source.underWsroot(""), null));
+						tutorialWsdefSrc(), copyOfLocalIwantWs, null));
 	}
 
 	public static Tutorial remote() {
