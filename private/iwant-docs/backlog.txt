@@ -1115,8 +1115,7 @@
     + split
     + also iwant-entry-tests needed
     + and iwant-testarea to private
-  - use IwantWsRootFinder in TestArea
-  - fix external (users') references to entry
+  + fix external (users') references to entry
   - only checkout essential, plugins are checked out if used
   - finalize
 
