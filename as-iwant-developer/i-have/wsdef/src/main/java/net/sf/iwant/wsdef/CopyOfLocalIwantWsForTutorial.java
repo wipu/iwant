@@ -75,7 +75,7 @@ public class CopyOfLocalIwantWsForTutorial extends Target {
 		if ("/as-iwant-developer/.i-cached".equals(fileName)) {
 			return false;
 		}
-		if ("/iwant-testarea/testarea-root".equals(fileName)) {
+		if ("/private/iwant-testarea/testarea-root".equals(fileName)) {
 			return false;
 		}
 		if (fileName.endsWith("/classes")) {

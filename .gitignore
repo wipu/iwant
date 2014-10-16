@@ -1,6 +1,6 @@
 .classpath
 .project
 .settings
-/essential/iwant-testarea/testarea-root/*
-!/essential/iwant-testarea/testarea-root/.keep
+/private/iwant-testarea/testarea-root/*
+!/private/iwant-testarea/testarea-root/.keep
 **/classes/

@@ -1111,10 +1111,10 @@
     + modules needed only by iwant's own build and test under private
     + plugins under optional
     + put the rest under essential
-  - split IwantNetworkMock from entry to separate private module iwant-entrymocks
+  + split IwantNetworkMock from entry to separate private module iwant-entrymocks
     + split
     + also iwant-entry-tests needed
-    - and iwant-testarea to private
+    + and iwant-testarea to private
   - use IwantWsRootFinder in TestArea
   - fix external (users') references to entry
   - only checkout essential, plugins are checked out if used

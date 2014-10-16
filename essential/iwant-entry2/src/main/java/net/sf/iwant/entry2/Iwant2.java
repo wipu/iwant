@@ -89,7 +89,6 @@ public class Iwant2 {
 		srcDirs.add("essential/iwant-iwant-wsroot-finder/" + "src/main/java");
 		srcDirs.add("essential/iwant-planner/" + "src/main/java");
 		srcDirs.add("essential/iwant-planner-api/" + "src/main/java");
-		srcDirs.add("essential/iwant-testarea/" + "src/main/java");
 		return srcDirs;
 	}
 

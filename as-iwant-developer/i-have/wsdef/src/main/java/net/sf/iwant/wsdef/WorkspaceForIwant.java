@@ -255,7 +255,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantApiModel = essentialModule("api-model")
 			.mainDeps().testDeps(junit).end();
 
-	private static JavaSrcModule iwantTestarea = essentialModule("testarea")
+	private static JavaSrcModule iwantTestarea = privateModule("testarea")
 			.noTestJava().mainDeps(junit).end();
 
 	private static JavaBinModule iwantWsRootMarker = JavaBinModule.providing(
@@ -371,7 +371,6 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		mod.mainJava("essential/iwant-entry2/src/main/java");
 		mod.mainJava("essential/iwant-entry3/src/main/java");
 		mod.mainJava("essential/iwant-iwant-wsroot-finder/src/main/java");
-		mod.mainJava("essential/iwant-testarea/src/main/java");
 		return mod.mainDeps(junit).end();
 	}
 

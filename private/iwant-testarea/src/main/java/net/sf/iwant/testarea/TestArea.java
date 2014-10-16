@@ -29,7 +29,7 @@ public final class TestArea {
 			while (wsRootCandidate.getParentFile() != null) {
 				wsRootCandidate = wsRootCandidate.getParentFile();
 				File testAreaRootCandidate = new File(wsRootCandidate,
-						"essential/iwant-testarea/testarea-root");
+						"private/iwant-testarea/testarea-root");
 				if (testAreaRootCandidate.exists()) {
 					return testAreaRootCandidate;
 				}
