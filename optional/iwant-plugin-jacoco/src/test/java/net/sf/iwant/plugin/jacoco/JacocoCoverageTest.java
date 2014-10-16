@@ -198,4 +198,80 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				classpath.toString());
 	}
 
+	public void testJvmArgsContainsSaneDefaultsIfNotSpecified()
+			throws Exception {
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "Hello");
+		JacocoInstrumentation instr = JacocoInstrumentation
+				.of(classesAndSources.classes())
+				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+		instr.path(ctx);
+
+		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
+				.classLocations(instr).antJars(antJar(), antLauncherJar())
+				.jacocoWithDeps(jacoco(), asm())
+				.mainClassAndArguments("instrtest.Hello").end();
+
+		assertEquals("[-XX:-UseSplitVerifier]", coverage.jvmargs().toString());
+	}
+
+	public void testJvmArgsCanBeCleared() throws Exception {
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "Hello");
+		JacocoInstrumentation instr = JacocoInstrumentation
+				.of(classesAndSources.classes())
+				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+		instr.path(ctx);
+
+		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
+				.classLocations(instr).antJars(antJar(), antLauncherJar())
+				.jacocoWithDeps(jacoco(), asm())
+				.mainClassAndArguments("instrtest.Hello").noJvmArgs().end();
+
+		assertEquals("[]", coverage.jvmargs().toString());
+	}
+
+	public void testJvmArgsCanBeDefined() throws Exception {
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "Hello");
+		JacocoInstrumentation instr = JacocoInstrumentation
+				.of(classesAndSources.classes())
+				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+		instr.path(ctx);
+
+		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
+				.classLocations(instr).antJars(antJar(), antLauncherJar())
+				.jacocoWithDeps(jacoco(), asm())
+				.mainClassAndArguments("instrtest.Hello").noJvmArgs()
+				.jvmArgs("jvmarg0", "jvmarg1").end();
+
+		assertEquals("[jvmarg0, jvmarg1]", coverage.jvmargs().toString());
+	}
+
+	public void testJvmArgsAreUsedInTheAntScriptUnderTmpDir() throws Exception {
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "Hello");
+		JacocoInstrumentation instr = JacocoInstrumentation
+				.of(classesAndSources.classes())
+				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+		instr.path(ctx);
+
+		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
+				.classLocations(instr).antJars(antJar(), antLauncherJar())
+				.jacocoWithDeps(jacoco(), asm())
+				.mainClassAndArguments("instrtest.Hello")
+				.jvmArgs("-Xillegal-jvm-arg").end();
+		try {
+			coverage.path(ctx);
+			fail();
+		} catch (InvocationTargetException e) {
+			// expected, a hackish way of making sure it was used
+			assertTrue(e.getCause() instanceof ExitCalledException);
+		}
+
+		String scriptContent = contentOf(new File(tmpDir, "coverage.exec.xml"));
+		assertTrue(scriptContent
+				.contains("<jvmarg value=\"-Xillegal-jvm-arg\"/>"));
+	}
+
 }

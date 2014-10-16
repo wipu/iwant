@@ -24,11 +24,13 @@ public class JacocoCoverage extends Target {
 	private final String mainClassName;
 	private final List<String> mainClassArgs;
 	private final Path mainClassArgsFile;
+	private final List<String> jvmargs;
 
 	public JacocoCoverage(String name, List<Path> classLocations,
 			List<Path> antJars, JacocoDistribution jacoco,
 			Collection<? extends Path> deps, String mainClassName,
-			List<String> mainClassArgs, Path mainClassArgsFile) {
+			List<String> mainClassArgs, Path mainClassArgsFile,
+			List<String> jvmargs) {
 		super(name);
 		this.classLocations = classLocations;
 		this.antJars = antJars;
@@ -37,6 +39,7 @@ public class JacocoCoverage extends Target {
 		this.mainClassName = mainClassName;
 		this.mainClassArgs = mainClassArgs;
 		this.mainClassArgsFile = mainClassArgsFile;
+		this.jvmargs = jvmargs;
 	}
 
 	public static JacocoCoverageSpexPlease with() {
@@ -53,6 +56,11 @@ public class JacocoCoverage extends Target {
 		private List<String> mainClassArgs;
 		private Path mainClassArgsFile;
 		private Collection<? extends Path> deps;
+		private final List<String> jvmargs = new ArrayList<String>();
+
+		private JacocoCoverageSpexPlease() {
+			jvmArgs("-XX:-UseSplitVerifier");
+		}
 
 		public JacocoCoverageSpexPlease name(String name) {
 			this.name = name;
@@ -61,7 +69,8 @@ public class JacocoCoverage extends Target {
 
 		public JacocoCoverage end() {
 			return new JacocoCoverage(name, classLocations, antJars, jacoco,
-					deps, mainClassName, mainClassArgs, mainClassArgsFile);
+					deps, mainClassName, mainClassArgs, mainClassArgsFile,
+					jvmargs);
 		}
 
 		public JacocoCoverageSpexPlease classLocations(Path... classLocations) {
@@ -107,6 +116,16 @@ public class JacocoCoverage extends Target {
 				Path mainClassArgumentsFile) {
 			this.mainClassName = mainClass;
 			this.mainClassArgsFile = mainClassArgumentsFile;
+			return this;
+		}
+
+		public JacocoCoverageSpexPlease noJvmArgs() {
+			jvmargs.clear();
+			return this;
+		}
+
+		public JacocoCoverageSpexPlease jvmArgs(String... jvmargs) {
+			this.jvmargs.addAll(Arrays.asList(jvmargs));
 			return this;
 		}
 
@@ -197,6 +216,9 @@ public class JacocoCoverage extends Target {
 		b.append("			</classpath>\n");
 		b.append("			<sysproperty key=\"jacoco-agent.destfile\" file=\""
 				+ ctx.cached(this) + "\" />\n");
+		for (String jvmarg : jvmargs) {
+			b.append("			<jvmarg value=\"" + jvmarg + "\"/>\n");
+		}
 		for (String arg : mainArgsToUse(ctx)) {
 			b.append("			<arg value=\"" + arg + "\" />\n");
 		}
@@ -240,6 +262,10 @@ public class JacocoCoverage extends Target {
 
 	public List<Path> classLocations() {
 		return classLocations;
+	}
+
+	public List<String> jvmargs() {
+		return jvmargs;
 	}
 
 }
