@@ -17,9 +17,9 @@ import net.sf.iwant.apimocks.TargetMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantWsRoot;
+import net.sf.iwant.entrymocks.IwantNetworkMock;
 import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
 
 public class Iwant3Test extends TestCase {
 

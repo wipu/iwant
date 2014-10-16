@@ -1,12 +1,13 @@
-package net.sf.iwant.entry;
+package net.sf.iwant.entry.tests;
 
 import java.io.File;
 import java.net.URL;
 
 import junit.framework.TestCase;
+import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
+import net.sf.iwant.entrymocks.IwantNetworkMock;
 import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
 
 public class DownloadingTest extends TestCase {
 

@@ -8,8 +8,8 @@ import java.io.FileOutputStream;
 import junit.framework.TestCase;
 import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entrymocks.IwantNetworkMock;
 import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
 
 public abstract class IwantTestCase extends TestCase {
 

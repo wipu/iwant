@@ -1,4 +1,4 @@
-package net.sf.iwant.testing;
+package net.sf.iwant.entrymocks;
 
 import java.io.File;
 import java.net.MalformedURLException;

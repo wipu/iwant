@@ -83,7 +83,6 @@ public class Iwant2 {
 		srcDirs.add("essential/iwant-coreservices/" + "src/main/java");
 		srcDirs.add("essential/iwant-deprecated-emma/" + "src/main/java");
 		srcDirs.add("essential/iwant-entry/" + "as-some-developer/with/java");
-		srcDirs.add("essential/iwant-entry/" + "src/main/java");
 		srcDirs.add("essential/iwant-eclipse-settings/" + "src/main/java");
 		srcDirs.add("essential/iwant-entry2/" + "src/main/java");
 		srcDirs.add("essential/iwant-entry3/" + "src/main/java");

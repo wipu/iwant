@@ -22,11 +22,11 @@ import net.sf.iwant.apimocks.TargetMock;
 import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
+import net.sf.iwant.entrymocks.IwantNetworkMock;
 import net.sf.iwant.plannerapi.Resource;
 import net.sf.iwant.plannerapi.ResourcePool;
 import net.sf.iwant.plannerapi.TaskDirtiness;
 import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
 
 public class TargetRefreshTaskTest extends TestCase {
 

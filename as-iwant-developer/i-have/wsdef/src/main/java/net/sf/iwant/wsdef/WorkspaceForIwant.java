@@ -80,13 +80,13 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				iwantApiJavamodules, iwantApimocks, iwantApiModel,
 				iwantApiWsdef, iwantCoreAnt, iwantCoreDownload,
 				iwantCoreservices, iwantDeprecatedEmma, iwantEntry,
-				iwantEntry2, iwantEntry3, iwantDocs, iwantEclipseSettings,
-				iwantEmbedded, iwantExampleWsdef, iwantIwantWsrootFinder,
-				iwantMockWsroot(), iwantPlanner, iwantPlannerApi,
-				iwantPlannerMocks, iwantPluginAnt, iwantPluginFindbugs,
-				iwantPluginGithub, iwantPluginJacoco, iwantPluginPmd,
-				iwantPluginWar, iwantTestarea, iwantTestresources,
-				iwantTutorialWsdefs));
+				iwantEntrymocks, iwantEntryTests, iwantEntry2, iwantEntry3,
+				iwantDocs, iwantEclipseSettings, iwantEmbedded,
+				iwantExampleWsdef, iwantIwantWsrootFinder, iwantMockWsroot(),
+				iwantPlanner, iwantPlannerApi, iwantPlannerMocks,
+				iwantPluginAnt, iwantPluginFindbugs, iwantPluginGithub,
+				iwantPluginJacoco, iwantPluginPmd, iwantPluginWar,
+				iwantTestarea, iwantTestresources, iwantTutorialWsdefs));
 	}
 
 	private static SortedSet<JavaSrcModule> modulesForCoverage() {
@@ -266,13 +266,22 @@ public class WorkspaceForIwant implements IwantWorkspace {
 			.end();
 
 	private static JavaSrcModule iwantEntry = essentialModule("entry")
+			.noMainJava().mainJava("as-some-developer/with/java").noTestJava()
+			.mainDeps().end();
+
+	private static JavaSrcModule iwantEntrymocks = privateModule("entrymocks")
+			.noTestJava().mainDeps(iwantEntry, iwantTestarea).end();
+
+	private static JavaSrcModule iwantEntryTests = privateModule("entry-tests")
+			.noMainJava()
 			.testResources("src/test/resources")
-			.mainJava("as-some-developer/with/java").mainDeps(iwantTestarea)
-			.testDeps(iwantIwantWsrootFinder, junit).end();
+			.testDeps(iwantEntry, iwantEntrymocks, iwantIwantWsrootFinder,
+					iwantTestarea, junit).end();
 
 	private static JavaSrcModule iwantEntry2 = essentialModule("entry2")
 			.mainDeps(iwantEntry)
-			.testDeps(iwantIwantWsrootFinder, iwantTestarea, junit).end();
+			.testDeps(iwantEntrymocks, iwantIwantWsrootFinder, iwantTestarea,
+					junit).end();
 
 	private static JavaSrcModule iwantCoreservices = essentialModule(
 			"coreservices").mainDeps(iwantApiModel, iwantEntry, iwantEntry2)
@@ -280,7 +289,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 
 	private static JavaSrcModule iwantApimocks = privateModule("apimocks")
 			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry,
-					iwantTestarea, junit).noTestJava().end();
+					iwantEntrymocks, iwantTestarea, junit).noTestJava().end();
 
 	private static JavaSrcModule iwantApiCore = essentialModule("api-core")
 			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
@@ -321,8 +330,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 					iwantApiWsdef, iwantCoreDownload, iwantCoreservices,
 					iwantEntry, iwantEntry2, iwantIwantWsrootFinder,
 					iwantPlanner, iwantPlannerApi)
-			.testDeps(iwantApimocks, iwantEclipseSettings, iwantPlannerMocks,
-					iwantTestarea, junit).end();
+			.testDeps(iwantApimocks, iwantEclipseSettings, iwantEntrymocks,
+					iwantPlannerMocks, iwantTestarea, junit).end();
 
 	private static JavaSrcModule iwantEmbedded = essentialModule("embedded")
 			.mainDeps(iwantApiModel, iwantApiJavamodules, iwantApiWsdef,
@@ -353,16 +362,16 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantMockWsroot() {
 		IwantSrcModuleSpex mod = privateModule("mock-wsroot").noMainJava()
 				.noTestJava();
-		mod.mainJava("iwant-api-javamodules/src/main/java");
-		mod.mainJava("iwant-apimocks/src/main/java");
-		mod.mainJava("iwant-api-model/src/main/java");
-		mod.mainJava("iwant-api-wsdef/src/main/java");
-		mod.mainJava("iwant-coreservices/src/main/java");
+		mod.mainJava("essential/iwant-api-javamodules/src/main/java");
+		mod.mainJava("essential/iwant-apimocks/src/main/java");
+		mod.mainJava("essential/iwant-api-model/src/main/java");
+		mod.mainJava("essential/iwant-api-wsdef/src/main/java");
+		mod.mainJava("essential/iwant-coreservices/src/main/java");
 		mod.mainJava("essential/iwant-entry/as-some-developer/with/java");
-		mod.mainJava("essential/iwant-entry/src/main/java");
-		mod.mainJava("iwant-entry3/src/main/java");
-		mod.mainJava("iwant-iwant-wsroot-finder/src/main/java");
-		mod.mainJava("iwant-testarea/src/main/java");
+		mod.mainJava("essential/iwant-entry2/src/main/java");
+		mod.mainJava("essential/iwant-entry3/src/main/java");
+		mod.mainJava("essential/iwant-iwant-wsroot-finder/src/main/java");
+		mod.mainJava("essential/iwant-testarea/src/main/java");
 		return mod.mainDeps(junit).end();
 	}
 

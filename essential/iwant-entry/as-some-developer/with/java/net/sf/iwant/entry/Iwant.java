@@ -252,7 +252,7 @@ public class Iwant {
 				Arrays.asList(iwantBootstrapClasses), iwant2Args);
 	}
 
-	File iwantWsrootOfWishedVersion(File asSomeone) {
+	public File iwantWsrootOfWishedVersion(File asSomeone) {
 		try {
 			Properties iwantFromProps = iwantFromProperties(asSomeone);
 			URL iwantLocation = new URL(
@@ -665,7 +665,8 @@ public class Iwant {
 				System.getenv("https_proxy"));
 	}
 
-	static void unixHttpProxyToJavaHttpProxy(String httpProxy, String httpsProxy) {
+	public static void unixHttpProxyToJavaHttpProxy(String httpProxy,
+			String httpsProxy) {
 		proxyUrlToJava(httpProxy, "http");
 		proxyUrlToJava(httpsProxy, "https");
 	}

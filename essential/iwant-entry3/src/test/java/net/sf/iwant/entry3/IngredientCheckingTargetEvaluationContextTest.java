@@ -12,8 +12,8 @@ import net.sf.iwant.apimocks.TargetMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.IwantNetwork;
+import net.sf.iwant.entrymocks.IwantNetworkMock;
 import net.sf.iwant.testarea.TestArea;
-import net.sf.iwant.testing.IwantNetworkMock;
 
 public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 
