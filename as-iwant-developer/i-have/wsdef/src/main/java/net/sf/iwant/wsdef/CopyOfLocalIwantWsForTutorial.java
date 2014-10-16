@@ -43,28 +43,10 @@ public class CopyOfLocalIwantWsForTutorial extends Target {
 		return ingredients;
 	}
 
-	/**
-	 * TODO a way to list non-relevant ones, for reliability
-	 * 
-	 * TODO pass a ctx with wsRoot to ingredients
-	 * 
-	 * TODO hmm, after toplevel dir move not necessary
-	 */
 	private static List<String> relevantSourceNames() {
 		// no iwant-docs here, otherwise editing them triggers new copy and the
 		// whole optimization breaks
-		return Arrays.asList("essential", "iwant-api-core",
-				"iwant-api-javamodules", "iwant-api-model", "iwant-api-wsdef",
-				"iwant-apimocks", "iwant-core-ant", "iwant-core-download",
-				"iwant-coreservices", "iwant-deprecated-emma",
-				"iwant-eclipse-settings", "iwant-embedded", "iwant-entry2",
-				"iwant-entry3", "iwant-example-wsdef",
-				"iwant-iwant-wsroot-finder", "iwant-mock-wsroot",
-				"iwant-planner", "iwant-planner-api", "iwant-planner-mocks",
-				"iwant-plugin-ant", "iwant-plugin-findbugs",
-				"iwant-plugin-github", "iwant-plugin-jacoco",
-				"iwant-plugin-pmd", "iwant-plugin-war", "iwant-testarea",
-				"iwant-testresources");
+		return Arrays.asList("essential", "optional");
 	}
 
 	@Override

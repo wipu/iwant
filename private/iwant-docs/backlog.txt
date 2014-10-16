@@ -1,0 +1,1651 @@
+
+
+#################################################################
+= Done
+#################################################################
+
++ As @developer I want a distillery for "low-ceremony" development of the new, java bootsrapper based iwant, without breaking the current implementation
+
++ As @developer I want a simple "driver script" (refresh.sh) that runs whatever techical definitions of done (compilation, test, descript) I currently have so I just need to give one command after changes to get a "license to commit"
+
++ As @developer I want refresh.sh to compile and test the java entry point
+  * just use junit jar assumedly downloaded by the current as-iwant-developer iwant
+
++ As @developer I want a descript with versioned output for easy and pragmatic TDD: no need to edit expectations, just verify output diffs by eye before commits
+  * cmd echo hello, version output
+
++ As @buildscriptauthor I want to svn export the cli so I can start using a known version of iwant on my project
+  * descript-driven
+
++ As @buildscriptauthor I want to run help.sh so it can start guiding the building of my workspace
+  * descript-driven
+
++ As @developer I want refresh.sh to unit test help.sh so I can trust it before proceeding in the build
+  + create mock java entry that prints cwd and cmdline args
+  + assert stdout, stderr and cwd
+
++ As @developer I @anticipate it's best if help.sh does NOT cd but passes AS_SOMEONE as the 1st cmdline arg so that the java entry is more robust and useful in envs that make it more cumbersome to control cwd (like eclipse)
+
++ As @buildscriptauthor I want 1st run of help.sh to print "I created iwant-from for you" and create it so I have a starting-point for my edits
+  + descript output
+  + junit output
+  + descript the created file
+  + junit it
+
++ As @developer I want test-area as a reusable module so I can test file operations
+
++ As @developer I want Iwant main to fail if as-someone arg or dir missing so I get friendly message if I break its caller
+
++ As @buildscriptauthor I want iwant bootstrapper (help.sh) to generate an example wsdef using a local url to iwant so I can start developing
+  * this is one huge epic, because earlier I made the mistake of trying to handle it as one story in the backlog of the _previous_ iwant version.
+  + iwant-from points to local iwant wsroot, run
+    + descript a bit
+      + edit iwant-from
+    + junit
+      + mocked url provider for svnkit jar
+      + mocked cache location for unmodifiable
+      + real values for locations
+      + get svnkit jar from downloader method
+        + robust cache path for url
+        + entry asks cache location from the mockable network interface
+          so the download test can control the cache
+        + test download of correct content when cached missing
+        + test does not download when cached exists
+        + unzip method
+          + test with hard-coded small zipfile
+        + svnkit download method
+          + test with mocked url and cache
+          + assert result is an unzipped dir that contains the unzipped url
+      + svn export of iwant
+        + export when cached iwant missing
+          + utilize the tested download method to get svnkit for the test
+            + in suite, test all needed functionality before this test:
+              + download
+              + real cache location
+              + real svnkit location
+            + test class, setUp ensures cached unzipped svnkit
+            + versioned mock iwant rootdir
+            + assert export method exports to given dir
+              + pass url to cache location method so the mock can
+                mock all but the svnkit zip cache
+      + fix: find wsroot even when running refesh.sh
+      + don't generate entry2 mock now that we have one versioned
+      + fix: unzip works with test files but not with svnkit zip
+        * currently tests pass only if fixing the real cache by hand
+        + test if it is because of jars inside zip
+        + test if it is because parent dirs come after their content in the stream
+        + fixed: it was just awfully slow because of no buffering: I had just stopped a test so I got a partially unzipped svnkit there, doh!
+      + junit: bootstrap when only iwant-from is given
+        * removed the test for already downloaded iwant
+        + point svnkit url to really downloaded file
+        + assert hello from entry 2 using the mocked wsroot
+        + assert hello from mocked entry 1, referenced by entry 2 to prove the common functionality from there can also be evolved without breaking runtime
+      + delegate to entry2
+        + write mock impl of entry2
+        + test correct args get passed
+        + impl: compile and run
+  + descript bootstrap call: call help.sh to show real iwant2 output
+    + implement failing iwant2
+  + iwant2
+    * now just KISS: don't use iwant (workspace, targets), just raw
+      download+compilation using entry 1. Later we can eat the dogfood,
+      when we have it
+    + no i-have/ws-info => fail with message, example created
+      * ha, TDD again drives design: I don't want to call Iwant2.main!
+      + instead: Iwant2.using(nw) just like Iwant
+        * Iwant still calls Iwant2 by main, because it will always
+          use the real locations and because they have different classloaders
+          so there isn't even an easy way to pass other than standard classes
+      + test & impl
+      + descript
+        + make entry2 main call evaluate with real locations
+        + catch IwantException (a non-bug one), print message and exit 1
+        + don't prevent system exit in entry1 when calling entry2
+        + cat the example ws-info
+    + delegate to actual (distilling) iwant
+      + Iwant3 and its test to do what Iwant2 does now
+      + Iwant2's new role
+        + compile iwant (distillery2) main
+        + run main suite
+          + compile tests, too
+          + download junit.jar
+          + mock-wsroot to test both test failure and success
+        + 3rd delegation: iwant2 -> iwant3
+          + only if test passes
+  + debug log disabled
+  + run junit silently and only print after failure
+    (failure tested only manually with temporarily broken test)
+  + iwant3
+    + invalid wsinfo => failure
+    + valid wsinfo => create example wsdef java
+    + descript: rerun with example ws-info => fail with message, example wsdef java created
+    + forge junit times in the descript to prevent unnecessary diffs
+    + create wish scripts, not only example wsdef
+    + wish scripts call help.sh with own relpath as arg
+    + descript: iwant3 prints hardcoded output for list-of/targets and hello
+    + functional example wsdef
+      + copy example java from actual source directory
+        + use WsRootFinder to find it
+      + iwant3 compiles wsdef
+      + iwant3 delegates to wsdef
+        + list-of/targets comes from wsdef
+        + target/x/as-path comes from wsdef
+        + cast to interface instead of calling by reflection
+          + 2 class instances in use, find out why
+            * don't classload the api again
+          + fix
+      + descript: rerun with example wsdef => "try .../list-of/targets"
+  + inherit base in example wsdef and tdd example behaviour
+  + descript: modify wsdef and rerun
+  + unit test: list-of/targets and target/x/as-path with dumb behaviour, to get going with tdd for it
+  + compile iwant to separate dir, not a subdir of exported wsroot
+    * it was already like this, the dir was a leftover of some work in progress testrun
+  + svn export laziness/eagerness
+    + no export when cached iwant exists
+    + except when remote is a file: changes in entry2 are effective immediately when developing, if local dir is deleted and re-exported
+  + slighty nicer stderr: ":task -> destfile" and "(task debug message)*"
+  + laziness of svn export: done at some point
+  + list-of/targets creates wish scripts
+  + descript: new target as path after "creating" it in the wsdef
+  + refactor: WishEvaluator contains refresh logic, not wsdef base class
+  + target produces content as stream (HelloTarget)
+  + refactor: StreamUtil for prod and test
+  + iwant2 tests the whole suite, not only Iwant3Test
+  + descript & tdd: HelloTarget.refreshTo, so now either stream or file content
+  + get content of target that uses another target's stream
+    * green withouth changes!
+  + get content of target that uses another target's file
+    * reintroducing the concept of ingredients
+  + paths to the 2 previous targets
+  + target that uses source stream as ingredient
+  + target that uses source file as ingredient
+  + JavaClasses
+  + optimization for descript: don't re-export file url if iwant-from contains re-export=false
+  + fix descript: first normal iwant-from to make sure we use newest iwant, then edit to keep on using that version without re-export
+  + refactor: refresh ctx mock needs a lot of teaching in target tests
+    * SepOfConc: target says where it's cached and, in another method, how
+  (+ laziness: source is never cached)
+  + refactor: interface Target->Path, Path is a superclass for targets, provides name
+  + refactor: target superclass provides cache location
+
++ As @buildscriptauthor I want to make iwant generate eclipse settings so it will be easier for me to modify workspacedef
+  * new concept: side-effect
+  + descript: before editing wsdef issue iwant/side-effect/eclipse-settings/effective
+  + generate the wish script (and list-of)
+  + descript: ls .../wsdef/...{.project,.classpath}
+  * here we keep things hard-coded as much as possible: genuine support for
+    side-effects will be added later
+  + new module (only package for now) for eclipse settings content generation
+  + iwant uses the generator to create the wsdef files
+    * very hard-coded content
+  + manually trying the settings in a proto project
+    + fix classpath so wsdef compiles in eclipse
+
++ As @buildscriptuser I want iwant to refresh targets lazily i.e. iff for target or any of its ingredients cached is missing or descriptor has changed
+  + as path twice => second causes no refresh
+  + descriptor changes, no other changes => refresh
+  + ingredient changed => refresh
+    + test that the simple impl is broken
+    + develop a separate module for lazy task execution (multi-threaded even)
+      * sorry, this happened in isolation, no log for it
+    + add to iwant (name here is "planner")
+    + integrate
+
++ As @developer I want slashes in cached paths and some more exceptions to url encoding so the paths will be shorter and less files per directory
+  * this introduces a risk, but since build tools are anyway capable of doing great harm, the only real risk is that of accidents and bugs, so let's proceed
+  + allow slashes, just prevent parent dir refs (..), preserve repeated slashes etc
+
++ As @buildscriptauthor I want my wsdef to be 2-phased i.e. I can define the compilation of wsdef in "wsdefdef" so I can define custom and 3rd party code in my build
+  * for now the names are wsdefdef=IwantWorkspaceProvider and wsdef=IwantWorkspace. These names suck, see later story
+  + make Iwant3 load wsdefdef instead of wsdef
+  + write/modify tests to test Iwant3 compiles & classloads wsdef defined in wsdefdef
+  + update example generator to generate both wsdefdef and wsdef
+  (* update descript: no need, it was good)
+  + fix i-have/wsinfo example
+  + update hard-coded eclipse-settings generator
+    + KISS: for now: just one eclipse project for the whole workspace!
+    + manually test with a dummy ws using iwant
+    + update descript to ls eclipse files from the ws root
+
++ As @buildscriptauthor I want to define a file downloaded from a url
+  + descript in wsdefdef, because this is most probably the first place it's needed in, to make it possible to use ext code in wsdef
+  + ingredients and descriptor basics
+  + delegates to Iwant.downloaded
+  + manually test with emptied cache and working net connection
+  + descript using of downloaded code
+
++ @bugfix: as @buildscriptuser I want a target refreshed when a source has been modified
+  + make TargetRefreshTask.isDirty compare src recursively to timestamp of contentdescr 
+
++ As @buildscriptuser I want lazy compilation and testing during bootstrap so I don't have to wait for them when I haven't changed iwant-from
+  + simple timestamp and source descriptor logic
+  + remove some redundancy in text file reads
+  + cleanup (more needed later)
+
++ As @buildscriptauthor I want eclipse settings to contain classpath additions of wsdef classes so Eclipse can also compile wsdef
+  + new concept: SideEffect
+  + list-of/side-effects consults wsdef
+  + side-effect/x/effective delegates to the s.e.
+    * and EclipseSettings does the thing
+  + unit test for EclipseSettings
+  + move WsInfo to api, it's needed by eclipse settings s.e.
+    + actually: extract interface: only parsing is part of impl and if belongs to api
+  + EclipseSettings takes wsdef as JavaClasses from context
+  + EclipseSettings puts wsdef src to .classpath
+  + JavaClasses accepts srcdir instead of package dir
+  + EclipseSettings puts wsdef deps to .classpath
+  + manually test with a dummy project
+    + fix: iwant classes only once, as normal dep
+
++ @refactor: As @developer I want cleaner and centralized cache location logic and also all ws caches under same dir so that...
+  * there is only one place to ask cache location for path (the ctx)
+  * paths cannot access non-cache related stuff when telling their cache location
+  * one cache dir => easier to wipe
+  + do refactoring
+  + manually test and also see there is only 1 cache
+  + fix help.sh to use same cache
+
++ @bugfix: as @buildscriptuser I want a target refreshed when a source has been DELETED
+  + test it's broken, using WishEvaluator test because it tests laziness
+  + ha, it works on linux, because parent dir gets modified, so split the story
+
++ As @buildscriptauthor I want to declare a target to use the singleton resource "computer" so it runs alone even when it's the only one explicitly using the resource
+  * so e.g. a performance test can be run reliably with minimal effort
+  + make worker count 2 by default so we have some parallelization always
+  * actually it's not a resource but a boolean "supportsParallelism"
+  + first do in planner module in isolation
+  + then adapt to a Target
+
++ As a @buildscriptuser I want to define the number of threads to use so I get performance from my machine
+  * also as descript generator I want reliable output
+  (- TODO on commandline, in a conf file, something else or all of them?)
+  (- TODO automatic detection of cpu count and using it for a good default?)
+  + parse user-preferences and output it in help.sh when all setup, mentioning that
+    defaults are used because file is missing
+  + test same output with existing file
+  + properties impl for user prefs
+  + descript: write workercount=1 to the file and rerun help.sh
+  + log target refresh with worker number for "manual reassurance"
+
++ As @buildscriptauthor I want to use ant for a target so that I can utilize its wide support of tools
+  * the idea is to just evaluate default target, all dependency handling etc belongs to iwant
+  + adapt Concatenated from main branch for robust script generation
+  + download ant.jar and ant-launcher.jar for test
+  + AntGenerated: target using downloaded ant.jar and minimal scripts
+    + minimal outputting echo and fail scripts
+    + assert exit status and stderr content
+  + hello world file generating ant script that references dependencies, by path and content
+  + descript
+    + to avoid misunderstanding: 1st replace ant.jar with commons-math
+    + FromRepository: easily reusable way of referring to the ant jars used in AntGeneratedTest
+    + then demonstrate file-generating hello ant
+      + script refers to hello2 so extract method in all versions of the wsdef
+
++ As @buildscriptauthor I want an easy way to refer to a certain version of ant.jar from ibiblio so I can easily pick public dependencies
+  * was implemented in the AntGenerated story as FromRepository
+
++ @bugfix As @buildscriptuser I want iwant to generate wish scripts even when I only have the help.sh wish available, after having checked out the ws
+  * Iwant3 doesn't refresh wish scripts, if help.sh is called when wsdef java already exists
+  * this is the case after checking out a workspace
+
++ As @javaprogrammer I want to just put iwant in my classpath and use it with minimal code from my java code without setting up the full directory structure and bootstrapping so I can utilize its features in my program
+  * useful in iwant's own tests
+  + AsEmbeddedIwantUser
+  + use in AntGeneratedTest
+  + remove some unneeded deps from WishEvaluator
+  + bugfix: make workerCount=1 by default, after all, descript used worker 1 instead of 0 before changing it
+
++ As @buildscriptauthor I want to declare separate eclipse settings for each module instead of the default one per workspace so that Eclipse will force correct dependencies for java developers
+  ( * one module for as-x-developer, hosting wsdefdef, another for x-workspace
+    * move wsdef in example generator, tests and manual dummy project
+      from as-x-developer/i-have/wsdef to x-workspace/src/main/java
+  )
+  * no, better to keep all under as-x-developer/i-have so no wizard generation
+    outside of it, risking name collisions with existings files
+  + move ws-info etc to subdir "conf" so we can have 3 eclipse projects
+  + replace wsdef(def)? with wsdef(def)?/src/main/java to avoid
+    having to use project root as src for eclipse
+  + change eclipse settings to generate
+    * as-x-developer/i-have/conf
+    * as-x-developer/i-have/wsdef
+    * as-x-developer/i-have/wsdefdef
+    + back and forth: after all put just ../wsdefdef in ws-info, and name
+      it WSDEFDEF_MODULE
+      + (for now) make the src dir "src/main/java" inside it hardcoded
+      + and now is a good time to rename WSDEF_CLASS to WSDEFDEF...
+    + publish wsdefdef and wsdef as JavaModule in ctx for s.e. definition
+    + JavaModule
+      + File rootDir()
+      + JavaClasses mainJavaClasses()
+    + (utilize or) delete the now unused but tested WsDefEclipseProject class
+  + descript change
+  + manual test
+    + better error messages for missing/nondir srcdir of JavaClasses
+      (if wsname does not match as-someone dir name iwant cannot find wsdef)
+
++ @bugfix: same target depended many times => iwant tries to refresh many times at the same time (workerCount>1), causing race conditions
+  + equals/hashCode of TargetRefreshTask must compare name, otherwise TaskQueue set of tasks being refreshed etc don't work
+
++ @bugfix Iwant.java generates compiled-by-Iwant under classes directory. Don't.
+
++ @bugfix produce empty classes when java src directory contains no java files, don't fail
+  + test and fix empty and non-empty dir with no java files
+
++ @bugfix: add ingredients of the path of JavaModule.implicitLibrary as implicit library dependencies so deps work correctly even with generated libraries 
+
++ @bugfix: make JavaModule.mainClasses (of normal "explicit" module) return null if no mainJava, also don't add such paths as dependencies
+
++ @enhancement: automatically delete cached file before refresh, for convenience of the Target author
+  + make TargetRefreshTask do it
+  + don't do it for Downloaded, because when the content descriptor is missing, the target is dirty
+    but it's ok when we don't delete the cached download, the actual refresh then does nothing
+  + boolean Target.expectsCachedTargetMissingBeforeRefresh() that can be overridden for other similar Targets
+  + also test parent of cached target is created (it already was)
+
++ @bugfix: make bootstrapping (refresh.sh) pass as different user than wipu to find hardcoded paths from tests etc
+  + run refresh.sh as different user
+  + make refresh.sh download junit.jar
+  + don't write filelog to one location (/tmp/iwant-cl) but instead under ~/.net.sf.iwant/log (not allowed when it exists for another user)
+  + test again, what tests contain hard-coded paths?
+    + fix AntGeneratedTest /home/wipu
+
++ @enhancement: add cygwin support to shell cli
+  + help.sh must use cygpath in cygwin for paths used by javac and java
+  + test cache path escaping handles windows paths (backslash, colon and space)
+  + test manually in a wintoys machine
+    + make IwantTestRunner use unix file.separator so tests don't need changes
+    + ah, doesn't help, so skip tests altogether if file.separator is backslash!!
+    + make FileUtil.relativePathOfFileUnderParent work without regexps, because wintoys backslashes
+      break them
+    + pass IWANT_PROXY_{HOST,PORT} to java as sysprops in help.sh
+    + manually test how difficult windows file.separator makes life with cygwin
+    * seems to work, of course the output path is in wintoys format, making it more difficult to use in scripts
+      but it's not important    
+
++ @bugfix: delete wish scripts before writing fresh ones to remove unusable clutter
+  * Now also list of side-effects is no more hard-coded
+
++ @bugfix: only redirect stderr once so threads don't race for output
+  + quick and dirty: do in Iwant.runJavaMain like before, but keep a counter and only do it once and restore originals when all ready
+  + change: redirect out to err instead of buffering and only showing after failure
+  + but show output of self-test only after failure
+  + manually test with real project
+
++ As @buildscriptuser I want number of concurrent workers logged as well as the Target type of each refreshed target
+  * so I can detect bottlenecks for parallelism and know what code is refreshing what
+  + just tdd the string building, not actual logging
+  + test with descript the actual log output
+  + test manually the actual log output
+
++ @enhancement: testClasses support for JavaModule
+  + build target for it like doing for mainClasses
+  + make it null for lib module
+  + make testDeps empty, not null, for lib module
+
++ @enhancement: testClasses implicitly uses mainDeps
+  + add them
+  + add only once even if redundantly declared as test dep
+
++ @enhancement: module's own main classes are a test dep
+
++ @bugfix: don't add null to test deps if module has no main classes
+
++ As a @buildscriptauthor I want Iwant to fail if my Target impl accesses a cached path during refresh without having declared it as ingredient
+  * so that I don't get incorrect results by using invalid cached content
+  + test referring to same path from a correct target, to make sure it really
+    checks the ingredients of the referring target
+  + TargetRefreshTask wraps ctx with a checking impl
+  + allow referring to target itself, and even a path with same name
+
++ @bugfix: ingredient of ingredient must be ok to refer to during refresh, otherwise a target would have to declare a lot of its indirect ingredients
+
++ @bugfix: even ingredients (of ingredients) need to be compared by name, not equality, because not all Path implementations implement equals/hashCode
+
++ @enhancement: friendly exception for null ingredient
+
++ As a @buildscriptuser I want the log to mention why each target is refreshed so I can understand the logic better
+  * S~ for source modification etc
+  + replace boolean with enum for dirty check
+  + print it
+
++ @optimization: only check each target dirtyness once during a build
+  + map dirtinesses in TaskQueue
+  + remove the unnecessary caching inside TargetRefreshTask
+
++ @bugfix and @optimization: make target refreshes really parallel
+  * tested at planner level with TaskMock, but not working in practice
+  + test end-to-end (in WishEvaluatorTest) with a controllable mock target that utilizes the controllable TaskMock
+  + remove unnecessary synchronization from TargetRefreshTask that blocks other threads that try to read the task during its refresh
+
++ @enhancement: Iwant uses -Xlint for javac to see verbose warnings (but not the extremely controversial serialversionuid warning!)
+
++ As @developer I want an ant cli for iwant that can be used by eclipse project builders so I can more easily create eclipse projects for modules that generate code
+  * also: as ant user I want to use iwant so I don't have to install cygwin
+  + just hack an ant script that compiles iwant entry and passes the wish to it, testing manually in a dummy project
+  + test happy case by demonstrating in descript
+    + help case: no wish
+    + wish cases:
+      + list-of/targets
+      + target/.../as-path
+
++ @enhancement: As http proxy user I want iwant to use the Unix-style http_proxy and http_proxy instead of the custom value so I don't need to configure it twice
+  * also: do it in java so it also works from the ant interface
+  + tdd env values -> sysprop setting
+  + remove setting of the custom variables from help.sh
+  + manually test it works in a proxy environment
+    + fix: http_proxy is an url, not only host[:port]
+    + enable proxy also before calling svnkit
+    + works
+
++ As @buildscriptauthor I want to generate content with an external script so I can utilize the unix tools
+  + adapt tests and impl from the main branch for ScriptGenerated
+    + fresh temporary directory
+    + copy script there and chmod
+    + run
+    + verify cwd, out, err, creation of destfile, exit status
+    + parallel test to see tempdirs are not shared by 2 threads
+      + also test that tests it's the Thread name in the dir name
+  + descript
+
++ As @buildscriptuser I want iwant to verify the checksum of the downloaded files so I don't get any corrupted stuff
+  + MD5 basic functionality
+  + make checksum optional for Downloaded
+  + find out why the test is slow to init
+    * whoa, URL.hashCode tries DNS resolve!
+    + fix in many places to use localhost urls
+  + cleanup file/stream handling (closing)
+    + reuse
+    + reuse everywhere
+
++ @enhancement As Win64 user I want a 64-bit eclipse installed by new-eclipse-env.sh so I don't have to resolve 32/64 complications
+  + also here make unzip quiet
+
++ @enhancement More sane settings for newly installed eclipse
+  + launch previously run, not the open one
+  + make constants italic, like other static members
+  + more warnings
+
++ @enhancement generated eclipse: new method body template to throw USE
+
++ @enhancement: usable eclipse settings generation
+  + code generator support in .classpath and .project
+  + replace old mechanism with new
+  + test in real dummy project
+
++ as @buildscriptauthor I want a simple pair of targets, instrumentation and forked testrun, so I can easily measure test coverage of a java-classes path
+  + instrumentation using emma that contains the emma metafile, confs, instrumented classes
+    + mention in ec filename in conf that it should be overridden during testrun
+      * this way the coverage report will be about a testrun, and one module can be involved in many
+  + testrun using given ant that produces the required ec file
+    + buildscript that forks a new jvm so the ec will get created
+  + remove redundancy of ant jar download in test
+  + basics of EmmaCoverage (ingredients etc)
+  + real test with dummy workspace
+    + add junit to tested deps, reusing the url with Iwant.java
+    + control over classname to run during testrun
+    + also arguments so junit main can be used
+    + non-instrumented deps for testrun (junit.jar in dummy ws)
+    + testArtifact for JavaSrcModule
+    + in dummy run junit with test class as argument 
+
++ As @buildscriptauthor I want an emma coverage report from a given set of coverage files so I can report a set of different ways to calculate coverage
+  + tdd impl
+  + manual test with dummy ws
+
++ as @developer I want new eclipse-settings-generating version of iwant for itself so I can start developing ant-depending modules
+  * e.g. for new jvm, tar etc
+  + upgrade iwant for iwant
+  + generate eclipse settings
+    + some of them
+    - add support for many mainJava directories, needed by iwant-distillery
+      + JavaClasses builder instead of direct constructor call
+      + many srcs
+      + affects compilation
+      + way to empty the srcDirs in builder (to override convenience "builder builder" output)
+      + SrcModule utilizes mainJava
+      + SrcModule utilizes testJava
+      + also emptyable SrcModule mainJava
+      + also emptyable SrcModule testJava
+    + add rest
+      + distillery
+      + fix distillery: depend on classpath-marker as bin module
+      + example-wsdef
+      + mock-wsroot
+      + testarea
+      + tutorial-wsdefs
+  + when ready, svn:ignore eclipse settings (or postpone as later story)
+    + delete
+    + delete unnecessary old iwant-bootstrapper
+    + ignore
+  + Iwant3 no more deletes all but help.sh (including .svn !!) under with/bash/iwant/, instead it only deletes target and side-effect
+    * so svn won't complain after using iwant bootstrapper that has been svn:externalized
+
++ As @buildscriptauthor and @developer I want to easily define emma coverage report for the whole workspace of java modules so I know my test coverage
+  + experiment with one project in iwant itself: testrunner with its one test class
+  + another project, if needed, and then move the logic to JavaSrcModule
+    + distillery2
+      + add it
+      + support for >1 source for JavaClassesAndSources (distillery uses that)
+      + emma doesn't include interfaces in instrumented classes => add original to classpath during EmmaCoverage
+      + upgrade iwant for iwant to test in practice
+      + add testarea dirs to classpath for coverage
+  + add other projects, referring to their Suite
+    + try distillery, not passing so:
+      + move test zips to test resources
+      + disable concurrency for EmmaCoverage to see if it fixes the occasional deadlocks
+      + make sure test resources in classpath during tests
+      + ensure correct classpath so classes are found from mock-wsroot
+      * yes, it passes, and total line coverage is now 93%
+      + svn:ignore generated testrunner in mock-wsroot (if possible, should be)
+        * it's just generated by a test to control whether the runner fails or not
+
++ As @buildscriptauthor I want a quick&dirty way of overriding 2 specific eclipse formatter settings so I can take iwant-generated settings into use in my existing project
+  + just do it
+  * other settings will be iterated later, now these 2 just in a simple way
+
++ @enhancement: use JavaSrcModule as type for wsdefdef and wsdef
+
++ @bugfix: corret parent dir for EclipseAntScript, currently it's always ${basedir}
+
++ @enhancement: As @buildscriptauthor I want to declare explicit sources to follow when my code-generating module generates the sources by running a java program so that the eclipse project refreshes automatically
+
++ @enhancement: As @buildscriptauthor I want to use an optional filter file for emma instrumentation so my coverage won't be too low because of some code that is not really production code under my control
+
++ As @buildscriptauthor I want to measure coverage by running junit on a list of dynamically found test classes so I don't have to use a suite
+  + test passing argument list as a Path to a file that lists the arguments as lines
+  + create and use ClassNameList as the argument path
+    * hardcoded ClassNameList to pass this test
+  + implement ClassNameList that
+    + reads the names from a given classes directory
+    + excludes non classes automatically
+    + filters names using given StringFilter
+
++ @bugfix: EmmaReport must not try to refer to missing em files that are caused by a filter filtering out a whole module
+  + test that EmmaInstrumentation really works like this, producing missing em file and empty instrumented classes
+  + test and fix EmmaReport to skip such a module
+
++ @enhancement: As @buildscriptauthor I want EmmaCoverage to use jvmargs I pass to it so I can increase permgenspace etc for big test runs
+
++ @enhancement: Add permgen and heap in help.sh, might be that EmmaCoverage is not the issue
+  + do it
+  + test in the real project that currently fails
+
++ @enhancement: As @buildscriptuser I want EmmaInstrumentation to copy excluded files (interfaces and those defined by the filter) so I need to add a module only once in the classpath and I'm guaranteed to use instrumented classes always
+  * for example when deploying to a web application, you have no control over the order of jars in the classpath, meaning that noninstrumented classes may be used instead of instrumented ones
+  + recursively copy files that exist in classes but not in instr-classes
+
++ As @buildscriptauthor I want iwant to contain enough debug and source information so I get proper variable names in my iwant-related code
+  * debug flag of compilation of Iwant2 untested as such, but:
+  + JavaClasses supports and obeys debug flag
+  + test that Iwant2 compiles the rest with debug
+  - add iwant sources reference to eclipse .classpath
+    + try if eclipse finds sources if src is the exported iwant ws: no, it
+      needs one proper source directory (or zip but not practical here)
+    + Iwant3 asks list of src dirs from Iwant2 and merges to 1 dir
+      + Iwant2 finds java files to compile recursively
+      + clean up now unnecessary compiler-fodder from mock-wsroot
+      + Iwant2 uses and provides list of srcdirs
+    + Iwant3 adds src to iwant classes bin module
+      + derive cache location from wsroot location
+      + put location in eclipse .classpath
+        + Iwant2 passes iwantWs to Iwant3
+      + actually combine the sources
+        + reuse recursive copy code with EmmaInstrumentation
+  + manually test in dummy project that iwant is now more usable
+    * required restart of eclipse (?!)
+    * not refreshed when iwant-from a file that gets re-exported, filed
+      as a separate bug  
+
++ As @buildscriptauthor I want iwant api modules from side effect definition context so I can define iwant wsdef module eclipse settings for a subproject (iwant-using project integrated to another project)
+
++ @enhancement: As @buildscriptauthor I want EmmaCoverage to put classpath items, be them instrumented or not, to classpath in the order I specify them so I can control for example which log4j.properties take effect etc
+  + do it
+  + test in real project that it helps
+
++ As @buildscriptauthor I want module to tell JavaClasses to copy resources, if any, and JavaClasses to obey, so I always get resources in classpath without extra effort
+  * this is how other build systems do it, instead of adding resources as such in classpath.
+    So let's do the same, for least surprise
+  + pass resources to JavaClasses
+  + test JavaClasses copies files from all given resource dirs
+  + allow JavaClasses with no src, just resources
+  + make JavaSrcModule also support >1 resource dirs
+  + make eclipse settings support >1 resource dirs
+    * didn't even require further tests: compiler required a for loop
+
++ As @buildscriptauthor I want iwant to fail if I create different versions of Paths with same name so dependency tracking works correctly etc
+  + compare class
+  + compare content descriptor
+  + compare ingredients (bug in actual target code, descriptor should
+    catch this too)
+  + various null checks
+
++ @bugfix: compare ingredients properly for conflicts, forgot to test the negative case with ingredients
+
++ As @buildscriptauthor I want an easy way of creating emma targets (instr and coverage) from modules, without having to build their dependencies manually
+  * a "from" factory method in both?
+  + factory for instr: non-null only if a src module with main javas
+  + factory for coverage
+    + simple
+    (- don't put duplicates, even if same mod belongs to
+      cumulative test and main deps: postponed as another story)
+  + upgrade iwant for iwant and try it out
+    + upgrade
+    + one module: works, descriptors more or less equivalent
+    + the rest, clean up and evaluate usability
+      + add test resources in classpath
+        * see another story about JavaClasses and JavaSrcModule
+      + upgrade iwant for iwant
+      + simplify all coverage methods of iwant build
+      + more for-looping instead of explicit per-module building
+        + filter out mock wsroot: duplicate classes confuse emma
+      + investigate adding filter to instr
+        + try
+        + fix bug: directly created instrs use filter, but those created
+          by coverage don't
+          * so filter was not refreshed because dep was asked from the
+            filterless version of instr
+          + see another story: make Iwant fail if conflicting paths
+          + upgrade iwant
+          + try filter again to make sure iwant now
+            detects the conflict: yes it does
+          + fix the design so no duplicate creation of instrs, or at least
+            created similar
+            (- maybe pass an immutable builder to emma coverage)
+            + or maybe emmacoverage responsibility is too big here:
+              + another class should create instrs and coverages from modules
+        (- upgrade iwant and enable filter in iwant build:
+           postponed as another story)
+    + evaluate and explain: to create emma targets from modules or vice versa?
+      * neither: again, when in doubt which of 2 things should assume new responsibility,
+        a third thing is needed
+
++ As a @buildscriptauthor I want to exclude a module from emma-report so that duplicate classes in it won't confuse emma
+  * example: iwant-mock-wsroot that is used by classloader magic to use mocked versions of classes
+
++ As @developer I want emma filter enabled so I get rid of false reds of examples
+  + make it possible to exclude iwant-mock-wsroot first (another story)
+  + upgrade iwant
+  + use EmmaTargetsOfJavaModules
+  + exclude mock wsroot
+  + doh, fix: ant jars cannot be put to SortedSet
+  + doh2: instrs and coverages neither, when building report
+  + reupgrade
+  + enable filter
+
++ @refactoring: As @developer I want iwant modules split so I can start increasing code reuse and also to get rid of the "distillery" naming
+  + new empty module: iwant-api-model
+  + move a minimal amount of model to new module
+    + move ?
+      * the api has a lot of cross-deps, contains actual code also =>
+      + add test java to api model
+      + then move some
+      + move more
+    + fix compilation by Iwant2
+    + fix compilation by Iwant3: now >1 classes in eclipse
+    + add to coverage
+  + module: iwant-api-javamodules
+    + create empty
+    + move minimal set of classes and tests
+      + JavaModule ,src and bin impls, JavaSrcModuleTest
+      + for now: Concatenated and HelloTarget to api-model, needed in test
+    + fix compilation
+    + fix coverage
+    + fix descript (real bootstrapping by Iwant2)
+  + bugfix: pass iwant classes only once: there are many modules only
+    when running tests in eclipse
+    * this breaks real eclipse settings
+    + clean up Iwant3 code that finds and creates iwant modules
+      * just use SortedSet, not worth trying to test
+  + before adding modules make it easy by implementing story about
+    emma target building from modules and take into use
+  + modularization
+    + abstract away dep to Iwant from api-model
+  + ok, things have now started, and it's easy to create new modules so
+    the rest can happen step by step from here: separate stories
+
+(- As @buildscriptauthor I want a findbugs report of my code so I can fix bugs and as @developer I want this implemented as separated module that directly depends on findbugs instead of running by reflection so I can practice implementing the story about optional modules with ext deps
+  + add the module and its dependency to downloaded findbugs
+  + split api mocks to separate module so testing of the target is possible
+  + also required: split coreutils, stuff needed by the mocks, and others
+  + tdd
+    + minimal run with default settings
+      * problem: requires findbugs.home (what for?!) so not good fit
+        for direct java-level, requires forking
+        => the part about plugin with ext deps: WONT IMPLEMENT
+  * at least this effort drove separation modules, and placeholder for findbugs,
+    and of course finding the ugly fact about home env var
+  + another story, only about findbugs)
+
++ As @developer I want Iwant2 to no more run any tests during bootstrapping so it's easier to add new modules and because modularization has already reduced the coverage of distillery2 tests
+  * also the actual build of iwant already covers everything nicely
+  + do it
+  + delete testrunner for real and from mock wsroot
+  + don't even compile tests in Iwant2 and delete them from mock wsroot
+
++ As @buildscriptauthor I want iwant to provide extra functionality with external dependencies as optional modules retrievable from an easy-to-use interface so I get functionality if and only if I need it
+  * see untar story: the first module implemented this way
+  + mark done when the 1st story doing this is done
+
++ As @developer I want target Untarred so I can untar findbugs distribution, which is required for using it, the standalone jar would require home env setting magic
+  * also try to use this as the 1st case for an iwant plugin with ext deps
+  + new module
+  + tdd Untarred
+    + functionality without compression
+    + functionality with compression=gz
+  + tdd usage of iwant-opt-paths
+    + refactor: encapsulate current data inside WorkspaceDefinitionContext
+      for defining the workspace
+      + also replace arrays of iwantApiModules with Set
+    + split module iwant-testresources, move test tars there
+  + drive with descript, tdd on lower levels
+    * currently not easy to do purely in java starting from wsdefdef
+    + wsdefdef calls ctx.iwantPlugin().ant().withDependencies()
+    + wsdef uses Untarred
+    + Iwant3 passes iwant wsroot to the ctx and it generates correct
+      bin modules
+
++ @enhancement: As @buildscriptuser I want a nice error message instead of NullPointerException when Iwant does not find the system java compiler so I know to switch from a JRE to JDK
+
++ @bugfix: replace backslashes with slashes in emma ant script, otherwise it won't work on Windows
+  + try to test: changing file.separator does not reproduce the bug, because File.getCanonicalPath() does not obey it
+    (keeping the method extract of script content)
+  + just fix without testing (=:-O)
+  + fix even the paths in the properties file of EmmaInstrumentation, that seems to be causing problems
+  + manually test on Windows
+  + add story about testing this after refactoring away raw Files or otherwise making this testable
+
++ @enhancement: As @buildscriptauthor I want to define the character encoding for JavaClasses so when it's different than the system default my classes will work
+
++ @enhancement: doh, encoding also for JavaSrcModule that defines JavaClasses
+
++ @bugfix: yet another: EmmaReport also needs backslash fix
+  * it's probably my fault, after all, properties files use backslash as escape?
+
++ @enhancement: It's not enough to add permgenspace for emmaruns, the whole ant ui of iwant may need that in a big project
+  + add it and heap
+  + test in real project that fails without this when cache is empty
+
++ @bugfix: target that is dirty because of dirty target ingredient must stay dirty even if its refresh is interrupted
+  * target timestamps are not checked, so dirtiness is detected only during the same run that refreshed the ingredient
+  + delete descriptor when starting refresh, this way target stays dirty until a new descriptor is successfully written 
+
++ @bugfix: As a Windows user I want JavaSrcModule to cache main and test artifacts so I don't get out of heap
+  + do it (remember synchronization)
+    * again an untestable feature, not practically testable, but it's ok since this is basically a semantics-preserving optimization
+  + manually test
+
++ @bugfix: It may not be enough to delete cached descriptor when refreshing, otherwise later targets in the build queue are not refreshed after interrupt
+  + test:
+    * src:a <- target:b <- target:c <- target:d
+    * successfully refresh d, touch a, tell b and d to fail, refresh d => b fails, tell b to succeed => assert d is retried and fails
+    (- fix if needed: before starting any refreshes delete descriptors of all targets that are going to be refreshed)
+    + it was ok: b deletes its descriptor so it will be dirty and cause c and d to be dirty
+  + test same set up, but successfully refresh c before d
+    * this revealed the bug, more direct test:
+  + test: target ingredient was refreshed directly on earlier run => dirty on next run
+    * so this bug was not only about interrupting, but just refreshing target ingredients before their dependant!
+    + fix
+      + not only compare descriptor timestamp to sources, also to target ingredient descriptors
+      + remember to be dirty if ingredient descriptor is missing
+      + this lead to another bugfix: missing source is another reason for dirtiness
+      + add symbols to the 2 new dirtiness reasons
+      + also test notdirty cases for both src and target ingredient cases
+
++ As @buildscriptauthor I want targets as paths from side effect code so I can use lazily generated files in my imperative code e.g. deploy and test integration environments
+  + test with side effect that wants 2 targets to show laziness
+  + new method to ctx: iwantAsPath(Target)
+
++ As @buildscriptauthor I want to define the test classnames for my java src modules so iwant does not try to run non-test classes even when I define emmacoverage using EmmaTargetsOfJavaModules instead of directly defining individual EmmaCoverage targets
+  + refactor: move StringFilter to api model so it can be used to define the classnames
+  + classname filter support to java src module
+  + testsuite => constant filter (StringFilterByEquality)
+
++ @bugfix: EmmaCoverage created by EmmaTargetsOfJavaModules must not try to test a src module without testJava
+  + test: not reproducible, it was an user error (there really were testJava)
+  + but, make the returned EmmaReport not null even here, it's less surprising
+    * the target just produces an empty directory
+
++ As @buildscriptauthor I want my wsdefdef in by wsdef classpath so I can define some modules in wsdefdef, making them available already build-time, not only from other modules
+  + just pass it to the wsdefctx
+  + make example wsdefdef pass it, not only iwant api classes
+  + test by descripting
+
++ As eclipse user I want new-eclipse-env.sh to use Kepler, because it has finally fixed broken refactoring with big workspaces
+
++ As eclipse user I want support for the new unusedTypeParameter and also warning by default, because more is more here
+
++ As eclipse user I want some syntax colour for annotation keys, because also here more is more
+
++ @bugfix new-eclipse-env.sh must put recent workspace path in native format i.e. in cygwin it must be cygpath -a -m so the carefully crafted workspace will be used instead of a fresh one elsewhere
+
++ As svn 1.7 user I want iwant to use a newer svnkit so it works with the newer working copy format
+
++ As @developer and @buildscriptuser I want -XX:-UseSplitVerifier added automatically to EmmaCoverage jvm args so my tests don't crash when using Oracle JDK 1.7
+  + add in spex constructor
+  + make it also possible to clear the default
+  + upgrade iwant for iwant to make own tests pass again on 1.7
+  + test on java 1.6
+
++ @optimization: Now that target ingredient descriptor timestamp is checked, we get false positives when target builds in less than 1 second. Find a way to get rid of this
+  * even if the target itself takes less than 1 second, some big target may depend on it
+  + implement: target descriptor timestamp is compared with >, source with >=
+  + real testing
+
++ As @developer I want fresh documentation on the project website so I can gradually start promoting the project
+  + grep away svn co output in local bootstrapping tutorial
+  + target for full website, not only tutorial
+  + website content improvements
+    + main features
+  + remote website
+  + deploy (manually)
+
++ As svn+eclipse user I want a newer subclipse version for the script-generated eclipse so it no more complains about javahl, after some os-level upgrade I have made
+  + upgrade
+  + simplify unzip function to not mention jars by name
+
++ @bugfix escape special characters in recently used workspace path, UTF-8 does not work
+  * thanks Geir Sande for the report
+  + use native2ascii (comes with JDK)
+
++ As @buildscriptauthor I want to define a Jar target so I can publish my classes as jars
+  + also Unzipped, to test the jar
+  + tdd it
+
++ As @buildscriptauthor I want to define characteristics for my java modules so I can for example make sure only deployable modules go into each deployment
+  + interfaces
+  + test extending with own
+  + src module support
+  + bin module support, requires changes to fluent specification
+
++ @bugfix: JavaBinModule toString must be the main artifact name
+  + test both implementations
+  + implement once in superclass
+
++ As @buildscriptauthor I want to add iwant-plugin-ant as a dependency to my module so I can delegate some build code out of the wsdef module
+  + test a side effect that reads ant plugin from ctx and prints its modules
+  + inject wsdefcontext to wishevaluator
+  + publish the plugins via side-effect definition ctx
+  + real test
+
++ @bugfix: equals/hashCode for JavaModule that uses name() so Collection.contains(), HashSet etc work correctly
+  + test equals and hashCode and impl
+  + real test
+
++ @bugfix: wish scripts must work even if cwd is a symlink that points to the workspace
+  + descript
+  + fix failing parts
+    * Iwant3 asSomeone
+  + real test
+
++ As @buildscriptauthor I want a target in a plugin for running a PMD analysis on my java source directories so I can improve their quality
+  + plugin module
+  + pmd target with default rules
+  + html report
+  + txt report
+  + assert issues found from example java file
+  + descript
+  + expose as plugin module
+  + real test
+
++ As @buildscriptauthor I want to use a Path to a PMD ruleset in PMD analysis so I get only the warnings that have been defined as problems in my project
+
++ As @buildscriptauthor I want a PMD copypaste analysis so I can improve my code
+  + base class for test
+  + just for fun: better syserr msg for PmdReport
+  + tdd copypaste report of
+    + 0 and 1 src dir
+    + 2 src dirs
+  + minimumTokenCount
+
++ As @buildscriptauthor I want to define a findbugs report of my classes so I can fix my bugs
+  * cannot use in the simple way, we need the "full distribution" and a home variable (sigh) so it's easiest to generate an ant script
+  + descript
+  + FindbugsDistribution.ofVersion("2.0.2")
+    + test contains directory findbugs-2.0.2 and some jars
+    + download and untar
+  + FindbugsReport.with().name("fbr")
+      .using(findbugs(), antJars())
+      .from(mainClassesAndTheirDepsFrom(allSrcModules()))
+      .end();
+  + fix classpath issue and write a classloader story of it (ant-launcher needed in iwant-plugin-ant, otherwise iwant-plugin-findbugs cannot use it AND dynamically run ant)
+  + also added repo1.maven.org to FromRepository, thought we'll download findbugs jar from there, but a full distro is needed
+
++ As @buildscriptauthor I want to define aux classes for findbugs report so it can report bugs that can only be detected by looking in the binary dependencies
+
++ As @buildscriptauthor I want to define runtime and testtime dependencies to my java modules so that I can more easily build classpaths
+
++ As @buildscriptauthor I want JavaModule to give me effective compile and run module paths for main and test so I don't need to build them myself
+  * compile always before run so it's possible to override
+  * test always before main so it's possible to override
+  * compile implies runtime
+  * runtime is cumulative
+  * compile is not cumulative
+
++ @bugfix disable parallel download, now there are failures if many downloads from the same repository
+  + unittest and fix
+    * very trivial unit test, but maybe shields against some refactoring
+  + real testing with gluent that has lots of downloads
+  + real testing with iwant itself
+
++ As @buildscriptauthor I want to define a java module like another (auto-shoveling spec) so I can reuse a module defined in wsdefdef but make some enhancements during the actual build (like characteristics)
+  + JavaSrcModule
+  + JavaBinModule
+    + both cases separately
+    + change the spex interface of the other
+    * the spex api of these really starts hurting
+  * btw, this didn't help: dependencies won't be cloned this way
+    so instead I made it possible for wsdef to decorate the buildtime
+    modules during their definition it uses from the wsdefdef
+
++ As @buildscriptauthor I want to pass a collection of generator sources to follow for a srcmodule so that I don't have to convert it into an array (currently supported)
+  + just do it, the overloaded method uses it so no need to test it directly
+
++ As @buildscriptauthor I want to clear main and test resources during specification of java src module so that I can override defaults set in my project-specific utility
+  * for example a project uses mavenLayout by default, and individual modules
+    can then declare they don't have resources
+
++ As eclipse user I want new-eclipse-env.sh to enable svn and git plugins if and only if I enable them on the command-line so I don't have to tolerate their problems when I don't need the good parts
+  * for example egit is buggy with submodules
+  + impl as optional opts
+  + conditional install of subclipse
+  + conditional _uninstall_ of egit (included by default)
+
++ As eclipse user I want eclipse-settings side-effect to refresh all binary references (classes and sources) so Eclipse won't complaing about missing references
+
++ As a web app developer I want an easy way of defining a web archive (war) so I don't have to generate an ant script for it
+  + plugin
+  + War target
+    + minimal
+    + web.xml under a directory Path so I can generate confs and use web.xml
+      from under it
+    + libs
+    + classes
+    + resources
+    + excludes
+  + descript, to make sure plugin classpath is right
+
++ As emma user I want emma.rt.control=false by default in EmmaCoverage so that tests don't fail if the happen to open that port and because I cannot find any good use for the control port
+  + add to default jvmargs
+  + real test in a project with test failures
+
++ As eclipse user I want eclipse settings with java compliance 1.7 so that I can use the pretty diamond syntax instead of redundantly defining generic types
+  + module takes JavaCompliance, default is 1.6
+  + core prefs uses it for the 3 places that currently have 1.6 hardcoded
+
++ As eclipse user I want new-eclipse.sh to skip downloading subclipse unless I want to enable it so that I save a lot of time in slow networks
+
++ As @buildscriptauthor I want to define the name of emma report so I can define many of them, for different sets of modules
+
++ As @buildscriptauthor I want to define other outputformats than the default html for findbugs report so I can analyze it by other programs
+
++ As @buildscriptuser I want java source modules to have debug enabled in the java classes so tools like emma and findbugs work better
+
++ @bugfix: add debug and encoding to JavaClasses content descriptor so they get refreshed when the settings change
+
++ As @buildscriptuser I want emma report in xml format, in addition to txt and html, so I can analyze it with e.g. a CI server
+  + tdd
+  + real test by upgrading iwant for iwant
+
++ As @buildscriptuser I want pmd report in xml format, in addition to txt and html, so I can analyze it with e.g. a CI server
+  + tdd
+
++ As @buildscriptauthor I want EclipseSettings to ensure java and resource dirs of my modules exist so I can just define them, run the side-effect, refresh/import to Eclipse and start adding packages and java files
+
++ As @developer I want a findbugs report so I can improve the quality of iwant and also eat some dogfood
+  + initial report
+  + story about filter
+
++ As @buildscriptauthor I want to list my java src modules to findbugs so that I don't need to iterate them myself and add their optional main and test javas and runtime deps myself
+  + tdd that adding modules leads to correct analyze fodder and aux
+  + real test with iwant
+
++ As an @eclipseuser I want to define a bigger value for formatter line length so I can type long lines and use autoformatting
+  * line in file org.eclipse.jdt.core.prefs:
+    org.eclipse.jdt.core.formatter.lineSplit=120
+  + tdd
+  + real test
+
++ As @developer I want to mention reusing code between build-time and run-time on the webpage for advertisement
+
++ As @developer I want svnkit upgraded to 1.8.3 so it works with the current svn workingcopy version
+
++ As @developer I want testarea root to be found by file path, not as resource from classpath so a classpath directory won't be touched by tests and emma report target is dirty only if I have really touched ingredients (sources)
+
++ As @developer I want TestArea to be final and all subclasses deleted, to save some LOCs
+
++ @bugfix: emma coverage must not contain a null artifact if a dependency (e.g. the module itself, if it's an integration test) has no main artifact
+
++ @bugfix: emma report must succeed even if some module has no ec file because of zero coverage (and the report must contain the non-covered code)
+  * it's an unfortunate feature of emma to not write the ec file in this corner case
+
++ As @developer I want utility code to handle mock environment so I can reduce LOC in tests
+  + env that encapsulates mocks
+  + optional base class for tests that makes refs to env parts easy (zero diff)
+  + one test uses it
+  + stdout and stderr capture
+  + tmpDir
+  + wsRoot related methods in IwantTestCase, to minimize diff to modified tests
+    and the risk of confusion between testarea root and wsroot
+  + use everywhere (except in some more special tests)
+
++ As @developer I want EclipseSettingsTest to inherit IwantTestCase to reduce LOC
+  + move SideEffectContextMock and WsInfoMock to apimocks
+  + do it
+
++ The same for EclipseSettingsWriterTest
+
++ As @developer I want a test class name filter instead of suites for tests
+  of iwant so the module splitting will be easier, and also adding new
+  tests
+
++ As @buildscriptauthor I want a coverage report using jacoco so that I can use an alive project instead of the dead emma
+  * also: @bugfix emma fails if path contains special characters (case völundr.sf.net)
+  + create module iwant-plugins-jacoco
+  + tdd
+    + distribution by version, unzipped, jars from it
+    + jacoco distro, jars from it
+    + instr
+    + exec
+    + report
+    + convenience creation from javamodules
+    + real test
+
++ As @developer I want to split distillery2 so it will help me in the later split into bootstrapper/core/plugins and also in understanding and maintaining clean design
+  + move interfaces for wsdef and wsdefdef (with deps) to a new module, iwant-api-wsdef
+    * cannot be in api-model, they need javamodule
+  + fix Iwant2
+  + fix textual java sources in tests
+  + create same module in mock wsroot
+  + fix ref in Iwant3.iwantApiClassLocations
+    + and add ref to another class in distillery2, with todo comment to remove
+      when no more really part of api
+  + fix textual refs to other moved types
+  + fix textual ref in Iwant3Test
+  + move mocked IwantWorkspace (just in case)
+  + fix dummy project (manual testing)
+  + test tutorial works
+  + commit and fix/notify workspaces using iwant
+  + more splitting, either in this story or a new one
+    * well, why not now
+    + iwant wsroot finder
+    + split target impls from distillery2 and api-model
+      + api-core
+        + SubPath
+      + core-download
+        + Downloaded
+        + FromRepository
+        + TestedIwantDependencies
+      + more to api-core
+        + Concatenated
+        + HelloTarget
+        + StringFilterByEquality
+      + emma => iwant-deprecated-emma
+      + AsEmbeddedIwantUser.java
+      + AntGenerated
+      + whole api package (prod)
+      + tests of api package
+  + delete unnecessary "compiler fodder" from mock root
+  + rename distillery2 to entry3
+
++ As @developer I want iwant's own module definitions optimized to fields so it will be a lot faster to make wishes
+  * now the methods create module objects many times, recursively
+
+#################################################################
+= In progress
+#################################################################
+
+- As @developer I want tutorial to use a copy of the workspace root that is only refreshed when some relevant file is modified so building the tutorial will be lazy
+  + first explicitly mark all toplevel directories as ingredients to the copy
+  + later, after moving all relevant modules under essential or optional, just
+    use them, leaving documentation out from them
+  - delete dead  as-iwant-developer/i-have/wsdef/net/
+
+- As @buildscriptuser I want iwant to only checkout the code it really needs so I don't need to wait for all the plugins I don't need
+  + split distillery
+    + entry2
+    + entry
+    + the rest (test utils for entry)
+  + restructure dirs so essentials one and plugins another dir
+    * essential, optional and private
+    + put entry under essential
+    + modules needed only by iwant's own build and test under private
+    + plugins under optional
+    + put the rest under essential
+  - split IwantNetworkMock from entry to separate private module iwant-entrymocks
+    - and iwant-testarea to private
+  - use IwantWsRootFinder in TestArea
+  - fix external (users') references to entry
+  - only checkout essential, plugins are checked out if used
+  - finalize
+
+- As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
+  + @bugfix: copy missing files (resources)
+  + simplify resource copying of instrumentation: don't follow the example in jacoco tutorial (**/*.class)
+    but instead use **/* so no extra copying is needed
+  + filter: 
+    + whole module: just don't pass uninteresting modules when building JacocoTargetsOfJavaModules
+      * test it works  even if interesting modules depend on the uninteresting
+    * filtering by classname requires online instrumentation => new story
+  + use in iwant
+  - refactor
+    + reuse test setup code
+    - reuse ant generator code
+  - other features?
+    - read through emma tests and find what is missing
+
+- As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
+  + use Windows to develop the wrapper
+  + fix ScriptGenerated test to tolerate Windows paths in output
+  + abstract path mangling so it can be mocked
+  + abstract os detection so it can be mocked
+  + tdd finding cygwin bash.exe
+  + test correct wrapping is used if and only if on Windows
+  + test tests are still green on linux
+  + real testing
+  + fix: ScriptGenerated.execute used by other targets must prepare
+    execution env like SG itself does
+  + again testing => usable
+  - tell story about making it easier to run unix commands in path, now
+    caller of execute needs to prepare a script for it
+  - either make all tests pass on Windows or write a story about it
+
+- As @developer I want IwantTestCase fields private so I can be more confident that the subclass intentions are still valid, especially regarding test area root versus wsroot
+  + hide fields temporarily and replace some direct refs with method calls
+  + hide testArea, fix refs
+  - hide wsRoot permanently and fix all refs
+
+- As @buildscriptauthor I want a Target of a downloaded and unzipped github commit so I can use the code in it
+  + a convenience class around downloaded, unzipped...
+  + and also a new concept: SubPath, because the github zip has a directory in it
+  + descript to verify the actual effect
+  - descript the real "so that": classes compiled from code from github
+
+- As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
+  * and also maintainability is increased
+  + bootstrapping from local iwant without versioning
+  + one common wsdef creation wizard tutorial
+    + cp -a given bootstrapped env
+    + create wsdef and wish hello
+  + bootstrapping with svn using svn:externals
+  + wsdef creation using both local and svnext
+    + make local create iwant-tutorial dir also, because svn version does
+    + in wsdef tutorial cd to iwant-tutorial
+    + in wsdef tutorial use iwant-tutorial as ws name
+    + another wsdef creation target
+  + hello world with eclipse
+    + continue from initial ws
+    + move eclipse settings and modification here
+  + tutorial directory with index page
+  + one tutorial document per nontrivial feature
+    + ext lib in wsdef
+    + antgenerated
+    + ant-cli
+    + scriptgenerated
+    + using-iwant-plugin-ant
+  + use style.css file from tutorial index and descript docs
+  + define descript doc title in one place (java) and use as html page
+    title, section header and link text
+  + links: prev, up, next
+  - bootstrapping without svn:externals
+  - bootstrapping with ant?
+  - remove the old files
+    - refresh.sh
+    - article.sh bootstrapping-with-ant.sh bootstrapping-with-bash.sh edits
+
+- @epic: As @developer I want the main branch deleted and replaced with distillery code split to many projects so distillery will be more maintainable
+  * don't split before deleting old code, otherwise it's difficult to see what is dead
+  - reimplement features that are now only in the main branch
+    + ScriptGeneratedContent: see separate story
+    * JunitResult seems to be thread-unsafe so let's skip it
+      ( it uses ant and suppresses sysout)
+    + checksum of downloaded: any tests to copy?
+  - split distillery2
+    + api
+    + planner, planner-api and planner-mocks
+    + eclipse-settings
+    - remove all Suite classes, by now it's clear they are not needed
+      - remove refs in module defs
+      - remove the classes
+      - verify test coverage still the same
+    - what else
+  - after split, take WsRootFinder and ExampleWsDefGenerator into use in Iwant3Test
+    * actually, no split needed, but no need for WsRootFinder
+
+#################################################################
+= Planned
+#################################################################
+
+- As @buildscriptauthor I want an utility for defining modules so that they are automatically added to an allSrcModules collection so I don't need to maintain such a collection myself
+  - take from real projects and polish for general use
+  - use in iwant itself
+
+- As @buildscriptauthor I want classes excluded from jacoco report by classname pattern so my special classes e.g. configuration does not affect the result
+  * offline instrumentation required, a bigger change to the way we use jacoco
+
+- @epic As @buildscriptauthor I want external dependencies to handle their dependencies automatically so I don't need to define them
+  * example: jacoco distribution depends on a certain version of asm
+
+- As @buildscriptauthor I want a tutorial for defining java modules so I know how to do it easily
+  - descript
+    - define modules
+      - "autolisting module def" used in some projects
+    - generate eclipse settings
+    - create code
+    - define list of jars
+      - publish "helper"
+    - want jars in tutorial
+
+- As @buildscriptauthor I want a tutorial for defining a jacoco coverage report so I know how to do it easily 
+
+- As @buildscriptauthor I want a default test classname filter that
+  detects typically named tests so I don't have to type the same filter
+  over and over again
+
+- As @developer I want to exclude findbugs testfodder etc from the findbugs report of iwant so I don't get false positives
+  - support for findbugs filter
+  - use it
+
+- stories about defining java classes with different settings (e.g. no debug) for java src modules
+
+- As @buildscriptauthor I want iwant to give a friendly error message during compilation at the latest if a resource directory is missing so I can fix the module definition
+  * currently throws NPE
+
+- As eclipse user I want to have .classpath files that are identical on all workstations so I can version them so solving eclipse settings problems is easier (for example after iwant upgrade)
+  * afaik this requires classpath variables
+  + new-eclipse-env.sh defines USER_HOME
+  - optional setting for EclipseSettings to use the variable
+  * postponed, because this is a bit too laborous to normalize at this point: /home/wipu/.net.sf.iwant/cached/ClassesFromUnmodifiableIwantWsRoot/%2Fhome/wipu/.net.sf.iwant/cached/UnmodifiableUrl/http%253A/%252Fsvn.code.sf.net/p/iwant/code/trunk%2540595
+
+- @anticipated As @buildscriptauthor I want full control over the java module runtime path order so I can use fragile enterprise modules like xml parsers
+
+- @epic As @buildscriptauthor I want all observable collections of api implementations to be protected against mutation after building them so I don't accidentaly cause bugs
+  - JavaModule impls
+  - Targets
+
+- As @developer I want a reliable classloader so that I can use AntGenerated even if I have ant.jar without ant-launcher.jar in my classpath
+  * case: AntGenerated fails to load ant classes, if ant.jar is in classpath without ant-launcher.jar
+  * this is because urlclassloader delegates to parent, and it will fail to load the main class because it refers to another class in the missing ant-launcher.jar
+  * the child classloader (urlclassloader) never gets an opportunity to load the class that it would be capable of loading
+  - a classloader that can load missing classes from the given urls and at the same time load system defaults from the parent (quite an @epic I guess, unless we use a 3rd party utility, and only use the current simple classloader for bootstrapping)
+
+- As @buildscriptauthor I want to define (fluently) a ruleset for PMD so I get only the warnings that really are an issue in my code
+
+- As a @buildscriptauthor I want a convenience filter for the typical test names so I don't have to implement it myself in all my projects
+
+- As @buildscriptauthor I want to refer to jars in the maven repository (at http://repo1.maven.org/maven2/) so I'm not restricted to the ibiblio selection 
+
+- As @buildscriptauthor I want to define runtime dependencies to a binary module so a module using it automatically gets the runtime dependency in its test and runtime classpath
+  - make sure the concepts test-runtime and runtime dependencies exist and work
+
+- @bugfix: EmmaReport must not fail by trying to access the nonexistent ec file, if a module has tests but they don't call any main code
+
+- As @developer I want a layer on top of File so I can test the emma backslash problems and also start making it more user-friendly than File
+  - make ctx.cached(Path) return new type
+  - follow the compiler
+
+- As @buildscriptauthor I want a convenience method Untarred.from(src) that detects the compression to use and derives the target name from src so I don't have to type them 99% of the time
+
+- As @buildscriptauthor I want a findbugs report of my code so I can fix bugs
+  - enable and fix test in iwant-plugin-findbugs
+    - use ant or something
+      - use full untarred distro of findbugs
+      - fork jvm, setting findbugs.home
+
+- As @buildscriptuser I want an easy (automatic) way of ensuring that eclipse settings refer to existing external dependencies so I don't get broken compilation
+  * should eclipse-settings always depend on them, why not?
+  - if so, make it possible for side-effect to depend on targets
+
+- @bugfix: fix: parallel script run sometimes fails with "text file busy"
+  * may be caused by chmod!
+  + cleanup closing in StreamUtil and FileUtil
+  + utilize pipe in copying of files
+  - incr numbers in WishEvaluatorTest.testScriptsWorkCorrectlyInParallel()
+  - test chmod in isolation
+  - fix, try to find even a workaround
+
+- @refactoring: As @developer and @buildscriptauthor I want test utilities, like mocks, for easy and nonverbose testing of iwant and iwant-based code
+  + new package: testing
+  + rehearse by moving a couple of test utilities there
+  + move all, creating a different package for entry2/3 stuff
+    + WsRootFinder
+    + test area 2
+    + all testareas
+    + reuse code btw testareas (could also combine,
+      but separation may be handy later)
+  - test Concatenated and HelloTarget in their own modules
+    - also JavaBinModule
+    - maybe another module for these
+    - modularize test tools so testing is possible
+  - reusable mocks of iwant interfaces/classes
+  - object mothers/testworlds for nonverbose setUp and tearDown
+
+- @enhancement: don't put duplicates of classes for emma coverage, even if they come from cumulative test and main deps
+
+- @enhancement: clean up the way JavaSrcModule defines test classes.
+  * Maybe better to just use a regex, whether it matches one suite or many classes
+    * just rename the string setter as testClassRegex and always use it
+  * no, better to have exact name and regex as separate properties =>
+    exact name passed to junit as such, regex is used by ClassNameList
+  - use a sane default for the regex (*Test, not Abstract*) when
+    neither setting given (syserr this so the magic won't be completely
+    black)
+
+- @bugfix: As @buildscriptauthor I want combined sources updated when iwant sources are re-exported so I can see fresh sources when I develop using iwant-from a file
+  * But keep it fast
+
+- As @buildscriptauthor I want target JavaClassesWithResources so I get classes and resources under the same directory, which is easier for classpaths 
+
+- As @developer I don't want iwant tests rerun just because testarea was touched so that it gets rerun only when real sources were touched
+
+- @bugfix: As @buildscriptauthor I want iwant to xml escape jvmargs passed to EmmaCoverage so I don't have to do it
+
+- @bugfix: indirect ingredient check does not work with many instances of the same Path
+  - see if it's time to make Path an abstract class that fixes equals,comparable,hashCode for good
+
+- @bugfix: eclipse env script generates unix-style path to workspace in cygwin => windows eclipse looks under C:/thepath instead of C:/cygwin/thepath
+  - see what else needs cygpath
+  - maybe tell a story about generating eclipse for another machine
+
+- improvements for Downloaded checksum handling
+  - SHA-256: store map of algo->expected key
+  - url for checksum instead of the value, use in FromRepository.ibiblio
+
+- As @developer I want own type for urls, to work around all problems of java.net.URL, especially the hashCode DNS brainfart
+
+- exit status chapter to tutorial, and test ant and bash cli failure there
+
+- As @developer I want the old iwant build to use the current distillery version of iwant so I can get start getting rid of the old main branch
+  + practice eclipse project declaration in dummy project first
+  - make the change, using svn:externals to control version
+    * keep current wsdef, for copying website building and tagging scripts
+  - generate all eclipse projects
+    + first wsdef and wsdefdef
+    + delete as-iwant-developer eclipse settings
+    + delete iwant-lib-{ant,junit}
+    + delete iwant-core as eclipse-project, keeping the files
+    + delete ref to lib-junit from distillery projects
+    - generate eclipse settings for all projects
+      + testJava and testDeps for JavaModule
+      + testJava and testDeps affect .classpath
+      + upgrade svn:externalized iwant to utilize these
+      - local classdir for JavaModule
+      - add testJava to all projects
+      - then make iwant ws generate all eclipse settings
+  - svn:ignore generated eclipse setting files
+  - create public (remote) version of the bootstrapping tutorial
+  - adapt the current iwant ws to use the new bs tutorials
+  - adapt the static html
+  - delete old wsdef 
+
+- @bugfix: make sure iwant deletes cached target before refreshing
+
+- make Iwant3Test use modified wsname to verify no hard-coded example stuff there
+
+- findings from real usage:
+  - targets() should just return collection of Paths, not Targets, wishes may be reasonable against ExternalSources for example
+    - but fix externalresource wish script path handling, the leading slash breaks number of ".."s
+  - binary javamodule should have empty deps, not null
+
+- As @buildscriptuser I want iwant to fail if I try to run it several times in parallel for the same workspace so it doesn't corrupt anything
+  * locking, also mention lock location in case a run failed to delete it
+
+- As @buildscriptuser I want to declare worker count once for my OS user so I don't need to create and maintain ws-specific files
+
+- As a @buildscriptauthor I want to declare some targets single-threaded so targets depending on it get never refreshed in parallel
+  * e.g. for tests that need the display, a certain shared sql table area or some other shared resource
+
+- @bugfix: delete cached file (or content descriptor) if refresh fails, otherwise partially created file will make next run think it's uptodate
+
+- @bugfix: as @buildscriptuser with @wintoys I want a target refreshed when a source has been DELETED
+  * I remember having the problem with Windows that it doesn't touch timestamp of parent
+    when deleting a file, so IF this is really the case and a wuser demands:
+  - update the test to touch parent timestamp back after deleting the file to prove need for the fix
+  - use same TimestampHandler than Iwant2
+  - a dedicated cache dir for source dir listings
+  - refactor: common supertype for Source and ExternalSource
+
+- As @developer I want this long and deep text broken into a readable list of stories (not too detailed), both to done and planned, so I can analyze how I proceeded and also see what has been done and what not:
+  - optimization: don't even write descriptor for source
+  - unmodifiable target is cached under user-global cache
+  - unmodifiable target descriptor is also under user-global cache
+  - wishevaluator aspath returns File, not prints
+  - laziness: handling of cached file if stream requested
+    - if ingredient says it's cheaper to regenerate stream and nobody needs file => delete file (saving uptodate check)
+    - if uptodate cached file exists, use it
+    - if oudated cached file exists
+      - only stream requested => delete cached file
+      - someone else needs as file => tee to file while streaming
+  - delete old wish scripts at refresh
+  - descript: modification of wsdef causes different output
+  - move WsRootFinder to main src from test
+  - dedicated module for WsRootFinder, replace other classpath markers (in testarea at least) with this
+  - laziness of compilation of unmodifiable
+  - remove the zip tests using versioned zip files now that we have the svnkit unzip test
+  - checksum after download
+     - test download of incorrect content causes failure (sha check)
+     - test sha failure causes rename of cached file
+  - incorrect iwant-from => friendly error
+  - maybe: more expandable contract between entry and entry2
+    - instead of assuming entry2 can only depend on entry, there could
+      be a text file that can be passed as the source list to javac
+  - new name for cache: as-someone/.iwanted
+    * no more with/bash: cli does not matter
+    * past tense shows for the possible user of the path that this is potentially stale data
+  - user-specific external dependencies cache: ~/.iwant/cached/by-url/<escaped-url-with-slashes>
+  - maybe: another entry method: one with given iwant-from, for fully embedded case
+    where a file is not needed for that
+    ? on the other hand, the as-someone dir is needed anyway
+  - remove main and its tests from core
+    * the entry is the only main, from then on just proper java
+  - from java both entry and entry2 are usable as entry points
+  - publish
+    - modify bootstrapping tutorials
+    - clean up the other bootstrapper story
+
+- only one place for reading bytes/string from stream
+  * currently Iwant, Iwant2 and StreamUtil
+  * maybe just keep StreamUtil as facade
+
+- As @buildscriptauthor I want iwant not to overwrite my wsdef even if I delete wsdefdef and iwant regenerates it and it points to my existing wsdef so that I don't lose my work
+
+- As @developer I want better names for wsdef and wsdefdef (IwantWorkspaceProvider and IwantWorkspace) and also for their eclipse projects
+  * for example currently the java interface for wsdefdef is WorkspaceProvider
+  - rename interfaces
+  - rename java references
+  - rename non-java refs, like in i-have
+
+- As @developer I want cached content descriptor logic behind an interface and use real impl only in one integration test that just tests features here and there, mock in current tests.
+  * also, do the same to cached content and maybe other file functionality
+
+- As @buildscriptauthor I want the eclipse-settings side-effect to generate settings for other projects, not only as-someone
+  * here we need to fix the many hardcoded values
+
+- As git user I want an easy way to get a bootstrap, because I cannot use svn:externals
+  * option: a script to svn export and delegate to help.sh
+  * option: downloadable package, to be commited
+
+- As git user I want an easy way to ignore generated iwant stuff
+  * either restructure so commited stuff is in different dir than generated
+  * or a helper side-effect/script or something
+
+- As @buildscriptauthor I want iwant to generate working wishscripts for my own side-effects so I can use iwant for scripting, not only defining and refreshing artifacts in the cache
+  * maybe a more concrete story needed here, to make sure this really helps
+    in real life
+  - example wsdef provides eclipse-settings side-effect
+  - test removing side-effects => no wish scripts
+  - test adding custom hello side-effect
+    - wish scripts are generated
+    - they delegate to the side-effect
+
+- As @buildscriptauthor and @buildscriptuser I want to declare to iwant I use eclipse so it will automatically make the side-effect of fresh eclipse settings effective when running anything
+  - design good ui
+  * don't do this if it's possible to break compilation in eclipse so it's difficult to fix it back
+    - option: just do it after successful refreshes
+
+- @anticipated As @buildscriptauthor I want to declare that I use IntelliJ IDEA so iwant will generate idea settings instead of eclipse settings
+
+- As @developer I want stories from the "in progress" section of the old backlog so I don't lose good ideas
+
+- logging: one letter to show if the generated target is a local (workspace) or global (user cache) one
+
+- As @buildscriptuser I want downloaded files cached by sha256 so the file is not downloaded again if some other buildscript uses a different url
+  * sha256 would then be mandatory for all downloads
+
+- security guard: whenever opening file for writing, make sure the canonical path (what about symlink resolving?) points to an allowed directory
+  * important when building a path from url for example
+
+- As @developer I want new tests for automatic rebootstrap after editing iwant-from.conf now that sha verification support cannot be used for that in tutorial
+  * new bootstrapper has to use a rev that already implements sha so another way is needed
+  * now that iwant-rev is no more used, cached iwant is always in the same directory, so
+    the probability of the feature being already broken is high!
+  - make iwant/help.sh print svn revision?
+  - junit test for sha, if there is none
+
+- As @developer I want a fixed version of descript so we no more need >> to make sure script output doesn't delete previous output and break descript output assertions
+
+- As @buildscriptauthor and @buildscriptuser I want to define cached name and target name so e.g. cached html files are more easily deployed/displayed and the "logical" name can express the meaning
+  - test normal case
+  - test name clash is detected and "use subdir" hint is given
+  - test subdirs in cached name work
+  - use in iwant website target
+
+- potential bugfix: filter out .svn etc when determining directory modification time
+  - test with .svn
+  - manually filter or use and Fileset
+
+- As @developer I want to see some progress messages in stderr so I can more easily detect problems and remember/understand what's going on
+  - replace/enhance TextOutput.java
+
+- As @developer I want WsDefClasses to inherit some abstract super class together with Target instead of extending Target, to be able to make Target final again so users don't get any stupid ideas about having to extend it
+  * Path logic should be the same in every workspace; new Content can and should be defined easily 
+
+- As @buildscriptauthor I want WsDefClasses to put contentdescription in a different cache dir than my own targets, to avoid name clashes (just like the actual cached content already does)
+
+- As eclipse user I want iwant to warn as long as I have outdated eclipse settings that differ from the ones defined in my wsdef so I won't debug classpath problems in vain
+  - eclipseProjects outdated => warn
+  - after that cached ecliseProjects different than "deployed" ones => warn
+
+- As @buildscriptauthor I want to define extra ingredients not mentioned in a script but indirectly needed at runtime so the script will be rerun when those ingredients have changed
+  * e.g. bootstrapping-with-bash.sh sources bootstrapping-with-ant.sh and
+         descript.sh sources descript-functions.sh
+
+- bugfix: As @developer I want to see an error message when bootstrap fails because of compilation error caused by missing svn add of new file 
+
+- As @developer I want to refactor all ouput to go through the same interface, to make sure everything is prefixed, and to perhaps control verboseness later
+
+- As @developer I want iwant-url replaced with iwant-from, because it's not an url in the iwant workspace
+  * and when iwant-rev has been removed, the file iwant-from.conf only contains iwant-from
+
+- As programmer I want to reuse another project integrating on source and build level so I don't need hassle with binary releases
+  * dependencies could be handled through an interface per classpathitem in the Path that defines the needer
+  * then both sides can define those whatever way thay want, binary or source
+  * TODO more stories: what if 3rd party binary dep could declare version constraints like
+    "at least 2.x"
+
+- As @buildscriptuser I want script generated content (e.g. iwant descripts) to refresh stderr more frequently, if java exec allows this, so it will be easier and more reliable to track script progress
+
+- As @developer I want generated eclipse settings so no more duplicate classpaths
+  - define all eclipse projects using iwant
+  - document copying them in place
+    OR: see story about side-effects
+  - refine eclipse stories and implement to make it more usable
+
+- As eclipse user I want jar classpaths to point to the workspace-relative as-WSNAME-developer/with/bash/iwant/cached/... instead of absolute paths so the workspace is easier to move (maybe) and so I can choose to version them when it's a pragmatic choise.
+
+- bugfix: as @buildscriptauthor I want iwant to fail if I define two paths with the same name instead of just overwriting
+  * note: even src cannot have same name as target, because content descriptors mention paths by name
+  * so, if a src is replaced with target, descriptor needs to change
+
+- As a @buildscriptauthor I don't want to see iwant tests in my classpath so I don't accidentally use them
+  - separate iwant-main-classes and iwant-test-classes in phase2.xml
+
+- @maybe as a @buildscriptauthor I want bootstrapper to generate example files that need editing before it agrees to continue so I won't screw things up by running the bootstrapper again before really editing the confs
+  - descript all
+  - choose option:
+    * just compare content to the example string
+    * put extra conf "remove-me"
+    * put confs in comments
+
+- As a @buildscriptauthor I want the bootstrapper to use an ".unverified" temp dir for classes (like svnkit download does before md5 check) so compilation failure won't leave the system in a broken state
+
+- As @buildscriptauthor I want to use some simpler syntax for the whole buildscript so iwant will be more ergonomic for really small projects that don't need java and IDE for anything
+  * ngr or even simpler?
+  * if custom content or anything fancier is needed, I guess it's ok to require java
+
+- As a @buildscriptuser I want several srcs in an eclipse project
+  + implement
+  - test in real project (gluent)
+  - descript
+
+- TODO eclipse project stories
+  - dep to other eclipse projects as project deps, not to iwant cache
+  - src dir from the classes target, not hardcoded "src"
+  - and support multiple sources for the classes (if supported by the JavaClasses content)
+    * or some other helper to create an eclipse project for given classes and test-classes
+  - src link name? maybe src-main or something, when supporting many sources and test classes?
+  - distinction between targets and nontargets is clumsy: why not just declare all needed paths as dependencies? would make it easier to build eclipseprojects from javaclasses
+  - somehow make it unnecessary to get content from target and cast it
+
+- As a @buildscriptauthor I want iwant the JavaClasses content to remember the order of "using" calls so I can control the actual classpath in the unfortunate case I need classpath items that contain the same fqcn's with different semantics (a real problem in the real world, especially in the enterprise/xml world)
+  - save the cpitems internally in a list, even though publishing them as an alphabetical sortedset for depencency management
+  - use the list during compilation
+  - use the list when generating eclipse .classpath
+
+- As a @buildscriptuser I want to be able to move the whole workspace without breaking iwant
+  * use only relative paths internally
+  * should be mostly done, but
+  - descript and fix possible problems
+
+- As a @buildscriptauthor I want all cached targets invalidated when iwant is rebootstrapping itself because I changed its version
+  * even downloaded files, for now (the "don't do it" rule of optimization)
+
+- As a @buildscriptauthor I want to be able to define tests for my workspace definition so if I break it iwant won't use it
+  * this is essential for bootstrapping
+
+- As a @developer I want iwant itself compiled with its workspace definition and tested with it so that I can bootstrap the whole tool, tested and working
+  * if iwant gets later split into submodules, include only essentials here
+
+- As a @buildscriptauthor I want an error message if I refer to a java classes directory with a missing source
+  * in the tutorial, call these test classes, to maintain the red-green cycle later
+  + done but untested and undefined details
+
+- As a @buildscriptuser I want an error message if I refer to a java classes directory of uncompilable sources
+  + done but untested and undefined details
+
+- As a @buildscriptauthor I want to define a target for debugless java classes so I can ship my code
+
+#################################################################
+= Story sketches, to be evaluated and or rewritten
+#################################################################
+
+- todo write stories:
+  - "i just touched src X, what needs refreshing"
+  - "autoupdated entrypoint build.xml that can also be imported to eclipse as a gui for iwant of the ws"
+  - root could just have one target, all, and list-of/targets would be its direct deps
+  - refresher must delete cached target if refresh fails
+  - todo gen wishscripts lazily
+
+- EPIC: As a @buildscriptauthor that has to serve users that don't have unix tools installed I want iwant to provide a JPC-based virtual machine for running my scripts
+  - a way to command the VM and read its results
+  - a very minimal disk image that contains basic tools
+
+- As a @buildscriptauthor I want an easy way to define a virtual machine image that contains the software I need so the base image shipped with iwant can be small
+
+- As a @buildscriptuser I want to see a refresh plan for any target so I know if I really have time to refresh it yet
+
+- As a @buildscriptuser I want to see a time estimate in a refresh plan, based on previous refresh(es)
+
+- As a @buildscriptuser I want targets refreshed in an order that tries to find cumulative problems as early as possible
+  * meaning targets that are most depended on are built first
+    so if they have problems, their dependencies probably need
+    to be refreshed again anyway
+  * if equal, recurse into targets depending on them
+
+- As a @buildscriptauthor I want iwant to use some non-default package for my workspace definition class and iwant still to be able to auto-detect the source directory location
+  * read the package declaration from the java file to deduce where the src root is
+  + now as-iwant-user/to-use-iwant-on requires all data as cli arguments
+    so this story no more makes sense
+
+- As a paranoid @buildscriptauthor I want some control over the validity of my downloaded targets
+  * if the current consistent "assume nobody is fool enough to touch the cache" strategy seems to work,
+    just provide a wish for checking the cached targets, one by one or all at once

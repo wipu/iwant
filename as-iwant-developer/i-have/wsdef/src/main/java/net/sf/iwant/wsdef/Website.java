@@ -20,7 +20,8 @@ public class Website extends Target {
 	public Website(String name, Target tutorial) {
 		super(name);
 		this.tutorial = tutorial;
-		this.html = Source.underWsroot("iwant-docs/src/main/html/website");
+		this.html = Source
+				.underWsroot("private/iwant-docs/src/main/html/website");
 	}
 
 	@Override

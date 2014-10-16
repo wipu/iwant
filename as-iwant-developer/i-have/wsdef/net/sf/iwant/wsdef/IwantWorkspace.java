@@ -140,15 +140,15 @@ public class IwantWorkspace implements WorkspaceDefinition {
 		}
 
 		private Source articleSh() {
-			return source("iwant-docs/src/main/descript/tutorial/article.sh");
+			return source("private/iwant-docs/src/main/descript/tutorial/article.sh");
 		}
 
 		private Source bootstrappingWithAntSh() {
-			return source("iwant-docs/src/main/descript/tutorial/bootstrapping-with-ant.sh");
+			return source("private/iwant-docs/src/main/descript/tutorial/bootstrapping-with-ant.sh");
 		}
 
 		private Source bootstrappingWithBashSh() {
-			return source("iwant-docs/src/main/descript/tutorial/bootstrapping-with-bash.sh");
+			return source("private/iwant-docs/src/main/descript/tutorial/bootstrapping-with-bash.sh");
 		}
 
 		private Target<Concatenated> bootstrappingTutorialScript(
@@ -167,7 +167,7 @@ public class IwantWorkspace implements WorkspaceDefinition {
 		}
 
 		private Source websiteHtml() {
-			return source("iwant-docs/src/main/html/website");
+			return source("private/iwant-docs/src/main/html/website");
 		}
 
 		private Target<Concatenated> websiteScript(String targetName,

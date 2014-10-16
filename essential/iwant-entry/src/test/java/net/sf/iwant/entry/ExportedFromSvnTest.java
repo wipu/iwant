@@ -33,7 +33,7 @@ public class ExportedFromSvnTest extends TestCase {
 		File exported = iwant.exportedFromSvn(remoteUrl, true);
 
 		assertFalse(exported.equals(remote));
-		assertTrue(new File(exported, "iwant-entry2/src/main/java/"
+		assertTrue(new File(exported, "essential/iwant-entry2/src/main/java/"
 				+ "net/sf/iwant/entry2/Iwant2.java").exists());
 		assertTrue(new File(exported,
 				"essential/iwant-entry/as-some-developer/with/java/"
@@ -49,7 +49,7 @@ public class ExportedFromSvnTest extends TestCase {
 		File exported = iwant.exportedFromSvn(remoteUrl, false);
 
 		assertFalse(exported.equals(remote));
-		assertTrue(new File(exported, "iwant-entry2/src/main/java/"
+		assertTrue(new File(exported, "essential/iwant-entry2/src/main/java/"
 				+ "net/sf/iwant/entry2/Iwant2.java").exists());
 		assertTrue(new File(exported,
 				"essential/iwant-entry/as-some-developer/with/java/"
@@ -111,8 +111,9 @@ public class ExportedFromSvnTest extends TestCase {
 				exportedAgain.getCanonicalPath());
 
 		assertFalse(previouslyExportedFile.exists());
-		assertTrue(new File(exportedAgain, "iwant-entry2/src/main/java/"
-				+ "net/sf/iwant/entry2/Iwant2.java").exists());
+		assertTrue(new File(exportedAgain,
+				"essential/iwant-entry2/src/main/java/"
+						+ "net/sf/iwant/entry2/Iwant2.java").exists());
 	}
 
 	/**

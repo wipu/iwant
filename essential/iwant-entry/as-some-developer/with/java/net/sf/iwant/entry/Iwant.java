@@ -415,7 +415,7 @@ public class Iwant {
 
 	private static List<File> iwantBootstrappingJavaSources(File iwantWs) {
 		File iwant2 = new File(iwantWs,
-				"iwant-entry2/src/main/java/net/sf/iwant/entry2/Iwant2.java");
+				"essential/iwant-entry2/src/main/java/net/sf/iwant/entry2/Iwant2.java");
 		File iwant = new File(
 				iwantWs,
 				"essential/iwant-entry/as-some-developer/with/java/net/sf/iwant/entry/Iwant.java");

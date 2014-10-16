@@ -51,17 +51,26 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				.modules(allModules()).end());
 	}
 
-	private static IwantSrcModuleSpex iwantSrcModule(String subName) {
-		String fullName = "iwant-" + subName;
-		return JavaSrcModule.with().name(fullName)
-				.locationUnderWsRoot(fullName).mainJava("src/main/java")
-				.testJava("src/test/java").testedBy(testClassNameFilter);
-	}
-
 	private static IwantSrcModuleSpex essentialModule(String subName) {
 		String fullName = "iwant-" + subName;
 		return JavaSrcModule.with().name(fullName)
 				.locationUnderWsRoot("essential/" + fullName)
+				.mainJava("src/main/java").testJava("src/test/java")
+				.testedBy(testClassNameFilter);
+	}
+
+	private static IwantSrcModuleSpex optionalModule(String subName) {
+		String fullName = "iwant-" + subName;
+		return JavaSrcModule.with().name(fullName)
+				.locationUnderWsRoot("optional/" + fullName)
+				.mainJava("src/main/java").testJava("src/test/java")
+				.testedBy(testClassNameFilter);
+	}
+
+	private static IwantSrcModuleSpex privateModule(String subName) {
+		String fullName = "iwant-" + subName;
+		return JavaSrcModule.with().name(fullName)
+				.locationUnderWsRoot("private/" + fullName)
 				.mainJava("src/main/java").testJava("src/test/java")
 				.testedBy(testClassNameFilter);
 	}
@@ -243,16 +252,16 @@ public class WorkspaceForIwant implements IwantWorkspace {
 			FromRepository.ibiblio().group("pmd").name("pmd").version("4.3"))
 			.end();
 
-	private static JavaSrcModule iwantApiModel = iwantSrcModule("api-model")
+	private static JavaSrcModule iwantApiModel = essentialModule("api-model")
 			.mainDeps().testDeps(junit).end();
 
-	private static JavaSrcModule iwantTestarea = iwantSrcModule("testarea")
+	private static JavaSrcModule iwantTestarea = essentialModule("testarea")
 			.noTestJava().mainDeps(junit).end();
 
 	private static JavaBinModule iwantWsRootMarker = JavaBinModule.providing(
 			Source.underWsroot("iwant-wsroot-marker")).end();
 
-	private static JavaSrcModule iwantIwantWsrootFinder = iwantSrcModule(
+	private static JavaSrcModule iwantIwantWsrootFinder = essentialModule(
 			"iwant-wsroot-finder").noTestJava().mainDeps(iwantWsRootMarker)
 			.end();
 
@@ -261,53 +270,53 @@ public class WorkspaceForIwant implements IwantWorkspace {
 			.mainJava("as-some-developer/with/java").mainDeps(iwantTestarea)
 			.testDeps(iwantIwantWsrootFinder, junit).end();
 
-	private static JavaSrcModule iwantEntry2 = iwantSrcModule("entry2")
+	private static JavaSrcModule iwantEntry2 = essentialModule("entry2")
 			.mainDeps(iwantEntry)
 			.testDeps(iwantIwantWsrootFinder, iwantTestarea, junit).end();
 
-	private static JavaSrcModule iwantCoreservices = iwantSrcModule(
+	private static JavaSrcModule iwantCoreservices = essentialModule(
 			"coreservices").mainDeps(iwantApiModel, iwantEntry, iwantEntry2)
 			.testDeps(iwantTestarea, junit).end();
 
-	private static JavaSrcModule iwantApimocks = iwantSrcModule("apimocks")
+	private static JavaSrcModule iwantApimocks = privateModule("apimocks")
 			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry,
 					iwantTestarea, junit).noTestJava().end();
 
-	private static JavaSrcModule iwantApiCore = iwantSrcModule("api-core")
+	private static JavaSrcModule iwantApiCore = essentialModule("api-core")
 			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
 			.testDeps(iwantApimocks, junit).end();
 
-	private static JavaSrcModule iwantApiJavamodules = iwantSrcModule(
+	private static JavaSrcModule iwantApiJavamodules = essentialModule(
 			"api-javamodules")
 			.mainDeps(iwantApiCore, iwantApiModel)
 			.testDeps(iwantApimocks, iwantCoreservices, iwantEntry,
 					iwantTestarea, junit).end();
 
-	private static JavaSrcModule iwantApiWsdef = iwantSrcModule("api-wsdef")
+	private static JavaSrcModule iwantApiWsdef = essentialModule("api-wsdef")
 			.noTestJava().mainDeps(iwantApiModel, iwantApiJavamodules).end();
 
-	private static JavaSrcModule iwantCoreDownload = iwantSrcModule(
+	private static JavaSrcModule iwantCoreDownload = essentialModule(
 			"core-download")
 			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
 			.testDeps(iwantApimocks, iwantTestarea, junit).end();
 
-	private static JavaSrcModule iwantPlannerApi = iwantSrcModule("planner-api")
-			.mainDeps(iwantEntry).testDeps(junit).end();
+	private static JavaSrcModule iwantPlannerApi = essentialModule(
+			"planner-api").mainDeps(iwantEntry).testDeps(junit).end();
 
-	private static JavaSrcModule iwantPlannerMocks = iwantSrcModule(
+	private static JavaSrcModule iwantPlannerMocks = essentialModule(
 			"planner-mocks").noTestJava().mainDeps(iwantPlannerApi, junit)
 			.end();
 
-	private static JavaSrcModule iwantPlanner = iwantSrcModule("planner")
+	private static JavaSrcModule iwantPlanner = essentialModule("planner")
 			.mainDeps(iwantEntry, iwantPlannerApi)
 			.testDeps(iwantPlannerMocks, junit).end();
 
-	private static JavaSrcModule iwantEclipseSettings = iwantSrcModule(
+	private static JavaSrcModule iwantEclipseSettings = essentialModule(
 			"eclipse-settings")
 			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
 					iwantEntry).testDeps(iwantApimocks, junit).end();
 
-	private static JavaSrcModule iwantEntry3 = iwantSrcModule("entry3")
+	private static JavaSrcModule iwantEntry3 = essentialModule("entry3")
 			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
 					iwantApiWsdef, iwantCoreDownload, iwantCoreservices,
 					iwantEntry, iwantEntry2, iwantIwantWsrootFinder,
@@ -315,34 +324,34 @@ public class WorkspaceForIwant implements IwantWorkspace {
 			.testDeps(iwantApimocks, iwantEclipseSettings, iwantPlannerMocks,
 					iwantTestarea, junit).end();
 
-	private static JavaSrcModule iwantEmbedded = iwantSrcModule("embedded")
+	private static JavaSrcModule iwantEmbedded = essentialModule("embedded")
 			.mainDeps(iwantApiModel, iwantApiJavamodules, iwantApiWsdef,
 					iwantCoreservices, iwantEntry, iwantEntry3)
 			.testDeps(iwantApimocks, iwantApiCore, iwantTestarea, junit).end();
 
-	private static JavaSrcModule iwantCoreAnt = iwantSrcModule("core-ant")
+	private static JavaSrcModule iwantCoreAnt = essentialModule("core-ant")
 			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
 			.testDeps(iwantApiCore, iwantApimocks, iwantCoreDownload,
 					iwantEmbedded, iwantTestarea, junit).end();
 
-	private static JavaSrcModule iwantDeprecatedEmma = iwantSrcModule(
+	private static JavaSrcModule iwantDeprecatedEmma = essentialModule(
 			"deprecated-emma")
 			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
 					iwantCoreAnt, iwantCoreservices, iwantEntry, iwantEntry3)
 			.testDeps(iwantApimocks, iwantCoreDownload, iwantEmbedded, junit)
 			.end();
 
-	private static JavaSrcModule iwantDocs = iwantSrcModule("docs")
-			.noMainJava().noTestJava().end();
+	private static JavaSrcModule iwantDocs = privateModule("docs").noMainJava()
+			.noTestJava().end();
 
-	private static JavaSrcModule iwantExampleWsdef = iwantSrcModule(
+	private static JavaSrcModule iwantExampleWsdef = privateModule(
 			"example-wsdef")
 			.noTestJava()
 			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
 					iwantApiWsdef, iwantEntry3, iwantEclipseSettings).end();
 
 	private static JavaSrcModule iwantMockWsroot() {
-		IwantSrcModuleSpex mod = iwantSrcModule("mock-wsroot").noMainJava()
+		IwantSrcModuleSpex mod = privateModule("mock-wsroot").noMainJava()
 				.noTestJava();
 		mod.mainJava("iwant-api-javamodules/src/main/java");
 		mod.mainJava("iwant-apimocks/src/main/java");
@@ -357,17 +366,17 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		return mod.mainDeps(junit).end();
 	}
 
-	private static JavaSrcModule iwantTestresources = iwantSrcModule(
+	private static JavaSrcModule iwantTestresources = privateModule(
 			"testresources").noTestJava().mainResources("src/main/resources")
 			.end();
 
-	private static JavaSrcModule iwantPluginAnt = iwantSrcModule("plugin-ant")
+	private static JavaSrcModule iwantPluginAnt = optionalModule("plugin-ant")
 			.testResources("src/test/resources")
 			.mainDeps(ant, antLauncher, iwantApiModel)
 			.testDeps(junit, iwantApimocks, iwantEntry, iwantTestarea,
 					iwantTestresources).end();
 
-	private static JavaSrcModule iwantPluginFindbugs = iwantSrcModule(
+	private static JavaSrcModule iwantPluginFindbugs = optionalModule(
 			"plugin-findbugs")
 			.testResources("src/test/resources")
 			.mainDeps(commonsIo, iwantApiCore, iwantApiJavamodules,
@@ -376,12 +385,12 @@ public class WorkspaceForIwant implements IwantWorkspace {
 			.testDeps(junit, iwantApimocks, iwantEntry, iwantEmbedded,
 					iwantTestarea).end();
 
-	private static JavaSrcModule iwantPluginGithub = iwantSrcModule(
+	private static JavaSrcModule iwantPluginGithub = optionalModule(
 			"plugin-github")
 			.mainDeps(iwantApiCore, iwantApiModel, iwantCoreDownload,
 					iwantEntry3, iwantPluginAnt).testDeps(junit).end();
 
-	private static JavaSrcModule iwantPluginJacoco = iwantSrcModule(
+	private static JavaSrcModule iwantPluginJacoco = optionalModule(
 			"plugin-jacoco")
 			.mainDeps(commonsIo, iwantApiCore, iwantApiModel,
 					iwantApiJavamodules, iwantCoreAnt, iwantCoreDownload,
@@ -390,18 +399,18 @@ public class WorkspaceForIwant implements IwantWorkspace {
 					iwantTestarea).end();
 
 	// TODO don't depend directly on asm, jaxen: pmd depends on them
-	private static JavaSrcModule iwantPluginPmd = iwantSrcModule("plugin-pmd")
+	private static JavaSrcModule iwantPluginPmd = optionalModule("plugin-pmd")
 			.testResources("src/test/resources")
 			.mainDeps(ant, asm, commonsIo, iwantApiModel, jaxen, pmd)
 			.testDeps(junit, iwantApimocks, iwantEntry, iwantTestarea,
 					iwantTestresources).end();
 
-	private static JavaSrcModule iwantPluginWar = iwantSrcModule("plugin-war")
+	private static JavaSrcModule iwantPluginWar = optionalModule("plugin-war")
 			.mainDeps(ant, antLauncher, iwantApiModel)
 			.testDeps(junit, iwantApimocks, iwantEntry, iwantPluginAnt,
 					iwantTestarea, iwantTestresources).end();
 
-	private static JavaSrcModule iwantTutorialWsdefs = iwantSrcModule(
+	private static JavaSrcModule iwantTutorialWsdefs = privateModule(
 			"tutorial-wsdefs")
 			.noMainJava()
 			.noTestJava()

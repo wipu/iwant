@@ -28,7 +28,7 @@ public class Tutorial extends Target {
 		this.bootstrappingDoc = bootstrappingDoc;
 		pages.add(bootstrappingDoc);
 		this.styleCss = Source
-				.underWsroot("iwant-docs/src/main/html/website/style.css");
+				.underWsroot("private/iwant-docs/src/main/html/website/style.css");
 		this.creatingWsdefDoc = new Descripted(namePrefix, "creating-wsdef",
 				"Creating the workspace definition", tutorialWsdefSrc(), null,
 				bootstrappingDoc);
@@ -77,7 +77,7 @@ public class Tutorial extends Target {
 	}
 
 	private static Source tutorialWsdefSrc() {
-		return Source.underWsroot("iwant-tutorial-wsdefs/src");
+		return Source.underWsroot("private/iwant-tutorial-wsdefs/src");
 	}
 
 	private Descripted pageAboutUsingWsdef(String docName, String titleText) {

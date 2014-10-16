@@ -31,10 +31,11 @@ public class Descripted extends Target {
 		this.tutorialWsdefSrc = tutorialWsdefSrc;
 		this.maybeIwantWsroot = maybeIwantWsroot;
 		this.maybeInitialState = maybeInitialState;
-		this.doc = Source.underWsroot("iwant-docs/src/main/descript/tutorial/"
-				+ docName + ".sh");
+		this.doc = Source
+				.underWsroot("private/iwant-docs/src/main/descript/tutorial/"
+						+ docName + ".sh");
 		this.abstractArticle = Source
-				.underWsroot("iwant-docs/src/main/descript/tutorial/abstract-article.sh");
+				.underWsroot("private/iwant-docs/src/main/descript/tutorial/abstract-article.sh");
 		this.descript = Source.underWsroot("iwant-lib-descript/descript.sh");
 	}
 
