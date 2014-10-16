@@ -1090,15 +1090,15 @@
 + As @developer I want iwant's own module definitions optimized to fields so it will be a lot faster to make wishes
   * now the methods create module objects many times, recursively
 
-#################################################################
-= In progress
-#################################################################
-
-- As @developer I want tutorial to use a copy of the workspace root that is only refreshed when some relevant file is modified so building the tutorial will be lazy
++ As @developer I want tutorial to use a copy of the workspace root that is only refreshed when some relevant file is modified so building the tutorial will be lazy
   + first explicitly mark all toplevel directories as ingredients to the copy
   + later, after moving all relevant modules under essential or optional, just
     use them, leaving documentation out from them
-  - delete dead  as-iwant-developer/i-have/wsdef/net/
+  + delete dead  as-iwant-developer/i-have/wsdef/net/
+
+#################################################################
+= In progress
+#################################################################
 
 - As @buildscriptuser I want iwant to only checkout the code it really needs so I don't need to wait for all the plugins I don't need
   + split distillery

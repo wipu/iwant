@@ -80,8 +80,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		JavaBinModule antPlugin = (JavaBinModule) mods.iterator().next();
 		ExternalSource src = (ExternalSource) antPlugin.source();
 
-		assertEquals(new File(iwantWs, "iwant-plugin-ant/src/main/java"),
-				src.file());
+		assertEquals(new File(iwantWs,
+				"optional/iwant-plugin-ant/src/main/java"), src.file());
 	}
 
 	public void testIwantPluginPmdWithDependenciesContainsCorrectModules() {
