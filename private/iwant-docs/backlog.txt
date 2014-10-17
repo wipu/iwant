@@ -1096,11 +1096,7 @@
     use them, leaving documentation out from them
   + delete dead  as-iwant-developer/i-have/wsdef/net/
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptuser I want iwant to only checkout the code it really needs so I don't need to wait for all the plugins I don't need
++ As @buildscriptuser I want iwant to only checkout the code it really needs so I don't need to wait for all the plugins I don't need
   + split distillery
     + entry2
     + entry
@@ -1130,11 +1126,15 @@
     + remove unneeded iwantWs from WorkspaceDefinitionContextImpl
     + make SvnExported single-threaded, svnkit seems to warn, also
       better behaviour against the sf.net svn server
-  - real test
+  + real test
     + bugfix: keep revision in the end of svn url when appending subpath
       to it
     + more bugfix: export essential directly, remove prefix "essential/"
       from refs, don't pass wsroot, pass essential to iwant2->iwant3
+
+#################################################################
+= In progress
+#################################################################
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
   + @bugfix: copy missing files (resources)
@@ -1238,6 +1238,9 @@
 - As @buildscriptauthor I want an utility for defining modules so that they are automatically added to an allSrcModules collection so I don't need to maintain such a collection myself
   - take from real projects and polish for general use
   - use in iwant itself
+
+- As @buildscriptuser I want svn exports to be downloaded to global cache so workspaces don't need to download them separately
+  - do it like Downloaded does it
 
 - As @buildscriptauthor I want classes excluded from jacoco report by classname pattern so my special classes e.g. configuration does not affect the result
   * offline instrumentation required, a bigger change to the way we use jacoco
