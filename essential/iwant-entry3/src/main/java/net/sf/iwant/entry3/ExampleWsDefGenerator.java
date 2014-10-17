@@ -8,7 +8,7 @@ class ExampleWsDefGenerator {
 
 	private static String exampleJava(File iwantWsRoot, String javaPath) {
 		File example = new File(iwantWsRoot,
-				"private/iwant-example-wsdef/src/main/java/" + javaPath);
+				"essential/iwant-example-wsdef/src/main/java/" + javaPath);
 		return FileUtil.contentAsString(example);
 	}
 

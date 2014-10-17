@@ -60,7 +60,7 @@ public class Iwant2 {
 		Iwant.debugLog("evaluate", (Object[]) args);
 		File allIwantClasses = allIwantClasses(iwantWs);
 
-		File wsRootMarker = new File(iwantWs, "iwant-wsroot-marker");
+		File wsRootMarker = new File(iwantWs, "essential/iwant-wsroot-marker");
 
 		List<File> classLocations = Arrays.asList(wsRootMarker,
 				allIwantClasses, junitJar());

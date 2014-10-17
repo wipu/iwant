@@ -259,11 +259,11 @@ public class WorkspaceForIwant implements IwantWorkspace {
 			.noTestJava().mainDeps(junit).end();
 
 	private static JavaBinModule iwantWsRootMarker = JavaBinModule.providing(
-			Source.underWsroot("iwant-wsroot-marker")).end();
+			Source.underWsroot("essential/iwant-wsroot-marker")).end();
 
 	private static JavaSrcModule iwantIwantWsrootFinder = essentialModule(
-			"iwant-wsroot-finder").noTestJava().mainDeps(iwantWsRootMarker)
-			.end();
+			"iwant-wsroot-finder").mainDeps(iwantWsRootMarker)
+			.testDeps(commonsIo, junit).end();
 
 	private static JavaSrcModule iwantEntry = essentialModule("entry")
 			.noMainJava().mainJava("as-some-developer/with/java").noTestJava()
@@ -353,7 +353,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantDocs = privateModule("docs").noMainJava()
 			.noTestJava().end();
 
-	private static JavaSrcModule iwantExampleWsdef = privateModule(
+	private static JavaSrcModule iwantExampleWsdef = essentialModule(
 			"example-wsdef")
 			.noTestJava()
 			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
