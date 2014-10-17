@@ -18,6 +18,8 @@ public interface IwantCoreServices {
 
 	void downloaded(URL from, File to);
 
+	void svnExported(URL from, File to);
+
 	void pipe(InputStream in, OutputStream out);
 
 	void pipeAndClose(InputStream in, OutputStream out);

@@ -5,8 +5,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import junit.framework.Assert;
 import net.sf.iwant.api.model.IwantCoreServices;
 
 public class IwantCoreServicesMock implements IwantCoreServices {
@@ -15,6 +18,7 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	private File taughtCygwinBashExe;
 	private boolean cygwinBashExeWasTaught;
 	private boolean shallMockWintoySafePaths;
+	private final Map<URL, File> executedSvnExports = new HashMap<URL, File>();
 
 	public IwantCoreServicesMock(IwantCoreServices delegate) {
 		this.delegate = delegate;
@@ -40,6 +44,11 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	@Override
 	public void downloaded(URL from, File to) {
 		delegate.downloaded(from, to);
+	}
+
+	@Override
+	public void svnExported(URL from, File to) {
+		executedSvnExports.put(from, to);
 	}
 
 	@Override
@@ -88,6 +97,10 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 
 	public void shallMockWintoySafePaths() {
 		this.shallMockWintoySafePaths = true;
+	}
+
+	public void shallHaveSvnExportedUrlTo(URL url, File exported) {
+		Assert.assertEquals(exported, executedSvnExports.get(url));
 	}
 
 }

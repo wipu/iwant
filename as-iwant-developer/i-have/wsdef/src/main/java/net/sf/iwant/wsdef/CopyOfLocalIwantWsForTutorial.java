@@ -72,10 +72,10 @@ public class CopyOfLocalIwantWsForTutorial extends Target {
 	}
 
 	private static boolean mustCopy(String fileName) {
-		if ("/as-iwant-developer/.i-cached".equals(fileName)) {
+		if (fileName.startsWith("/as-iwant-developer")) {
 			return false;
 		}
-		if ("/private/iwant-testarea/testarea-root".equals(fileName)) {
+		if (fileName.startsWith("/private")) {
 			return false;
 		}
 		if (fileName.endsWith("/classes")) {

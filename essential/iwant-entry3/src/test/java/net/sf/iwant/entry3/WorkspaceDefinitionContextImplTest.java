@@ -1,6 +1,6 @@
 package net.sf.iwant.entry3;
 
-import java.io.File;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -9,19 +9,19 @@ import junit.framework.TestCase;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.core.download.SvnExported;
 
 public class WorkspaceDefinitionContextImplTest extends TestCase {
 
 	private Set<JavaModule> apiModules;
-	private File iwantWs;
 	private WorkspaceDefinitionContext ctx;
 	private JavaBinModule iwantApiModule1;
 	private JavaBinModule iwantApiModule2;
 	private JavaBinModule wsdefdefModule;
+	private URL iwantFromUrl;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -36,8 +36,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		apiModules.add(iwantApiModule1);
 		apiModules.add(iwantApiModule2);
 
-		iwantWs = new File("iwantWs");
-		ctx = new WorkspaceDefinitionContextImpl(apiModules, iwantWs,
+		iwantFromUrl = new URL("http://localhost/iwant-from-url");
+		ctx = new WorkspaceDefinitionContextImpl(apiModules, iwantFromUrl,
 				wsdefdefModule);
 	}
 
@@ -74,14 +74,17 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		assertEquals("ant-1.7.1.jar", iterator.next().name());
 	}
 
-	public void testIwantPluginAntContainsSources() {
+	public void testIwantPluginAntMainJavaIsAnSvnExportFromIwantRepoPlugins() {
 		Set<JavaModule> mods = ctx.iwantPlugin().ant().withDependencies();
 
 		JavaBinModule antPlugin = (JavaBinModule) mods.iterator().next();
-		ExternalSource src = (ExternalSource) antPlugin.source();
+		JavaClasses classes = (JavaClasses) antPlugin.mainArtifact();
+		assertEquals(1, classes.srcDirs().size());
 
-		assertEquals(new File(iwantWs,
-				"optional/iwant-plugin-ant/src/main/java"), src.file());
+		SvnExported java = (SvnExported) classes.srcDirs().iterator().next();
+		assertEquals("iwant-plugin-ant-main-java", java.name());
+		assertEquals(iwantFromUrl + "/optional/iwant-plugin-ant/src/main/java",
+				java.url().toExternalForm());
 	}
 
 	public void testIwantPluginPmdWithDependenciesContainsCorrectModules() {

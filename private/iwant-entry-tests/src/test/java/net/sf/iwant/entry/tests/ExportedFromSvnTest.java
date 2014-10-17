@@ -2,6 +2,7 @@ package net.sf.iwant.entry.tests;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import junit.framework.TestCase;
@@ -23,6 +24,16 @@ public class ExportedFromSvnTest extends TestCase {
 		network = new IwantNetworkMock(testArea);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
 		iwant = Iwant.using(network);
+	}
+
+	public void testUrlAppendForLearning() throws MalformedURLException {
+		URL base = new URL("http://localhost/base");
+		// it replaces the path:
+		assertEquals("http://localhost/sub",
+				new URL(base, "sub").toExternalForm());
+		// so we need string append here:
+		assertEquals("http://localhost/base/sub",
+				new URL(base + "/sub").toExternalForm());
 	}
 
 	public void testExportReturnsDifferentFileFromSourceWithCorrectContent() {

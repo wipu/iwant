@@ -243,15 +243,25 @@ public class Iwant {
 				Arrays.asList(iwantBootstrapClasses), iwant2Args);
 	}
 
+	public URL wishedIwantFromUrl(File asSomeone) {
+		try {
+			Properties iwantFromProps = iwantFromProperties(asSomeone);
+			return new URL(iwantFromProps.getProperty("iwant-from"));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public File iwantWsrootOfWishedVersion(File asSomeone) {
 		try {
 			Properties iwantFromProps = iwantFromProperties(asSomeone);
-			URL iwantLocation = new URL(
-					iwantFromProps.getProperty("iwant-from"));
+			URL iwantEssentialLocation = new URL(wishedIwantFromUrl(asSomeone)
+					+ "/essential");
 			boolean reExportNotNeeded = "false".equals(iwantFromProps
 					.getProperty("re-export"));
-			File iwantWs = exportedFromSvn(iwantLocation, !reExportNotNeeded);
-			return iwantWs;
+			File iwantWsEssential = exportedFromSvn(iwantEssentialLocation,
+					!reExportNotNeeded);
+			return iwantWsEssential.getParentFile();
 		} catch (IwantException e) {
 			throw e;
 		} catch (Exception e) {
@@ -762,19 +772,27 @@ public class Iwant {
 			}
 			debugLog("svn-exported", url);
 			log("svn-exported", exported);
-			String urlString = url.toExternalForm();
-			if (isFile(url)) {
-				urlString = url.getFile();
+			svnExport(url, exported);
+			return exported;
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void svnExport(URL from, File to) {
+		try {
+			String urlString = from.toExternalForm();
+			if (isFile(from)) {
+				urlString = from.getFile();
 			}
 			File svnkit = unzippedSvnkit();
 			File svnkitLib = new File(svnkit, "svnkit-1.8.6/lib");
 			List<File> svnkitJars = Arrays.asList(svnkitLib.listFiles());
 			enableHttpProxy();
 			runJavaMain(true, false, "org.tmatesoft.svn.cli.SVN", svnkitJars,
-					"export", urlString, exported.getCanonicalPath());
-			return exported;
-		} catch (RuntimeException e) {
-			throw e;
+					"export", urlString, to.getCanonicalPath());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

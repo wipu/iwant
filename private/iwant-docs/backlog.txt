@@ -1116,15 +1116,21 @@
     + also iwant-entry-tests needed
     + and iwant-testarea to private
   + fix external (users') references to entry
-  - only checkout essential, plugins are checked out if used
+  + only checkout essential, plugins are checked out if used
     + first move iwantwsroot finding and examplewsdef under essential
     + test iwant wsroot finding
     + test Iwant2 puts wsroot marker in classpath when calling Iwant3
     + don't use junit when compiling/running, not needed anymore
     + cleanup: remove junit handling from Iwant and tests
-    - then only checkout essential (keep subdir essential at checkout,
+    + then only checkout essential (keep subdir essential at checkout,
       otherwise modules are not found)
-  - finalize
+    + also make plugins svn exported
+      + new target SvnExported
+  + finalize
+    + remove unneeded iwantWs from WorkspaceDefinitionContextImpl
+    + make SvnExported single-threaded, svnkit seems to warn, also
+      better behaviour against the sf.net svn server
+  - real test
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
   + @bugfix: copy missing files (resources)

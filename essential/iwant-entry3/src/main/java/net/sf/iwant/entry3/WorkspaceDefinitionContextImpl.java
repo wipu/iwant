@@ -1,7 +1,7 @@
 package net.sf.iwant.entry3;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -9,27 +9,27 @@ import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
 import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.wsdef.IwantPluginWish;
 import net.sf.iwant.api.wsdef.IwantPluginWishes;
 import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
 import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.core.download.FromRepository;
+import net.sf.iwant.core.download.SvnExported;
 import net.sf.iwant.core.download.TestedIwantDependencies;
 
 public class WorkspaceDefinitionContextImpl implements
 		WorkspaceDefinitionContext {
 
 	private final Set<JavaModule> iwantApiModules;
-	private final File iwantWs;
 	private final JavaModule wsdefdefModule;
+	private final URL iwantFromUrl;
 
 	public WorkspaceDefinitionContextImpl(Set<JavaModule> iwantApiModules,
-			File iwantWs, JavaModule wsdefdefModule) {
+			URL iwantFromUrl, JavaModule wsdefdefModule) {
 		this.iwantApiModules = iwantApiModules;
-		this.iwantWs = iwantWs;
 		this.wsdefdefModule = wsdefdefModule;
+		this.iwantFromUrl = iwantFromUrl;
 	}
 
 	@Override
@@ -49,8 +49,10 @@ public class WorkspaceDefinitionContextImpl implements
 
 	private Path pluginMainJava(String pluginName) {
 		try {
-			return new ExternalSource(new File(iwantWs, "optional/"
-					+ pluginName + "/src/main/java"));
+			URL url = new URL(iwantFromUrl + "/optional/" + pluginName
+					+ "/src/main/java");
+			return SvnExported.with().name(pluginName + "-main-java").url(url)
+					.end();
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}

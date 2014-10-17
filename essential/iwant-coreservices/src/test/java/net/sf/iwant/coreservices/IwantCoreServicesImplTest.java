@@ -1,6 +1,10 @@
 package net.sf.iwant.coreservices;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import junit.framework.TestCase;
@@ -73,6 +77,25 @@ public class IwantCoreServicesImplTest extends TestCase {
 		} catch (IllegalStateException e) {
 			assertEquals("Cannot find cygwin bash.exe", e.getMessage());
 		}
+	}
+
+	public void testSvnExportDelegatesToIwant() throws MalformedURLException {
+		final List<URL> urlsPassed = new ArrayList<URL>();
+		final List<File> filesPassed = new ArrayList<File>();
+		iwant = new Iwant(null) {
+			@Override
+			public void svnExport(URL from, File to) {
+				urlsPassed.add(from);
+				filesPassed.add(to);
+			}
+		};
+		services = new IwantCoreServicesImpl(iwant, testArea.root(), sysprops);
+
+		services.svnExported(new URL("http://localhost/an-url"), new File(
+				"an-file"));
+
+		assertEquals("[http://localhost/an-url]", urlsPassed.toString());
+		assertEquals("[an-file]", filesPassed.toString());
 	}
 
 }

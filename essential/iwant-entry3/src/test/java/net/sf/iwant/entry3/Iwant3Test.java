@@ -47,6 +47,9 @@ public class Iwant3Test extends TestCase {
 		testArea = TestArea.forTest(this);
 		testArea.hasFile("wsroot/as-example-developer/with/bash/iwant/help.sh",
 				"#!/bin/bash\njust a mock because this exists in real life\n");
+		testArea.hasFile("wsroot/as-example-developer/i-have/conf/iwant-from",
+				"#just a mock because this exists in real life\n"
+						+ "iwant-from=http://localhost/not-needed-here\n");
 		network = new IwantNetworkMock(testArea);
 		combinedIwantSrc = new File(testArea.root(), "combined-iwant-src");
 		iwantWs = IwantWsRootFinder.mockWsRoot();
