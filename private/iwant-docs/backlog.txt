@@ -1121,7 +1121,7 @@
     + test iwant wsroot finding
     + test Iwant2 puts wsroot marker in classpath when calling Iwant3
     + don't use junit when compiling/running, not needed anymore
-    - remove junit handling from Iwant and tests
+    + cleanup: remove junit handling from Iwant and tests
     - then only checkout essential (keep subdir essential at checkout,
       otherwise modules are not found)
   - finalize

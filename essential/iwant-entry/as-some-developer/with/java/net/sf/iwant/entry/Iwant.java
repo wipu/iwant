@@ -66,8 +66,6 @@ public class Iwant {
 
 		URL svnkitUrl();
 
-		URL junitUrl();
-
 		JavaCompiler systemJavaCompiler();
 
 	}
@@ -177,13 +175,6 @@ public class Iwant {
 		public URL svnkitUrl() {
 			return url("http://www.svnkit.com/"
 					+ "org.tmatesoft.svn_1.8.6.standalone.nojna.zip");
-		}
-
-		@Override
-		public URL junitUrl() {
-			final String v = "4.8.2";
-			return url("http://mirrors.ibiblio.org/maven2" + "/junit/junit/"
-					+ v + "/junit-" + v + ".jar");
 		}
 
 		@Override

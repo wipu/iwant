@@ -129,12 +129,6 @@ public class DownloadedTest extends TestCase {
 				}
 
 				@Override
-				public URL junitUrl() {
-					throw new UnsupportedOperationException(
-							"TODO test and implement");
-				}
-
-				@Override
 				public File cacheLocation(UnmodifiableSource<?> src) {
 					throw new UnsupportedOperationException(
 							"TODO test and implement");

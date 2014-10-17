@@ -111,7 +111,6 @@ public class Iwant2Test extends TestCase {
 
 	public void testIwant2CompilesIwantAndCallsIwant3() throws Exception {
 		File iwantWsRoot = IwantWsRootFinder.mockWsRoot();
-		network.usesRealJunitUrlAndCached();
 		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
 				"all-iwant-classes");
 
@@ -125,7 +124,6 @@ public class Iwant2Test extends TestCase {
 
 	public void testIwant2CallsIwant3UsingCorrectClasspath() throws Exception {
 		File iwantWsRoot = IwantWsRootFinder.mockWsRoot();
-		network.usesRealJunitUrlAndCached();
 		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
 				"all-iwant-classes");
 
@@ -141,7 +139,6 @@ public class Iwant2Test extends TestCase {
 
 	public void testIwant2CompilesIwantWithDebugInformation() throws Exception {
 		File iwantWsRoot = IwantWsRootFinder.mockWsRoot();
-		network.usesRealJunitUrlAndCached();
 		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
 				"all-iwant-classes");
 

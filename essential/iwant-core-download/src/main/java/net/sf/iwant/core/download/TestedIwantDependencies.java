@@ -1,10 +1,6 @@
 package net.sf.iwant.core.download;
 
-import java.io.File;
-import java.net.URL;
-
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.entry.Iwant;
 
 public class TestedIwantDependencies {
 
@@ -26,9 +22,8 @@ public class TestedIwantDependencies {
 	}
 
 	public static Path junit() {
-		URL url = Iwant.usingRealNetwork().network().junitUrl();
-		File file = new File(url.getFile());
-		return Downloaded.withName(file.getName()).url(url).noCheck();
+		return FromRepository.ibiblio().group("junit").name("junit")
+				.version("4.8.2");
 	}
 
 }

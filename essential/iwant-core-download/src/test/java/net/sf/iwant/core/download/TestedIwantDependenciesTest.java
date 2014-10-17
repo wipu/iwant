@@ -1,17 +1,8 @@
 package net.sf.iwant.core.download;
 
-import java.net.URL;
-
 import junit.framework.TestCase;
-import net.sf.iwant.entry.Iwant;
 
 public class TestedIwantDependenciesTest extends TestCase {
-
-	public void testJunitUrlIsTheSameIwantBootstrapperUses() {
-		URL expected = Iwant.usingRealNetwork().network().junitUrl();
-		Downloaded downloaded = (Downloaded) TestedIwantDependencies.junit();
-		assertEquals(expected.toString(), downloaded.url().toString());
-	}
 
 	public void testNamesOfDownloadedTargets() {
 		// this documents the names, change when upgrading:

@@ -19,7 +19,6 @@ public class IwantNetworkMock implements IwantNetwork {
 
 	private final TestArea testArea;
 	private Map<UnmodifiableSource<?>, File> cachedUnmodifiables = new HashMap<UnmodifiableSource<?>, File>();
-	private URL junitUrl;
 	private URL svnkitUrl;
 	private boolean shallNotFindSystemJavaCompiler;
 
@@ -72,25 +71,6 @@ public class IwantNetworkMock implements IwantNetwork {
 		} catch (MalformedURLException e) {
 			throw new IllegalArgumentException(e);
 		}
-	}
-
-	@Override
-	public URL junitUrl() {
-		return nonNull(junitUrl, "junitUrl");
-	}
-
-	public void hasJunitUrl(URL junitUrl) {
-		this.junitUrl = junitUrl;
-	}
-
-	public void usesRealJunitUrlAndCached() {
-		// assuming real download works we ensure real junit is cached in real
-		// cache:
-		Iwant iwant = Iwant.usingRealNetwork();
-		URL realJunitUrl = iwant.network().junitUrl();
-		hasJunitUrl(realJunitUrl);
-		cachesAt(new UnmodifiableUrl(realJunitUrl),
-				iwant.downloaded(realJunitUrl));
 	}
 
 	public void usesRealSvnkitUrlAndCacheAndUnzipped() {
