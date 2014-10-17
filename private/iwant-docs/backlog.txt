@@ -1133,6 +1133,8 @@
   - real test
     + bugfix: keep revision in the end of svn url when appending subpath
       to it
+    + more bugfix: export essential directly, remove prefix "essential/"
+      from refs, don't pass wsroot, pass essential to iwant2->iwant3
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
   + @bugfix: copy missing files (resources)

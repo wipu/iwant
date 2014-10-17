@@ -8,7 +8,7 @@ import java.security.Permission;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantWsRoot;
+import net.sf.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantEssential;
 import net.sf.iwant.entrymocks.IwantNetworkMock;
 import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import net.sf.iwant.testarea.TestArea;
@@ -110,39 +110,40 @@ public class Iwant2Test extends TestCase {
 	}
 
 	public void testIwant2CompilesIwantAndCallsIwant3() throws Exception {
-		File iwantWsRoot = IwantWsRootFinder.mockWsRoot();
-		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
-				"all-iwant-classes");
+		File iwantEssential = new File(IwantWsRootFinder.mockWsRoot(),
+				"essential");
+		network.cachesAt(new ClassesFromUnmodifiableIwantEssential(
+				iwantEssential), "all-iwant-classes");
 
-		iwant2.evaluate(IwantWsRootFinder.mockWsRoot(), "args", "to be",
-				"passed");
+		iwant2.evaluate(iwantEssential, "args", "to be", "passed");
 
 		assertEquals(":        compiled -> all-iwant-classes\n", err());
 		assertEquals("Mocked net.sf.iwant.entry3.Iwant3\n" + "args: ["
-				+ iwantWsRoot + ", args, to be, passed]\n", out());
+				+ iwantEssential + ", args, to be, passed]\n", out());
 	}
 
 	public void testIwant2CallsIwant3UsingCorrectClasspath() throws Exception {
-		File iwantWsRoot = IwantWsRootFinder.mockWsRoot();
-		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
-				"all-iwant-classes");
+		File iwantEssential = new File(IwantWsRootFinder.mockWsRoot(),
+				"essential");
+		network.cachesAt(new ClassesFromUnmodifiableIwantEssential(
+				iwantEssential), "all-iwant-classes");
 
-		iwant2.evaluate(IwantWsRootFinder.mockWsRoot(),
-				"--printClassLoaderUrls");
+		iwant2.evaluate(iwantEssential, "--printClassLoaderUrls");
 		assertEquals(":        compiled -> all-iwant-classes\n", err());
 		assertEquals("Mocked net.sf.iwant.entry3.Iwant3\n" + "args: ["
-				+ iwantWsRoot + ", --printClassLoaderUrls]\n"
-				+ "classloader urls: [file:" + iwantWsRoot
-				+ "/essential/iwant-wsroot-marker/, file:" + testArea.root()
+				+ iwantEssential + ", --printClassLoaderUrls]\n"
+				+ "classloader urls: [file:" + iwantEssential
+				+ "/iwant-wsroot-marker/, file:" + testArea.root()
 				+ "/all-iwant-classes/]\n", out());
 	}
 
 	public void testIwant2CompilesIwantWithDebugInformation() throws Exception {
-		File iwantWsRoot = IwantWsRootFinder.mockWsRoot();
-		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
-				"all-iwant-classes");
+		File iwantEssential = new File(IwantWsRootFinder.mockWsRoot(),
+				"essential");
+		network.cachesAt(new ClassesFromUnmodifiableIwantEssential(
+				iwantEssential), "all-iwant-classes");
 
-		iwant2.evaluate(IwantWsRootFinder.mockWsRoot());
+		iwant2.evaluate(iwantEssential);
 
 		File iwantClasses = new File(testArea.root(), "all-iwant-classes");
 		File classWithVars = new File(iwantClasses,

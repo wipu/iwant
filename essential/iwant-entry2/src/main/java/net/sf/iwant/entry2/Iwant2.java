@@ -29,10 +29,10 @@ public class Iwant2 {
 		this.iwant = Iwant.using(network);
 	}
 
-	public static class ClassesFromUnmodifiableIwantWsRoot extends
+	public static class ClassesFromUnmodifiableIwantEssential extends
 			UnmodifiableSource<File> {
 
-		public ClassesFromUnmodifiableIwantWsRoot(File location) {
+		public ClassesFromUnmodifiableIwantEssential(File location) {
 			super(location);
 		}
 
@@ -40,11 +40,12 @@ public class Iwant2 {
 
 	public static void main(String[] args) throws Exception {
 		Iwant.fileLog("Iwant2: " + Arrays.toString(args));
-		File iwantWs = new File(args[0]);
+		File iwantEssential = new File(args[0]);
 		String[] args2 = new String[args.length - 1];
 		System.arraycopy(args, 1, args2, 0, args2.length);
 		try {
-			using(Iwant.usingRealNetwork().network()).evaluate(iwantWs, args2);
+			using(Iwant.usingRealNetwork().network()).evaluate(iwantEssential,
+					args2);
 		} catch (IwantException e) {
 			Iwant.fileLog("Iwant2 main failed: " + e);
 			System.err.println(e.getMessage());
@@ -56,17 +57,17 @@ public class Iwant2 {
 		return new Iwant2(network);
 	}
 
-	public void evaluate(File iwantWs, String... args) throws Exception {
+	public void evaluate(File iwantEssential, String... args) throws Exception {
 		Iwant.debugLog("evaluate", (Object[]) args);
-		File allIwantClasses = allIwantClasses(iwantWs);
+		File allIwantClasses = allIwantClasses(iwantEssential);
 
-		File wsRootMarker = new File(iwantWs, "essential/iwant-wsroot-marker");
+		File wsRootMarker = new File(iwantEssential, "iwant-wsroot-marker");
 
 		List<File> classLocations = Arrays
 				.asList(wsRootMarker, allIwantClasses);
 
 		String[] iwant3Args = new String[args.length + 1];
-		iwant3Args[0] = iwantWs.getCanonicalPath();
+		iwant3Args[0] = iwantEssential.getCanonicalPath();
 		System.arraycopy(args, 0, iwant3Args, 1, args.length);
 		Iwant.runJavaMain(false, false, "net.sf.iwant.entry3.Iwant3",
 				classLocations, iwant3Args);
@@ -74,40 +75,41 @@ public class Iwant2 {
 
 	private static List<String> relativeIwantSrcDirs() {
 		List<String> srcDirs = new ArrayList<String>();
-		srcDirs.add("essential/iwant-api-core/" + "src/main/java");
-		srcDirs.add("essential/iwant-api-javamodules/" + "src/main/java");
-		srcDirs.add("essential/iwant-api-model/" + "src/main/java");
-		srcDirs.add("essential/iwant-api-wsdef/" + "src/main/java");
-		srcDirs.add("essential/iwant-core-ant/" + "src/main/java");
-		srcDirs.add("essential/iwant-core-download/" + "src/main/java");
-		srcDirs.add("essential/iwant-coreservices/" + "src/main/java");
-		srcDirs.add("essential/iwant-deprecated-emma/" + "src/main/java");
-		srcDirs.add("essential/iwant-entry/" + "as-some-developer/with/java");
-		srcDirs.add("essential/iwant-eclipse-settings/" + "src/main/java");
-		srcDirs.add("essential/iwant-entry2/" + "src/main/java");
-		srcDirs.add("essential/iwant-entry3/" + "src/main/java");
-		srcDirs.add("essential/iwant-iwant-wsroot-finder/" + "src/main/java");
-		srcDirs.add("essential/iwant-planner/" + "src/main/java");
-		srcDirs.add("essential/iwant-planner-api/" + "src/main/java");
+		srcDirs.add("iwant-api-core/" + "src/main/java");
+		srcDirs.add("iwant-api-javamodules/" + "src/main/java");
+		srcDirs.add("iwant-api-model/" + "src/main/java");
+		srcDirs.add("iwant-api-wsdef/" + "src/main/java");
+		srcDirs.add("iwant-core-ant/" + "src/main/java");
+		srcDirs.add("iwant-core-download/" + "src/main/java");
+		srcDirs.add("iwant-coreservices/" + "src/main/java");
+		srcDirs.add("iwant-deprecated-emma/" + "src/main/java");
+		srcDirs.add("iwant-entry/" + "as-some-developer/with/java");
+		srcDirs.add("iwant-eclipse-settings/" + "src/main/java");
+		srcDirs.add("iwant-entry2/" + "src/main/java");
+		srcDirs.add("iwant-entry3/" + "src/main/java");
+		srcDirs.add("iwant-iwant-wsroot-finder/" + "src/main/java");
+		srcDirs.add("iwant-planner/" + "src/main/java");
+		srcDirs.add("iwant-planner-api/" + "src/main/java");
 		return srcDirs;
 	}
 
-	public static SortedSet<File> srcDirsOfIwantWs(File iwantWs) {
+	public static SortedSet<File> srcDirsOfIwantWs(File iwantEssential) {
 		SortedSet<File> srcDirs = new TreeSet<File>();
 		for (String relative : relativeIwantSrcDirs()) {
-			srcDirs.add(new File(iwantWs, relative));
+			srcDirs.add(new File(iwantEssential, relative));
 		}
 		return srcDirs;
 	}
 
-	public File allIwantClasses(File iwantWs) {
-		Iwant.fileLog("allIwantClasses, iwantWs=" + iwantWs);
+	public File allIwantClasses(File iwantEssential) {
+		Iwant.fileLog("allIwantClasses, iwantEssential=" + iwantEssential);
 		File allIwantClasses = network
-				.cacheLocation(new ClassesFromUnmodifiableIwantWsRoot(iwantWs));
+				.cacheLocation(new ClassesFromUnmodifiableIwantEssential(
+						iwantEssential));
 		Iwant.fileLog("allIwantClasses, dest=" + allIwantClasses);
 
 		SortedSet<File> javaFiles = new TreeSet<File>();
-		for (File srcDir : srcDirsOfIwantWs(iwantWs)) {
+		for (File srcDir : srcDirsOfIwantWs(iwantEssential)) {
 			javaFiles.addAll(javaFilesRecursivelyUnder(srcDir));
 		}
 

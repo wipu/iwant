@@ -23,13 +23,13 @@ public class WorkspaceDefinitionContextImpl implements
 
 	private final Set<JavaModule> iwantApiModules;
 	private final JavaModule wsdefdefModule;
-	private final URL iwantFromUrl;
+	private final URL iwantRootFromUrl;
 
 	public WorkspaceDefinitionContextImpl(Set<JavaModule> iwantApiModules,
-			URL iwantFromUrl, JavaModule wsdefdefModule) {
+			URL iwantRootFromUrl, JavaModule wsdefdefModule) {
 		this.iwantApiModules = iwantApiModules;
 		this.wsdefdefModule = wsdefdefModule;
-		this.iwantFromUrl = iwantFromUrl;
+		this.iwantRootFromUrl = iwantRootFromUrl;
 	}
 
 	@Override
@@ -48,8 +48,8 @@ public class WorkspaceDefinitionContextImpl implements
 	}
 
 	private Path pluginMainJava(String pluginName) {
-		URL url = Iwant.subUrlOfSvnUrl(iwantFromUrl, "optional/" + pluginName
-				+ "/src/main/java");
+		URL url = Iwant.subUrlOfSvnUrl(iwantRootFromUrl, "optional/"
+				+ pluginName + "/src/main/java");
 		return SvnExported.with().name(pluginName + "-main-java").url(url)
 				.end();
 	}

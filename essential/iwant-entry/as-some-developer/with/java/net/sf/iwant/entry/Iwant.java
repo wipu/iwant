@@ -126,8 +126,9 @@ public class Iwant {
 	public static class UnmodifiableIwantBootstrapperClassesFromIwantWsRoot
 			extends UnmodifiableSource<URL> {
 
-		public UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(File iwantWs) {
-			super(fileToUrl(iwantWs));
+		public UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
+				File iwantEssential) {
+			super(fileToUrl(iwantEssential));
 		}
 
 	}
@@ -231,19 +232,19 @@ public class Iwant {
 			throw new IwantException("AS_SOMEONE_DIRECTORY does not exist: "
 					+ asSomeone.getCanonicalPath());
 		}
-		File iwantWs = iwantWsrootOfWishedVersion(asSomeone);
+		File iwantEssential = iwantEssentialOfWishedVersion(asSomeone);
 
-		File iwantBootstrapClasses = iwantBootstrapperClasses(iwantWs);
+		File iwantBootstrapClasses = iwantBootstrapperClasses(iwantEssential);
 
 		String[] iwant2Args = new String[args.length + 1];
-		iwant2Args[0] = iwantWs.getCanonicalPath();
+		iwant2Args[0] = iwantEssential.getCanonicalPath();
 		System.arraycopy(args, 0, iwant2Args, 1, args.length);
 
 		runJavaMain(false, true, "net.sf.iwant.entry2.Iwant2",
 				Arrays.asList(iwantBootstrapClasses), iwant2Args);
 	}
 
-	public URL wishedIwantFromUrl(File asSomeone) {
+	public URL wishedIwantRootFromUrl(File asSomeone) {
 		try {
 			Properties iwantFromProps = iwantFromProperties(asSomeone);
 			return new URL(iwantFromProps.getProperty("iwant-from"));
@@ -267,16 +268,17 @@ public class Iwant {
 		}
 	}
 
-	public File iwantWsrootOfWishedVersion(File asSomeone) {
+	public File iwantEssentialOfWishedVersion(File asSomeone) {
 		try {
 			Properties iwantFromProps = iwantFromProperties(asSomeone);
-			URL iwantEssentialLocation = subUrlOfSvnUrl(
-					wishedIwantFromUrl(asSomeone), "essential");
+			URL iwantRootUrl = wishedIwantRootFromUrl(asSomeone);
+			URL iwantEssentialLocation = subUrlOfSvnUrl(iwantRootUrl,
+					"essential");
 			boolean reExportNotNeeded = "false".equals(iwantFromProps
 					.getProperty("re-export"));
 			File iwantWsEssential = exportedFromSvn(iwantEssentialLocation,
 					!reExportNotNeeded);
-			return iwantWsEssential.getParentFile();
+			return iwantWsEssential;
 		} catch (IwantException e) {
 			throw e;
 		} catch (Exception e) {
@@ -324,11 +326,12 @@ public class Iwant {
 		}
 	}
 
-	private File iwantBootstrapperClasses(File iwantWs) {
+	private File iwantBootstrapperClasses(File iwantEssential) {
 		File classes = network
 				.cacheLocation(new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
-						iwantWs));
-		return compiledClasses(classes, iwantBootstrappingJavaSources(iwantWs),
+						iwantEssential));
+		return compiledClasses(classes,
+				iwantBootstrappingJavaSources(iwantEssential),
 				Collections.<File> emptyList(), true, null);
 	}
 
@@ -429,12 +432,11 @@ public class Iwant {
 		fileLog(b.toString());
 	}
 
-	private static List<File> iwantBootstrappingJavaSources(File iwantWs) {
-		File iwant2 = new File(iwantWs,
-				"essential/iwant-entry2/src/main/java/net/sf/iwant/entry2/Iwant2.java");
-		File iwant = new File(
-				iwantWs,
-				"essential/iwant-entry/as-some-developer/with/java/net/sf/iwant/entry/Iwant.java");
+	private static List<File> iwantBootstrappingJavaSources(File iwantEssential) {
+		File iwant2 = new File(iwantEssential,
+				"iwant-entry2/src/main/java/net/sf/iwant/entry2/Iwant2.java");
+		File iwant = new File(iwantEssential,
+				"iwant-entry/as-some-developer/with/java/net/sf/iwant/entry/Iwant.java");
 		return Arrays.asList(iwant2, iwant);
 	}
 

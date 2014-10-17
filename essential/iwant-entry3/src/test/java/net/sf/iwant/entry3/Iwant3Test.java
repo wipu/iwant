@@ -16,7 +16,7 @@ import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.apimocks.TargetMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
-import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantWsRoot;
+import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantEssential;
 import net.sf.iwant.entrymocks.IwantNetworkMock;
 import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import net.sf.iwant.testarea.TestArea;
@@ -38,7 +38,7 @@ public class Iwant3Test extends TestCase {
 	private ByteArrayOutputStream err;
 	private String originalLineSeparator;
 
-	private File iwantWs;
+	private File iwantEssential;
 
 	private File combinedIwantSrc;
 
@@ -52,10 +52,10 @@ public class Iwant3Test extends TestCase {
 						+ "iwant-from=http://localhost/not-needed-here\n");
 		network = new IwantNetworkMock(testArea);
 		combinedIwantSrc = new File(testArea.root(), "combined-iwant-src");
-		iwantWs = IwantWsRootFinder.mockWsRoot();
-		network.cachesAt(new CombinedSrcFromUnmodifiableIwantWsRoot(iwantWs),
-				combinedIwantSrc);
-		iwant3 = Iwant3.using(network, iwantWs);
+		iwantEssential = new File(IwantWsRootFinder.mockWsRoot(), "essential");
+		network.cachesAt(new CombinedSrcFromUnmodifiableIwantEssential(
+				iwantEssential), combinedIwantSrc);
+		iwant3 = Iwant3.using(network, iwantEssential);
 		wsRoot = new File(testArea.root(), "wsroot");
 		asTest = new File(wsRoot, "as-example-developer");
 		originalIn = System.in;

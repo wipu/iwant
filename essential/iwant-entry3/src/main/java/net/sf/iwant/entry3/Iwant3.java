@@ -42,20 +42,20 @@ import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
 public class Iwant3 {
 
 	private final Iwant iwant;
-	private final File iwantWs;
+	private final File iwantEssential;
 
-	public Iwant3(IwantNetwork network, File iwantWs) {
-		this.iwantWs = iwantWs;
+	public Iwant3(IwantNetwork network, File iwantEssential) {
+		this.iwantEssential = iwantEssential;
 		this.iwant = Iwant.using(network);
 	}
 
 	public static void main(String[] args) throws Exception {
-		File iwantWs = new File(args[0]);
+		File iwantEssential = new File(args[0]);
 		File asSomeone = new File(args[1]);
 		String[] args2 = new String[args.length - 2];
 		System.arraycopy(args, 2, args2, 0, args2.length);
 		try {
-			using(Iwant.usingRealNetwork().network(), iwantWs).evaluate(
+			using(Iwant.usingRealNetwork().network(), iwantEssential).evaluate(
 					asSomeone, args2);
 		} catch (IwantException e) {
 			System.err.println(e.getMessage());
@@ -63,8 +63,8 @@ public class Iwant3 {
 		}
 	}
 
-	public static Iwant3 using(IwantNetwork network, File iwantWs) {
-		return new Iwant3(network, iwantWs);
+	public static Iwant3 using(IwantNetwork network, File iwantEssential) {
+		return new Iwant3(network, iwantEssential);
 	}
 
 	private Set<JavaModule> iwantApiModules(SortedSet<File> apiClassLocations)
@@ -124,9 +124,9 @@ public class Iwant3 {
 					.name(wsInfo.wsName() + "-wsdefdef")
 					.locationUnderWsRoot(wsdefdefRelativeToWsRoot)
 					.mainJava("src/main/java").mainDeps(iwantApiModules).end();
-			URL iwantFromUrl = iwant.wishedIwantFromUrl(asSomeone);
+			URL iwantRootFromUrl = iwant.wishedIwantRootFromUrl(asSomeone);
 			WorkspaceDefinitionContext wsDefCtx = new WorkspaceDefinitionContextImpl(
-					iwantApiModules, iwantFromUrl, wsdefdefJavaModule);
+					iwantApiModules, iwantRootFromUrl, wsdefdefJavaModule);
 			JavaSrcModule wsdDefClassesModule = wsDefdef
 					.workspaceModule(wsDefCtx);
 			// TODO don't cast when no more necessary
@@ -172,21 +172,21 @@ public class Iwant3 {
 
 	private Path combinedIwantSources() throws IOException {
 		File combinedSources = iwant.network().cacheLocation(
-				new CombinedSrcFromUnmodifiableIwantWsRoot(iwantWs));
-		Iwant.fileLog("Combining iwant sources from " + iwantWs + " to "
+				new CombinedSrcFromUnmodifiableIwantEssential(iwantEssential));
+		Iwant.fileLog("Combining iwant sources from " + iwantEssential + " to "
 				+ combinedSources);
 		combinedSources.mkdirs();
-		SortedSet<File> srcDirs = Iwant2.srcDirsOfIwantWs(iwantWs);
+		SortedSet<File> srcDirs = Iwant2.srcDirsOfIwantWs(iwantEssential);
 		for (File srcDir : srcDirs) {
 			FileUtil.copyMissingFiles(srcDir, combinedSources);
 		}
 		return new ExternalSource(combinedSources);
 	}
 
-	static class CombinedSrcFromUnmodifiableIwantWsRoot extends
+	static class CombinedSrcFromUnmodifiableIwantEssential extends
 			UnmodifiableSource<File> {
 
-		public CombinedSrcFromUnmodifiableIwantWsRoot(File location) {
+		public CombinedSrcFromUnmodifiableIwantEssential(File location) {
 			super(location);
 		}
 

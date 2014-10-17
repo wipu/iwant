@@ -186,11 +186,9 @@ public class IwantTest extends TestCase {
 		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
 				"exported-iwant-wsroot/essential");
 
-		File exportedWsRoot = Iwant.using(network).iwantWsrootOfWishedVersion(
-				asSomeone);
-		assertEquals(exportedWsEssential, new File(exportedWsRoot, "essential"));
-		assertTrue(new File(exportedWsRoot, "essential/iwant-api-model")
-				.exists());
+		assertEquals(exportedWsEssential, Iwant.using(network)
+				.iwantEssentialOfWishedVersion(asSomeone));
+		assertTrue(new File(exportedWsEssential, "iwant-api-model").exists());
 	}
 
 	/**
@@ -213,12 +211,10 @@ public class IwantTest extends TestCase {
 		File preExisting = new File(exportedWsEssential, "existing");
 		preExisting.mkdirs();
 
-		File exportedWsRoot = Iwant.using(network).iwantWsrootOfWishedVersion(
-				asSomeone);
-		assertEquals(exportedWsEssential, new File(exportedWsRoot, "essential"));
+		assertEquals(exportedWsEssential, Iwant.using(network)
+				.iwantEssentialOfWishedVersion(asSomeone));
 
-		assertTrue(new File(exportedWsRoot, "essential/iwant-api-model")
-				.exists());
+		assertTrue(new File(exportedWsEssential, "iwant-api-model").exists());
 		assertFalse(preExisting.exists());
 	}
 
@@ -242,12 +238,10 @@ public class IwantTest extends TestCase {
 		File preExisting = new File(exportedWsEssential, "existing");
 		preExisting.mkdirs();
 
-		File exportedWsRoot = Iwant.using(network).iwantWsrootOfWishedVersion(
-				asSomeone);
-		assertEquals(exportedWsEssential, new File(exportedWsRoot, "essential"));
+		assertEquals(exportedWsEssential, Iwant.using(network)
+				.iwantEssentialOfWishedVersion(asSomeone));
 
-		assertFalse(new File(exportedWsRoot, "essential/iwant-api-model")
-				.exists());
+		assertFalse(new File(exportedWsEssential, "iwant-api-model").exists());
 		assertTrue(preExisting.exists());
 	}
 
@@ -266,17 +260,16 @@ public class IwantTest extends TestCase {
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
 		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
 				"exported-iwant-wsroot/essential");
-		File exportedWsRoot = exportedWsEssential.getParentFile();
 		network.cachesAt(
 				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
-						exportedWsRoot), "iwant-bootstrapper-classes");
+						exportedWsEssential), "iwant-bootstrapper-classes");
 
 		Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
 				"for", "entry two");
 
 		String cwd = System.getProperty("user.dir");
 		assertEquals("Mocked iwant entry2\n" + "CWD: " + cwd + "\n" + "args: ["
-				+ exportedWsRoot + ", " + asSomeone
+				+ exportedWsEssential + ", " + asSomeone
 				+ ", args, for, entry two]\n"
 				+ "And hello from mocked entry one.\n", out());
 		assertTrue(err().endsWith("And syserr message from mocked entry2\n"));
@@ -326,10 +319,9 @@ public class IwantTest extends TestCase {
 
 		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
 				"exported-iwant-wsroot/essential");
-		File exportedWsRoot = exportedWsEssential.getParentFile();
 		network.cachesAt(
 				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
-						exportedWsRoot), "iwant-bootstrapper-classes");
+						exportedWsEssential), "iwant-bootstrapper-classes");
 
 		try {
 			Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
