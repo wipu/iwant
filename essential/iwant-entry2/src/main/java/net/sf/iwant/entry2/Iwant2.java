@@ -6,10 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -62,8 +62,8 @@ public class Iwant2 {
 
 		File wsRootMarker = new File(iwantWs, "essential/iwant-wsroot-marker");
 
-		List<File> classLocations = Arrays.asList(wsRootMarker,
-				allIwantClasses, junitJar());
+		List<File> classLocations = Arrays
+				.asList(wsRootMarker, allIwantClasses);
 
 		String[] iwant3Args = new String[args.length + 1];
 		iwant3Args[0] = iwantWs.getCanonicalPath();
@@ -127,7 +127,7 @@ public class Iwant2 {
 
 		List<File> javaFileList = new ArrayList<File>(javaFiles);
 		iwant.compiledClasses(allIwantClasses, javaFileList,
-				Arrays.asList(junitJar()), true, null);
+				Collections.<File> emptyList(), true, null);
 		timestampHandler.markFresh();
 		return allIwantClasses;
 	}
@@ -150,15 +150,6 @@ public class Iwant2 {
 
 	private static boolean isJavaSourceFile(File file) {
 		return !file.isDirectory() && file.getAbsolutePath().endsWith(".java");
-	}
-
-	private File junitJar() {
-		try {
-			URL url = network.junitUrl();
-			return iwant.downloaded(url);
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
 	}
 
 	static class TimestampHandler {

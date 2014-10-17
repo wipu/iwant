@@ -1119,7 +1119,9 @@
   - only checkout essential, plugins are checked out if used
     + first move iwantwsroot finding and examplewsdef under essential
     + test iwant wsroot finding
-    - test Iwant2 puts wsroot marker in classpath when calling Iwant3
+    + test Iwant2 puts wsroot marker in classpath when calling Iwant3
+    + don't use junit when compiling/running, not needed anymore
+    - remove junit handling from Iwant and tests
     - then only checkout essential (keep subdir essential at checkout,
       otherwise modules are not found)
   - finalize

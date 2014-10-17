@@ -123,6 +123,22 @@ public class Iwant2Test extends TestCase {
 				+ iwantWsRoot + ", args, to be, passed]\n", out());
 	}
 
+	public void testIwant2CallsIwant3UsingCorrectClasspath() throws Exception {
+		File iwantWsRoot = IwantWsRootFinder.mockWsRoot();
+		network.usesRealJunitUrlAndCached();
+		network.cachesAt(new ClassesFromUnmodifiableIwantWsRoot(iwantWsRoot),
+				"all-iwant-classes");
+
+		iwant2.evaluate(IwantWsRootFinder.mockWsRoot(),
+				"--printClassLoaderUrls");
+		assertEquals(":        compiled -> all-iwant-classes\n", err());
+		assertEquals("Mocked net.sf.iwant.entry3.Iwant3\n" + "args: ["
+				+ iwantWsRoot + ", --printClassLoaderUrls]\n"
+				+ "classloader urls: [file:" + iwantWsRoot
+				+ "/essential/iwant-wsroot-marker/, file:" + testArea.root()
+				+ "/all-iwant-classes/]\n", out());
+	}
+
 	public void testIwant2CompilesIwantWithDebugInformation() throws Exception {
 		File iwantWsRoot = IwantWsRootFinder.mockWsRoot();
 		network.usesRealJunitUrlAndCached();
