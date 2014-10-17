@@ -1239,6 +1239,8 @@
   - take from real projects and polish for general use
   - use in iwant itself
 
+- As @developer I want CopyOfLocalIwantWsTutorial to get a context for ingredients() so it can find all essential src/main/java dirs from wsroot and is not dirty when e.g. eclipse settings have changed
+
 - As @buildscriptuser I want svn exports to be downloaded to global cache so workspaces don't need to download them separately
   - do it like Downloaded does it
 

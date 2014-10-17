@@ -78,6 +78,15 @@ public class CopyOfLocalIwantWsForTutorial extends Target {
 		if (fileName.startsWith("/private")) {
 			return false;
 		}
+		if (fileName.endsWith("/.project")) {
+			return false;
+		}
+		if (fileName.endsWith("/.classpath")) {
+			return false;
+		}
+		if (fileName.endsWith("/.settings")) {
+			return false;
+		}
 		if (fileName.endsWith("/classes")) {
 			return false;
 		}
