@@ -252,11 +252,26 @@ public class Iwant {
 		}
 	}
 
+	public static URL subUrlOfSvnUrl(URL baseUrl, String subPath) {
+		try {
+			String raw = baseUrl.toExternalForm();
+			int atAt = raw.lastIndexOf("@");
+			if (!isFile(baseUrl) && atAt >= 0) {
+				String rev = raw.substring(atAt, raw.length());
+				return new URL(raw.substring(0, atAt) + "/" + subPath + rev);
+			} else {
+				return new URL(baseUrl + "/" + subPath);
+			}
+		} catch (MalformedURLException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
 	public File iwantWsrootOfWishedVersion(File asSomeone) {
 		try {
 			Properties iwantFromProps = iwantFromProperties(asSomeone);
-			URL iwantEssentialLocation = new URL(wishedIwantFromUrl(asSomeone)
-					+ "/essential");
+			URL iwantEssentialLocation = subUrlOfSvnUrl(
+					wishedIwantFromUrl(asSomeone), "essential");
 			boolean reExportNotNeeded = "false".equals(iwantFromProps
 					.getProperty("re-export"));
 			File iwantWsEssential = exportedFromSvn(iwantEssentialLocation,

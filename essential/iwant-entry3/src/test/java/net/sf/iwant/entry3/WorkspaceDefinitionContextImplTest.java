@@ -1,5 +1,6 @@
 package net.sf.iwant.entry3;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -85,6 +86,25 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		assertEquals("iwant-plugin-ant-main-java", java.name());
 		assertEquals(iwantFromUrl + "/optional/iwant-plugin-ant/src/main/java",
 				java.url().toExternalForm());
+	}
+
+	public void testPluginJavaUrlWhenIwantUrlHasRevision()
+			throws MalformedURLException {
+		iwantFromUrl = new URL("https://svn.code.sf.net/p/iwant/code/trunk@687");
+		ctx = new WorkspaceDefinitionContextImpl(apiModules, iwantFromUrl,
+				wsdefdefModule);
+
+		Set<JavaModule> mods = ctx.iwantPlugin().ant().withDependencies();
+
+		JavaBinModule antPlugin = (JavaBinModule) mods.iterator().next();
+		JavaClasses classes = (JavaClasses) antPlugin.mainArtifact();
+		assertEquals(1, classes.srcDirs().size());
+
+		SvnExported java = (SvnExported) classes.srcDirs().iterator().next();
+
+		assertEquals("https://svn.code.sf.net/p/iwant/code/trunk/"
+				+ "optional/iwant-plugin-ant/src/main/java@687", java.url()
+				.toExternalForm());
 	}
 
 	public void testIwantPluginPmdWithDependenciesContainsCorrectModules() {

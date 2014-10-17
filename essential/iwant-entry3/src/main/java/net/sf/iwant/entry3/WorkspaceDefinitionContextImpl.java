@@ -1,6 +1,5 @@
 package net.sf.iwant.entry3;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -17,6 +16,7 @@ import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.core.download.SvnExported;
 import net.sf.iwant.core.download.TestedIwantDependencies;
+import net.sf.iwant.entry.Iwant;
 
 public class WorkspaceDefinitionContextImpl implements
 		WorkspaceDefinitionContext {
@@ -48,14 +48,10 @@ public class WorkspaceDefinitionContextImpl implements
 	}
 
 	private Path pluginMainJava(String pluginName) {
-		try {
-			URL url = new URL(iwantFromUrl + "/optional/" + pluginName
-					+ "/src/main/java");
-			return SvnExported.with().name(pluginName + "-main-java").url(url)
-					.end();
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
+		URL url = Iwant.subUrlOfSvnUrl(iwantFromUrl, "optional/" + pluginName
+				+ "/src/main/java");
+		return SvnExported.with().name(pluginName + "-main-java").url(url)
+				.end();
 	}
 
 	private Set<JavaModule> pluginWithDependencies(String pluginName,

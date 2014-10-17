@@ -1131,6 +1131,8 @@
     + make SvnExported single-threaded, svnkit seems to warn, also
       better behaviour against the sf.net svn server
   - real test
+    + bugfix: keep revision in the end of svn url when appending subpath
+      to it
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
   + @bugfix: copy missing files (resources)
