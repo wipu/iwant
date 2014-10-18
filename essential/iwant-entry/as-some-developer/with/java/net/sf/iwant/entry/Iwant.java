@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -173,6 +174,8 @@ public class Iwant {
 				return url;
 			}
 			return new URL(urlString + "/");
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		}
@@ -265,6 +268,8 @@ public class Iwant {
 		try {
 			Properties iwantFromProps = iwantFromProperties(asSomeone);
 			return new URL(iwantFromProps.getProperty("iwant-from"));
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -297,6 +302,8 @@ public class Iwant {
 					!reExportNotNeeded);
 			return iwantWsEssential;
 		} catch (IwantException e) {
+			throw e;
+		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -649,7 +656,7 @@ public class Iwant {
 	private static String urlEncode(String s) {
 		try {
 			return URLEncoder.encode(s, "UTF-8");
-		} catch (Exception e) {
+		} catch (UnsupportedEncodingException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
@@ -675,6 +682,8 @@ public class Iwant {
 			FileOutputStream cachedOut = new FileOutputStream(to);
 			cachedOut.write(bytes);
 			cachedOut.close();
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -827,6 +836,8 @@ public class Iwant {
 			enableHttpProxy();
 			runJavaMain(true, false, "org.tmatesoft.svn.cli.SVN", svnkitJars,
 					"export", urlString, to.getCanonicalPath());
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

@@ -285,6 +285,8 @@ public class Iwant3 {
 				file = file.getParentFile();
 			}
 			return file;
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new IllegalStateException("Cannot find classes.", e);
 		}

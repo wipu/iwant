@@ -9,6 +9,8 @@ public class IwantWsRootFinder {
 			File marker = new File(IwantWsRootFinder.class.getResource(
 					"/iwant-wsroot-marker.txt").toURI());
 			return marker.getParentFile().getParentFile().getParentFile();
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}

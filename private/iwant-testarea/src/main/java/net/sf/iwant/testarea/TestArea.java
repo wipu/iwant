@@ -93,6 +93,8 @@ public final class TestArea {
 			}
 			reader.close();
 			return actual.toString();
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}

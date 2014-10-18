@@ -98,6 +98,8 @@ public class Downloaded extends Target {
 			md.update(bytes);
 			byte[] digest = md.digest();
 			return asHex(digest);
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
