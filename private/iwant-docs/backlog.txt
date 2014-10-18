@@ -1139,11 +1139,13 @@
   + but for now, at least, kiss (minimize changes)
     + just use wsrootfinder
 
++ As @buildscriptauthor I want iwant to log the (first) path that renders a Target nonfresh so I can more easily debug my Target code, Source timestamps etc if laziness doesn't work 
+  + just filelog, without automatic testing
+  + manually verify from log after jacoco-report
+
 #################################################################
 = In progress
 #################################################################
-
-- As @buildscriptauthor I want iwant to log the (first) path that renders a Target nonfresh so I can more easily debug my Target code, Source timestamps etc if laziness doesn't work 
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
   + @bugfix: copy missing files (resources)

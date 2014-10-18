@@ -88,6 +88,10 @@ public class TargetRefreshTask implements Task {
 		return FileUtil.contentAsString(file);
 	}
 
+	private void logReasonOfDirtiness(File ingredient, String reason) {
+		Iwant.fileLog(this + " is dirty, because " + ingredient + reason);
+	}
+
 	private TaskDirtiness isIngredientModifiedSince(long time) {
 		for (Path ingredient : target.ingredients()) {
 			if (ingredient instanceof Target) {
@@ -96,14 +100,17 @@ public class TargetRefreshTask implements Task {
 						.contentDescriptorOf(targetIngredient);
 				if (!ingredientDescriptor.exists()
 						|| ingredientDescriptor.lastModified() > time) {
+					logReasonOfDirtiness(ingredientDescriptor, " was modified");
 					return TaskDirtiness.DIRTY_TARGET_INGREDIENT_MODIFIED;
 				}
 			} else {
 				File src = ctx.cached(ingredient);
 				if (!src.exists()) {
+					logReasonOfDirtiness(src, " is missing");
 					return TaskDirtiness.DIRTY_SRC_INGREDIENT_MISSING;
 				}
 				if (isModifiedSince(src, time)) {
+					logReasonOfDirtiness(src, " was modified");
 					return TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED;
 				}
 			}
