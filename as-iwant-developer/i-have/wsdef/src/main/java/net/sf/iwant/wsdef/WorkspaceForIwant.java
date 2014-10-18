@@ -36,11 +36,13 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private final FindbugsDistribution findbugs = FindbugsDistribution
 			.ofVersion("2.0.3");
 
+	private static final Target copyOfLocalIwantWs = new CopyOfLocalIwantWsForTutorial();
+
 	@Override
 	public List<? extends Target> targets() {
-		return Arrays.asList(emmaCoverageReport(), findbugsReport(),
-				jacocoReport(), listOfExternalDeps(), localWebsite(),
-				remoteWebsite());
+		return Arrays.asList(copyOfLocalIwantWs, emmaCoverageReport(),
+				findbugsReport(), jacocoReport(), listOfExternalDeps(),
+				localWebsite(), remoteWebsite());
 	}
 
 	@Override
@@ -189,7 +191,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static Target localTutorial() {
-		return Tutorial.local();
+		return Tutorial.local(copyOfLocalIwantWs);
 	}
 
 	private static Target localWebsite() {

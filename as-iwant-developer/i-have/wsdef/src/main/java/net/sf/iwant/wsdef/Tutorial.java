@@ -20,7 +20,6 @@ public class Tutorial extends Target {
 	private final String namePrefix;
 	private final List<Descripted> pages = new ArrayList<Descripted>();
 	private final Path styleCss;
-	private static final Path copyOfLocalIwantWs = new CopyOfLocalIwantWsForTutorial();
 
 	private Tutorial(String namePrefix, Descripted bootstrappingDoc) {
 		super(namePrefix + "tutorial");
@@ -59,7 +58,7 @@ public class Tutorial extends Target {
 		pages.add(pageAboutUsingWsdef("fromgithub", "(Code) from github"));
 	}
 
-	public static Tutorial local() {
+	public static Tutorial local(Path copyOfLocalIwantWs) {
 		return new Tutorial(
 				"local-",
 				new Descripted(

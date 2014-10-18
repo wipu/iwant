@@ -2,6 +2,7 @@ package net.sf.iwant.wsdef;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,8 +16,66 @@ import org.apache.commons.io.FileUtils;
 
 public class CopyOfLocalIwantWsForTutorial extends Target {
 
+	private final List<Path> ingredients = new ArrayList<Path>();
+
 	public CopyOfLocalIwantWsForTutorial() {
 		super("copy-of-local-iwant-ws-for-tutorial");
+		try {
+			addIngredients();
+		} catch (URISyntaxException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+	/**
+	 * TODO reuse from somewhere
+	 */
+	private File findWsRoot() throws URISyntaxException {
+		File candidate = new File(getClass().getResource(
+				getClass().getSimpleName() + ".class").toURI());
+		while (candidate.getParentFile() != null) {
+			if (new File(candidate,
+					"essential/iwant-wsroot-marker/iwant-wsroot-marker.txt")
+					.exists()) {
+				return candidate;
+			}
+			candidate = candidate.getParentFile();
+		}
+		throw new IllegalStateException("Cannot find wsRoot");
+	}
+
+	/**
+	 * no iwant-docs here, otherwise editing them triggers new copy and the
+	 * whole optimization breaks
+	 */
+	private void addIngredients() throws URISyntaxException {
+		File wsRoot = findWsRoot();
+		// no iwant-docs here, otherwise editing them triggers new copy and the
+		// whole optimization breaks
+		ingredients.add(Source
+				.underWsroot("essential/iwant-entry/as-some-developer/with"));
+		ingredients
+				.addAll(mainJavasOfModulesUnder(new File(wsRoot, "essential")));
+		ingredients
+				.addAll(mainJavasOfModulesUnder(new File(wsRoot, "optional")));
+		ingredients
+				.add(Source
+						.underWsroot("as-iwant-developer/i-have/wsdef/"
+								+ "src/main/java/net/sf/iwant/wsdef/CopyOfLocalIwantWsForTutorial.java"));
+	}
+
+	private static List<Path> mainJavasOfModulesUnder(File modulesDir) {
+		List<Path> mainJavas = new ArrayList<Path>();
+		File[] potentialMod = modulesDir.listFiles();
+		Arrays.sort(potentialMod);
+		for (File mod : potentialMod) {
+			File mainJava = new File(mod, "src/main/java");
+			if (mainJava.exists()) {
+				mainJavas.add(Source.underWsroot(modulesDir.getName() + "/"
+						+ mod.getName() + "/src/main/java"));
+			}
+		}
+		return mainJavas;
 	}
 
 	@Override
@@ -26,27 +85,7 @@ public class CopyOfLocalIwantWsForTutorial extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
-		ingredients.addAll(relevantModuleDirPaths());
-		ingredients
-				.add(Source
-						.underWsroot("as-iwant-developer/i-have/wsdef/"
-								+ "src/main/java/net/sf/iwant/wsdef/CopyOfLocalIwantWsForTutorial.java"));
 		return ingredients;
-	}
-
-	private static List<Path> relevantModuleDirPaths() {
-		List<Path> ingredients = new ArrayList<Path>();
-		for (String srcName : relevantSourceNames()) {
-			ingredients.add(Source.underWsroot(srcName));
-		}
-		return ingredients;
-	}
-
-	private static List<String> relevantSourceNames() {
-		// no iwant-docs here, otherwise editing them triggers new copy and the
-		// whole optimization breaks
-		return Arrays.asList("essential", "optional");
 	}
 
 	@Override

@@ -1132,9 +1132,18 @@
     + more bugfix: export essential directly, remove prefix "essential/"
       from refs, don't pass wsroot, pass essential to iwant2->iwant3
 
++ As @developer I want CopyOfLocalIwantWsTutorial to get a context for ingredients() so it can find all essential src/main/java dirs from wsroot and is not dirty when e.g. eclipse settings have changed
+  * maybe later something like this
+    * pass wsRoot as ReadAccessToFile
+    * enough functionality to that class for finding essential main src dirs
+  + but for now, at least, kiss (minimize changes)
+    + just use wsrootfinder
+
 #################################################################
 = In progress
 #################################################################
+
+- As @buildscriptauthor I want iwant to log the (first) path that renders a Target nonfresh so I can more easily debug my Target code, Source timestamps etc if laziness doesn't work 
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
   + @bugfix: copy missing files (resources)
@@ -1238,8 +1247,6 @@
 - As @buildscriptauthor I want an utility for defining modules so that they are automatically added to an allSrcModules collection so I don't need to maintain such a collection myself
   - take from real projects and polish for general use
   - use in iwant itself
-
-- As @developer I want CopyOfLocalIwantWsTutorial to get a context for ingredients() so it can find all essential src/main/java dirs from wsroot and is not dirty when e.g. eclipse settings have changed
 
 - As @buildscriptuser I want svn exports to be downloaded to global cache so workspaces don't need to download them separately
   - do it like Downloaded does it
