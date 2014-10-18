@@ -30,7 +30,6 @@ public class Iwant3Test extends TestCase {
 	private Iwant3 iwant3;
 	private File wsRoot;
 	private File asTest;
-	private SecurityManager origSecman;
 	private InputStream originalIn;
 	private PrintStream originalOut;
 	private PrintStream originalErr;
@@ -87,7 +86,6 @@ public class Iwant3Test extends TestCase {
 
 	@Override
 	public void tearDown() {
-		System.setSecurityManager(origSecman);
 		System.setIn(originalIn);
 		System.setOut(originalOut);
 		System.setErr(originalErr);
