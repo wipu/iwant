@@ -8,6 +8,8 @@ import net.sf.iwant.entry.Iwant.UnmodifiableSource;
 import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
 import net.sf.iwant.entry.Iwant.UnmodifiableZip;
 
+import com.google.common.testing.EqualsTester;
+
 public class UnmodifiableSourceTest extends TestCase {
 
 	public void testEqualsComparesTypeAndLocation()
@@ -20,10 +22,11 @@ public class UnmodifiableSourceTest extends TestCase {
 		UnmodifiableSource<URL> zipFromUrl1 = new UnmodifiableZip(
 				url1a.location());
 
-		assertEquals(url1a, url1b);
-		assertFalse(url1a.equals(url2));
-		assertFalse(url1a.equals(zipFromUrl1));
-		assertFalse(url1a.equals("not UnmodifiableSource"));
+		EqualsTester et = new EqualsTester();
+		et.addEqualityGroup(url1a, url1b);
+		et.addEqualityGroup(url2);
+		et.addEqualityGroup(zipFromUrl1);
+		et.testEquals();
 	}
 
 }

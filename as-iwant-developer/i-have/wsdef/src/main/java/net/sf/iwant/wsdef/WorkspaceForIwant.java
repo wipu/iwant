@@ -241,6 +241,16 @@ public class WorkspaceForIwant implements IwantWorkspace {
 			FromRepository.ibiblio().group("commons-math").name("commons-math")
 					.version("1.2")).end();
 
+	private static JavaModule guava = JavaBinModule.providing(
+			FromRepository.repo1MavenOrg().group("com/google/guava")
+					.name("guava").version("18.0")).end();
+
+	private static JavaModule guavaTestlib = JavaBinModule
+			.providing(
+					FromRepository.repo1MavenOrg().group("com/google/guava")
+							.name("guava-testlib").version("18.0"))
+			.runtimeDeps(guava).end();
+
 	private static JavaModule jaxen = JavaBinModule.providing(
 			FromRepository.ibiblio().group("jaxen").name("jaxen")
 					.version("1.1.4")).end();
@@ -277,8 +287,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private static JavaSrcModule iwantEntryTests = privateModule("entry-tests")
 			.noMainJava()
 			.testResources("src/test/resources")
-			.testDeps(iwantEntry, iwantEntrymocks, iwantIwantWsrootFinder,
-					iwantTestarea, junit).end();
+			.testDeps(guava, guavaTestlib, iwantEntry, iwantEntrymocks,
+					iwantIwantWsrootFinder, iwantTestarea, junit).end();
 
 	private static JavaSrcModule iwantEntry2 = essentialModule("entry2")
 			.mainDeps(iwantEntry)
