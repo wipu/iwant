@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.List;
 
@@ -92,17 +93,11 @@ public class Downloaded extends Target {
 		}
 	}
 
-	private static String md5(byte[] bytes) {
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			md.update(bytes);
-			byte[] digest = md.digest();
-			return asHex(digest);
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	private static String md5(byte[] bytes) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(bytes);
+		byte[] digest = md.digest();
+		return asHex(digest);
 	}
 
 	private static String asHex(byte[] in) {

@@ -1,7 +1,6 @@
 package net.sf.iwant.entrymocks;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,11 +65,7 @@ public class IwantNetworkMock implements IwantNetwork {
 	}
 
 	public void hasSvnkitUrl(String svnkitUrl) {
-		try {
-			hasSvnkitUrl(new URL(svnkitUrl));
-		} catch (MalformedURLException e) {
-			throw new IllegalArgumentException(e);
-		}
+		hasSvnkitUrl(Iwant.url(svnkitUrl));
 	}
 
 	public void usesRealSvnkitUrlAndCacheAndUnzipped() {

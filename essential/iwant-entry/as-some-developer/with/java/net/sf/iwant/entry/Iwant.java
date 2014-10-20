@@ -301,8 +301,6 @@ public class Iwant {
 			File iwantWsEssential = exportedFromSvn(iwantEssentialLocation,
 					!reExportNotNeeded);
 			return iwantWsEssential;
-		} catch (IwantException e) {
-			throw e;
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {

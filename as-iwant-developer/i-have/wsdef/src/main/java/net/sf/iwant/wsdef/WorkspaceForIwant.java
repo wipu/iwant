@@ -421,9 +421,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	// TODO don't depend directly on asm, jaxen: pmd depends on them
 	private static JavaSrcModule iwantPluginPmd = optionalModule("plugin-pmd")
 			.testResources("src/test/resources")
-			.mainDeps(ant, asm, commonsIo, iwantApiModel, jaxen, pmd)
-			.testDeps(junit, iwantApimocks, iwantEntry, iwantTestarea,
-					iwantTestresources).end();
+			.mainDeps(ant, asm, commonsIo, iwantApiModel, iwantEntry, jaxen,
+					pmd)
+			.testDeps(junit, iwantApimocks, iwantTestarea, iwantTestresources)
+			.end();
 
 	private static JavaSrcModule iwantPluginWar = optionalModule("plugin-war")
 			.mainDeps(ant, antLauncher, iwantApiModel)

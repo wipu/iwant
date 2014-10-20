@@ -10,6 +10,7 @@ import java.util.List;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.entry.Iwant.IwantException;
 import net.sourceforge.pmd.cpd.CPDTask;
 
 import org.apache.tools.ant.Project;
@@ -80,7 +81,7 @@ public class CopyPasteReport extends Target {
 		if (srcDirectories.isEmpty()) {
 			// PMD does not tolerate this so let's give an error message on our
 			// abstraction level:
-			throw new IllegalArgumentException("No source directories given.");
+			throw new IwantException("No source directories given.");
 		}
 		File dest = ctx.cached(this);
 		dest.mkdirs();

@@ -88,14 +88,22 @@ public class AntGenerated extends Target {
 			if (e.getCause() instanceof ExitCalledException) {
 				ExitCalledException ece = (ExitCalledException) e.getCause();
 				if (ece.status() != 0) {
-					throw e;
+					throw ece;
 				} else {
 					// ant just feels like trying to kill our JVM,
 					// it was still a success
 				}
 			} else {
-				throw e;
+				throw asRuntimeException(e.getCause());
 			}
+		}
+	}
+
+	private static RuntimeException asRuntimeException(Throwable e) {
+		if (e instanceof RuntimeException) {
+			return (RuntimeException) e;
+		} else {
+			return new RuntimeException(e);
 		}
 	}
 

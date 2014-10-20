@@ -2,7 +2,6 @@ package net.sf.iwant.core.ant;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import net.sf.iwant.api.core.Concatenated;
 import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
@@ -112,9 +111,8 @@ public class AntGeneratedTest extends IwantTestCase {
 		try {
 			antGen.path(ctx);
 			fail();
-		} catch (InvocationTargetException e) {
-			ExitCalledException ece = (ExitCalledException) e.getCause();
-			assertEquals(1, ece.status());
+		} catch (ExitCalledException e) {
+			assertEquals(1, e.status());
 		}
 
 		assertEquals("", out());

@@ -1,9 +1,9 @@
 package net.sf.iwant.entry3;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -259,7 +259,8 @@ public class Iwant3 {
 		}
 	}
 
-	private static SortedSet<File> iwantApiClassLocations() {
+	private static SortedSet<File> iwantApiClassLocations()
+			throws URISyntaxException {
 		SortedSet<File> apiClassLocations = new TreeSet<File>();
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
 				+ "api/core/HelloTarget.class"));
@@ -275,21 +276,15 @@ public class Iwant3 {
 		return apiClassLocations;
 	}
 
-	private static File classesDirOf(String resourceInsideClassLocation) {
-		try {
-			int slashCount = countOfOccurrencesIn('/',
-					resourceInsideClassLocation);
-			URL url = Iwant3.class.getResource(resourceInsideClassLocation);
-			File file = new File(url.toURI());
-			for (int i = 0; i < slashCount; i++) {
-				file = file.getParentFile();
-			}
-			return file;
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new IllegalStateException("Cannot find classes.", e);
+	private static File classesDirOf(String resourceInsideClassLocation)
+			throws URISyntaxException {
+		int slashCount = countOfOccurrencesIn('/', resourceInsideClassLocation);
+		URL url = Iwant3.class.getResource(resourceInsideClassLocation);
+		File file = new File(url.toURI());
+		for (int i = 0; i < slashCount; i++) {
+			file = file.getParentFile();
 		}
+		return file;
 	}
 
 	private static int countOfOccurrencesIn(char c, String string) {
@@ -353,9 +348,6 @@ public class Iwant3 {
 		try {
 			in = new FileReader(wsInfoFile);
 			return new WsInfoFileImpl(in, wsInfoFile, asSomeone);
-		} catch (FileNotFoundException e) {
-			throw new IllegalStateException("Sorry, for a while I thought "
-					+ wsInfoFile + " exists.");
 		} finally {
 			StreamUtil.tryToClose(in);
 		}

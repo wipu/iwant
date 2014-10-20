@@ -4,6 +4,7 @@ import java.io.File;
 
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.entry.Iwant.IwantException;
 
 public class CopyPasteReportTest extends PmdTestBase {
 
@@ -48,7 +49,7 @@ public class CopyPasteReportTest extends PmdTestBase {
 		try {
 			report.path(ctx);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (IwantException e) {
 			assertEquals("No source directories given.", e.getMessage());
 		}
 

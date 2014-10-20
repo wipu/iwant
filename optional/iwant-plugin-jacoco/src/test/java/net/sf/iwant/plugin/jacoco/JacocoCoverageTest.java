@@ -2,7 +2,6 @@ package net.sf.iwant.plugin.jacoco;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import net.sf.iwant.api.core.HelloTarget;
@@ -163,8 +162,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		try {
 			coverage.path(ctx);
 			fail();
-		} catch (InvocationTargetException e) {
-			assertTrue(e.getCause() instanceof ExitCalledException);
+		} catch (ExitCalledException e) {
+			assertNull(e.getMessage());
 		}
 
 	}
@@ -264,9 +263,9 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		try {
 			coverage.path(ctx);
 			fail();
-		} catch (InvocationTargetException e) {
+		} catch (ExitCalledException e) {
 			// expected, a hackish way of making sure it was used
-			assertTrue(e.getCause() instanceof ExitCalledException);
+			assertNull(e.getMessage());
 		}
 
 		String scriptContent = contentOf(new File(tmpDir, "coverage.exec.xml"));
