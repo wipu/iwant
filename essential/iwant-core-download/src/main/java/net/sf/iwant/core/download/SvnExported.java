@@ -1,13 +1,16 @@
 package net.sf.iwant.core.download;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
+import net.sf.iwant.api.model.CacheScopeChoices;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.coreservices.FileUtil;
 
 public class SvnExported extends Target {
 
@@ -62,8 +65,19 @@ public class SvnExported extends Target {
 	}
 
 	@Override
+	public File cachedAt(CacheScopeChoices cachedAt) {
+		return cachedAt.unmodifiableUrl(url);
+	}
+
+	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
-		ctx.iwant().svnExported(url, ctx.cached(this));
+		File tmp = ctx.freshTemporaryDirectory();
+		File tmpExported = new File(tmp, "exported");
+		ctx.iwant().svnExported(url, tmpExported);
+
+		File dest = ctx.cached(this);
+		dest.mkdirs();
+		FileUtil.copyRecursively(tmpExported, dest, true);
 	}
 
 	@Override

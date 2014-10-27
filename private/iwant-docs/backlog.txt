@@ -1168,6 +1168,14 @@
   + the filter
   + make it the default filter in javamodules
 
++ As @buildscriptuser I want svn exports to be downloaded to global cache so workspaces don't need to download them separately
+  + do it like Downloaded does it
+
++ @anticipated @bufgfix As @buildscriptuser I want download/svn export to first use different name and only then rename so failure won't produce a corrupted artifact
+  + fix for svn export
+  * not as strictyly needed for download, it first downloads to ram
+  * it could fail during md5 check but won't fix for now 
+
 #################################################################
 = In progress
 #################################################################
@@ -1255,9 +1263,6 @@
 - As @buildscriptauthor I want an utility for defining modules so that they are automatically added to an allSrcModules collection so I don't need to maintain such a collection myself
   - take from real projects and polish for general use
   - use in iwant itself
-
-- As @buildscriptuser I want svn exports to be downloaded to global cache so workspaces don't need to download them separately
-  - do it like Downloaded does it
 
 - As @buildscriptauthor I want classes excluded from jacoco report by classname pattern so my special classes e.g. configuration does not affect the result
   * offline instrumentation required, a bigger change to the way we use jacoco

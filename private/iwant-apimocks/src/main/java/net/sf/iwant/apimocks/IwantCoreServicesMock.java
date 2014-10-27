@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
 import net.sf.iwant.api.model.IwantCoreServices;
+import net.sf.iwant.entry.Iwant;
 
 public class IwantCoreServicesMock implements IwantCoreServices {
 
@@ -18,7 +18,8 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	private File taughtCygwinBashExe;
 	private boolean cygwinBashExeWasTaught;
 	private boolean shallMockWintoySafePaths;
-	private final Map<URL, File> executedSvnExports = new HashMap<URL, File>();
+	private final Map<URL, Integer> numberOfFilesToSvnExport = new HashMap<URL, Integer>();
+	private final Map<URL, Integer> numberOfFilesToSvnExportBeforeFailure = new HashMap<URL, Integer>();
 
 	public IwantCoreServicesMock(IwantCoreServices delegate) {
 		this.delegate = delegate;
@@ -48,7 +49,16 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 
 	@Override
 	public void svnExported(URL from, File to) {
-		executedSvnExports.put(from, to);
+		int fileCount = numberOfFilesToSvnExport.get(from);
+		Integer failAfter = numberOfFilesToSvnExportBeforeFailure.get(from);
+		to.mkdirs();
+		for (int i = 0; i < fileCount; i++) {
+			if (failAfter != null && i >= failAfter) {
+				throw new IllegalStateException("Simulated svn export failure");
+			}
+			Iwant.newTextFile(new File(to, "exported-" + i),
+					"content of exported-" + i);
+		}
 	}
 
 	@Override
@@ -99,8 +109,14 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 		this.shallMockWintoySafePaths = true;
 	}
 
-	public void shallHaveSvnExportedUrlTo(URL url, File exported) {
-		Assert.assertEquals(exported, executedSvnExports.get(url));
+	public void shallSvnExport(URL url, int numberOfFilesToSvnExport) {
+		this.numberOfFilesToSvnExport.put(url, numberOfFilesToSvnExport);
+	}
+
+	public void shallFailSvnExportAfterFileCount(URL url,
+			Integer numberOfFilesToSvnExportBeforeFailure) {
+		this.numberOfFilesToSvnExportBeforeFailure.put(url,
+				numberOfFilesToSvnExportBeforeFailure);
 	}
 
 }
