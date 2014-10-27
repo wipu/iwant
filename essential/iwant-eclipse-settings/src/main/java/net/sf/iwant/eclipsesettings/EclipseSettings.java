@@ -86,9 +86,7 @@ public class EclipseSettings implements SideEffect {
 				+ ".bin-refs");
 		Set<Path> paths = new LinkedHashSet<Path>();
 		for (JavaModule mod : javaModules) {
-			Set<JavaModule> modDeps = new LinkedHashSet<JavaModule>();
-			modDeps.addAll(mod.effectivePathForMainForCompile());
-			modDeps.addAll(mod.effectivePathForTestCompile());
+			Set<JavaModule> modDeps = EclipseProject.dependenciesOf(mod);
 			for (JavaModule dep : modDeps) {
 				if (!(dep instanceof JavaBinModule)) {
 					continue;

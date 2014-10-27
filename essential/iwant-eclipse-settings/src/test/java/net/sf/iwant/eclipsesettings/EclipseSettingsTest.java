@@ -298,4 +298,30 @@ public class EclipseSettingsTest extends IwantTestCase {
 		assertTrue(new File(wsRoot, "mod-with-all/src/test/resources").exists());
 	}
 
+	public void testTestRuntimeDepenencyGoesToDotClasspath() {
+		JavaModule rtBinTool = JavaBinModule.providing(
+				TargetMock.ingredientless("rtBinTool"),
+				TargetMock.ingredientless("rtBinTool-src")).end();
+
+		JavaModule rtSrcTool = JavaSrcModule.with().name("rtSrcTool")
+				.locationUnderWsRoot("rtSrcTool").mainJava("src").end();
+		JavaModule mod = JavaSrcModule.with().name("mod")
+				.locationUnderWsRoot("mod").mainJava("src").testJava("tests")
+				.testRuntimeDeps(rtBinTool, rtSrcTool).end();
+		wsRootHasDirectory("mod");
+
+		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
+				.end();
+
+		es.mutate(seCtx);
+
+		assertDotClasspathContains("mod",
+				"<classpathentry kind=\"lib\" path=\"" + cacheDir
+						+ "/rtBinTool\" sourcepath=\"" + cacheDir
+						+ "/rtBinTool-src\"/>");
+		assertDotClasspathContains(
+				"mod",
+				"<classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/rtSrcTool\"/>");
+	}
+
 }

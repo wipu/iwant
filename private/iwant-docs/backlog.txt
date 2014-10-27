@@ -1182,6 +1182,12 @@
 
 + @bugfix: DefaultTestClassNameFilter toString must be constant
 
++ As @buildscriptauthor I want test runtime dependendies in eclipse classpath so I can run the tests in eclipse
+  * unfortunately this means that developers can accidentally create compile, even main compile, deps when writing code   
+  + real test, where module test passes by iwant, not by eclipse
+  + make dep collection test runtime instead of compile time
+  + fix dep refresh to use same collection
+
 #################################################################
 = In progress
 #################################################################

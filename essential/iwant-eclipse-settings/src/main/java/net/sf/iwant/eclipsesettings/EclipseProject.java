@@ -39,10 +39,7 @@ public class EclipseProject {
 			dcp = optionalSrc(dcp, res);
 		}
 
-		Set<JavaModule> allDeps = new LinkedHashSet<JavaModule>();
-		allDeps.addAll(module.mainDepsForCompilation());
-		allDeps.addAll(module.testDepsForCompilationExcludingMainDeps());
-		for (JavaModule dep : allDeps) {
+		for (JavaModule dep : dependenciesOf(module)) {
 			dcp = dep(dcp, dep);
 		}
 
@@ -53,6 +50,15 @@ public class EclipseProject {
 		}
 
 		return dcp.end();
+	}
+
+	static Set<JavaModule> dependenciesOf(JavaModule module) {
+		Set<JavaModule> deps = new LinkedHashSet<JavaModule>();
+		deps.addAll(module.mainDepsForCompilation());
+		deps.addAll(module.testDepsForCompilationExcludingMainDeps());
+		deps.addAll(module.mainDepsForRunOnly());
+		deps.addAll(module.testDepsForRunOnlyExcludingMainDeps());
+		return deps;
 	}
 
 	public ProjectExternalBuilderLaunch externalBuilderLaunch() {
