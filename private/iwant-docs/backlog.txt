@@ -1315,10 +1315,6 @@
 
 - As @buildscriptauthor I want to define (fluently) a ruleset for PMD so I get only the warnings that really are an issue in my code
 
-- As a @buildscriptauthor I want a convenience filter for the typical test names so I don't have to implement it myself in all my projects
-
-- As @buildscriptauthor I want to refer to jars in the maven repository (at http://repo1.maven.org/maven2/) so I'm not restricted to the ibiblio selection 
-
 - As @buildscriptauthor I want to define runtime dependencies to a binary module so a module using it automatically gets the runtime dependency in its test and runtime classpath
   - make sure the concepts test-runtime and runtime dependencies exist and work
 
