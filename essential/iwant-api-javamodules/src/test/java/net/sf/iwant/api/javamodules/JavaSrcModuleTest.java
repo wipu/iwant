@@ -341,11 +341,6 @@ public class JavaSrcModuleTest extends TestCase {
 		assertEquals("[]", tests.classLocations().toString());
 	}
 
-	public void testTestedByNoClassesIfNotDefined() {
-		assertNull(JavaSrcModule.with().name("testless").testJava("test").end()
-				.testClassNameDefinition());
-	}
-
 	public void testTestedBySingleTestSuite() {
 		StringFilter testNames = JavaSrcModule.with().name("suited")
 				.testJava("test").testedBy("com.example.TestSuite").end()
@@ -728,6 +723,46 @@ public class JavaSrcModuleTest extends TestCase {
 		JavaClasses classes = (JavaClasses) mod.testArtifact();
 
 		assertTrue(classes.debug());
+	}
+
+	public void testModuleWithTestsHasDefaultTestClassNameFilter() {
+		JavaSrcModule mod = JavaSrcModule.with().name("tested").mainJava("src")
+				.testJava("test").end();
+
+		assertTrue(mod.testClassNameDefinition() instanceof DefaultTestClassNameFilter);
+	}
+
+	public void testAlsoTestlessModuleHasDefaultTestClassNameFilter() {
+		JavaSrcModule mod = JavaSrcModule.with().name("testless")
+				.mainJava("src").end();
+
+		assertTrue(mod.testClassNameDefinition() instanceof DefaultTestClassNameFilter);
+	}
+
+	public void testTestlessModuleTestClassNameFilterCanBeExplicitlySetEvenIfItHasNoUse() {
+		StringFilter filter = new StringFilter() {
+			@Override
+			public boolean matches(String candidate) {
+				throw new UnsupportedOperationException("not to be called");
+			}
+		};
+		JavaSrcModule mod = JavaSrcModule.with().name("testless")
+				.testedBy(filter).mainJava("src").end();
+
+		assertSame(filter, mod.testClassNameDefinition());
+	}
+
+	public void testTestClassNameDefinitionReturnsGivenFilter() {
+		StringFilter filter = new StringFilter() {
+			@Override
+			public boolean matches(String candidate) {
+				throw new UnsupportedOperationException("not to be called");
+			}
+		};
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test").testedBy(filter).end();
+
+		assertSame(filter, mod.testClassNameDefinition());
 	}
 
 }

@@ -1162,6 +1162,12 @@
   (- after split, take WsRootFinder and ExampleWsDefGenerator into use in Iwant3Test
     * actually, no split needed, but no need for WsRootFinder)
 
++ As @buildscriptauthor I want a default test classname filter that
+  detects typically named tests so I don't have to type the same filter
+  over and over again
+  + the filter
+  + make it the default filter in javamodules
+
 #################################################################
 = In progress
 #################################################################
@@ -1270,10 +1276,6 @@
     - want jars in tutorial
 
 - As @buildscriptauthor I want a tutorial for defining a jacoco coverage report so I know how to do it easily 
-
-- As @buildscriptauthor I want a default test classname filter that
-  detects typically named tests so I don't have to type the same filter
-  over and over again
 
 - As @developer I want to exclude findbugs testfodder etc from the findbugs report of iwant so I don't get false positives
   - support for findbugs filter

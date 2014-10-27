@@ -132,7 +132,7 @@ public class JavaSrcModule extends JavaModule {
 		private CodeFormatterPolicy codeFormatterPolicy = new CodeFormatterPolicy();
 		private JavaCompliance javaCompliance = JavaCompliance.JAVA_1_6;
 		private String locationUnderWsRoot;
-		private StringFilter testClassNameFilter;
+		private StringFilter testClassNameFilter = new DefaultTestClassNameFilter();
 		private Charset encoding;
 		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<Class<? extends JavaModuleCharacteristic>>();
 

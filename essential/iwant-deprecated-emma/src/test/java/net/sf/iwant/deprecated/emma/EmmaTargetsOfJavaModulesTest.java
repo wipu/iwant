@@ -2,6 +2,7 @@ package net.sf.iwant.deprecated.emma;
 
 import junit.framework.TestCase;
 import net.sf.iwant.api.core.ClassNameList;
+import net.sf.iwant.api.javamodules.DefaultTestClassNameFilter;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Source;
@@ -226,7 +227,7 @@ public class EmmaTargetsOfJavaModulesTest extends TestCase {
 		ClassNameList arg = (ClassNameList) coverage.mainClassArgumentsFile();
 		assertEquals("mod-test-class-names", arg.name());
 		assertEquals("mod-test-classes", arg.classes().toString());
-		assertNull(arg.filter());
+		assertTrue(arg.filter() instanceof DefaultTestClassNameFilter);
 	}
 
 	public void testMainClassAndArgumentsFileOfCoverageOfModuleWithClassDefinitionAsFilter() {
