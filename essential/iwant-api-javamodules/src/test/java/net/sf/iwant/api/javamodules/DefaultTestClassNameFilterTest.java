@@ -25,4 +25,9 @@ public class DefaultTestClassNameFilterTest extends TestCase {
 		assertFalse(filter.matches("com.example.AbstractUiTest"));
 	}
 
+	public void testToStringIsConstantSoItCanBeUsedInTargetContentDefinition() {
+		assertEquals("net.sf.iwant.api.javamodules.DefaultTestClassNameFilter",
+				filter.toString());
+	}
+
 }

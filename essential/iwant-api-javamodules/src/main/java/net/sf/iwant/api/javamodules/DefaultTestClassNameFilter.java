@@ -14,4 +14,9 @@ public class DefaultTestClassNameFilter implements StringFilter {
 		return namedLikeTest;
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getCanonicalName();
+	}
+
 }

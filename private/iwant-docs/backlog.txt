@@ -1180,6 +1180,8 @@
   + experiment with one test class, convert others case by case
   * recent enough junit was already in use, works nicely together with junit 3 test classes
 
++ @bugfix: DefaultTestClassNameFilter toString must be constant
+
 #################################################################
 = In progress
 #################################################################
