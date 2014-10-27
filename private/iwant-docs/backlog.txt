@@ -1176,6 +1176,10 @@
   * not as strictyly needed for download, it first downloads to ram
   * it could fail during md5 check but won't fix for now 
 
++ As @developer I want junit 4 tests so I can name my test methods in a declarative way
+  + experiment with one test class, convert others case by case
+  * recent enough junit was already in use, works nicely together with junit 3 test classes
+
 #################################################################
 = In progress
 #################################################################

@@ -1,13 +1,17 @@
 package net.sf.iwant.api.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class ExternalSourceTest extends TestCase {
+public class ExternalSourceTest {
 
-	public void testAbsolutePathToString() throws IOException {
+	@Test
+	public void absolutePathToString() throws IOException {
 		assertEquals("/an/absolute/path", new ExternalSource(new File(
 				"/an/absolute/path")).toString());
 	}
@@ -15,13 +19,15 @@ public class ExternalSourceTest extends TestCase {
 	/**
 	 * Relative paths shouldn't be used but this is how they work
 	 */
-	public void testRelativePathToString() throws IOException {
+	@Test
+	public void relativePathToString() throws IOException {
 		String cwd = System.getProperty("user.dir");
 		assertEquals(cwd + "/relative/path", new ExternalSource(new File(
 				"relative/path")).toString());
 	}
 
-	public void testItHasNoIngredients() throws IOException {
+	@Test
+	public void itHasNoIngredients() throws IOException {
 		assertTrue(new ExternalSource(new File("/whatever")).ingredients()
 				.isEmpty());
 	}
