@@ -311,7 +311,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 			"api-javamodules")
 			.mainDeps(iwantApiCore, iwantApiModel)
 			.testDeps(iwantApimocks, iwantCoreservices, iwantEntry,
-					iwantTestarea, junit).end();
+					iwantTestarea, guava, guavaTestlib, junit).end();
 
 	private static JavaSrcModule iwantApiWsdef = essentialModule("api-wsdef")
 			.noTestJava().mainDeps(iwantApiModel, iwantApiJavamodules).end();

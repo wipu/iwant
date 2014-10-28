@@ -1192,6 +1192,17 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want an utility for defining modules so that they are automatically added to an allSrcModules collection so I don't need to maintain such a collection myself
+  - take from real projects and polish for general use
+    + src module defs, auto collecting
+    + default and custom settings
+    - bin modules
+    - artifact helpers
+      - main artifact jars
+      - dep artifact collections
+  - use in real project, replacing its own version of this
+  - use in iwant itself
+
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
   + @bugfix: copy missing files (resources)
   + simplify resource copying of instrumentation: don't follow the example in jacoco tutorial (**/*.class)
@@ -1271,10 +1282,6 @@
 #################################################################
 = Planned
 #################################################################
-
-- As @buildscriptauthor I want an utility for defining modules so that they are automatically added to an allSrcModules collection so I don't need to maintain such a collection myself
-  - take from real projects and polish for general use
-  - use in iwant itself
 
 - As @buildscriptauthor I want classes excluded from jacoco report by classname pattern so my special classes e.g. configuration does not affect the result
   * offline instrumentation required, a bigger change to the way we use jacoco

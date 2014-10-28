@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy.FormatterSettingsListener;
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
 
+import com.google.common.testing.EqualsTester;
+
 public class CodeFormatterPolicyTest extends TestCase implements
 		FormatterSettingsListener {
 
@@ -46,6 +48,26 @@ public class CodeFormatterPolicyTest extends TestCase implements
 
 		assertEquals(Integer.valueOf(48), alignmentForEnumConstants);
 		assertEquals(TabulationCharValue.SPACE, tabulationChar);
+	}
+
+	public void testEqualsAndHashcode() {
+		EqualsTester et = new EqualsTester();
+		et.addEqualityGroup(CodeFormatterPolicy.defaults(),
+				CodeFormatterPolicy.defaults(), new CodeFormatterPolicy());
+
+		CodeFormatterPolicy alignmentForEnumConstants = new CodeFormatterPolicy();
+		alignmentForEnumConstants.alignmentForEnumConstants = 100;
+		et.addEqualityGroup(alignmentForEnumConstants);
+
+		CodeFormatterPolicy lineSplit = new CodeFormatterPolicy();
+		lineSplit.lineSplit = 120;
+		et.addEqualityGroup(lineSplit);
+
+		CodeFormatterPolicy tabulationChar = new CodeFormatterPolicy();
+		tabulationChar.tabulationChar = TabulationCharValue.SPACE;
+		et.addEqualityGroup(tabulationChar);
+
+		et.testEquals();
 	}
 
 }
