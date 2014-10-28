@@ -1197,27 +1197,27 @@
       + fix edit subpackage removal: require prefix "editversion"
     + target all jars as classpath string
 
++ @bugfix: use effective test runtime deps for eclipse settings, now runtime dep of binary is not included
+  + tdd using EclipseProjectTest, finer grained than EclipseSettingsTest
+  + real test
+
 #################################################################
 = In progress
 #################################################################
 
-- @bugfix: use effective test runtime deps for eclipse settings, now runtime dep of binary is not included
-  + tdd using EclipseProjectTest, finer grained than EclipseSettingsTest
-  - real test
-
 - As @buildscriptauthor I want an utility for defining modules so that they are automatically added to an allSrcModules collection so I don't need to maintain such a collection myself
-  - take from real projects and polish for general use
+  + take from real projects and polish for general use
     + src module defs, auto collecting
     + default and custom settings
     + split to a plugin, since Jar is in a plugin (needed later:)
     + bin modules
-    - artifact helpers
+    + artifact helpers
       + main artifact jars
       + test artifact jars
       (- dep artifact collections postponed until more detail:
-         JavaModule already gives these)
+         JavaModule already gives some of these)
   + test plugin deps by implementing story about javamodules tutorial
-  - use in real project, replacing its own version of this
+  + use in real project, replacing its own version of this
   - use in iwant itself
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
