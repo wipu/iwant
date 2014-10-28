@@ -446,7 +446,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 					iwantApiModel, iwantApiWsdef, iwantCoreAnt,
 					iwantCoreDownload, iwantEntry3, iwantEclipseSettings,
 					iwantPluginAnt, iwantPluginFindbugs, iwantPluginGithub,
-					iwantPluginJacoco, iwantPluginPmd, iwantPluginWar, junit)
-			.end();
+					iwantPluginJacoco, iwantPluginJavamodules, iwantPluginPmd,
+					iwantPluginWar, junit).end();
 
 }

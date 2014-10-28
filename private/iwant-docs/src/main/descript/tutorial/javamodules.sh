@@ -25,4 +25,30 @@ out-was <<EOF
 Hello tutorial
 EOF
 
+p "Next we will use an optional convenience class for easier definition of modules."
+
+p "First we'll enable the needed plugin and refresh eclipse settings."
+wsdefdef-edit javamodules
+cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective"
+
+p "Now we will use the class JavaModule to define more modules and utilize some convenience functionality of it."
+
+wsdef-edit javamodules
+
+p "We write some code to the new module"
+cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective"
+mkdir -p example-helloutil/src/{main,test}/java/com/example/helloutil
+module-edit helloutil src/test/java first HelloUtilTest
+module-edit helloutil src/main/java first HelloUtil
+module-edit hello src/main/java useutil HelloMain
+
+p "Now we can get all our classes as a classpath string."
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/all-as-cp/as-path | xargs cat"
+
+p "Let's use the classpath to run the application again."
+cmd 'java -cp $(as-iwant-tutorial-developer/with/bash/iwant/target/all-as-cp/as-path | xargs cat) com.example.hello.HelloMain "same tutorial"'
+out-was <<EOF
+Hello same tutorial
+EOF
+
 }

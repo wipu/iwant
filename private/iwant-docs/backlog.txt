@@ -1188,6 +1188,15 @@
   + make dep collection test runtime instead of compile time
   + fix dep refresh to use same collection
 
++ As @buildscriptauthor I want a tutorial for defining java modules so I know how to do it easily
+  + descript
+    + define modules first on low level
+    + generate eclipse settings
+    + create code, target from main classes
+    + define modules using JavaModules from the plugin
+      + fix edit subpackage removal: require prefix "editversion"
+    + target all jars as classpath string
+
 #################################################################
 = In progress
 #################################################################
@@ -1203,17 +1212,9 @@
       + test artifact jars
       (- dep artifact collections postponed until more detail:
          JavaModule already gives these)
-  - test plugin deps by implementing story about javamodules tutorial
+  + test plugin deps by implementing story about javamodules tutorial
   - use in real project, replacing its own version of this
   - use in iwant itself
-
-- As @buildscriptauthor I want a tutorial for defining java modules so I know how to do it easily
-  - descript
-    + define modules first on low level
-    + generate eclipse settings
-    + create code, target from main classes
-    - define modules using JavaModules from the plugin
-    - target list of jars
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
   + @bugfix: copy missing files (resources)

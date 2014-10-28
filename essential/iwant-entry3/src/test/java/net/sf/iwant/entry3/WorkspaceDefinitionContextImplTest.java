@@ -148,4 +148,13 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				mods.toString());
 	}
 
+	public void testIwantPluginJavamodulesWithDependenciesContainsCorrectModules() {
+		Set<JavaModule> mods = ctx.iwantPlugin().javamodules()
+				.withDependencies();
+
+		assertEquals("[iwant-plugin-javamodules, iwant-api-1, iwant-api-2,"
+				+ " iwant-plugin-ant, ant-1.7.1.jar,"
+				+ " ant-launcher-1.7.1.jar]", mods.toString());
+	}
+
 }

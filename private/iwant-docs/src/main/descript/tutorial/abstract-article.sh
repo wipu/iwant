@@ -28,10 +28,10 @@ wsdefdef-edit() {
   def-edit wsdefdef "$NAME" WorkspaceProvider
 }
 
+# TODO remove arg NAME
 without-subpackage() {
   local NAME=$1
-  sed "s:\.$NAME\.:.:g" |
-  sed "s:\.$NAME;:;:g"
+  sed "s:\.editversion[a-zA-Z0-9]*::g"
 }
 
 module-edit() {
@@ -40,7 +40,7 @@ module-edit() {
   local NAME=$3
   local CLASS=$4
   log "module-edit $MODULE $SRCDIR $NAME $CLASS"
-  cat "$IWANT_TUTORIAL_WSDEF_SRC/com/example/$MODULE/$NAME/${CLASS}.java" |
+  cat "$IWANT_TUTORIAL_WSDEF_SRC/com/example/$MODULE/editversion$NAME/${CLASS}.java" |
     without-subpackage "$NAME" |
     edit example-$MODULE/${SRCDIR}/com/example/$MODULE/${CLASS}.java "$MODULE-$NAME"
 }
@@ -50,7 +50,7 @@ def-edit() {
   local NAME=$2
   local CLASS=$3
   log "def-edit $TYPE $NAME $CLASS"
-  cat "$IWANT_TUTORIAL_WSDEF_SRC/com/example/$TYPE/$NAME/${CLASS}.java" |
+  cat "$IWANT_TUTORIAL_WSDEF_SRC/com/example/$TYPE/editversion$NAME/${CLASS}.java" |
     without-subpackage "$NAME" |
     edit as-iwant-tutorial-developer/i-have/${TYPE}/src/main/java/com/example/$TYPE/${CLASS}.java "$TYPE-$NAME"
 }
