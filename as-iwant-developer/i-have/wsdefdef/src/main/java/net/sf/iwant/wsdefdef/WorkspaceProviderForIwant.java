@@ -16,6 +16,7 @@ public class WorkspaceProviderForIwant implements IwantWorkspaceProvider {
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
 				.mainDeps(ctx.iwantPlugin().findbugs().withDependencies())
 				.mainDeps(ctx.iwantPlugin().jacoco().withDependencies())
+				.mainDeps(ctx.iwantPlugin().javamodules().withDependencies())
 				.mainDeps(commonsIo()).end();
 	}
 
