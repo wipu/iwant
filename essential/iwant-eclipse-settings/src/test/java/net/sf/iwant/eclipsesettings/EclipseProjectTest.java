@@ -12,6 +12,7 @@ import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
+import net.sf.iwant.apimocks.TargetMock;
 
 public class EclipseProjectTest extends IwantTestCase {
 
@@ -121,8 +122,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
 		assertEquals(
-				"[        <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/main-util\"/>\n"
-						+ ",         <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/test-util\"/>\n"
+				"[        <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/test-util\"/>\n"
+						+ ",         <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/main-util\"/>\n"
 						+ "]", dotClasspath.deps().toString());
 	}
 
@@ -171,6 +172,25 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals(
 				"[        <classpathentry kind=\"lib\" path=\"/libs/util.jar\" sourcepath=\"/libs/util-src.zip\"/>\n"
 						+ "]", dotClasspath.deps().toString());
+	}
+
+	public void testDotClasspathIncludesRuntimeDepOfTestRuntimeBinaryDep() {
+		JavaBinModule depOfBinDep = JavaBinModule.providing(
+				new TargetMock("depOfBinDep.jar")).end();
+		JavaBinModule binDep = JavaBinModule
+				.providing(new TargetMock("binDep.jar"))
+				.runtimeDeps(depOfBinDep).end();
+		JavaSrcModule module = JavaSrcModule.with().name("simple")
+				.mainJava("src").testRuntimeDeps(binDep).end();
+		EclipseProject project = new EclipseProject(module, ctx);
+
+		DotClasspath dotClasspath = project.eclipseDotClasspath();
+
+		assertEquals("[        <classpathentry kind=\"lib\" path=\"" + cached
+				+ "/binDep.jar\"/>\n"
+				+ ",         <classpathentry kind=\"lib\" path=\"" + cached
+				+ "/depOfBinDep.jar\"/>\n" + "]", dotClasspath.deps()
+				.toString());
 	}
 
 	// code generation

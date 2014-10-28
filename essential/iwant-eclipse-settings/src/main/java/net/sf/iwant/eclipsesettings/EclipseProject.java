@@ -54,10 +54,8 @@ public class EclipseProject {
 
 	static Set<JavaModule> dependenciesOf(JavaModule module) {
 		Set<JavaModule> deps = new LinkedHashSet<JavaModule>();
-		deps.addAll(module.mainDepsForCompilation());
-		deps.addAll(module.testDepsForCompilationExcludingMainDeps());
-		deps.addAll(module.mainDepsForRunOnly());
-		deps.addAll(module.testDepsForRunOnlyExcludingMainDeps());
+		deps.addAll(module.effectivePathForTestRuntime());
+		deps.remove(module);
 		return deps;
 	}
 

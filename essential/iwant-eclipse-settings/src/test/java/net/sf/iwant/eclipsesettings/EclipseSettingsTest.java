@@ -188,12 +188,12 @@ public class EclipseSettingsTest extends IwantTestCase {
 
 		assertEquals(1, seCtx.targetsWantedAsPath().size());
 		assertEquals("Concatenated {\n"
+				+ "path-of:testUtilWithSources\nstring:'\n'\n"
+				+ "path-of:testUtilWithSources-src\nstring:'\n'\n"
 				+ "path-of:binWithoutSources\nstring:'\n'\n"
 				+ "path-of:binWithSources\nstring:'\n'\n"
-				+ "path-of:binWithSources-src\nstring:'\n'\n"
-				+ "path-of:testUtilWithSources\nstring:'\n'\n"
-				+ "path-of:testUtilWithSources-src\nstring:'\n'\n" + "}\n",
-				seCtx.targetsWantedAsPath().get(0).contentDescriptor());
+				+ "path-of:binWithSources-src\nstring:'\n'\n" + "}\n", seCtx
+				.targetsWantedAsPath().get(0).contentDescriptor());
 	}
 
 	public void testClasspathIsGeneratedButWithWarningIfRefreshOfDepsFails() {
