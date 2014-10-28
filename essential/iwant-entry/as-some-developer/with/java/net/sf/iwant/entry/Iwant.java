@@ -511,8 +511,8 @@ public class Iwant {
 						+ catchPrintsAndSystemExit, "hideIwantClasses="
 						+ hideIwantClasses, "classLocations: " + classLocations);
 		ClassLoader classLoader = classLoader(hideIwantClasses, classLocations);
-		Class<?> helloClass = classLoader.loadClass(className);
-		Method mainMethod = helloClass.getMethod("main", String[].class);
+		Class<?> mainClass = classLoader.loadClass(className);
+		Method mainMethod = mainClass.getMethod("main", String[].class);
 
 		Object[] invocationArgs = { args };
 
