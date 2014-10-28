@@ -1,9 +1,12 @@
-package net.sf.iwant.api.javamodules;
+package net.sf.iwant.plugin.javamodules;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
 
+import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
+import net.sf.iwant.api.javamodules.JavaCompliance;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 
 import org.junit.Test;

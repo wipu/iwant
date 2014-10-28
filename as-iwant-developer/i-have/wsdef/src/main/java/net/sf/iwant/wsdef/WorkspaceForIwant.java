@@ -87,8 +87,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 				iwantExampleWsdef, iwantIwantWsrootFinder, iwantMockWsroot(),
 				iwantPlanner, iwantPlannerApi, iwantPlannerMocks,
 				iwantPluginAnt, iwantPluginFindbugs, iwantPluginGithub,
-				iwantPluginJacoco, iwantPluginPmd, iwantPluginWar,
-				iwantTestarea, iwantTestresources, iwantTutorialWsdefs));
+				iwantPluginJacoco, iwantPluginJavamodules, iwantPluginPmd,
+				iwantPluginWar, iwantTestarea, iwantTestresources,
+				iwantTutorialWsdefs));
 	}
 
 	private static SortedSet<JavaSrcModule> modulesForCoverage() {
@@ -417,6 +418,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 					iwantEntry3, iwantPluginAnt)
 			.testDeps(junit, iwantApimocks, iwantEntry, iwantEmbedded,
 					iwantTestarea).end();
+
+	private static JavaSrcModule iwantPluginJavamodules = optionalModule(
+			"plugin-javamodules").mainDeps(iwantApiJavamodules, iwantApiModel)
+			.testDeps(junit).end();
 
 	// TODO don't depend directly on asm, jaxen: pmd depends on them
 	private static JavaSrcModule iwantPluginPmd = optionalModule("plugin-pmd")

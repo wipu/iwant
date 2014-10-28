@@ -1196,12 +1196,22 @@
   - take from real projects and polish for general use
     + src module defs, auto collecting
     + default and custom settings
+    + split to a plugin, since Jar is in a plugin (needed later:)
     - bin modules
     - artifact helpers
       - main artifact jars
       - dep artifact collections
+  - test plugin deps by implementing story about javamodules tutorial
   - use in real project, replacing its own version of this
   - use in iwant itself
+
+- As @buildscriptauthor I want a tutorial for defining java modules so I know how to do it easily
+  - descript
+    - define modules first on low level
+    - generate eclipse settings
+    - create code, target from main classes
+    - define modules using JavaModules from the plugin
+    - target list of jars
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
   + @bugfix: copy missing files (resources)
@@ -1288,16 +1298,6 @@
 
 - @epic As @buildscriptauthor I want external dependencies to handle their dependencies automatically so I don't need to define them
   * example: jacoco distribution depends on a certain version of asm
-
-- As @buildscriptauthor I want a tutorial for defining java modules so I know how to do it easily
-  - descript
-    - define modules
-      - "autolisting module def" used in some projects
-    - generate eclipse settings
-    - create code
-    - define list of jars
-      - publish "helper"
-    - want jars in tutorial
 
 - As @buildscriptauthor I want a tutorial for defining a jacoco coverage report so I know how to do it easily 
 

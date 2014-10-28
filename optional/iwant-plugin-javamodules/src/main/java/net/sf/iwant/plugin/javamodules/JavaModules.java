@@ -1,8 +1,10 @@
-package net.sf.iwant.api.javamodules;
+package net.sf.iwant.plugin.javamodules;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import net.sf.iwant.api.javamodules.JavaCompliance;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 
 public abstract class JavaModules {
