@@ -420,7 +420,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 					iwantTestarea).end();
 
 	private static JavaSrcModule iwantPluginJavamodules = optionalModule(
-			"plugin-javamodules").mainDeps(iwantApiJavamodules, iwantApiModel)
+			"plugin-javamodules")
+			.mainDeps(iwantApiJavamodules, iwantApiModel, iwantCoreDownload)
 			.testDeps(junit).end();
 
 	// TODO don't depend directly on asm, jaxen: pmd depends on them

@@ -5,9 +5,11 @@ import static org.junit.Assert.assertEquals;
 import java.util.Iterator;
 
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
+import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaCompliance;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import net.sf.iwant.core.download.Downloaded;
 
 import org.junit.Test;
 
@@ -92,6 +94,22 @@ public class JavaModulesTest {
 				m.mod.codeFormatterPolicy().lineSplit);
 		assertEquals("[src]", m.mod.mainJavas().toString());
 		assertEquals("[]", m.mod.testJavas().toString());
+	}
+
+	@Test
+	public void binModuleAsDep() {
+		class Mods extends JavaModules {
+			JavaBinModule bin = binModule("commons-io", "commons-io", "2.4");
+			JavaSrcModule src = srcModule("mod").mainDeps(bin).end();
+		}
+		Mods m = new Mods();
+
+		assertEquals("[commons-io-2.4.jar]", m.src.mainDepsForCompilation()
+				.toString());
+		Downloaded binArtifact = (Downloaded) m.bin.mainArtifact();
+		assertEquals("http://repo1.maven.org/maven2/commons-io/"
+				+ "commons-io/2.4/commons-io-2.4.jar", binArtifact.url()
+				.toString());
 	}
 
 }

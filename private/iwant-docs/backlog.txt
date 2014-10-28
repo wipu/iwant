@@ -1197,7 +1197,7 @@
     + src module defs, auto collecting
     + default and custom settings
     + split to a plugin, since Jar is in a plugin (needed later:)
-    - bin modules
+    + bin modules
     - artifact helpers
       - main artifact jars
       - dep artifact collections

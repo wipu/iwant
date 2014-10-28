@@ -3,9 +3,13 @@ package net.sf.iwant.plugin.javamodules;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaCompliance;
+import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.core.download.FromRepository;
 
 public abstract class JavaModules {
 
@@ -40,6 +44,19 @@ public abstract class JavaModules {
 			allSrcModules.add(mod);
 			return mod;
 		}
+	}
+
+	protected JavaBinModule binModule(String group, String name,
+			String version, JavaModule... runtimeDeps) {
+		Path jar = FromRepository.repo1MavenOrg().group(group).name(name)
+				.version(version);
+		return binModule(jar, runtimeDeps);
+	}
+
+	public static JavaBinModule binModule(Path mainArtifact,
+			JavaModule... runtimeDeps) {
+		return JavaBinModule.providing(mainArtifact).runtimeDeps(runtimeDeps)
+				.end();
 	}
 
 }
