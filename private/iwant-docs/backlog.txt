@@ -1201,16 +1201,17 @@
     - artifact helpers
       + main artifact jars
       + test artifact jars
-      - dep artifact collections
+      (- dep artifact collections postponed until more detail:
+         JavaModule already gives these)
   - test plugin deps by implementing story about javamodules tutorial
   - use in real project, replacing its own version of this
   - use in iwant itself
 
 - As @buildscriptauthor I want a tutorial for defining java modules so I know how to do it easily
   - descript
-    - define modules first on low level
-    - generate eclipse settings
-    - create code, target from main classes
+    + define modules first on low level
+    + generate eclipse settings
+    + create code, target from main classes
     - define modules using JavaModules from the plugin
     - target list of jars
 

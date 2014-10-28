@@ -45,6 +45,7 @@ public class Tutorial extends Target {
 				"Using a script/program define target content"));
 		pages.add(pageAboutUsingWsdef("using-iwant-plugin-ant",
 				"Using an iwant plugin (for untarring)"));
+		pages.add(pageAboutUsingWsdef("javamodules", "Defining Java modules"));
 		pages.add(pageAboutUsingWsdef("usingmoduleinbuild",
 				"Using a module of the workspace in the build"));
 		pages.add(pageAboutUsingWsdef("ws-symlink",
