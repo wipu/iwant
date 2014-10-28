@@ -163,4 +163,57 @@ public class JavaModulesTest {
 		// test only module has no main artifact
 	}
 
+	@Test
+	public void testArtifactsOfModules() {
+		class Mods extends JavaModules {
+			JavaBinModule bin = binModule("commons-io", "commons-io", "2.4");
+			JavaSrcModule src = srcModule("mod").mainDeps(bin).end();
+			JavaSrcModule onlyMain = srcModule("only-main").noTestJava()
+					.mainDeps(src).end();
+			JavaSrcModule onlyTests = srcModule("only-tests").noMainJava()
+					.testDeps(onlyMain).end();
+		}
+		Mods m = new Mods();
+
+		List<Path> tas = JavaModules.testArtifactsOf(m.bin, m.src, m.onlyMain,
+				m.onlyTests);
+		assertEquals(2, tas.size());
+		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n"
+				+ "  src:mod/src/test/java\n"
+				+ "  res:mod/src/test/resources\n"
+				+ "  classes:mod-main-classes\n"
+				+ "  classes:commons-io-2.4.jar\n" + "  debug:true\n"
+				+ "  encoding:null\n" + "}", descr(tas.get(0)));
+		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n"
+				+ "  src:only-tests/src/test/java\n"
+				+ "  res:only-tests/src/test/resources\n"
+				+ "  classes:only-main-main-classes\n" + "  debug:true\n"
+				+ "  encoding:null\n" + "}", descr(tas.get(1)));
+		// bin and main only have no test artifact
+	}
+
+	@Test
+	public void testArtifactJarsOfModules() {
+		class Mods extends JavaModules {
+			JavaBinModule bin = binModule("commons-io", "commons-io", "2.4");
+			JavaSrcModule src = srcModule("mod").mainDeps(bin).end();
+			JavaSrcModule onlyMain = srcModule("only-main").noTestJava()
+					.mainDeps(src).end();
+			JavaSrcModule onlyTests = srcModule("only-tests").noMainJava()
+					.testDeps(onlyMain).end();
+		}
+		Mods m = new Mods();
+
+		List<Path> jars = JavaModules.testArtifactJarsOf(m.bin, m.src,
+				m.onlyMain, m.onlyTests);
+		assertEquals(2, jars.size());
+		assertEquals("net.sf.iwant.plugin.ant.Jar: {\n" + "  ingredients: {\n"
+				+ "    mod-test-classes\n" + "  }\n" + "}\n" + "",
+				descr(jars.get(0)));
+		assertEquals("net.sf.iwant.plugin.ant.Jar: {\n" + "  ingredients: {\n"
+				+ "    only-tests-test-classes\n" + "  }\n" + "}\n" + "",
+				descr(jars.get(1)));
+		// bin and main only have no test artifact
+	}
+
 }

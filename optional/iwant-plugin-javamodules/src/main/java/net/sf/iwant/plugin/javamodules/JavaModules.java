@@ -68,6 +68,10 @@ public abstract class JavaModules {
 		return mainArtifactsOf(Arrays.asList(modules));
 	}
 
+	public static List<Path> testArtifactsOf(JavaModule... modules) {
+		return testArtifactsOf(Arrays.asList(modules));
+	}
+
 	public static List<Path> mainArtifactsOf(
 			Collection<? extends JavaModule> modules) {
 		List<Path> artifacts = new ArrayList<Path>();
@@ -80,8 +84,28 @@ public abstract class JavaModules {
 		return artifacts;
 	}
 
+	public static List<Path> testArtifactsOf(
+			Collection<? extends JavaModule> modules) {
+		List<Path> artifacts = new ArrayList<Path>();
+		for (JavaModule module : modules) {
+			if (!(module instanceof JavaSrcModule)) {
+				continue;
+			}
+			JavaSrcModule srcModule = (JavaSrcModule) module;
+			Path artifact = srcModule.testArtifact();
+			if (artifact != null) {
+				artifacts.add(artifact);
+			}
+		}
+		return artifacts;
+	}
+
 	public static List<Path> mainArtifactJarsOf(JavaModule... modules) {
 		return mainArtifactJarsOf(Arrays.asList(modules));
+	}
+
+	public static List<Path> testArtifactJarsOf(JavaModule... modules) {
+		return testArtifactJarsOf(Arrays.asList(modules));
 	}
 
 	public static List<Path> mainArtifactJarsOf(
@@ -89,6 +113,18 @@ public abstract class JavaModules {
 		List<Path> jars = new ArrayList<Path>();
 		for (JavaModule module : modules) {
 			Path jar = mainJarOf(module);
+			if (jar != null) {
+				jars.add(jar);
+			}
+		}
+		return jars;
+	}
+
+	public static List<Path> testArtifactJarsOf(
+			Collection<? extends JavaModule> modules) {
+		List<Path> jars = new ArrayList<Path>();
+		for (JavaModule module : modules) {
+			Path jar = testJarOf(module);
 			if (jar != null) {
 				jars.add(jar);
 			}
@@ -106,6 +142,19 @@ public abstract class JavaModules {
 			return Jar.with().name(module.name() + ".jar")
 					.classes(module.mainArtifact()).end();
 		}
+	}
+
+	public static Path testJarOf(JavaModule module) {
+		if (!(module instanceof JavaSrcModule)) {
+			return null;
+		}
+		JavaSrcModule srcModule = (JavaSrcModule) module;
+		Path tests = srcModule.testArtifact();
+		if (tests == null) {
+			return null;
+		}
+		return Jar.with().name(srcModule.name() + "-tests.jar").classes(tests)
+				.end();
 	}
 
 }
