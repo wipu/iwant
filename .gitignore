@@ -6,9 +6,4 @@
 **/classes/
 /as-iwant-developer/with/bash/iwant/list-of/
 /as-iwant-developer/with/bash/iwant/target/
-/as-iwant-developer/.i-cached/.internal/*
-/as-iwant-developer/.i-cached/descriptor/*
-/as-iwant-developer/.i-cached/target/*
-/as-iwant-developer/.i-cached/temp/*
-/as-iwant-developer/.i-cached/wsdefdef-classes/*
-!/as-iwant-developer/.i-cached/target/local-website
+/as-iwant-developer/.i-cached/*
