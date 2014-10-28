@@ -3,17 +3,24 @@ package net.sf.iwant.plugin.javamodules;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
+import java.util.List;
 
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaCompliance;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Target;
 import net.sf.iwant.core.download.Downloaded;
 
 import org.junit.Test;
 
 public class JavaModulesTest {
+
+	private static String descr(Path path) {
+		return ((Target) path).contentDescriptor();
+	}
 
 	@Test
 	public void allSrcModulesWhenThereAreNone() {
@@ -110,6 +117,50 @@ public class JavaModulesTest {
 		assertEquals("http://repo1.maven.org/maven2/commons-io/"
 				+ "commons-io/2.4/commons-io-2.4.jar", binArtifact.url()
 				.toString());
+	}
+
+	@Test
+	public void mainArtifactsOfModules() {
+		class Mods extends JavaModules {
+			JavaBinModule bin = binModule("commons-io", "commons-io", "2.4");
+			JavaSrcModule src = srcModule("mod").mainDeps(bin).end();
+			JavaSrcModule onlyTests = srcModule("only-tests").noMainJava()
+					.testDeps(src).end();
+		}
+		Mods m = new Mods();
+
+		List<Path> mas = JavaModules.mainArtifactsOf(m.bin, m.src, m.onlyTests);
+		assertEquals(2, mas.size());
+		assertEquals(
+				"net.sf.iwant.core.download.Downloaded {\n"
+						+ "  url:http://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar\n"
+						+ "}\n" + "", descr(mas.get(0)));
+		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n"
+				+ "  src:mod/src/main/java\n"
+				+ "  res:mod/src/main/resources\n"
+				+ "  classes:commons-io-2.4.jar\n" + "  debug:true\n"
+				+ "  encoding:null\n" + "}", descr(mas.get(1)));
+		// test only module has no main artifact
+	}
+
+	@Test
+	public void mainArtifactJarsOfModules() {
+		class Mods extends JavaModules {
+			JavaBinModule bin = binModule("commons-io", "commons-io", "2.4");
+			JavaSrcModule src = srcModule("mod").mainDeps(bin).end();
+			JavaSrcModule onlyTests = srcModule("only-tests").noMainJava()
+					.testDeps(src).end();
+		}
+		Mods m = new Mods();
+
+		List<Path> jars = JavaModules.mainArtifactJarsOf(m.bin, m.src,
+				m.onlyTests);
+		assertEquals(2, jars.size());
+		assertEquals(descr(m.bin.mainArtifact()), descr(jars.get(0)));
+		assertEquals("net.sf.iwant.plugin.ant.Jar: {\n" + "  ingredients: {\n"
+				+ "    mod-main-classes\n" + "  }\n" + "}\n" + "",
+				descr(jars.get(1)));
+		// test only module has no main artifact
 	}
 
 }

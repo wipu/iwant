@@ -1199,7 +1199,8 @@
     + split to a plugin, since Jar is in a plugin (needed later:)
     + bin modules
     - artifact helpers
-      - main artifact jars
+      + main artifact jars
+      - test artifact jars
       - dep artifact collections
   - test plugin deps by implementing story about javamodules tutorial
   - use in real project, replacing its own version of this
