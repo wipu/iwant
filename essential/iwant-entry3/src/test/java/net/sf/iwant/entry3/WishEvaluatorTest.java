@@ -565,7 +565,7 @@ public class WishEvaluatorTest extends TestCase {
 				workerCount, wsdefdefJavaModule, wsdefJavaModule, wsdefCtx);
 
 		final int partCount = 20;
-		List<Target> parts = new ArrayList<Target>();
+		List<Target> parts = new ArrayList<>();
 		ConcatenatedBuilder listOfPartsSpex = Concatenated.named("listOfParts");
 		for (int i = 0; i < partCount; i++) {
 			ConcatenatedBuilder scriptContent = Concatenated.named("script-"
@@ -590,7 +590,7 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	public void testSideEffectDefinitionContextPassesIwantApiClasses() {
-		final AtomicReference<Set<? extends JavaModule>> fromCtx = new AtomicReference<Set<? extends JavaModule>>();
+		final AtomicReference<Set<? extends JavaModule>> fromCtx = new AtomicReference<>();
 		IwantWorkspace ws = new IwantWorkspace() {
 
 			@Override

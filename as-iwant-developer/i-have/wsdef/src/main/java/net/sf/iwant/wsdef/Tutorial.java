@@ -18,7 +18,7 @@ public class Tutorial extends Target {
 	private final Descripted bootstrappingDoc;
 	private final Descripted creatingWsdefDoc;
 	private final String namePrefix;
-	private final List<Descripted> pages = new ArrayList<Descripted>();
+	private final List<Descripted> pages = new ArrayList<>();
 	private final Path styleCss;
 
 	private Tutorial(String namePrefix, Descripted bootstrappingDoc) {
@@ -101,7 +101,7 @@ public class Tutorial extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.add(bootstrappingDoc);
 		ingredients.add(creatingWsdefDoc);
 		ingredients.add(styleCss);

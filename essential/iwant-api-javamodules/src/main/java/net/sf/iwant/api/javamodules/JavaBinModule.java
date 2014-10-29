@@ -109,8 +109,8 @@ public abstract class JavaBinModule extends JavaModule {
 
 		private String name;
 		private String src;
-		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<Class<? extends JavaModuleCharacteristic>>();
-		private final Set<JavaModule> runtimeDeps = new LinkedHashSet<JavaModule>();
+		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<>();
+		private final Set<JavaModule> runtimeDeps = new LinkedHashSet<>();
 		private JavaSrcModule libsModule;
 
 		public IwantBinModuleSpex(String name) {
@@ -199,8 +199,8 @@ public abstract class JavaBinModule extends JavaModule {
 
 		private final Path mainArtifact;
 		private final Path sources;
-		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<Class<? extends JavaModuleCharacteristic>>();
-		private final Set<JavaModule> runtimeDeps = new LinkedHashSet<JavaModule>();
+		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<>();
+		private final Set<JavaModule> runtimeDeps = new LinkedHashSet<>();
 
 		private PathProviderSpex(Path mainArtifact, Path sources) {
 			this.mainArtifact = mainArtifact;

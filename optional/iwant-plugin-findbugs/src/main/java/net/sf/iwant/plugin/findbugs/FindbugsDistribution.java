@@ -45,7 +45,7 @@ public class FindbugsDistribution extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.add(tarGz);
 		return ingredients;
 	}

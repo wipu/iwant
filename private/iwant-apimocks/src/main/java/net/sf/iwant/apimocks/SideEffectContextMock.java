@@ -17,7 +17,7 @@ public class SideEffectContextMock implements SideEffectContext {
 	private WsInfoMock wsInfo;
 	private File wsRoot;
 	private final TargetEvaluationContextMock evaluationCtx;
-	private final List<Target> targetsWantedAsPath = new ArrayList<Target>();
+	private final List<Target> targetsWantedAsPath = new ArrayList<>();
 	private File resultForTargetAsPath;
 	private RuntimeException failureForIwantAsPath;
 	private final ByteArrayOutputStream err = new ByteArrayOutputStream();

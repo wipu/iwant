@@ -6,6 +6,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaCompliance;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
@@ -17,12 +18,12 @@ public class IwantModules extends JavaModules {
 
 	@Override
 	protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {
-		return m.mainJava("src/main/java").testJava("src/test/java");
+		return m.javaCompliance(JavaCompliance.JAVA_1_7)
+				.mainJava("src/main/java").testJava("src/test/java");
 	}
 
 	SortedSet<JavaSrcModule> modulesForCoverage() {
-		SortedSet<JavaSrcModule> mods = new TreeSet<JavaSrcModule>(
-				allSrcModules());
+		SortedSet<JavaSrcModule> mods = new TreeSet<>(allSrcModules());
 		mods.remove(iwantExampleWsdef);
 		mods.remove(iwantMockWsroot);
 		mods.remove(iwantTutorialWsdefs);

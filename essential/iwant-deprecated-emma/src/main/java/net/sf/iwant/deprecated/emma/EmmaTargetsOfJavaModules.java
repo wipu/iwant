@@ -25,9 +25,9 @@ public class EmmaTargetsOfJavaModules {
 	private final List<Path> antJars;
 	private final SortedSet<JavaModule> modules;
 	private final Path filter;
-	private final Map<String, EmmaInstrumentation> instrsByName = new HashMap<String, EmmaInstrumentation>();
-	private final Map<String, EmmaCoverage> coveragesByName = new HashMap<String, EmmaCoverage>();
-	private final SortedSet<String> modulesNotToInstrument = new TreeSet<String>();
+	private final Map<String, EmmaInstrumentation> instrsByName = new HashMap<>();
+	private final Map<String, EmmaCoverage> coveragesByName = new HashMap<>();
+	private final SortedSet<String> modulesNotToInstrument = new TreeSet<>();
 
 	private EmmaTargetsOfJavaModules(Path emma, List<Path> antJars,
 			Path filter, SortedSet<JavaModule> modules,
@@ -48,10 +48,10 @@ public class EmmaTargetsOfJavaModules {
 
 	public static class EmmaTargetsOfJavaModulesSpex {
 
-		private final SortedSet<JavaModule> modules = new TreeSet<JavaModule>();
-		private final SortedSet<JavaModule> modulesNotToInstrument = new TreeSet<JavaModule>();
+		private final SortedSet<JavaModule> modules = new TreeSet<>();
+		private final SortedSet<JavaModule> modulesNotToInstrument = new TreeSet<>();
 		private Path emma;
-		private final List<Path> antJars = new ArrayList<Path>();
+		private final List<Path> antJars = new ArrayList<>();
 		private Path filter;
 
 		public EmmaTargetsOfJavaModulesSpex emma(Path emma) {
@@ -169,8 +169,8 @@ public class EmmaTargetsOfJavaModules {
 	}
 
 	public EmmaReport emmaReport(String name) {
-		Set<EmmaInstrumentation> instrs = new LinkedHashSet<EmmaInstrumentation>();
-		Set<EmmaCoverage> coverages = new LinkedHashSet<EmmaCoverage>();
+		Set<EmmaInstrumentation> instrs = new LinkedHashSet<>();
+		Set<EmmaCoverage> coverages = new LinkedHashSet<>();
 		for (JavaModule mod : modules) {
 			EmmaInstrumentation instr = emmaInstrumentationOf(mod);
 			if (instr != null) {

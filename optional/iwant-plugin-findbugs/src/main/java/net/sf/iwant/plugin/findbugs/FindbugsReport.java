@@ -51,8 +51,8 @@ public class FindbugsReport extends Target {
 	public static class FindbugsReportSpex {
 
 		private String name;
-		private final List<JavaClassesAndSources> classesToAnalyze = new ArrayList<JavaClassesAndSources>();
-		private final List<Path> auxClasses = new ArrayList<Path>();
+		private final List<JavaClassesAndSources> classesToAnalyze = new ArrayList<>();
+		private final List<Path> auxClasses = new ArrayList<>();
 		private FindbugsDistribution findbugs;
 		private Path antJar;
 		private Path antLauncherJar;
@@ -137,7 +137,7 @@ public class FindbugsReport extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.add(findbugs);
 		ingredients.add(antJar);
 		ingredients.add(antLauncherJar);
@@ -186,7 +186,7 @@ public class FindbugsReport extends Target {
 		File buildXml = new File(dest, "build.xml");
 		FileUtils.writeStringToFile(buildXml, antScript(ctx));
 
-		List<File> cachedAnts = new ArrayList<File>();
+		List<File> cachedAnts = new ArrayList<>();
 		cachedAnts.add(ctx.cached(antJar));
 		cachedAnts.add(ctx.cached(antLauncherJar));
 

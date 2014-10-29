@@ -1227,8 +1227,8 @@
 #################################################################
 
 - As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
-  - use the -source javac option
-  - fix all diamond warnings
+  + use the -source javac option
+  + fix all diamond warnings
   - polish: JavaSrcModule passes compliance to JavaClasses
 
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma

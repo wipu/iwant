@@ -27,7 +27,7 @@ public class EclipseSettingsWriter {
 
 	public static class EclipseSettingsWriterSpex {
 
-		private final Set<JavaModule> modules = new LinkedHashSet<JavaModule>();
+		private final Set<JavaModule> modules = new LinkedHashSet<>();
 		private SideEffectContext ctx;
 
 		public EclipseSettingsWriterSpex modules(JavaModule... modules) {

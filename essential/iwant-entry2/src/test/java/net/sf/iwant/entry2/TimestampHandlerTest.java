@@ -35,7 +35,7 @@ public class TimestampHandlerTest extends TestCase {
 	// refresh is needed
 
 	public void testRefreshWhenCachedTargetWithNoSourcesIsMissing() {
-		SortedSet<File> sources = new TreeSet<File>();
+		SortedSet<File> sources = new TreeSet<>();
 		File cachedTarget = fileIsMissing("cachedTarget");
 		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr", "", 1);
 
@@ -50,7 +50,7 @@ public class TimestampHandlerTest extends TestCase {
 	 * its caller.
 	 */
 	public void testExistingSourceDescriptorIsDeletedIfFileNeedsRefresh() {
-		SortedSet<File> sources = new TreeSet<File>();
+		SortedSet<File> sources = new TreeSet<>();
 		File cachedTarget = fileIsMissing("cachedTarget");
 		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr", "", 1);
 
@@ -63,7 +63,7 @@ public class TimestampHandlerTest extends TestCase {
 	}
 
 	public void testFileNeedsRefreshWhenSrcDescriptorOfNoSourcesIsMissing() {
-		SortedSet<File> sources = new TreeSet<File>();
+		SortedSet<File> sources = new TreeSet<>();
 		File cachedTarget = fileHasContentAndTimestamp("cachedTarget",
 				"cached content", 1);
 		File sourceDescriptor = fileIsMissing("srcDescr");
@@ -77,7 +77,7 @@ public class TimestampHandlerTest extends TestCase {
 	public void testFileNeedsRefreshWhenSrcDescriptorContentDiffersFromCurrentSources() {
 		File src1 = fileHasContentAndTimestamp("src1", "whatever", 1);
 		File src2 = fileHasContentAndTimestamp("src2", "whatever", 1);
-		SortedSet<File> sources = new TreeSet<File>(Arrays.asList(src1, src2));
+		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
 		File cachedTarget = fileHasContentAndTimestamp("cachedTarget",
 				"cached content", 2);
 		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr",
@@ -92,7 +92,7 @@ public class TimestampHandlerTest extends TestCase {
 	public void testFileNeedsRefreshWhenOneSourceFileIsNewerThanSourceDescriptor() {
 		File src1 = fileHasContentAndTimestamp("src1", "whatever", 11);
 		File src2 = fileHasContentAndTimestamp("src2", "whatever", 1);
-		SortedSet<File> sources = new TreeSet<File>(Arrays.asList(src1, src2));
+		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
 		File cachedTarget = fileHasContentAndTimestamp("cachedTarget",
 				"cached content", 2);
 		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr", src1
@@ -109,7 +109,7 @@ public class TimestampHandlerTest extends TestCase {
 	public void testExistingCachedFileThatDoesNotNeedRefresh() {
 		File src1 = fileHasContentAndTimestamp("src1", "whatever", 1);
 		File src2 = fileHasContentAndTimestamp("src2", "whatever", 1);
-		SortedSet<File> sources = new TreeSet<File>(Arrays.asList(src1, src2));
+		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
 		File cachedTarget = fileHasContentAndTimestamp("cachedTarget",
 				"cached content", 2);
 		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr", src1
@@ -127,7 +127,7 @@ public class TimestampHandlerTest extends TestCase {
 	public void testNullCachedFileThatDoesNotNeedRefresh() {
 		File src1 = fileHasContentAndTimestamp("src1", "whatever", 1);
 		File src2 = fileHasContentAndTimestamp("src2", "whatever", 1);
-		SortedSet<File> sources = new TreeSet<File>(Arrays.asList(src1, src2));
+		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
 		File cachedTarget = null;
 		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr", src1
 				+ "\n" + src2 + "\n", 2);
@@ -143,7 +143,7 @@ public class TimestampHandlerTest extends TestCase {
 	public void testMarkFreshWritesSortedSetOfSourceNamesToSourceDescriptor() {
 		File src1 = fileHasContentAndTimestamp("src1", "whatever", 1);
 		File src2 = fileHasContentAndTimestamp("src2", "whatever", 1);
-		SortedSet<File> sources = new TreeSet<File>(Arrays.asList(src1, src2));
+		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
 		File cachedTarget = fileHasContentAndTimestamp("cachedTarget",
 				"cached content", 2);
 		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr",

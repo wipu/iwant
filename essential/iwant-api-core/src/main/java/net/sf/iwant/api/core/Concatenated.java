@@ -31,7 +31,7 @@ public class Concatenated extends Target {
 
 	public static class ConcatenatedBuilder {
 
-		private final List<Fragment> fragments = new ArrayList<Fragment>();
+		private final List<Fragment> fragments = new ArrayList<>();
 		private final String name;
 
 		public ConcatenatedBuilder(String name) {
@@ -196,7 +196,7 @@ public class Concatenated extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		for (Fragment fragment : fragments) {
 			ingredients.addAll(fragment.ingredients());
 		}

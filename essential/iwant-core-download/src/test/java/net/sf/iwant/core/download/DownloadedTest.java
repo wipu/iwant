@@ -111,8 +111,8 @@ public class DownloadedTest extends TestCase {
 
 	private static class IwantMock extends Iwant {
 
-		private final Map<URL, File> executedDownloads = new LinkedHashMap<URL, File>();
-		private final Map<URL, String> contentToDownload = new LinkedHashMap<URL, String>();
+		private final Map<URL, File> executedDownloads = new LinkedHashMap<>();
+		private final Map<URL, String> contentToDownload = new LinkedHashMap<>();
 
 		IwantMock() {
 			super(null);

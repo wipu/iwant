@@ -86,7 +86,7 @@ public class War extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.add(basedir);
 		ingredients.add(webXmlOrWebXmlDirectory);
 		ingredients.addAll(libs);
@@ -147,10 +147,10 @@ public class War extends Target {
 		private String name;
 		private Path basedir;
 		private Path webXmlOrWebXmlDirectory;
-		private final List<String> excludes = new ArrayList<String>();
-		private final List<Path> libs = new ArrayList<Path>();
-		private final List<Path> classeses = new ArrayList<Path>();
-		private final List<Path> resourceDirectories = new ArrayList<Path>();
+		private final List<String> excludes = new ArrayList<>();
+		private final List<Path> libs = new ArrayList<>();
+		private final List<Path> classeses = new ArrayList<>();
+		private final List<Path> resourceDirectories = new ArrayList<>();
 		private String webXmlName;
 
 		public WarSpex name(String name) {

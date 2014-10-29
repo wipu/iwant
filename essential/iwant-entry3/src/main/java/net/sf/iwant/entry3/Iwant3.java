@@ -70,7 +70,7 @@ public class Iwant3 {
 	private Set<JavaModule> iwantApiModules(SortedSet<File> apiClassLocations)
 			throws IOException {
 		Path combinedIwantSources = combinedIwantSources();
-		SortedSet<JavaModule> iwantApiModules = new TreeSet<JavaModule>();
+		SortedSet<JavaModule> iwantApiModules = new TreeSet<>();
 		for (File apiClasses : apiClassLocations) {
 			iwantApiModules
 					.add(JavaBinModule.providing(
@@ -104,7 +104,7 @@ public class Iwant3 {
 		Set<JavaModule> iwantApiModules = iwantApiModules(apiClassLocations);
 
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
-		iwant.compiledClasses(wsDefdefClasses, srcFiles, new ArrayList<File>(
+		iwant.compiledClasses(wsDefdefClasses, srcFiles, new ArrayList<>(
 				apiClassLocations), Iwant.bootstrappingJavacOptions(), null);
 
 		List<File> runtimeClasses = Arrays.asList(wsDefdefClasses);
@@ -233,7 +233,7 @@ public class Iwant3 {
 	static List<File> wsdefRuntimeClasspath(TargetEvaluationContext ctx,
 			JavaClasses wsdDefClassesTarget, File wsDefdefClasses,
 			File wsDefClasses) {
-		List<File> cp = new ArrayList<File>();
+		List<File> cp = new ArrayList<>();
 		cp.add(wsDefdefClasses);
 		cp.add(wsDefClasses);
 		for (Path extra : wsdDefClassesTarget.classLocations()) {
@@ -261,7 +261,7 @@ public class Iwant3 {
 
 	private static SortedSet<File> iwantApiClassLocations()
 			throws URISyntaxException {
-		SortedSet<File> apiClassLocations = new TreeSet<File>();
+		SortedSet<File> apiClassLocations = new TreeSet<>();
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
 				+ "api/core/HelloTarget.class"));
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"

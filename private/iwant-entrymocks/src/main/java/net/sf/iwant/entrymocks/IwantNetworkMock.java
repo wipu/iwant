@@ -17,7 +17,7 @@ import net.sf.iwant.testarea.TestArea;
 public class IwantNetworkMock implements IwantNetwork {
 
 	private final TestArea testArea;
-	private Map<UnmodifiableSource<?>, File> cachedUnmodifiables = new HashMap<UnmodifiableSource<?>, File>();
+	private Map<UnmodifiableSource<?>, File> cachedUnmodifiables = new HashMap<>();
 	private URL svnkitUrl;
 	private boolean shallNotFindSystemJavaCompiler;
 

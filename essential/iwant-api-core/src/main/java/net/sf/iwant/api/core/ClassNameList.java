@@ -89,7 +89,7 @@ public class ClassNameList extends Target {
 	}
 
 	private List<String> fileNamesUnder(File dir, String parentName) {
-		List<String> classNames = new ArrayList<String>();
+		List<String> classNames = new ArrayList<>();
 		File[] children = dir.listFiles();
 		Arrays.sort(children);
 		for (File child : children) {

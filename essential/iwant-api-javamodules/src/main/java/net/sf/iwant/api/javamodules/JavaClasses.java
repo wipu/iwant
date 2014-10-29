@@ -33,7 +33,7 @@ public class JavaClasses extends Target {
 		this.debug = debug;
 		this.sourceVersion = sourceVersion;
 		this.encoding = encoding;
-		this.ingredients = new ArrayList<Path>();
+		this.ingredients = new ArrayList<>();
 		this.ingredients.addAll(srcDirs);
 		this.ingredients.addAll(resourceDirs);
 		this.ingredients.addAll(classLocations);
@@ -46,9 +46,9 @@ public class JavaClasses extends Target {
 	public static class JavaClassesSpex {
 
 		private String name;
-		private final List<Path> srcDirs = new ArrayList<Path>();
-		private final List<Path> resourceDirs = new ArrayList<Path>();
-		private final List<Path> classLocations = new ArrayList<Path>();
+		private final List<Path> srcDirs = new ArrayList<>();
+		private final List<Path> resourceDirs = new ArrayList<>();
+		private final List<Path> classLocations = new ArrayList<>();
 		private boolean debug;
 		private Charset encoding;
 		private JavaCompliance sourceVersion;
@@ -145,7 +145,7 @@ public class JavaClasses extends Target {
 	}
 
 	private List<String> javacOptions() {
-		List<String> javacOptions = new ArrayList<String>();
+		List<String> javacOptions = new ArrayList<>();
 		javacOptions.addAll(Iwant.recommendedJavacWarningOptions());
 		if (sourceVersion != null) {
 			javacOptions.add("-source");
@@ -160,7 +160,7 @@ public class JavaClasses extends Target {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.cached(this);
-		List<File> javaFiles = new ArrayList<File>();
+		List<File> javaFiles = new ArrayList<>();
 		for (Path srcDir : srcDirs) {
 			javaFiles.addAll(javaFilesUnder(ctx.cached(srcDir)));
 		}
@@ -171,7 +171,7 @@ public class JavaClasses extends Target {
 			return;
 		}
 		if (!javaFiles.isEmpty()) {
-			List<File> classLocationDirs = new ArrayList<File>();
+			List<File> classLocationDirs = new ArrayList<>();
 			for (Path classLocation : classLocations) {
 				File classLocationDir = ctx.cached(classLocation);
 				classLocationDirs.add(classLocationDir);
@@ -197,7 +197,7 @@ public class JavaClasses extends Target {
 			throw new IllegalArgumentException("Source is not a directory: "
 					+ dir);
 		}
-		List<File> srcFiles = new ArrayList<File>();
+		List<File> srcFiles = new ArrayList<>();
 		File[] files = dir.listFiles();
 		Arrays.sort(files);
 		for (File file : files) {

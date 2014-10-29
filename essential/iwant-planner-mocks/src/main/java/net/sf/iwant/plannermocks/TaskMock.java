@@ -49,7 +49,7 @@ public class TaskMock implements Task {
 
 		private TaskDirtiness dirtiness;
 		private final String name;
-		private List<ResourcePool> resourcePools = new ArrayList<ResourcePool>();
+		private List<ResourcePool> resourcePools = new ArrayList<>();
 		private boolean supportsParallelism = true;
 
 		public TaskMockSpex(String name) {

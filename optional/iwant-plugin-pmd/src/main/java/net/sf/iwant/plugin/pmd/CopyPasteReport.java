@@ -35,7 +35,7 @@ public class CopyPasteReport extends Target {
 	public static class CopyPasteReportSpex {
 
 		private String name;
-		private final List<Path> srcDirectories = new ArrayList<Path>();
+		private final List<Path> srcDirectories = new ArrayList<>();
 		private int minimumTokenCount = 100;
 
 		public CopyPasteReportSpex name(String name) {
@@ -71,7 +71,7 @@ public class CopyPasteReport extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.addAll(srcDirectories);
 		return ingredients;
 	}

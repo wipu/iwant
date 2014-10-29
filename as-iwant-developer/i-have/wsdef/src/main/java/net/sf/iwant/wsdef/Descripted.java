@@ -60,7 +60,7 @@ public class Descripted extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.add(doc);
 		ingredients.add(abstractArticle);
 		ingredients.add(descript);

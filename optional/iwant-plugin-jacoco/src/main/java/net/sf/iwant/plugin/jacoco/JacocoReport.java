@@ -46,10 +46,10 @@ public class JacocoReport extends Target {
 		private String name;
 		private JacocoDistribution jacoco;
 		private List<Path> deps;
-		private final List<Path> antJars = new ArrayList<Path>();
+		private final List<Path> antJars = new ArrayList<>();
 		private Collection<? extends JacocoCoverage> coverages;
-		private final Collection<Path> classes = new ArrayList<Path>();
-		private final Collection<Path> sources = new ArrayList<Path>();
+		private final Collection<Path> classes = new ArrayList<>();
+		private final Collection<Path> sources = new ArrayList<>();
 
 		public JacocoReport end() {
 			return new JacocoReport(name, jacoco, deps, antJars, coverages,
@@ -69,7 +69,7 @@ public class JacocoReport extends Target {
 		public JacocoReportSpexPlease jacocoWithDeps(JacocoDistribution jacoco,
 				Collection<? extends Path> deps) {
 			this.jacoco = jacoco;
-			this.deps = new ArrayList<Path>(deps);
+			this.deps = new ArrayList<>(deps);
 			return this;
 		}
 
@@ -119,7 +119,7 @@ public class JacocoReport extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.add(jacoco);
 		ingredients.addAll(deps);
 		ingredients.addAll(antJars);
@@ -150,7 +150,7 @@ public class JacocoReport extends Target {
 		File antScript = new File(tmp, name() + ".xml");
 		FileUtils.writeStringToFile(antScript, antScript(ctx), "UTF-8");
 
-		List<File> cachedAntJars = new ArrayList<File>();
+		List<File> cachedAntJars = new ArrayList<>();
 		for (Path antJar : antJars) {
 			cachedAntJars.add(ctx.cached(antJar));
 		}

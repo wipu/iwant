@@ -46,13 +46,13 @@ public class EmmaCoverage extends Target {
 	public static class EmmaCoverageSpex {
 
 		private String name;
-		private final List<Path> antJars = new ArrayList<Path>();
+		private final List<Path> antJars = new ArrayList<>();
 		private Path emma;
 		private String mainClass;
 		private List<String> mainClassArguments;
-		private final List<ClasspathItem> classpath = new ArrayList<ClasspathItem>();
+		private final List<ClasspathItem> classpath = new ArrayList<>();
 		private Path mainClassArgumentsFile;
-		private final List<String> jvmargs = new ArrayList<String>();
+		private final List<String> jvmargs = new ArrayList<>();
 
 		public EmmaCoverageSpex() {
 			jvmArgs("-XX:-UseSplitVerifier", "-Demma.rt.control=false");
@@ -150,7 +150,7 @@ public class EmmaCoverage extends Target {
 		File scriptFile = Iwant
 				.newTextFile(new File(dest, "build.xml"), script);
 
-		List<File> cachedAntJars = new ArrayList<File>();
+		List<File> cachedAntJars = new ArrayList<>();
 		for (Path antJar : antJars) {
 			cachedAntJars.add(ctx.cached(antJar));
 		}
@@ -284,7 +284,7 @@ public class EmmaCoverage extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.addAll(antJars);
 		ingredients.add(emma);
 		ingredients.addAll(classPathIngredients());
@@ -310,7 +310,7 @@ public class EmmaCoverage extends Target {
 	}
 
 	public List<Path> classPathIngredients() {
-		List<Path> paths = new ArrayList<Path>();
+		List<Path> paths = new ArrayList<>();
 		for (ClasspathItem cpItem : classpath) {
 			paths.add(cpItem.ingredient());
 		}

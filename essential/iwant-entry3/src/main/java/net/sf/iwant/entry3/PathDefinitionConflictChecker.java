@@ -12,7 +12,7 @@ import net.sf.iwant.entry.Iwant.IwantException;
 class PathDefinitionConflictChecker {
 
 	static void failIfConflictingPathDefinitions(List<? extends Path> paths) {
-		Map<String, Path> seen = new HashMap<String, Path>();
+		Map<String, Path> seen = new HashMap<>();
 		for (Path path : paths) {
 			failIfConflictingPathDefinitions(seen, path);
 		}

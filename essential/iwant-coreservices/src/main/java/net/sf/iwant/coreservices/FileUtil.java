@@ -22,7 +22,7 @@ public class FileUtil {
 	public static String relativePathOfFileUnderParent(File child, File parent) {
 		File absChild = child.getAbsoluteFile();
 		File absParent = parent.getAbsoluteFile();
-		List<String> names = new LinkedList<String>();
+		List<String> names = new LinkedList<>();
 		File parentCandidate = absChild;
 		while (true) {
 			if (parentCandidate == null) {

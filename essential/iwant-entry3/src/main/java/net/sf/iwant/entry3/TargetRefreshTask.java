@@ -21,7 +21,7 @@ public class TargetRefreshTask implements Task {
 
 	private final Target target;
 	private final TargetEvaluationContext ctx;
-	private final Collection<Task> deps = new ArrayList<Task>();
+	private final Collection<Task> deps = new ArrayList<>();
 	private final Caches caches;
 
 	public TargetRefreshTask(Target target, TargetEvaluationContext ctx,

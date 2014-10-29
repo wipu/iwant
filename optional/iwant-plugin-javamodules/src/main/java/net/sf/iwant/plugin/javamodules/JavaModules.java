@@ -18,7 +18,7 @@ import net.sf.iwant.plugin.ant.Jar;
 
 public abstract class JavaModules {
 
-	private final SortedSet<JavaSrcModule> allSrcModules = new TreeSet<JavaSrcModule>();
+	private final SortedSet<JavaSrcModule> allSrcModules = new TreeSet<>();
 
 	public SortedSet<JavaSrcModule> allSrcModules() {
 		return allSrcModules;
@@ -74,7 +74,7 @@ public abstract class JavaModules {
 
 	public static List<Path> mainArtifactsOf(
 			Collection<? extends JavaModule> modules) {
-		List<Path> artifacts = new ArrayList<Path>();
+		List<Path> artifacts = new ArrayList<>();
 		for (JavaModule module : modules) {
 			Path mainArtifact = module.mainArtifact();
 			if (mainArtifact != null) {
@@ -86,7 +86,7 @@ public abstract class JavaModules {
 
 	public static List<Path> testArtifactsOf(
 			Collection<? extends JavaModule> modules) {
-		List<Path> artifacts = new ArrayList<Path>();
+		List<Path> artifacts = new ArrayList<>();
 		for (JavaModule module : modules) {
 			if (!(module instanceof JavaSrcModule)) {
 				continue;
@@ -110,7 +110,7 @@ public abstract class JavaModules {
 
 	public static List<Path> mainArtifactJarsOf(
 			Collection<? extends JavaModule> modules) {
-		List<Path> jars = new ArrayList<Path>();
+		List<Path> jars = new ArrayList<>();
 		for (JavaModule module : modules) {
 			Path jar = mainJarOf(module);
 			if (jar != null) {
@@ -122,7 +122,7 @@ public abstract class JavaModules {
 
 	public static List<Path> testArtifactJarsOf(
 			Collection<? extends JavaModule> modules) {
-		List<Path> jars = new ArrayList<Path>();
+		List<Path> jars = new ArrayList<>();
 		for (JavaModule module : modules) {
 			Path jar = testJarOf(module);
 			if (jar != null) {

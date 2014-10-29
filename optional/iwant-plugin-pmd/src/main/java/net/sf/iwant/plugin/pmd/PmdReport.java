@@ -37,7 +37,7 @@ public class PmdReport extends Target {
 	public static class PmdReportSpex {
 
 		private String name;
-		private final List<Path> srcDirectories = new ArrayList<Path>();
+		private final List<Path> srcDirectories = new ArrayList<>();
 		private Path ruleset;
 
 		public PmdReportSpex name(String name) {
@@ -72,7 +72,7 @@ public class PmdReport extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.addAll(srcDirectories);
 		if (ruleset != null) {
 			ingredients.add(ruleset);

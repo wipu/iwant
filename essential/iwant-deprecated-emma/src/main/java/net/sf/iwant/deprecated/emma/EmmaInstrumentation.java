@@ -90,7 +90,7 @@ public class EmmaInstrumentation extends Target {
 		File cachedClasses = ctx.cached(classesAndSources.classes());
 		File cachedEmma = ctx.cached(emma);
 
-		List<String> emmaArgs = new ArrayList<String>();
+		List<String> emmaArgs = new ArrayList<>();
 		emmaArgs.add("instr");
 		emmaArgs.add("-d");
 		emmaArgs.add(instrClasses.getCanonicalPath());
@@ -119,14 +119,14 @@ public class EmmaInstrumentation extends Target {
 	}
 
 	static void runEmma(File emmaJar, String... emmaArgs) throws Exception {
-		List<File> classLocations = new ArrayList<File>();
+		List<File> classLocations = new ArrayList<>();
 		classLocations.add(emmaJar);
 		Iwant.runJavaMain(true, true, "emma", classLocations, emmaArgs);
 	}
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.add(emma);
 		ingredients.add(classesAndSources.classes());
 		if (filter != null) {

@@ -56,7 +56,7 @@ public class WorkspaceDefinitionContextImpl implements
 
 	private Set<JavaModule> pluginWithDependencies(String pluginName,
 			Path... dependencies) {
-		Set<JavaModule> depModules = new LinkedHashSet<JavaModule>();
+		Set<JavaModule> depModules = new LinkedHashSet<>();
 		for (Path dependency : dependencies) {
 			depModules.add(JavaBinModule.providing(dependency).end());
 		}
@@ -75,7 +75,7 @@ public class WorkspaceDefinitionContextImpl implements
 			pluginClasses.classLocations(dependency.mainArtifact());
 		}
 
-		Set<JavaModule> mods = new LinkedHashSet<JavaModule>();
+		Set<JavaModule> mods = new LinkedHashSet<>();
 		mods.add(JavaBinModule.providing(pluginClasses.end(), pluginJava).end());
 		mods.addAll(iwantApiModules);
 		mods.addAll(dependencies);
@@ -106,7 +106,7 @@ public class WorkspaceDefinitionContextImpl implements
 			return new IwantPluginWish() {
 				@Override
 				public Set<JavaModule> withDependencies() {
-					Set<JavaModule> deps = new LinkedHashSet<JavaModule>();
+					Set<JavaModule> deps = new LinkedHashSet<>();
 					deps.add(JavaBinModule.providing(commonsIoJar()).end());
 					deps.addAll(ant().withDependencies());
 					return pluginWithDependencies("iwant-plugin-findbugs", deps);
@@ -133,7 +133,7 @@ public class WorkspaceDefinitionContextImpl implements
 			return new IwantPluginWish() {
 				@Override
 				public Set<JavaModule> withDependencies() {
-					Set<JavaModule> deps = new LinkedHashSet<JavaModule>();
+					Set<JavaModule> deps = new LinkedHashSet<>();
 					deps.addAll(ant().withDependencies());
 					deps.add(JavaBinModule.providing(commonsIoJar()).end());
 					return pluginWithDependencies("iwant-plugin-jacoco", deps);

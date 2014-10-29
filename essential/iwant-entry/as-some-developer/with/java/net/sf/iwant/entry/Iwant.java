@@ -359,8 +359,10 @@ public class Iwant {
 	}
 
 	public static List<String> bootstrappingJavacOptions() {
-		List<String> options = new ArrayList<String>();
+		List<String> options = new ArrayList<>();
 		options.addAll(recommendedJavacWarningOptions());
+		options.add("-source");
+		options.add("1.7");
 		options.add("-g");
 		return options;
 	}
@@ -413,7 +415,7 @@ public class Iwant {
 			Writer compilerTaskOut = null;
 			Iterable<String> classes = null;
 
-			List<String> options = new ArrayList<String>();
+			List<String> options = new ArrayList<>();
 			options.addAll(javacOptions);
 			options.add("-d");
 			options.add(dest.getCanonicalPath());

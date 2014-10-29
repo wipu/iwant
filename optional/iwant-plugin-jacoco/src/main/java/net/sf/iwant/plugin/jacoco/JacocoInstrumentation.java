@@ -51,7 +51,7 @@ public class JacocoInstrumentation extends Target {
 
 		private final Path classes;
 		private JacocoDistribution jacoco;
-		private final List<Path> antJars = new ArrayList<Path>();
+		private final List<Path> antJars = new ArrayList<>();
 
 		public Builder(Path classes) {
 			this.classes = classes;
@@ -78,7 +78,7 @@ public class JacocoInstrumentation extends Target {
 		@Override
 		public JacocoInstrumentation with(Collection<? extends Path> deps) {
 			return new JacocoInstrumentation(classes, jacoco, antJars,
-					new ArrayList<Path>(deps));
+					new ArrayList<>(deps));
 		}
 
 	}
@@ -90,7 +90,7 @@ public class JacocoInstrumentation extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.add(classes);
 		ingredients.add(jacoco);
 		ingredients.addAll(antJars);
@@ -117,7 +117,7 @@ public class JacocoInstrumentation extends Target {
 		File antScript = new File(tmp, name() + ".xml");
 		FileUtils.writeStringToFile(antScript, antScript(ctx), "UTF-8");
 
-		List<File> cachedAntJars = new ArrayList<File>();
+		List<File> cachedAntJars = new ArrayList<>();
 		for (Path antJar : antJars) {
 			cachedAntJars.add(ctx.cached(antJar));
 		}

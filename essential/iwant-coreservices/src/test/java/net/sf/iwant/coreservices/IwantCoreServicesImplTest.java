@@ -80,8 +80,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 	}
 
 	public void testSvnExportDelegatesToIwant() throws MalformedURLException {
-		final List<URL> urlsPassed = new ArrayList<URL>();
-		final List<File> filesPassed = new ArrayList<File>();
+		final List<URL> urlsPassed = new ArrayList<>();
+		final List<File> filesPassed = new ArrayList<>();
 		iwant = new Iwant(null) {
 			@Override
 			public void svnExport(URL from, File to) {

@@ -174,7 +174,7 @@ public class CodeStylePolicy {
 
 	public static class CodeStylePolicySpex {
 
-		private final Map<CodeStyle, CodeStyleValue> settings = new HashMap<CodeStyle, CodeStyleValue>();
+		private final Map<CodeStyle, CodeStyleValue> settings = new HashMap<>();
 
 		public CodeStylePolicySpex ignore(CodeStyle... styles) {
 			return mappedTo(CodeStyleValue.IGNORE, styles);

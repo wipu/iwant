@@ -19,8 +19,8 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	private File taughtCygwinBashExe;
 	private boolean cygwinBashExeWasTaught;
 	private boolean shallMockWintoySafePaths;
-	private final Map<URL, Integer> numberOfFilesToSvnExport = new HashMap<URL, Integer>();
-	private final Map<URL, Integer> numberOfFilesToSvnExportBeforeFailure = new HashMap<URL, Integer>();
+	private final Map<URL, Integer> numberOfFilesToSvnExport = new HashMap<>();
+	private final Map<URL, Integer> numberOfFilesToSvnExportBeforeFailure = new HashMap<>();
 	private List<String> lastJavacOptions;
 
 	public IwantCoreServicesMock(IwantCoreServices delegate) {
@@ -31,7 +31,7 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	public File compiledClasses(File dest, List<File> src,
 			List<File> classLocations, List<String> javacOptions,
 			Charset encoding) {
-		lastJavacOptions = new ArrayList<String>(javacOptions);
+		lastJavacOptions = new ArrayList<>(javacOptions);
 		return delegate.compiledClasses(dest, src, classLocations,
 				javacOptions, encoding);
 	}

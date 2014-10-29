@@ -49,14 +49,14 @@ public class JacocoCoverage extends Target {
 	public static class JacocoCoverageSpexPlease {
 
 		private String name;
-		private final List<Path> classLocations = new ArrayList<Path>();
-		private final List<Path> antJars = new ArrayList<Path>();
+		private final List<Path> classLocations = new ArrayList<>();
+		private final List<Path> antJars = new ArrayList<>();
 		private JacocoDistribution jacoco;
 		private String mainClassName;
 		private List<String> mainClassArgs;
 		private Path mainClassArgsFile;
 		private Collection<? extends Path> deps;
-		private final List<String> jvmargs = new ArrayList<String>();
+		private final List<String> jvmargs = new ArrayList<>();
 
 		private JacocoCoverageSpexPlease() {
 			jvmArgs("-XX:-UseSplitVerifier");
@@ -143,7 +143,7 @@ public class JacocoCoverage extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.addAll(classLocations);
 		ingredients.addAll(antJars);
 		ingredients.add(jacoco);
@@ -175,7 +175,7 @@ public class JacocoCoverage extends Target {
 		File antScript = new File(tmp, name() + ".xml");
 		FileUtils.writeStringToFile(antScript, antScript(ctx), "UTF-8");
 
-		List<File> cachedAntJars = new ArrayList<File>();
+		List<File> cachedAntJars = new ArrayList<>();
 		for (Path antJar : antJars) {
 			cachedAntJars.add(ctx.cached(antJar));
 		}
@@ -241,7 +241,7 @@ public class JacocoCoverage extends Target {
 
 	private static List<String> mainArgsFromFile(File argumentsFile)
 			throws IOException {
-		List<String> lines = new ArrayList<String>();
+		List<String> lines = new ArrayList<>();
 		for (Object line : FileUtils.readLines(argumentsFile)) {
 			lines.add((String) line);
 		}

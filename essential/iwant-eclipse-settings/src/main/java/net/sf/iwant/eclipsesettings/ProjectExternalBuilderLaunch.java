@@ -18,7 +18,7 @@ public class ProjectExternalBuilderLaunch {
 			String relativeOutputDirectory) {
 		this.projectName = projectName;
 		this.relativeOutputDirectory = relativeOutputDirectory;
-		List<String> relativeInputPaths = new ArrayList<String>();
+		List<String> relativeInputPaths = new ArrayList<>();
 		for (Source genSrc : generatorSourcesToFollow) {
 			relativeInputPaths.add(genSrc.wsRootRelativePath());
 		}

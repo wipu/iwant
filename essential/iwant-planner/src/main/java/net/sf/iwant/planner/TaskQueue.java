@@ -19,10 +19,10 @@ import net.sf.iwant.plannerapi.TaskDirtiness;
 
 public class TaskQueue {
 
-	private final Map<Task, TaskDirtiness> dirtinessByTask = new HashMap<Task, TaskDirtiness>();
-	private final Set<Task> stillDirty = new HashSet<Task>();
-	private final Set<Task> refreshable = new HashSet<Task>();
-	private final Set<Task> refreshing = new HashSet<Task>();
+	private final Map<Task, TaskDirtiness> dirtinessByTask = new HashMap<>();
+	private final Set<Task> stillDirty = new HashSet<>();
+	private final Set<Task> refreshable = new HashSet<>();
+	private final Set<Task> refreshing = new HashSet<>();
 	private final Task rootTask;
 	private boolean isNonParallelRefreshing = false;
 
@@ -38,7 +38,7 @@ public class TaskQueue {
 	}
 
 	private static Set<Task> refreshable(Task root, Set<Task> dirty) {
-		Set<Task> retval = new HashSet<Task>();
+		Set<Task> retval = new HashSet<>();
 		boolean hasDirtyDeps = false;
 		for (Task dep : root.dependencies()) {
 			retval.addAll(refreshable(dep, dirty));
@@ -71,8 +71,8 @@ public class TaskQueue {
 
 	private static List<Task> findDirties(Task root,
 			Map<Task, TaskDirtiness> dirtinessByTask) {
-		List<Task> retval = new ArrayList<Task>();
-		List<Task> dirtyDeps = new ArrayList<Task>();
+		List<Task> retval = new ArrayList<>();
+		List<Task> dirtyDeps = new ArrayList<>();
 		for (Task dep : root.dependencies()) {
 			dirtyDeps.addAll(findDirties(dep, dirtinessByTask));
 		}
@@ -153,7 +153,7 @@ public class TaskQueue {
 	private class TaskAllocationImpl implements TaskAllocation {
 
 		private final Task task;
-		private final Map<ResourcePool, Resource> allocations = new LinkedHashMap<ResourcePool, Resource>();
+		private final Map<ResourcePool, Resource> allocations = new LinkedHashMap<>();
 
 		TaskAllocationImpl(Task task, Collection<ResourcePool> resourcePools) {
 			this.task = task;

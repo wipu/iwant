@@ -31,7 +31,7 @@ public class AntGenerated extends Target {
 	public static class AntGeneratedSpex {
 
 		private String name;
-		private final List<Path> antJars = new ArrayList<Path>();
+		private final List<Path> antJars = new ArrayList<>();
 		private Path script;
 
 		public AntGeneratedSpex name(String name) {
@@ -65,7 +65,7 @@ public class AntGenerated extends Target {
 		// ant.sh calls this but it is not probably good for embedding:
 		// String className = "org.apache.tools.ant.launch.Launcher";
 
-		List<File> cachedJars = new ArrayList<File>();
+		List<File> cachedJars = new ArrayList<>();
 		for (Path jar : antJars) {
 			cachedJars.add(ctx.cached(jar));
 		}
@@ -77,7 +77,7 @@ public class AntGenerated extends Target {
 	public static void runAnt(List<File> antJars, File cachedScript,
 			String... antArgs) throws Exception {
 		final String className = "org.apache.tools.ant.Main";
-		List<String> allArgs = new ArrayList<String>();
+		List<String> allArgs = new ArrayList<>();
 		allArgs.add("-f");
 		allArgs.add(cachedScript.getAbsolutePath());
 		allArgs.addAll(Arrays.asList(antArgs));
@@ -109,7 +109,7 @@ public class AntGenerated extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> retval = new ArrayList<Path>();
+		List<Path> retval = new ArrayList<>();
 		retval.addAll(antJars);
 		retval.add(script);
 		return retval;

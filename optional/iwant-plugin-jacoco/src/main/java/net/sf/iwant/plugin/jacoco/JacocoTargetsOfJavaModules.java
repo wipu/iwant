@@ -25,8 +25,8 @@ public class JacocoTargetsOfJavaModules {
 	private final List<Path> deps;
 	private final List<Path> antJars;
 	private final Collection<? extends JavaModule> modules;
-	private final Map<String, JacocoInstrumentation> instrsByName = new HashMap<String, JacocoInstrumentation>();
-	private final Map<String, JacocoCoverage> coveragesByName = new HashMap<String, JacocoCoverage>();
+	private final Map<String, JacocoInstrumentation> instrsByName = new HashMap<>();
+	private final Map<String, JacocoCoverage> coveragesByName = new HashMap<>();
 
 	public JacocoTargetsOfJavaModules(JacocoDistribution jacoco,
 			List<Path> deps, List<Path> antJars,
@@ -45,8 +45,8 @@ public class JacocoTargetsOfJavaModules {
 
 		private JacocoDistribution jacoco;
 		private List<Path> deps;
-		private final List<Path> antJars = new ArrayList<Path>();
-		private final SortedSet<JavaModule> modules = new TreeSet<JavaModule>();
+		private final List<Path> antJars = new ArrayList<>();
+		private final SortedSet<JavaModule> modules = new TreeSet<>();
 
 		public JacocoTargetsOfJavaModules end() {
 			return new JacocoTargetsOfJavaModules(jacoco, deps, antJars,
@@ -151,9 +151,9 @@ public class JacocoTargetsOfJavaModules {
 	}
 
 	public JacocoReport jacocoReport(String name) {
-		Set<JacocoCoverage> coverages = new LinkedHashSet<JacocoCoverage>();
-		Set<Path> classes = new LinkedHashSet<Path>();
-		Set<Path> sources = new LinkedHashSet<Path>();
+		Set<JacocoCoverage> coverages = new LinkedHashSet<>();
+		Set<Path> classes = new LinkedHashSet<>();
+		Set<Path> sources = new LinkedHashSet<>();
 		for (JavaModule mod : modules) {
 			JacocoCoverage coverage = jacocoCoverageOf(mod);
 			if (coverage != null) {

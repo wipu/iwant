@@ -116,17 +116,17 @@ public class JavaSrcModule extends JavaModule {
 
 		private String name;
 		private String relativeParentDir;
-		private final List<String> mainJavas = new ArrayList<String>();
-		private final List<String> mainResources = new ArrayList<String>();
-		private final List<String> testJavas = new ArrayList<String>();
-		private final List<String> testResources = new ArrayList<String>();
-		private final Set<JavaModule> mainDepsForCompilation = new LinkedHashSet<JavaModule>();
-		private final Set<JavaModule> mainDepsForRunOnly = new LinkedHashSet<JavaModule>();
-		private final Set<JavaModule> testDepsForCompilationExcludingMainDeps = new LinkedHashSet<JavaModule>();
-		private final Set<JavaModule> testDepsForRunOnlyExcludingMainDeps = new LinkedHashSet<JavaModule>();
+		private final List<String> mainJavas = new ArrayList<>();
+		private final List<String> mainResources = new ArrayList<>();
+		private final List<String> testJavas = new ArrayList<>();
+		private final List<String> testResources = new ArrayList<>();
+		private final Set<JavaModule> mainDepsForCompilation = new LinkedHashSet<>();
+		private final Set<JavaModule> mainDepsForRunOnly = new LinkedHashSet<>();
+		private final Set<JavaModule> testDepsForCompilationExcludingMainDeps = new LinkedHashSet<>();
+		private final Set<JavaModule> testDepsForRunOnlyExcludingMainDeps = new LinkedHashSet<>();
 		private Target generatedClasses;
 		private Target generatedSrc;
-		private final List<Source> generatorSourcesToFollow = new ArrayList<Source>();
+		private final List<Source> generatorSourcesToFollow = new ArrayList<>();
 		private CodeStylePolicy codeStylePolicy = CodeStylePolicy
 				.defaultsExcept().end();
 		private CodeFormatterPolicy codeFormatterPolicy = new CodeFormatterPolicy();
@@ -134,7 +134,7 @@ public class JavaSrcModule extends JavaModule {
 		private String locationUnderWsRoot;
 		private StringFilter testClassNameFilter = new DefaultTestClassNameFilter();
 		private Charset encoding;
-		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<Class<? extends JavaModuleCharacteristic>>();
+		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<>();
 
 		public JavaSrcModule end() {
 			if (locationUnderWsRoot != null && relativeParentDir != null) {
@@ -408,7 +408,7 @@ public class JavaSrcModule extends JavaModule {
 		if (generatedSrc != null) {
 			return Collections.<Path> singletonList(generatedSrc);
 		}
-		List<Path> retval = new ArrayList<Path>();
+		List<Path> retval = new ArrayList<>();
 		for (String mainJava : mainJavas) {
 			retval.add(Source.underWsroot(locationUnderWsRoot() + "/"
 					+ mainJava));
@@ -417,7 +417,7 @@ public class JavaSrcModule extends JavaModule {
 	}
 
 	public List<Path> mainResourcesAsPaths() {
-		List<Path> retval = new ArrayList<Path>();
+		List<Path> retval = new ArrayList<>();
 		for (String res : mainResources) {
 			retval.add(Source.underWsroot(locationUnderWsRoot() + "/" + res));
 		}
@@ -425,7 +425,7 @@ public class JavaSrcModule extends JavaModule {
 	}
 
 	public List<Path> testJavasAsPaths() {
-		List<Path> retval = new ArrayList<Path>();
+		List<Path> retval = new ArrayList<>();
 		for (String testJava : testJavas) {
 			retval.add(Source.underWsroot(locationUnderWsRoot() + "/"
 					+ testJava));
@@ -434,7 +434,7 @@ public class JavaSrcModule extends JavaModule {
 	}
 
 	public List<Path> testResourcesAsPaths() {
-		List<Path> retval = new ArrayList<Path>();
+		List<Path> retval = new ArrayList<>();
 		for (String res : testResources) {
 			retval.add(Source.underWsroot(locationUnderWsRoot() + "/" + res));
 		}
@@ -456,7 +456,7 @@ public class JavaSrcModule extends JavaModule {
 		if (mainJavas.isEmpty()) {
 			return null;
 		}
-		Collection<Path> classpath = new ArrayList<Path>();
+		Collection<Path> classpath = new ArrayList<>();
 		for (JavaModule mainDep : mainDepsForCompilation()) {
 			Path depArtifact = mainDep.mainArtifact();
 			if (depArtifact != null) {
@@ -480,7 +480,7 @@ public class JavaSrcModule extends JavaModule {
 		if (testJavas.isEmpty()) {
 			return null;
 		}
-		Collection<Path> classpath = new ArrayList<Path>();
+		Collection<Path> classpath = new ArrayList<>();
 		Path mainClasses = mainArtifact();
 		if (mainClasses != null) {
 			classpath.add(mainClasses);

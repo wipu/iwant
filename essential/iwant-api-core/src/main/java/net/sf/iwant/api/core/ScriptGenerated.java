@@ -61,7 +61,7 @@ public class ScriptGenerated extends Target {
 		FileUtil.copyFile(scriptSrc, tmpScript);
 		tmpScript.setExecutable(true);
 
-		List<String> args = new ArrayList<String>();
+		List<String> args = new ArrayList<>();
 		args.add(ctx.iwant().unixPathOf(ctx.cached(this)));
 		return prepareExecutionEnvironment(ctx, tmpDir, tmpScript,
 				args.toArray(new String[0]));
@@ -70,7 +70,7 @@ public class ScriptGenerated extends Target {
 	private static ExecutionEnvironment prepareExecutionEnvironment(
 			TargetEvaluationContext ctx, File dir, File userExecutable,
 			String[] userArgs) throws IOException {
-		List<String> args = new ArrayList<String>();
+		List<String> args = new ArrayList<>();
 		File cygwinBashExe = ctx.iwant().cygwinBashExe();
 		File executable;
 		if (cygwinBashExe != null) {
@@ -123,7 +123,7 @@ public class ScriptGenerated extends Target {
 
 	private static void execute(ExecutionEnvironment env) throws IOException,
 			InterruptedException {
-		List<String> cmdLine = new ArrayList<String>();
+		List<String> cmdLine = new ArrayList<>();
 		cmdLine.add(env.executable.getCanonicalPath());
 		for (String arg : env.args) {
 			cmdLine.add(arg);

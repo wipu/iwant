@@ -16,7 +16,7 @@ public class CachesMock implements Caches {
 	private final File wsRoot;
 	private File cachedModifiableTargets;
 	private File cachedDescriptors;
-	private Map<URL, File> cachedUrls = new HashMap<URL, File>();
+	private Map<URL, File> cachedUrls = new HashMap<>();
 	private File temporaryDirectory;
 
 	public CachesMock(File wsRoot) {

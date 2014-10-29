@@ -84,7 +84,7 @@ public class EclipseSettings implements SideEffect {
 	private Exception bestEffortToEnsureFreshReferences(SideEffectContext ctx) {
 		ConcatenatedBuilder classLocations = Concatenated.named(name
 				+ ".bin-refs");
-		Set<Path> paths = new LinkedHashSet<Path>();
+		Set<Path> paths = new LinkedHashSet<>();
 		for (JavaModule mod : javaModules) {
 			Set<JavaModule> modDeps = EclipseProject.dependenciesOf(mod);
 			for (JavaModule dep : modDeps) {
@@ -125,7 +125,7 @@ public class EclipseSettings implements SideEffect {
 
 		private String name;
 
-		private final SortedSet<JavaModule> javaModules = new TreeSet<JavaModule>();
+		private final SortedSet<JavaModule> javaModules = new TreeSet<>();
 
 		public EclipseSettingsSpex name(String name) {
 			this.name = name;

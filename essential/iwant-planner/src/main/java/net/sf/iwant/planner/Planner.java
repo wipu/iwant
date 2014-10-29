@@ -15,7 +15,7 @@ import net.sf.iwant.plannerapi.TaskDirtiness;
 
 public class Planner {
 
-	private final List<Thread> threads = new ArrayList<Thread>();
+	private final List<Thread> threads = new ArrayList<>();
 	private final TaskQueue queue;
 	private Throwable failure;
 

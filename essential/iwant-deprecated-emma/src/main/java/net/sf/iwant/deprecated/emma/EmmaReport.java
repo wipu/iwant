@@ -37,8 +37,8 @@ public class EmmaReport extends Target {
 
 		private String name;
 		private Path emma;
-		private final Set<EmmaInstrumentation> instrumentations = new LinkedHashSet<EmmaInstrumentation>();
-		private final Set<EmmaCoverage> coverages = new LinkedHashSet<EmmaCoverage>();
+		private final Set<EmmaInstrumentation> instrumentations = new LinkedHashSet<>();
+		private final Set<EmmaCoverage> coverages = new LinkedHashSet<>();
 
 		public EmmaReportSpex name(String name) {
 			this.name = name;
@@ -97,7 +97,7 @@ public class EmmaReport extends Target {
 				+ "\nreport.xml.out.file="
 				+ ctx.iwant().pathWithoutBackslashes(reportXml) + "\n");
 
-		List<String> reportArgs = new ArrayList<String>();
+		List<String> reportArgs = new ArrayList<>();
 		reportArgs.add("report");
 		reportArgs.add("-r");
 		reportArgs.add("html,txt,xml");
@@ -133,7 +133,7 @@ public class EmmaReport extends Target {
 
 	@Override
 	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<Path>();
+		List<Path> ingredients = new ArrayList<>();
 		ingredients.add(emma);
 		ingredients.addAll(instrumentations);
 		ingredients.addAll(coverages);

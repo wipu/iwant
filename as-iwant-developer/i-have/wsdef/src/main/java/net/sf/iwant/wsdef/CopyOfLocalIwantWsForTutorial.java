@@ -16,7 +16,7 @@ import org.apache.commons.io.FileUtils;
 
 public class CopyOfLocalIwantWsForTutorial extends Target {
 
-	private final List<Path> ingredients = new ArrayList<Path>();
+	private final List<Path> ingredients = new ArrayList<>();
 
 	public CopyOfLocalIwantWsForTutorial() {
 		super("copy-of-local-iwant-ws-for-tutorial");
@@ -65,7 +65,7 @@ public class CopyOfLocalIwantWsForTutorial extends Target {
 	}
 
 	private static List<Path> mainJavasOfModulesUnder(File modulesDir) {
-		List<Path> mainJavas = new ArrayList<Path>();
+		List<Path> mainJavas = new ArrayList<>();
 		File[] potentialMod = modulesDir.listFiles();
 		Arrays.sort(potentialMod);
 		for (File mod : potentialMod) {
@@ -95,7 +95,7 @@ public class CopyOfLocalIwantWsForTutorial extends Target {
 
 	private static List<String> nonDirFilesToCopy(File dir, String dirName) {
 		System.err.println("Finding files to copy from " + dir);
-		List<String> files = new ArrayList<String>();
+		List<String> files = new ArrayList<>();
 		for (File file : dir.listFiles()) {
 			String fileName = dirName + "/" + file.getName();
 			if (!mustCopy(fileName)) {

@@ -10,7 +10,7 @@ import net.sf.iwant.api.model.Path;
 
 public abstract class JavaModule implements Comparable<JavaModule> {
 
-	private final SortedSet<Class<? extends JavaModuleCharacteristic>> characteristics = new TreeSet<Class<? extends JavaModuleCharacteristic>>(
+	private final SortedSet<Class<? extends JavaModuleCharacteristic>> characteristics = new TreeSet<>(
 			new ClassComparator());
 	private Set<JavaModule> effectiveMainDepsForCompile;
 	private Set<JavaModule> effectiveMainDepsForRun;
@@ -35,7 +35,7 @@ public abstract class JavaModule implements Comparable<JavaModule> {
 
 	public final Set<JavaModule> effectivePathForMainForCompile() {
 		if (effectiveMainDepsForCompile == null) {
-			effectiveMainDepsForCompile = new LinkedHashSet<JavaModule>();
+			effectiveMainDepsForCompile = new LinkedHashSet<>();
 			effectiveMainDepsForCompile.addAll(mainDepsForCompilation());
 		}
 		return effectiveMainDepsForCompile;
@@ -45,7 +45,7 @@ public abstract class JavaModule implements Comparable<JavaModule> {
 
 	public final synchronized Set<JavaModule> effectivePathForMainRuntime() {
 		if (effectiveMainDepsForRun == null) {
-			effectiveMainDepsForRun = new LinkedHashSet<JavaModule>();
+			effectiveMainDepsForRun = new LinkedHashSet<>();
 			effectiveMainDepsForRun.add(this);
 			for (JavaModule dep : mainDepsForCompilation()) {
 				addWithEffectiveRuntimeDeps(effectiveMainDepsForRun, dep);
@@ -74,7 +74,7 @@ public abstract class JavaModule implements Comparable<JavaModule> {
 
 	public synchronized Set<JavaModule> effectivePathForTestCompile() {
 		if (effectiveTestDepsForCompile == null) {
-			effectiveTestDepsForCompile = new LinkedHashSet<JavaModule>();
+			effectiveTestDepsForCompile = new LinkedHashSet<>();
 			effectiveTestDepsForCompile
 					.addAll(testDepsForCompilationExcludingMainDeps());
 			effectiveTestDepsForCompile.add(this);
@@ -86,7 +86,7 @@ public abstract class JavaModule implements Comparable<JavaModule> {
 
 	public synchronized Set<JavaModule> effectivePathForTestRuntime() {
 		if (effectiveTestDepsForRun == null) {
-			effectiveTestDepsForRun = new LinkedHashSet<JavaModule>();
+			effectiveTestDepsForRun = new LinkedHashSet<>();
 			for (JavaModule dep : testDepsForCompilationExcludingMainDeps()) {
 				addWithEffectiveRuntimeDeps(effectiveTestDepsForRun, dep);
 			}

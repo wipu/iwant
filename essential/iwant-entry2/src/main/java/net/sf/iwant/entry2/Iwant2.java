@@ -74,7 +74,7 @@ public class Iwant2 {
 	}
 
 	private static List<String> relativeIwantSrcDirs() {
-		List<String> srcDirs = new ArrayList<String>();
+		List<String> srcDirs = new ArrayList<>();
 		srcDirs.add("iwant-api-core/" + "src/main/java");
 		srcDirs.add("iwant-api-javamodules/" + "src/main/java");
 		srcDirs.add("iwant-api-model/" + "src/main/java");
@@ -94,7 +94,7 @@ public class Iwant2 {
 	}
 
 	public static SortedSet<File> srcDirsOfIwantWs(File iwantEssential) {
-		SortedSet<File> srcDirs = new TreeSet<File>();
+		SortedSet<File> srcDirs = new TreeSet<>();
 		for (String relative : relativeIwantSrcDirs()) {
 			srcDirs.add(new File(iwantEssential, relative));
 		}
@@ -108,7 +108,7 @@ public class Iwant2 {
 						iwantEssential));
 		Iwant.fileLog("allIwantClasses, dest=" + allIwantClasses);
 
-		SortedSet<File> javaFiles = new TreeSet<File>();
+		SortedSet<File> javaFiles = new TreeSet<>();
 		for (File srcDir : srcDirsOfIwantWs(iwantEssential)) {
 			javaFiles.addAll(javaFilesRecursivelyUnder(srcDir));
 		}
@@ -127,7 +127,7 @@ public class Iwant2 {
 		}
 		allIwantClasses.mkdirs();
 
-		List<File> javaFileList = new ArrayList<File>(javaFiles);
+		List<File> javaFileList = new ArrayList<>(javaFiles);
 		iwant.compiledClasses(allIwantClasses, javaFileList,
 				Collections.<File> emptyList(),
 				Iwant.bootstrappingJavacOptions(), null);
@@ -136,7 +136,7 @@ public class Iwant2 {
 	}
 
 	public static SortedSet<File> javaFilesRecursivelyUnder(File dir) {
-		SortedSet<File> srcFiles = new TreeSet<File>();
+		SortedSet<File> srcFiles = new TreeSet<>();
 		File[] files = dir.listFiles();
 		for (File file : files) {
 			if (".svn".equals(file.getName())) {
@@ -262,7 +262,7 @@ public class Iwant2 {
 	}
 
 	static SortedSet<File> plainFilesRecursivelyUnder(Collection<File> in) {
-		SortedSet<File> retval = new TreeSet<File>();
+		SortedSet<File> retval = new TreeSet<>();
 		for (File f : in) {
 			plainFilesRecursivelyUnder(retval, f);
 		}
@@ -281,7 +281,7 @@ public class Iwant2 {
 	}
 
 	static SortedSet<File> filesByNameSuffix(Collection<File> in, String suffix) {
-		SortedSet<File> out = new TreeSet<File>();
+		SortedSet<File> out = new TreeSet<>();
 		for (File candidate : in) {
 			if (candidate.getName().endsWith(suffix)) {
 				out.add(candidate);

@@ -33,7 +33,7 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		wsdefdefModule = JavaBinModule
 				.providing(Source.underWsroot("wsdefdef")).end();
 
-		apiModules = new LinkedHashSet<JavaModule>();
+		apiModules = new LinkedHashSet<>();
 		apiModules.add(iwantApiModule1);
 		apiModules.add(iwantApiModule2);
 

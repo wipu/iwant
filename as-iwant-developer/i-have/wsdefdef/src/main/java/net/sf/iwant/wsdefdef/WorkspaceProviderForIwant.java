@@ -1,6 +1,7 @@
 package net.sf.iwant.wsdefdef;
 
 import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaCompliance;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.wsdef.IwantWorkspaceProvider;
@@ -13,6 +14,7 @@ public class WorkspaceProviderForIwant implements IwantWorkspaceProvider {
 	public JavaSrcModule workspaceModule(WorkspaceDefinitionContext ctx) {
 		return JavaSrcModule.with().name("iwant-workspace")
 				.locationUnderWsRoot("as-iwant-developer/i-have/wsdef")
+				.javaCompliance(JavaCompliance.JAVA_1_7)
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
 				.mainDeps(ctx.iwantPlugin().findbugs().withDependencies())
 				.mainDeps(ctx.iwantPlugin().jacoco().withDependencies())

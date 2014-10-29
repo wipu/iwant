@@ -17,8 +17,7 @@ public class ResourcePoolMock implements ResourcePool {
 	}
 
 	public static ResourcePoolMock of(ResourceMock... resources) {
-		return new ResourcePoolMock(new ArrayList<ResourceMock>(
-				Arrays.asList(resources)));
+		return new ResourcePoolMock(new ArrayList<>(Arrays.asList(resources)));
 	}
 
 	@Override

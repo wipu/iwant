@@ -44,8 +44,8 @@ public class DotClasspath {
 
 	public static class DotClasspathSpex {
 
-		private final List<String> srcs = new ArrayList<String>();
-		private final List<String> deps = new ArrayList<String>();
+		private final List<String> srcs = new ArrayList<>();
+		private final List<String> deps = new ArrayList<>();
 
 		public DotClasspath end() {
 			return new DotClasspath(srcs, deps);
