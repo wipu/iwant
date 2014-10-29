@@ -63,14 +63,16 @@ public class JavaClassesTest extends IwantTestCase {
 	public void testRelevantSettingsAreMentionedInContentDescriptor() {
 		assertEquals(
 				"net.sf.iwant.api.javamodules.JavaClasses {\n" + "  src:src\n"
-						+ "  debug:false\n" + "  encoding:UTF-8\n" + "}",
+						+ "  javacOptions:[-Xlint, -Xlint:-serial]\n"
+						+ "  encoding:UTF-8\n" + "}",
 				JavaClasses.with().name("classes")
 						.srcDirs(Source.underWsroot("src")).classLocations()
 						.debug(false).encoding(Charset.forName("UTF-8")).end()
 						.contentDescriptor());
 		assertEquals(
 				"net.sf.iwant.api.javamodules.JavaClasses {\n" + "  src:src2\n"
-						+ "  src:src3\n" + "  res:res\n" + "  debug:true\n"
+						+ "  src:src3\n" + "  res:res\n"
+						+ "  javacOptions:[-Xlint, -Xlint:-serial, -g]\n"
 						+ "  encoding:ISO-8859-1\n" + "}",
 				JavaClasses
 						.with()
@@ -192,8 +194,8 @@ public class JavaClassesTest extends IwantTestCase {
 
 		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n"
 				+ "  src:src\n" + "  classes:dep1\n" + "  classes:dep2\n"
-				+ "  debug:false\n" + "  encoding:null\n" + "}",
-				target.contentDescriptor());
+				+ "  javacOptions:[-Xlint, -Xlint:-serial]\n"
+				+ "  encoding:null\n" + "}", target.contentDescriptor());
 	}
 
 	public void testEmptySourceDirectoryProducesEmptyClasses() throws Exception {
@@ -372,12 +374,24 @@ public class JavaClassesTest extends IwantTestCase {
 		wsRootHasDirectory("src");
 		wsRootHasFile("src/Whatever.java", "public class Whatever {}");
 		JavaClasses classes = JavaClasses.with().name("classes")
-				.srcDirs(Source.underWsroot("src")).debug(true).end();
+				.srcDirs(Source.underWsroot("src")).debug(true)
+				.sourceVersion(JavaCompliance.JAVA_1_7).end();
 
 		classes.path(ctx);
 
-		assertEquals("[-Xlint, -Xlint:-serial, -g]", ctx.iwant()
+		assertEquals("[-Xlint, -Xlint:-serial, -source, 1.7, -g]", ctx.iwant()
 				.lastJavacOptions().toString());
+	}
+
+	public void testJavacOptionsAreInDescriptor() {
+		assertTrue(JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot("src")).debug(true)
+				.sourceVersion(JavaCompliance.JAVA_1_6).end()
+				.contentDescriptor().contains("-source, 1.6"));
+		assertTrue(JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot("src")).debug(true)
+				.sourceVersion(JavaCompliance.JAVA_1_7).end()
+				.contentDescriptor().contains("-source, 1.7, -g"));
 	}
 
 }

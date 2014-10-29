@@ -20,16 +20,18 @@ public class JavaClasses extends Target {
 	private final Collection<? extends Path> resourceDirs;
 	private final Collection<? extends Path> classLocations;
 	private final boolean debug;
+	private final JavaCompliance sourceVersion;
 	private final Charset encoding;
 
 	private JavaClasses(String name, Collection<? extends Path> srcDirs,
 			Collection<? extends Path> resourceDirs, List<Path> classLocations,
-			boolean debug, Charset encoding) {
+			boolean debug, JavaCompliance sourceVersion, Charset encoding) {
 		super(name);
 		this.srcDirs = srcDirs;
 		this.resourceDirs = resourceDirs;
 		this.classLocations = classLocations;
 		this.debug = debug;
+		this.sourceVersion = sourceVersion;
 		this.encoding = encoding;
 		this.ingredients = new ArrayList<Path>();
 		this.ingredients.addAll(srcDirs);
@@ -49,6 +51,7 @@ public class JavaClasses extends Target {
 		private final List<Path> classLocations = new ArrayList<Path>();
 		private boolean debug;
 		private Charset encoding;
+		private JavaCompliance sourceVersion;
 
 		public JavaClassesSpex name(String name) {
 			this.name = name;
@@ -99,6 +102,11 @@ public class JavaClasses extends Target {
 			return this;
 		}
 
+		public JavaClassesSpex sourceVersion(JavaCompliance sourceVersion) {
+			this.sourceVersion = sourceVersion;
+			return this;
+		}
+
 		public JavaClassesSpex encoding(Charset encoding) {
 			this.encoding = encoding;
 			return this;
@@ -106,7 +114,7 @@ public class JavaClasses extends Target {
 
 		public JavaClasses end() {
 			return new JavaClasses(name, srcDirs, resourceDirs, classLocations,
-					debug, encoding);
+					debug, sourceVersion, encoding);
 		}
 
 	}
@@ -136,6 +144,19 @@ public class JavaClasses extends Target {
 		throw new UnsupportedOperationException("TODO test and implement");
 	}
 
+	private List<String> javacOptions() {
+		List<String> javacOptions = new ArrayList<String>();
+		javacOptions.addAll(Iwant.recommendedJavacWarningOptions());
+		if (sourceVersion != null) {
+			javacOptions.add("-source");
+			javacOptions.add(sourceVersion.prettyName());
+		}
+		if (debug) {
+			javacOptions.add("-g");
+		}
+		return javacOptions;
+	}
+
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.cached(this);
@@ -155,13 +176,8 @@ public class JavaClasses extends Target {
 				File classLocationDir = ctx.cached(classLocation);
 				classLocationDirs.add(classLocationDir);
 			}
-			List<String> javacOptions = new ArrayList<String>();
-			javacOptions.addAll(Iwant.recommendedJavacWarningOptions());
-			if (debug) {
-				javacOptions.add("-g");
-			}
 			ctx.iwant().compiledClasses(dest, javaFiles, classLocationDirs,
-					javacOptions, encoding);
+					javacOptions(), encoding);
 		} else {
 			// create dest for resource copying
 			dest.mkdirs();
@@ -214,7 +230,7 @@ public class JavaClasses extends Target {
 		for (Path classLocation : classLocations) {
 			b.append("  classes:").append(classLocation).append("\n");
 		}
-		b.append("  debug:").append(debug()).append("\n");
+		b.append("  javacOptions:").append(javacOptions()).append("\n");
 		b.append("  encoding:").append(encoding()).append("\n");
 		b.append("}");
 		return b.toString();
