@@ -3,6 +3,7 @@ package net.sf.iwant.wsdef;
 import java.util.Arrays;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaModule;
@@ -20,7 +21,8 @@ public class IwantModules extends JavaModules {
 	}
 
 	SortedSet<JavaSrcModule> modulesForCoverage() {
-		SortedSet<JavaSrcModule> mods = allSrcModules();
+		SortedSet<JavaSrcModule> mods = new TreeSet<JavaSrcModule>(
+				allSrcModules());
 		mods.remove(iwantExampleWsdef);
 		mods.remove(iwantMockWsroot);
 		mods.remove(iwantTutorialWsdefs);
