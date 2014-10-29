@@ -10,7 +10,7 @@ import java.util.List;
 public interface IwantCoreServices {
 
 	File compiledClasses(File dest, List<File> src, List<File> classLocations,
-			boolean debug, Charset encoding);
+			List<String> javacOptions, Charset encoding);
 
 	int copyMissingFiles(File from, File to);
 

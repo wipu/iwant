@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	private boolean shallMockWintoySafePaths;
 	private final Map<URL, Integer> numberOfFilesToSvnExport = new HashMap<URL, Integer>();
 	private final Map<URL, Integer> numberOfFilesToSvnExportBeforeFailure = new HashMap<URL, Integer>();
+	private List<String> lastJavacOptions;
 
 	public IwantCoreServicesMock(IwantCoreServices delegate) {
 		this.delegate = delegate;
@@ -27,9 +29,15 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 
 	@Override
 	public File compiledClasses(File dest, List<File> src,
-			List<File> classLocations, boolean debug, Charset encoding) {
-		return delegate.compiledClasses(dest, src, classLocations, debug,
-				encoding);
+			List<File> classLocations, List<String> javacOptions,
+			Charset encoding) {
+		lastJavacOptions = new ArrayList<String>(javacOptions);
+		return delegate.compiledClasses(dest, src, classLocations,
+				javacOptions, encoding);
+	}
+
+	public List<String> lastJavacOptions() {
+		return lastJavacOptions;
 	}
 
 	@Override

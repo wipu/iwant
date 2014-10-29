@@ -129,7 +129,8 @@ public class Iwant2 {
 
 		List<File> javaFileList = new ArrayList<File>(javaFiles);
 		iwant.compiledClasses(allIwantClasses, javaFileList,
-				Collections.<File> emptyList(), true, null);
+				Collections.<File> emptyList(),
+				Iwant.bootstrappingJavacOptions(), null);
 		timestampHandler.markFresh();
 		return allIwantClasses;
 	}

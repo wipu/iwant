@@ -354,11 +354,24 @@ public class Iwant {
 						iwantEssential));
 		return compiledClasses(classes,
 				iwantBootstrappingJavaSources(iwantEssential),
-				Collections.<File> emptyList(), true, null);
+				Collections.<File> emptyList(), bootstrappingJavacOptions(),
+				null);
+	}
+
+	public static List<String> bootstrappingJavacOptions() {
+		List<String> options = new ArrayList<String>();
+		options.addAll(recommendedJavacWarningOptions());
+		options.add("-g");
+		return options;
+	}
+
+	public static List<String> recommendedJavacWarningOptions() {
+		return Arrays.asList("-Xlint", "-Xlint:-serial");
 	}
 
 	public File compiledClasses(File dest, List<File> src,
-			List<File> classLocations, boolean debug, Charset encoding) {
+			List<File> classLocations, List<String> javacOptions,
+			Charset encoding) {
 		try {
 			StringBuilder cp = new StringBuilder();
 			for (Iterator<File> iterator = classLocations.iterator(); iterator
@@ -369,7 +382,8 @@ public class Iwant {
 					cp.append(pathSeparator());
 				}
 			}
-			return compiledClasses(dest, src, cp.toString(), debug, encoding);
+			return compiledClasses(dest, src, cp.toString(), javacOptions,
+					encoding);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -378,10 +392,10 @@ public class Iwant {
 	}
 
 	public File compiledClasses(File dest, List<File> src, String classpath,
-			boolean debug, Charset encoding) {
+			List<String> javacOptions, Charset encoding) {
 		try {
 			debugLog("compiledClasses", "dest: " + dest, "src: " + src,
-					"classpath: " + classpath, "debug:" + debug);
+					"classpath: " + classpath, "javacOptions:" + javacOptions);
 			del(dest);
 			dest.mkdirs();
 			JavaCompiler compiler = network.systemJavaCompiler();
@@ -400,11 +414,7 @@ public class Iwant {
 			Iterable<String> classes = null;
 
 			List<String> options = new ArrayList<String>();
-			options.add("-Xlint");
-			options.add("-Xlint:-serial");
-			if (debug) {
-				options.add("-g");
-			}
+			options.addAll(javacOptions);
 			options.add("-d");
 			options.add(dest.getCanonicalPath());
 			options.add("-classpath");

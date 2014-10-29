@@ -31,9 +31,10 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 
 	@Override
 	public File compiledClasses(File dest, List<File> src,
-			List<File> classLocations, boolean debug, Charset encoding) {
-		return iwant
-				.compiledClasses(dest, src, classLocations, debug, encoding);
+			List<File> classLocations, List<String> javacOptions,
+			Charset encoding) {
+		return iwant.compiledClasses(dest, src, classLocations, javacOptions,
+				encoding);
 	}
 
 	@Override

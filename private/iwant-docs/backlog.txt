@@ -1221,6 +1221,15 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want to define java compliance of sources to JavaClasses so I can enforce/tolerate syntax
+  + refactor: Iwant.compiledClasses takes javac options instead of just the debug boolean
+  + test JavaClasses passes given options w/wo debug
+  - tdd source compliance
+
+- As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
+  - use the -source javac option
+  - fix all diamond warnings
+
 - As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
   + @bugfix: copy missing files (resources)
   + simplify resource copying of instrumentation: don't follow the example in jacoco tutorial (**/*.class)

@@ -140,9 +140,9 @@ public class IwantModules extends JavaModules {
 
 	private JavaSrcModule iwantApiJavamodules = essentialModule(
 			"api-javamodules")
-			.mainDeps(iwantApiCore, iwantApiModel)
-			.testDeps(iwantApimocks, iwantCoreservices, iwantEntry,
-					iwantTestarea, guava, guavaTestlib, junit).end();
+			.mainDeps(iwantApiCore, iwantApiModel, iwantEntry)
+			.testDeps(iwantApimocks, iwantCoreservices, iwantTestarea, guava,
+					guavaTestlib, junit).end();
 
 	private JavaSrcModule iwantApiWsdef = essentialModule("api-wsdef")
 			.noTestJava().mainDeps(iwantApiModel, iwantApiJavamodules).end();

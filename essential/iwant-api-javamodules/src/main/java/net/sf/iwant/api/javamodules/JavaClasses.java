@@ -11,6 +11,7 @@ import java.util.List;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.entry.Iwant;
 
 public class JavaClasses extends Target {
 
@@ -154,8 +155,13 @@ public class JavaClasses extends Target {
 				File classLocationDir = ctx.cached(classLocation);
 				classLocationDirs.add(classLocationDir);
 			}
+			List<String> javacOptions = new ArrayList<String>();
+			javacOptions.addAll(Iwant.recommendedJavacWarningOptions());
+			if (debug) {
+				javacOptions.add("-g");
+			}
 			ctx.iwant().compiledClasses(dest, javaFiles, classLocationDirs,
-					debug, encoding);
+					javacOptions, encoding);
 		} else {
 			// create dest for resource copying
 			dest.mkdirs();

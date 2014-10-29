@@ -356,4 +356,28 @@ public class JavaClassesTest extends IwantTestCase {
 		assertEquals("aumlaut:ä\n", out());
 	}
 
+	public void testDefaultJavacOptionsPassedToServices() throws Exception {
+		wsRootHasDirectory("src");
+		wsRootHasFile("src/Whatever.java", "public class Whatever {}");
+		JavaClasses classes = JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot("src")).end();
+
+		classes.path(ctx);
+
+		assertEquals("[-Xlint, -Xlint:-serial]", ctx.iwant().lastJavacOptions()
+				.toString());
+	}
+
+	public void testDifferentJavacOptionsPassedToServices() throws Exception {
+		wsRootHasDirectory("src");
+		wsRootHasFile("src/Whatever.java", "public class Whatever {}");
+		JavaClasses classes = JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot("src")).debug(true).end();
+
+		classes.path(ctx);
+
+		assertEquals("[-Xlint, -Xlint:-serial, -g]", ctx.iwant()
+				.lastJavacOptions().toString());
+	}
+
 }
