@@ -267,7 +267,15 @@ public class Iwant {
 	public URL wishedIwantRootFromUrl(File asSomeone) {
 		try {
 			Properties iwantFromProps = iwantFromProperties(asSomeone);
-			return new URL(iwantFromProps.getProperty("iwant-from"));
+			String iwantFromPropertyName = "iwant-from";
+			String iwantFrom = iwantFromProps
+					.getProperty(iwantFromPropertyName);
+			if (iwantFrom == null) {
+				throw new IwantException("Please define '"
+						+ iwantFromPropertyName + "' in "
+						+ iwantFromFile(asSomeone));
+			}
+			return new URL(iwantFrom);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -308,15 +316,22 @@ public class Iwant {
 		}
 	}
 
+	private static File iwantFromFile(File asSomeone) {
+		return new File(asSomeone, "i-have/conf/iwant-from");
+	}
+
 	private static Properties iwantFromProperties(File asSomeone)
 			throws IOException, FileNotFoundException {
-		File iHaveConf = new File(asSomeone, "i-have/conf");
-		if (!iHaveConf.exists()) {
-			iHaveConf.mkdirs();
+		File iwantFrom = iwantFromFile(asSomeone);
+		File iwantFromParent = iwantFrom.getParentFile();
+		if (!iwantFromParent.exists()) {
+			iwantFromParent.mkdirs();
 		}
-		File iwantFrom = new File(iHaveConf, "iwant-from");
 		if (!iwantFrom.exists()) {
-			newTextFile(iwantFrom, "iwant-from=TODO\n");
+			newTextFile(
+					iwantFrom,
+					"# uncomment and optionally change the revision:\n"
+							+ "#iwant-from=https://svn.code.sf.net/p/iwant/code/trunk@721\n");
 			throw new IwantException("I created " + iwantFrom
 					+ "\nPlease edit it and rerun me.");
 		}

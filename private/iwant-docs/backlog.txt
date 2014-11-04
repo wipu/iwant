@@ -1222,6 +1222,10 @@
   + test JavaClasses passes given options w/wo debug
   + tdd source compliance
 
++ As @buildscriptauthor I want the example iwant-from to contain an example of a working iwant url so I don't need documentation to edit it
+
++ As @buildscriptauthor I want the example iwant-from to have the url commented out and Iwant to give a friendly failure if I try to use it without editing so I don't accidentally miss the step in the wizard 
+
 #################################################################
 = In progress
 #################################################################

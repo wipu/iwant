@@ -149,7 +149,9 @@ public class IwantTest extends TestCase {
 		assertEquals("I created " + asSomeone + "/i-have/conf/iwant-from\n"
 				+ "Please edit it and rerun me.\n", err());
 
-		assertEquals("iwant-from=TODO\n",
+		assertEquals(
+				"# uncomment and optionally change the revision:\n"
+						+ "#iwant-from=https://svn.code.sf.net/p/iwant/code/trunk@721\n",
 				testArea.contentOf("as-test/i-have/conf/iwant-from"));
 	}
 
@@ -167,8 +169,27 @@ public class IwantTest extends TestCase {
 		assertEquals("I created " + asSomeone + "/i-have/conf/iwant-from\n"
 				+ "Please edit it and rerun me.\n", err());
 
-		assertEquals("iwant-from=TODO\n",
+		assertEquals(
+				"# uncomment and optionally change the revision:\n"
+						+ "#iwant-from=https://svn.code.sf.net/p/iwant/code/trunk@721\n",
 				testArea.contentOf("as-test/i-have/conf/iwant-from"));
+	}
+
+	public void testUserGetsFriendlyErrorIfRerunsIwantWithoutEditingIwantFrom()
+			throws Exception {
+		testMainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist();
+		startOfOutAndErrCapture();
+
+		File asSomeone = testArea.newDir("as-test");
+		try {
+			Iwant.main(new String[] { asSomeone.getCanonicalPath() });
+			fail();
+		} catch (ExitCalledException e) {
+			assertEquals(1, e.status());
+		}
+		assertEquals("", out());
+		assertEquals("Please define 'iwant-from' in " + asSomeone
+				+ "/i-have/conf/iwant-from\n", err());
 	}
 
 	public void testIwantEssentialIsSvnExportedWhenNotExported() {
