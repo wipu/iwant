@@ -1226,9 +1226,13 @@
 
 + As @buildscriptauthor I want the example iwant-from to have the url commented out and Iwant to give a friendly failure if I try to use it without editing so I don't accidentally miss the step in the wizard 
 
++ As @buildscriptauthor I want eclipse-settings and side-effects mentioned in the wizard help output so I know to use them if I need/want
+
 #################################################################
 = In progress
 #################################################################
+
+- As @buildscriptauthor I want the created wsdef package and classname to match the values given in ws-info so I most probably has less to modify afterwards 
 
 - As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
   + use the -source javac option

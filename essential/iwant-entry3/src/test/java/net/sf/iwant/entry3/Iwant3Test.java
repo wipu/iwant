@@ -165,7 +165,10 @@ public class Iwant3Test extends TestCase {
 							+ "and\n"
 							+ asTest
 							+ "/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java"
-							+ "\nPlease edit them and rerun me.",
+							+ "\nPlease edit them and rerun me.\n"
+							+ "If you want to use Eclipse for editing, run "
+							+ asTest
+							+ "/with/bash/iwant/side-effect/eclipse-settings/effective first.",
 					e.getMessage());
 		}
 		String wsdefdefContent = testArea
@@ -228,7 +231,7 @@ public class Iwant3Test extends TestCase {
 					.contains(
 							"Try "
 									+ wsRoot
-									+ "/as-example-developer/with/bash/iwant/list-of/targets"));
+									+ "/as-example-developer/with/bash/iwant/list-of/side-effects"));
 		}
 
 		// the target wish script has been renamed:
@@ -281,7 +284,7 @@ public class Iwant3Test extends TestCase {
 					.contains(
 							"Try "
 									+ wsRoot
-									+ "/as-example-developer/with/bash/iwant/list-of/targets"));
+									+ "/as-example-developer/with/bash/iwant/list-of/side-effects"));
 		}
 
 		// no targets so the whole target directory has disappeared:
@@ -458,6 +461,7 @@ public class Iwant3Test extends TestCase {
 			assertEquals("(Using default user preferences (file " + asTest
 					+ "/i-have/conf/user-preferences is missing):\n"
 					+ "[workerCount=1])\n" + "Try " + asTest
+					+ "/with/bash/iwant/list-of/side-effects\nor\n" + asTest
 					+ "/with/bash/iwant/list-of/targets", e.getMessage());
 		}
 
@@ -643,6 +647,7 @@ public class Iwant3Test extends TestCase {
 			assertEquals("(Using default user preferences (file " + asTest
 					+ "/i-have/conf/user-preferences is missing):\n"
 					+ "[workerCount=1])\n" + "Try " + asTest
+					+ "/with/bash/iwant/list-of/side-effects\nor\n" + asTest
 					+ "/with/bash/iwant/list-of/targets", e.getMessage());
 		}
 
@@ -666,8 +671,9 @@ public class Iwant3Test extends TestCase {
 		} catch (IwantException e) {
 			assertEquals("(Using user preferences from file " + asTest
 					+ "/i-have/conf/user-preferences:\n" + "[workerCount=3])\n"
-					+ "Try " + asTest + "/with/bash/iwant/list-of/targets",
-					e.getMessage());
+					+ "Try " + asTest
+					+ "/with/bash/iwant/list-of/side-effects\nor\n" + asTest
+					+ "/with/bash/iwant/list-of/targets", e.getMessage());
 		}
 
 		assertEquals("", out());

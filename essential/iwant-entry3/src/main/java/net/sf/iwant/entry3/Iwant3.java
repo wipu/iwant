@@ -41,6 +41,8 @@ import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
 
 public class Iwant3 {
 
+	private static final String WISH_LIST_OF_SIDE_EFFECTS = "list-of/side-effects";
+	private static final String WISH_LIST_OF_TARGETS = "list-of/targets";
 	private final Iwant iwant;
 	private final File iwantEssential;
 
@@ -153,12 +155,14 @@ public class Iwant3 {
 			refreshWishScripts(asSomeone, wsDef,
 					wishEvaluator.sideEffectDefinitionContext());
 			if (args.length == 0) {
-				throw new IwantException(
-						"(Using "
-								+ userPrefs
-								+ ")\nTry "
-								+ new File(asSomeone,
-										"with/bash/iwant/list-of/targets"));
+				throw new IwantException("(Using "
+						+ userPrefs
+						+ ")\nTry "
+						+ new File(withBashIwantFile(asSomeone),
+								WISH_LIST_OF_SIDE_EFFECTS)
+						+ "\nor\n"
+						+ new File(withBashIwantFile(asSomeone),
+								WISH_LIST_OF_TARGETS));
 			}
 			String wish = args[0];
 			Iwant.fileLog("Wanting " + wish + " from " + wsDef);
@@ -221,12 +225,19 @@ public class Iwant3 {
 				iwantWsRoot, "com.example.wsdef", "Workspace"));
 		// TODO it's a bit ugly to create dummy target and side-effect just to
 		// get proper names for wish scripts:
+		HelloSideEffect stubEclipseSettingsSe = new HelloSideEffect(
+				"eclipse-settings");
 		refreshWishScripts(asSomeone,
 				Arrays.asList(new HelloTarget("hello", "not needed")),
-				Arrays.asList(new HelloSideEffect("eclipse-settings")));
-		IwantException e = new IwantException("I created\n"
-				+ wsInfo.wsdefdefJava() + "\nand\n" + wsDefJava
-				+ "\nPlease edit them and rerun me.");
+				Arrays.asList(stubEclipseSettingsSe));
+		IwantException e = new IwantException(
+				"I created\n"
+						+ wsInfo.wsdefdefJava()
+						+ "\nand\n"
+						+ wsDefJava
+						+ "\nPlease edit them and rerun me.\nIf you want to use Eclipse for editing, run "
+						+ new File(withBashIwantFile(asSomeone),
+								toWish(stubEclipseSettingsSe)) + " first.");
 		return e;
 	}
 
@@ -301,17 +312,24 @@ public class Iwant3 {
 			Collection<? extends Target> targets,
 			Collection<? extends SideEffect> sideEffects) {
 		Iwant.fileLog("Refreshing wish scripts under " + asSomeone);
-		File withBashIwant = new File(asSomeone, "with/bash/iwant");
+		File withBashIwant = withBashIwantFile(asSomeone);
 		deleteWishScripts(withBashIwant);
-		createWishScript(withBashIwant, "list-of/targets");
+		createWishScript(withBashIwant, WISH_LIST_OF_TARGETS);
 		for (Object target : targets) {
 			createWishScript(withBashIwant, "target/" + target + "/as-path");
 		}
-		createWishScript(withBashIwant, "list-of/side-effects");
+		createWishScript(withBashIwant, WISH_LIST_OF_SIDE_EFFECTS);
 		for (SideEffect sideEffect : sideEffects) {
-			createWishScript(withBashIwant, "side-effect/" + sideEffect.name()
-					+ "/effective");
+			createWishScript(withBashIwant, toWish(sideEffect));
 		}
+	}
+
+	private static String toWish(SideEffect sideEffect) {
+		return "side-effect/" + sideEffect.name() + "/effective";
+	}
+
+	private static File withBashIwantFile(File asSomeone) {
+		return new File(asSomeone, "with/bash/iwant");
 	}
 
 	private static void deleteWishScripts(File withBashIwant) {
