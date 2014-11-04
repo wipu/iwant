@@ -1233,6 +1233,7 @@
 #################################################################
 
 - As @buildscriptauthor I want the created wsdef package and classname to match the values given in ws-info so I most probably has less to modify afterwards 
+  - also change module from WS-workspace to WS-wsdef
 
 - As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
   + use the -source javac option
