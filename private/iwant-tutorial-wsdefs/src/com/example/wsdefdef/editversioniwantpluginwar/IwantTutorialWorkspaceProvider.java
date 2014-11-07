@@ -10,7 +10,7 @@ public class IwantTutorialWorkspaceProvider implements IwantWorkspaceProvider {
 	public JavaSrcModule workspaceModule(WorkspaceDefinitionContext ctx) {
 		return JavaSrcModule
 				.with()
-				.name("iwant-tutorial-workspace")
+				.name("iwant-tutorial-wsdef")
 				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
 				.mainDeps(ctx.wsdefdefModule())
