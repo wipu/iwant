@@ -14,7 +14,7 @@ import net.sf.iwant.core.ant.AntGenerated;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 
-public class Workspace implements IwantWorkspace {
+public class IwanttutorialWorkspace implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {

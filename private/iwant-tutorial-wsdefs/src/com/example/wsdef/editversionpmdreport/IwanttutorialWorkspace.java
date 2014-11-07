@@ -12,7 +12,7 @@ import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 import net.sf.iwant.plugin.pmd.PmdReport;
 
-public class Workspace implements IwantWorkspace {
+public class IwanttutorialWorkspace implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {

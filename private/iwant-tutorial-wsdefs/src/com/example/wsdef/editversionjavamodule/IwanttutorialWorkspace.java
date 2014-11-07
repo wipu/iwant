@@ -15,7 +15,7 @@ import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.core.download.TestedIwantDependencies;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 
-public class Workspace implements IwantWorkspace {
+public class IwanttutorialWorkspace implements IwantWorkspace {
 
 	private final JavaModule junit = JavaBinModule.providing(
 			TestedIwantDependencies.junit()).end();

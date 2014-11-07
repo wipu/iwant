@@ -13,7 +13,7 @@ class ExampleWsDefGenerator {
 	}
 
 	static String exampleWsdefdef(File iwantWsRoot, String newPackage,
-			String newName, String wsName) {
+			String newName, String wsName, String wsdefClassName) {
 		String src = exampleJava(iwantWsRoot,
 				"com/example/wsdefdef/WorkspaceProvider.java");
 		String out = src.replaceFirst("package.*;", "package " + newPackage
@@ -21,6 +21,7 @@ class ExampleWsDefGenerator {
 		out = out.replaceFirst("class WorkspaceProvider ", "class " + newName
 				+ " ");
 		out = out.replaceAll("WSNAME", wsName);
+		out = out.replaceAll("WSDEF", wsdefClassName);
 		return out;
 	}
 
@@ -30,6 +31,24 @@ class ExampleWsDefGenerator {
 				"com/example/wsdef/Workspace.java");
 		return src.replaceFirst("package.*;", "package " + newPackage + ";")
 				.replaceFirst("class Workspace ", "class " + newName + " ");
+	}
+
+	static String proposedWsdefSimpleName(String wsName) {
+		String cap = wsName.substring(0, 1).toUpperCase()
+				+ wsName.substring(1, wsName.length());
+		cap = cap.replaceAll("[^A-Za-z0-9]", "");
+		if (Character.isDigit(cap.charAt(0))) {
+			cap = "_" + cap;
+		}
+		return cap + "Workspace";
+	}
+
+	static String proposedWsdefPackage(String wsdefdefPackage) {
+		String conventionalEnd = ".wsdefdef";
+		if (wsdefdefPackage.endsWith(conventionalEnd)) {
+			return wsdefdefPackage.replaceAll(conventionalEnd + "$", ".wsdef");
+		}
+		return wsdefdefPackage + ".wsdef";
 	}
 
 }

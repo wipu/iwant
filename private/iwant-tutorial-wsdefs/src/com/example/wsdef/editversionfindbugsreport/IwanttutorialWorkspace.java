@@ -15,7 +15,7 @@ import net.sf.iwant.eclipsesettings.EclipseSettings;
 import net.sf.iwant.plugin.findbugs.FindbugsDistribution;
 import net.sf.iwant.plugin.findbugs.FindbugsReport;
 
-public class Workspace implements IwantWorkspace {
+public class IwanttutorialWorkspace implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {

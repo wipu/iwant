@@ -1,10 +1,10 @@
-package com.example.wsdefdef.editversionjavamodules;
+package com.example.wsdefdef.editversionv01iwantPluginAnt;
 
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.wsdef.IwantWorkspaceProvider;
 import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
 
-public class WorkspaceProvider implements IwantWorkspaceProvider {
+public class IwantTutorialWorkspaceProvider implements IwantWorkspaceProvider {
 
 	@Override
 	public JavaSrcModule workspaceModule(WorkspaceDefinitionContext ctx) {
@@ -14,13 +14,12 @@ public class WorkspaceProvider implements IwantWorkspaceProvider {
 				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
 				.mainDeps(ctx.wsdefdefModule())
-				.mainDeps(ctx.iwantPlugin().javamodules().withDependencies())
-				.end();
+				.mainDeps(ctx.iwantPlugin().ant().withDependencies()).end();
 	}
 
 	@Override
 	public String workspaceClassname() {
-		return "com.example.wsdef.Workspace";
+		return "com.example.wsdef.IwanttutorialWorkspace";
 	}
 
 }

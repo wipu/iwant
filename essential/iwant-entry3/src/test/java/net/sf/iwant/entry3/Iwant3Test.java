@@ -113,7 +113,7 @@ public class Iwant3Test extends TestCase {
 						+ "WSNAME=example\n"
 						+ "WSROOT=../../..\n"
 						+ "WSDEFDEF_MODULE=../wsdefdef\n"
-						+ "WSDEFDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n",
+						+ "WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n",
 				testArea.contentOf("wsroot/as-example-developer/i-have/conf/ws-info"));
 	}
 
@@ -164,7 +164,7 @@ public class Iwant3Test extends TestCase {
 							+ "/i-have/wsdefdef/src/main/java/com/example/wsdefdef/ExampleWsProvider.java\n"
 							+ "and\n"
 							+ asTest
-							+ "/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java"
+							+ "/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWorkspace.java"
 							+ "\nPlease edit them and rerun me.\n"
 							+ "If you want to use Eclipse for editing, run "
 							+ asTest
@@ -178,9 +178,9 @@ public class Iwant3Test extends TestCase {
 		assertTrue(wsdefdefContent.contains(" class ExampleWsProvider "));
 		// full content will be asserted by functionality
 		String wsdefContent = testArea
-				.contentOf("wsroot/as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java");
+				.contentOf("wsroot/as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWorkspace.java");
 		assertTrue(wsdefContent.startsWith("package com.example.wsdef;\n"));
-		assertTrue(wsdefContent.contains(" class Workspace "));
+		assertTrue(wsdefContent.contains(" class ExampleWorkspace "));
 		// full content will be asserted by functionality
 	}
 
@@ -210,7 +210,7 @@ public class Iwant3Test extends TestCase {
 			throws Exception {
 		testIwant3AlsoCreatesWishScriptsForExampleWsDef();
 
-		String wsdefRelpath = "wsroot/as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java";
+		String wsdefRelpath = "wsroot/as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWorkspace.java";
 		String wsdefContent = testArea.contentOf(wsdefRelpath);
 		// renamed target
 		wsdefContent = wsdefContent.replace("new HelloTarget(\"hello\"",
@@ -263,7 +263,7 @@ public class Iwant3Test extends TestCase {
 			throws Exception {
 		testIwant3AlsoCreatesWishScriptsForExampleWsDef();
 
-		String wsdefRelpath = "wsroot/as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/Workspace.java";
+		String wsdefRelpath = "wsroot/as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWorkspace.java";
 		String wsdefContent = testArea.contentOf(wsdefRelpath);
 
 		// no targets

@@ -41,7 +41,7 @@ public class WsInfoTest extends TestCase {
 	public void testMissingWsname() throws IOException {
 		in.append("WSROOT=../../..\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
-		in.append("WSDEFDEF_CLASS=com.example.wsdef.Workspace\n");
+		in.append("WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 
 		try {
 			newWsInfo();
@@ -57,7 +57,7 @@ public class WsInfoTest extends TestCase {
 	public void testMissingWsroot() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
-		in.append("WSDEFDEF_CLASS=com.example.wsdef.Workspace\n");
+		in.append("WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 
 		try {
 			newWsInfo();
@@ -73,7 +73,7 @@ public class WsInfoTest extends TestCase {
 	public void testMissingWsdefdefModule() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
-		in.append("WSDEFDEF_CLASS=com.example.wsdef.Workspace\n");
+		in.append("WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 
 		try {
 			newWsInfo();
@@ -106,7 +106,7 @@ public class WsInfoTest extends TestCase {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
-		in.append("WSDEFDEF_CLASS=com.example.wsdef.Workspace\n");
+		in.append("WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 		asSomeone = new File("/different-project/as-test");
 
 		try {
@@ -123,7 +123,7 @@ public class WsInfoTest extends TestCase {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
-		in.append("WSDEFDEF_CLASS=com.example.wsdef.Workspace\n");
+		in.append("WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 
 		WsInfo wsInfo = newWsInfo();
 
@@ -133,12 +133,14 @@ public class WsInfoTest extends TestCase {
 				.getCanonicalPath());
 		assertEquals("/project/as-test/i-have/wsdef/src/main/java", wsInfo
 				.wsdefdefSrc().getCanonicalPath());
-		assertEquals("com.example.wsdef.Workspace", wsInfo.wsdefClass());
+		assertEquals("com.example.wsdefdef.ExampleWorkspaceProvider",
+				wsInfo.wsdefdefClass());
 		assertEquals("/project/as-test/i-have/wsdef/src/main/java/"
-				+ "com/example/wsdef/Workspace.java", wsInfo.wsdefdefJava()
-				.toString());
-		assertEquals("com.example.wsdef", wsInfo.wsdefdefPackage());
-		assertEquals("Workspace", wsInfo.wsdefdefClassSimpleName());
+				+ "com/example/wsdefdef/ExampleWorkspaceProvider.java", wsInfo
+				.wsdefdefJava().toString());
+		assertEquals("com.example.wsdefdef", wsInfo.wsdefdefPackage());
+		assertEquals("ExampleWorkspaceProvider",
+				wsInfo.wsdefdefClassSimpleName());
 		assertEquals("as-test", wsInfo.relativeAsSomeone());
 	}
 
@@ -147,7 +149,7 @@ public class WsInfoTest extends TestCase {
 		in.append("WSNAME=example2\n");
 		in.append("WSROOT=../../../wsroot\n");
 		in.append("WSDEFDEF_MODULE=../../../wsroot/wsdefinition\n");
-		in.append("WSDEFDEF_CLASS=com.example2.wsdef.Workspace2\n");
+		in.append("WSDEFDEF_CLASS=com.example2.wsdefdef.Example2WorkspaceProvider\n");
 
 		WsInfo wsInfo = newWsInfo();
 
@@ -157,12 +159,14 @@ public class WsInfoTest extends TestCase {
 				.toString());
 		assertEquals("/project/wsroot/wsdefinition/src/main/java", wsInfo
 				.wsdefdefSrc().toString());
-		assertEquals("com.example2.wsdef.Workspace2", wsInfo.wsdefClass());
+		assertEquals("com.example2.wsdefdef.Example2WorkspaceProvider",
+				wsInfo.wsdefdefClass());
 		assertEquals("/project/wsroot/wsdefinition/src/main/java/"
-				+ "com/example2/wsdef/Workspace2.java", wsInfo.wsdefdefJava()
-				.toString());
-		assertEquals("com.example2.wsdef", wsInfo.wsdefdefPackage());
-		assertEquals("Workspace2", wsInfo.wsdefdefClassSimpleName());
+				+ "com/example2/wsdefdef/Example2WorkspaceProvider.java",
+				wsInfo.wsdefdefJava().toString());
+		assertEquals("com.example2.wsdefdef", wsInfo.wsdefdefPackage());
+		assertEquals("Example2WorkspaceProvider",
+				wsInfo.wsdefdefClassSimpleName());
 		assertEquals("as-test2", wsInfo.relativeAsSomeone());
 	}
 

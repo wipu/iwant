@@ -20,12 +20,12 @@ doc-content() {
 
 wsdef-edit() {
   local NAME=$1
-  def-edit wsdef "$NAME" Workspace
+  def-edit wsdef "$NAME" IwanttutorialWorkspace
 }
 
 wsdefdef-edit() {
   local NAME=$1
-  def-edit wsdefdef "$NAME" WorkspaceProvider
+  def-edit wsdefdef "$NAME" IwantTutorialWorkspaceProvider
 }
 
 # TODO remove arg NAME

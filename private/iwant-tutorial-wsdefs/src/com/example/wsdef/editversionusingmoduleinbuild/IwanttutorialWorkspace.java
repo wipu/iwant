@@ -11,9 +11,9 @@ import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 
 import com.example.util.editversionusingmoduleinbuild.ExampleUtil;
-import com.example.wsdefdef.editversionusingmoduleinbuild.WorkspaceProvider;
+import com.example.wsdefdef.editversionusingmoduleinbuild.IwantTutorialWorkspaceProvider;
 
-public class Workspace implements IwantWorkspace {
+public class IwanttutorialWorkspace implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {
@@ -31,7 +31,7 @@ public class Workspace implements IwantWorkspace {
 			SideEffectDefinitionContext ctx) {
 		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")
 				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())
-				.modules(WorkspaceProvider.exampleUtil()).end());
+				.modules(IwantTutorialWorkspaceProvider.exampleUtil()).end());
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.example.wsdef.editversionv00modifiedhello;
+package com.example.wsdef.editversionv01commonsmathjar;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,16 +10,19 @@ import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 
-public class Workspace implements IwantWorkspace {
+import org.apache.commons.math.fraction.Fraction;
+
+public class IwanttutorialWorkspace implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {
 		return Arrays.asList(new HelloTarget("hello", "hello from iwant"),
-				hello2());
+				arithmeticWithExtLib());
 	}
 
-	private static Target hello2() {
-		return new HelloTarget("hello2", "another target");
+	private static Target arithmeticWithExtLib() {
+		return new HelloTarget("arithmeticWithExtLib", "1/2 + 2/4 = "
+				+ new Fraction(1, 2).add(new Fraction(2, 4)).intValue() + "\n");
 	}
 
 	@Override

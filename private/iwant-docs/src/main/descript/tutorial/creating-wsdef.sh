@@ -4,12 +4,12 @@ cd iwant-tutorial
 
 p "Now we start defining our workspace and its build definition."
 
-edit as-iwant-tutorial-developer/i-have/conf/ws-info "no-changes" <<EOF
+edit as-iwant-tutorial-developer/i-have/conf/ws-info "thewsinfo" <<EOF
 # paths are relative to this file's directory
 WSNAME=iwant-tutorial
 WSROOT=../../..
 WSDEFDEF_MODULE=../wsdefdef
-WSDEFDEF_CLASS=com.example.wsdefdef.WorkspaceProvider
+WSDEFDEF_CLASS=com.example.wsdefdef.IwantTutorialWorkspaceProvider
 EOF
 
 cmde "1" "as-iwant-tutorial-developer/with/bash/iwant/help.sh 2>&1"

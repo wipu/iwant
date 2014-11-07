@@ -52,7 +52,7 @@ public class WsInfoMock implements WsInfo {
 	}
 
 	@Override
-	public String wsdefClass() {
+	public String wsdefdefClass() {
 		throw new UnsupportedOperationException("TODO test and implement");
 	}
 

@@ -16,7 +16,7 @@ public class WorkspaceProvider implements IwantWorkspaceProvider {
 
 	@Override
 	public String workspaceClassname() {
-		return "com.example.wsdef.Workspace";
+		return "WSDEF";
 	}
 
 }

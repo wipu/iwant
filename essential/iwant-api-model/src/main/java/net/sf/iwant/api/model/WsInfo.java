@@ -12,7 +12,7 @@ public interface WsInfo {
 
 	File wsdefdefSrc();
 
-	String wsdefClass();
+	String wsdefdefClass();
 
 	File wsdefdefJava();
 

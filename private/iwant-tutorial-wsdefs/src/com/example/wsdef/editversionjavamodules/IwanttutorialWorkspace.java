@@ -17,7 +17,7 @@ import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 import net.sf.iwant.plugin.javamodules.JavaModules;
 
-public class Workspace implements IwantWorkspace {
+public class IwanttutorialWorkspace implements IwantWorkspace {
 
 	class ExampleModules extends JavaModules {
 

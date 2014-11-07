@@ -76,7 +76,7 @@ public class WsInfoFileImpl implements WsInfo {
 	}
 
 	@Override
-	public String wsdefClass() {
+	public String wsdefdefClass() {
 		return wsdefdefClass;
 	}
 

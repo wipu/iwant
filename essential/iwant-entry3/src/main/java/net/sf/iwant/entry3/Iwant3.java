@@ -111,7 +111,7 @@ public class Iwant3 {
 
 		List<File> runtimeClasses = Arrays.asList(wsDefdefClasses);
 		Class<?> wsDefdefClass = loadClass(getClass().getClassLoader(),
-				wsInfo.wsdefClass(), runtimeClasses);
+				wsInfo.wsdefdefClass(), runtimeClasses);
 
 		try {
 			Iwant.fileLog("Calling wsdefdef");
@@ -214,15 +214,18 @@ public class Iwant3 {
 	private static IwantException createExampleWsdefdefAndWsdef(File asSomeone,
 			File iHave, WsInfo wsInfo) {
 		File iwantWsRoot = IwantWsRootFinder.wsRoot();
-		FileUtil.newTextFile(
-				wsInfo.wsdefdefJava(),
-				ExampleWsDefGenerator.exampleWsdefdef(iwantWsRoot,
-						wsInfo.wsdefdefPackage(),
-						wsInfo.wsdefdefClassSimpleName(), wsInfo.wsName()));
-		File wsDefJava = new File(iHave, "/wsdef/src/main/java"
-				+ "/com/example/wsdef/Workspace.java");
+		String wsDefPackage = ExampleWsDefGenerator.proposedWsdefPackage(wsInfo
+				.wsdefdefPackage());
+		String wsDefName = ExampleWsDefGenerator.proposedWsdefSimpleName(wsInfo
+				.wsName());
+		FileUtil.newTextFile(wsInfo.wsdefdefJava(), ExampleWsDefGenerator
+				.exampleWsdefdef(iwantWsRoot, wsInfo.wsdefdefPackage(),
+						wsInfo.wsdefdefClassSimpleName(), wsInfo.wsName(),
+						wsDefPackage + "." + wsDefName));
+		File wsDefJava = new File(iHave, "/wsdef/src/main/java" + "/"
+				+ wsDefPackage.replace(".", "/") + "/" + wsDefName + ".java");
 		FileUtil.newTextFile(wsDefJava, ExampleWsDefGenerator.exampleWsdef(
-				iwantWsRoot, "com.example.wsdef", "Workspace"));
+				iwantWsRoot, wsDefPackage, wsDefName));
 		// TODO it's a bit ugly to create dummy target and side-effect just to
 		// get proper names for wish scripts:
 		HelloSideEffect stubEclipseSettingsSe = new HelloSideEffect(
@@ -378,7 +381,7 @@ public class Iwant3 {
 						+ "WSNAME=example\n"
 						+ "WSROOT=../../..\n"
 						+ "WSDEFDEF_MODULE=../wsdefdef\n"
-						+ "WSDEFDEF_CLASS=com.example.wsdefdef.WorkspaceProvider\n");
+						+ "WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 	}
 
 	private static void createScript(File file, String content) {

@@ -89,10 +89,10 @@ cmd "cat $REL_IHAVE/ws-info.conf"
 p "Let's go with the defaults."
 cmde 1 'iwant/help.sh'
 out-was <<EOF
-I created $WSROOT/as-example-developer/i-have/wsdef/com/example/wsdef/Workspace.java for you. Please edit it and rerun me.
+I created $WSROOT/as-example-developer/i-have/wsdef/com/example/wsdef/ExampleWorkspace.java for you. Please edit it and rerun me.
 EOF
 
-cmd "cat $REL_IHAVE/wsdef/com/example/wsdef/Workspace.java"
+cmd "cat $REL_IHAVE/wsdef/com/example/wsdef/ExampleWorkspace.java"
 cmde 1 'iwant/help.sh'
 
 cmd 'iwant/list-of/targets'
@@ -148,7 +148,7 @@ EOF
 
 p 'Import the project into Eclipse. Make sure not to copy it to the workspace.'
 
-WSJAVA=$REL_IHAVE/wsdef/com/example/wsdef/Workspace.java
+WSJAVA=$REL_IHAVE/wsdef/com/example/wsdef/ExampleWorkspace.java
 
 my-edit "$WSJAVA" Workspace.java.new-constant-content.diff
 cmd 'cat $(iwant/target/aConstant/as-path)'
