@@ -12,7 +12,7 @@ p "Now we can import the project to eclipse (don't copy it to the workspace!) an
 wsdef-edit v00modifiedhello
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
 out-was <<EOF
-(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-workspace-main-classes)
+(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
 hello
 hello2
 EOF

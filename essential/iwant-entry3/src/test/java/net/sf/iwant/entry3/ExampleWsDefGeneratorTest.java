@@ -22,7 +22,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		b.append("package com.example.wsdef;\n");
 		b.append("public class WorkspaceProvider implements IwantWorkspaceProvider {\n");
 		b.append("	public JavaModule workspaceModule(JavaModule iwantApiClasses) {\n");
-		b.append("		return JavaSrcModule.with().name(\"WSNAME-workspace\")\n");
+		b.append("		return JavaSrcModule.with().name(\"WSNAME-wsdef\")\n");
 		b.append("				.locationUnderWsRoot(\"as-WSNAME-developer/i-have/wsdef\")\n");
 		b.append("				.mainJava(\"src/main/java\").mainDeps(iwantApiClasses).end();\n");
 		b.append("	}\n");
@@ -67,7 +67,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		expectedWsdefdefStart
 				.append("	public JavaModule workspaceModule(JavaModule iwantApiClasses) {\n");
 		expectedWsdefdefStart
-				.append("		return JavaSrcModule.with().name(\"x1-workspace\")\n");
+				.append("		return JavaSrcModule.with().name(\"x1-wsdef\")\n");
 		expectedWsdefdefStart
 				.append("				.locationUnderWsRoot(\"as-x1-developer/i-have/wsdef\")\n");
 
@@ -82,7 +82,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		expectedWsdefdefStart
 				.append("	public JavaModule workspaceModule(JavaModule iwantApiClasses) {\n");
 		expectedWsdefdefStart
-				.append("		return JavaSrcModule.with().name(\"x2-workspace\")\n");
+				.append("		return JavaSrcModule.with().name(\"x2-wsdef\")\n");
 		expectedWsdefdefStart
 				.append("				.locationUnderWsRoot(\"as-x2-developer/i-have/wsdef\")\n");
 

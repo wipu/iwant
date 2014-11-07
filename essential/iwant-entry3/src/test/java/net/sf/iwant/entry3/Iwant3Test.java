@@ -528,7 +528,7 @@ public class Iwant3Test extends TestCase {
 				"<projectDescription>\n        <name>example-wsdefdef</name>");
 		testArea.shallContainFragmentIn(
 				"wsroot/as-example-developer/i-have/wsdef/.project",
-				"<projectDescription>\n        <name>example-workspace</name>");
+				"<projectDescription>\n        <name>example-wsdef</name>");
 
 		// project source dirs
 		testArea.shallContainFragmentIn(
