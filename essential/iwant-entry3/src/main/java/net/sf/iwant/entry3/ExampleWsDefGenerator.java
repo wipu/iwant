@@ -6,15 +6,15 @@ import net.sf.iwant.coreservices.FileUtil;
 
 class ExampleWsDefGenerator {
 
-	private static String exampleJava(File iwantWsRoot, String javaPath) {
-		File example = new File(iwantWsRoot,
-				"essential/iwant-example-wsdef/src/main/java/" + javaPath);
+	private static String exampleJava(File essential, String javaPath) {
+		File example = new File(essential, "iwant-example-wsdef/src/main/java/"
+				+ javaPath);
 		return FileUtil.contentAsString(example);
 	}
 
-	static String exampleWsdefdef(File iwantWsRoot, String newPackage,
+	static String exampleWsdefdef(File essential, String newPackage,
 			String newName, String wsName, String wsdefClassName) {
-		String src = exampleJava(iwantWsRoot,
+		String src = exampleJava(essential,
 				"com/example/wsdefdef/WorkspaceProvider.java");
 		String out = src.replaceFirst("package.*;", "package " + newPackage
 				+ ";");
@@ -25,10 +25,9 @@ class ExampleWsDefGenerator {
 		return out;
 	}
 
-	public static String exampleWsdef(File iwantWsRoot, String newPackage,
+	public static String exampleWsdef(File essential, String newPackage,
 			String newName) {
-		String src = exampleJava(iwantWsRoot,
-				"com/example/wsdef/Workspace.java");
+		String src = exampleJava(essential, "com/example/wsdef/Workspace.java");
 		return src.replaceFirst("package.*;", "package " + newPackage + ";")
 				.replaceFirst("class Workspace ", "class " + newName + " ");
 	}

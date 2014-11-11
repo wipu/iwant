@@ -31,7 +31,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		b.append("  }\n");
 		b.append("}\n");
 
-		testArea.hasFile("essential/iwant-example-wsdef/src/main/java/"
+		testArea.hasFile("iwant-example-wsdef/src/main/java/"
 				+ "com/example/wsdefdef/WorkspaceProvider.java", b.toString());
 
 		String actualWsdefdef = ExampleWsDefGenerator.exampleWsdefdef(
@@ -47,7 +47,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 
 	private void assertChangeWsdefTo(String newPackage, String newName) {
 		testArea.hasFile(
-				"essential/iwant-example-wsdef/src/main/java/"
+				"iwant-example-wsdef/src/main/java/"
 						+ "com/example/wsdef/Workspace.java",
 				"package com.example.wsdef;\n"
 						+ "public class Workspace implements IwantWorkspace {\n}\n");

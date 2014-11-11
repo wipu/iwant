@@ -51,7 +51,7 @@ public class Iwant3Test extends TestCase {
 						+ "iwant-from=http://localhost/not-needed-here\n");
 		network = new IwantNetworkMock(testArea);
 		combinedIwantSrc = new File(testArea.root(), "combined-iwant-src");
-		iwantEssential = new File(IwantWsRootFinder.mockWsRoot(), "essential");
+		iwantEssential = IwantWsRootFinder.mockEssential();
 		network.cachesAt(new CombinedSrcFromUnmodifiableIwantEssential(
 				iwantEssential), combinedIwantSrc);
 		iwant3 = Iwant3.using(network, iwantEssential);

@@ -1252,6 +1252,13 @@
       + reproduce with remote tutorial
         + fix url in svn:external
       - fix bug
+        * not good to find wsroot, since subdir "essential" is named
+          "essential@REV" when exported from svn
+        + replace wsroot finding with essential finding
+          * mock wsroot still needed
+          * actually, a test bug caused by introducing "essential"
+            was now found and fixed (assert file does NOT exist) 
+        - verify
 
 - As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
   + use the -source javac option

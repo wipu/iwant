@@ -110,8 +110,7 @@ public class Iwant2Test extends TestCase {
 	}
 
 	public void testIwant2CompilesIwantAndCallsIwant3() throws Exception {
-		File iwantEssential = new File(IwantWsRootFinder.mockWsRoot(),
-				"essential");
+		File iwantEssential = IwantWsRootFinder.mockEssential();
 		network.cachesAt(new ClassesFromUnmodifiableIwantEssential(
 				iwantEssential), "all-iwant-classes");
 
@@ -123,8 +122,7 @@ public class Iwant2Test extends TestCase {
 	}
 
 	public void testIwant2CallsIwant3UsingCorrectClasspath() throws Exception {
-		File iwantEssential = new File(IwantWsRootFinder.mockWsRoot(),
-				"essential");
+		File iwantEssential = IwantWsRootFinder.mockEssential();
 		network.cachesAt(new ClassesFromUnmodifiableIwantEssential(
 				iwantEssential), "all-iwant-classes");
 
@@ -138,8 +136,7 @@ public class Iwant2Test extends TestCase {
 	}
 
 	public void testIwant2CompilesIwantWithDebugInformation() throws Exception {
-		File iwantEssential = new File(IwantWsRootFinder.mockWsRoot(),
-				"essential");
+		File iwantEssential = IwantWsRootFinder.mockEssential();
 		network.cachesAt(new ClassesFromUnmodifiableIwantEssential(
 				iwantEssential), "all-iwant-classes");
 

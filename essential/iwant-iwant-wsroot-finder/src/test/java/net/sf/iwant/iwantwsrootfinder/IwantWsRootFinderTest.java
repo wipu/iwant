@@ -10,7 +10,7 @@ import org.apache.commons.io.FileUtils;
 public class IwantWsRootFinderTest extends TestCase {
 
 	public void testKnownFileIsFoundUnderWsRoot() throws IOException {
-		File wsInfo = new File(IwantWsRootFinder.wsRoot(),
+		File wsInfo = new File(IwantWsRootFinder.essential().getParentFile(),
 				"as-iwant-developer/i-have/conf/ws-info");
 
 		assertTrue(wsInfo.exists());
@@ -18,9 +18,9 @@ public class IwantWsRootFinderTest extends TestCase {
 				.contains("WSNAME=iwant\n"));
 	}
 
-	public void testKnownFileIsFoundUnderMockWsRoot() throws IOException {
-		File mockedApiWsdef = new File(IwantWsRootFinder.mockWsRoot(),
-				"essential/iwant-api-wsdef/src/main/java/"
+	public void testKnownFileIsFoundUnderMockEssential() throws IOException {
+		File mockedApiWsdef = new File(IwantWsRootFinder.mockEssential(),
+				"iwant-api-wsdef/src/main/java/"
 						+ "net/sf/iwant/api/wsdef/MockedApiWsdef.java");
 
 		assertTrue(mockedApiWsdef.exists());

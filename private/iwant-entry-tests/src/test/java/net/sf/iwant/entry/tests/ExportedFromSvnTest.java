@@ -63,7 +63,7 @@ public class ExportedFromSvnTest extends TestCase {
 	}
 
 	public void testExportReturnsDifferentFileFromSourceWithCorrectContent() {
-		File remote = IwantWsRootFinder.mockWsRoot();
+		File remote = IwantWsRootFinder.mockEssential();
 		URL remoteUrl = Iwant.fileToUrl(remote);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
 		network.cachesUrlAt(remoteUrl, "svn-exported");
@@ -71,15 +71,15 @@ public class ExportedFromSvnTest extends TestCase {
 		File exported = iwant.exportedFromSvn(remoteUrl, true);
 
 		assertFalse(exported.equals(remote));
-		assertTrue(new File(exported, "essential/iwant-entry2/src/main/java/"
+		assertTrue(new File(exported, "iwant-entry2/src/main/java/"
 				+ "net/sf/iwant/entry2/Iwant2.java").exists());
 		assertTrue(new File(exported,
-				"essential/iwant-entry/as-some-developer/with/java/"
+				"iwant-entry/as-some-developer/with/java/"
 						+ "net/sf/iwant/entry/Iwant.java").exists());
 	}
 
 	public void testExportIsDoneFromFileEvenWithoutReExportPermissionWhenLocalDoesNotExist() {
-		File remote = IwantWsRootFinder.mockWsRoot();
+		File remote = IwantWsRootFinder.mockEssential();
 		URL remoteUrl = Iwant.fileToUrl(remote);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
 		network.cachesUrlAt(remoteUrl, "svn-exported");
@@ -87,10 +87,10 @@ public class ExportedFromSvnTest extends TestCase {
 		File exported = iwant.exportedFromSvn(remoteUrl, false);
 
 		assertFalse(exported.equals(remote));
-		assertTrue(new File(exported, "essential/iwant-entry2/src/main/java/"
+		assertTrue(new File(exported, "iwant-entry2/src/main/java/"
 				+ "net/sf/iwant/entry2/Iwant2.java").exists());
 		assertTrue(new File(exported,
-				"essential/iwant-entry/as-some-developer/with/java/"
+				"iwant-entry/as-some-developer/with/java/"
 						+ "net/sf/iwant/entry/Iwant.java").exists());
 	}
 
@@ -136,7 +136,7 @@ public class ExportedFromSvnTest extends TestCase {
 	 * each time for change to be effective.
 	 */
 	public void testExportIsRedoneIfUrlSchemeIsFile() throws IOException {
-		File remote = IwantWsRootFinder.mockWsRoot();
+		File remote = IwantWsRootFinder.mockEssential();
 		URL remoteUrl = Iwant.fileToUrl(remote);
 		File exported = testArea.newDir("exported");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exported);
@@ -149,9 +149,8 @@ public class ExportedFromSvnTest extends TestCase {
 				exportedAgain.getCanonicalPath());
 
 		assertFalse(previouslyExportedFile.exists());
-		assertTrue(new File(exportedAgain,
-				"essential/iwant-entry2/src/main/java/"
-						+ "net/sf/iwant/entry2/Iwant2.java").exists());
+		assertTrue(new File(exportedAgain, "iwant-entry2/src/main/java/"
+				+ "net/sf/iwant/entry2/Iwant2.java").exists());
 	}
 
 	/**
@@ -160,7 +159,7 @@ public class ExportedFromSvnTest extends TestCase {
 	 */
 	public void testExportIsNotRedoneEvenIfUrlSchemeIsFileWhenReExportDisabled()
 			throws IOException {
-		File remote = IwantWsRootFinder.mockWsRoot();
+		File remote = IwantWsRootFinder.mockEssential();
 		URL remoteUrl = Iwant.fileToUrl(remote);
 		File exported = testArea.newDir("exported");
 		network.cachesAt(new UnmodifiableUrl(remoteUrl), exported);

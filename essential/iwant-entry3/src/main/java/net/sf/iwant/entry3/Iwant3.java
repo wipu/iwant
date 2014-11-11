@@ -213,19 +213,19 @@ public class Iwant3 {
 
 	private static IwantException createExampleWsdefdefAndWsdef(File asSomeone,
 			File iHave, WsInfo wsInfo) {
-		File iwantWsRoot = IwantWsRootFinder.wsRoot();
+		File essential = IwantWsRootFinder.essential();
 		String wsDefPackage = ExampleWsDefGenerator.proposedWsdefPackage(wsInfo
 				.wsdefdefPackage());
 		String wsDefName = ExampleWsDefGenerator.proposedWsdefSimpleName(wsInfo
 				.wsName());
 		FileUtil.newTextFile(wsInfo.wsdefdefJava(), ExampleWsDefGenerator
-				.exampleWsdefdef(iwantWsRoot, wsInfo.wsdefdefPackage(),
+				.exampleWsdefdef(essential, wsInfo.wsdefdefPackage(),
 						wsInfo.wsdefdefClassSimpleName(), wsInfo.wsName(),
 						wsDefPackage + "." + wsDefName));
 		File wsDefJava = new File(iHave, "/wsdef/src/main/java" + "/"
 				+ wsDefPackage.replace(".", "/") + "/" + wsDefName + ".java");
 		FileUtil.newTextFile(wsDefJava, ExampleWsDefGenerator.exampleWsdef(
-				iwantWsRoot, wsDefPackage, wsDefName));
+				essential, wsDefPackage, wsDefName));
 		// TODO it's a bit ugly to create dummy target and side-effect just to
 		// get proper names for wish scripts:
 		HelloSideEffect stubEclipseSettingsSe = new HelloSideEffect(
