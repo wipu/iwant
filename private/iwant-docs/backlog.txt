@@ -1350,7 +1350,20 @@
     - derive idea from some objects explained in English
     - tell same in java 
     - define Source and Target
-  - explain why side-effect needed, as different concept  
+  - explain why side-effect needed, as different concept
+  - prerequisites for tutorial
+    - understand basic shell
+      - some grepping
+      - xargs cat for displaying target content
+  - more beef to tutorial
+    - mention eclipse settings when wizard mentions them
+  - good order for explaining things in tutorial
+    * like this
+      * basics
+      * java modules
+      * advanced
+    - from separate story: javamodules
+    - ext libs in wsdef to advanced, not in the beginning  
 
 - As @buildscriptauthor I want classes excluded from jacoco report by classname pattern so my special classes e.g. configuration does not affect the result
   * offline instrumentation required, a bigger change to the way we use jacoco
