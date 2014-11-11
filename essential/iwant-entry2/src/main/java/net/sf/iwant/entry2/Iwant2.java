@@ -62,7 +62,7 @@ public class Iwant2 {
 		File allIwantClasses = allIwantClasses(iwantEssential);
 
 		File wsRootMarker = new File(iwantEssential, "iwant-wsroot-marker");
-
+		Iwant.fileLog("iwant-wsroot-marker=" + wsRootMarker);
 		List<File> classLocations = Arrays
 				.asList(wsRootMarker, allIwantClasses);
 

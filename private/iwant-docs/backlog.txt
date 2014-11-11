@@ -1247,6 +1247,9 @@
   + also change module name from WS-workspace to WS-wsdef
   + fix module names in tutorial wsdefdefs
   - real test
+    - fix: example wsdef creation fails
+      + log wsroot marker
+      - reproduce with remote tutorial
 
 - As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
   + use the -source javac option
@@ -1332,6 +1335,13 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptauthor and @buildscriptauthor I want the core concepts explained in the tutorial so I'll be able to write and use build programs
+  - explain declarative dep graph of Paths
+    - derive idea from some objects explained in English
+    - tell same in java 
+    - define Source and Target
+  - explain why side-effect needed, as different concept  
 
 - As @buildscriptauthor I want classes excluded from jacoco report by classname pattern so my special classes e.g. configuration does not affect the result
   * offline instrumentation required, a bigger change to the way we use jacoco
