@@ -41,4 +41,16 @@ public class FromRepositoryTest extends TestCase {
 		assertNull(findbugs139.md5());
 	}
 
+	public void testDotsInGroupTurnIntoSlashes() {
+		assertEquals("http://mirrors.ibiblio.org/maven2/"
+				+ "org/apache/ant/ant/1.7.1/ant-1.7.1.jar", FromRepository
+				.ibiblio().group("org.apache.ant").name("ant").version("1.7.1")
+				.url().toString());
+		assertEquals("http://repo1.maven.org/maven2/"
+				+ "com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9.jar",
+				FromRepository.repo1MavenOrg()
+						.group("com.google.code.findbugs").name("findbugs")
+						.version("1.3.9").url().toExternalForm());
+	}
+
 }

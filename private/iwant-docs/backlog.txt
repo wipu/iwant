@@ -1228,6 +1228,9 @@
 
 + As @buildscriptauthor I want eclipse-settings and side-effects mentioned in the wizard help output so I know to use them if I need/want
 
++ As @buildscriptauthor I want FromRepository to accept group with dots instead of slashes because that's how it's documented in pom.xmls
+  * of course, keeping support for slashes
+
 #################################################################
 = In progress
 #################################################################

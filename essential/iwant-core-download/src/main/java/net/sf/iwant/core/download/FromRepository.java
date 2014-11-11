@@ -25,7 +25,7 @@ public class FromRepository {
 		}
 
 		public ArtifactName group(String group) {
-			this.group = group;
+			this.group = group.replace(".", "/");
 			return new ArtifactName();
 		}
 
