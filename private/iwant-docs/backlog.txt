@@ -1231,11 +1231,7 @@
 + As @buildscriptauthor I want FromRepository to accept group with dots instead of slashes because that's how it's documented in pom.xmls
   * of course, keeping support for slashes
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I want the created wsdef package and classname to match the values given in ws-info so I most probably has less to modify afterwards 
++ As @buildscriptauthor I want the created wsdef package and classname to match the values given in ws-info so I most probably has less to modify afterwards 
   + also put WS name to proposed provider class
   + refactor: build proposed package and name in dedicated methods
   + deduce package and name proposal
@@ -1246,19 +1242,23 @@
   + fix name: WsInfo.wsdefClass -> wsdefdefClass 
   + also change module name from WS-workspace to WS-wsdef
   + fix module names in tutorial wsdefdefs
-  - real test
-    - fix: example wsdef creation fails
+  + real test
+    + fix: example wsdef creation fails
       + log wsroot marker
       + reproduce with remote tutorial
         + fix url in svn:external
-      - fix bug
+      + fix bug
         * not good to find wsroot, since subdir "essential" is named
           "essential@REV" when exported from svn
         + replace wsroot finding with essential finding
           * mock wsroot still needed
           * actually, a test bug caused by introducing "essential"
             was now found and fixed (assert file does NOT exist) 
-        - verify
+        + verify
+
+#################################################################
+= In progress
+#################################################################
 
 - As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
   + use the -source javac option

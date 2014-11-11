@@ -1,6 +1,6 @@
 doc-content() {
 
-local REV_TO_TEST=730
+local REV_TO_TEST=732
 
 p "Let's create a local svn repository and check it out."
 
