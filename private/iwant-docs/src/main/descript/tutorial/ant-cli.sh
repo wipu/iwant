@@ -6,10 +6,10 @@ p "In addition to the shell user interface there is also an ant interface. It is
 
 cmd "cd as-iwant-tutorial-developer/with/ant/iw"
 
-p "Here we modify the time to keep this tutorial reproducible."
+p "Here we filter out the time to keep this tutorial reproducible."
 
-cmde "0 0" "ant | sed 's/[0-9]* second/\?/'"
-cmde "0 0" "ant -Dwish=list-of/targets | sed 's/[0-9]* second/\?/'"
-cmde "0 0" "ant -Dwish=target/hello/as-path | sed 's/[0-9]* second/\?/'"
+cmde "0 0" "ant | grep -v '^Total time:'"
+cmde "0 0" "ant -Dwish=list-of/targets | grep -v '^Total time:'"
+cmde "0 0" "ant -Dwish=target/hello/as-path | grep -v '^Total time:'"
 
 }
