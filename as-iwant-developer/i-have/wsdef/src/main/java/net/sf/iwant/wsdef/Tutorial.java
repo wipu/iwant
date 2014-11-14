@@ -28,6 +28,8 @@ public class Tutorial extends Target {
 		pages.add(bootstrappingDoc);
 		this.styleCss = Source
 				.underWsroot("private/iwant-docs/src/main/html/website/style.css");
+		pages.add(new Descripted(namePrefix, "concepts-intro",
+				"Introduction of concepts", tutorialWsdefSrc(), null, null));
 		this.creatingWsdefDoc = new Descripted(namePrefix, "creating-wsdef",
 				"Creating the workspace definition", tutorialWsdefSrc(), null,
 				bootstrappingDoc);

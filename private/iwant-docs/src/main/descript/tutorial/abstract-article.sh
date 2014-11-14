@@ -54,3 +54,18 @@ def-edit() {
     without-subpackage "$NAME" |
     edit as-iwant-tutorial-developer/i-have/${TYPE}/src/main/java/com/example/$TYPE/${CLASS}.java "$TYPE-$NAME"
 }
+
+tutorial-inline-snippets() {
+  cat "$IWANT_TUTORIAL_WSDEF_SRC/net/sf/iwant/tutorial/TutorialInlineSnippets.java"
+}
+
+# this depends a lot on eclipse formatting
+inline-snippet() {
+  local NAME=$1
+  html "<div class='java-snippet'>"
+  tutorial-inline-snippets |
+    sed -n -e '/\tvoid '$NAME'/,/\t}/ p' |
+    tail -n +2  | head -n -1 | sed 's/^\t\t//' |
+    to-article
+  html "</div>"
+}

@@ -1347,8 +1347,13 @@
 
 - As @buildscriptauthor and @buildscriptauthor I want the core concepts explained in the tutorial so I'll be able to write and use build programs
   - explain declarative dep graph of Paths
-    - derive idea from some objects explained in English
-    - tell same in java 
+    + derive idea from some objects explained in English
+      + page
+      + text
+    + tell same in java 
+      + code snippets from java to page (so guaranteed to compile)
+      + css for code snippets
+      + text
     - define Source and Target
   - explain why side-effect needed, as different concept
   - prerequisites for tutorial

@@ -14,3 +14,4 @@ div.line {white-space:pre;margin-bottom:1px;min-height:1em;}
 div.add  {background-color: #def9de;;}
 div.del  {background-color: #f9dede;; text-decoration:line-through;}
 div.keep {background-color: #ffffff;;}
+div.java-snippet {border-style:solid; border-width:1px; border-color: #d0d0d0;; padding:2px; font-family:monospace; white-space:pre; margin-left:30px; width:42em;}
