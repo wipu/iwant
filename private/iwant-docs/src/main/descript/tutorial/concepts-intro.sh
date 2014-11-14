@@ -1,6 +1,6 @@
 subsec() {
   local TITLE=$1
-  html "<h2>$TITLE</h2>"
+  html "<h3>$TITLE</h3>"
 }
 
 humanquote() {
