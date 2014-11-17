@@ -1260,6 +1260,11 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want bootstrapper to be less verbose when svn exporting so I can concentrate on the essentials
+  * also I want to minimize the "| grep" tricks to minimize the tutorial
+  + do the change
+  - verify in tutorial
+
 - As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
   + use the -source javac option
   + fix all diamond warnings

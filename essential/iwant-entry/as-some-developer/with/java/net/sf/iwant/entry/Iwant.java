@@ -838,8 +838,6 @@ public class Iwant {
 					return exported;
 				}
 			}
-			debugLog("svn-exported", url);
-			log("svn-exported", exported);
 			svnExport(url, exported);
 			return exported;
 		} catch (RuntimeException e) {
@@ -850,6 +848,8 @@ public class Iwant {
 	}
 
 	public void svnExport(URL from, File to) {
+		// TODO use a log method here:
+		System.err.println("svn exporting (may take a while) " + from);
 		try {
 			String urlString = from.toExternalForm();
 			if (isFile(from)) {
@@ -860,7 +860,7 @@ public class Iwant {
 			List<File> svnkitJars = Arrays.asList(svnkitLib.listFiles());
 			enableHttpProxy();
 			runJavaMain(true, false, "org.tmatesoft.svn.cli.SVN", svnkitJars,
-					"export", urlString, to.getCanonicalPath());
+					"export", "-q", urlString, to.getCanonicalPath());
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {

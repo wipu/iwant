@@ -12,7 +12,7 @@ cmde 1 'as-iwant-tutorial-developer/with/bash/iwant/help.sh'
 edit as-iwant-tutorial-developer/i-have/conf/iwant-from "local-iwant-from" <<EOF
 iwant-from=file://$LOCAL_IWANT_WSROOT
 EOF
-cmde "1 0" "as-iwant-tutorial-developer/with/bash/iwant/help.sh 2>&1 | grep -v '^A '"
+cmde "1" "as-iwant-tutorial-developer/with/bash/iwant/help.sh 2>&1"
 
 p "This is an optimization for this tutorial:"
 
