@@ -1356,6 +1356,7 @@
       + text
     - define Source and Target
   - explain why side-effect needed, as different concept
+  - concepts before bootstrapping
   - prerequisites for tutorial
     - understand basic shell
       - some grepping
