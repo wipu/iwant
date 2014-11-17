@@ -1256,14 +1256,50 @@
             was now found and fixed (assert file does NOT exist) 
         + verify
 
++ As @buildscriptauthor I want bootstrapper to be less verbose when svn exporting so I can concentrate on the essentials
+  * also I want to minimize the "| grep" tricks to minimize the tutorial
+  + do the change
+  + verify in tutorial
+
 #################################################################
 = In progress
 #################################################################
 
-- As @buildscriptauthor I want bootstrapper to be less verbose when svn exporting so I can concentrate on the essentials
-  * also I want to minimize the "| grep" tricks to minimize the tutorial
-  + do the change
-  - verify in tutorial
+- As @buildscriptauthor and @buildscriptauthor I want the core concepts explained in the tutorial so I'll be able to write and use build programs
+  - explain declarative dep graph of Paths
+    + derive idea from some objects explained in English
+      + page
+      + text
+    + tell same in java 
+      + code snippets from java to page (so guaranteed to compile)
+      + css for code snippets
+      + text
+    - define Source and Target
+  - explain why side-effect needed, as different concept
+  - concepts before bootstrapping
+  - prerequisites for tutorial
+    - understand basic shell
+      - some grepping
+      - xargs cat for displaying target content
+  - bootstrapping and the ui
+    - high-level descr
+      - bash and ant
+      - ant not only for interactive but also for eclipse etc
+    - simplest: svn co bs
+    - "if this is all you want to know, click (here) to use iwant"
+    - alternatives
+      - svn externals
+      - iwant-iwant.sh
+  - more beef to tutorial
+    - mention eclipse settings when wizard mentions them
+    - wish scripts, tab is your friend
+  - good order for explaining things in tutorial
+    * like this
+      * basics
+      * java modules
+      * advanced
+    - from separate story: javamodules
+    - ext libs in wsdef to advanced, not in the beginning  
 
 - As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
   + use the -source javac option
@@ -1349,42 +1385,6 @@
 #################################################################
 = Planned
 #################################################################
-
-- As @buildscriptauthor and @buildscriptauthor I want the core concepts explained in the tutorial so I'll be able to write and use build programs
-  - explain declarative dep graph of Paths
-    + derive idea from some objects explained in English
-      + page
-      + text
-    + tell same in java 
-      + code snippets from java to page (so guaranteed to compile)
-      + css for code snippets
-      + text
-    - define Source and Target
-  - explain why side-effect needed, as different concept
-  - concepts before bootstrapping
-  - prerequisites for tutorial
-    - understand basic shell
-      - some grepping
-      - xargs cat for displaying target content
-  - bootstrapping and the ui
-    - high-level descr
-      - bash and ant
-      - ant not only for interactive but also for eclipse etc
-    - simplest: svn co bs
-    - "if this is all you want to know, click (here) to use iwant"
-    - alternatives
-      - svn externals
-      - iwant-iwant.sh
-  - more beef to tutorial
-    - mention eclipse settings when wizard mentions them
-    - wish scripts, tab is your friend
-  - good order for explaining things in tutorial
-    * like this
-      * basics
-      * java modules
-      * advanced
-    - from separate story: javamodules
-    - ext libs in wsdef to advanced, not in the beginning  
 
 - As @buildscriptauthor I want classes excluded from jacoco report by classname pattern so my special classes e.g. configuration does not affect the result
   * offline instrumentation required, a bigger change to the way we use jacoco
