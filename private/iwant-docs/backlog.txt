@@ -1360,8 +1360,18 @@
     - understand basic shell
       - some grepping
       - xargs cat for displaying target content
+  - bootstrapping and the ui
+    - high-level descr
+      - bash and ant
+      - ant not only for interactive but also for eclipse etc
+    - simplest: svn co bs
+    - "if this is all you want to know, click (here) to use iwant"
+    - alternatives
+      - svn externals
+      - iwant-iwant.sh
   - more beef to tutorial
     - mention eclipse settings when wizard mentions them
+    - wish scripts, tab is your friend
   - good order for explaining things in tutorial
     * like this
       * basics
