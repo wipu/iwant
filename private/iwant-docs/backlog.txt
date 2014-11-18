@@ -1274,8 +1274,9 @@
       + code snippets from java to page (so guaranteed to compile)
       + css for code snippets
       + text
-    - define Source and Target
-  - explain why side-effect needed, as different concept
+    + define Source and Target, ingredients
+  + explain why side-effect needed, as different concept
+  + proper class ('text') for raw p elements
   - concepts before bootstrapping
   - prerequisites for tutorial
     - understand basic shell
@@ -1299,7 +1300,9 @@
       * java modules
       * advanced
     - from separate story: javamodules
-    - ext libs in wsdef to advanced, not in the beginning  
+    - ext libs in wsdef to advanced, not in the beginning
+  - writing own targets and side-effects
+    - content descriptor, ingredients  
 
 - As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
   + use the -source javac option

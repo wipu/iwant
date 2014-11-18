@@ -2,27 +2,23 @@ package net.sf.iwant.tutorial;
 
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.Target;
 import net.sf.iwant.plugin.ant.Jar;
 
 public class TutorialInlineSnippets {
 
-	@SuppressWarnings("unused")
-	private Jar coolAppJar;
-	private Source coolAppMainJava;
-	private JavaClasses coolAppMainClasses;
+	/* snippet-start coolAppMainJava */
+	Source coolAppMainJava = Source.underWsroot("cool-app/src/main/java");
+	/* snippet-end coolAppMainJava */
 
-	void coolAppJar() {
-		coolAppJar = Jar.with().name("cool-app.jar")
-				.classes(coolAppMainClasses).end();
-	}
+	/* snippet-start coolAppMainClasses */
+	Target coolAppMainClasses = JavaClasses.with()
+			.name("cool-app-main-classes").srcDirs(coolAppMainJava).end();
+	/* snippet-end coolAppMainClasses */
 
-	void coolAppClasses() {
-		coolAppMainClasses = JavaClasses.with().name("cool-app-main-classes")
-				.srcDirs(coolAppMainJava).end();
-	}
-
-	void coolAppJava() {
-		coolAppMainJava = Source.underWsroot("cool-app/src/main/java");
-	}
+	/* snippet-start coolAppJar */
+	Target coolAppJar = Jar.with().name("cool-app.jar")
+			.classes(coolAppMainClasses).end();
+	/* snippet-end coolAppJar */
 
 }

@@ -64,8 +64,8 @@ inline-snippet() {
   local NAME=$1
   html "<div class='java-snippet'>"
   tutorial-inline-snippets |
-    sed -n -e '/\tvoid '$NAME'/,/\t}/ p' |
-    tail -n +2  | head -n -1 | sed 's/^\t\t//' |
+    sed -n -e '/snippet-start '$NAME'/,/snippet-end '$NAME'/ p' |
+    tail -n +2  | head -n -1 | sed 's/^\t//' |
     to-article
   html "</div>"
 }
