@@ -52,7 +52,7 @@ public class IwantModules extends JavaModules {
 	 */
 	private JavaModule ant = JavaBinModule.providing(
 			FromRepository.ibiblio().group("org/apache/ant").name("ant")
-					.version("1.7.1")).end();
+					.version("1.9.4")).end();
 
 	/**
 	 * TODO reuse with TestedIwantDependencies
@@ -61,7 +61,7 @@ public class IwantModules extends JavaModules {
 	 */
 	private JavaModule antLauncher = JavaBinModule.providing(
 			FromRepository.ibiblio().group("org/apache/ant")
-					.name("ant-launcher").version("1.7.1")).end();
+					.name("ant-launcher").version("1.9.4")).end();
 
 	private JavaModule asm = JavaBinModule.providing(
 			FromRepository.ibiblio().group("asm").name("asm").version("3.2"))

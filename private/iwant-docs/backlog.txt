@@ -1271,7 +1271,7 @@
 - As @developer I want the ant output "Total time" lines away from the tutorial so it will be reproducible
   * also: as @buildscriptuser I want compact ant output so the tutorial will be easier to read
   + upgrade ant in tested deps
-  - upgrade ant for own build of iwant
+  + upgrade ant for own build of iwant
   - add -S to all ant calls
     - AntGenerated
     - commands in tutorial
