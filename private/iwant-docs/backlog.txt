@@ -1272,7 +1272,9 @@
   * also: as @buildscriptuser I want compact ant output so the tutorial will be easier to read
   + upgrade ant in tested deps
   + upgrade ant for own build of iwant
-  - add -S to all ant calls
+  (- add -S to all ant calls
+     * argh: that suppresses output from java executed by <java>)
+  - pass own logger to ant calls
     - AntGenerated
     - commands in tutorial
   - remove unnecessary grep -v's in tutorial
