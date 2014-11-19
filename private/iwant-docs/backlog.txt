@@ -1261,6 +1261,9 @@
   + do the change
   + verify in tutorial
 
++ As @buildscriptauthor I want to fluently define a directory with subdirectories and copies of paths so I don't need to write a new Target implementation for example for distributions 
+  + tdd Directory
+
 #################################################################
 = In progress
 #################################################################
