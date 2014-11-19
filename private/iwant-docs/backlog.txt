@@ -1268,6 +1268,15 @@
 = In progress
 #################################################################
 
+- As @developer I want the ant output "Total time" lines away from the tutorial so it will be reproducible
+  * also: as @buildscriptuser I want compact ant output so the tutorial will be easier to read
+  + upgrade ant in tested deps
+  - upgrade ant for own build of iwant
+  - add -S to all ant calls
+    - AntGenerated
+    - commands in tutorial
+  - remove unnecessary grep -v's in tutorial
+
 - As @buildscriptauthor and @buildscriptauthor I want the core concepts explained in the tutorial so I'll be able to write and use build programs
   - explain declarative dep graph of Paths
     + derive idea from some objects explained in English

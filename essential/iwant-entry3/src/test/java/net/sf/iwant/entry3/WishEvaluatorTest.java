@@ -876,8 +876,8 @@ public class WishEvaluatorTest extends TestCase {
 
 		assertEquals("ant-plugin-print mutating.\n"
 				+ "ant-plugin modules: [iwant-plugin-ant,"
-				+ " mock-iwant-classes, ant-1.7.1.jar,"
-				+ " ant-launcher-1.7.1.jar]", err.toString());
+				+ " mock-iwant-classes, ant-1.9.4.jar,"
+				+ " ant-launcher-1.9.4.jar]", err.toString());
 	}
 
 }

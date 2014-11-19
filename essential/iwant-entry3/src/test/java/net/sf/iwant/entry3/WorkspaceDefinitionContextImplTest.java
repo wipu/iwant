@@ -59,8 +59,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		assertEquals("iwant-plugin-ant", iterator.next().name());
 		assertSame(iwantApiModule1, iterator.next());
 		assertSame(iwantApiModule2, iterator.next());
-		assertEquals("ant-1.7.1.jar", iterator.next().name());
-		assertEquals("ant-launcher-1.7.1.jar", iterator.next().name());
+		assertEquals("ant-1.9.4.jar", iterator.next().name());
+		assertEquals("ant-launcher-1.9.4.jar", iterator.next().name());
 	}
 
 	public void testIwantPluginAntMainClassesHasCorrectCompilationClasspath() {
@@ -72,7 +72,7 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 
 		assertSame(iwantApiModule1.mainArtifact(), iterator.next());
 		assertSame(iwantApiModule2.mainArtifact(), iterator.next());
-		assertEquals("ant-1.7.1.jar", iterator.next().name());
+		assertEquals("ant-1.9.4.jar", iterator.next().name());
 	}
 
 	public void testIwantPluginAntMainJavaIsAnSvnExportFromIwantRepoPlugins() {
@@ -111,7 +111,7 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		Set<JavaModule> mods = ctx.iwantPlugin().pmd().withDependencies();
 
 		assertEquals("[iwant-plugin-pmd, iwant-api-1, iwant-api-2,"
-				+ " ant-1.7.1.jar, asm-3.2.jar, commons-io-1.3.2.jar,"
+				+ " ant-1.9.4.jar, asm-3.2.jar, commons-io-1.3.2.jar,"
 				+ " jaxen-1.1.4.jar, pmd-4.3.jar]", mods.toString());
 	}
 
@@ -119,23 +119,23 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		Set<JavaModule> mods = ctx.iwantPlugin().findbugs().withDependencies();
 
 		assertEquals("[iwant-plugin-findbugs, iwant-api-1, iwant-api-2,"
-				+ " commons-io-1.3.2.jar, iwant-plugin-ant, ant-1.7.1.jar,"
-				+ " ant-launcher-1.7.1.jar]", mods.toString());
+				+ " commons-io-1.3.2.jar, iwant-plugin-ant, ant-1.9.4.jar,"
+				+ " ant-launcher-1.9.4.jar]", mods.toString());
 	}
 
 	public void testIwantPluginGithubWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().github().withDependencies();
 
 		assertEquals("[iwant-plugin-github, iwant-api-1, iwant-api-2,"
-				+ " iwant-plugin-ant, ant-1.7.1.jar,"
-				+ " ant-launcher-1.7.1.jar]", mods.toString());
+				+ " iwant-plugin-ant, ant-1.9.4.jar,"
+				+ " ant-launcher-1.9.4.jar]", mods.toString());
 	}
 
 	public void testIwantPluginWarWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().war().withDependencies();
 
 		assertEquals(
-				"[iwant-plugin-war, iwant-api-1, iwant-api-2, ant-1.7.1.jar]",
+				"[iwant-plugin-war, iwant-api-1, iwant-api-2, ant-1.9.4.jar]",
 				mods.toString());
 	}
 
@@ -143,8 +143,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		Set<JavaModule> mods = ctx.iwantPlugin().jacoco().withDependencies();
 
 		assertEquals("[iwant-plugin-jacoco, iwant-api-1, iwant-api-2,"
-				+ " iwant-plugin-ant, ant-1.7.1.jar,"
-				+ " ant-launcher-1.7.1.jar, commons-io-1.3.2.jar]",
+				+ " iwant-plugin-ant, ant-1.9.4.jar,"
+				+ " ant-launcher-1.9.4.jar, commons-io-1.3.2.jar]",
 				mods.toString());
 	}
 
@@ -153,8 +153,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				.withDependencies();
 
 		assertEquals("[iwant-plugin-javamodules, iwant-api-1, iwant-api-2,"
-				+ " iwant-plugin-ant, ant-1.7.1.jar,"
-				+ " ant-launcher-1.7.1.jar]", mods.toString());
+				+ " iwant-plugin-ant, ant-1.9.4.jar,"
+				+ " ant-launcher-1.9.4.jar]", mods.toString());
 	}
 
 }

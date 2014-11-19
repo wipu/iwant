@@ -43,7 +43,7 @@ public class AntGeneratedTest extends IwantTestCase {
 				"net.sf.iwant.core.ant.AntGenerated {\n"
 						+ "  ant-jar:"
 						+ Iwant.IWANT_USER_DIR
-						+ "/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/org/apache/ant/ant/1.7.1/ant-1.7.1.jar\n"
+						+ "/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/org/apache/ant/ant/1.9.4/ant-1.9.4.jar\n"
 						+ "  script:script\n" + "}\n",
 				AntGenerated.with().name("minimal").antJars(antJar())
 						.script(Source.underWsroot("script")).end()

@@ -4,7 +4,7 @@ import net.sf.iwant.api.model.Path;
 
 public class TestedIwantDependencies {
 
-	private static final String ANT_VER = "1.7.1";
+	private static final String ANT_VER = "1.9.4";
 
 	public static Path antJar() {
 		return FromRepository.ibiblio().group("org/apache/ant").name("ant")
