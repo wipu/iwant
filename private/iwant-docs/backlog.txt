@@ -1385,7 +1385,7 @@
   + remote bootstrapping without svn:externals
     + tutorial takes list of bootstrapping pages
     + also: concepts explained before bootstrapping
-  - name other bootstrapping styles "alternatives"
+  + name other bootstrapping styles "alternatives"
   - high-level explanation of bootstrapping before all the
     bootstrapping options
   - bootstrapping with ant

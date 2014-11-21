@@ -147,7 +147,8 @@ public class Descripted extends Target {
 
 	@Override
 	public String contentDescriptor() {
-		return getClass().getCanonicalName() + ":" + ingredients();
+		return getClass().getCanonicalName() + ":" + ingredients() + docName
+				+ titleText;
 	}
 
 }

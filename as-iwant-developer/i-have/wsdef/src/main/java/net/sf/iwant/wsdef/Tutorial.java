@@ -76,8 +76,10 @@ public class Tutorial extends Target {
 		bs.add(new Descripted("", "bootstrapping",
 				"Acquiring iwant bootstrapper by checking it out",
 				tutorialWsdefSrc(), null, null));
-		bs.add(new Descripted("", "bootstrapping-with-svnexternals",
-				"Acquiring iwant bootstrapper by using svn:externals",
+		bs.add(new Descripted(
+				"",
+				"bootstrapping-with-svnexternals",
+				"Alternative: acquiring iwant bootstrapper by using svn:externals",
 				tutorialWsdefSrc(), null, null));
 		return new Tutorial("remote-", bs);
 	}
