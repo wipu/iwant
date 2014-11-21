@@ -21,15 +21,15 @@ public class Tutorial extends Target {
 	private final List<Descripted> pages = new ArrayList<>();
 	private final Path styleCss;
 
-	private Tutorial(String namePrefix, Descripted bootstrappingDoc) {
+	private Tutorial(String namePrefix, List<Descripted> bootstrappingDocs) {
 		super(namePrefix + "tutorial");
 		this.namePrefix = namePrefix;
-		this.bootstrappingDoc = bootstrappingDoc;
-		pages.add(bootstrappingDoc);
 		this.styleCss = Source
 				.underWsroot("private/iwant-docs/src/main/html/website/style.css");
 		pages.add(new Descripted(namePrefix, "concepts-intro",
 				"Introduction of concepts", tutorialWsdefSrc(), null, null));
+		this.bootstrappingDoc = bootstrappingDocs.get(0);
+		pages.addAll(bootstrappingDocs);
 		this.creatingWsdefDoc = new Descripted(namePrefix, "creating-wsdef",
 				"Creating the workspace definition", tutorialWsdefSrc(), null,
 				bootstrappingDoc);
@@ -62,20 +62,24 @@ public class Tutorial extends Target {
 	}
 
 	public static Tutorial local(Path copyOfLocalIwantWs) {
-		return new Tutorial(
-				"local-",
-				new Descripted(
-						"",
-						"bootstrapping-locally",
-						"Acquiring iwant bootstrapper by svn-exporting it from a local directory",
-						tutorialWsdefSrc(), copyOfLocalIwantWs, null));
+		List<Descripted> bs = new ArrayList<>();
+		bs.add(new Descripted(
+				"",
+				"bootstrapping-locally",
+				"Acquiring iwant bootstrapper by svn-exporting it from a local directory",
+				tutorialWsdefSrc(), copyOfLocalIwantWs, null));
+		return new Tutorial("local-", bs);
 	}
 
 	public static Tutorial remote() {
-		return new Tutorial("remote-", new Descripted("",
-				"bootstrapping-with-svnexternals",
+		List<Descripted> bs = new ArrayList<>();
+		bs.add(new Descripted("", "bootstrapping",
+				"Acquiring iwant bootstrapper by checking it out",
+				tutorialWsdefSrc(), null, null));
+		bs.add(new Descripted("", "bootstrapping-with-svnexternals",
 				"Acquiring iwant bootstrapper by using svn:externals",
 				tutorialWsdefSrc(), null, null));
+		return new Tutorial("remote-", bs);
 	}
 
 	private static Source tutorialWsdefSrc() {

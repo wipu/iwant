@@ -99,6 +99,8 @@ public class Descripted extends Target {
 				+ ctx.cached(tutorialWsdefSrc) + "\n");
 		if (iwantWsRoot != null) {
 			sh.append("export LOCAL_IWANT_WSROOT=" + iwantWsRoot + "\n");
+		} else {
+			sh.append("export REV_TO_TEST=748\n");
 		}
 		if (initialState != null) {
 			sh.append("export INITIAL_STATE=" + initialState + "\n");

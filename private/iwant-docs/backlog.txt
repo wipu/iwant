@@ -1382,8 +1382,13 @@
   + define descript doc title in one place (java) and use as html page
     title, section header and link text
   + links: prev, up, next
-  - bootstrapping without svn:externals
-  - bootstrapping with ant?
+  + remote bootstrapping without svn:externals
+    + tutorial takes list of bootstrapping pages
+    + also: concepts explained before bootstrapping
+  - bootstrapping with ant
+  - name other bootstrapping styles "alternatives"
+  - high-level explanation of bootstrapping before all the
+    bootstrapping options
   - remove the old files
     - refresh.sh
     - article.sh bootstrapping-with-ant.sh bootstrapping-with-bash.sh edits
