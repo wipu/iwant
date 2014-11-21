@@ -1386,6 +1386,12 @@
     + tutorial takes list of bootstrapping pages
     + also: concepts explained before bootstrapping
   + name other bootstrapping styles "alternatives"
+  + remove the old files
+    + refresh.sh
+    + article.sh
+    + bootstrapping-with-ant.sh
+    + bootstrapping-with-bash.sh
+    + edits
   - high-level explanation of bootstrapping before all the
     bootstrapping options
   - bootstrapping with ant
@@ -1397,12 +1403,6 @@
         - ant: ant -f /abs/.../build.xml -Dwish=...
       - make sure user-preferences printed for ant-cli users, too
     - mention in bootstrapping
-  - remove the old files
-    - refresh.sh
-    - article.sh
-    + bootstrapping-with-ant.sh
-    + bootstrapping-with-bash.sh
-    - edits
 
 #################################################################
 = Planned

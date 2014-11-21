@@ -1,4 +1,0 @@
-26c26
-<                 content(Constant.value("Constant generated content\n")).end();
----
->                 content(Constant.value("Modified constant content\n")).end();
