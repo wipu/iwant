@@ -1406,6 +1406,8 @@
       And having ant in cp of AntGenerated easily breaks things.)
   - so, easiest: add flag --deterministic-output to ant
     - feature request
+      + submitted: https://issues.apache.org/bugzilla/show_bug.cgi?id=57243
+      - take into use, if fixed 
     - patch?
   - remove unnecessary grep -v's in tutorial
 
