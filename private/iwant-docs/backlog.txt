@@ -1264,12 +1264,50 @@
 + As @buildscriptauthor I want to fluently define a directory with subdirectories and copies of paths so I don't need to write a new Target implementation for example for distributions 
   + tdd Directory
 
++ As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
+  * and also maintainability is increased
+  + bootstrapping from local iwant without versioning
+  + one common wsdef creation wizard tutorial
+    + cp -a given bootstrapped env
+    + create wsdef and wish hello
+  + bootstrapping with svn using svn:externals
+  + wsdef creation using both local and svnext
+    + make local create iwant-tutorial dir also, because svn version does
+    + in wsdef tutorial cd to iwant-tutorial
+    + in wsdef tutorial use iwant-tutorial as ws name
+    + another wsdef creation target
+  + hello world with eclipse
+    + continue from initial ws
+    + move eclipse settings and modification here
+  + tutorial directory with index page
+  + one tutorial document per nontrivial feature
+    + ext lib in wsdef
+    + antgenerated
+    + ant-cli
+    + scriptgenerated
+    + using-iwant-plugin-ant
+  + use style.css file from tutorial index and descript docs
+  + define descript doc title in one place (java) and use as html page
+    title, section header and link text
+  + links: prev, up, next
+  + remote bootstrapping without svn:externals
+    + tutorial takes list of bootstrapping pages
+    + also: concepts explained before bootstrapping
+  + name other bootstrapping styles "alternatives"
+  + remove the old files
+    + refresh.sh
+    + article.sh
+    + bootstrapping-with-ant.sh
+    + bootstrapping-with-bash.sh
+    + edits
+  + fix link to tutorial index
+
 #################################################################
 = In progress
 #################################################################
 
 - As @buildscriptauthor and @buildscriptauthor I want the core concepts explained in the tutorial so I'll be able to write and use build programs
-  - explain declarative dep graph of Paths
+  + explain declarative dep graph of Paths
     + derive idea from some objects explained in English
       + page
       + text
@@ -1280,23 +1318,35 @@
     + define Source and Target, ingredients
   + explain why side-effect needed, as different concept
   + proper class ('text') for raw p elements
-  - concepts before bootstrapping
+  + concepts before bootstrapping
   - prerequisites for tutorial
     - understand basic shell
       - some grepping
       - xargs cat for displaying target content
-  - bootstrapping and the ui
-    - high-level descr
-      - bash and ant
-      - ant not only for interactive but also for eclipse etc
-    - simplest: svn co bs
-    - "if this is all you want to know, click (here) to use iwant"
-    - alternatives
-      - svn externals
-      - iwant-iwant.sh
+  + bootstrapping and the ui
+    + high-level descr
+      + bash and ant
+    + simplest: svn co bs
+    + "if this is all you want to know, click (here) to use iwant"
+  - more text to creating wsdef
+  - bootstrapper alternatives
+    - svn externals
+      + cmds
+      - explanations
+    - iwant-iwant.sh
   - more beef to tutorial
     - mention eclipse settings when wizard mentions them
     - wish scripts, tab is your friend
+  - bootstrapping with ant and using ant
+    - ant not only for interactive but also for eclipse etc
+    - inline to ant-cli, one doc for the whole ant topic suffices
+    - help output (like older iwant did) to mention both bash and ant
+      - pass cli type from cli to java
+      - at empty wish, not only mention legal targets but whole wishes
+        - bash: /abs/iwant/{target,side-effect,list-of}/...
+        - ant: ant -f /abs/.../build.xml -Dwish=...
+      - make sure user-preferences printed for ant-cli users, too
+    + mention in bootstrapping
   - good order for explaining things in tutorial
     * like this
       * basics
@@ -1355,55 +1405,6 @@
   + and also a new concept: SubPath, because the github zip has a directory in it
   + descript to verify the actual effect
   - descript the real "so that": classes compiled from code from github
-
-- As @developer I want the tutorial defined by a set of iwant targets so I can split it for readers' convenience and speed
-  * and also maintainability is increased
-  + bootstrapping from local iwant without versioning
-  + one common wsdef creation wizard tutorial
-    + cp -a given bootstrapped env
-    + create wsdef and wish hello
-  + bootstrapping with svn using svn:externals
-  + wsdef creation using both local and svnext
-    + make local create iwant-tutorial dir also, because svn version does
-    + in wsdef tutorial cd to iwant-tutorial
-    + in wsdef tutorial use iwant-tutorial as ws name
-    + another wsdef creation target
-  + hello world with eclipse
-    + continue from initial ws
-    + move eclipse settings and modification here
-  + tutorial directory with index page
-  + one tutorial document per nontrivial feature
-    + ext lib in wsdef
-    + antgenerated
-    + ant-cli
-    + scriptgenerated
-    + using-iwant-plugin-ant
-  + use style.css file from tutorial index and descript docs
-  + define descript doc title in one place (java) and use as html page
-    title, section header and link text
-  + links: prev, up, next
-  + remote bootstrapping without svn:externals
-    + tutorial takes list of bootstrapping pages
-    + also: concepts explained before bootstrapping
-  + name other bootstrapping styles "alternatives"
-  + remove the old files
-    + refresh.sh
-    + article.sh
-    + bootstrapping-with-ant.sh
-    + bootstrapping-with-bash.sh
-    + edits
-  + fix link to tutorial index
-  - high-level explanation of bootstrapping before all the
-    bootstrapping options
-  - bootstrapping with ant
-    - inline to ant-cli, one doc for the whole ant topic suffices
-    - help output (like older iwant did) to mention both bash and ant
-      - pass cli type from cli to java
-      - at empty wish, not only mention legal targets but whole wishes
-        - bash: /abs/iwant/{target,side-effect,list-of}/...
-        - ant: ant -f /abs/.../build.xml -Dwish=...
-      - make sure user-preferences printed for ant-cli users, too
-    - mention in bootstrapping
 
 #################################################################
 = Planned

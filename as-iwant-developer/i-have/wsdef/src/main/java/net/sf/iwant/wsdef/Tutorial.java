@@ -74,7 +74,7 @@ public class Tutorial extends Target {
 	public static Tutorial remote() {
 		List<Descripted> bs = new ArrayList<>();
 		bs.add(new Descripted("", "bootstrapping",
-				"Acquiring iwant bootstrapper by checking it out",
+				"The command line interface and bootstrapping",
 				tutorialWsdefSrc(), null, null));
 		bs.add(new Descripted(
 				"",
