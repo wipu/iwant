@@ -1329,14 +1329,17 @@
     + simplest: svn co bs
     + "if this is all you want to know, click (here) to use iwant"
   - more text to creating wsdef
-  - bootstrapper alternatives
-    - svn externals
-      + cmds
-      - explanations
-    - iwant-iwant.sh
-  - more beef to tutorial
     - mention eclipse settings when wizard mentions them
     - wish scripts, tab is your friend
+  - bootstrapper alternatives
+    + svn externals
+      + cmds
+      + explanations
+    - iwant-iwant.sh
+      - publish the script
+      - tutorial: create iwant-from, svn co and use the script
+      - explain the idea: minimal amount of iwant text to commit to
+        project's own repo
   - bootstrapping with ant and using ant
     - ant not only for interactive but also for eclipse etc
     - inline to ant-cli, one doc for the whole ant topic suffices
