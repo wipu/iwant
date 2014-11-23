@@ -509,7 +509,7 @@ public class Iwant3Test extends TestCase {
 		assertEquals(cached + "\n", out());
 		assertEquals("", errIgnoringDebugLog());
 
-		assertEquals("hello from iwant", testArea.contentOf(cached));
+		assertEquals("hello from iwant\n", testArea.contentOf(cached));
 	}
 
 	public void testSideEffectEclipseSettingsEffectiveOfExampleWsDef()

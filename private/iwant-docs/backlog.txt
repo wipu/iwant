@@ -1333,10 +1333,13 @@
     + mention eclipse settings when wizard mentions them
     + wish scripts, tab is your friend
   - hello world with eclipse
-    - more text
-      - eclipse-settings, read what we have
-      - run list-of, hello
-    - more text to modify hello, rerun
+    + more text
+      + eclipse-settings, read what we have
+      + run list-of, hello
+      + newline after hellos, for out-was assertion (and otherwise also,
+        to show good example of the old good habit)
+    + more text to modify hello, rerun
+    - polish lang: less "now", for example
   - bootstrapper alternatives
     + svn externals
       + cmds

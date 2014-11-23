@@ -14,12 +14,12 @@ public class IwanttutorialWorkspace implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {
-		return Arrays.asList(new HelloTarget("hello", "hello from iwant"),
+		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),
 				hello2());
 	}
 
 	private static Target hello2() {
-		return new HelloTarget("hello2", "another target");
+		return new HelloTarget("hello2", "hello from my first target\n");
 	}
 
 	@Override

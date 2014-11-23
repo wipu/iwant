@@ -26,6 +26,7 @@ EOF
 
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/target/hello/as-path"
 out-was <<EOF
+(0/1 D! net.sf.iwant.api.core.HelloTarget hello)
 $CACHED_HELLO
 EOF
 

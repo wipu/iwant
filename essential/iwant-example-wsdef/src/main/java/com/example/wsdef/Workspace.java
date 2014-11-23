@@ -14,7 +14,7 @@ public class Workspace implements IwantWorkspace {
 
 	@Override
 	public List<? extends Target> targets() {
-		return Arrays.asList(new HelloTarget("hello", "hello from iwant"));
+		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"));
 	}
 
 	@Override
