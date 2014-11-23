@@ -176,7 +176,7 @@ public class Tutorial extends Target {
 		html.append("<a href='index.html'>");
 		html.append("^ Site index ^");
 		html.append("</a> | ");
-		html.append("<a href='index.html'>");
+		html.append("<a href='tutorial.html'>");
 		html.append("^ Tutorial index ^");
 		html.append("</a>");
 		if (next != null) {

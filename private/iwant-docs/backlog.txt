@@ -1392,6 +1392,7 @@
     + bootstrapping-with-ant.sh
     + bootstrapping-with-bash.sh
     + edits
+  + fix link to tutorial index
   - high-level explanation of bootstrapping before all the
     bootstrapping options
   - bootstrapping with ant
