@@ -146,7 +146,7 @@ public class Iwant3Test extends TestCase {
 		}
 	}
 
-	public void testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation()
+	public void testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation()
 			throws Exception {
 		testArea.hasFile(
 				"wsroot/as-example-developer/i-have/conf/ws-info",
@@ -186,7 +186,7 @@ public class Iwant3Test extends TestCase {
 
 	public void testIwant3AlsoCreatesWishScriptsForExampleWsDef()
 			throws Exception {
-		testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
 		// targets:
 		assertTrue(testArea.contentOf(
 				"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
@@ -314,7 +314,7 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testListOfTargetsOfExampleWsDef() throws Exception {
-		testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "list-of/targets");
@@ -324,7 +324,7 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testListOfSideEffectsOfExampleWsDef() throws Exception {
-		testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "list-of/side-effects");
@@ -500,7 +500,7 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testTargetHelloAsPathOfExampleWsDef() throws Exception {
-		testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "target/hello/as-path");
@@ -514,7 +514,7 @@ public class Iwant3Test extends TestCase {
 
 	public void testSideEffectEclipseSettingsEffectiveOfExampleWsDef()
 			throws Exception {
-		testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "side-effect/eclipse-settings/effective");
@@ -637,7 +637,7 @@ public class Iwant3Test extends TestCase {
 	 * Corresponds to calling help.sh once more
 	 */
 	public void testEmptyWishAfterCreationOfExampleWsDef() throws Exception {
-		testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
 		startOfOutAndErrCapture();
 
 		try {
@@ -730,7 +730,7 @@ public class Iwant3Test extends TestCase {
 
 	public void testListOfSideEffectsOfExampleWsDefWorksFromUnderSymbolicLinkOfWorkspace()
 			throws Exception {
-		testMissingWsdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
 		startOfOutAndErrCapture();
 
 		File symlinkToWsRoot = new File(testArea.root(), "symlink-to-wsroot");

@@ -35,10 +35,10 @@ public class Tutorial extends Target {
 				bootstrappingDoc);
 		pages.add(this.creatingWsdefDoc);
 
-		pages.add(pageAboutUsingWsdef("ant-cli",
-				"Using ant cli instead of bash"));
 		pages.add(pageAboutUsingWsdef("helloworld-with-eclipse",
 				"Hello world with Eclipse"));
+		pages.add(pageAboutUsingWsdef("ant-cli",
+				"Using ant cli instead of bash"));
 		pages.add(pageAboutUsingWsdef("ext-libs-in-wsdef",
 				"Using external libraries in workspace definition"));
 		pages.add(pageAboutUsingWsdef("antgenerated",

@@ -1328,9 +1328,15 @@
       + bash and ant
     + simplest: svn co bs
     + "if this is all you want to know, click (here) to use iwant"
-  - more text to creating wsdef
-    - mention eclipse settings when wizard mentions them
-    - wish scripts, tab is your friend
+  + more text to creating wsdef
+    + find what files we have after wizard
+    + mention eclipse settings when wizard mentions them
+    + wish scripts, tab is your friend
+  - hello world with eclipse
+    - more text
+      - eclipse-settings, read what we have
+      - run list-of, hello
+    - more text to modify hello, rerun
   - bootstrapper alternatives
     + svn externals
       + cmds
