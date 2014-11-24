@@ -26,6 +26,7 @@ public class Tutorial extends Target {
 		this.namePrefix = namePrefix;
 		this.styleCss = Source
 				.underWsroot("private/iwant-docs/src/main/html/website/style.css");
+		
 		pages.add(new Descripted(namePrefix, "concepts-intro",
 				"Introduction of concepts", tutorialWsdefSrc(), null, null));
 		this.bootstrappingDoc = bootstrappingDocs.get(0);
@@ -39,19 +40,18 @@ public class Tutorial extends Target {
 				"Hello world with Eclipse"));
 		pages.add(pageAboutUsingWsdef("ant-cli",
 				"Using ant cli instead of bash"));
-		pages.add(pageAboutUsingWsdef("ext-libs-in-wsdef",
-				"Using external libraries in workspace definition"));
+		
 		pages.add(pageAboutUsingWsdef("antgenerated",
 				"Using ant to define target content"));
 		pages.add(pageAboutUsingWsdef("scriptgenerated",
 				"Using a script/program define target content"));
+
 		pages.add(pageAboutUsingWsdef("using-iwant-plugin-ant",
 				"Using an iwant plugin (for untarring)"));
+		pages.add(pageAboutUsingWsdef("ext-libs-in-wsdef",
+				"Using external libraries in workspace definition"));
+
 		pages.add(pageAboutUsingWsdef("javamodules", "Defining Java modules"));
-		pages.add(pageAboutUsingWsdef("usingmoduleinbuild",
-				"Using a module of the workspace in the build"));
-		pages.add(pageAboutUsingWsdef("ws-symlink",
-				"Using a symbolic link for the workspace"));
 		pages.add(pageAboutUsingWsdef("pmdreport",
 				"Static code analysis report using PMD"));
 		pages.add(pageAboutUsingWsdef("findbugsreport",
@@ -59,6 +59,11 @@ public class Tutorial extends Target {
 		pages.add(pageAboutUsingWsdef("using-iwant-plugin-war",
 				"Defining a web archive (war)"));
 		pages.add(pageAboutUsingWsdef("fromgithub", "(Code) from github"));
+
+		pages.add(pageAboutUsingWsdef("usingmoduleinbuild",
+				"Using a module of the workspace in the build"));
+		pages.add(pageAboutUsingWsdef("ws-symlink",
+				"Using a symbolic link for the workspace"));
 	}
 
 	public static Tutorial local(Path copyOfLocalIwantWs) {
