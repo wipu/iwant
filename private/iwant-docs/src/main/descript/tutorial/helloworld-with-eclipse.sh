@@ -2,7 +2,7 @@ doc-content() {
 
 cd iwant-tutorial
 
-html "<p class='text'>Now, like the wizard advised after <a href='creating-wsdef.html'>defining the workspace</a>, let's generate eclipse settings.</p>"
+html "<p class='text'>Next, as the wizard advised after <a href='creating-wsdef.html'>defining the workspace</a>, we'll generate eclipse settings. This is a mutation to the workspace, and iwant does not have full control over the files (eclipse is also able to modify them), so this wish needs to be a side-effect.</p>"
 
 cmd "as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective"
 out-was <<EOF
@@ -23,7 +23,7 @@ p "Now we can import the projects to eclipse (without copying them to the worksp
 
 wsdef-edit v00modifiedhello
 
-p "Now we can see our new target in the list of targets."
+p "We can see our new target in the list of targets."
 
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
 out-was <<EOF
@@ -45,7 +45,7 @@ out-was <<EOF
 $PWD/as-iwant-tutorial-developer/.i-cached/target/hello2
 EOF
 
-p "iwant only prints the requested path to stdout, all diagnostic output goes to stderr. This means we can redirect the path to further processing. This is a convenient idiom for getting the content of a target:"
+p "iwant only prints the requested path to stdout, all diagnostic output goes to stderr. This means we can redirect the path to further processing. This is a convenient idiom for showing the content of a target:"
 
 cmde "0 0" 'as-iwant-tutorial-developer/with/bash/iwant/target/hello2/as-path | xargs cat'
 out-was <<EOF

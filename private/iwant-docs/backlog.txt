@@ -1332,14 +1332,34 @@
     + find what files we have after wizard
     + mention eclipse settings when wizard mentions them
     + wish scripts, tab is your friend
-  - hello world with eclipse
+  + hello world with eclipse
     + more text
       + eclipse-settings, read what we have
       + run list-of, hello
       + newline after hellos, for out-was assertion (and otherwise also,
         to show good example of the old good habit)
     + more text to modify hello, rerun
-    - polish lang: less "now", for example
+    + polish lang: less "now", for example
+  (- bootstrapping with ant and using ant
+    (- ant not only for interactive but also for eclipse etc
+       * was already)
+    - inline to ant-cli, one doc for the whole ant topic suffices
+    - help output (like older iwant did) to mention both bash and ant
+      - pass cli type from cli to java
+      - at empty wish, not only mention legal targets but whole wishes
+        - bash: /abs/iwant/{target,side-effect,list-of}/...
+        - ant: ant -f /abs/.../build.xml -Dwish=...
+      - make sure user-preferences printed for ant-cli users, too
+    + mention in bootstrapping
+    * maybe it's too much trouble, the bootstrapping is the same
+      than with bash, ant-cli is good enough as it is)
+  - good order for explaining things in tutorial
+    * like this
+      * basics
+      * java modules
+      * advanced
+    - from separate story: javamodules
+    - ext libs in wsdef to advanced, not in the beginning
   - bootstrapper alternatives
     + svn externals
       + cmds
@@ -1349,23 +1369,6 @@
       - tutorial: create iwant-from, svn co and use the script
       - explain the idea: minimal amount of iwant text to commit to
         project's own repo
-  - bootstrapping with ant and using ant
-    - ant not only for interactive but also for eclipse etc
-    - inline to ant-cli, one doc for the whole ant topic suffices
-    - help output (like older iwant did) to mention both bash and ant
-      - pass cli type from cli to java
-      - at empty wish, not only mention legal targets but whole wishes
-        - bash: /abs/iwant/{target,side-effect,list-of}/...
-        - ant: ant -f /abs/.../build.xml -Dwish=...
-      - make sure user-preferences printed for ant-cli users, too
-    + mention in bootstrapping
-  - good order for explaining things in tutorial
-    * like this
-      * basics
-      * java modules
-      * advanced
-    - from separate story: javamodules
-    - ext libs in wsdef to advanced, not in the beginning
   - writing own targets and side-effects
     - content descriptor, ingredients  
 
