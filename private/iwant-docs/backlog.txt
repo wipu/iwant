@@ -1353,8 +1353,7 @@
     + mention in bootstrapping
     * maybe it's too much trouble, the bootstrapping is the same
       than with bash, ant-cli is good enough as it is)
-  - jacoco
-  - good order for explaining things in tutorial
+  + good order for explaining things in tutorial
     * like this
       * basics
       * java modules
@@ -1363,6 +1362,13 @@
     (- from separate story: javamodules
        * already done)
     + ext libs in wsdef to advanced, not in the beginning
+  - concatenated before its first use
+    - also here just add the missing feature: line(String)
+    - this is a good example of automatic dep tracking
+  - ant is 1st example to show output goes to stderr => xargs cat works
+  - after javamodules: jacoco
+  - after jacoco: distribution dir, with run.sh
+    - new feature to Directory: executable copyOf
   - bootstrapper alternatives
     + svn externals
       + cmds
