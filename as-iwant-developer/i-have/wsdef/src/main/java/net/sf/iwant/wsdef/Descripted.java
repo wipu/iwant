@@ -18,13 +18,14 @@ public class Descripted extends Target {
 	private final Source descript;
 	private final Path maybeIwantWsroot;
 	private final Source abstractArticle;
-	private final Path maybeInitialState;
+	private final Descripted maybeInitialState;
 	private final Path tutorialWsdefSrc;
 	private final String titleText;
 	private final String docName;
 
 	public Descripted(String namePrefix, String docName, String titleText,
-			Path tutorialWsdefSrc, Path maybeIwantWsroot, Path maybeInitialState) {
+			Path tutorialWsdefSrc, Path maybeIwantWsroot,
+			Descripted maybeInitialState) {
 		super(namePrefix + docName + ".html");
 		this.docName = docName;
 		this.titleText = titleText;
@@ -89,8 +90,6 @@ public class Descripted extends Target {
 
 		File iwantWsRoot = maybeIwantWsroot == null ? null : ctx
 				.cached(maybeIwantWsroot);
-		File initialState = maybeInitialState == null ? null : new File(
-				ctx.cached(maybeInitialState), "final-state.tar");
 
 		StringBuilder sh = new StringBuilder();
 		sh.append("#!/bin/bash\n");
@@ -102,8 +101,14 @@ public class Descripted extends Target {
 		} else {
 			sh.append("export REV_TO_TEST=748\n");
 		}
-		if (initialState != null) {
+		if (maybeInitialState != null) {
+			File initialState = new File(ctx.cached(maybeInitialState),
+					"final-state.tar");
 			sh.append("export INITIAL_STATE=" + initialState + "\n");
+			sh.append("export INIT_STATE_PAGE=" + maybeInitialState.docName
+					+ ".html\n");
+			sh.append("export INIT_STATE_TITLE='" + maybeInitialState.titleText
+					+ "'\n");
 		}
 		sh.append("DOC=combined.sh\n");
 		sh.append("cat " + ctx.cached(abstractArticle) + " " + ctx.cached(doc)

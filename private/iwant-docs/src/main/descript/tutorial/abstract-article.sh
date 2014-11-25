@@ -2,6 +2,7 @@ doc() {
   [ "x${INITIAL_STATE:-}" == "x" ] || {
     log "Creating initial state from $INITIAL_STATE"
     tar xf "$INITIAL_STATE"
+    html "<p><i>This chapter continues from where <a href='$INIT_STATE_PAGE'>$INIT_STATE_TITLE</a> left us.</i></p>"
   } 
   IWANT_DOC_DIR=$(pwd)
   

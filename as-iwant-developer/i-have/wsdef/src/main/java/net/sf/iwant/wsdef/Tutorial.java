@@ -20,13 +20,14 @@ public class Tutorial extends Target {
 	private final String namePrefix;
 	private final List<Descripted> pages = new ArrayList<>();
 	private final Path styleCss;
+	private Descripted javamodulesDoc;
 
 	private Tutorial(String namePrefix, List<Descripted> bootstrappingDocs) {
 		super(namePrefix + "tutorial");
 		this.namePrefix = namePrefix;
 		this.styleCss = Source
 				.underWsroot("private/iwant-docs/src/main/html/website/style.css");
-		
+
 		pages.add(new Descripted(namePrefix, "concepts-intro",
 				"Introduction of concepts", tutorialWsdefSrc(), null, null));
 		this.bootstrappingDoc = bootstrappingDocs.get(0);
@@ -40,7 +41,7 @@ public class Tutorial extends Target {
 				"Hello world with Eclipse"));
 		pages.add(pageAboutUsingWsdef("ant-cli",
 				"Using ant cli instead of bash"));
-		
+
 		pages.add(pageAboutUsingWsdef("antgenerated",
 				"Using ant to define target content"));
 		pages.add(pageAboutUsingWsdef("scriptgenerated",
@@ -51,7 +52,13 @@ public class Tutorial extends Target {
 		pages.add(pageAboutUsingWsdef("ext-libs-in-wsdef",
 				"Using external libraries in workspace definition"));
 
-		pages.add(pageAboutUsingWsdef("javamodules", "Defining Java modules"));
+		javamodulesDoc = pageAboutUsingWsdef("javamodules",
+				"Defining Java modules");
+		pages.add(javamodulesDoc);
+
+		pages.add(pageAboutUsingJavamodules("jacoco",
+				"Test coverage report using jacoco"));
+
 		pages.add(pageAboutUsingWsdef("pmdreport",
 				"Static code analysis report using PMD"));
 		pages.add(pageAboutUsingWsdef("findbugsreport",
@@ -96,6 +103,12 @@ public class Tutorial extends Target {
 	private Descripted pageAboutUsingWsdef(String docName, String titleText) {
 		return new Descripted(namePrefix, docName, titleText,
 				tutorialWsdefSrc(), null, creatingWsdefDoc);
+	}
+
+	private Descripted pageAboutUsingJavamodules(String docName,
+			String titleText) {
+		return new Descripted(namePrefix, docName, titleText,
+				tutorialWsdefSrc(), null, javamodulesDoc);
 	}
 
 	private static String fileName(Descripted page) {

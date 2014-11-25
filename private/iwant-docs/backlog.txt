@@ -1362,13 +1362,19 @@
     (- from separate story: javamodules
        * already done)
     + ext libs in wsdef to advanced, not in the beginning
+  + after javamodules: jacoco
+    + wsdefdef and wsdef, base on javamodule tutorial
+    + page
+    + here iwant philosophy in action: don't tell it to run tests
+      but wish for (could be boolean) coverage report
+  + in each chapter mention chapter it continues editing
   - concatenated before its first use
     - also here just add the missing feature: line(String)
     - this is a good example of automatic dep tracking
   - ant is 1st example to show output goes to stderr => xargs cat works
-  - after javamodules: jacoco
   - after jacoco: distribution dir, with run.sh
     - new feature to Directory: executable copyOf
+  - use dot syntax in binary groups
   - bootstrapper alternatives
     + svn externals
       + cmds
@@ -1434,6 +1440,13 @@
 = Planned
 #################################################################
 
+- @epic As @buildscriptauthor I want external dependencies to handle their dependencies automatically so I don't need to define them
+  - example: jacoco distribution depends on a certain version of asm
+  - jacocoreport: if no jacoco dist defined, use latest with correct asm
+  - use tested ant by default, too
+  - use in tutorial
+  - what others?
+
 - As @developer I want the ant output "Total time" lines away from the tutorial so it will be reproducible
   * also: as @buildscriptuser I want compact ant output so the tutorial will be easier to read
   + upgrade ant in tested deps
@@ -1455,9 +1468,6 @@
 
 - As @buildscriptauthor I want classes excluded from jacoco report by classname pattern so my special classes e.g. configuration does not affect the result
   * offline instrumentation required, a bigger change to the way we use jacoco
-
-- @epic As @buildscriptauthor I want external dependencies to handle their dependencies automatically so I don't need to define them
-  * example: jacoco distribution depends on a certain version of asm
 
 - As @buildscriptauthor I want a tutorial for defining a jacoco coverage report so I know how to do it easily 
 
