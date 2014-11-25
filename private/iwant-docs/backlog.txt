@@ -1443,6 +1443,8 @@
 = Planned
 #################################################################
 
+- As @developer I want own type for urls, to work around all problems of java.net.URL, especially the hashCode DNS brainfart
+
 - @epic As @buildscriptauthor I want external dependencies to handle their dependencies automatically so I don't need to define them
   - example: jacoco distribution depends on a certain version of asm
   - jacocoreport: if no jacoco dist defined, use latest with correct asm
@@ -1477,8 +1479,6 @@
 
 - As @buildscriptauthor I want classes excluded from jacoco report by classname pattern so my special classes e.g. configuration does not affect the result
   * offline instrumentation required, a bigger change to the way we use jacoco
-
-- As @buildscriptauthor I want a tutorial for defining a jacoco coverage report so I know how to do it easily 
 
 - As @developer I want to exclude findbugs testfodder etc from the findbugs report of iwant so I don't get false positives
   - support for findbugs filter
@@ -1584,8 +1584,6 @@
 - improvements for Downloaded checksum handling
   - SHA-256: store map of algo->expected key
   - url for checksum instead of the value, use in FromRepository.ibiblio
-
-- As @developer I want own type for urls, to work around all problems of java.net.URL, especially the hashCode DNS brainfart
 
 - exit status chapter to tutorial, and test ant and bash cli failure there
 
