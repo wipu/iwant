@@ -1302,6 +1302,24 @@
     + edits
   + fix link to tutorial index
 
++ As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
+  + @bugfix: copy missing files (resources)
+  + simplify resource copying of instrumentation: don't follow the example in jacoco tutorial (**/*.class)
+    but instead use **/* so no extra copying is needed
+  + filter: 
+    + whole module: just don't pass uninteresting modules when building JacocoTargetsOfJavaModules
+      * test it works  even if interesting modules depend on the uninteresting
+    * filtering by classname requires online instrumentation => new story
+  + use in iwant
+  + refactor
+    + reuse test setup code
+    (- reuse ant generator code
+       * nah, duplication is so small)
+  + other features?
+    + read through emma tests and find what is missing
+      + jvmargs, -XX:-UseSplitVerifier
+      (- other?)
+
 #################################################################
 = In progress
 #################################################################
@@ -1391,23 +1409,6 @@
   + use the -source javac option
   + fix all diamond warnings
   - polish: JavaSrcModule passes compliance to JavaClasses
-
-- As @developer I want to clean up and enhance jacoco plugin so it will fully replace emma
-  + @bugfix: copy missing files (resources)
-  + simplify resource copying of instrumentation: don't follow the example in jacoco tutorial (**/*.class)
-    but instead use **/* so no extra copying is needed
-  + filter: 
-    + whole module: just don't pass uninteresting modules when building JacocoTargetsOfJavaModules
-      * test it works  even if interesting modules depend on the uninteresting
-    * filtering by classname requires online instrumentation => new story
-  + use in iwant
-  - refactor
-    + reuse test setup code
-    - reuse ant generator code
-  - other features?
-    - read through emma tests and find what is missing
-      + jvmargs, -XX:-UseSplitVerifier
-      - other?
 
 - As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
   + use Windows to develop the wrapper
