@@ -130,7 +130,7 @@ public class JavaSrcModule extends JavaModule {
 		private CodeStylePolicy codeStylePolicy = CodeStylePolicy
 				.defaultsExcept().end();
 		private CodeFormatterPolicy codeFormatterPolicy = new CodeFormatterPolicy();
-		private JavaCompliance javaCompliance = JavaCompliance.JAVA_1_6;
+		private JavaCompliance javaCompliance = JavaCompliance.JAVA_1_7;
 		private String locationUnderWsRoot;
 		private StringFilter testClassNameFilter = new DefaultTestClassNameFilter();
 		private Charset encoding;
@@ -465,6 +465,7 @@ public class JavaSrcModule extends JavaModule {
 		}
 		return JavaClasses.with().name(name() + "-main-classes")
 				.srcDirs(mainJavasAsPaths()).encoding(encoding)
+				.sourceVersion(javaCompliance)
 				.resourceDirs(mainResourcesAsPaths()).classLocations(classpath)
 				.debug(true).end();
 	}
@@ -499,6 +500,7 @@ public class JavaSrcModule extends JavaModule {
 		}
 		return JavaClasses.with().name(name() + "-test-classes")
 				.srcDirs(testJavasAsPaths()).encoding(encoding)
+				.sourceVersion(javaCompliance)
 				.resourceDirs(testResourcesAsPaths()).classLocations(classpath)
 				.debug(true).end();
 	}

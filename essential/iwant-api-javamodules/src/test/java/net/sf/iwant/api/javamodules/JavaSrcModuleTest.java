@@ -765,4 +765,20 @@ public class JavaSrcModuleTest extends TestCase {
 		assertSame(filter, mod.testClassNameDefinition());
 	}
 
+	public void testSourceComplianceOfMainAndTestClassesIsTheJavaComplianceOfTheModule() {
+		JavaCompliance nonDefaultCompliance = JavaCompliance.JAVA_1_6;
+		// inner test:
+		assertFalse(nonDefaultCompliance.equals(JavaSrcModule.with()
+				.name("defaults").end().javaCompliance()));
+
+		JavaSrcModule mod = JavaSrcModule.with().name("mod")
+				.javaCompliance(nonDefaultCompliance).mainJava("src")
+				.testJava("test").end();
+
+		JavaClasses mainClasses = (JavaClasses) mod.mainArtifact();
+		JavaClasses testClasses = (JavaClasses) mod.testArtifact();
+
+		assertEquals(nonDefaultCompliance, mainClasses.sourceCompliance());
+		assertEquals(nonDefaultCompliance, testClasses.sourceCompliance());
+	}
 }

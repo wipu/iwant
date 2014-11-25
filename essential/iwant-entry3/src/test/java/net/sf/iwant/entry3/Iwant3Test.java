@@ -554,7 +554,7 @@ public class Iwant3Test extends TestCase {
 		testArea.shallContainFragmentIn(
 				"wsroot/as-example-developer/i-have/wsdef/"
 						+ ".settings/org.eclipse.jdt.core.prefs",
-				"org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6\n");
+				"org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.7\n");
 		testArea.shallContainFragmentIn(
 				"wsroot/as-example-developer/i-have/wsdef/"
 						+ ".settings/org.eclipse.jdt.ui.prefs",

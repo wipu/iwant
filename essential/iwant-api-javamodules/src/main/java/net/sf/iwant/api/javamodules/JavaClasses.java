@@ -139,6 +139,10 @@ public class JavaClasses extends Target {
 		return resourceDirs;
 	}
 
+	public JavaCompliance sourceCompliance() {
+		return sourceVersion;
+	}
+
 	@Override
 	public InputStream content(TargetEvaluationContext ctx) throws Exception {
 		throw new UnsupportedOperationException("TODO test and implement");

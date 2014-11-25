@@ -1320,6 +1320,13 @@
       + jvmargs, -XX:-UseSplitVerifier
       (- other?)
 
++ As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
+  + use the -source javac option
+  + fix all diamond warnings
+  + polish: JavaSrcModule passes compliance to JavaClasses
+    + required setting default to 1.7, otherwise a lot of output was affected
+      (warning about bootclasspath with 1.6)
+
 #################################################################
 = In progress
 #################################################################
@@ -1405,11 +1412,6 @@
   - writing own targets and side-effects
     - content descriptor, ingredients  
 
-- As @developer I want java 1.7 compliance so I can use the more ergonomic diamond syntax
-  + use the -source javac option
-  + fix all diamond warnings
-  - polish: JavaSrcModule passes compliance to JavaClasses
-
 - As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
   + use Windows to develop the wrapper
   + fix ScriptGenerated test to tolerate Windows paths in output
@@ -1466,6 +1468,12 @@
       - take into use, if fixed 
     - patch?
   - remove unnecessary grep -v's in tutorial
+
+- As @buildscriptauthor I want to define source and target compliance separately to javamodules and javaclasses so I have more control over sources and targets
+  * e.g. forcing old bytecode on modern machines
+  * currently javamodule has javaCompliance, javaclasses has source
+  - make both have both attributes, keeping javaCompliance convenience
+    for setting both simultaneously
 
 - As @buildscriptauthor I want classes excluded from jacoco report by classname pattern so my special classes e.g. configuration does not affect the result
   * offline instrumentation required, a bigger change to the way we use jacoco

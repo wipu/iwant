@@ -139,7 +139,7 @@ public class JavaModulesTest {
 				+ "  src:mod/src/main/java\n"
 				+ "  res:mod/src/main/resources\n"
 				+ "  classes:commons-io-2.4.jar\n"
-				+ "  javacOptions:[-Xlint, -Xlint:-serial, -g]\n"
+				+ "  javacOptions:[-Xlint, -Xlint:-serial, -source, 1.7, -g]\n"
 				+ "  encoding:null\n" + "}", descr(mas.get(1)));
 		// test only module has no main artifact
 	}
@@ -184,13 +184,13 @@ public class JavaModulesTest {
 				+ "  res:mod/src/test/resources\n"
 				+ "  classes:mod-main-classes\n"
 				+ "  classes:commons-io-2.4.jar\n"
-				+ "  javacOptions:[-Xlint, -Xlint:-serial, -g]\n"
+				+ "  javacOptions:[-Xlint, -Xlint:-serial, -source, 1.7, -g]\n"
 				+ "  encoding:null\n" + "}", descr(tas.get(0)));
 		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n"
 				+ "  src:only-tests/src/test/java\n"
 				+ "  res:only-tests/src/test/resources\n"
 				+ "  classes:only-main-main-classes\n"
-				+ "  javacOptions:[-Xlint, -Xlint:-serial, -g]\n"
+				+ "  javacOptions:[-Xlint, -Xlint:-serial, -source, 1.7, -g]\n"
 				+ "  encoding:null\n" + "}", descr(tas.get(1)));
 		// bin and main only have no test artifact
 	}
