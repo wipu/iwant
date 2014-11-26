@@ -148,7 +148,7 @@ public class AntGeneratedTest extends IwantTestCase {
 		ConcatenatedBuilder scriptContent = Concatenated.named("script");
 		scriptContent.string("<project name='hello' default='hello'>\n");
 		scriptContent.string("  <target name='hello'>\n");
-		scriptContent.string("    <copy file='").pathTo(ingredient1)
+		scriptContent.string("    <copy file='").nativePathTo(ingredient1)
 				.string("' tofile='${iwant-outfile}'/>\n");
 		scriptContent
 				.string("    <echo file='${iwant-outfile}' append='true'"

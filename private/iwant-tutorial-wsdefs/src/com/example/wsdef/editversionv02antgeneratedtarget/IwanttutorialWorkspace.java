@@ -32,7 +32,8 @@ public class IwanttutorialWorkspace implements IwantWorkspace {
 		xml.string("<project name='hello' default='hello'>\n");
 		xml.string("  <target name='hello'>\n");
 		xml.string("    <echo message='Refreshing ${iwant-outfile}'/>\n");
-		xml.string("    <copy file='").pathTo(justATargetUsedByAntScript())
+		xml.string("    <copy file='")
+				.nativePathTo(justATargetUsedByAntScript())
 				.string("' tofile='${iwant-outfile}'/>\n");
 		xml.string("    <echo file='${iwant-outfile}' append='true'"
 				+ " message=' appended by ant.'/>\n");

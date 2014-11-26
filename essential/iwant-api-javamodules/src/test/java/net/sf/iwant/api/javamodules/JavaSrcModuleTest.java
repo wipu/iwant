@@ -136,7 +136,7 @@ public class JavaSrcModuleTest extends TestCase {
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
 				.string("in reality this would be compiled from: ")
-				.pathTo(generatedSrc).end();
+				.nativePathTo(generatedSrc).end();
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module")
 				.relativeParentDir("subdir1/subdir2")
@@ -165,7 +165,7 @@ public class JavaSrcModuleTest extends TestCase {
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
 				.string("in reality this would be compiled from: ")
-				.pathTo(generatedSrc).end();
+				.nativePathTo(generatedSrc).end();
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module")
 				.relativeParentDir("subdir1/subdir2")

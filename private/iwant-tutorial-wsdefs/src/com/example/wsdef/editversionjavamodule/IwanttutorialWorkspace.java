@@ -31,8 +31,8 @@ public class IwanttutorialWorkspace implements IwantWorkspace {
 
 	private Target exampleHelloClasses() {
 		return Concatenated.named("hello-classes")
-				.pathTo(exampleHello.mainArtifact()).string("\n")
-				.pathTo(exampleHello.testArtifact()).string("\n").end();
+				.unixPathTo(exampleHello.mainArtifact()).string("\n")
+				.unixPathTo(exampleHello.testArtifact()).string("\n").end();
 	}
 
 	@Override

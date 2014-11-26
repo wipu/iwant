@@ -61,8 +61,13 @@ public class Concatenated extends Target {
 			return this;
 		}
 
-		public ConcatenatedBuilder pathTo(Path path) {
-			fragments.add(new PathFragment(path));
+		public ConcatenatedBuilder nativePathTo(Path path) {
+			fragments.add(new NativePathFragment(path));
+			return this;
+		}
+
+		public ConcatenatedBuilder unixPathTo(Path path) {
+			fragments.add(new UnixPathFragment(path));
 			return this;
 		}
 
@@ -140,17 +145,17 @@ public class Concatenated extends Target {
 
 	}
 
-	private static class PathFragment implements Fragment {
+	private static class NativePathFragment implements Fragment {
 
 		private final Path value;
 
-		public PathFragment(Path value) {
+		public NativePathFragment(Path value) {
 			this.value = value;
 		}
 
 		@Override
 		public String toString() {
-			return "path-of:" + value;
+			return "native-path:" + value;
 		}
 
 		@Override
@@ -158,6 +163,34 @@ public class Concatenated extends Target {
 				throws IOException {
 			PrintWriter writer = new PrintWriter(out);
 			writer.append(ctx.cached(value).getCanonicalPath());
+			writer.flush();
+		}
+
+		@Override
+		public Collection<? extends Path> ingredients() {
+			return Collections.singleton(value);
+		}
+
+	}
+
+	private static class UnixPathFragment implements Fragment {
+
+		private final Path value;
+
+		public UnixPathFragment(Path value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return "unix-path:" + value;
+		}
+
+		@Override
+		public void writeTo(OutputStream out, TargetEvaluationContext ctx)
+				throws IOException {
+			PrintWriter writer = new PrintWriter(out);
+			writer.append(ctx.iwant().unixPathOf(ctx.cached(value)));
 			writer.flush();
 		}
 

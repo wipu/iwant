@@ -32,10 +32,10 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 	}
 
 	public void testTwoIdenticalTargetsWithIngredients() {
-		Path p1 = Concatenated.named("a").pathTo(Source.underWsroot("ingr"))
-				.end();
-		Path p2 = Concatenated.named("a").pathTo(Source.underWsroot("ingr"))
-				.end();
+		Path p1 = Concatenated.named("a")
+				.nativePathTo(Source.underWsroot("ingr")).end();
+		Path p2 = Concatenated.named("a")
+				.nativePathTo(Source.underWsroot("ingr")).end();
 
 		assertError(null, p1, p2);
 	}
@@ -54,7 +54,7 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 	public void testPathIngredientOfTargetConflictsWithAnotherTarget() {
 		Path targetB = new HelloTarget("b", "b");
 		Path sourceB = Source.underWsroot("b");
-		Path a = Concatenated.named("a").pathTo(sourceB).end();
+		Path a = Concatenated.named("a").nativePathTo(sourceB).end();
 
 		assertError("Two conflicting definitions for Path name b:\n"
 				+ "One is of\n" + " class net.sf.iwant.api.core.HelloTarget\n"
@@ -63,42 +63,44 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 	}
 
 	public void testTwoConcatenatedsHaveIngredientsOfDifferentName() {
-		Path p1 = Concatenated.named("a").pathTo(Source.underWsroot("ingr1"))
-				.end();
-		Path p2 = Concatenated.named("a").pathTo(Source.underWsroot("ingr2"))
-				.end();
+		Path p1 = Concatenated.named("a")
+				.nativePathTo(Source.underWsroot("ingr1")).end();
+		Path p2 = Concatenated.named("a")
+				.nativePathTo(Source.underWsroot("ingr2")).end();
 
 		assertError("Two conflicting definitions for Path name a:\n"
 				+ "One has content descriptor:\n" + "Concatenated {\n"
-				+ "path-of:ingr2\n" + "}\n" + "\n" + "and another:\n"
-				+ "Concatenated {\n" + "path-of:ingr1\n" + "}\n" + "", p1, p2);
+				+ "native-path:ingr2\n" + "}\n" + "\n" + "and another:\n"
+				+ "Concatenated {\n" + "native-path:ingr1\n" + "}\n" + "", p1,
+				p2);
 	}
 
 	public void testOneConcatenatedHasNullIngredientInsteadOfNotNull() {
-		Path p1 = Concatenated.named("a").pathTo(Source.underWsroot("ingr1"))
-				.end();
-		Path p2 = Concatenated.named("a").pathTo(null).end();
+		Path p1 = Concatenated.named("a")
+				.nativePathTo(Source.underWsroot("ingr1")).end();
+		Path p2 = Concatenated.named("a").nativePathTo(null).end();
 
 		// check both ways so no NPE here
 		String errorMessage = "Two conflicting definitions for Path name a:\n"
 				+ "One has content descriptor:\n" + "Concatenated {\n"
-				+ "path-of:null\n" + "}\n" + "\n" + "and another:\n"
-				+ "Concatenated {\n" + "path-of:ingr1\n" + "}\n" + "";
+				+ "native-path:null\n" + "}\n" + "\n" + "and another:\n"
+				+ "Concatenated {\n" + "native-path:ingr1\n" + "}\n" + "";
 		assertError(errorMessage, p1, p2);
 		assertError("Null Path", p2, p1);
 	}
 
 	public void testTwoConcatenatedsHaveDifferentNumberOfIngredients() {
-		Path p1 = Concatenated.named("a").pathTo(Source.underWsroot("common"))
-				.end();
-		Path p2 = Concatenated.named("a").pathTo(Source.underWsroot("common"))
-				.pathTo(Source.underWsroot("p2-only")).end();
+		Path p1 = Concatenated.named("a")
+				.nativePathTo(Source.underWsroot("common")).end();
+		Path p2 = Concatenated.named("a")
+				.nativePathTo(Source.underWsroot("common"))
+				.nativePathTo(Source.underWsroot("p2-only")).end();
 
 		assertError("Two conflicting definitions for Path name a:\n"
 				+ "One has content descriptor:\n" + "Concatenated {\n"
-				+ "path-of:common\n" + "path-of:p2-only\n" + "}\n" + "\n"
-				+ "and another:\n" + "Concatenated {\n" + "path-of:common\n"
-				+ "}\n", p1, p2);
+				+ "native-path:common\n" + "native-path:p2-only\n" + "}\n"
+				+ "\n" + "and another:\n" + "Concatenated {\n"
+				+ "native-path:common\n" + "}\n", p1, p2);
 	}
 
 	public void testBuggyTargetsThatGiveIdenticalDescriptorButDifferentIngredients() {

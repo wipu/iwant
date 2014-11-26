@@ -12,10 +12,11 @@ public class ConcatenatedTest extends IwantTestCase {
 				Concatenated.named("no-paths").bytes(1, 2).string("s").end()
 						.ingredients().toString());
 		assertEquals(
-				"[src, target]",
+				"[src, target, target2]",
 				Concatenated.named("paths")
 						.contentOf(Source.underWsroot("src"))
-						.pathTo(new HelloTarget("target", "")).end()
+						.nativePathTo(new HelloTarget("target", ""))
+						.unixPathTo(new HelloTarget("target2", "")).end()
 						.ingredients().toString());
 	}
 
@@ -24,10 +25,13 @@ public class ConcatenatedTest extends IwantTestCase {
 				Concatenated.named("all-but-paths").bytes(1, 2).string("s")
 						.end().contentDescriptor());
 		assertEquals(
-				"Concatenated {\ncontent-of:src\npath-of:target\n}\n" + "",
+				"Concatenated {\n" + "content-of:src\n"
+						+ "native-path:target\n" + "unix-path:target2\n"
+						+ "}\n" + "",
 				Concatenated.named("only-paths")
 						.contentOf(Source.underWsroot("src"))
-						.pathTo(new HelloTarget("target", "")).end()
+						.nativePathTo(new HelloTarget("target", ""))
+						.unixPathTo(new HelloTarget("target2", "")).end()
 						.contentDescriptor());
 	}
 
@@ -45,14 +49,31 @@ public class ConcatenatedTest extends IwantTestCase {
 		target.path(ctx);
 
 		Concatenated c = Concatenated.named("all").bytes('A').bytes('B', '\n')
-				.pathTo(src).string(":").contentOf(src).string("\n")
-				.pathTo(target).string(":").contentOf(target).string("\n")
-				.end();
+				.nativePathTo(src).string(":").contentOf(src).string("\n")
+				.nativePathTo(target).string(":").contentOf(target)
+				.string("\n").end();
 		c.path(ctx);
 
 		assertEquals("AB\n" + wsRoot + "/src:src-content\n" + cacheDir
 				+ "/target:target-content\n", contentOf(new File(cacheDir,
 				"all")));
+	}
+
+	/**
+	 * Handy when generating scripts for cygwin on Windows
+	 */
+	public void testUnixPathVersusNativePath() throws Exception {
+		ctx.iwant().shallMockWintoySafePaths();
+
+		Source src = Source.underWsroot("src");
+		Concatenated c = Concatenated.named("paths").string("native:")
+				.nativePathTo(src).string("\nunix:").unixPathTo(src)
+				.string("\n").end();
+
+		c.path(ctx);
+
+		assertEquals("native:" + wsRoot + "/src\nunix:mock-unix-path:" + wsRoot
+				+ "/src\n", contentOfCached("paths"));
 	}
 
 }

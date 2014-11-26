@@ -1,5 +1,6 @@
 package com.example.wsdef.editversionjavamodules;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,14 +43,14 @@ public class IwanttutorialWorkspace implements IwantWorkspace {
 	@Override
 	public List<? extends Target> targets() {
 		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),
-				unixClasspathStringOfAll());
+				classpathStringOfAll());
 	}
 
-	private Target unixClasspathStringOfAll() {
+	private Target classpathStringOfAll() {
 		ConcatenatedBuilder cp = Concatenated.named("all-as-cp");
 		cp.string(".");
 		for (Path jar : JavaModules.mainArtifactJarsOf(modules.allSrcModules())) {
-			cp.string(":").pathTo(jar);
+			cp.string(File.pathSeparator).nativePathTo(jar);
 		}
 		return cp.end();
 	}

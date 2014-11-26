@@ -101,7 +101,7 @@ public class EclipseSettings implements SideEffect {
 			}
 		}
 		for (Path path : paths) {
-			classLocations.pathTo(path).string("\n");
+			classLocations.nativePathTo(path).string("\n");
 		}
 		try {
 			ctx.iwantAsPath(classLocations.end());

@@ -433,14 +433,14 @@ public class WishEvaluatorTest extends TestCase {
 		Path src = new HelloTarget("src", "src content");
 
 		ConcatenatedBuilder correctSpex = Concatenated.named("correct");
-		correctSpex.pathTo(src);
+		correctSpex.nativePathTo(src);
 		Target correct = correctSpex.end();
 
 		Target incorrect = new TargetThatForgetsToDeclareAnIngredient(
 				"incorrect", src);
 
-		Target root = Concatenated.named("root").pathTo(correct)
-				.pathTo(incorrect).end();
+		Target root = Concatenated.named("root").nativePathTo(correct)
+				.nativePathTo(incorrect).end();
 
 		try {
 			evaluator.asPath(root);
@@ -577,7 +577,7 @@ public class WishEvaluatorTest extends TestCase {
 			Concatenated script = scriptContent.end();
 			Target part = ScriptGenerated.named("part-" + i).byScript(script);
 			parts.add(part);
-			listOfPartsSpex = listOfPartsSpex.pathTo(part);
+			listOfPartsSpex = listOfPartsSpex.unixPathTo(part);
 		}
 		Target listOfParts = listOfPartsSpex.end();
 
@@ -621,7 +621,7 @@ public class WishEvaluatorTest extends TestCase {
 
 			private Target targetA() {
 				ConcatenatedBuilder a = Concatenated.named("a");
-				a.pathTo(sourceB());
+				a.nativePathTo(sourceB());
 				return a.end();
 			}
 

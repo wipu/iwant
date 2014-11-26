@@ -88,8 +88,8 @@ public abstract class IwantTestCase extends TestCase {
 		return e.err();
 	}
 
-	protected void wsRootHasFile(String relativePath, String content) {
-		testArea.fileHasContent(new File(wsRoot, relativePath), content);
+	protected File wsRootHasFile(String relativePath, String content) {
+		return testArea.fileHasContent(new File(wsRoot, relativePath), content);
 	}
 
 	protected void wsRootHasFile(String relativePath, byte[] content) {

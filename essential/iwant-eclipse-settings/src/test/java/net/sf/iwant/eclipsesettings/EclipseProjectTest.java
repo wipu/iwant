@@ -200,7 +200,7 @@ public class EclipseProjectTest extends IwantTestCase {
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
 				.string("in reality this would be compiled from: ")
-				.pathTo(generatedSrc).end();
+				.nativePathTo(generatedSrc).end();
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module")
 				.exportsClasses(generatedClasses, generatedSrc).end();
@@ -216,7 +216,7 @@ public class EclipseProjectTest extends IwantTestCase {
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
 				.string("in reality this would be compiled from: ")
-				.pathTo(generatedSrc).end();
+				.nativePathTo(generatedSrc).end();
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module")
 				.exportsClasses(generatedClasses, generatedSrc).end();
@@ -241,7 +241,7 @@ public class EclipseProjectTest extends IwantTestCase {
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
 				.string("in reality this would be compiled from: ")
-				.pathTo(generatedSrc).end();
+				.nativePathTo(generatedSrc).end();
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module")
 				.exportsClasses(generatedClasses, generatedSrc).end();
@@ -258,10 +258,10 @@ public class EclipseProjectTest extends IwantTestCase {
 		Source srcForGenerator = Source
 				.underWsroot("gen-parent/gen-src-project/gen-src");
 		Target generatedSrc = Concatenated.named("generated-src")
-				.pathTo(srcForGenerator).end();
+				.nativePathTo(srcForGenerator).end();
 		Target generatedClasses = Concatenated.named("generated-classes")
 				.string("in reality this would be compiled from: ")
-				.pathTo(generatedSrc).end();
+				.nativePathTo(generatedSrc).end();
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module").relativeParentDir("parent-dir")
 				.mainResources("src/main/resources")
@@ -283,14 +283,14 @@ public class EclipseProjectTest extends IwantTestCase {
 				.underWsroot("gen-parent/generator/src/main/resources");
 		Target generatorClasses = Concatenated.named("generator-classes")
 				.string("In reality this is compiled from ")
-				.pathTo(generatorMainJava).string(" and ")
-				.pathTo(generatorMainResources).end();
+				.nativePathTo(generatorMainJava).string(" and ")
+				.nativePathTo(generatorMainResources).end();
 		Target generatedSrc = Concatenated.named("generated-src")
 				.string("In reality this is produced by running a class from ")
-				.pathTo(generatorClasses).end();
+				.nativePathTo(generatorClasses).end();
 		Target generatedClasses = Concatenated.named("generated-classes")
 				.string("In reality this is compiled from")
-				.pathTo(generatedSrc).end();
+				.nativePathTo(generatedSrc).end();
 		JavaSrcModule module = JavaSrcModule
 				.with()
 				.name("code-generating-module")
@@ -322,7 +322,7 @@ public class EclipseProjectTest extends IwantTestCase {
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
 				.string("in reality this would be compiled from: ")
-				.pathTo(generatedSrc).end();
+				.nativePathTo(generatedSrc).end();
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module")
 				.exportsClasses(generatedClasses, generatedSrc).end();
@@ -344,7 +344,7 @@ public class EclipseProjectTest extends IwantTestCase {
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
 				.string("in reality this would be compiled from: ")
-				.pathTo(generatedSrc).end();
+				.nativePathTo(generatedSrc).end();
 		JavaSrcModule module = JavaSrcModule.with()
 				.name("code-generating-module")
 				.relativeParentDir("subdir1/subdir2")

@@ -188,12 +188,12 @@ public class EclipseSettingsTest extends IwantTestCase {
 
 		assertEquals(1, seCtx.targetsWantedAsPath().size());
 		assertEquals("Concatenated {\n"
-				+ "path-of:testUtilWithSources\nstring:'\n'\n"
-				+ "path-of:testUtilWithSources-src\nstring:'\n'\n"
-				+ "path-of:binWithoutSources\nstring:'\n'\n"
-				+ "path-of:binWithSources\nstring:'\n'\n"
-				+ "path-of:binWithSources-src\nstring:'\n'\n" + "}\n", seCtx
-				.targetsWantedAsPath().get(0).contentDescriptor());
+				+ "native-path:testUtilWithSources\nstring:'\n'\n"
+				+ "native-path:testUtilWithSources-src\nstring:'\n'\n"
+				+ "native-path:binWithoutSources\nstring:'\n'\n"
+				+ "native-path:binWithSources\nstring:'\n'\n"
+				+ "native-path:binWithSources-src\nstring:'\n'\n" + "}\n",
+				seCtx.targetsWantedAsPath().get(0).contentDescriptor());
 	}
 
 	public void testClasspathIsGeneratedButWithWarningIfRefreshOfDepsFails() {
@@ -211,8 +211,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		assertEquals(1, seCtx.targetsWantedAsPath().size());
-		assertEquals("Concatenated {\n" + "path-of:util\nstring:'\n'\n"
-				+ "path-of:util-src\nstring:'\n'\n" + "}\n", seCtx
+		assertEquals("Concatenated {\n" + "native-path:util\nstring:'\n'\n"
+				+ "native-path:util-src\nstring:'\n'\n" + "}\n", seCtx
 				.targetsWantedAsPath().get(0).contentDescriptor());
 
 		assertDotClasspathContains("mod",
