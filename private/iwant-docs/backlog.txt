@@ -1443,6 +1443,13 @@
 = Planned
 #################################################################
 
+- @epic As @buildscriptauthor I want external dependencies to handle their dependencies automatically so I don't need to define them
+  - example: jacoco distribution depends on a certain version of asm
+  - jacocoreport: if no jacoco dist defined, use latest with correct asm
+  - use tested ant by default, too
+  - use in tutorial
+  - what others?
+
 - As @developer I want own type for urls, to work around all problems of java.net.URL, especially the hashCode DNS brainfart
 
 - @epic As @buildscriptauthor I want external dependencies to handle their dependencies automatically so I don't need to define them
