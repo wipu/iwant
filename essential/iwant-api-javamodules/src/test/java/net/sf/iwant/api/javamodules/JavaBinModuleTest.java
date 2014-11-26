@@ -156,7 +156,7 @@ public class JavaBinModuleTest extends IwantTestCase {
 		Target libJar = new HelloTarget("lib.jar", "");
 		JavaBinModule libJarModule = JavaBinModule.providing(libJar).end();
 
-		assertEquals(cached + "/lib.jar",
+		assertEquals(slashed(cached) + "/lib.jar",
 				libJarModule.eclipseBinaryReference(evCtx));
 		assertEquals(null, libJarModule.eclipseSourceReference(evCtx));
 	}
@@ -167,9 +167,9 @@ public class JavaBinModuleTest extends IwantTestCase {
 		JavaBinModule libJarModule = JavaBinModule.providing(libJar, libSrc)
 				.end();
 
-		assertEquals(cached + "/lib.jar",
+		assertEquals(slashed(cached) + "/lib.jar",
 				libJarModule.eclipseBinaryReference(evCtx));
-		assertEquals(cached + "/lib-src.zip",
+		assertEquals(slashed(cached) + "/lib-src.zip",
 				libJarModule.eclipseSourceReference(evCtx));
 	}
 

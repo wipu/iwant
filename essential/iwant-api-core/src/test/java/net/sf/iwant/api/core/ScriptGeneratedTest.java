@@ -123,8 +123,9 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		File wrapper = new File(tmpDir, "script-cygwinwrapper.sh");
 		assertEquals(tmpDir, env.dir);
 		assertEquals(mockCygwinBashExe, env.executable);
-		assertEquals("[" + wrapper.getCanonicalPath() + ", mock-unix-path:"
-				+ new File(cacheDir, "sg") + "]", Arrays.toString(env.args));
+		assertEquals("[only-slashes:" + slashed(wrapper) + ", mock-unix-path:"
+				+ slashed(new File(cacheDir, "sg")) + "]",
+				Arrays.toString(env.args));
 
 		assertEquals("#!/bin/bash\n" + "SCRIPT=$(cygpath --unix -a '"
 				+ new File(tmpDir, "script") + "')\n"
@@ -148,8 +149,8 @@ public class ScriptGeneratedTest extends IwantTestCase {
 
 		assertEquals(tmpDir, env.dir);
 		assertEquals(new File(tmpDir, "script"), env.executable);
-		assertEquals("[mock-unix-path:" + new File(cacheDir, "sg") + "]",
-				Arrays.toString(env.args));
+		assertEquals("[mock-unix-path:" + slashed(new File(cacheDir, "sg"))
+				+ "]", Arrays.toString(env.args));
 	}
 
 }

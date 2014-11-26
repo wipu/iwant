@@ -82,7 +82,7 @@ public class ScriptGenerated extends Target {
 					new File(dir, userExecutable.getName()
 							+ "-cygwinwrapper.sh"),
 					cygwinBashWrapperFor(userExecutable, dir));
-			args.add(wrapper.getCanonicalPath());
+			args.add(ctx.iwant().pathWithoutBackslashes(wrapper));
 		} else {
 			executable = userExecutable;
 		}

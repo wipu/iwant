@@ -1,6 +1,5 @@
 package net.sf.iwant.api.javamodules;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -257,11 +256,7 @@ public abstract class JavaBinModule extends JavaModule {
 		}
 
 		private static String cached(TargetEvaluationContext ctx, Path path) {
-			try {
-				return ctx.cached(path).getCanonicalPath();
-			} catch (IOException e) {
-				throw new IllegalArgumentException(e);
-			}
+			return ctx.iwant().pathWithoutBackslashes(ctx.cached(path));
 		}
 
 		@Override

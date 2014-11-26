@@ -1427,8 +1427,16 @@
   - tell story about making it easier to run unix commands in path, now
     caller of execute needs to prepare a script for it
     + concatenated takes native and unix paths
+    - use slashes in native windows paths
+      + concatenated
+      + binmodule
+      + eclipse settings
+      + scriptgenerated cygwin wrapper path
+      - other?
     - test on Windows and fix usages of concatenated
   - either make all tests pass on Windows or write a story about it
+    + make some tests green: slashes, newline hacks
+    * very difficult
 
 - As @developer I want IwantTestCase fields private so I can be more confident that the subclass intentions are still valid, especially regarding test area root versus wsroot
   + hide fields temporarily and replace some direct refs with method calls

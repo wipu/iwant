@@ -233,8 +233,8 @@ public class JavaClassesTest extends IwantTestCase {
 			target.path(ctx);
 			fail();
 		} catch (IllegalArgumentException e) {
-			assertEquals("Source directory does not exist: " + wsRoot
-					+ "/missing-src", e.getMessage());
+			assertEquals("Source directory does not exist: "
+					+ new File(wsRoot, "missing-src"), e.getMessage());
 		}
 	}
 
@@ -341,7 +341,7 @@ public class JavaClassesTest extends IwantTestCase {
 		StringBuilder java = new StringBuilder();
 		java.append("public class Main {\n");
 		java.append("  public static void main(String[] args) {\n");
-		java.append("    System.out.println(\"aumlaut:ä\");\n");
+		java.append("    System.out.print(\"aumlaut:ä\\n\");\n");
 		java.append("  \n}");
 		java.append("}\n");
 		byte[] javaBytes = java.toString().getBytes(differentCharset);

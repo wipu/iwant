@@ -54,9 +54,9 @@ public class ConcatenatedTest extends IwantTestCase {
 				.string("\n").end();
 		c.path(ctx);
 
-		assertEquals("AB\n" + wsRoot + "/src:src-content\n" + cacheDir
-				+ "/target:target-content\n", contentOf(new File(cacheDir,
-				"all")));
+		assertEquals("AB\n" + slashed(wsRoot) + "/src:src-content\n"
+				+ slashed(cacheDir) + "/target:target-content\n",
+				contentOf(new File(cacheDir, "all")));
 	}
 
 	/**
@@ -72,8 +72,9 @@ public class ConcatenatedTest extends IwantTestCase {
 
 		c.path(ctx);
 
-		assertEquals("native:" + wsRoot + "/src\nunix:mock-unix-path:" + wsRoot
-				+ "/src\n", contentOfCached("paths"));
+		assertEquals("native:only-slashes:" + slashed(wsRoot)
+				+ "/src\nunix:mock-unix-path:" + slashed(wsRoot) + "/src\n",
+				contentOfCached("paths"));
 	}
 
 }

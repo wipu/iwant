@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.model.IwantCoreServices;
+import net.sf.iwant.coreservices.IwantCoreServicesImpl;
 import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entrymocks.IwantNetworkMock;
@@ -32,6 +34,7 @@ public abstract class IwantTestCase extends TestCase {
 	protected SideEffectContextMock seCtx;
 	private IwantNetworkMock network;
 	private Iwant iwant;
+	private IwantCoreServices realCoreServices;
 
 	@Override
 	public final void setUp() throws Exception {
@@ -49,6 +52,7 @@ public abstract class IwantTestCase extends TestCase {
 		seCtx = new SideEffectContextMock(testArea,
 				new TargetEvaluationContextMock(iwant, caches));
 		seCtx.hasWsRoot(wsRoot);
+		realCoreServices = new IwantCoreServicesImpl(iwant);
 		if (mustCaptureSystemOutAndErr()) {
 			startSystemOutAndErrCapture();
 		}
@@ -125,6 +129,13 @@ public abstract class IwantTestCase extends TestCase {
 
 	protected String unixPathOf(File file) {
 		return ctx.iwant().unixPathOf(file);
+	}
+
+	/**
+	 * Keeping tests green on windows
+	 */
+	protected String slashed(File file) {
+		return realCoreServices.pathWithoutBackslashes(file);
 	}
 
 }

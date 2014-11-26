@@ -100,7 +100,7 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	@Override
 	public String pathWithoutBackslashes(File file) {
 		if (shallMockWintoySafePaths) {
-			return "only-slashes:" + file;
+			return "only-slashes:" + delegate.pathWithoutBackslashes(file);
 		}
 		return delegate.pathWithoutBackslashes(file);
 	}
@@ -108,9 +108,13 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	@Override
 	public String unixPathOf(File file) {
 		if (shallMockWintoySafePaths) {
-			return "mock-unix-path:" + file;
+			return "mock-unix-path:" + delegate.pathWithoutBackslashes(file);
 		}
 		return delegate.unixPathOf(file);
+	}
+
+	public void shallNotMockWintoySafePaths() {
+		this.shallMockWintoySafePaths = false;
 	}
 
 	public void shallMockWintoySafePaths() {

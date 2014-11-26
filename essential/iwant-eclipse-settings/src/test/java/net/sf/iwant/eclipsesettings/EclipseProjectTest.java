@@ -186,11 +186,11 @@ public class EclipseProjectTest extends IwantTestCase {
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
-		assertEquals("[        <classpathentry kind=\"lib\" path=\"" + cached
-				+ "/binDep.jar\"/>\n"
-				+ ",         <classpathentry kind=\"lib\" path=\"" + cached
-				+ "/depOfBinDep.jar\"/>\n" + "]", dotClasspath.deps()
-				.toString());
+		assertEquals("[        <classpathentry kind=\"lib\" path=\""
+				+ slashed(cached) + "/binDep.jar\"/>\n"
+				+ ",         <classpathentry kind=\"lib\" path=\""
+				+ slashed(cached) + "/depOfBinDep.jar\"/>\n" + "]",
+				dotClasspath.deps().toString());
 	}
 
 	// code generation
