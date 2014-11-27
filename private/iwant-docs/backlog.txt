@@ -1327,6 +1327,10 @@
     + required setting default to 1.7, otherwise a lot of output was affected
       (warning about bootclasspath with 1.6)
 
++ website publish script
+  * As @developer I want this so I will publish often
+  + also publish
+
 #################################################################
 = In progress
 #################################################################
