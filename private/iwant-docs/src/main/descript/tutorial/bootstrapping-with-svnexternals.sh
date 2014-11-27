@@ -39,7 +39,7 @@ A    as-iwant-tutorial-developer/with/ant/iw/build.xml
 A    as-iwant-tutorial-developer/with/bash
 A    as-iwant-tutorial-developer/with/bash/iwant
 A    as-iwant-tutorial-developer/with/bash/iwant/help.sh
-Updated external to revision 748.
+Updated external to revision $REV_TO_TEST.
 
 At revision 1.
 EOF
