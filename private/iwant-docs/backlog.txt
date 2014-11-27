@@ -1344,10 +1344,6 @@
   + explain why side-effect needed, as different concept
   + proper class ('text') for raw p elements
   + concepts before bootstrapping
-  - prerequisites for tutorial
-    - understand basic shell
-      - some grepping
-      - xargs cat for displaying target content
   + bootstrapping and the ui
     + high-level descr
       + bash and ant
@@ -1396,6 +1392,11 @@
   - concatenated before its first use
     - also here just add the missing feature: line(String)
     - this is a good example of automatic dep tracking
+  + index page: status of project
+  - prerequisites for tutorial
+    - understand basic shell
+      - some grepping
+      - xargs cat for displaying target content
   - ant is 1st example to show output goes to stderr => xargs cat works
   - after jacoco: distribution dir, with run.sh
     - new feature to Directory: executable copyOf
@@ -1452,6 +1453,15 @@
 #################################################################
 = Planned
 #################################################################
+
+- @epic As @buildscriptauthor I want external dependencies to handle their dependencies automatically so I don't need to define them
+  - example: jacoco distribution depends on a certain version of asm
+  - jacocoreport: if no jacoco dist defined, use latest with correct asm
+  - use tested ant by default, too
+  - use in tutorial
+  - what others?
+
+- As @developer I want own type for urls, to work around all problems of java.net.URL, especially the hashCode DNS brainfart
 
 - @epic As @buildscriptauthor I want external dependencies to handle their dependencies automatically so I don't need to define them
   - example: jacoco distribution depends on a certain version of asm
