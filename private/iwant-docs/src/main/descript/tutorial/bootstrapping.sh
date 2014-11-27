@@ -54,7 +54,7 @@ I created $PWD/as-iwant-tutorial-developer/i-have/conf/iwant-from
 Please edit it and rerun me.
 EOF
 
-p "Since we just started creating our workspace, the wizard starts helping us. We follow its advice by choosing a revision of iwant and asking for help again."
+p "Since we just started creating our workspace, the wizard starts helping us. We follow its advice by choosing a revision of iwant and asking for help again. Note: here it is not wise to leave the revision out."
 
 edit as-iwant-tutorial-developer/i-have/conf/iwant-from "remote-iwant-from" <<EOF
 iwant-from=https://svn.code.sf.net/p/iwant/code/trunk@$REV_TO_TEST

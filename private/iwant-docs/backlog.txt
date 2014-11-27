@@ -1393,6 +1393,7 @@
     + here iwant philosophy in action: don't tell it to run tests
       but wish for (could be boolean) coverage report
   + in each chapter mention chapter it continues editing
+  + warn: revision needed in iwant-from
   - concatenated before its first use
     - also here just add the missing feature: line(String)
     - this is a good example of automatic dep tracking
