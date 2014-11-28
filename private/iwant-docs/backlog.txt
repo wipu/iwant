@@ -1331,6 +1331,16 @@
   * As @developer I want this so I will publish often
   + also publish
 
++ logo
+  * As @developer I want a logo on the website because logos are so nice :)
+  * just a quick version, later it can be improved
+
++ final words for tutorial
+  * As @buildscriptauthor I want some pointers to what to do after reading
+    the tutorial so I can learn things it does not mention
+  * also: as @developer I want to challenge readers to give feedback so
+    I can prioritize work to better server them
+
 #################################################################
 = In progress
 #################################################################

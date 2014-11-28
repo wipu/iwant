@@ -71,6 +71,8 @@ public class Tutorial extends Target {
 				"Using a module of the workspace in the build"));
 		pages.add(pageAboutUsingWsdef("ws-symlink",
 				"Using a symbolic link for the workspace"));
+		pages.add(new Descripted(namePrefix, "iwantmore", "I want more",
+				tutorialWsdefSrc(), null, null));
 	}
 
 	public static Tutorial local(Path copyOfLocalIwantWs) {

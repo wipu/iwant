@@ -16,10 +16,14 @@ public class Website extends Target {
 
 	private final Target tutorial;
 	private final Source html;
+	private final Target logo;
+	private final Target favicon;
 
-	public Website(String name, Target tutorial) {
+	public Website(String name, Target tutorial, Target logo, Target favicon) {
 		super(name);
 		this.tutorial = tutorial;
+		this.logo = logo;
+		this.favicon = favicon;
 		this.html = Source
 				.underWsroot("private/iwant-docs/src/main/html/website");
 	}
@@ -37,6 +41,8 @@ public class Website extends Target {
 		ingredients.add(Source
 				.underWsroot("as-iwant-developer/i-have/wsdef/src/main/java/"
 						+ "net/sf/iwant/wsdef/WorkspaceForIwant.java"));
+		ingredients.add(logo);
+		ingredients.add(favicon);
 		return ingredients;
 	}
 
@@ -46,6 +52,8 @@ public class Website extends Target {
 		dest.mkdirs();
 		FileUtils.copyDirectory(ctx.cached(tutorial), dest);
 		FileUtils.copyDirectory(ctx.cached(html), dest);
+		FileUtils.copyFileToDirectory(ctx.cached(logo), dest);
+		FileUtils.copyFileToDirectory(ctx.cached(favicon), dest);
 	}
 
 	@Override

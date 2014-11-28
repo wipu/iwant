@@ -6,9 +6,11 @@ import java.util.List;
 
 import net.sf.iwant.api.core.Concatenated;
 import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import net.sf.iwant.api.core.ScriptGenerated;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
+import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
@@ -37,8 +39,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	@Override
 	public List<? extends Target> targets() {
 		return Arrays.asList(copyOfLocalIwantWs, emmaCoverageReport(),
-				findbugsReport(), jacocoReport(), localWebsite(),
-				remoteWebsite());
+				faviconIco(), findbugsReport(), jacocoReport(), localWebsite(),
+				logoGif(), remoteWebsite());
 	}
 
 	@Override
@@ -111,7 +113,8 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static Target localWebsite() {
-		return new Website("local-website", localTutorial());
+		return new Website("local-website", localTutorial(), logoGif(),
+				faviconIco());
 	}
 
 	private static Target remoteTutorial() {
@@ -119,9 +122,57 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private static Target remoteWebsite() {
-		return new Website("remote-website", remoteTutorial());
+		return new Website("remote-website", remoteTutorial(), logoGif(),
+				faviconIco());
 	}
 
-	// the modules
+	private static Source logoAsy() {
+		return Source
+				.underWsroot("private/iwant-docs/src/main/asy/iwant-logo.asy");
+	}
+
+	private static Target logoEpsSh() {
+		ConcatenatedBuilder sh = Concatenated.named("iwant-logo.eps.sh");
+		sh.string("#!/bin/bash -eux\n");
+		sh.string("DEST=$1\n");
+		sh.string("asy -o \"$DEST\" '");
+		sh.pathTo(logoAsy());
+		sh.string("'\n");
+		return sh.end();
+	}
+
+	private static Target logoGifSh() {
+		ConcatenatedBuilder sh = Concatenated.named("iwant-logo.gif.sh");
+		sh.string("#!/bin/bash -eux\n");
+		sh.string("DEST=$1\n");
+		sh.string("convert '");
+		sh.pathTo(logoEps());
+		sh.string("' -resize '50%' \"$DEST\"\n");
+		return sh.end();
+	}
+
+	private static Target faviconIcoSh() {
+		ConcatenatedBuilder sh = Concatenated.named("favicon.ico.sh");
+		sh.string("#!/bin/bash -eux\n");
+		sh.string("DEST=$1\n");
+		sh.string("cat '").pathTo(logoAsy())
+				.string("' | sed 's/^drawFull();/drawStar();/' > temp.asy\n");
+		sh.string("asy -o temp.eps temp.asy\n");
+		sh.string("convert temp.eps -resize 32x32 temp.png\n");
+		sh.string("icotool -c -o \"$DEST\" temp.png\n");
+		return sh.end();
+	}
+
+	private static Target logoEps() {
+		return ScriptGenerated.named("iwant-logo.eps").byScript(logoEpsSh());
+	}
+
+	private static Target logoGif() {
+		return ScriptGenerated.named("iwant-logo.gif").byScript(logoGifSh());
+	}
+
+	private static Target faviconIco() {
+		return ScriptGenerated.named("favicon.ico").byScript(faviconIcoSh());
+	}
 
 }
