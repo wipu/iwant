@@ -152,6 +152,8 @@ public class Tutorial extends Target {
 		index.append("<head>\n");
 		index.append("<title>iwant tutorial</title>\n");
 		index.append("<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" charset=\"utf-8\" />\n");
+		index.append("<link rel=\"icon\" href=\"favicon.ico\"/>\n" );
+		index.append("<link rel=\"shortcut icon\" href=\"favicon.ico\"/>\n" ); 
 		index.append("</head>\n");
 		index.append("<body>\n");
 

@@ -131,6 +131,8 @@ public class Descripted extends Target {
 		html.append("<head>\n");
 		html.append("<title>" + titleText + "</title>\n");
 		html.append("<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" charset=\"utf-8\" />\n");
+		html.append("<link rel=\"icon\" href=\"favicon.ico\"/>\n" );
+		html.append("<link rel=\"shortcut icon\" href=\"favicon.ico\"/>\n" ); 
 		html.append("</head>\n");
 		html.append("<body>\n");
 		appendNavigationLinkPanelPlaceholder(html);

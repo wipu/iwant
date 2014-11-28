@@ -1341,6 +1341,8 @@
   * also: as @developer I want to challenge readers to give feedback so
     I can prioritize work to better server them
 
++ @bugfix: favicon link to tutorial index and all tutorial pages
+
 #################################################################
 = In progress
 #################################################################
