@@ -156,10 +156,9 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertNull(coverageOfManyClasses.mainClassArgs());
 		ClassNameList testNames = (ClassNameList) coverageOfManyClasses
 				.mainClassArgsFile();
-		assertEquals("net.sf.iwant.api.core.ClassNameList {\n"
-				+ "  classes:testedByClassnameFilter-test-classes\n"
-				+ "  filter:just-a-filter\n" + "}\n" + "",
-				testNames.contentDescriptor());
+		assertEquals("net.sf.iwant.api.core.ClassNameList\n" + "i:classes:\n"
+				+ "  testedByClassnameFilter-test-classes\n" + "p:filter:\n"
+				+ "  just-a-filter\n" + "", testNames.contentDescriptor());
 	}
 
 	public void testCoverageOfJavaSrcModuleWithCumulativeDeps()

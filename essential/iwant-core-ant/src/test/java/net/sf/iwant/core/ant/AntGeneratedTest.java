@@ -40,18 +40,18 @@ public class AntGeneratedTest extends IwantTestCase {
 
 	public void testContentDescriptor() throws IOException {
 		assertEquals(
-				"net.sf.iwant.core.ant.AntGenerated {\n"
-						+ "  ant-jar:"
+				"net.sf.iwant.core.ant.AntGenerated\n"
+						+ "i:ant-jars:\n  "
 						+ Iwant.IWANT_USER_DIR
 						+ "/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/org/apache/ant/ant/1.9.4/ant-1.9.4.jar\n"
-						+ "  script:script\n" + "}\n",
+						+ "i:script:\n  script\n",
 				AntGenerated.with().name("minimal").antJars(antJar())
 						.script(Source.underWsroot("script")).end()
 						.contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.core.ant.AntGenerated {\n" + "  ant-jar:"
-						+ antJar() + "\n" + "  ant-jar:another-ant.jar\n"
-						+ "  script:another-script\n" + "}\n" + "",
+				"net.sf.iwant.core.ant.AntGenerated\n" + "i:ant-jars:\n  "
+						+ antJar() + "\n" + "  another-ant.jar\n"
+						+ "i:script:\n  another-script\n",
 				AntGenerated
 						.with()
 						.name("another")

@@ -183,9 +183,10 @@ public class IwantModules extends JavaModules {
 			.testDeps(iwantApimocks, iwantApiCore, iwantTestarea, junit).end();
 
 	private JavaSrcModule iwantCoreAnt = essentialModule("core-ant")
-			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
-			.testDeps(iwantApiCore, iwantApimocks, iwantCoreDownload,
-					iwantEmbedded, iwantTestarea, junit).end();
+			.mainDeps(iwantApiCore, iwantApiModel, iwantCoreservices,
+					iwantEntry)
+			.testDeps(iwantApimocks, iwantCoreDownload, iwantEmbedded,
+					iwantTestarea, junit).end();
 
 	private JavaSrcModule iwantDeprecatedEmma = essentialModule(
 			"deprecated-emma")

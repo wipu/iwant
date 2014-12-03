@@ -1,18 +1,16 @@
 package net.sf.iwant.api.core;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.StringFilter;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 
-public class ClassNameList extends Target {
+public class ClassNameList extends TargetBase {
 
 	private final Path classes;
 	private final StringFilter filter;
@@ -52,11 +50,6 @@ public class ClassNameList extends Target {
 			return new ClassNameList(name, classes, filter);
 		}
 
-	}
-
-	@Override
-	public InputStream content(TargetEvaluationContext ctx) throws Exception {
-		throw new UnsupportedOperationException("TODO test and implement");
 	}
 
 	@Override
@@ -114,20 +107,10 @@ public class ClassNameList extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		return Arrays.asList(classes);
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append(" {\n");
-		b.append("  classes:").append(classes).append("\n");
-		if (filter != null) {
-			b.append("  filter:").append(filter).append("\n");
-		}
-		b.append("}\n");
-		return b.toString();
+	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("classes", classes).parameter("filter", filter)
+				.nothingElse();
 	}
 
 	public Path classes() {

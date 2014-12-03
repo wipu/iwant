@@ -1,19 +1,18 @@
 package net.sf.iwant.core.ant;
 
 import java.io.File;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.ExitCalledException;
 
-public class AntGenerated extends Target {
+public class AntGenerated extends TargetBase {
 
 	private final List<Path> antJars;
 	private final Path script;
@@ -53,11 +52,6 @@ public class AntGenerated extends Target {
 			return new AntGenerated(name, antJars, script);
 		}
 
-	}
-
-	@Override
-	public InputStream content(TargetEvaluationContext ctx) throws Exception {
-		throw new UnsupportedOperationException("TODO test and implement");
 	}
 
 	@Override
@@ -108,23 +102,10 @@ public class AntGenerated extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> retval = new ArrayList<>();
-		retval.addAll(antJars);
-		retval.add(script);
-		return retval;
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append(" {\n");
-		for (Path antJar : antJars) {
-			b.append("  ant-jar:").append(antJar).append("\n");
-		}
-		b.append("  script:").append(script).append("\n");
-		b.append("}\n");
-		return b.toString();
+	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("ant-jars", antJars)
+				.ingredients("script", script).nothingElse();
 	}
 
 }

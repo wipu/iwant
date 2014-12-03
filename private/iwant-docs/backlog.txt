@@ -1343,6 +1343,13 @@
 
 + @bugfix: favicon link to tutorial index and all tutorial pages
 
++ As @buildscriptauthor I want a convenience superclass for my Targets so I can define contentDescriptor and ingredients at the same place
+  * TargetBase
+  + tdd it
+  + use in some targets
+  + robust handling of nulls in descriptor
+  + robust escaping of newlines in descriptor
+
 #################################################################
 = In progress
 #################################################################
@@ -1429,6 +1436,9 @@
         project's own repo
   - writing own targets and side-effects
     - content descriptor, ingredients  
+
+- As @buildscriptauthor I want all Targets to extends TargetBase so they show good compact example
+  * also, as @developer, for maintenance
 
 - As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
   + use Windows to develop the wrapper

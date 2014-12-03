@@ -4,25 +4,16 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 
-public class HelloTarget extends Target {
+public class HelloTarget extends TargetBase {
 
 	private final String message;
 
 	public HelloTarget(String name, String message) {
 		super(name);
 		this.message = message;
-	}
-
-	@Override
-	public List<Path> ingredients() {
-		return Collections.emptyList();
 	}
 
 	@Override
@@ -38,8 +29,9 @@ public class HelloTarget extends Target {
 	}
 
 	@Override
-	public String contentDescriptor() {
-		return getClass().getCanonicalName() + ":" + message;
+	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.parameter("message", message).nothingElse();
 	}
 
 }

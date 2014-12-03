@@ -22,8 +22,9 @@ public class ClassNameListTest extends IwantTestCase {
 		ClassNameList list = ClassNameList.with().name("list").classes(classes)
 				.end();
 
-		assertEquals("net.sf.iwant.api.core.ClassNameList {\n"
-				+ "  classes:classes\n" + "}\n", list.contentDescriptor());
+		assertEquals("net.sf.iwant.api.core.ClassNameList\n" + "i:classes:\n"
+				+ "  classes\n" + "p:filter:\n" + " null\n" + "",
+				list.contentDescriptor());
 	}
 
 	private static class TestFilter implements StringFilter {
@@ -46,9 +47,9 @@ public class ClassNameListTest extends IwantTestCase {
 		ClassNameList list = ClassNameList.with().name("list").classes(classes)
 				.matching(new TestFilter()).end();
 
-		assertEquals("net.sf.iwant.api.core.ClassNameList {\n"
-				+ "  classes:classes2\n"
-				+ "  filter:TestFilter to test descriptor\n}\n",
+		assertEquals("net.sf.iwant.api.core.ClassNameList\n" + "i:classes:\n"
+				+ "  classes2\n" + "p:filter:\n"
+				+ "  TestFilter to test descriptor\n" + "",
 				list.contentDescriptor());
 	}
 
