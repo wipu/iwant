@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.coreservices.FileUtil;
 
-public class Directory extends Target {
+public class Directory extends TargetBase {
 
 	private final Root root;
 
@@ -73,13 +72,10 @@ public class Directory extends Target {
 				}
 
 				@Override
-				public void addIngredientsTo(List<Path> ingredients) {
-					ingredients.add(path);
-				}
-
-				@Override
-				public void contentDescriptor(StringBuilder descr) {
-					descr.append(this).append("\n");
+				public IngredientsAndParametersPlease ingredientsAndAttributes(
+						IngredientsAndParametersPlease iUse) {
+					return iUse.ingredients("copy-from", path).parameter(
+							"copy-as", name);
 				}
 
 				@Override
@@ -107,18 +103,14 @@ public class Directory extends Target {
 		}
 
 		@Override
-		public void addIngredientsTo(List<Path> ingredients) {
+		public IngredientsAndParametersPlease ingredientsAndAttributes(
+				IngredientsAndParametersPlease iUse) {
+			IngredientsAndParametersPlease weUse = iUse;
+			weUse = weUse.parameter("fullRelativePath", fullRelativePath);
 			for (FileCreator child : children) {
-				child.addIngredientsTo(ingredients);
+				weUse = child.ingredientsAndAttributes(weUse);
 			}
-		}
-
-		@Override
-		public void contentDescriptor(StringBuilder descr) {
-			descr.append(this).append("\n");
-			for (FileCreator child : children) {
-				child.contentDescriptor(descr);
-			}
+			return weUse;
 		}
 
 	}
@@ -160,9 +152,8 @@ public class Directory extends Target {
 		void createUnder(File parent, TargetEvaluationContext ctx)
 				throws Exception;
 
-		void addIngredientsTo(List<Path> ingredients);
-
-		void contentDescriptor(StringBuilder descr);
+		IngredientsAndParametersPlease ingredientsAndAttributes(
+				IngredientsAndParametersPlease iUse);
 
 	}
 
@@ -172,22 +163,14 @@ public class Directory extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
-		root.addIngredientsTo(ingredients);
-		return ingredients;
+	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+			IngredientsAndParametersPlease iUse) {
+		return root.ingredientsAndAttributes(iUse).nothingElse();
 	}
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		root.createUnder(ctx.cached(this), ctx);
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder descr = new StringBuilder();
-		root.contentDescriptor(descr);
-		return descr.toString();
 	}
 
 }

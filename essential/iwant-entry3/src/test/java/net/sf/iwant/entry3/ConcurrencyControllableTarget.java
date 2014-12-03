@@ -1,12 +1,11 @@
 package net.sf.iwant.entry3;
 
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.plannerapi.Resource;
@@ -14,7 +13,7 @@ import net.sf.iwant.plannerapi.ResourcePool;
 import net.sf.iwant.plannerapi.TaskDirtiness;
 import net.sf.iwant.plannermocks.TaskMock;
 
-public class ConcurrencyControllableTarget extends Target {
+public class ConcurrencyControllableTarget extends TargetBase {
 
 	private final TaskMock task;
 	private final List<Path> dependencies;
@@ -25,11 +24,6 @@ public class ConcurrencyControllableTarget extends Target {
 		task = new TaskMock(name, TaskDirtiness.DIRTY_SRC_INGREDIENT_MISSING,
 				Collections.<ResourcePool> emptyList(), true);
 		this.dependencies = Arrays.asList(dependencies);
-	}
-
-	@Override
-	public InputStream content(TargetEvaluationContext ctx) throws Exception {
-		throw new UnsupportedOperationException("TODO test and implement");
 	}
 
 	private static void log(Object... msg) {
@@ -45,13 +39,11 @@ public class ConcurrencyControllableTarget extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		return dependencies;
-	}
-
-	@Override
-	public String contentDescriptor() {
-		return name();
+	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+			IngredientsAndParametersPlease iUse) {
+		// TODO is name really an important parameter, if it is, explain why
+		return iUse.ingredients("dependencies", dependencies)
+				.parameter("name", name()).nothingElse();
 	}
 
 	public void shallEventuallyStartRefresh() {

@@ -69,10 +69,11 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 				.nativePathTo(Source.underWsroot("ingr2")).end();
 
 		assertError("Two conflicting definitions for Path name a:\n"
-				+ "One has content descriptor:\n" + "Concatenated {\n"
-				+ "native-path:ingr2\n" + "}\n" + "\n" + "and another:\n"
-				+ "Concatenated {\n" + "native-path:ingr1\n" + "}\n" + "", p1,
-				p2);
+				+ "One has content descriptor:\n"
+				+ "net.sf.iwant.api.core.Concatenated\n" + "i:native-path:\n"
+				+ "  ingr2\n" + "\n" + "and another:\n"
+				+ "net.sf.iwant.api.core.Concatenated\n" + "i:native-path:\n"
+				+ "  ingr1\n" + "", p1, p2);
 	}
 
 	public void testOneConcatenatedHasNullIngredientInsteadOfNotNull() {
@@ -82,9 +83,11 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 
 		// check both ways so no NPE here
 		String errorMessage = "Two conflicting definitions for Path name a:\n"
-				+ "One has content descriptor:\n" + "Concatenated {\n"
-				+ "native-path:null\n" + "}\n" + "\n" + "and another:\n"
-				+ "Concatenated {\n" + "native-path:ingr1\n" + "}\n" + "";
+				+ "One has content descriptor:\n"
+				+ "net.sf.iwant.api.core.Concatenated\n" + "i:native-path:\n"
+				+ " null\n" + "\n" + "and another:\n"
+				+ "net.sf.iwant.api.core.Concatenated\n" + "i:native-path:\n"
+				+ "  ingr1\n" + "";
 		assertError(errorMessage, p1, p2);
 		assertError("Null Path", p2, p1);
 	}
@@ -97,10 +100,11 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 				.nativePathTo(Source.underWsroot("p2-only")).end();
 
 		assertError("Two conflicting definitions for Path name a:\n"
-				+ "One has content descriptor:\n" + "Concatenated {\n"
-				+ "native-path:common\n" + "native-path:p2-only\n" + "}\n"
-				+ "\n" + "and another:\n" + "Concatenated {\n"
-				+ "native-path:common\n" + "}\n", p1, p2);
+				+ "One has content descriptor:\n"
+				+ "net.sf.iwant.api.core.Concatenated\n" + "i:native-path:\n"
+				+ "  common\n" + "i:native-path:\n" + "  p2-only\n" + "\n"
+				+ "and another:\n" + "net.sf.iwant.api.core.Concatenated\n"
+				+ "i:native-path:\n" + "  common\n" + "", p1, p2);
 	}
 
 	public void testBuggyTargetsThatGiveIdenticalDescriptorButDifferentIngredients() {

@@ -187,12 +187,14 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		assertEquals(1, seCtx.targetsWantedAsPath().size());
-		assertEquals("Concatenated {\n"
-				+ "native-path:testUtilWithSources\nstring:'\n'\n"
-				+ "native-path:testUtilWithSources-src\nstring:'\n'\n"
-				+ "native-path:binWithoutSources\nstring:'\n'\n"
-				+ "native-path:binWithSources\nstring:'\n'\n"
-				+ "native-path:binWithSources-src\nstring:'\n'\n" + "}\n",
+		assertEquals("net.sf.iwant.api.core.Concatenated\n"
+				+ "i:native-path:\n" + "  testUtilWithSources\n"
+				+ "p:string:\n" + "  \\n\n" + "i:native-path:\n"
+				+ "  testUtilWithSources-src\n" + "p:string:\n" + "  \\n\n"
+				+ "i:native-path:\n" + "  binWithoutSources\n" + "p:string:\n"
+				+ "  \\n\n" + "i:native-path:\n" + "  binWithSources\n"
+				+ "p:string:\n" + "  \\n\n" + "i:native-path:\n"
+				+ "  binWithSources-src\n" + "p:string:\n" + "  \\n\n" + "",
 				seCtx.targetsWantedAsPath().get(0).contentDescriptor());
 	}
 
@@ -211,9 +213,11 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		assertEquals(1, seCtx.targetsWantedAsPath().size());
-		assertEquals("Concatenated {\n" + "native-path:util\nstring:'\n'\n"
-				+ "native-path:util-src\nstring:'\n'\n" + "}\n", seCtx
-				.targetsWantedAsPath().get(0).contentDescriptor());
+		assertEquals("net.sf.iwant.api.core.Concatenated\n"
+				+ "i:native-path:\n" + "  util\n" + "p:string:\n" + "  \\n\n"
+				+ "i:native-path:\n" + "  util-src\n" + "p:string:\n"
+				+ "  \\n\n" + "", seCtx.targetsWantedAsPath().get(0)
+				.contentDescriptor());
 
 		assertDotClasspathContains("mod",
 				"<classpathentry kind=\"lib\" path=\"" + slashed(cacheDir)

@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sourceforge.pmd.cpd.CPDTask;
@@ -16,7 +16,7 @@ import net.sourceforge.pmd.cpd.CPDTask;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 
-public class CopyPasteReport extends Target {
+public class CopyPasteReport extends TargetBase {
 
 	private final List<Path> srcDirectories;
 	private final int minimumTokenCount;
@@ -70,10 +70,11 @@ public class CopyPasteReport extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
-		ingredients.addAll(srcDirectories);
-		return ingredients;
+	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("srcDirectories", srcDirectories)
+				.parameter("minimumTokenCount", minimumTokenCount)
+				.nothingElse();
 	}
 
 	@Override
@@ -104,20 +105,6 @@ public class CopyPasteReport extends Target {
 
 		System.err.println("Running copy-paste analysis on " + srcDirectories);
 		task.execute();
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append(" {\n");
-		b.append("  ingredients {\n");
-		for (Path ingredient : ingredients()) {
-			b.append("    ").append(ingredient).append("\n");
-		}
-		b.append("  }\n");
-		b.append("  minimumTokenCount:" + minimumTokenCount + "\n");
-		b.append("}\n");
-		return b.toString();
 	}
 
 }

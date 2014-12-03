@@ -21,13 +21,14 @@ public class ConcatenatedTest extends IwantTestCase {
 	}
 
 	public void testContentDescriptor() {
-		assertEquals("Concatenated {\nbytes:[1, 2]\nstring:'s'\n}\n",
-				Concatenated.named("all-but-paths").bytes(1, 2).string("s")
-						.end().contentDescriptor());
+		assertEquals("net.sf.iwant.api.core.Concatenated\n" + "p:bytes:\n"
+				+ "  [1, 2]\n" + "p:string:\n" + "  s\n" + "", Concatenated
+				.named("all-but-paths").bytes(1, 2).string("s").end()
+				.contentDescriptor());
 		assertEquals(
-				"Concatenated {\n" + "content-of:src\n"
-						+ "native-path:target\n" + "unix-path:target2\n"
-						+ "}\n" + "",
+				"net.sf.iwant.api.core.Concatenated\n" + "i:content-of:\n"
+						+ "  src\n" + "i:native-path:\n" + "  target\n"
+						+ "i:unix-path:\n" + "  target2\n" + "",
 				Concatenated.named("only-paths")
 						.contentOf(Source.underWsroot("src"))
 						.nativePathTo(new HelloTarget("target", ""))

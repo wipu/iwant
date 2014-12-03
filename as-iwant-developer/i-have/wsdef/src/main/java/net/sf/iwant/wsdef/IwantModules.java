@@ -258,8 +258,8 @@ public class IwantModules extends JavaModules {
 	// TODO don't depend directly on asm, jaxen: pmd depends on them
 	private JavaSrcModule iwantPluginPmd = optionalModule("plugin-pmd")
 			.testResources("src/test/resources")
-			.mainDeps(ant, asm, commonsIo, iwantApiModel, iwantEntry, jaxen,
-					pmd)
+			.mainDeps(ant, asm, commonsIo, iwantApiCore, iwantApiModel,
+					iwantEntry, jaxen, pmd)
 			.testDeps(junit, iwantApimocks, iwantTestarea, iwantTestresources)
 			.end();
 

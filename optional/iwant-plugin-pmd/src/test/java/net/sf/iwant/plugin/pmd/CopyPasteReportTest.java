@@ -34,10 +34,10 @@ public class CopyPasteReportTest extends PmdTestBase {
 		Path src = Source.underWsroot("src");
 
 		assertTrue(CopyPasteReport.with().name("report-10").from(src).end()
-				.contentDescriptor().contains("minimumTokenCount:100\n"));
+				.contentDescriptor().contains("minimumTokenCount:\n  100\n"));
 		assertTrue(CopyPasteReport.with().name("report-150").from(src)
 				.minimumTokenCount(150).end().contentDescriptor()
-				.contains("minimumTokenCount:150\n"));
+				.contains("minimumTokenCount:\n  150\n"));
 	}
 
 	public void testReportOfZeroSrcDirectoriesIsAnError() throws Exception {

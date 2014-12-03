@@ -12,7 +12,9 @@ public class DirectoryTest extends IwantTestCase {
 	public void testContentDescriptorAndIngredientsOfEmpty() {
 		Directory dir = Directory.named("empty").end();
 
-		assertEquals(" DIR \n", dir.contentDescriptor());
+		assertEquals("net.sf.iwant.api.core.Directory\n"
+				+ "p:fullRelativePath:\n" + "  \n" + "",
+				dir.contentDescriptor());
 		assertEquals("[]", dir.ingredients().toString());
 	}
 
@@ -22,9 +24,12 @@ public class DirectoryTest extends IwantTestCase {
 		Directory dir = Directory.named("nonempty").dir("empty-sub").end()
 				.copyOf(ingr1).dir("nonempty-sub").copyOf(ingr2).end().end();
 
-		assertEquals(" DIR \n" + " DIR /empty-sub\n" + "COPY src <- src\n"
-				+ " DIR /nonempty-sub\n" + "COPY hello <- hello\n" + "",
-				dir.contentDescriptor());
+		assertEquals("net.sf.iwant.api.core.Directory\n"
+				+ "p:fullRelativePath:\n" + "  \n" + "p:fullRelativePath:\n"
+				+ "  /empty-sub\n" + "i:copy-from:\n" + "  src\n"
+				+ "p:copy-as:\n" + "  src\n" + "p:fullRelativePath:\n"
+				+ "  /nonempty-sub\n" + "i:copy-from:\n" + "  hello\n"
+				+ "p:copy-as:\n" + "  hello\n" + "", dir.contentDescriptor());
 		assertEquals("[src, hello]", dir.ingredients().toString());
 	}
 

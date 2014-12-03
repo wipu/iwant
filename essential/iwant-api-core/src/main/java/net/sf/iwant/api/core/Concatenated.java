@@ -8,15 +8,12 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 
-public class Concatenated extends Target {
+public class Concatenated extends TargetBase {
 
 	private final List<Fragment> fragments;
 
@@ -82,7 +79,8 @@ public class Concatenated extends Target {
 		void writeTo(OutputStream out, TargetEvaluationContext ctx)
 				throws IOException;
 
-		Collection<? extends Path> ingredients();
+		IngredientsAndParametersPlease ingredientsAndAttributes(
+				IngredientsAndParametersPlease iUse);
 
 	}
 
@@ -95,11 +93,6 @@ public class Concatenated extends Target {
 		}
 
 		@Override
-		public String toString() {
-			return "string:'" + value + "'";
-		}
-
-		@Override
 		public void writeTo(OutputStream out, TargetEvaluationContext ctx)
 				throws IOException {
 			PrintWriter writer = new PrintWriter(out);
@@ -108,8 +101,9 @@ public class Concatenated extends Target {
 		}
 
 		@Override
-		public Collection<? extends Path> ingredients() {
-			return Collections.emptySet();
+		public IngredientsAndParametersPlease ingredientsAndAttributes(
+				IngredientsAndParametersPlease iUse) {
+			return iUse.parameter("string", value);
 		}
 
 	}
@@ -120,11 +114,6 @@ public class Concatenated extends Target {
 
 		public PathContentFragment(Path value) {
 			this.value = value;
-		}
-
-		@Override
-		public String toString() {
-			return "content-of:" + value;
 		}
 
 		@Override
@@ -139,8 +128,9 @@ public class Concatenated extends Target {
 		}
 
 		@Override
-		public Collection<? extends Path> ingredients() {
-			return Collections.singleton(value);
+		public IngredientsAndParametersPlease ingredientsAndAttributes(
+				IngredientsAndParametersPlease iUse) {
+			return iUse.ingredients("content-of", value);
 		}
 
 	}
@@ -154,11 +144,6 @@ public class Concatenated extends Target {
 		}
 
 		@Override
-		public String toString() {
-			return "native-path:" + value;
-		}
-
-		@Override
 		public void writeTo(OutputStream out, TargetEvaluationContext ctx)
 				throws IOException {
 			PrintWriter writer = new PrintWriter(out);
@@ -167,8 +152,9 @@ public class Concatenated extends Target {
 		}
 
 		@Override
-		public Collection<? extends Path> ingredients() {
-			return Collections.singleton(value);
+		public IngredientsAndParametersPlease ingredientsAndAttributes(
+				IngredientsAndParametersPlease iUse) {
+			return iUse.ingredients("native-path", value);
 		}
 
 	}
@@ -182,11 +168,6 @@ public class Concatenated extends Target {
 		}
 
 		@Override
-		public String toString() {
-			return "unix-path:" + value;
-		}
-
-		@Override
 		public void writeTo(OutputStream out, TargetEvaluationContext ctx)
 				throws IOException {
 			PrintWriter writer = new PrintWriter(out);
@@ -195,8 +176,9 @@ public class Concatenated extends Target {
 		}
 
 		@Override
-		public Collection<? extends Path> ingredients() {
-			return Collections.singleton(value);
+		public IngredientsAndParametersPlease ingredientsAndAttributes(
+				IngredientsAndParametersPlease iUse) {
+			return iUse.ingredients("unix-path", value);
 		}
 
 	}
@@ -210,30 +192,27 @@ public class Concatenated extends Target {
 		}
 
 		@Override
-		public String toString() {
-			return "bytes:" + Arrays.toString(value);
-		}
-
-		@Override
 		public void writeTo(OutputStream out, TargetEvaluationContext ctx)
 				throws IOException {
 			out.write(value);
 		}
 
 		@Override
-		public Collection<? extends Path> ingredients() {
-			return Collections.emptySet();
+		public IngredientsAndParametersPlease ingredientsAndAttributes(
+				IngredientsAndParametersPlease iUse) {
+			return iUse.parameter("bytes", Arrays.toString(value));
 		}
 
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
+	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+			IngredientsAndParametersPlease iUse) {
+		IngredientsAndParametersPlease fUse = iUse;
 		for (Fragment fragment : fragments) {
-			ingredients.addAll(fragment.ingredients());
+			fUse = fragment.ingredientsAndAttributes(fUse);
 		}
-		return ingredients;
+		return fUse.nothingElse();
 	}
 
 	@Override
@@ -246,22 +225,6 @@ public class Concatenated extends Target {
 		} finally {
 			out.close();
 		}
-	}
-
-	@Override
-	public InputStream content(TargetEvaluationContext ctx) throws Exception {
-		throw new UnsupportedOperationException("TODO test and implement");
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getSimpleName()).append(" {\n");
-		for (Fragment fragment : fragments) {
-			b.append(fragment).append("\n");
-		}
-		b.append("}\n");
-		return b.toString();
 	}
 
 }
