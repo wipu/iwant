@@ -29,7 +29,7 @@ public class HelloTarget extends TargetBase {
 	}
 
 	@Override
-	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
 		return iUse.parameter("message", message).nothingElse();
 	}

@@ -107,7 +107,7 @@ public class ClassNameList extends TargetBase {
 	}
 
 	@Override
-	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
 		return iUse.ingredients("classes", classes).parameter("filter", filter)
 				.nothingElse();

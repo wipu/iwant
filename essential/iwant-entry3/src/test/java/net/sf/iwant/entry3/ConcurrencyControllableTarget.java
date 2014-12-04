@@ -39,7 +39,7 @@ public class ConcurrencyControllableTarget extends TargetBase {
 	}
 
 	@Override
-	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
 		// TODO is name really an important parameter, if it is, explain why
 		return iUse.ingredients("dependencies", dependencies)

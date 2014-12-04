@@ -102,7 +102,7 @@ public class AntGenerated extends TargetBase {
 	}
 
 	@Override
-	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
 		return iUse.ingredients("ant-jars", antJars)
 				.ingredients("script", script).nothingElse();

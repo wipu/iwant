@@ -163,7 +163,7 @@ public class Directory extends TargetBase {
 	}
 
 	@Override
-	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
 		return root.ingredientsAndAttributes(iUse).nothingElse();
 	}

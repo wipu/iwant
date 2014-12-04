@@ -206,7 +206,7 @@ public class Concatenated extends TargetBase {
 	}
 
 	@Override
-	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
 		IngredientsAndParametersPlease fUse = iUse;
 		for (Fragment fragment : fragments) {

@@ -24,7 +24,7 @@ public abstract class TargetBase extends Target {
 	@Override
 	public final List<Path> ingredients() {
 		IngredientsBuilder ib = new IngredientsBuilder();
-		ingredientsAndAttributes(ib);
+		ingredientsAndParameters(ib);
 		return ib.ingredients();
 	}
 
@@ -54,7 +54,7 @@ public abstract class TargetBase extends Target {
 	@Override
 	public final String contentDescriptor() {
 		ContentDescriptorBuilder cdb = new ContentDescriptorBuilder();
-		ingredientsAndAttributes(cdb);
+		ingredientsAndParameters(cdb);
 		return cdb.contentDescriptor();
 	}
 
@@ -102,7 +102,7 @@ public abstract class TargetBase extends Target {
 
 	}
 
-	protected abstract IngredientsAndParametersDefined ingredientsAndAttributes(
+	protected abstract IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse);
 
 	protected interface IngredientsAndParametersPlease {

@@ -127,7 +127,7 @@ public class Downloaded extends TargetBase {
 	}
 
 	@Override
-	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
 		return iUse.parameter("url", url).parameter("md5", md5).nothingElse();
 	}

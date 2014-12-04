@@ -39,27 +39,27 @@ public class IngredientsAndParametersTest {
 
 	}
 
-	private class NoIngredientsOrAttributes extends TestTarget {
+	private class NoIngredientsOrParameters extends TestTarget {
 		@Override
-		protected IngredientsAndParametersDefined ingredientsAndAttributes(
+		protected IngredientsAndParametersDefined ingredientsAndParameters(
 				IngredientsAndParametersPlease iUse) {
 			return iUse.nothingElse();
 		}
 	}
 
 	@Test
-	public void noIngredientsOrAttributes() {
-		Target t = new NoIngredientsOrAttributes();
+	public void noIngredientsOrParameters() {
+		Target t = new NoIngredientsOrParameters();
 
 		assertEquals("[]", t.ingredients().toString());
 		assertEquals(
-				"net.sf.iwant.api.core.IngredientsAndParametersTest.NoIngredientsOrAttributes\n",
-				t.contentDescriptor());
+				"net.sf.iwant.api.core.IngredientsAndParametersTest.NoIngredientsOrParameters\n"
+						+ "", t.contentDescriptor());
 	}
 
-	private class SomeIngredientsAndAttributes extends TestTarget {
+	private class SomeIngredientsAndParameters extends TestTarget {
 		@Override
-		protected IngredientsAndParametersDefined ingredientsAndAttributes(
+		protected IngredientsAndParametersDefined ingredientsAndParameters(
 				IngredientsAndParametersPlease iUse) {
 			return iUse.parameter("flags", "--int", 1)
 					.ingredients("c-files", i1s, i2t).parameter("-W", "all")
@@ -68,12 +68,12 @@ public class IngredientsAndParametersTest {
 	}
 
 	@Test
-	public void someIngredientsAndAttributes() {
-		Target t = new SomeIngredientsAndAttributes();
+	public void someIngredientsAndParameters() {
+		Target t = new SomeIngredientsAndParameters();
 
 		assertEquals("[i1, i2, i3, i4]", t.ingredients().toString());
 		assertEquals(
-				"net.sf.iwant.api.core.IngredientsAndParametersTest.SomeIngredientsAndAttributes\n"
+				"net.sf.iwant.api.core.IngredientsAndParametersTest.SomeIngredientsAndParameters\n"
 						+ "p:flags:\n"
 						+ "  --int\n"
 						+ "  1\n"
@@ -94,7 +94,7 @@ public class IngredientsAndParametersTest {
 	 */
 	private class EscapeTest extends TestTarget {
 		@Override
-		protected IngredientsAndParametersDefined ingredientsAndAttributes(
+		protected IngredientsAndParametersDefined ingredientsAndParameters(
 				IngredientsAndParametersPlease iUse) {
 			return iUse
 					.parameter("multiline\npname", "multiline\npvalue")
@@ -128,7 +128,7 @@ public class IngredientsAndParametersTest {
 	private class Nulls extends TestTarget {
 
 		@Override
-		protected IngredientsAndParametersDefined ingredientsAndAttributes(
+		protected IngredientsAndParametersDefined ingredientsAndParameters(
 				IngredientsAndParametersPlease iUse) {
 			return iUse.parameter("nullp", (Object) null)
 					.ingredients("nulli", (Path) null).nothingElse();

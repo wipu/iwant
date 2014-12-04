@@ -70,7 +70,7 @@ public class CopyPasteReport extends TargetBase {
 	}
 
 	@Override
-	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
 		return iUse.ingredients("srcDirectories", srcDirectories)
 				.parameter("minimumTokenCount", minimumTokenCount)
