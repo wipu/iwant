@@ -1,17 +1,13 @@
 package net.sf.iwant.plugin.findbugs;
 
 import java.io.File;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.plugin.ant.Untarred;
 
-public class FindbugsDistribution extends Target {
+public class FindbugsDistribution extends TargetBase {
 
 	private final String version;
 	private final Downloaded tarGz;
@@ -39,26 +35,9 @@ public class FindbugsDistribution extends Target {
 	}
 
 	@Override
-	public InputStream content(TargetEvaluationContext ctx) throws Exception {
-		throw new UnsupportedOperationException("TODO test and implement");
-	}
-
-	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
-		ingredients.add(tarGz);
-		return ingredients;
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append(" {\n");
-		for (Path ingredient : ingredients()) {
-			b.append("  ").append(ingredient).append("\n");
-		}
-		b.append("}\n");
-		return b.toString();
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("tarGz", tarGz).nothingElse();
 	}
 
 	@Override

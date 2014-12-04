@@ -93,7 +93,7 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.mainClassAndArguments("Hello").instrumentations(instr)
 				.nonInstrumentedClasses(junit()).end();
 
-		assertEquals("[" + antJar() + ", " + antLauncherJar() + ", " + emma()
+		assertEquals("[" + emma() + ", " + antJar() + ", " + antLauncherJar()
 				+ ", instrtest-classes.emma-instr, " + junit() + "]", coverage
 				.ingredients().toString());
 	}
@@ -124,13 +124,14 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.mainClassAndArguments("Hello", "arg1", "arg2")
 				.instrumentations(instr).end();
 
-		assertEquals("net.sf.iwant.deprecated.emma.EmmaCoverage {\n" + "emma:"
-				+ emma() + "\n" + "antJars:[" + antJar() + ", "
-				+ antLauncherJar() + "]\n" + "mainClass:Hello\n"
-				+ "mainClassArguments:[arg1, arg2]\n"
-				+ "mainClassArgumentsFile:null\n"
-				+ "classpath:[instr:instrtest-classes]\n"
-				+ "jvmargs:[-XX:-UseSplitVerifier, -Demma.rt.control=false]\n"
+		assertEquals("net.sf.iwant.deprecated.emma.EmmaCoverage\n"
+				+ "i:emma:\n" + "  " + emma() + "\n" + "i:antJars:\n" + "  "
+				+ antJar() + "\n  " + antLauncherJar() + "\n"
+				+ "p:mainClass:\n" + "  Hello\n" + "p:mainClassArguments:\n"
+				+ "  arg1\n" + "  arg2\n" + "i:mainClassArgumentsFile:\n"
+				+ " null\n" + "i:classpath:\n"
+				+ "  instrtest-classes.emma-instr\n" + "p:jvmargs:\n"
+				+ "  -XX:-UseSplitVerifier\n" + "  -Demma.rt.control=false\n"
 				+ "", coverage.contentDescriptor());
 	}
 

@@ -1,6 +1,9 @@
 package net.sf.iwant.api.core;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
@@ -131,7 +134,11 @@ public class IngredientsAndParametersTest {
 		protected IngredientsAndParametersDefined ingredientsAndParameters(
 				IngredientsAndParametersPlease iUse) {
 			return iUse.parameter("nullp", (Object) null)
-					.ingredients("nulli", (Path) null).nothingElse();
+					.parameter("nullps", (List<Object>) null)
+					.ingredients("nulli", (Path) null)
+					.ingredients("nullis", (List<Path>) null)
+					.optionalIngredients("nullois", (List<Path>) null)
+					.nothingElse();
 		}
 
 	}
@@ -143,8 +150,31 @@ public class IngredientsAndParametersTest {
 		assertEquals("[null]", t.ingredients().toString());
 		assertEquals(
 				"net.sf.iwant.api.core.IngredientsAndParametersTest.Nulls\n"
-						+ "p:nullp:\n" + " null\n" + "i:nulli:\n" + " null\n"
-						+ "", t.contentDescriptor());
+						+ "p:nullp:\n" + " null\n" + "p:nullps:\n"
+						+ " null-collection\n" + "i:nulli:\n" + " null\n"
+						+ "i:nullis:\n" + " null-collection\n" + "i:nullois:\n"
+						+ " null-collection\n" + "", t.contentDescriptor());
+
+	}
+
+	private class OptionalIngredients extends TestTarget {
+		@Override
+		protected IngredientsAndParametersDefined ingredientsAndParameters(
+				IngredientsAndParametersPlease iUse) {
+			return iUse.optionalIngredients("o1", null, i1s)
+					.optionalIngredients("o2", i2t, null).nothingElse();
+		}
+	}
+
+	@Test
+	public void optionalIngredients() {
+		Target t = new OptionalIngredients();
+
+		assertEquals("[i1, i2]", t.ingredients().toString());
+		assertEquals(
+				"net.sf.iwant.api.core.IngredientsAndParametersTest.OptionalIngredients\n"
+						+ "i:o1:\n" + " null\n" + "  i1\n" + "i:o2:\n"
+						+ "  i2\n" + " null\n" + "", t.contentDescriptor());
 
 	}
 

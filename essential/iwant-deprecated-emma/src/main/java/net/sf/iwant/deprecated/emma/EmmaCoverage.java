@@ -2,20 +2,19 @@ package net.sf.iwant.deprecated.emma;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.core.ant.AntGenerated;
 import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.entry.Iwant;
 
-public class EmmaCoverage extends Target {
+public class EmmaCoverage extends TargetBase {
 
 	private final Path emma;
 	private final List<Path> antJars;
@@ -134,11 +133,6 @@ public class EmmaCoverage extends Target {
 	@Override
 	public boolean supportsParallelism() {
 		return false;
-	}
-
-	@Override
-	public InputStream content(TargetEvaluationContext ctx) throws Exception {
-		throw new UnsupportedOperationException("TODO test and implement");
 	}
 
 	@Override
@@ -283,30 +277,17 @@ public class EmmaCoverage extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
-		ingredients.addAll(antJars);
-		ingredients.add(emma);
-		ingredients.addAll(classPathIngredients());
-		if (mainClassArgumentsFile != null) {
-			ingredients.add(mainClassArgumentsFile);
-		}
-		return ingredients;
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append(" {\n");
-		b.append("emma:").append(emma).append("\n");
-		b.append("antJars:").append(antJars).append("\n");
-		b.append("mainClass:").append(mainClass).append("\n");
-		b.append("mainClassArguments:").append(mainClassArguments).append("\n");
-		b.append("mainClassArgumentsFile:").append(mainClassArgumentsFile)
-				.append("\n");
-		b.append("classpath:").append(classpath).append("\n");
-		b.append("jvmargs:").append(jvmargs).append("\n");
-		return b.toString();
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse
+				.ingredients("emma", emma)
+				.ingredients("antJars", antJars)
+				.parameter("mainClass", mainClass)
+				.parameter("mainClassArguments", mainClassArguments)
+				.optionalIngredients("mainClassArgumentsFile",
+						mainClassArgumentsFile)
+				.ingredients("classpath", classPathIngredients())
+				.parameter("jvmargs", jvmargs).nothingElse();
 	}
 
 	public List<Path> classPathIngredients() {

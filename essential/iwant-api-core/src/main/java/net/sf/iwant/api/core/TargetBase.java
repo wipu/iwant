@@ -45,7 +45,22 @@ public abstract class TargetBase extends Target {
 		@Override
 		public IngredientsAndParametersPlease ingredients(String name,
 				Collection<? extends Path> ingredients) {
-			this.ingredients.addAll(ingredients);
+			if (ingredients != null) {
+				this.ingredients.addAll(ingredients);
+			}
+			return this;
+		}
+
+		@Override
+		public IngredientsAndParametersPlease optionalIngredients(String name,
+				Collection<? extends Path> maybeIngredients) {
+			if (maybeIngredients != null) {
+				for (Path maybeIngredient : maybeIngredients) {
+					if (maybeIngredient != null) {
+						this.ingredients.add(maybeIngredient);
+					}
+				}
+			}
 			return this;
 		}
 
@@ -84,11 +99,15 @@ public abstract class TargetBase extends Target {
 		private IngredientsAndParametersPlease nameAndValues(String type,
 				String name, Collection<? extends Object> values) {
 			b.append(type).append(":").append(escaped(name)).append(":\n");
-			for (Object value : values) {
-				if (value == null) {
-					b.append(" null\n");
-				} else {
-					b.append("  ").append(escaped(value)).append("\n");
+			if (values == null) {
+				b.append(" null-collection\n");
+			} else {
+				for (Object value : values) {
+					if (value == null) {
+						b.append(" null\n");
+					} else {
+						b.append("  ").append(escaped(value)).append("\n");
+					}
 				}
 			}
 			return this;
@@ -98,6 +117,12 @@ public abstract class TargetBase extends Target {
 		public IngredientsAndParametersPlease ingredients(String name,
 				Collection<? extends Path> ingredients) {
 			return nameAndValues("i", name, ingredients);
+		}
+
+		@Override
+		public IngredientsAndParametersPlease optionalIngredients(String name,
+				Collection<? extends Path> maybeIngredients) {
+			return ingredients(name, maybeIngredients);
 		}
 
 	}
@@ -121,6 +146,12 @@ public abstract class TargetBase extends Target {
 		IngredientsAndParametersPlease ingredients(String name,
 				Path... ingredients);
 
+		IngredientsAndParametersPlease optionalIngredients(String name,
+				Path... maybeIngredients);
+
+		IngredientsAndParametersPlease optionalIngredients(String name,
+				Collection<? extends Path> maybeIngredients);
+
 	}
 
 	private abstract class BaseBuilder implements
@@ -141,6 +172,12 @@ public abstract class TargetBase extends Target {
 		public final IngredientsAndParametersPlease ingredients(String name,
 				Path... ingredients) {
 			return ingredients(name, Arrays.asList(ingredients));
+		}
+
+		@Override
+		public IngredientsAndParametersPlease optionalIngredients(String name,
+				Path... maybeIngredients) {
+			return optionalIngredients(name, Arrays.asList(maybeIngredients));
 		}
 
 	}
