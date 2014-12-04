@@ -132,9 +132,10 @@ public class JavaModulesTest {
 		List<Path> mas = JavaModules.mainArtifactsOf(m.bin, m.src, m.onlyTests);
 		assertEquals(2, mas.size());
 		assertEquals(
-				"net.sf.iwant.core.download.Downloaded {\n"
-						+ "  url:http://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar\n"
-						+ "}\n" + "", descr(mas.get(0)));
+				"net.sf.iwant.core.download.Downloaded\n"
+						+ "p:url:\n"
+						+ "  http://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar\n"
+						+ "p:md5:\n" + " null\n" + "", descr(mas.get(0)));
 		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n"
 				+ "  src:mod/src/main/java\n"
 				+ "  res:mod/src/main/resources\n"

@@ -151,8 +151,9 @@ public class IwantModules extends JavaModules {
 			.noTestJava().mainDeps(iwantApiModel, iwantApiJavamodules).end();
 
 	private JavaSrcModule iwantCoreDownload = essentialModule("core-download")
-			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
-			.testDeps(iwantApimocks, iwantTestarea, junit).end();
+			.mainDeps(iwantApiCore, iwantApiModel, iwantCoreservices,
+					iwantEntry).testDeps(iwantApimocks, iwantTestarea, junit)
+			.end();
 
 	private JavaSrcModule iwantPlannerApi = essentialModule("planner-api")
 			.mainDeps(iwantEntry).testDeps(junit).end();
@@ -252,8 +253,8 @@ public class IwantModules extends JavaModules {
 
 	private JavaSrcModule iwantPluginJavamodules = optionalModule(
 			"plugin-javamodules")
-			.mainDeps(iwantApiJavamodules, iwantApiModel, iwantCoreDownload,
-					iwantPluginAnt).testDeps(junit).end();
+			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
+					iwantCoreDownload, iwantPluginAnt).testDeps(junit).end();
 
 	// TODO don't depend directly on asm, jaxen: pmd depends on them
 	private JavaSrcModule iwantPluginPmd = optionalModule("plugin-pmd")

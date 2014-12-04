@@ -39,13 +39,15 @@ public class DownloadedTest extends TestCase {
 
 	public void testContentDescriptor() {
 		assertEquals(
-				"net.sf.iwant.core.download.Downloaded {\n  url:http://localhost/url1\n}\n",
+				"net.sf.iwant.core.download.Downloaded\n" + "p:url:\n"
+						+ "  http://localhost/url1\n" + "p:md5:\n" + "  any\n"
+						+ "",
 				Downloaded.withName("any").url("http://localhost/url1")
 						.md5("any").contentDescriptor());
-		assertEquals(
-				"net.sf.iwant.core.download.Downloaded {\n  url:http://localhost/url2\n}\n",
-				Downloaded.withName("any").url("http://localhost/url2")
-						.md5("any").contentDescriptor());
+		assertEquals("net.sf.iwant.core.download.Downloaded\n" + "p:url:\n"
+				+ "  http://localhost/url2\n" + "p:md5:\n" + "  anyother\n"
+				+ "", Downloaded.withName("any").url("http://localhost/url2")
+				.md5("anyother").contentDescriptor());
 	}
 
 	/**

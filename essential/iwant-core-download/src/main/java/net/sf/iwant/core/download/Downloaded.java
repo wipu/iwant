@@ -5,17 +5,14 @@ import java.io.InputStream;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
-import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.CacheScopeChoices;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.entry.Iwant;
 
-public class Downloaded extends Target {
+public class Downloaded extends TargetBase {
 
 	private final URL url;
 	private final String md5;
@@ -130,17 +127,9 @@ public class Downloaded extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append(" {\n");
-		b.append("  url:" + url).append("\n");
-		b.append("}\n");
-		return b.toString();
+	protected IngredientsAndParametersDefined ingredientsAndAttributes(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.parameter("url", url).parameter("md5", md5).nothingElse();
 	}
 
 	public URL url() {
