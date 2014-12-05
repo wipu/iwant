@@ -62,18 +62,22 @@ public class JavaClassesTest extends IwantTestCase {
 
 	public void testRelevantSettingsAreMentionedInContentDescriptor() {
 		assertEquals(
-				"net.sf.iwant.api.javamodules.JavaClasses {\n" + "  src:src\n"
-						+ "  javacOptions:[-Xlint, -Xlint:-serial]\n"
-						+ "  encoding:UTF-8\n" + "}",
+				"net.sf.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
+						+ "  src\n" + "i:resourceDirs:\n"
+						+ "i:classLocations:\n" + "p:javacOptions:\n"
+						+ "  -Xlint\n" + "  -Xlint:-serial\n" + "p:encoding:\n"
+						+ "  UTF-8\n" + "",
 				JavaClasses.with().name("classes")
 						.srcDirs(Source.underWsroot("src")).classLocations()
 						.debug(false).encoding(Charset.forName("UTF-8")).end()
 						.contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.javamodules.JavaClasses {\n" + "  src:src2\n"
-						+ "  src:src3\n" + "  res:res\n"
-						+ "  javacOptions:[-Xlint, -Xlint:-serial, -g]\n"
-						+ "  encoding:ISO-8859-1\n" + "}",
+				"net.sf.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
+						+ "  src2\n" + "  src3\n" + "i:resourceDirs:\n"
+						+ "  res\n" + "i:classLocations:\n"
+						+ "p:javacOptions:\n" + "  -Xlint\n"
+						+ "  -Xlint:-serial\n" + "  -g\n" + "p:encoding:\n"
+						+ "  ISO-8859-1\n" + "",
 				JavaClasses
 						.with()
 						.name("classes2")
@@ -192,10 +196,11 @@ public class JavaClassesTest extends IwantTestCase {
 				.srcDirs(Source.underWsroot("src")).classLocations(dep1, dep2)
 				.end();
 
-		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n"
-				+ "  src:src\n" + "  classes:dep1\n" + "  classes:dep2\n"
-				+ "  javacOptions:[-Xlint, -Xlint:-serial]\n"
-				+ "  encoding:null\n" + "}", target.contentDescriptor());
+		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
+				+ "i:srcDirs:\n" + "  src\n" + "i:resourceDirs:\n"
+				+ "i:classLocations:\n" + "  dep1\n" + "  dep2\n"
+				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
+				+ "p:encoding:\n" + " null\n" + "", target.contentDescriptor());
 	}
 
 	public void testEmptySourceDirectoryProducesEmptyClasses() throws Exception {
@@ -387,11 +392,11 @@ public class JavaClassesTest extends IwantTestCase {
 		assertTrue(JavaClasses.with().name("classes")
 				.srcDirs(Source.underWsroot("src")).debug(true)
 				.sourceVersion(JavaCompliance.JAVA_1_6).end()
-				.contentDescriptor().contains("-source, 1.6"));
+				.contentDescriptor().contains("  -source\n  1.6"));
 		assertTrue(JavaClasses.with().name("classes")
 				.srcDirs(Source.underWsroot("src")).debug(true)
 				.sourceVersion(JavaCompliance.JAVA_1_7).end()
-				.contentDescriptor().contains("-source, 1.7, -g"));
+				.contentDescriptor().contains("  -source\n  1.7\n  -g"));
 	}
 
 }

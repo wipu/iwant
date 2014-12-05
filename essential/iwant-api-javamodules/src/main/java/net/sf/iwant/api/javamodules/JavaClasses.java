@@ -8,14 +8,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 
-public class JavaClasses extends Target {
+public class JavaClasses extends TargetBase {
 
-	private final List<Path> ingredients;
 	private final Collection<? extends Path> srcDirs;
 	private final Collection<? extends Path> resourceDirs;
 	private final Collection<? extends Path> classLocations;
@@ -33,10 +32,6 @@ public class JavaClasses extends Target {
 		this.debug = debug;
 		this.sourceVersion = sourceVersion;
 		this.encoding = encoding;
-		this.ingredients = new ArrayList<>();
-		this.ingredients.addAll(srcDirs);
-		this.ingredients.addAll(resourceDirs);
-		this.ingredients.addAll(classLocations);
 	}
 
 	public static JavaClassesSpex with() {
@@ -217,27 +212,13 @@ public class JavaClasses extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		return ingredients;
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append(" {\n");
-		for (Path srcDir : srcDirs) {
-			b.append("  src:").append(srcDir).append("\n");
-		}
-		for (Path resourceDir : resourceDirs) {
-			b.append("  res:").append(resourceDir).append("\n");
-		}
-		for (Path classLocation : classLocations) {
-			b.append("  classes:").append(classLocation).append("\n");
-		}
-		b.append("  javacOptions:").append(javacOptions()).append("\n");
-		b.append("  encoding:").append(encoding()).append("\n");
-		b.append("}");
-		return b.toString();
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("srcDirs", srcDirs)
+				.ingredients("resourceDirs", resourceDirs)
+				.ingredients("classLocations", classLocations)
+				.parameter("javacOptions", javacOptions())
+				.parameter("encoding", encoding()).nothingElse();
 	}
 
 }

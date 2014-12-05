@@ -136,12 +136,13 @@ public class JavaModulesTest {
 						+ "p:url:\n"
 						+ "  http://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar\n"
 						+ "p:md5:\n" + " null\n" + "", descr(mas.get(0)));
-		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n"
-				+ "  src:mod/src/main/java\n"
-				+ "  res:mod/src/main/resources\n"
-				+ "  classes:commons-io-2.4.jar\n"
-				+ "  javacOptions:[-Xlint, -Xlint:-serial, -source, 1.7, -g]\n"
-				+ "  encoding:null\n" + "}", descr(mas.get(1)));
+		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
+				+ "i:srcDirs:\n" + "  mod/src/main/java\n"
+				+ "i:resourceDirs:\n" + "  mod/src/main/resources\n"
+				+ "i:classLocations:\n" + "  commons-io-2.4.jar\n"
+				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
+				+ "  -source\n" + "  1.7\n" + "  -g\n" + "p:encoding:\n"
+				+ " null\n" + "", descr(mas.get(1)));
 		// test only module has no main artifact
 	}
 
@@ -180,19 +181,20 @@ public class JavaModulesTest {
 		List<Path> tas = JavaModules.testArtifactsOf(m.bin, m.src, m.onlyMain,
 				m.onlyTests);
 		assertEquals(2, tas.size());
-		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n"
-				+ "  src:mod/src/test/java\n"
-				+ "  res:mod/src/test/resources\n"
-				+ "  classes:mod-main-classes\n"
-				+ "  classes:commons-io-2.4.jar\n"
-				+ "  javacOptions:[-Xlint, -Xlint:-serial, -source, 1.7, -g]\n"
-				+ "  encoding:null\n" + "}", descr(tas.get(0)));
-		assertEquals("net.sf.iwant.api.javamodules.JavaClasses {\n"
-				+ "  src:only-tests/src/test/java\n"
-				+ "  res:only-tests/src/test/resources\n"
-				+ "  classes:only-main-main-classes\n"
-				+ "  javacOptions:[-Xlint, -Xlint:-serial, -source, 1.7, -g]\n"
-				+ "  encoding:null\n" + "}", descr(tas.get(1)));
+		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
+				+ "i:srcDirs:\n" + "  mod/src/test/java\n"
+				+ "i:resourceDirs:\n" + "  mod/src/test/resources\n"
+				+ "i:classLocations:\n" + "  mod-main-classes\n"
+				+ "  commons-io-2.4.jar\n" + "p:javacOptions:\n" + "  -Xlint\n"
+				+ "  -Xlint:-serial\n" + "  -source\n" + "  1.7\n" + "  -g\n"
+				+ "p:encoding:\n" + " null\n" + "", descr(tas.get(0)));
+		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
+				+ "i:srcDirs:\n" + "  only-tests/src/test/java\n"
+				+ "i:resourceDirs:\n" + "  only-tests/src/test/resources\n"
+				+ "i:classLocations:\n" + "  only-main-main-classes\n"
+				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
+				+ "  -source\n" + "  1.7\n" + "  -g\n" + "p:encoding:\n"
+				+ " null\n" + "", descr(tas.get(1)));
 		// bin and main only have no test artifact
 	}
 
