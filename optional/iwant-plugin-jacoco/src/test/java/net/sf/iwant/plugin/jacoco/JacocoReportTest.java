@@ -24,11 +24,13 @@ public class JacocoReportTest extends JacocoTestBase {
 		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
 				+ antLauncherJar() + ", thecoverage, theclasses, thesources]",
 				report.ingredients().toString());
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n" + "jacoco:"
-				+ jacoco() + "\n" + "deps:[" + asm() + "]\n" + "antJars:["
-				+ antJar() + ", " + antLauncherJar() + "]\n"
-				+ "coverages:[thecoverage]\n" + "classes:[theclasses]\n"
-				+ "sources:[thesources]\n" + "", report.contentDescriptor());
+		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n"
+				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n" + "  "
+				+ asm() + "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
+				+ antLauncherJar() + "\n" + "i:coverages:\n"
+				+ "  thecoverage\n" + "i:classes:\n" + "  theclasses\n"
+				+ "i:sources:\n" + "  thesources\n" + "",
+				report.contentDescriptor());
 	}
 
 	public void testReportWithNoncoveredAndPartlyCoveredModule()

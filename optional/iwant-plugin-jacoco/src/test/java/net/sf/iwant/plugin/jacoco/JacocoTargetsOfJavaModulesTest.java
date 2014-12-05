@@ -32,10 +32,11 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertNull(jacocoTargets.jacocoCoverageOf(mod));
 
 		JacocoReport report = jacocoTargets.jacocoReport("coverage-report");
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n" + "jacoco:"
-				+ jacoco() + "\n" + "deps:[" + asm() + "]\n" + "antJars:["
-				+ antJar() + ", " + antLauncherJar() + "]\n" + "coverages:[]\n"
-				+ "classes:[mod-main-classes]\n" + "sources:[mod/src]\n" + "",
+		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n"
+				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n" + "  "
+				+ asm() + "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
+				+ antLauncherJar() + "\n" + "i:coverages:\n" + "i:classes:\n"
+				+ "  mod-main-classes\n" + "i:sources:\n" + "  mod/src\n" + "",
 				report.contentDescriptor());
 	}
 
@@ -61,11 +62,11 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertNull(jacocoTargets.jacocoCoverageOf(mod));
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n" + "jacoco:"
-				+ jacoco() + "\n" + "deps:[" + asm() + "]\n" + "antJars:["
-				+ antJar() + ", " + antLauncherJar() + "]\n" + "coverages:[]\n"
-				+ "classes:[]\n" + "sources:[]\n" + "",
-				report.contentDescriptor());
+		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n"
+				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n" + "  "
+				+ asm() + "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
+				+ antLauncherJar() + "\n" + "i:coverages:\n" + "i:classes:\n"
+				+ "i:sources:\n" + "", report.contentDescriptor());
 	}
 
 	public void testTargetsFromOneMinimalTestOnlyModule() throws IOException {
@@ -90,11 +91,12 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				+ "  mod-test-class-names\n" + "", coverage.contentDescriptor());
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n" + "jacoco:"
-				+ jacoco() + "\n" + "deps:[" + asm() + "]\n" + "antJars:["
-				+ antJar() + ", " + antLauncherJar() + "]\n"
-				+ "coverages:[mod.jacococoverage]\n" + "classes:[]\n"
-				+ "sources:[]\n" + "", report.contentDescriptor());
+		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n"
+				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n" + "  "
+				+ asm() + "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
+				+ antLauncherJar() + "\n" + "i:coverages:\n"
+				+ "  mod.jacococoverage\n" + "i:classes:\n" + "i:sources:\n"
+				+ "", report.contentDescriptor());
 	}
 
 	public void testTargetsFromOneBinaryModule() throws IOException {
@@ -110,11 +112,11 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertNull(jacocoTargets.jacocoCoverageOf(mod));
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n" + "jacoco:"
-				+ jacoco() + "\n" + "deps:[" + asm() + "]\n" + "antJars:["
-				+ antJar() + ", " + antLauncherJar() + "]\n" + "coverages:[]\n"
-				+ "classes:[lib]\n" + "sources:[]\n" + "",
-				report.contentDescriptor());
+		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n"
+				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
+				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+				+ antLauncherJar() + "\ni:coverages:\n" + "i:classes:\n"
+				+ "  lib\n" + "i:sources:\n" + "", report.contentDescriptor());
 	}
 
 	public void testCoverageArgsForJunitIsClassNameListUnlessOnlyOneTestDefined()
