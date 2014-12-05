@@ -42,16 +42,17 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				.jacocoWithDeps(jacoco(), asm())
 				.mainClassAndArguments("instrtest.Main", "arg0", "arg1").end();
 
-		assertEquals("[instrtest-classes.jacoco-instr, " + antJar() + ", "
-				+ antLauncherJar() + ", " + jacoco() + ", " + asm() + "]",
+		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
+				+ antLauncherJar() + ", instrtest-classes.jacoco-instr]",
 				coverage.ingredients().toString());
 		assertEquals("net.sf.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "jacoco:jacoco-0.7.2.201409121644\n" + "deps:[" + asm()
-				+ "]\n" + "antJars:[" + antJar() + ", " + antLauncherJar()
-				+ "]\n" + "classLocations:[instrtest-classes.jacoco-instr]\n"
-				+ "mainClassName:instrtest.Main\n"
-				+ "mainClassArgs:[arg0, arg1]\n" + "mainClassArgsFile:null\n"
-				+ "", coverage.contentDescriptor());
+				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
+				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+				+ antLauncherJar() + "\ni:classLocations:\n"
+				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
+				+ "  instrtest.Main\n" + "p:mainClassArgs:\n" + "  arg0\n"
+				+ "  arg1\n" + "i:mainClassArgsFile:\n" + " null\n" + "",
+				coverage.contentDescriptor());
 	}
 
 	public void testIngredientsAndDescriptorWithMainClassArgsGivenAsPath()
@@ -69,16 +70,18 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				.jacocoWithDeps(jacoco(), asm())
 				.mainClassAndArguments("instrtest.Main", args).end();
 
-		assertEquals("[instrtest-classes.jacoco-instr, " + antJar() + ", "
-				+ antLauncherJar() + ", " + jacoco() + ", " + asm()
-				+ ", args-file]", coverage.ingredients().toString());
+		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
+				+ antLauncherJar()
+				+ ", instrtest-classes.jacoco-instr, args-file]", coverage
+				.ingredients().toString());
 		assertEquals("net.sf.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "jacoco:jacoco-0.7.2.201409121644\n" + "deps:[" + asm()
-				+ "]\n" + "antJars:[" + antJar() + ", " + antLauncherJar()
-				+ "]\n" + "classLocations:[instrtest-classes.jacoco-instr]\n"
-				+ "mainClassName:instrtest.Main\n" + "mainClassArgs:null\n"
-				+ "mainClassArgsFile:args-file\n" + "",
-				coverage.contentDescriptor());
+				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
+				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+				+ antLauncherJar() + "\ni:classLocations:\n"
+				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
+				+ "  instrtest.Main\n" + "p:mainClassArgs:\n"
+				+ " null-collection\n" + "i:mainClassArgsFile:\n"
+				+ "  args-file\n" + "", coverage.contentDescriptor());
 	}
 
 	public void testItProducesTheRequestedExecFile() throws Exception {

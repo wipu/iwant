@@ -79,14 +79,14 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 
 		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
 		assertEquals("mod.jacococoverage", coverage.name());
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoCoverage\n" + "jacoco:"
-				+ jacoco() + "\n" + "deps:[" + asm() + "]\n" + "antJars:["
-				+ antJar() + ", " + antLauncherJar() + "]\n"
-				+ "classLocations:[mod-test-classes]\n"
-				+ "mainClassName:org.junit.runner.JUnitCore\n"
-				+ "mainClassArgs:null\n"
-				+ "mainClassArgsFile:mod-test-class-names\n" + "",
-				coverage.contentDescriptor());
+		assertEquals("net.sf.iwant.plugin.jacoco.JacocoCoverage\n"
+				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
+				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+				+ antLauncherJar() + "\ni:classLocations:\n"
+				+ "  mod-test-classes\n" + "p:mainClassName:\n"
+				+ "  org.junit.runner.JUnitCore\n" + "p:mainClassArgs:\n"
+				+ " null-collection\n" + "i:mainClassArgsFile:\n"
+				+ "  mod-test-class-names\n" + "", coverage.contentDescriptor());
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
 		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n" + "jacoco:"

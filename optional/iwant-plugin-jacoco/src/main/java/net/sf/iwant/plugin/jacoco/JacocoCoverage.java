@@ -8,14 +8,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.core.ant.AntGenerated;
 
 import org.apache.commons.io.FileUtils;
 
-public class JacocoCoverage extends Target {
+public class JacocoCoverage extends TargetBase {
 
 	private final List<Path> classLocations;
 	private final List<Path> antJars;
@@ -142,30 +142,16 @@ public class JacocoCoverage extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
-		ingredients.addAll(classLocations);
-		ingredients.addAll(antJars);
-		ingredients.add(jacoco);
-		ingredients.addAll(deps);
-		if (mainClassArgsFile != null) {
-			ingredients.add(mainClassArgsFile);
-		}
-		return ingredients;
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append("\n");
-		b.append("jacoco:").append(jacoco).append("\n");
-		b.append("deps:").append(deps).append("\n");
-		b.append("antJars:").append(antJars).append("\n");
-		b.append("classLocations:").append(classLocations).append("\n");
-		b.append("mainClassName:").append(mainClassName).append("\n");
-		b.append("mainClassArgs:").append(mainClassArgs).append("\n");
-		b.append("mainClassArgsFile:").append(mainClassArgsFile).append("\n");
-		return b.toString();
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		iUse.ingredients("jacoco", jacoco);
+		iUse.ingredients("deps", deps);
+		iUse.ingredients("antJars", antJars);
+		iUse.ingredients("classLocations", classLocations);
+		iUse.parameter("mainClassName", mainClassName);
+		iUse.parameter("mainClassArgs", mainClassArgs);
+		iUse.optionalIngredients("mainClassArgsFile", mainClassArgsFile);
+		return iUse.nothingElse();
 	}
 
 	@Override
