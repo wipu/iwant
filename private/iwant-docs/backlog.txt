@@ -1451,6 +1451,7 @@
   + FindbugsDistribution
   + FindbugsReport
   + JacocoCoverage
+  + JacocoDistribution
 
 - As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
   + use Windows to develop the wrapper

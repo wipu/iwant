@@ -2,16 +2,13 @@ package net.sf.iwant.plugin.jacoco;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.plugin.ant.Unzipped;
 
-public class JacocoDistribution extends Target {
+public class JacocoDistribution extends TargetBase {
 
 	private final String version;
 	private final Downloaded zip;
@@ -48,21 +45,9 @@ public class JacocoDistribution extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
-		ingredients.add(zip);
-		return ingredients;
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append(" {\n");
-		for (Path ingredient : ingredients()) {
-			b.append("  ").append(ingredient).append("\n");
-		}
-		b.append("}\n");
-		return b.toString();
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("zip", zip).nothingElse();
 	}
 
 	@Override
