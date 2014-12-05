@@ -21,18 +21,18 @@ public class JarTest extends IwantTestCase {
 	public void testIngredientsAndDescriptorOfSimpleJarOfClasses() {
 		Jar jar = Jar.with().classes(Source.underWsroot("classes")).end();
 		assertEquals("[classes]", jar.ingredients().toString());
-		assertEquals("net.sf.iwant.plugin.ant.Jar: {\n  ingredients: {\n"
-				+ "    classes\n  }\n}\n", jar.contentDescriptor());
+		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
+				+ "  classes\n" + "p:classesSubDirectory:\n" + " null\n" + "",
+				jar.contentDescriptor());
 	}
 
 	public void testIngredientsAndDescriptorOfJarOfClassesUnderSubDirectory() {
 		Jar jar = Jar.with().classes(Source.underWsroot("classes"))
 				.classesSubDirectory("classes-subdir").end();
 		assertEquals("[classes]", jar.ingredients().toString());
-		assertEquals("net.sf.iwant.plugin.ant.Jar: {\n"
-				+ "  classes-sub-directory:classes-subdir\n"
-				+ "  ingredients: {\n    classes\n  }\n}\n",
-				jar.contentDescriptor());
+		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
+				+ "  classes\n" + "p:classesSubDirectory:\n"
+				+ "  classes-subdir\n" + "", jar.contentDescriptor());
 	}
 
 	public void testJarOfDirectory() throws Exception {

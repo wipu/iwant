@@ -2,16 +2,14 @@ package net.sf.iwant.plugin.ant;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 
 import org.apache.tools.ant.Project;
 
-public class Jar extends Target {
+public class Jar extends TargetBase {
 
 	private final Path classes;
 	private final String classesSubDirectory;
@@ -59,25 +57,11 @@ public class Jar extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		return Arrays.asList(classes);
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName() + ": {\n");
-		if (classesSubDirectory != null) {
-			b.append("  classes-sub-directory:").append(classesSubDirectory)
-					.append("\n");
-		}
-		b.append("  ingredients: {\n");
-		for (Path ingredient : ingredients()) {
-			b.append("    ").append(ingredient).append("\n");
-		}
-		b.append("  }\n");
-		b.append("}\n");
-		return b.toString();
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("classes", classes)
+				.parameter("classesSubDirectory", classesSubDirectory)
+				.nothingElse();
 	}
 
 	@Override

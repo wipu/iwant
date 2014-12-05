@@ -159,9 +159,9 @@ public class JavaModulesTest {
 				m.onlyTests);
 		assertEquals(2, jars.size());
 		assertEquals(descr(m.bin.mainArtifact()), descr(jars.get(0)));
-		assertEquals("net.sf.iwant.plugin.ant.Jar: {\n" + "  ingredients: {\n"
-				+ "    mod-main-classes\n" + "  }\n" + "}\n" + "",
-				descr(jars.get(1)));
+		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
+				+ "  mod-main-classes\n" + "p:classesSubDirectory:\n"
+				+ " null\n" + "", descr(jars.get(1)));
 		// test only module has no main artifact
 	}
 
@@ -211,12 +211,12 @@ public class JavaModulesTest {
 		List<Path> jars = JavaModules.testArtifactJarsOf(m.bin, m.src,
 				m.onlyMain, m.onlyTests);
 		assertEquals(2, jars.size());
-		assertEquals("net.sf.iwant.plugin.ant.Jar: {\n" + "  ingredients: {\n"
-				+ "    mod-test-classes\n" + "  }\n" + "}\n" + "",
-				descr(jars.get(0)));
-		assertEquals("net.sf.iwant.plugin.ant.Jar: {\n" + "  ingredients: {\n"
-				+ "    only-tests-test-classes\n" + "  }\n" + "}\n" + "",
-				descr(jars.get(1)));
+		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
+				+ "  mod-test-classes\n" + "p:classesSubDirectory:\n"
+				+ " null\n" + "", descr(jars.get(0)));
+		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
+				+ "  only-tests-test-classes\n" + "p:classesSubDirectory:\n"
+				+ " null\n" + "", descr(jars.get(1)));
 		// bin and main only have no test artifact
 	}
 
