@@ -98,16 +98,18 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 
 	public void testDescriptor() throws IOException {
 		assertEquals(
-				"net.sf.iwant.deprecated.emma.EmmaInstrumentation:[" + emma()
-						+ ", one]",
+				"net.sf.iwant.deprecated.emma.EmmaInstrumentation\n"
+						+ "i:emma:\n" + "  " + emma() + "\ni:classes:\n"
+						+ "  one\n" + "i:filter:\n" + " null\n" + "",
 				EmmaInstrumentation
 						.of(new JavaClassesAndSources(
 								Source.underWsroot("one"), Source
 										.underWsroot("irrelevant")))
 						.using(emma()).contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.deprecated.emma.EmmaInstrumentation:[" + emma()
-						+ ", two]",
+				"net.sf.iwant.deprecated.emma.EmmaInstrumentation\n"
+						+ "i:emma:\n" + "  " + emma() + "\ni:classes:\n"
+						+ "  two\n" + "i:filter:\n" + " null\n" + "",
 				EmmaInstrumentation
 						.of(new JavaClassesAndSources(
 								Source.underWsroot("two"), Source

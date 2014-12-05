@@ -9,12 +9,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 
-public class EmmaReport extends Target {
+public class EmmaReport extends TargetBase {
 
 	private Path emma;
 	private Set<EmmaInstrumentation> instrumentations;
@@ -132,17 +132,11 @@ public class EmmaReport extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
-		ingredients.add(emma);
-		ingredients.addAll(instrumentations);
-		ingredients.addAll(coverages);
-		return ingredients;
-	}
-
-	@Override
-	public String contentDescriptor() {
-		return getClass().getCanonicalName() + ":" + ingredients();
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("emma", emma)
+				.ingredients("instrumentations", instrumentations)
+				.ingredients("coverages", coverages).nothingElse();
 	}
 
 }

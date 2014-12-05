@@ -83,8 +83,10 @@ public class EmmaReportTest extends IwantTestCase {
 		assertEquals("[" + emma()
 				+ ", classes.emma-instr, instrtest-emma-coverage]", report
 				.ingredients().toString());
-		assertEquals("net.sf.iwant.deprecated.emma.EmmaReport:[" + emma()
-				+ ", classes.emma-instr, instrtest-emma-coverage]",
+		assertEquals("net.sf.iwant.deprecated.emma.EmmaReport\n" + "i:emma:\n"
+				+ "  " + emma() + "\ni:instrumentations:\n"
+				+ "  classes.emma-instr\n" + "i:coverages:\n"
+				+ "  instrtest-emma-coverage\n" + "",
 				report.contentDescriptor());
 
 	}

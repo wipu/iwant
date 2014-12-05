@@ -5,16 +5,16 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.entry.Iwant;
 
-public class EmmaInstrumentation extends Target {
+public class EmmaInstrumentation extends TargetBase {
 
 	private final Path emma;
 	private final JavaClassesAndSources classesAndSources;
@@ -125,19 +125,11 @@ public class EmmaInstrumentation extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
-		ingredients.add(emma);
-		ingredients.add(classesAndSources.classes());
-		if (filter != null) {
-			ingredients.add(filter);
-		}
-		return ingredients;
-	}
-
-	@Override
-	public String contentDescriptor() {
-		return getClass().getCanonicalName() + ":" + ingredients();
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("emma", emma)
+				.ingredients("classes", classesAndSources.classes())
+				.optionalIngredients("filter", filter).nothingElse();
 	}
 
 }

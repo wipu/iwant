@@ -1446,6 +1446,8 @@
   + Downloaded
   + fix method name (parameter, not attribute)
   + EmmaCoverage
+  + EmmaInstrumentation
+  + EmmaReport
   + FindbugsDistribution
 
 - As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
