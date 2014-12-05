@@ -24,9 +24,10 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.jacocoInstrumentationOf(mod);
 		assertEquals("mod-main-classes.jacoco-instr", instr.name());
 		assertEquals("net.sf.iwant.plugin.jacoco.JacocoInstrumentation\n"
-				+ "jacoco:" + jacoco() + "\n" + "deps:[" + asm() + "]\n"
-				+ "antJars:[" + antJar() + ", " + antLauncherJar() + "]\n"
-				+ "classes:mod-main-classes\n" + "", instr.contentDescriptor());
+				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
+				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+				+ antLauncherJar() + "\ni:classes:\n" + "  mod-main-classes\n"
+				+ "", instr.contentDescriptor());
 
 		assertNull(jacocoTargets.jacocoCoverageOf(mod));
 

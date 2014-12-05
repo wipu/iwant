@@ -7,14 +7,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.core.ant.AntGenerated;
 
 import org.apache.commons.io.FileUtils;
 
-public class JacocoInstrumentation extends Target {
+public class JacocoInstrumentation extends TargetBase {
 
 	private final Path classes;
 	private final JacocoDistribution jacoco;
@@ -89,24 +89,11 @@ public class JacocoInstrumentation extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
-		ingredients.add(classes);
-		ingredients.add(jacoco);
-		ingredients.addAll(antJars);
-		ingredients.addAll(deps);
-		return ingredients;
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append("\n");
-		b.append("jacoco:").append(jacoco).append("\n");
-		b.append("deps:").append(deps).append("\n");
-		b.append("antJars:").append(antJars).append("\n");
-		b.append("classes:").append(classes).append("\n");
-		return b.toString();
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("jacoco", jacoco).ingredients("deps", deps)
+				.ingredients("antJars", antJars)
+				.ingredients("classes", classes).nothingElse();
 	}
 
 	@Override

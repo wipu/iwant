@@ -28,8 +28,8 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 
 	public void testIngredients() throws IOException {
 		assertEquals(
-				"[classes, " + jacoco() + ", " + antJar() + ", "
-						+ antLauncherJar() + ", " + asm() + "]",
+				"[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
+						+ antLauncherJar() + ", classes]",
 				JacocoInstrumentation.of(Source.underWsroot("classes"))
 						.using(jacoco(), antJar(), antLauncherJar())
 						.with(asm()).ingredients().toString());
@@ -38,9 +38,10 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 	public void testContentDescriptor() throws IOException {
 		assertEquals(
 				"net.sf.iwant.plugin.jacoco.JacocoInstrumentation\n"
-						+ "jacoco:" + jacoco() + "\n" + "deps:[" + asm()
-						+ "]\n" + "antJars:[" + antJar() + ", "
-						+ antLauncherJar() + "]\n" + "classes:classes\n" + "",
+						+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n"
+						+ "i:deps:\n" + "  " + asm() + "\ni:antJars:\n" + "  "
+						+ antJar() + "\n  " + antLauncherJar()
+						+ "\ni:classes:\n" + "  classes\n" + "",
 				JacocoInstrumentation.of(Source.underWsroot("classes"))
 						.using(jacoco(), antJar(), antLauncherJar())
 						.with(asm()).contentDescriptor());
