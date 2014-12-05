@@ -124,15 +124,13 @@ public class FindbugsReportTest extends IwantTestCase {
 		assertEquals("[findbugs-2.0.2, " + antJar() + ", " + antLauncherJar()
 				+ ", empty-classes, empty-src, bin.jar]", report.ingredients()
 				.toString());
-		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport {\n"
-				+ "  output-format:html\n" + "  ingredients: {\n"
-				+ "    findbugs-2.0.2\n" + "    " + antJar() + "\n" + "    "
-				+ antLauncherJar() + "\n" + "    empty-classes\n"
-				+ "    empty-src\n    bin.jar\n" + "  }\n"
-				+ "  classesToAnalyze: {\n"
-				+ "    JavaClassesAndSources {empty-classes [empty-src]}\n"
-				+ "  }\n  auxClasses: {\n" + "    bin.jar\n" + "  }\n" + ""
-				+ "}\n" + "", report.contentDescriptor());
+		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport\n"
+				+ "i:findbugs:\n" + "  findbugs-2.0.2\n" + "i:antJar:\n" + "  "
+				+ antJar() + "\ni:antLauncherJar:\n" + "  " + antLauncherJar()
+				+ "\ni:classes:\n" + "  empty-classes\n" + "i:sources:\n"
+				+ "  empty-src\n" + "i:auxClasses:\n" + "  bin.jar\n"
+				+ "p:output-format:\n" + "  html\n" + "",
+				report.contentDescriptor());
 	}
 
 	public void testExplicitHtmlOutputFormat() throws IOException {
@@ -147,7 +145,8 @@ public class FindbugsReportTest extends IwantTestCase {
 						new JavaClassesAndSources(emptyClasses, emptySrc))
 				.end();
 
-		assertTrue(report.contentDescriptor().contains("output-format:html"));
+		assertTrue(report.contentDescriptor()
+				.contains("output-format:\n  html"));
 	}
 
 	public void testContentDescriptorWithXmlOutputFormat() throws IOException {
@@ -162,14 +161,12 @@ public class FindbugsReportTest extends IwantTestCase {
 						new JavaClassesAndSources(emptyClasses, emptySrc))
 				.end();
 
-		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport {\n"
-				+ "  output-format:xml\n" + "  ingredients: {\n"
-				+ "    findbugs-2.0.2\n" + "    " + antJar() + "\n" + "    "
-				+ antLauncherJar() + "\n" + "    empty-classes\n"
-				+ "    empty-src\n" + "  }\n" + "  classesToAnalyze: {\n"
-				+ "    JavaClassesAndSources {empty-classes [empty-src]}\n"
-				+ "  }\n" + "  auxClasses: {\n" + "  }\n" + "}\n" + "",
-				report.contentDescriptor());
+		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport\n"
+				+ "i:findbugs:\n" + "  findbugs-2.0.2\n" + "i:antJar:\n" + "  "
+				+ antJar() + "\ni:antLauncherJar:\n" + "  " + antLauncherJar()
+				+ "\ni:classes:\n" + "  empty-classes\n" + "i:sources:\n"
+				+ "  empty-src\n" + "i:auxClasses:\n" + "p:output-format:\n"
+				+ "  xml\n" + "", report.contentDescriptor());
 	}
 
 	public void testDefaultReportFromEmptyClasses() throws Exception {

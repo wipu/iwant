@@ -7,18 +7,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.core.ant.AntGenerated;
 
 import org.apache.commons.io.FileUtils;
 
-public class FindbugsReport extends Target {
+public class FindbugsReport extends TargetBase {
 
 	private final List<JavaClassesAndSources> classesToAnalyze;
 	private final List<Path> auxClasses;
@@ -136,46 +136,19 @@ public class FindbugsReport extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
-		ingredients.add(findbugs);
-		ingredients.add(antJar);
-		ingredients.add(antLauncherJar);
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		iUse.ingredients("findbugs", findbugs);
+		iUse.ingredients("antJar", antJar);
+		iUse.ingredients("antLauncherJar", antLauncherJar);
 		for (JavaClassesAndSources cs : classesToAnalyze) {
-			ingredients.add(cs.classes());
-			ingredients.addAll(cs.sources());
+			iUse.ingredients("classes", cs.classes());
+			iUse.ingredients("sources", cs.sources());
 		}
-		ingredients.addAll(auxClasses);
-		return ingredients;
-	}
 
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append(" {\n");
-
-		b.append("  output-format:").append(outputFormat).append("\n");
-
-		b.append("  ingredients: {\n");
-		for (Path ingredient : ingredients()) {
-			b.append("    ").append(ingredient).append("\n");
-		}
-		b.append("  }\n");
-
-		b.append("  classesToAnalyze: {\n");
-		for (JavaClassesAndSources cs : classesToAnalyze) {
-			b.append("    ").append(cs).append("\n");
-		}
-		b.append("  }\n");
-
-		b.append("  auxClasses: {\n");
-		for (Path aux : auxClasses) {
-			b.append("    ").append(aux).append("\n");
-		}
-		b.append("  }\n");
-
-		b.append("}\n");
-		return b.toString();
+		iUse.ingredients("auxClasses", auxClasses);
+		iUse.parameter("output-format", outputFormat);
+		return iUse.nothingElse();
 	}
 
 	@Override
