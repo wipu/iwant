@@ -1350,6 +1350,30 @@
   + robust handling of nulls in descriptor
   + robust escaping of newlines in descriptor
 
++ As @buildscriptauthor I want all Targets to extends TargetBase so they show good compact example
+  * also, as @developer, for maintenance
+  + Concatenated
+  + ConcurrencyControllableTarget
+  + CopyPasteReport
+  + Directory
+  + Downloaded
+  + fix method name (parameter, not attribute)
+  + EmmaCoverage
+  + EmmaInstrumentation
+  + EmmaReport
+  + FindbugsDistribution
+  + FindbugsReport
+  + JacocoCoverage
+  + JacocoDistribution
+  + JacocoInstrumentation
+  + JacocoReport
+  + Jar
+  + JavaClasses
+  + PmdReport
+  + ScriptGenerated
+  + SubPath
+  + SvnExported
+
 #################################################################
 = In progress
 #################################################################
@@ -1436,29 +1460,6 @@
         project's own repo
   - writing own targets and side-effects
     - content descriptor, ingredients  
-
-- As @buildscriptauthor I want all Targets to extends TargetBase so they show good compact example
-  * also, as @developer, for maintenance
-  + Concatenated
-  + ConcurrencyControllableTarget
-  + CopyPasteReport
-  + Directory
-  + Downloaded
-  + fix method name (parameter, not attribute)
-  + EmmaCoverage
-  + EmmaInstrumentation
-  + EmmaReport
-  + FindbugsDistribution
-  + FindbugsReport
-  + JacocoCoverage
-  + JacocoDistribution
-  + JacocoInstrumentation
-  + JacocoReport
-  + Jar
-  + JavaClasses
-  + PmdReport
-  + ScriptGenerated
-  + SubPath
 
 - As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
   + use Windows to develop the wrapper

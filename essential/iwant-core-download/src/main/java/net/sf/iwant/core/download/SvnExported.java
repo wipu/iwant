@@ -3,16 +3,13 @@ package net.sf.iwant.core.download;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Collections;
-import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.CacheScopeChoices;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.coreservices.FileUtil;
 
-public class SvnExported extends Target {
+public class SvnExported extends TargetBase {
 
 	private final URL url;
 
@@ -52,8 +49,9 @@ public class SvnExported extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		return Collections.emptyList();
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.parameter("url", url).nothingElse();
 	}
 
 	/**
@@ -78,11 +76,6 @@ public class SvnExported extends Target {
 		File dest = ctx.cached(this);
 		dest.mkdirs();
 		FileUtil.copyRecursively(tmpExported, dest, true);
-	}
-
-	@Override
-	public String contentDescriptor() {
-		return getClass().getCanonicalName() + ":" + url;
 	}
 
 	public URL url() {

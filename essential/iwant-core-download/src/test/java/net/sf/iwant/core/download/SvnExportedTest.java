@@ -28,9 +28,9 @@ public class SvnExportedTest extends IwantTestCase {
 		target = SvnExported.with().name("svn-exported").url(url).end();
 
 		assertEquals("[]", target.ingredients().toString());
-		assertEquals(
-				"net.sf.iwant.core.download.SvnExported:http://localhost/an-url",
-				target.contentDescriptor().toString());
+		assertEquals("net.sf.iwant.core.download.SvnExported\n" + "p:url:\n"
+				+ "  http://localhost/an-url\n" + "", target
+				.contentDescriptor().toString());
 	}
 
 	/**
