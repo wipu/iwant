@@ -4,17 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.entry.Iwant;
 
-public class ScriptGenerated extends Target {
+public class ScriptGenerated extends TargetBase {
 
 	private final Path script;
 
@@ -149,13 +147,9 @@ public class ScriptGenerated extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		return Arrays.asList(script);
-	}
-
-	@Override
-	public String contentDescriptor() {
-		return getClass().getCanonicalName() + ":" + script;
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("script", script).nothingElse();
 	}
 
 }

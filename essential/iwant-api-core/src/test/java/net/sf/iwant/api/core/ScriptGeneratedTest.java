@@ -13,12 +13,14 @@ public class ScriptGeneratedTest extends IwantTestCase {
 
 	public void testContentDescriptor() {
 		assertEquals(
-				"net.sf.iwant.api.core.ScriptGenerated:src1.sh",
+				"net.sf.iwant.api.core.ScriptGenerated\n" + "i:script:\n"
+						+ "  src1.sh\n" + "",
 				ScriptGenerated.named("s1")
 						.byScript(Source.underWsroot("src1.sh"))
 						.contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.core.ScriptGenerated:src2.sh",
+				"net.sf.iwant.api.core.ScriptGenerated\n" + "i:script:\n"
+						+ "  src2.sh\n" + "",
 				ScriptGenerated.named("s2")
 						.byScript(Source.underWsroot("src2.sh"))
 						.contentDescriptor());
