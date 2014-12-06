@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sourceforge.pmd.ant.Formatter;
 import net.sourceforge.pmd.ant.PMDTask;
@@ -19,7 +19,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 
-public class PmdReport extends Target {
+public class PmdReport extends TargetBase {
 
 	private final List<Path> srcDirectories;
 	private final Path ruleset;
@@ -71,13 +71,10 @@ public class PmdReport extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		List<Path> ingredients = new ArrayList<>();
-		ingredients.addAll(srcDirectories);
-		if (ruleset != null) {
-			ingredients.add(ruleset);
-		}
-		return ingredients;
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("srcDirectories", srcDirectories)
+				.optionalIngredients("ruleset", ruleset).nothingElse();
 	}
 
 	@Override
@@ -155,19 +152,6 @@ public class PmdReport extends Target {
 		b.append("	<rule ref=\"rulesets/naming.xml\" />\n");
 		b.append("\n");
 		b.append("</ruleset>\n");
-		return b.toString();
-	}
-
-	@Override
-	public String contentDescriptor() {
-		StringBuilder b = new StringBuilder();
-		b.append(getClass().getCanonicalName()).append(" {\n");
-		b.append("  ingredients {\n");
-		for (Path ingredient : ingredients()) {
-			b.append("    ").append(ingredient).append("\n");
-		}
-		b.append("  }\n");
-		b.append("}\n");
 		return b.toString();
 	}
 
