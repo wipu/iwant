@@ -16,7 +16,7 @@ public class CachesMock implements Caches {
 	private final File wsRoot;
 	private File cachedModifiableTargets;
 	private File cachedDescriptors;
-	private Map<URL, File> cachedUrls = new HashMap<>();
+	private Map<UrlString, File> cachedUrls = new HashMap<>();
 	private File temporaryDirectory;
 
 	public CachesMock(File wsRoot) {
@@ -42,7 +42,8 @@ public class CachesMock implements Caches {
 
 		@Override
 		public File unmodifiableUrl(URL url) {
-			return nonNull(cachedUrls.get(url), "cache for url " + url);
+			return nonNull(cachedUrls.get(new UrlString(url)), "cache for url "
+					+ url);
 		}
 
 	}
@@ -57,7 +58,7 @@ public class CachesMock implements Caches {
 	}
 
 	public void cachesUrlAt(URL url, File cached) {
-		cachedUrls.put(url, cached);
+		cachedUrls.put(new UrlString(url), cached);
 	}
 
 	public void cachesDesciptorsAt(File cachedDescriptors) {

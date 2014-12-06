@@ -19,8 +19,8 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	private File taughtCygwinBashExe;
 	private boolean cygwinBashExeWasTaught;
 	private boolean shallMockWintoySafePaths;
-	private final Map<URL, Integer> numberOfFilesToSvnExport = new HashMap<>();
-	private final Map<URL, Integer> numberOfFilesToSvnExportBeforeFailure = new HashMap<>();
+	private final Map<UrlString, Integer> numberOfFilesToSvnExport = new HashMap<>();
+	private final Map<UrlString, Integer> numberOfFilesToSvnExportBeforeFailure = new HashMap<>();
 	private List<String> lastJavacOptions;
 
 	public IwantCoreServicesMock(IwantCoreServices delegate) {
@@ -57,8 +57,9 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 
 	@Override
 	public void svnExported(URL from, File to) {
-		int fileCount = numberOfFilesToSvnExport.get(from);
-		Integer failAfter = numberOfFilesToSvnExportBeforeFailure.get(from);
+		int fileCount = numberOfFilesToSvnExport.get(new UrlString(from));
+		Integer failAfter = numberOfFilesToSvnExportBeforeFailure
+				.get(new UrlString(from));
 		to.mkdirs();
 		for (int i = 0; i < fileCount; i++) {
 			if (failAfter != null && i >= failAfter) {
@@ -122,12 +123,13 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	}
 
 	public void shallSvnExport(URL url, int numberOfFilesToSvnExport) {
-		this.numberOfFilesToSvnExport.put(url, numberOfFilesToSvnExport);
+		this.numberOfFilesToSvnExport.put(new UrlString(url),
+				numberOfFilesToSvnExport);
 	}
 
 	public void shallFailSvnExportAfterFileCount(URL url,
 			Integer numberOfFilesToSvnExportBeforeFailure) {
-		this.numberOfFilesToSvnExportBeforeFailure.put(url,
+		this.numberOfFilesToSvnExportBeforeFailure.put(new UrlString(url),
 				numberOfFilesToSvnExportBeforeFailure);
 	}
 

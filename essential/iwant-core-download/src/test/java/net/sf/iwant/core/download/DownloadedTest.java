@@ -10,6 +10,7 @@ import javax.tools.JavaCompiler;
 import junit.framework.TestCase;
 import net.sf.iwant.apimocks.CachesMock;
 import net.sf.iwant.apimocks.TargetEvaluationContextMock;
+import net.sf.iwant.apimocks.UrlString;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.testarea.TestArea;
 
@@ -113,8 +114,8 @@ public class DownloadedTest extends TestCase {
 
 	private static class IwantMock extends Iwant {
 
-		private final Map<URL, File> executedDownloads = new LinkedHashMap<>();
-		private final Map<URL, String> contentToDownload = new LinkedHashMap<>();
+		private final Map<UrlString, File> executedDownloads = new LinkedHashMap<>();
+		private final Map<UrlString, String> contentToDownload = new LinkedHashMap<>();
 
 		IwantMock() {
 			super(null);
@@ -147,8 +148,8 @@ public class DownloadedTest extends TestCase {
 
 		@Override
 		public void downloaded(URL from, File to) {
-			executedDownloads.put(from, to);
-			String content = contentToDownload.get(from);
+			executedDownloads.put(new UrlString(from), to);
+			String content = contentToDownload.get(new UrlString(from));
 			if (content == null) {
 				throw new IllegalStateException(
 						"You forgot to teach content of " + from);
@@ -157,7 +158,7 @@ public class DownloadedTest extends TestCase {
 		}
 
 		public void shallDownloadContent(URL from, String content) {
-			contentToDownload.put(from, content);
+			contentToDownload.put(new UrlString(from), content);
 		}
 
 		@Override
