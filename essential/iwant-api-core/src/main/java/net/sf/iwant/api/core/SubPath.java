@@ -2,15 +2,12 @@ package net.sf.iwant.api.core;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 
 import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.coreservices.FileUtil;
 
-public class SubPath extends Target {
+public class SubPath extends TargetBase {
 
 	private final Path parent;
 	private final String relativePath;
@@ -27,20 +24,16 @@ public class SubPath extends Target {
 	}
 
 	@Override
-	public List<Path> ingredients() {
-		return Arrays.asList(parent);
+	protected IngredientsAndParametersDefined ingredientsAndParameters(
+			IngredientsAndParametersPlease iUse) {
+		return iUse.ingredients("parent", parent)
+				.parameter("relativePath", relativePath).nothingElse();
 	}
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File from = new File(ctx.cached(parent), relativePath);
 		FileUtil.copyRecursively(from, ctx.cached(this));
-	}
-
-	@Override
-	public String contentDescriptor() {
-		return getClass().getCanonicalName() + ":" + parent + ":"
-				+ relativePath;
 	}
 
 	public Path parent() {
