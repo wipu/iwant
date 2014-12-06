@@ -336,7 +336,9 @@ public class Iwant {
 					+ "\nPlease edit it and rerun me.");
 		}
 		Properties iwantFromProps = new Properties();
-		iwantFromProps.load(new FileReader(iwantFrom));
+		try (FileReader fr = new FileReader(iwantFrom)) {
+			iwantFromProps.load(fr);
+		}
 		return iwantFromProps;
 	}
 
@@ -650,11 +652,10 @@ public class Iwant {
 	}
 
 	public static void fileLog(String msg) {
-		try {
-
-			new FileWriter(new File(IWANT_USER_DIR, "log"), true)
-					.append(new Date().toString()).append(" - ").append(msg)
-					.append("\n").close();
+		try (FileWriter fw = new FileWriter(new File(IWANT_USER_DIR, "log"),
+				true)) {
+			fw.append(new Date().toString()).append(" - ").append(msg)
+					.append("\n");
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
