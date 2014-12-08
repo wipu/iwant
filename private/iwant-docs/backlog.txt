@@ -1437,10 +1437,14 @@
       but wish for (could be boolean) coverage report
   + in each chapter mention chapter it continues editing
   + warn: revision needed in iwant-from
+  + index page: status of project
+  - writing own targets
+    - content descriptor, ingredients
+  - writing own side-effects
+    - want some target
   - concatenated before its first use
     - also here just add the missing feature: line(String)
     - this is a good example of automatic dep tracking
-  + index page: status of project
   - prerequisites for tutorial
     - understand basic shell
       - some grepping
@@ -1458,8 +1462,6 @@
       - tutorial: create iwant-from, svn co and use the script
       - explain the idea: minimal amount of iwant text to commit to
         project's own repo
-  - writing own targets and side-effects
-    - content descriptor, ingredients  
 
 - As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
   + use Windows to develop the wrapper
@@ -1508,6 +1510,13 @@
   - use tested ant by default, too
   - use in tutorial
   - what others?
+
+- As @buildscriptauthor I want to split my wsdef(def) into many modules so it's easier to maintain
+  * maybe now it's time to inject context in (optional?) constructor of wsdefdef
+  * also maybe inject wsdefdef to wsdef
+  * otherwise it's clumsy to define a build-time module that depends on iwant
+    so that the module can be used like normal modules
+  - after changing, change also generated example and tutorial
 
 - As @developer I want own type for urls, to work around all problems of java.net.URL, especially the hashCode DNS brainfart
 
