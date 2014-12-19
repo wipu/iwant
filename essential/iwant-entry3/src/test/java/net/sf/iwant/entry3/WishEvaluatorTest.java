@@ -447,7 +447,7 @@ public class WishEvaluatorTest extends TestCase {
 			fail();
 		} catch (IwantException e) {
 			assertEquals("Target incorrect referred to src without"
-					+ " declaring it as an ingredient.", e.getMessage());
+					+ " declaring it an ingredient.", e.getMessage());
 		}
 
 		// correct shall succeed:

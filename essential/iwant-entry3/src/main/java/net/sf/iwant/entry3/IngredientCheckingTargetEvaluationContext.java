@@ -29,7 +29,7 @@ public class IngredientCheckingTargetEvaluationContext implements
 	public File cached(Path path) {
 		if (!isLegalReference(path)) {
 			throw new Iwant.IwantException("Target " + target + " referred to "
-					+ path + " without " + "declaring it as an ingredient.");
+					+ path + " without " + "declaring it an ingredient.");
 		}
 		return delegate.cached(path);
 	}

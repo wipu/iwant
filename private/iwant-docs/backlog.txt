@@ -1438,8 +1438,13 @@
   + in each chapter mention chapter it continues editing
   + warn: revision needed in iwant-from
   + index page: status of project
-  - writing own targets
-    - content descriptor, ingredients
+  + writing own targets
+    + undeclared ingredients
+    + declared ingredients
+    + undeclared parameters
+    + declared ingredients
+    + target's own src as ingredient
+    + fix English grammar: declare x "an ingredient", not "as an ingredient"
   - writing own side-effects
     - want some target
   - concatenated before its first use
@@ -1503,6 +1508,12 @@
 #################################################################
 = Planned
 #################################################################
+
+- code affecting target changes -> dirty
+  * As @buildscriptauthor
+    I want a target to be dirty if I have changed code
+    so that the cached content will be valid
+  * this is difficult, without making everything dirty when wsdef classes changed
 
 - @epic As @buildscriptauthor I want external dependencies to handle their dependencies automatically so I don't need to define them
   - example: jacoco distribution depends on a certain version of asm
