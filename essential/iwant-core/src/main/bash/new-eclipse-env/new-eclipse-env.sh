@@ -98,32 +98,32 @@ log "OPT_EGIT=$OPT_EGIT"
 
 
 ECL_CODENAME=luna
-ECL_REL=R
+ECL_REL=SR1a
 ECL_DISTBASE=eclipse-java-$ECL_CODENAME-$ECL_REL
 ECL_URLBASE='http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/'$ECL_CODENAME/$ECL_REL
 
 eclipse-url-linux32() {
   DISTNAME=$ECL_DISTBASE-linux-gtk.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='c7ab0470f80038ac24815a3bfa0d011f'
+  DISTMD5='375eebd3b51933d248951e8d96a0d6c9'
 }
 
 eclipse-url-linux64() {
   DISTNAME=$ECL_DISTBASE-linux-gtk-x86_64.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='46dbd46a7321c958b0b40592a675ed77'
+  DISTMD5='e3f219a580995203df8f003b39d5adfa'
 }
 
 eclipse-url-win32() {
   DISTNAME=$ECL_DISTBASE-win32.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='9817d6e0a80805556b450fe73f2450b1'
+  DISTMD5='5b8e0beed1b18061292c0f572148c1d4'
 }
 
 eclipse-url-win64() {
   DISTNAME=$ECL_DISTBASE-win32-x86_64.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='07a8f78989d23f40899bb587dce56be9'
+  DISTMD5='24d54b7d123a96d8f7df7e680e835d76'
 }
 
 eclipse-dist() {
