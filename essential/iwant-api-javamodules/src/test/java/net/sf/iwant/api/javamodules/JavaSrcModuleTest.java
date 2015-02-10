@@ -377,6 +377,21 @@ public class JavaSrcModuleTest extends TestCase {
 		assertSame(encoding, test.encoding());
 	}
 
+	public void testRawCompilerArgsAreUsedToCompileMainAndTestClasses() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.testJava("test")
+				.rawCompilerArgs("-bootclasspath", "/mock/jdk-1.7").end();
+
+		JavaClasses main = (JavaClasses) mod.mainArtifact();
+		assertEquals(
+				"[-Xlint, -Xlint:-serial, -source, 1.7, -g, -bootclasspath, /mock/jdk-1.7]",
+				main.javacOptions().toString());
+		JavaClasses test = (JavaClasses) mod.testArtifact();
+		assertEquals(
+				"[-Xlint, -Xlint:-serial, -source, 1.7, -g, -bootclasspath, /mock/jdk-1.7]",
+				test.javacOptions().toString());
+	}
+
 	public void testNoCharacteristicsByDefault() {
 		assertTrue(JavaSrcModule.with().name("mod").mainJava("src").end()
 				.characteristics().isEmpty());

@@ -21,10 +21,12 @@ public class JavaClasses extends TargetBase {
 	private final boolean debug;
 	private final JavaCompliance sourceVersion;
 	private final Charset encoding;
+	private final List<String> rawArgs;
 
 	private JavaClasses(String name, Collection<? extends Path> srcDirs,
 			Collection<? extends Path> resourceDirs, List<Path> classLocations,
-			boolean debug, JavaCompliance sourceVersion, Charset encoding) {
+			boolean debug, JavaCompliance sourceVersion, Charset encoding,
+			List<String> rawArgs) {
 		super(name);
 		this.srcDirs = srcDirs;
 		this.resourceDirs = resourceDirs;
@@ -32,6 +34,7 @@ public class JavaClasses extends TargetBase {
 		this.debug = debug;
 		this.sourceVersion = sourceVersion;
 		this.encoding = encoding;
+		this.rawArgs = rawArgs;
 	}
 
 	public static JavaClassesSpex with() {
@@ -47,6 +50,7 @@ public class JavaClasses extends TargetBase {
 		private boolean debug;
 		private Charset encoding;
 		private JavaCompliance sourceVersion;
+		private final List<String> rawArgs = new ArrayList<>();
 
 		public JavaClassesSpex name(String name) {
 			this.name = name;
@@ -107,9 +111,18 @@ public class JavaClasses extends TargetBase {
 			return this;
 		}
 
+		public JavaClassesSpex rawArgs(String... rawArgs) {
+			return rawArgs(Arrays.asList(rawArgs));
+		}
+
+		public JavaClassesSpex rawArgs(Collection<? extends String> rawArgs) {
+			this.rawArgs.addAll(rawArgs);
+			return this;
+		}
+
 		public JavaClasses end() {
 			return new JavaClasses(name, srcDirs, resourceDirs, classLocations,
-					debug, sourceVersion, encoding);
+					debug, sourceVersion, encoding, rawArgs);
 		}
 
 	}
@@ -143,7 +156,7 @@ public class JavaClasses extends TargetBase {
 		throw new UnsupportedOperationException("TODO test and implement");
 	}
 
-	private List<String> javacOptions() {
+	public List<String> javacOptions() {
 		List<String> javacOptions = new ArrayList<>();
 		javacOptions.addAll(Iwant.recommendedJavacWarningOptions());
 		if (sourceVersion != null) {
@@ -152,6 +165,9 @@ public class JavaClasses extends TargetBase {
 		}
 		if (debug) {
 			javacOptions.add("-g");
+		}
+		for (String rawArg : rawArgs) {
+			javacOptions.add(rawArg);
 		}
 		return javacOptions;
 	}

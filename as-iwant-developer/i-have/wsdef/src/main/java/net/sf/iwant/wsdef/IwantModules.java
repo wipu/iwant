@@ -275,10 +275,11 @@ public class IwantModules extends JavaModules {
 			.mainJava("src")
 			.mainDeps(commonsMath, iwantApiCore, iwantApiJavamodules,
 					iwantApiModel, iwantApiWsdef, iwantCoreAnt,
-					iwantCoreDownload, iwantEntry3, iwantEclipseSettings,
-					iwantPluginAnt, iwantPluginFindbugs, iwantPluginGithub,
-					iwantPluginJacoco, iwantPluginJavamodules, iwantPluginPmd,
-					iwantPluginWar, junit).end();
+					iwantCoreDownload, iwantCoreservices, iwantEntry3,
+					iwantEclipseSettings, iwantPluginAnt, iwantPluginFindbugs,
+					iwantPluginGithub, iwantPluginJacoco,
+					iwantPluginJavamodules, iwantPluginPmd, iwantPluginWar,
+					junit).end();
 
 	/**
 	 * Just for documenting, to help detect dead stuff

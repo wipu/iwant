@@ -36,6 +36,7 @@ public class JavaSrcModule extends JavaModule {
 	private final List<Source> generatorSourcesToFollow;
 	private final StringFilter testClassNameFilter;
 	private final Charset encoding;
+	private final List<String> rawCompilerArgs;
 	private Path mainArtifact;
 	private Path testArtifact;
 
@@ -52,7 +53,8 @@ public class JavaSrcModule extends JavaModule {
 			CodeFormatterPolicy codeFormatterPolicy,
 			JavaCompliance javaCompliance, StringFilter testClassNameFilter,
 			Charset encoding,
-			Set<Class<? extends JavaModuleCharacteristic>> characteristics) {
+			Set<Class<? extends JavaModuleCharacteristic>> characteristics,
+			List<String> rawCompilerArgs) {
 		super(characteristics);
 		this.name = name;
 		this.generatorSourcesToFollow = generatorSourcesToFollow;
@@ -66,6 +68,7 @@ public class JavaSrcModule extends JavaModule {
 		this.javaCompliance = javaCompliance;
 		this.testClassNameFilter = testClassNameFilter;
 		this.encoding = encoding;
+		this.rawCompilerArgs = rawCompilerArgs;
 		this.mainDepsForCompilation = Collections
 				.unmodifiableSet(mainDepsForCompilation);
 		this.mainDepsForRunOnly = Collections
@@ -135,6 +138,7 @@ public class JavaSrcModule extends JavaModule {
 		private StringFilter testClassNameFilter = new DefaultTestClassNameFilter();
 		private Charset encoding;
 		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<>();
+		private final List<String> rawCompilerArgs = new ArrayList<>();
 
 		public JavaSrcModule end() {
 			if (locationUnderWsRoot != null && relativeParentDir != null) {
@@ -155,7 +159,7 @@ public class JavaSrcModule extends JavaModule {
 					testDepsForRunOnlyExcludingMainDeps, generatedClasses,
 					generatedSrc, generatorSourcesToFollow, codeStylePolicy,
 					codeFormatterPolicy, javaCompliance, testClassNameFilter,
-					encoding, characteristics);
+					encoding, characteristics, rawCompilerArgs);
 		}
 
 		private static String normalizedRelativeParentDir(String value) {
@@ -279,6 +283,16 @@ public class JavaSrcModule extends JavaModule {
 
 		public IwantSrcModuleSpex encoding(Charset encoding) {
 			this.encoding = encoding;
+			return this;
+		}
+
+		public IwantSrcModuleSpex rawCompilerArgs(String... rawCompilerArgs) {
+			return rawCompilerArgs(Arrays.asList(rawCompilerArgs));
+		}
+
+		public IwantSrcModuleSpex rawCompilerArgs(
+				Collection<? extends String> rawCompilerArgs) {
+			this.rawCompilerArgs.addAll(rawCompilerArgs);
 			return this;
 		}
 
@@ -467,7 +481,7 @@ public class JavaSrcModule extends JavaModule {
 				.srcDirs(mainJavasAsPaths()).encoding(encoding)
 				.sourceVersion(javaCompliance)
 				.resourceDirs(mainResourcesAsPaths()).classLocations(classpath)
-				.debug(true).end();
+				.debug(true).rawArgs(rawCompilerArgs).end();
 	}
 
 	public synchronized Path testArtifact() {
@@ -502,7 +516,7 @@ public class JavaSrcModule extends JavaModule {
 				.srcDirs(testJavasAsPaths()).encoding(encoding)
 				.sourceVersion(javaCompliance)
 				.resourceDirs(testResourcesAsPaths()).classLocations(classpath)
-				.debug(true).end();
+				.debug(true).rawArgs(rawCompilerArgs).end();
 	}
 
 	public String locationUnderWsRoot() {

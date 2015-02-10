@@ -103,15 +103,37 @@ public class JavaClassesTest extends IwantTestCase {
 		}
 	}
 
-	public void testValidToPathCompiles() throws Exception {
+	public void testSourceCompliance17WarnsAboutMissingBootclasspath()
+			throws Exception {
 		wsRootHasFile("src/Valid.java", "class Valid {}");
 		Source src = Source.underWsroot("src");
 		Target target = JavaClasses.with().name("valid").srcDirs(src)
+				.sourceVersion(JavaCompliance.JAVA_1_7).classLocations().end();
+
+		target.path(ctx);
+
+		assertTrue(new File(cached, "valid/Valid.class").exists());
+		assertEquals("warning: [options] bootstrap class path not set"
+				+ " in conjunction with -source 1.7\n" + "1 warning\n" + "",
+				err());
+	}
+
+	public void testSourceCompliance17WithCorrectBootclasspathCompilesWithoutWarnings()
+			throws Exception {
+		// in reality this would be a jdk1.7:
+		File jdk = new File(System.getProperty("java.home"));
+		File mockedRtJar17 = new File(jdk, "lib/rt.jar");
+		wsRootHasFile("src/Valid.java", "class Valid {}");
+		Source src = Source.underWsroot("src");
+		Target target = JavaClasses.with().name("valid").srcDirs(src)
+				.sourceVersion(JavaCompliance.JAVA_1_7)
+				.rawArgs("-bootclasspath", mockedRtJar17.getCanonicalPath())
 				.classLocations().end();
 
 		target.path(ctx);
 
 		assertTrue(new File(cached, "valid/Valid.class").exists());
+		assertEquals("", err());
 	}
 
 	public void testToPathCompilesFromMultiplePackages() throws Exception {
@@ -375,6 +397,19 @@ public class JavaClassesTest extends IwantTestCase {
 				.toString());
 	}
 
+	public void testCustomArgs() throws Exception {
+		wsRootHasDirectory("src");
+		wsRootHasFile("src/Whatever.java", "public class Whatever {}");
+		JavaClasses classes = JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot("src"))
+				.rawArgs("-cp", "cploc0:cploc1").end();
+
+		classes.path(ctx);
+
+		assertEquals("[-Xlint, -Xlint:-serial, -cp, cploc0:cploc1]", ctx
+				.iwant().lastJavacOptions().toString());
+	}
+
 	public void testDifferentJavacOptionsPassedToServices() throws Exception {
 		wsRootHasDirectory("src");
 		wsRootHasFile("src/Whatever.java", "public class Whatever {}");
@@ -397,6 +432,24 @@ public class JavaClassesTest extends IwantTestCase {
 				.srcDirs(Source.underWsroot("src")).debug(true)
 				.sourceVersion(JavaCompliance.JAVA_1_7).end()
 				.contentDescriptor().contains("  -source\n  1.7\n  -g"));
+		assertTrue(JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot("src")).debug(true)
+				.sourceVersion(JavaCompliance.JAVA_1_8).end()
+				.contentDescriptor().contains("  -source\n  1.8\n  -g"));
+	}
+
+	public void testJava8CompilesWithoutWarnings() throws Exception {
+		wsRootHasFile("src/UsingJ8.java", "class UsingJ8 {" + "	static {\n"
+				+ "		java.util.Arrays.asList(\"1\")."
+				+ "forEach(s -> System.out.println(s));\n" + "	}\n" + "}");
+		Source src = Source.underWsroot("src");
+		Target target = JavaClasses.with().name("valid").srcDirs(src)
+				.sourceVersion(JavaCompliance.JAVA_1_8).classLocations().end();
+
+		target.path(ctx);
+
+		assertTrue(new File(cached, "valid/UsingJ8.class").exists());
+		assertEquals("", err());
 	}
 
 }

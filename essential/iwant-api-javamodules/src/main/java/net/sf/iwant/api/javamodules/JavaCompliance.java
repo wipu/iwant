@@ -2,7 +2,7 @@ package net.sf.iwant.api.javamodules;
 
 public enum JavaCompliance {
 
-	JAVA_1_6("1.6"), JAVA_1_7("1.7");
+	JAVA_1_6("1.6"), JAVA_1_7("1.7"), JAVA_1_8("1.8");
 
 	private final String prettyName;
 
