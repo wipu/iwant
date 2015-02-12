@@ -40,7 +40,7 @@ public class FindbugsReportTest extends IwantTestCase {
 	}
 
 	private static FindbugsDistribution distroToTest() {
-		return FindbugsDistribution.ofVersion("2.0.2");
+		return FindbugsDistribution.ofVersion("3.0.0");
 	}
 
 	private static File cachedFindbugsTarGz() {
@@ -121,11 +121,11 @@ public class FindbugsReportTest extends IwantTestCase {
 						new JavaClassesAndSources(emptyClasses, emptySrc))
 				.auxClasses(bin).end();
 
-		assertEquals("[findbugs-2.0.2, " + antJar() + ", " + antLauncherJar()
+		assertEquals("[findbugs-3.0.0, " + antJar() + ", " + antLauncherJar()
 				+ ", empty-classes, empty-src, bin.jar]", report.ingredients()
 				.toString());
 		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport\n"
-				+ "i:findbugs:\n" + "  findbugs-2.0.2\n" + "i:antJar:\n" + "  "
+				+ "i:findbugs:\n" + "  findbugs-3.0.0\n" + "i:antJar:\n" + "  "
 				+ antJar() + "\ni:antLauncherJar:\n" + "  " + antLauncherJar()
 				+ "\ni:classes:\n" + "  empty-classes\n" + "i:sources:\n"
 				+ "  empty-src\n" + "i:auxClasses:\n" + "  bin.jar\n"
@@ -162,7 +162,7 @@ public class FindbugsReportTest extends IwantTestCase {
 				.end();
 
 		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport\n"
-				+ "i:findbugs:\n" + "  findbugs-2.0.2\n" + "i:antJar:\n" + "  "
+				+ "i:findbugs:\n" + "  findbugs-3.0.0\n" + "i:antJar:\n" + "  "
 				+ antJar() + "\ni:antLauncherJar:\n" + "  " + antLauncherJar()
 				+ "\ni:classes:\n" + "  empty-classes\n" + "i:sources:\n"
 				+ "  empty-src\n" + "i:auxClasses:\n" + "p:output-format:\n"

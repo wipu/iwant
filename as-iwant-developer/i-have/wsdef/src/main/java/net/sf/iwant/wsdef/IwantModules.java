@@ -27,22 +27,27 @@ public class IwantModules extends JavaModules {
 		mods.remove(iwantExampleWsdef);
 		mods.remove(iwantMockWsroot);
 		mods.remove(iwantTutorialWsdefs);
+		mods.remove(iwantDeprecatedEmma);
 		return mods;
 	}
 
 	private IwantSrcModuleSpex essentialModule(String subName) {
 		String fullName = "iwant-" + subName;
-		return srcModule(fullName).locationUnderWsRoot("essential/" + fullName);
+		return module(fullName).locationUnderWsRoot("essential/" + fullName);
 	}
 
 	private IwantSrcModuleSpex optionalModule(String subName) {
 		String fullName = "iwant-" + subName;
-		return srcModule(fullName).locationUnderWsRoot("optional/" + fullName);
+		return module(fullName).locationUnderWsRoot("optional/" + fullName);
 	}
 
 	private IwantSrcModuleSpex privateModule(String subName) {
 		String fullName = "iwant-" + subName;
-		return srcModule(fullName).locationUnderWsRoot("private/" + fullName);
+		return module(fullName).locationUnderWsRoot("private/" + fullName);
+	}
+
+	private IwantSrcModuleSpex module(String fullName) {
+		return srcModule(fullName).javaCompliance(JavaCompliance.JAVA_1_8);
 	}
 
 	/**

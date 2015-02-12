@@ -378,9 +378,11 @@ public class Iwant {
 	public static List<String> bootstrappingJavacOptions() {
 		List<String> options = new ArrayList<>();
 		options.addAll(recommendedJavacWarningOptions());
-		options.add("-source");
-		options.add("1.7");
+		// options.add("-source");
+		// options.add("1.7");
 		options.add("-g");
+		// options.add("-bootclasspath");
+		// options.add(System.getProperty("java.home"));
 		return options;
 	}
 

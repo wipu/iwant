@@ -245,8 +245,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		// uninteresting not included:
 		assertEquals(
 				"GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED\n"
-						+ "report,interesting2,Interesting2,5,0,0,0,1,0,2,0,2,0\n"
 						+ "report,interesting1,Interesting1,7,0,0,0,1,0,2,0,2,0\n"
+						+ "report,interesting2,Interesting2,5,0,0,0,1,0,2,0,2,0\n"
 						+ "", contentOf(new File(ctx.cached(report),
 						"report.csv")));
 	}

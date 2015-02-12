@@ -37,7 +37,7 @@ public class FindbugsDistributionTest extends IwantTestCase {
 	}
 
 	private static FindbugsDistribution distroToTest() {
-		return FindbugsDistribution.ofVersion("2.0.2");
+		return FindbugsDistribution.ofVersion("3.0.0");
 	}
 
 	private static File cachedFindbugsTarGz() {
@@ -49,7 +49,7 @@ public class FindbugsDistributionTest extends IwantTestCase {
 		File cachedFindbugsJar = cachedFindbugsTarGz();
 
 		assertTrue(cachedFindbugsJar.exists());
-		assertEquals(8295637, cachedFindbugsJar.length());
+		assertEquals(8893609, cachedFindbugsJar.length());
 	}
 
 	public void testTarGzIsAnIngredientAndMentionedInDescriptor() {

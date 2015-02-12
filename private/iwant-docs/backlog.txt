@@ -1392,10 +1392,31 @@
      nah, it's automatically the same, for now ok)
   (- javamodule uses compliance for both source and target)
   + javamodule.compilerRawArgs
-  - make 1.8 default => no bootclasspath changes needed
-    (and iwant's own build again green ... =:-O)
+  + use 1.8 for iwant modules
+  + don't test emma: it does not work with 1.8 bytecode (now it's
+    finally dead)
+  + fix tests: now extra warnings about bootclasspath
+    + make 1.8 default => no bootclasspath changes needed
+      (and iwant's own build again green ... =:-O)
+    + upgrade findbugs to support 1.8 bytecode
+  - don' specify compliance in ui: that compilation is for current jvm
+    - bash
+    - ant
+  - remove jvm options no more supported
+    (1.7 users must add them explicitly)
   - real test
     - jdk1.7 from env variable
+
+- reliable assert of jacoco txt report content
+  - find out what jacoco promises
+  - if nothing, suggest they do
+  - sort in test before asserting
+
+- robust update of jvm: refresh targets
+  - maybe put version in global cache dir name
+  - maybe automatically add to content descriptors
+
+- define default java compliance in JavaClasses, not the caller of it
 
 - jdk1.7 location from user-preferences
   - missing prefs file fails only if needed
@@ -1405,6 +1426,8 @@
      a temporarily needed functionality)
   - pass in ctx via constr/factory for wsdef
     big change to api!
+
+- delete emma plugin, it's dead with java 8
 
 - As @buildscriptauthor and @buildscriptauthor I want the core concepts explained in the tutorial so I'll be able to write and use build programs
   + explain declarative dep graph of Paths

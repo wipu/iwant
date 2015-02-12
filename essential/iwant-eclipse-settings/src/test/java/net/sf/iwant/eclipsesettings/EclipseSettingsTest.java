@@ -248,8 +248,23 @@ public class EclipseSettingsTest extends IwantTestCase {
 		assertEquals("es2.bin-refs", seCtx.targetsWantedAsPath().get(1).name());
 	}
 
-	public void testDefaultJavaComplianceIs17() {
+	public void testDefaultJavaComplianceIs18() {
 		JavaModule mod = JavaSrcModule.with().name("mod")
+				.locationUnderWsRoot("mod").mainJava("src").end();
+
+		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
+				.end();
+		es.mutate(seCtx);
+
+		String corePrefs = "mod/.settings/org.eclipse.jdt.core.prefs";
+		assertFileContains(corePrefs, "targetPlatform=1.8");
+		assertFileContains(corePrefs, "compiler.compliance=1.8");
+		assertFileContains(corePrefs, "compiler.source=1.8");
+	}
+
+	public void testJavaComplianceCanBeDefinedAs17() {
+		JavaModule mod = JavaSrcModule.with().name("mod")
+				.javaCompliance(JavaCompliance.JAVA_1_7)
 				.locationUnderWsRoot("mod").mainJava("src").end();
 
 		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
@@ -260,21 +275,6 @@ public class EclipseSettingsTest extends IwantTestCase {
 		assertFileContains(corePrefs, "targetPlatform=1.7");
 		assertFileContains(corePrefs, "compiler.compliance=1.7");
 		assertFileContains(corePrefs, "compiler.source=1.7");
-	}
-
-	public void testJavaComplianceCanBeDefinedAs17() {
-		JavaModule mod = JavaSrcModule.with().name("mod")
-				.javaCompliance(JavaCompliance.JAVA_1_6)
-				.locationUnderWsRoot("mod").mainJava("src").end();
-
-		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
-				.end();
-		es.mutate(seCtx);
-
-		String corePrefs = "mod/.settings/org.eclipse.jdt.core.prefs";
-		assertFileContains(corePrefs, "targetPlatform=1.6");
-		assertFileContains(corePrefs, "compiler.compliance=1.6");
-		assertFileContains(corePrefs, "compiler.source=1.6");
 	}
 
 	public void testJavaAndResourceDirsAreCreated() {

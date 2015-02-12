@@ -136,7 +136,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		sh.string("#!/bin/bash -eux\n");
 		sh.string("DEST=$1\n");
 		sh.string("asy -o \"$DEST\" '");
-		sh.pathTo(logoAsy());
+		sh.unixPathTo(logoAsy());
 		sh.string("'\n");
 		return sh.end();
 	}
@@ -146,7 +146,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		sh.string("#!/bin/bash -eux\n");
 		sh.string("DEST=$1\n");
 		sh.string("convert '");
-		sh.pathTo(logoEps());
+		sh.unixPathTo(logoEps());
 		sh.string("' -resize '50%' \"$DEST\"\n");
 		return sh.end();
 	}
@@ -155,7 +155,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 		ConcatenatedBuilder sh = Concatenated.named("favicon.ico.sh");
 		sh.string("#!/bin/bash -eux\n");
 		sh.string("DEST=$1\n");
-		sh.string("cat '").pathTo(logoAsy())
+		sh.string("cat '").unixPathTo(logoAsy())
 				.string("' | sed 's/^drawFull();/drawStar();/' > temp.asy\n");
 		sh.string("asy -o temp.eps temp.asy\n");
 		sh.string("convert temp.eps -resize 32x32 temp.png\n");

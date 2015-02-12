@@ -48,8 +48,8 @@ public class Directory extends TargetBase {
 		@Override
 		public DirectoryContentPlease<DirectoryContentPlease<AFTEREND>> dir(
 				String dirName) {
-			SubDir<DirectoryContentPlease<AFTEREND>> sub = new SubDir<DirectoryContentPlease<AFTEREND>>(
-					this, fullRelativePath + "/" + dirName);
+			SubDir<DirectoryContentPlease<AFTEREND>> sub = new SubDir<>(this,
+					fullRelativePath + "/" + dirName);
 			children.add(sub);
 			return sub;
 		}
