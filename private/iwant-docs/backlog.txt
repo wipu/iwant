@@ -1400,6 +1400,7 @@
       (and iwant's own build again green ... =:-O)
     + upgrade findbugs to support 1.8 bytecode
   - don' specify compliance in ui: that compilation is for current jvm
+    + entry
     - bash
     - ant
   - remove jvm options no more supported
@@ -1559,6 +1560,9 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptauthor I want to optionally use full names for binary modules loaded from repository so I can use org.eclipse.core.runtime and swt.runtime of the same version at the same time
+  * on the other hand, these jars may not even work together, but there may be other cases like this
 
 - code affecting target changes -> dirty
   * As @buildscriptauthor
