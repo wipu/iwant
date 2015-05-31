@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import net.sf.iwant.api.core.ClassNameList;
+import net.sf.iwant.api.core.SystemEnv;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Source;
@@ -251,4 +252,18 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 						"report.csv")));
 	}
 
+	public void testJacocoCoverageUsesModulesTestEnv() throws IOException {
+		SystemEnv env = SystemEnv.with().string("a", "a1")
+				.path("b", Source.underWsroot("b")).end();
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
+				.testEnv(env).end();
+
+		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
+				.with().jacocoWithDeps(jacoco(), asm())
+				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+
+		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
+
+		assertSame(env, coverage.env());
+	}
 }

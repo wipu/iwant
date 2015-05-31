@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.core.SystemEnv;
+import net.sf.iwant.api.core.SystemEnv.SystemEnvPlease;
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
@@ -25,12 +27,13 @@ public class JacocoCoverage extends TargetBase {
 	private final List<String> mainClassArgs;
 	private final Path mainClassArgsFile;
 	private final List<String> jvmargs;
+	private final SystemEnv env;
 
 	public JacocoCoverage(String name, List<Path> classLocations,
 			List<Path> antJars, JacocoDistribution jacoco,
 			Collection<? extends Path> deps, String mainClassName,
 			List<String> mainClassArgs, Path mainClassArgsFile,
-			List<String> jvmargs) {
+			List<String> jvmargs, SystemEnv env) {
 		super(name);
 		this.classLocations = classLocations;
 		this.antJars = antJars;
@@ -40,6 +43,7 @@ public class JacocoCoverage extends TargetBase {
 		this.mainClassArgs = mainClassArgs;
 		this.mainClassArgsFile = mainClassArgsFile;
 		this.jvmargs = jvmargs;
+		this.env = env;
 	}
 
 	public static JacocoCoverageSpexPlease with() {
@@ -57,6 +61,7 @@ public class JacocoCoverage extends TargetBase {
 		private Path mainClassArgsFile;
 		private Collection<? extends Path> deps;
 		private final List<String> jvmargs = new ArrayList<>();
+		private SystemEnv env;
 
 		private JacocoCoverageSpexPlease() {
 			jvmArgs("-XX:-UseSplitVerifier");
@@ -70,7 +75,7 @@ public class JacocoCoverage extends TargetBase {
 		public JacocoCoverage end() {
 			return new JacocoCoverage(name, classLocations, antJars, jacoco,
 					deps, mainClassName, mainClassArgs, mainClassArgsFile,
-					jvmargs);
+					jvmargs, env);
 		}
 
 		public JacocoCoverageSpexPlease classLocations(Path... classLocations) {
@@ -129,6 +134,11 @@ public class JacocoCoverage extends TargetBase {
 			return this;
 		}
 
+		public JacocoCoverageSpexPlease env(SystemEnv env) {
+			this.env = env;
+			return this;
+		}
+
 	}
 
 	@Override
@@ -151,6 +161,7 @@ public class JacocoCoverage extends TargetBase {
 		iUse.parameter("mainClassName", mainClassName);
 		iUse.parameter("mainClassArgs", mainClassArgs);
 		iUse.optionalIngredients("mainClassArgsFile", mainClassArgsFile);
+		iUse.optionalSystemEnv(env);
 		return iUse.nothingElse();
 	}
 
@@ -208,6 +219,25 @@ public class JacocoCoverage extends TargetBase {
 		for (String arg : mainArgsToUse(ctx)) {
 			b.append("			<arg value=\"" + arg + "\" />\n");
 		}
+		if (env != null) {
+			env.shovelTo(new SystemEnvPlease() {
+
+				@Override
+				public SystemEnvPlease string(String name, String value) {
+					b.append("			<env key=\"" + name + "\" " + "value=\""
+							+ value + "\"" + "/>\n");
+					return this;
+				}
+
+				@Override
+				public SystemEnvPlease path(String name, Path value) {
+					b.append("			<env key=\"" + name + "\" " + "file=\""
+							+ ctx.cached(value) + "\"" + "/>\n");
+					return this;
+				}
+			});
+
+		}
 		b.append("		</java>\n");
 		b.append("	</target>\n");
 
@@ -252,6 +282,10 @@ public class JacocoCoverage extends TargetBase {
 
 	public List<String> jvmargs() {
 		return jvmargs;
+	}
+
+	public SystemEnv env() {
+		return env;
 	}
 
 }

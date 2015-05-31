@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.sf.iwant.api.core.HelloTarget;
+import net.sf.iwant.api.core.SystemEnv;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
@@ -274,6 +275,53 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		String scriptContent = contentOf(new File(tmpDir, "coverage.exec.xml"));
 		assertTrue(scriptContent
 				.contains("<jvmarg value=\"-Xillegal-jvm-arg\"/>"));
+	}
+
+	/**
+	 * TODO why cannot we assert err() like in EmmaCoverageTest
+	 */
+	public void testItCallsGivenClassWithGivenEnvVariables() throws Exception {
+		Path src = Source.underWsroot("aSrc");
+
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "EnvChecker", "if(!\"[aString, " + wsRoot
+						+ "/aSrc]\".equals(" + "java.util.Arrays.asList("
+						+ "System.getenv(\"string\"),System.getenv(\"source\")"
+						+ ").toString())) System.exit(1);");
+		JacocoInstrumentation instr = JacocoInstrumentation
+				.of(classesAndSources.classes())
+				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+		instr.path(ctx);
+
+		SystemEnv env = SystemEnv.with().string("string", "aString")
+				.path("source", src).end();
+		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
+				.classLocations(instr).antJars(antJar(), antLauncherJar())
+				.jacocoWithDeps(jacoco(), asm())
+				.mainClassAndArguments("instrtest.EnvChecker").env(env).end();
+		coverage.path(ctx);
+
+		assertTrue(new File(cacheDir, "coverage.exec").exists());
+	}
+
+	public void testEnvIsUsedAsIngredientsAndParameters() throws IOException {
+		Path pathForEnv = Source.underWsroot("aSrc");
+		Path classesToInstrument = Source.underWsroot("classes");
+
+		JacocoInstrumentation instr = JacocoInstrumentation
+				.of(classesToInstrument)
+				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+
+		SystemEnv env = SystemEnv.with().string("string", "aString")
+				.path("source", pathForEnv).end();
+		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
+				.classLocations(instr).antJars(antJar(), antLauncherJar())
+				.jacocoWithDeps(jacoco(), asm())
+				.mainClassAndArguments("instrtest.EnvChecker").env(env).end();
+
+		assertTrue(coverage.contentDescriptor().contains(
+				"p:env:string:\n" + "  aString\n" + "i:env:source:\n"
+						+ "  aSrc"));
 	}
 
 }

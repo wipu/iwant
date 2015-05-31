@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.sf.iwant.api.core.StringFilterByEquality;
+import net.sf.iwant.api.core.SystemEnv;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.StringFilter;
@@ -24,6 +25,7 @@ public class JavaSrcModule extends JavaModule {
 	private final List<String> mainResources;
 	private final List<String> testJavas;
 	private final List<String> testResources;
+	private final SystemEnv testEnv;
 	private final Set<JavaModule> mainDepsForCompilation;
 	private final Set<JavaModule> mainDepsForRunOnly;
 	private final Set<JavaModule> testDepsForCompilationExcludingMainDeps;
@@ -43,7 +45,7 @@ public class JavaSrcModule extends JavaModule {
 	public JavaSrcModule(String name, String locationUnderWsRoot,
 			List<String> mainJavas, List<String> mainResources,
 			List<String> testJavas, List<String> testResources,
-			Set<JavaModule> mainDepsForCompilation,
+			SystemEnv testEnv, Set<JavaModule> mainDepsForCompilation,
 			Set<JavaModule> mainDepsForRunOnly,
 			Set<JavaModule> testDepsForCompilationExcludingMainDeps,
 			Set<JavaModule> testDepsForRunOnlyExcludingMainDeps,
@@ -64,6 +66,7 @@ public class JavaSrcModule extends JavaModule {
 		this.mainResources = mainResources;
 		this.testJavas = testJavas;
 		this.testResources = testResources;
+		this.testEnv = testEnv;
 		this.codeFormatterPolicy = codeFormatterPolicy;
 		this.javaCompliance = javaCompliance;
 		this.testClassNameFilter = testClassNameFilter;
@@ -123,6 +126,7 @@ public class JavaSrcModule extends JavaModule {
 		private final List<String> mainResources = new ArrayList<>();
 		private final List<String> testJavas = new ArrayList<>();
 		private final List<String> testResources = new ArrayList<>();
+		private SystemEnv testEnv;
 		private final Set<JavaModule> mainDepsForCompilation = new LinkedHashSet<>();
 		private final Set<JavaModule> mainDepsForRunOnly = new LinkedHashSet<>();
 		private final Set<JavaModule> testDepsForCompilationExcludingMainDeps = new LinkedHashSet<>();
@@ -153,7 +157,7 @@ public class JavaSrcModule extends JavaModule {
 						+ name;
 			}
 			return new JavaSrcModule(name, locationUnderWsRootToUse, mainJavas,
-					mainResources, testJavas, testResources,
+					mainResources, testJavas, testResources, testEnv,
 					mainDepsForCompilation, mainDepsForRunOnly,
 					testDepsForCompilationExcludingMainDeps,
 					testDepsForRunOnlyExcludingMainDeps, generatedClasses,
@@ -231,6 +235,11 @@ public class JavaSrcModule extends JavaModule {
 
 		public IwantSrcModuleSpex noTestResources() {
 			this.testResources.clear();
+			return this;
+		}
+
+		public IwantSrcModuleSpex testEnv(SystemEnv testEnv) {
+			this.testEnv = testEnv;
 			return this;
 		}
 
@@ -368,6 +377,10 @@ public class JavaSrcModule extends JavaModule {
 
 	public List<String> testResources() {
 		return testResources;
+	}
+
+	public SystemEnv testEnv() {
+		return testEnv;
 	}
 
 	@Override

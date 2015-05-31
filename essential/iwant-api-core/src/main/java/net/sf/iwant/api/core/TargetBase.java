@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.core.SystemEnv.SystemEnvPlease;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
@@ -61,6 +62,28 @@ public abstract class TargetBase extends Target {
 					}
 				}
 			}
+			return this;
+		}
+
+		@Override
+		public IngredientsAndParametersPlease optionalSystemEnv(SystemEnv env) {
+			if (env == null) {
+				return this;
+			}
+			env.shovelTo(new SystemEnvPlease() {
+
+				@Override
+				public SystemEnvPlease string(String name, String value) {
+					// no ingredients here
+					return this;
+				}
+
+				@Override
+				public SystemEnvPlease path(String name, Path value) {
+					ingredients("env:" + name, value);
+					return this;
+				}
+			});
 			return this;
 		}
 
@@ -125,6 +148,28 @@ public abstract class TargetBase extends Target {
 			return ingredients(name, maybeIngredients);
 		}
 
+		@Override
+		public IngredientsAndParametersPlease optionalSystemEnv(SystemEnv env) {
+			if (env == null) {
+				return this;
+			}
+			env.shovelTo(new SystemEnvPlease() {
+
+				@Override
+				public SystemEnvPlease string(String name, String value) {
+					parameter("env:" + name, value);
+					return this;
+				}
+
+				@Override
+				public SystemEnvPlease path(String name, Path value) {
+					ingredients("env:" + name, value);
+					return this;
+				}
+			});
+			return this;
+		}
+
 	}
 
 	protected abstract IngredientsAndParametersDefined ingredientsAndParameters(
@@ -151,6 +196,8 @@ public abstract class TargetBase extends Target {
 
 		IngredientsAndParametersPlease optionalIngredients(String name,
 				Collection<? extends Path> maybeIngredients);
+
+		IngredientsAndParametersPlease optionalSystemEnv(SystemEnv env);
 
 	}
 

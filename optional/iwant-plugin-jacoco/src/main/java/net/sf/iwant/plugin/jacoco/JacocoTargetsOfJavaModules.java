@@ -118,7 +118,8 @@ public class JacocoTargetsOfJavaModules {
 		}
 		JacocoCoverageSpexPlease coverage = JacocoCoverage.with()
 				.name(mod.name() + ".jacococoverage")
-				.jacocoWithDeps(jacoco, deps).antJars(antJars);
+				.jacocoWithDeps(jacoco, deps).antJars(antJars)
+				.env(mod.testEnv());
 		String mainClass = "org.junit.runner.JUnitCore";
 
 		StringFilter classNameDef = mod.testClassNameDefinition();
