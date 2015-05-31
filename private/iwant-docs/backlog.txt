@@ -1376,6 +1376,10 @@
 
 + As @buildscriptuser I want an installation of Eclipse Luna SR1a so I can use its new features
 
++ As @eclipeuser I want generated catch clauses to throw, not just print stacktrace, so my code is robust all the time
+  + two templates in the autoconfigured eclipse
+  + also upgrade, there is SR2 of Luna available
+
 #################################################################
 = In progress
 #################################################################

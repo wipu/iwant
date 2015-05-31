@@ -98,32 +98,32 @@ log "OPT_EGIT=$OPT_EGIT"
 
 
 ECL_CODENAME=luna
-ECL_REL=SR1a
+ECL_REL=SR2
 ECL_DISTBASE=eclipse-java-$ECL_CODENAME-$ECL_REL
 ECL_URLBASE='http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/'$ECL_CODENAME/$ECL_REL
 
 eclipse-url-linux32() {
   DISTNAME=$ECL_DISTBASE-linux-gtk.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='375eebd3b51933d248951e8d96a0d6c9'
+  DISTMD5='f5eafa6e2e3e84c2ea57df02fb5a478c'
 }
 
 eclipse-url-linux64() {
   DISTNAME=$ECL_DISTBASE-linux-gtk-x86_64.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='e3f219a580995203df8f003b39d5adfa'
+  DISTMD5='738bcdcb1f4b68abe40ad805969a0cbc'
 }
 
 eclipse-url-win32() {
   DISTNAME=$ECL_DISTBASE-win32.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='5b8e0beed1b18061292c0f572148c1d4'
+  DISTMD5='f6db0a75248fb6887077f4a6c516d91f'
 }
 
 eclipse-url-win64() {
   DISTNAME=$ECL_DISTBASE-win32-x86_64.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='24d54b7d123a96d8f7df7e680e835d76'
+  DISTMD5='d27e38f21352bfea03749319bf499dea'
 }
 
 eclipse-dist() {
@@ -252,7 +252,7 @@ runtime-settings-file() {
 }
 
 conf_org.eclipse.jdt.ui.prefs() {
-cat <<EOF
+cat <<\EOF
 content_assist_proposals_background=255,255,255
 content_assist_proposals_foreground=0,0,0
 eclipse.preferences.version=1
@@ -261,8 +261,8 @@ org.eclipse.jdt.ui.editor.tab.width=
 org.eclipse.jdt.ui.formatterprofiles.version=12
 org.eclipse.jdt.ui.javadoclocations.migrated=true
 org.eclipse.jdt.ui.text.code_templates_migrated=true
-org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates><template autoinsert\="false" context\="methodbody_context" deleted\="false" description\="Code in created method stubs" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.methodbody" name\="methodbody">int todoTestAndImplement;\nthrow new UnsupportedOperationException("TODO test and implement");</template></templates>
-org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
+org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates><template autoinsert\="false" context\="catchblock_context" deleted\="false" description\="Code in new catch blocks" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.catchblock" name\="catchblock">\tint todoProperExceptionTypeOrHandleOtherwise;\n\tthrow new UnsupportedOperationException("TODO proper exception type or handle otherwise", e);\n</template><template autoinsert\="false" context\="methodbody_context" deleted\="false" description\="Code in created method stubs" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.methodbody" name\="methodbody">int todoTestAndImplement;\nthrow new UnsupportedOperationException("TODO test and implement");</template></templates>
+org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates><template autoinsert\="false" context\="java-statements" deleted\="false" description\="try catch block" enabled\="true" id\="org.eclipse.jdt.ui.templates.try" name\="try">try {\n\t${line_selection}${cursor}\n} catch (${Exception} ${exception_variable_name}) {\n\tint todoProperExceptionTypeOrHandleOtherwise;\n\tthrow new UnsupportedOperationException("TODO proper exception type or handle otherwise", e);\n}</template></templates>
 org.eclipse.jdt.ui.text.templates_migrated=true
 org.eclipse.jface.textfont=1|Monospace|10.0|0|GTK|1|;
 proposalOrderMigrated=true
