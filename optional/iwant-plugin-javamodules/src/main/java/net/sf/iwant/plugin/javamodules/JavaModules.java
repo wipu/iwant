@@ -39,7 +39,7 @@ public abstract class JavaModules {
 	 * Override if needed
 	 */
 	protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {
-		return m.javaCompliance(JavaCompliance.JAVA_1_7).mavenLayout();
+		return m.javaCompliance(JavaCompliance.JAVA_1_8).mavenLayout();
 	}
 
 	private class CollectingSrcSpex extends IwantSrcModuleSpex {

@@ -1420,14 +1420,16 @@
     + entry
     + bash
     + ant
-  - remove jvm options no more supported
+  + remove jvm options no more supported
     (1.7 users must add them explicitly)
     + MaxPermSize
     + UseSplitVerifier
+  + use 1.8 as default everywhere
+  + upgrade findbugs to 3.0.0 that works with java 8
+  + upgrade iwant for iwant
+  - test by building the remote website
     - remove source 1.7 from some tests/tutorials, now they cause
       the bootclasspath warning
-  + upgrade findbugs to 3.0.0 that works with java 8
-  - test by building the remote website
 
 - reliable assert of jacoco txt report content
   - find out what jacoco promises
