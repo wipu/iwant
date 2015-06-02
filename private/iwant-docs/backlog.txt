@@ -1380,24 +1380,7 @@
   + two templates in the autoconfigured eclipse
   + also upgrade, there is SR2 of Luna available
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I want to pass environment variables to a module's tests so I can use a (native) tool that needs them
-  * manipulating envs from java is 1) a dirty hack and 2) not helpful, since it's just a copy, not the real env observable by a launched child process so tests cannot do this at runtime
-  + pass them to the ant script running junit for JacocoCoverage
-    + string value
-    + path value
-  + define for JavaSrcModule, too (no dependency to jacoco)
-    + dedicated class for env, after all
-    + JacocoTargetsOfJavaModules uses when creating JacocoCoverage
-  + dep tracking
-    + test env is a parameter
-    + path value is an ingredient
-  - real test with the tool that drives this story
-
-- As @buildscriptauthor I want to use 1.8 as JavaCompliance so my code compiles and run nicely in java 8
++ As @buildscriptauthor I want to use 1.8 as JavaCompliance so my code compiles and run nicely in java 8
   + new enum value 1.8
   + test compilation of code that uses 1.8 features
   + assert no warnings
@@ -1426,10 +1409,25 @@
     + UseSplitVerifier
   + use 1.8 as default everywhere
   + upgrade findbugs to 3.0.0 that works with java 8
-  + upgrade iwant for iwant
-  - test by building the remote website
-    - remove source 1.7 from some tests/tutorials, now they cause
-      the bootclasspath warning
+  + test by building the remote website
+    + upgrade iwant for iwant
+
+#################################################################
+= In progress
+#################################################################
+
+- As @buildscriptauthor I want to pass environment variables to a module's tests so I can use a (native) tool that needs them
+  * manipulating envs from java is 1) a dirty hack and 2) not helpful, since it's just a copy, not the real env observable by a launched child process so tests cannot do this at runtime
+  + pass them to the ant script running junit for JacocoCoverage
+    + string value
+    + path value
+  + define for JavaSrcModule, too (no dependency to jacoco)
+    + dedicated class for env, after all
+    + JacocoTargetsOfJavaModules uses when creating JacocoCoverage
+  + dep tracking
+    + test env is a parameter
+    + path value is an ingredient
+  - real test with the tool that drives this story
 
 - reliable assert of jacoco txt report content
   - find out what jacoco promises
