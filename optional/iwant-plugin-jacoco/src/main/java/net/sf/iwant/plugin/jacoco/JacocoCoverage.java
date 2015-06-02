@@ -63,10 +63,6 @@ public class JacocoCoverage extends TargetBase {
 		private final List<String> jvmargs = new ArrayList<>();
 		private SystemEnv env;
 
-		private JacocoCoverageSpexPlease() {
-			jvmArgs("-XX:-UseSplitVerifier");
-		}
-
 		public JacocoCoverageSpexPlease name(String name) {
 			this.name = name;
 			return this;

@@ -1416,14 +1416,18 @@
     + make 1.8 default => no bootclasspath changes needed
       (and iwant's own build again green ... =:-O)
     + upgrade findbugs to support 1.8 bytecode
-  - don' specify compliance in ui: that compilation is for current jvm
+  + don't specify compliance in ui: that compilation is for current jvm
     + entry
-    - bash
-    - ant
+    + bash
+    + ant
   - remove jvm options no more supported
     (1.7 users must add them explicitly)
-  - real test
-    - jdk1.7 from env variable
+    + MaxPermSize
+    + UseSplitVerifier
+    - remove source 1.7 from some tests/tutorials, now they cause
+      the bootclasspath warning
+  + upgrade findbugs to 3.0.0 that works with java 8
+  - test by building the remote website
 
 - reliable assert of jacoco txt report content
   - find out what jacoco promises

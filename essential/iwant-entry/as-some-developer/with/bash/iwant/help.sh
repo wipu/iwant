@@ -23,9 +23,8 @@ CLASSES=$CACHED/.internal/entry-classes
 CYG_CLASSES=$(cyg "$CLASSES")
 mkdir -p "$CLASSES"
 CYG_SRC=$(cyg "$AS_SOMEONE/with/java/net/sf/iwant/entry/Iwant.java")
-javac -source 1.7 -g -d "$CYG_CLASSES" "$CYG_SRC"
+javac -source 1.8 -g -d "$CYG_CLASSES" "$CYG_SRC"
 
 java \
   -Xmx1024m \
-  -XX:MaxPermSize=256m \
   -cp "$CYG_CLASSES" net.sf.iwant.entry.Iwant "$CYG_AS_SOMEONE" "$@"

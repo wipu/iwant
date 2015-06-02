@@ -27,7 +27,7 @@ import net.sf.iwant.plugin.jacoco.JacocoTargetsOfJavaModules;
 public class WorkspaceForIwant implements IwantWorkspace {
 
 	private final FindbugsDistribution findbugs = FindbugsDistribution
-			.ofVersion("2.0.3");
+			.ofVersion("3.0.0");
 
 	private static final Target copyOfLocalIwantWs = new CopyOfLocalIwantWsForTutorial();
 

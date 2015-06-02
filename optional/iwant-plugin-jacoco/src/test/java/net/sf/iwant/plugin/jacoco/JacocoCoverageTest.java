@@ -215,7 +215,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				.jacocoWithDeps(jacoco(), asm())
 				.mainClassAndArguments("instrtest.Hello").end();
 
-		assertEquals("[-XX:-UseSplitVerifier]", coverage.jvmargs().toString());
+		assertEquals("[]", coverage.jvmargs().toString());
 	}
 
 	public void testJvmArgsCanBeCleared() throws Exception {
