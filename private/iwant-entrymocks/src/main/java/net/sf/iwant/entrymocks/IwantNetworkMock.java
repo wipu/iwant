@@ -25,17 +25,9 @@ public class IwantNetworkMock implements IwantNetwork {
 		this.testArea = testArea;
 	}
 
-	private <T> T nonNull(T value, Object request) {
-		if (value == null) {
-			throw new IllegalStateException("You forgot to teach " + request
-					+ "\nto " + this);
-		}
-		return value;
-	}
-
 	@Override
 	public File cacheLocation(UnmodifiableSource<?> src) {
-		return nonNull(cachedUnmodifiables.get(src), src);
+		return NullCheck.nonNull(cachedUnmodifiables.get(src));
 	}
 
 	public File cachesAt(UnmodifiableSource<?> src, File cached) {
@@ -57,7 +49,7 @@ public class IwantNetworkMock implements IwantNetwork {
 
 	@Override
 	public URL svnkitUrl() {
-		return nonNull(svnkitUrl, "svnkitUrl");
+		return NullCheck.nonNull(svnkitUrl);
 	}
 
 	public void hasSvnkitUrl(URL svnkitUrl) {

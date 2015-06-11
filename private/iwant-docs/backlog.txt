@@ -1412,6 +1412,12 @@
   + test by building the remote website
     + upgrade iwant for iwant
 
++ As @developer I want trivial coverage issues fixed so I can more easily find uncovered code and cover it
+  + test that documents and tests synthetic or otherwise automatically generated code
+    + unused default constructor of utility classes
+    + enum valueOf and values
+  + reused and tested nonNull check for mocks
+
 #################################################################
 = In progress
 #################################################################

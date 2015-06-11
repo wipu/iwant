@@ -3,6 +3,7 @@ package net.sf.iwant.apimocks;
 import java.io.File;
 
 import net.sf.iwant.api.model.WsInfo;
+import net.sf.iwant.entrymocks.NullCheck;
 
 public class WsInfoMock implements WsInfo {
 
@@ -11,17 +12,9 @@ public class WsInfoMock implements WsInfo {
 	private File wsRoot;
 	private String relativeAsSomeone;
 
-	private <T> T nonNull(T value, Object request) {
-		if (value == null) {
-			throw new IllegalStateException("You forgot to teach " + request
-					+ "\nto " + this);
-		}
-		return value;
-	}
-
 	@Override
 	public String wsName() {
-		return nonNull(wsName, "wsName");
+		return NullCheck.nonNull(wsName);
 	}
 
 	public void hasWsName(String wsName) {
@@ -30,7 +23,7 @@ public class WsInfoMock implements WsInfo {
 
 	@Override
 	public File wsRoot() {
-		return nonNull(wsRoot, "wsRoot");
+		return NullCheck.nonNull(wsRoot);
 	}
 
 	public void hasWsRoot(File wsRoot) {
@@ -39,7 +32,7 @@ public class WsInfoMock implements WsInfo {
 
 	@Override
 	public File wsdefdefModule() {
-		return nonNull(wsdefdefModule, "wsdefdefModule");
+		return NullCheck.nonNull(wsdefdefModule);
 	}
 
 	public void hasWsdefdefModule(File wsdefdefModule) {
@@ -77,7 +70,7 @@ public class WsInfoMock implements WsInfo {
 
 	@Override
 	public String relativeAsSomeone() {
-		return nonNull(relativeAsSomeone, "relativeAsSomeone");
+		return NullCheck.nonNull(relativeAsSomeone);
 	}
 
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 import net.sf.iwant.api.model.SideEffectContext;
 import net.sf.iwant.api.model.Target;
+import net.sf.iwant.entrymocks.NullCheck;
 import net.sf.iwant.testarea.TestArea;
 
 public class SideEffectContextMock implements SideEffectContext {
@@ -29,14 +30,6 @@ public class SideEffectContextMock implements SideEffectContext {
 		this.wsInfo = new WsInfoMock();
 	}
 
-	private <T> T nonNull(T value, Object request) {
-		if (value == null) {
-			throw new IllegalStateException("You forgot to teach " + request
-					+ "\nto " + this);
-		}
-		return value;
-	}
-
 	@Override
 	public WsInfoMock wsInfo() {
 		return wsInfo;
@@ -44,7 +37,7 @@ public class SideEffectContextMock implements SideEffectContext {
 
 	@Override
 	public File wsRoot() {
-		return nonNull(wsRoot, "wsRoot");
+		return NullCheck.nonNull(wsRoot);
 	}
 
 	public void hasWsRoot(File wsRoot) {

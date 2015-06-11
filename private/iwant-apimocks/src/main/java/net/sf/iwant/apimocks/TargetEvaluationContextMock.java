@@ -6,6 +6,7 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.coreservices.IwantCoreServicesImpl;
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entrymocks.NullCheck;
 
 public class TargetEvaluationContextMock implements TargetEvaluationContext {
 
@@ -20,17 +21,9 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext {
 				new IwantCoreServicesImpl(iwant));
 	}
 
-	private <T> T nonNull(T value, Object request) {
-		if (value == null) {
-			throw new IllegalStateException("You forgot to teach " + request
-					+ "\nto " + this);
-		}
-		return value;
-	}
-
 	@Override
 	public File wsRoot() {
-		return nonNull(wsRoot, "wsRoot");
+		return NullCheck.nonNull(wsRoot);
 	}
 
 	public void hasWsRoot(File wsRoot) {

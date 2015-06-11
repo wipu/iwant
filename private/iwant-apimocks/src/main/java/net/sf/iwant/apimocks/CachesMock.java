@@ -10,6 +10,7 @@ import net.sf.iwant.api.model.Caches;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
+import net.sf.iwant.entrymocks.NullCheck;
 
 public class CachesMock implements Caches {
 
@@ -42,8 +43,8 @@ public class CachesMock implements Caches {
 
 		@Override
 		public File unmodifiableUrl(URL url) {
-			return nonNull(cachedUrls.get(new UrlString(url)), "cache for url "
-					+ url);
+			return NullCheck.nonNull(cachedUrls.get(new UrlString(url)),
+					"cache for url " + url);
 		}
 
 	}
@@ -66,28 +67,20 @@ public class CachesMock implements Caches {
 	}
 
 	private File cachedModifiableTargets() {
-		return nonNull(cachedModifiableTargets, "cachedModifiableTargets");
+		return NullCheck.nonNull(cachedModifiableTargets);
 	}
 
 	private File cachedDescriptors() {
-		return nonNull(cachedDescriptors, "cachedDescriptorsDir");
+		return NullCheck.nonNull(cachedDescriptors);
 	}
 
 	@Override
 	public File temporaryDirectory(String workerName) {
-		return nonNull(temporaryDirectory, "temporaryDirectory");
+		return NullCheck.nonNull(temporaryDirectory);
 	}
 
 	public void providesTemporaryDirectoryAt(File temporaryDirectory) {
 		this.temporaryDirectory = temporaryDirectory;
-	}
-
-	private <T> T nonNull(T value, Object request) {
-		if (value == null) {
-			throw new IllegalStateException("You forgot to teach " + request
-					+ "\nto " + this);
-		}
-		return value;
 	}
 
 }
