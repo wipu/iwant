@@ -6,11 +6,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaCompliance;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.Target;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.plugin.javamodules.JavaModules;
 
@@ -121,7 +123,7 @@ public class IwantModules extends JavaModules {
 			.end();
 
 	private JavaSrcModule iwantEntrymocks = privateModule("entrymocks")
-			.noTestJava().mainDeps(iwantEntry, iwantTestarea).end();
+			.mainDeps(iwantEntry, iwantTestarea).testDeps(junit).end();
 
 	private JavaSrcModule iwantEntryTests = privateModule("entry-tests")
 			.noMainJava()
@@ -286,11 +288,25 @@ public class IwantModules extends JavaModules {
 					iwantPluginJavamodules, iwantPluginPmd, iwantPluginWar,
 					junit).end();
 
+	private final Target extendedIwantEnumsJava = new ExtendedIwantEnums(
+			"extended-iwant-enums");
+
+	private final Target extendedIwantEnumsClasses = JavaClasses.with()
+			.name(extendedIwantEnumsJava.name() + "-classes")
+			.srcDirs(extendedIwantEnumsJava).end();
+
+	private final JavaModule iwantExtendedEnums = JavaBinModule.providing(
+			extendedIwantEnumsClasses, extendedIwantEnumsJava).end();
+
+	private final JavaSrcModule iwantTests = privateModule("tests")
+			.noMainJava().testDeps(iwantExtendedEnums)
+			.testDeps(allSrcModules()).testDeps(junit).end();
+
 	/**
 	 * Just for documenting, to help detect dead stuff
 	 */
 	@SuppressWarnings("unused")
 	private final List<JavaSrcModule> modulesNotDependedByOthers = Arrays
-			.asList(iwantDeprecatedEmma, iwantDocs, iwantEntryTests);
+			.asList(iwantDeprecatedEmma, iwantDocs, iwantEntryTests, iwantTests);
 
 }

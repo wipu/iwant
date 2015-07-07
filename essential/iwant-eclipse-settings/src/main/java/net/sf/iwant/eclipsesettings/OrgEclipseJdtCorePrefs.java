@@ -206,7 +206,7 @@ public class OrgEclipseJdtCorePrefs {
 		return propertyLine(key, value, true);
 	}
 
-	private static String valueToEclipseValue(boolean disableInsteadOfIgnore,
+	public static String valueToEclipseValue(boolean disableInsteadOfIgnore,
 			CodeStyleValue value) {
 		switch (value) {
 		case FAIL:

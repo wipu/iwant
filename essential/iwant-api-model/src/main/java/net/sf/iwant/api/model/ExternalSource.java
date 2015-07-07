@@ -47,8 +47,4 @@ public class ExternalSource implements Path {
 		return name;
 	}
 
-	public File file() {
-		return file;
-	}
-
 }

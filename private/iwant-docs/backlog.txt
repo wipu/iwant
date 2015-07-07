@@ -1422,6 +1422,12 @@
 = In progress
 #################################################################
 
+- As @developer I want tests for impossible enum switch cases so I can get 100% test coverage
+  * generate extended enums, use in test
+  + OrgEclipseJdtCorePrefs.asPropertyLine
+  + OrgEclipseJdtCorePrefs.valueToEclipseValue
+  - others?
+
 - As @buildscriptauthor I want to pass environment variables to a module's tests so I can use a (native) tool that needs them
   * manipulating envs from java is 1) a dirty hack and 2) not helpful, since it's just a copy, not the real env observable by a launched child process so tests cannot do this at runtime
   + pass them to the ant script running junit for JacocoCoverage
