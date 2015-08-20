@@ -14,6 +14,8 @@ public interface IwantPluginWishes {
 
 	IwantPluginWish pmd();
 
+	IwantPluginWish testng();
+
 	IwantPluginWish war();
 
 }

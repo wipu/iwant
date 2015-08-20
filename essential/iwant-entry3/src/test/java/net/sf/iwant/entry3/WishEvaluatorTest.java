@@ -31,6 +31,7 @@ import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
+import net.sf.iwant.api.wsdef.TargetDefinitionContext;
 import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
 import net.sf.iwant.apimocks.TargetMock;
 import net.sf.iwant.apimocks.WsInfoMock;
@@ -131,7 +132,7 @@ public class WishEvaluatorTest extends TestCase {
 	private class Hello implements IwantWorkspace {
 
 		@Override
-		public List<? extends Target> targets() {
+		public List<? extends Target> targets(TargetDefinitionContext ctx) {
 			return Arrays.asList(new HelloTarget("hello", "hello content"));
 		}
 
@@ -146,7 +147,7 @@ public class WishEvaluatorTest extends TestCase {
 	private class TwoHellos implements IwantWorkspace {
 
 		@Override
-		public List<? extends Target> targets() {
+		public List<? extends Target> targets(TargetDefinitionContext ctx) {
 			return Arrays.asList(new HelloTarget("hello1", "content 1"),
 					new HelloTarget("hello2", "content 2"));
 		}
@@ -333,7 +334,7 @@ public class WishEvaluatorTest extends TestCase {
 	private class OnlyEclipseSettingsAsSideEffect implements IwantWorkspace {
 
 		@Override
-		public List<? extends Target> targets() {
+		public List<? extends Target> targets(TargetDefinitionContext ctx) {
 			return Arrays.asList(new HelloTarget("hello", "content"));
 		}
 
@@ -349,7 +350,7 @@ public class WishEvaluatorTest extends TestCase {
 	private class TwoSideEffects implements IwantWorkspace {
 
 		@Override
-		public List<? extends Target> targets() {
+		public List<? extends Target> targets(TargetDefinitionContext ctx) {
 			return Arrays.asList(new HelloTarget("hello", "content"));
 		}
 
@@ -594,7 +595,7 @@ public class WishEvaluatorTest extends TestCase {
 		IwantWorkspace ws = new IwantWorkspace() {
 
 			@Override
-			public List<? extends Target> targets() {
+			public List<? extends Target> targets(TargetDefinitionContext ctx) {
 				return Collections.emptyList();
 			}
 
@@ -615,7 +616,7 @@ public class WishEvaluatorTest extends TestCase {
 		IwantWorkspace ws = new IwantWorkspace() {
 
 			@Override
-			public List<? extends Target> targets() {
+			public List<? extends Target> targets(TargetDefinitionContext ctx) {
 				return Arrays.asList(targetA(), targetB());
 			}
 
@@ -671,7 +672,7 @@ public class WishEvaluatorTest extends TestCase {
 
 		IwantWorkspace ws = new IwantWorkspace() {
 			@Override
-			public List<? extends Target> targets() {
+			public List<? extends Target> targets(TargetDefinitionContext ctx) {
 				return Arrays.asList(target);
 			}
 
@@ -715,7 +716,7 @@ public class WishEvaluatorTest extends TestCase {
 
 		IwantWorkspace ws = new IwantWorkspace() {
 			@Override
-			public List<? extends Target> targets() {
+			public List<? extends Target> targets(TargetDefinitionContext ctx) {
 				return Arrays.asList(d);
 			}
 
@@ -762,7 +763,7 @@ public class WishEvaluatorTest extends TestCase {
 
 		IwantWorkspace ws = new IwantWorkspace() {
 			@Override
-			public List<? extends Target> targets() {
+			public List<? extends Target> targets(TargetDefinitionContext ctx) {
 				return Arrays.asList(b, c);
 			}
 
@@ -799,7 +800,7 @@ public class WishEvaluatorTest extends TestCase {
 				.string("target2 using ").contentOf(target1).end();
 		IwantWorkspace ws = new IwantWorkspace() {
 			@Override
-			public List<? extends Target> targets() {
+			public List<? extends Target> targets(TargetDefinitionContext ctx) {
 				return Arrays.asList(target1, target2);
 			}
 
@@ -854,7 +855,7 @@ public class WishEvaluatorTest extends TestCase {
 			IwantWorkspace {
 
 		@Override
-		public List<? extends Target> targets() {
+		public List<? extends Target> targets(TargetDefinitionContext ctx) {
 			return Arrays.asList(new HelloTarget("hello", "content"));
 		}
 

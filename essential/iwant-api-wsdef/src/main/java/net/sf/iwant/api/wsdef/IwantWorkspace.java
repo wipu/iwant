@@ -10,7 +10,7 @@ public interface IwantWorkspace {
 	/**
 	 * TODO SortedSet
 	 */
-	List<? extends Target> targets();
+	List<? extends Target> targets(TargetDefinitionContext ctx);
 
 	List<? extends SideEffect> sideEffects(SideEffectDefinitionContext ctx);
 

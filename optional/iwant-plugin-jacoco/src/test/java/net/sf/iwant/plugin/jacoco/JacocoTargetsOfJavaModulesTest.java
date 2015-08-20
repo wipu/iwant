@@ -7,6 +7,7 @@ import net.sf.iwant.api.core.ClassNameList;
 import net.sf.iwant.api.core.SystemEnv;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
+import net.sf.iwant.api.javamodules.TestRunner;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.StringFilter;
 import net.sf.iwant.api.model.Target;
@@ -266,4 +267,35 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 
 		assertSame(env, coverage.env());
 	}
+
+	public void testJunitRunnerIsUsedForCoverageByDefault() throws IOException {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
+				.end();
+
+		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
+				.with().jacocoWithDeps(jacoco(), asm())
+				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+
+		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
+		assertEquals("org.junit.runner.JUnitCore", coverage.mainClassName());
+	}
+
+	public void testCustomTestRunnerIsUsedForCoverage() throws IOException {
+		class CustomRunner implements TestRunner {
+			@Override
+			public String mainClassName() {
+				return "custom.TestRunner";
+			}
+		}
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
+				.testRunner(new CustomRunner()).end();
+
+		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
+				.with().jacocoWithDeps(jacoco(), asm())
+				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+
+		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
+		assertEquals("custom.TestRunner", coverage.mainClassName());
+	}
+
 }

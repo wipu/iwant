@@ -20,7 +20,6 @@ public class Tutorial extends Target {
 	private final String namePrefix;
 	private final List<Descripted> pages = new ArrayList<>();
 	private final Path styleCss;
-	private Descripted javamodulesDoc;
 
 	private Tutorial(String namePrefix, List<Descripted> bootstrappingDocs) {
 		super(namePrefix + "tutorial");
@@ -52,12 +51,16 @@ public class Tutorial extends Target {
 		pages.add(pageAboutUsingWsdef("ext-libs-in-wsdef",
 				"Using external libraries in workspace definition"));
 
-		javamodulesDoc = pageAboutUsingWsdef("javamodules",
+		Descripted javamodulesDoc = pageAboutUsingWsdef("javamodules",
 				"Defining Java modules");
 		pages.add(javamodulesDoc);
 
-		pages.add(pageAboutUsingJavamodules("jacoco",
-				"Test coverage report using jacoco"));
+		Descripted jacocoDoc = pageAboutUsing("jacoco",
+				"Test coverage report using jacoco", javamodulesDoc);
+		pages.add(jacocoDoc);
+
+		pages.add(pageAboutUsing("testng", "Using TestNG instead of JUnit",
+				jacocoDoc));
 
 		pages.add(pageAboutUsingWsdef("pmdreport",
 				"Static code analysis report using PMD"));
@@ -107,14 +110,13 @@ public class Tutorial extends Target {
 	}
 
 	private Descripted pageAboutUsingWsdef(String docName, String titleText) {
-		return new Descripted(namePrefix, docName, titleText,
-				tutorialWsdefSrc(), null, creatingWsdefDoc);
+		return pageAboutUsing(docName, titleText, creatingWsdefDoc);
 	}
 
-	private Descripted pageAboutUsingJavamodules(String docName,
-			String titleText) {
+	private Descripted pageAboutUsing(String docName, String titleText,
+			Descripted initialState) {
 		return new Descripted(namePrefix, docName, titleText,
-				tutorialWsdefSrc(), null, javamodulesDoc);
+				tutorialWsdefSrc(), null, initialState);
 	}
 
 	private static String fileName(Descripted page) {

@@ -21,9 +21,19 @@ public class TestedIwantDependencies {
 				.version("2.0.5312");
 	}
 
+	public static Path jcommander() {
+		return FromRepository.ibiblio().group("com/beust").name("jcommander")
+				.version("1.48");
+	}
+
 	public static Path junit() {
 		return FromRepository.ibiblio().group("junit").name("junit")
 				.version("4.8.2");
+	}
+
+	public static Path testng() {
+		return FromRepository.ibiblio().group("org/testng").name("testng")
+				.version("6.9.4");
 	}
 
 }

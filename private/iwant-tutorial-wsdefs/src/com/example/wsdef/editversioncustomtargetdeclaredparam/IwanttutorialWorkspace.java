@@ -9,6 +9,7 @@ import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
+import net.sf.iwant.api.wsdef.TargetDefinitionContext;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 
 public class IwanttutorialWorkspace implements IwantWorkspace {
@@ -19,7 +20,7 @@ public class IwanttutorialWorkspace implements IwantWorkspace {
 			Arrays.asList(ingredient1, ingredient2), "The sum of file sizes");
 
 	@Override
-	public List<? extends Target> targets() {
+	public List<? extends Target> targets(TargetDefinitionContext ctx) {
 		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),
 				myTarget);
 	}

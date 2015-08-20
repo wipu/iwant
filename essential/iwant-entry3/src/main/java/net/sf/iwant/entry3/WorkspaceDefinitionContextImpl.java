@@ -176,6 +176,20 @@ public class WorkspaceDefinitionContextImpl implements
 		}
 
 		@Override
+		public IwantPluginWish testng() {
+			return new IwantPluginWish() {
+				@Override
+				public Set<JavaModule> withDependencies() {
+					Set<JavaModule> deps = new LinkedHashSet<>();
+					deps.add(JavaBinModule.providing(jcommanderJar()).end());
+					deps.add(JavaBinModule.providing(testngJar()).end());
+					return pluginWithDependencies("iwant-plugin-testng", deps);
+				}
+
+			};
+		}
+
+		@Override
 		public IwantPluginWish war() {
 			return new IwantPluginWish() {
 				@Override
@@ -198,6 +212,14 @@ public class WorkspaceDefinitionContextImpl implements
 	private static Downloaded commonsIoJar() {
 		return FromRepository.ibiblio().group("org/apache/commons")
 				.name("commons-io").version("1.3.2");
+	}
+
+	private static Path jcommanderJar() {
+		return TestedIwantDependencies.jcommander();
+	}
+
+	private static Path testngJar() {
+		return TestedIwantDependencies.testng();
 	}
 
 }

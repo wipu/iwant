@@ -10,6 +10,7 @@ import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
+import net.sf.iwant.api.wsdef.TargetDefinitionContext;
 import net.sf.iwant.core.ant.AntGenerated;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
@@ -17,7 +18,7 @@ import net.sf.iwant.eclipsesettings.EclipseSettings;
 public class IwanttutorialWorkspace implements IwantWorkspace {
 
 	@Override
-	public List<? extends Target> targets() {
+	public List<? extends Target> targets(TargetDefinitionContext ctx) {
 		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),
 				antGenerated());
 	}

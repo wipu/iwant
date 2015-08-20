@@ -578,7 +578,7 @@ public class Iwant {
 
 	}
 
-	private static class ExitCatcher extends SecurityManager {
+	public static class ExitCatcher extends SecurityManager {
 
 		@Override
 		public void checkPermission(Permission perm) {

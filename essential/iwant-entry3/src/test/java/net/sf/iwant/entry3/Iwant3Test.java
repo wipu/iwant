@@ -268,8 +268,9 @@ public class Iwant3Test extends TestCase {
 
 		// no targets
 		wsdefContent = wsdefContent
-				.replace(" targets() {",
-						" targets() { if(true) return java.util.Collections.emptyList(); else");
+				.replace(
+						" targets(TargetDefinitionContext ctx) {",
+						" targets(TargetDefinitionContext ctx) { if(true) return java.util.Collections.emptyList(); else");
 		// renamed side-effect
 		wsdefContent = wsdefContent.replace(".name(\"eclipse-settings\")",
 				".name(\"renamed-eclipse-settings\")");
@@ -353,13 +354,14 @@ public class Iwant3Test extends TestCase {
 		wsdef.append("import net.sf.iwant.api.model.SideEffect;\n");
 		wsdef.append("import net.sf.iwant.api.model.Target;\n");
 		wsdef.append("import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;\n");
+		wsdef.append("import net.sf.iwant.api.wsdef.TargetDefinitionContext;\n");
 		wsdef.append("import net.sf.iwant.api.wsdef.IwantWorkspace;\n");
 		wsdef.append("import net.sf.iwant.eclipsesettings.EclipseSettings;\n");
 		wsdef.append("\n");
 		wsdef.append("public class ExampleWs implements IwantWorkspace {\n");
 		wsdef.append("\n");
 		wsdef.append("  @Override\n");
-		wsdef.append("	public List<? extends Target> targets() {\n");
+		wsdef.append("	public List<? extends Target> targets(TargetDefinitionContext ctx) {\n");
 		wsdef.append("		return Arrays.asList(new HelloTarget(\"modified-hello\", \"content 1\"),\n");
 		wsdef.append("			new HelloTarget(\"hello2\", \"content 2\"));\n");
 		wsdef.append("	}\n");

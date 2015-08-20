@@ -120,7 +120,7 @@ public class JacocoTargetsOfJavaModules {
 				.name(mod.name() + ".jacococoverage")
 				.jacocoWithDeps(jacoco, deps).antJars(antJars)
 				.env(mod.testEnv());
-		String mainClass = "org.junit.runner.JUnitCore";
+		String mainClass = testRunnerClassNameFor(mod);
 
 		StringFilter classNameDef = mod.testClassNameDefinition();
 		if (classNameDef instanceof StringFilterByEquality) {
@@ -140,6 +140,13 @@ public class JacocoTargetsOfJavaModules {
 		}
 
 		return coverage.end();
+	}
+
+	private static String testRunnerClassNameFor(JavaSrcModule mod) {
+		if (mod.testRunner() != null) {
+			return mod.testRunner().mainClassName();
+		}
+		return "org.junit.runner.JUnitCore";
 	}
 
 	private void dep(JacocoCoverageSpexPlease coverage, JavaModule mod) {

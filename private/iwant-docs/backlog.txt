@@ -1422,6 +1422,47 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want coverage for modules that have TestNG tests so I don't have to use junit only
+  + descript
+    + wsdef uses testng plugin
+    + a module declares it uses TestngRunner
+      + new interface TestRunner, java module may optionally define
+      + new plugin: testng, with TestngRunner
+    + write test, run, fix, rerun, cat jacoco report
+  + extract existing JacocoCoverage test running to a JunitRunner
+    + remove unnecessary taskdef of jacoco
+    * nothing more to do: after all runner is just a cli replacement for junit
+  + TestngRunner passes correct args to TestNG
+  + JacocoTargetsOfJavaModules passes as main: runner defined by javamodule or junit as default
+  + plugin deps
+  + verify descript details ok
+    + TestngRunner cannot be found => iwant-plugin classes to test-time classpath
+      + target def ctx that gives them
+        + cleanup: common super for target def ctx and s.e. def ctx
+      * not enough to put as runtime deps for jacoco report because
+        tests are run without ant runtime deps
+      + make plugin testdep of the module
+      * UGLY: modules need wishevaluationctx => targets(ctx) and
+        sideEffects(ctx) need to save it to file and modules just needs
+        to trust they have been called first :( (another story will fix)
+  - stories about more helpful and cleaner output at test failure
+  - cleanup: WorkspaceDefinitionContextImpl.commonsIoJar is Path, not Downloaded
+  - cleanup: iwantExampleWsdef module deps in alphabetical order
+  - real test
+  - polish text for descript
+
+- As @buildscriptauthor I want ws def ctx stuff in wsdef constructor, not
+  separately for functions targets and sideEffects so I can instantiate
+  my JavaModules there
+  * currently targets and sideEffects need to save the ctx, then JavaModules
+    needs to be created lazily, blindly trusting the ctx has been created
+  * current IwantWorkspace will just be the factory so it has a default
+    constructor and a factory method
+  - so better to rename stuff
+    - IwantWorkspaceProvider -> WorkspaceModuleDefinition
+    - IwantWorkspace -> WorkspaceFactory
+    - new: Workspace
+  
 - As @developer I want tests for impossible enum switch cases so I can get 100% test coverage
   * generate extended enums, use in test
   + OrgEclipseJdtCorePrefs.asPropertyLine

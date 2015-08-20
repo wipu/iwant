@@ -29,6 +29,7 @@ import net.sf.iwant.api.model.WsInfo;
 import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.IwantWorkspaceProvider;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
+import net.sf.iwant.api.wsdef.TargetDefinitionContext;
 import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
 import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.coreservices.StreamUtil;
@@ -153,6 +154,7 @@ public class Iwant3 {
 			Iwant.fileLog("Instantiating " + wsDefClass);
 			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
 			refreshWishScripts(asSomeone, wsDef,
+					wishEvaluator.targetDefinitionContext(),
 					wishEvaluator.sideEffectDefinitionContext());
 			if (args.length == 0) {
 				throw new IwantException("(Using "
@@ -257,8 +259,9 @@ public class Iwant3 {
 	}
 
 	private static void refreshWishScripts(File asSomeone,
-			IwantWorkspace wsDef, SideEffectDefinitionContext sedCtx) {
-		refreshWishScripts(asSomeone, wsDef.targets(),
+			IwantWorkspace wsDef, TargetDefinitionContext tdCtx,
+			SideEffectDefinitionContext sedCtx) {
+		refreshWishScripts(asSomeone, wsDef.targets(tdCtx),
 				wsDef.sideEffects(sedCtx));
 	}
 

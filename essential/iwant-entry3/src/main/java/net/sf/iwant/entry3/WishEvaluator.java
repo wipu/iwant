@@ -18,6 +18,7 @@ import net.sf.iwant.api.model.WsInfo;
 import net.sf.iwant.api.wsdef.IwantPluginWishes;
 import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
+import net.sf.iwant.api.wsdef.TargetDefinitionContext;
 import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
 import net.sf.iwant.coreservices.IwantCoreServicesImpl;
 import net.sf.iwant.coreservices.StreamUtil;
@@ -63,11 +64,15 @@ public class WishEvaluator {
 		return ctx;
 	}
 
+	public TargetDefinitionContext targetDefinitionContext() {
+		return ctx;
+	}
+
 	public void iwant(String wish, IwantWorkspace ws) {
 		failIfConflictingPathDefinitions(ws);
 		if ("list-of/targets".equals(wish)) {
 			PrintWriter wr = new PrintWriter(out);
-			for (Target target : ws.targets()) {
+			for (Target target : ws.targets(ctx)) {
 				wr.println(target.name());
 			}
 			wr.close();
@@ -81,7 +86,7 @@ public class WishEvaluator {
 			wr.close();
 			return;
 		}
-		for (Target target : ws.targets()) {
+		for (Target target : ws.targets(ctx)) {
 			if (wish.equals("target/" + target.name() + "/as-path")) {
 				asPath(target);
 				return;
@@ -104,12 +109,12 @@ public class WishEvaluator {
 			}
 		}
 		throw new IllegalArgumentException("Illegal wish: " + wish
-				+ "\nlegal targets:" + ws.targets());
+				+ "\nlegal targets:" + ws.targets(ctx));
 	}
 
-	private static void failIfConflictingPathDefinitions(IwantWorkspace ws) {
+	private void failIfConflictingPathDefinitions(IwantWorkspace ws) {
 		PathDefinitionConflictChecker.failIfConflictingPathDefinitions(ws
-				.targets());
+				.targets(ctx));
 	}
 
 	File freshCachedContent(Path path) {
@@ -150,7 +155,7 @@ public class WishEvaluator {
 	}
 
 	private class Ctx implements TargetEvaluationContext, SideEffectContext,
-			SideEffectDefinitionContext {
+			SideEffectDefinitionContext, TargetDefinitionContext {
 
 		private final IwantCoreServices iwantCoreServices = new IwantCoreServicesImpl(
 				iwant);

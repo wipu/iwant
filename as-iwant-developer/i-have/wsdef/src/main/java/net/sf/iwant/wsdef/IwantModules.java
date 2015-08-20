@@ -105,6 +105,12 @@ public class IwantModules extends JavaModules {
 			FromRepository.ibiblio().group("pmd").name("pmd").version("4.3"))
 			.end();
 
+	private final JavaBinModule jcommander = binModule("com.beust",
+			"jcommander", "1.48");
+
+	private final JavaBinModule testng = binModule("org.testng", "testng",
+			"6.9.4", jcommander);
+
 	private JavaSrcModule iwantApiModel = essentialModule("api-model")
 			.mainDeps().testDeps(junit).end();
 
@@ -271,6 +277,10 @@ public class IwantModules extends JavaModules {
 			.testDeps(junit, iwantApimocks, iwantTestarea, iwantTestresources)
 			.end();
 
+	private JavaSrcModule iwantPluginTestng = optionalModule("plugin-testng")
+			.mainDeps(iwantApiJavamodules, testng).testDeps(iwantEntry, junit)
+			.end();
+
 	private JavaSrcModule iwantPluginWar = optionalModule("plugin-war")
 			.mainDeps(ant, antLauncher, iwantApiModel)
 			.testDeps(junit, iwantApimocks, iwantEntry, iwantPluginAnt,
@@ -285,8 +295,8 @@ public class IwantModules extends JavaModules {
 					iwantCoreDownload, iwantCoreservices, iwantEntry3,
 					iwantEclipseSettings, iwantPluginAnt, iwantPluginFindbugs,
 					iwantPluginGithub, iwantPluginJacoco,
-					iwantPluginJavamodules, iwantPluginPmd, iwantPluginWar,
-					junit).end();
+					iwantPluginJavamodules, iwantPluginPmd, iwantPluginTestng,
+					iwantPluginWar, junit, testng).end();
 
 	private final Target extendedIwantEnumsJava = new ExtendedIwantEnums(
 			"extended-iwant-enums");

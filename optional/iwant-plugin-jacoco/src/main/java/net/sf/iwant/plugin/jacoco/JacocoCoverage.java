@@ -180,20 +180,7 @@ public class JacocoCoverage extends TargetBase {
 		b.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		b.append("\n");
 		b.append("<project name=\"" + name() + "\" default=\"" + name()
-				+ "\" xmlns:jacoco=\"antlib:org.jacoco.ant\" basedir=\".\">\n");
-		b.append("\n");
-		b.append("      <taskdef uri=\"antlib:org.jacoco.ant\" resource=\"org/jacoco/ant/antlib.xml\">\n");
-		for (Path dep : deps) {
-			b.append("              <classpath location=\"" + ctx.cached(dep)
-					+ "\" />\n");
-		}
-		b.append("              <classpath location=\""
-				+ jacoco.orgJacocoAntJar(ctx) + "\" />\n");
-		b.append("              <classpath location=\""
-				+ jacoco.orgJacocoCoreJar(ctx) + "\" />\n");
-		b.append("              <classpath location=\""
-				+ jacoco.orgJacocoReportJar(ctx) + "\" />\n");
-		b.append("      </taskdef>\n");
+				+ "\" basedir=\".\">\n");
 		b.append("\n");
 
 		b.append("	<target name=\"" + name() + "\">\n");

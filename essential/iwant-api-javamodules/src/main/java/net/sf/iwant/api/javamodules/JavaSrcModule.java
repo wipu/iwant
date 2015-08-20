@@ -41,6 +41,7 @@ public class JavaSrcModule extends JavaModule {
 	private final List<String> rawCompilerArgs;
 	private Path mainArtifact;
 	private Path testArtifact;
+	private TestRunner testRunner;
 
 	public JavaSrcModule(String name, String locationUnderWsRoot,
 			List<String> mainJavas, List<String> mainResources,
@@ -56,7 +57,7 @@ public class JavaSrcModule extends JavaModule {
 			JavaCompliance javaCompliance, StringFilter testClassNameFilter,
 			Charset encoding,
 			Set<Class<? extends JavaModuleCharacteristic>> characteristics,
-			List<String> rawCompilerArgs) {
+			List<String> rawCompilerArgs, TestRunner testRunner) {
 		super(characteristics);
 		this.name = name;
 		this.generatorSourcesToFollow = generatorSourcesToFollow;
@@ -72,6 +73,7 @@ public class JavaSrcModule extends JavaModule {
 		this.testClassNameFilter = testClassNameFilter;
 		this.encoding = encoding;
 		this.rawCompilerArgs = rawCompilerArgs;
+		this.testRunner = testRunner;
 		this.mainDepsForCompilation = Collections
 				.unmodifiableSet(mainDepsForCompilation);
 		this.mainDepsForRunOnly = Collections
@@ -143,6 +145,7 @@ public class JavaSrcModule extends JavaModule {
 		private Charset encoding;
 		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<>();
 		private final List<String> rawCompilerArgs = new ArrayList<>();
+		private TestRunner testRunner;
 
 		public JavaSrcModule end() {
 			if (locationUnderWsRoot != null && relativeParentDir != null) {
@@ -163,7 +166,7 @@ public class JavaSrcModule extends JavaModule {
 					testDepsForRunOnlyExcludingMainDeps, generatedClasses,
 					generatedSrc, generatorSourcesToFollow, codeStylePolicy,
 					codeFormatterPolicy, javaCompliance, testClassNameFilter,
-					encoding, characteristics, rawCompilerArgs);
+					encoding, characteristics, rawCompilerArgs, testRunner);
 		}
 
 		private static String normalizedRelativeParentDir(String value) {
@@ -353,6 +356,11 @@ public class JavaSrcModule extends JavaModule {
 		public IwantSrcModuleSpex has(
 				Class<? extends JavaModuleCharacteristic> characteristic) {
 			this.characteristics.add(characteristic);
+			return this;
+		}
+
+		public IwantSrcModuleSpex testRunner(TestRunner testRunner) {
+			this.testRunner = testRunner;
 			return this;
 		}
 
@@ -555,6 +563,10 @@ public class JavaSrcModule extends JavaModule {
 
 	public StringFilter testClassNameDefinition() {
 		return testClassNameFilter;
+	}
+
+	public TestRunner testRunner() {
+		return testRunner;
 	}
 
 }
