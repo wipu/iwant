@@ -52,8 +52,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				+ antLauncherJar() + "\ni:classLocations:\n"
 				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
 				+ "  instrtest.Main\n" + "p:mainClassArgs:\n" + "  arg0\n"
-				+ "  arg1\n" + "i:mainClassArgsFile:\n" + " null\n" + "",
-				coverage.contentDescriptor());
+				+ "  arg1\n" + "i:mainClassArgsFile:\n" + " null\n"
+				+ "p:jvmargs:\n", coverage.contentDescriptor());
 	}
 
 	public void testIngredientsAndDescriptorWithMainClassArgsGivenAsPath()
@@ -82,7 +82,33 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
 				+ "  instrtest.Main\n" + "p:mainClassArgs:\n"
 				+ " null-collection\n" + "i:mainClassArgsFile:\n"
-				+ "  args-file\n" + "", coverage.contentDescriptor());
+				+ "  args-file\n" + "p:jvmargs:\n",
+				coverage.contentDescriptor());
+	}
+
+	public void testIngredientsAndDescriptorWithJvmArgs() throws Exception {
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest", "Main");
+		JacocoInstrumentation instr = JacocoInstrumentation
+				.of(classesAndSources.classes())
+				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+
+		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
+				.classLocations(instr).antJars(antJar(), antLauncherJar())
+				.jacocoWithDeps(jacoco(), asm()).jvmArgs("-Xmx1G")
+				.mainClassAndArguments("instrtest.Main", "arg0", "arg1").end();
+
+		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
+				+ antLauncherJar() + ", instrtest-classes.jacoco-instr]",
+				coverage.ingredients().toString());
+		assertEquals("net.sf.iwant.plugin.jacoco.JacocoCoverage\n"
+				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
+				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+				+ antLauncherJar() + "\ni:classLocations:\n"
+				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
+				+ "  instrtest.Main\n" + "p:mainClassArgs:\n" + "  arg0\n"
+				+ "  arg1\n" + "i:mainClassArgsFile:\n" + " null\n"
+				+ "p:jvmargs:\n" + "  -Xmx1G\n", coverage.contentDescriptor());
 	}
 
 	public void testItProducesTheRequestedExecFile() throws Exception {

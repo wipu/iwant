@@ -90,7 +90,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				+ "  mod-test-classes\n" + "p:mainClassName:\n"
 				+ "  org.junit.runner.JUnitCore\n" + "p:mainClassArgs:\n"
 				+ " null-collection\n" + "i:mainClassArgsFile:\n"
-				+ "  mod-test-class-names\n" + "", coverage.contentDescriptor());
+				+ "  mod-test-class-names\n" + "p:jvmargs:\n",
+				coverage.contentDescriptor());
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
 		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n"

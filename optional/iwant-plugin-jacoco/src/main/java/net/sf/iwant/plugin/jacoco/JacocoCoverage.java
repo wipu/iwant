@@ -158,6 +158,7 @@ public class JacocoCoverage extends TargetBase {
 		iUse.parameter("mainClassArgs", mainClassArgs);
 		iUse.optionalIngredients("mainClassArgsFile", mainClassArgsFile);
 		iUse.optionalSystemEnv(env);
+		iUse.parameter("jvmargs", jvmargs);
 		return iUse.nothingElse();
 	}
 

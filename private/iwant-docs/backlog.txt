@@ -1418,6 +1418,8 @@
     + enum valueOf and values
   + reused and tested nonNull check for mocks
 
++ @bugfix: add jvmargs as parameter to JacocoCoverage
+
 #################################################################
 = In progress
 #################################################################
