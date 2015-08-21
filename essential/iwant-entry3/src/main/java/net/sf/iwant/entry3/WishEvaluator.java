@@ -217,7 +217,7 @@ public class WishEvaluator {
 		}
 
 		@Override
-		public File iwantAsPath(Target target) {
+		public File iwantFreshCached(Path target) {
 			return freshCachedContent(target);
 		}
 

@@ -823,7 +823,7 @@ public class WishEvaluatorTest extends TestCase {
 					private void want(final Target target1,
 							SideEffectContext ctx) {
 						System.err.println("Wanting " + target1);
-						File cachedTarget1 = ctx.iwantAsPath(target1);
+						File cachedTarget1 = ctx.iwantFreshCached(target1);
 						String target1Content = FileUtil
 								.contentAsString(cachedTarget1);
 						System.err.println("Content:\n" + target1Content);

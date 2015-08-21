@@ -1420,6 +1420,10 @@
 
 + @bugfix: add jvmargs as parameter to JacocoCoverage
 
++ As @buildscriptauthor I want to have fresh cached Path, not only Target, in my side-effect so I can access e.g. iwant api classes
+  * just change the signature (also better name)
+  + small hackfix (cast) to a mock impl of the interface
+
 #################################################################
 = In progress
 #################################################################

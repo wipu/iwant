@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffectContext;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.entrymocks.NullCheck;
@@ -65,8 +66,9 @@ public class SideEffectContextMock implements SideEffectContext {
 	}
 
 	@Override
-	public File iwantAsPath(Target target) {
-		targetsWantedAsPath.add(target);
+	public File iwantFreshCached(Path target) {
+		// TODO remove need to cache
+		targetsWantedAsPath.add((Target) target);
 		if (failureForIwantAsPath != null) {
 			throw failureForIwantAsPath;
 		}

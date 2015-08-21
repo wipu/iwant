@@ -13,6 +13,6 @@ public interface SideEffectContext {
 
 	TargetEvaluationContext targetEvaluationContext();
 
-	File iwantAsPath(Target target);
+	File iwantFreshCached(Path target);
 
 }

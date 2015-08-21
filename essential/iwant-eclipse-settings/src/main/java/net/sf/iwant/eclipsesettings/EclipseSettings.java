@@ -104,7 +104,7 @@ public class EclipseSettings implements SideEffect {
 			classLocations.nativePathTo(path).string("\n");
 		}
 		try {
-			ctx.iwantAsPath(classLocations.end());
+			ctx.iwantFreshCached(classLocations.end());
 			return null;
 		} catch (Exception e) {
 			return e;
