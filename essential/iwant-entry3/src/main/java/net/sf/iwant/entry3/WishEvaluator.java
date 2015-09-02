@@ -19,6 +19,7 @@ import net.sf.iwant.api.wsdef.IwantPluginWishes;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.api.wsdef.TargetDefinitionContext;
 import net.sf.iwant.api.wsdef.Workspace;
+import net.sf.iwant.api.wsdef.WorkspaceContext;
 import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
 import net.sf.iwant.coreservices.IwantCoreServicesImpl;
 import net.sf.iwant.coreservices.StreamUtil;
@@ -65,6 +66,10 @@ public class WishEvaluator {
 	}
 
 	public TargetDefinitionContext targetDefinitionContext() {
+		return ctx;
+	}
+
+	public WorkspaceContext workspaceContext() {
 		return ctx;
 	}
 
@@ -155,7 +160,8 @@ public class WishEvaluator {
 	}
 
 	private class Ctx implements TargetEvaluationContext, SideEffectContext,
-			SideEffectDefinitionContext, TargetDefinitionContext {
+			SideEffectDefinitionContext, TargetDefinitionContext,
+			WorkspaceContext {
 
 		private final IwantCoreServices iwantCoreServices = new IwantCoreServicesImpl(
 				iwant);

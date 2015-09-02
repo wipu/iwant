@@ -21,6 +21,8 @@ out-was <<EOF
 I created
 $PWD/as-iwant-tutorial-developer/i-have/wsdefdef/src/main/java/com/example/wsdefdef/IwantTutorialWorkspaceProvider.java
 and
+$PWD/as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspaceFactory.java
+and
 $PWD/as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java
 Please edit them and rerun me.
 If you want to use Eclipse for editing, run $PWD/as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective first.

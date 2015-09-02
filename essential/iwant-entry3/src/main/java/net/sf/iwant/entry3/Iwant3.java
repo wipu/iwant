@@ -29,6 +29,7 @@ import net.sf.iwant.api.model.WsInfo;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.api.wsdef.TargetDefinitionContext;
 import net.sf.iwant.api.wsdef.Workspace;
+import net.sf.iwant.api.wsdef.WorkspaceFactory;
 import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
 import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;
 import net.sf.iwant.coreservices.FileUtil;
@@ -94,7 +95,7 @@ public class Iwant3 {
 		File wsInfoFile = wsInfoFile(iHaveConf);
 		WsInfo wsInfo = parseWsInfo(wsInfoFile, asSomeone);
 		if (!wsInfo.wsdefdefJava().exists()) {
-			throw createExampleWsdefdefAndWsdef(asSomeone, iHave, wsInfo);
+			throw createExampleWsdefdefAndWsdefAndWs(asSomeone, iHave, wsInfo);
 		}
 		UserPrefs userPrefs = parseUserPrefs(iHaveConf);
 
@@ -152,8 +153,10 @@ public class Iwant3 {
 							wishEvaluator.targetEvaluationContext(),
 							wsDefClassesTarget, wsDefdefClasses, wsDefClasses));
 			Iwant.fileLog("Instantiating " + wsDefClass);
-			Workspace wsDef = (Workspace) wsDefClass.newInstance();
-			refreshWishScripts(asSomeone, wsDef,
+			WorkspaceFactory wsDef = (WorkspaceFactory) wsDefClass
+					.newInstance();
+			Workspace ws = wsDef.workspace(wishEvaluator.workspaceContext());
+			refreshWishScripts(asSomeone, ws,
 					wishEvaluator.targetDefinitionContext(),
 					wishEvaluator.sideEffectDefinitionContext());
 			if (args.length == 0) {
@@ -167,8 +170,8 @@ public class Iwant3 {
 								WISH_LIST_OF_TARGETS));
 			}
 			String wish = args[0];
-			Iwant.fileLog("Wanting " + wish + " from " + wsDef);
-			wishEvaluator.iwant(wish, wsDef);
+			Iwant.fileLog("Wanting " + wish + " from " + ws);
+			wishEvaluator.iwant(wish, ws);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -213,8 +216,8 @@ public class Iwant3 {
 		}
 	}
 
-	private static IwantException createExampleWsdefdefAndWsdef(File asSomeone,
-			File iHave, WsInfo wsInfo) {
+	private static IwantException createExampleWsdefdefAndWsdefAndWs(
+			File asSomeone, File iHave, WsInfo wsInfo) {
 		File essential = IwantWsRootFinder.essential();
 		String wsDefPackage = ExampleWsDefGenerator.proposedWsdefPackage(wsInfo
 				.wsdefdefPackage());
@@ -225,9 +228,14 @@ public class Iwant3 {
 						wsInfo.wsdefdefClassSimpleName(), wsInfo.wsName(),
 						wsDefPackage + "." + wsDefName));
 		File wsDefJava = new File(iHave, "/wsdef/src/main/java" + "/"
-				+ wsDefPackage.replace(".", "/") + "/" + wsDefName + ".java");
+				+ wsDefPackage.replace(".", "/") + "/" + wsDefName
+				+ "Factory.java");
 		FileUtil.newTextFile(wsDefJava, ExampleWsDefGenerator.exampleWsdef(
 				essential, wsDefPackage, wsDefName));
+		File wsJava = new File(iHave, "/wsdef/src/main/java" + "/"
+				+ wsDefPackage.replace(".", "/") + "/" + wsDefName + ".java");
+		FileUtil.newTextFile(wsJava, ExampleWsDefGenerator.exampleWs(essential,
+				wsDefPackage, wsDefName));
 		// TODO it's a bit ugly to create dummy target and side-effect just to
 		// get proper names for wish scripts:
 		HelloSideEffect stubEclipseSettingsSe = new HelloSideEffect(
@@ -240,6 +248,8 @@ public class Iwant3 {
 						+ wsInfo.wsdefdefJava()
 						+ "\nand\n"
 						+ wsDefJava
+						+ "\nand\n"
+						+ wsJava
 						+ "\nPlease edit them and rerun me.\nIf you want to use Eclipse for editing, run "
 						+ new File(withBashIwantFile(asSomeone),
 								toWish(stubEclipseSettingsSe)) + " first.");

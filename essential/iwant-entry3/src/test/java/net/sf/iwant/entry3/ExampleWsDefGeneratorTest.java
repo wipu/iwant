@@ -20,7 +20,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 			String wsDefSrc, String wsdefClassName) {
 		StringBuilder b = new StringBuilder();
 		b.append("package com.example.wsdef;\n");
-		b.append("public class WorkspaceProvider implements IwantWorkspaceProvider {\n");
+		b.append("public class WorkspaceProvider implements WorkspaceModuleProvider {\n");
 		b.append("	public JavaModule workspaceModule(JavaModule iwantApiClasses) {\n");
 		b.append("		return JavaSrcModule.with().name(\"WSNAME-wsdef\")\n");
 		b.append("				.locationUnderWsRoot(\"as-WSNAME-developer/i-have/wsdef\")\n");
@@ -41,29 +41,52 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 				actualWsdefdef.startsWith(expectedWsdefdefStart.toString()));
 		assertTrue("actual:\n" + actualWsdefdef,
 				actualWsdefdef.endsWith("\n}\n"));
-		assertTrue("actual:\n" + actualWsdefdef,
-				actualWsdefdef.contains("return \"" + wsdefClassName + "\";"));
+		assertTrue(
+				"actual:\n" + actualWsdefdef,
+				actualWsdefdef.contains("return \"" + wsdefClassName
+						+ "Factory\";"));
 	}
 
 	private void assertChangeWsdefTo(String newPackage, String newName) {
 		testArea.hasFile(
 				"iwant-example-wsdef/src/main/java/"
-						+ "com/example/wsdef/ExampleWorkspace.java",
+						+ "com/example/wsdef/ExampleWorkspaceFactory.java",
 				"package com.example.wsdef;\n"
-						+ "public class ExampleWorkspace implements IwantWorkspace {\n}\n");
+						+ "public class ExampleWorkspaceFactory implements WorkspaceFactory {\n"
+						+ "	@Override\n"
+						+ "	public Workspace workspace(WorkspaceContext ctx) {\n"
+						+ "		return new ExampleWorkspace();\n" + "	}\n" + ""
+						+ "}\n");
 
 		String actualWsdef = ExampleWsDefGenerator.exampleWsdef(
 				testArea.root(), newPackage, newName);
 
 		assertTrue("actual:\n" + actualWsdef,
 				actualWsdef.startsWith(expectedWsdefStart.toString()));
+		assertTrue("actual:\n" + actualWsdef,
+				actualWsdef.contains("return new " + newName + "("));
 		assertTrue("actual:\n" + actualWsdef, actualWsdef.endsWith("\n}\n"));
+	}
+
+	private void assertChangeWsTo(String newPackage, String newName) {
+		testArea.hasFile(
+				"iwant-example-wsdef/src/main/java/"
+						+ "com/example/wsdef/ExampleWorkspace.java",
+				"package com.example.wsdef;\n"
+						+ "public class ExampleWorkspace implements Workspace {\n}\n");
+
+		String actualWs = ExampleWsDefGenerator.exampleWs(testArea.root(),
+				newPackage, newName);
+
+		assertTrue("actual:\n" + actualWs,
+				actualWs.startsWith(expectedWsdefStart.toString()));
+		assertTrue("actual:\n" + actualWs, actualWs.endsWith("\n}\n"));
 	}
 
 	public void testWsdefdefName1() {
 		expectedWsdefdefStart.append("package new.package1;\n");
 		expectedWsdefdefStart
-				.append("public class Ws1 implements IwantWorkspaceProvider {\n");
+				.append("public class Ws1 implements WorkspaceModuleProvider {\n");
 		expectedWsdefdefStart
 				.append("	public JavaModule workspaceModule(JavaModule iwantApiClasses) {\n");
 		expectedWsdefdefStart
@@ -78,7 +101,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 	public void testWsdefdefName2() {
 		expectedWsdefdefStart.append("package new.package2;\n");
 		expectedWsdefdefStart
-				.append("public class Ws2 implements IwantWorkspaceProvider {\n");
+				.append("public class Ws2 implements WorkspaceModuleProvider {\n");
 		expectedWsdefdefStart
 				.append("	public JavaModule workspaceModule(JavaModule iwantApiClasses) {\n");
 		expectedWsdefdefStart
@@ -93,7 +116,7 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 	public void testWsdefName1() {
 		expectedWsdefStart.append("package new.package1;\n");
 		expectedWsdefStart
-				.append("public class Ws1 implements IwantWorkspace ");
+				.append("public class Ws1Factory implements WorkspaceFactory ");
 
 		assertChangeWsdefTo("new.package1", "Ws1");
 	}
@@ -101,9 +124,23 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 	public void testWsdefName2() {
 		expectedWsdefStart.append("package new.package2;\n");
 		expectedWsdefStart
-				.append("public class Ws2 implements IwantWorkspace ");
+				.append("public class Ws2Factory implements WorkspaceFactory ");
 
 		assertChangeWsdefTo("new.package2", "Ws2");
+	}
+
+	public void testWsName1() {
+		expectedWsdefStart.append("package new.package1;\n");
+		expectedWsdefStart.append("public class Ws1 implements Workspace ");
+
+		assertChangeWsTo("new.package1", "Ws1");
+	}
+
+	public void testWsName2() {
+		expectedWsdefStart.append("package new.package2;\n");
+		expectedWsdefStart.append("public class Ws2 implements Workspace ");
+
+		assertChangeWsTo("new.package2", "Ws2");
 	}
 
 	public void testProposedWsdefPackage() {

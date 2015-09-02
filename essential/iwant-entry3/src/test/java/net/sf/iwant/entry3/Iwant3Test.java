@@ -146,7 +146,7 @@ public class Iwant3Test extends TestCase {
 		}
 	}
 
-	public void testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation()
+	public void testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation()
 			throws Exception {
 		testArea.hasFile(
 				"wsroot/as-example-developer/i-have/conf/ws-info",
@@ -164,6 +164,9 @@ public class Iwant3Test extends TestCase {
 							+ "/i-have/wsdefdef/src/main/java/com/example/wsdefdef/ExampleWsProvider.java\n"
 							+ "and\n"
 							+ asTest
+							+ "/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWorkspaceFactory.java\n"
+							+ "and\n"
+							+ asTest
 							+ "/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWorkspace.java"
 							+ "\nPlease edit them and rerun me.\n"
 							+ "If you want to use Eclipse for editing, run "
@@ -175,18 +178,26 @@ public class Iwant3Test extends TestCase {
 				.contentOf("wsroot/as-example-developer/i-have/wsdefdef/src/main/java/com/example/wsdefdef/ExampleWsProvider.java");
 		assertTrue(wsdefdefContent
 				.startsWith("package com.example.wsdefdef;\n"));
-		assertTrue(wsdefdefContent.contains(" class ExampleWsProvider "));
+		assertTrue(wsdefdefContent
+				.contains(" class ExampleWsProvider implements WorkspaceModuleProvider "));
 		// full content will be asserted by functionality
 		String wsdefContent = testArea
-				.contentOf("wsroot/as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWorkspace.java");
+				.contentOf("wsroot/as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWorkspaceFactory.java");
 		assertTrue(wsdefContent.startsWith("package com.example.wsdef;\n"));
-		assertTrue(wsdefContent.contains(" class ExampleWorkspace "));
+		assertTrue(wsdefContent
+				.contains(" class ExampleWorkspaceFactory implements WorkspaceFactory "));
+		// full content will be asserted by functionality
+		String wsContent = testArea
+				.contentOf("wsroot/as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWorkspace.java");
+		assertTrue(wsContent.startsWith("package com.example.wsdef;\n"));
+		assertTrue(wsContent
+				.contains(" class ExampleWorkspace implements Workspace"));
 		// full content will be asserted by functionality
 	}
 
 	public void testIwant3AlsoCreatesWishScriptsForExampleWsDef()
 			throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		// targets:
 		assertTrue(testArea.contentOf(
 				"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
@@ -315,7 +326,7 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testListOfTargetsOfExampleWsDef() throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "list-of/targets");
@@ -325,7 +336,7 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testListOfSideEffectsOfExampleWsDef() throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "list-of/side-effects");
@@ -344,7 +355,7 @@ public class Iwant3Test extends TestCase {
 				"net/sf/iwant/api/wsdef/MockedApiWsdef.java").exists());
 	}
 
-	private static String modifiedExampleWsDef() {
+	private static String modifiedExampleWs() {
 		StringBuilder wsdef = new StringBuilder();
 		wsdef.append("package com.example.wsdef;\n");
 		wsdef.append("\n");
@@ -405,8 +416,27 @@ public class Iwant3Test extends TestCase {
 		b.append("\n");
 		b.append("      @Override\n");
 		b.append("      public String workspaceClassname() {\n");
-		b.append("              return \"com.example.wsdef.ExampleWs\";\n");
+		b.append("              return \"com.example.wsdef.ExampleWsFactory\";\n");
 		b.append("      }\n");
+		b.append("\n");
+		b.append("}\n");
+		return b.toString();
+	}
+
+	private static String exampleWsFactory() {
+		StringBuilder b = new StringBuilder();
+		b.append("package com.example.wsdef;\n");
+		b.append("\n");
+		b.append("import net.sf.iwant.api.wsdef.Workspace;\n");
+		b.append("import net.sf.iwant.api.wsdef.WorkspaceContext;\n");
+		b.append("import net.sf.iwant.api.wsdef.WorkspaceFactory;\n");
+		b.append("\n");
+		b.append("public class ExampleWsFactory implements WorkspaceFactory {\n");
+		b.append("\n");
+		b.append("	@Override\n");
+		b.append("	public Workspace workspace(WorkspaceContext ctx) {\n");
+		b.append("		return new ExampleWs();\n");
+		b.append("	}\n");
 		b.append("\n");
 		b.append("}\n");
 		return b.toString();
@@ -425,8 +455,12 @@ public class Iwant3Test extends TestCase {
 				exampleWsProvider());
 		testArea.hasFile(
 				"wsroot/as-example-developer/i-have/wsdef/src/main/java/"
+						+ "com/example/wsdef/ExampleWsFactory.java",
+				exampleWsFactory());
+		testArea.hasFile(
+				"wsroot/as-example-developer/i-have/wsdef/src/main/java/"
 						+ "com/example/wsdef/ExampleWs.java",
-				modifiedExampleWsDef());
+				modifiedExampleWs());
 
 		iwant3.evaluate(asTest, "list-of/targets");
 
@@ -453,8 +487,12 @@ public class Iwant3Test extends TestCase {
 				exampleWsProvider());
 		testArea.hasFile(
 				"wsroot/as-example-developer/i-have/wsdef/src/main/java/"
+						+ "com/example/wsdef/ExampleWsFactory.java",
+				exampleWsFactory());
+		testArea.hasFile(
+				"wsroot/as-example-developer/i-have/wsdef/src/main/java/"
 						+ "com/example/wsdef/ExampleWs.java",
-				modifiedExampleWsDef());
+				modifiedExampleWs());
 
 		try {
 			iwant3.evaluate(asTest);
@@ -502,7 +540,7 @@ public class Iwant3Test extends TestCase {
 	}
 
 	public void testTargetHelloAsPathOfExampleWsDef() throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "target/hello/as-path");
@@ -516,7 +554,7 @@ public class Iwant3Test extends TestCase {
 
 	public void testSideEffectEclipseSettingsEffectiveOfExampleWsDef()
 			throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "side-effect/eclipse-settings/effective");
@@ -576,8 +614,12 @@ public class Iwant3Test extends TestCase {
 				exampleWsProvider());
 		testArea.hasFile(
 				"wsroot/as-example-developer/i-have/wsdef/src/main/java/"
+						+ "com/example/wsdef/ExampleWsFactory.java",
+				exampleWsFactory());
+		testArea.hasFile(
+				"wsroot/as-example-developer/i-have/wsdef/src/main/java/"
 						+ "com/example/wsdef/ExampleWs.java",
-				modifiedExampleWsDef());
+				modifiedExampleWs());
 
 		iwant3.evaluate(asTest, "target/modified-hello/as-path");
 
@@ -639,7 +681,7 @@ public class Iwant3Test extends TestCase {
 	 * Corresponds to calling help.sh once more
 	 */
 	public void testEmptyWishAfterCreationOfExampleWsDef() throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		try {
@@ -732,7 +774,7 @@ public class Iwant3Test extends TestCase {
 
 	public void testListOfSideEffectsOfExampleWsDefWorksFromUnderSymbolicLinkOfWorkspace()
 			throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefCreation();
+		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		File symlinkToWsRoot = new File(testArea.root(), "symlink-to-wsroot");

@@ -13,7 +13,7 @@ class ExampleWsDefGenerator {
 	}
 
 	static String exampleWsdefdef(File essential, String newPackage,
-			String newName, String wsName, String wsdefClassName) {
+			String newName, String wsName, String wsClassName) {
 		String src = exampleJava(essential,
 				"com/example/wsdefdef/WorkspaceProvider.java");
 		String out = src.replaceFirst("package.*;", "package " + newPackage
@@ -21,11 +21,23 @@ class ExampleWsDefGenerator {
 		out = out.replaceFirst("class WorkspaceProvider ", "class " + newName
 				+ " ");
 		out = out.replaceAll("WSNAME", wsName);
-		out = out.replaceAll("WSDEF", wsdefClassName);
+		out = out.replaceAll("WSDEF", wsClassName + "Factory");
 		return out;
 	}
 
 	public static String exampleWsdef(File essential, String newPackage,
+			String newName) {
+		String src = exampleJava(essential,
+				"com/example/wsdef/ExampleWorkspaceFactory.java");
+		return src
+				.replaceFirst("package.*;", "package " + newPackage + ";")
+				.replaceFirst("class ExampleWorkspaceFactory ",
+						"class " + newName + "Factory ")
+				.replaceFirst("return new ExampleWorkspace\\(",
+						"return new " + newName + "(");
+	}
+
+	public static String exampleWs(File essential, String newPackage,
 			String newName) {
 		String src = exampleJava(essential,
 				"com/example/wsdef/ExampleWorkspace.java");

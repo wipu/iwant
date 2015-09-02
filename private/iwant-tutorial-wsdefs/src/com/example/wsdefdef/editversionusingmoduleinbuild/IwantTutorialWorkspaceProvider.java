@@ -18,7 +18,7 @@ public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {
 
 	@Override
 	public String workspaceClassname() {
-		return "com.example.wsdef.IwanttutorialWorkspace";
+		return "com.example.wsdef.IwanttutorialWorkspaceFactory";
 	}
 
 	public static JavaSrcModule exampleUtil() {

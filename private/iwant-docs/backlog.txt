@@ -1469,12 +1469,17 @@
     + WorkspaceDefinitionContext -> WorkspaceModuleContext
     + IwantWorkspace -> Workspace
     + Workspace -> ExampleWorkspace
-    - new: WorkspaceFactory and WorkspaceContext
-  - use the factory
-    - cast wsdef to factory, use it to create ws
-    - the wscontext impl
-    - example factory creation
-  - remove redundant stuff from wishdefcontexts
+    + new: WorkspaceFactory and WorkspaceContext
+  + use the factory
+    + cast wsdef to factory, use it to create ws
+    + the ctx implements also wscontext impl
+    + fix tests
+      + assume factory exists
+    + example factory creation
+    + fix example wsinfo creation
+    + fix descript
+  - remove redundant stuff from wishdefcontexts: if given at ws creation,
+    not needed there (maybe other contexts can be removed)
   - fix implementations according to new naming
   - fix variables according to new naming
   - fix documentation according to new naming
