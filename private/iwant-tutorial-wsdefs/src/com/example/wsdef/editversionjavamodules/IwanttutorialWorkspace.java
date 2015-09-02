@@ -13,13 +13,13 @@ import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.api.wsdef.TargetDefinitionContext;
+import net.sf.iwant.api.wsdef.Workspace;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 import net.sf.iwant.plugin.javamodules.JavaModules;
 
-public class IwanttutorialWorkspace implements IwantWorkspace {
+public class IwanttutorialWorkspace implements Workspace {
 
 	class ExampleModules extends JavaModules {
 

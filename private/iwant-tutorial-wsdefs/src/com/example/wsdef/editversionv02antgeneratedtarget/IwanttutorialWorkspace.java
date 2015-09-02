@@ -8,14 +8,14 @@ import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.api.wsdef.TargetDefinitionContext;
+import net.sf.iwant.api.wsdef.Workspace;
 import net.sf.iwant.core.ant.AntGenerated;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 
-public class IwanttutorialWorkspace implements IwantWorkspace {
+public class IwanttutorialWorkspace implements Workspace {
 
 	@Override
 	public List<? extends Target> targets(TargetDefinitionContext ctx) {

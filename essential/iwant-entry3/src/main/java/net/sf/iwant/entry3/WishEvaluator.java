@@ -16,10 +16,10 @@ import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.model.WsInfo;
 import net.sf.iwant.api.wsdef.IwantPluginWishes;
-import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.api.wsdef.TargetDefinitionContext;
-import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.api.wsdef.Workspace;
+import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
 import net.sf.iwant.coreservices.IwantCoreServicesImpl;
 import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.entry.Iwant;
@@ -37,12 +37,12 @@ public class WishEvaluator {
 	private final int workerCount;
 	private final JavaSrcModule wsdefdefJavaModule;
 	private final JavaSrcModule wsdefJavaModule;
-	private final WorkspaceDefinitionContext wsDefCtx;
+	private final WorkspaceModuleContext wsDefCtx;
 
 	public WishEvaluator(OutputStream out, OutputStream err, File wsRoot,
 			Iwant iwant, WsInfo wsInfo, Caches caches, int workerCount,
 			JavaSrcModule wsdefdefJavaModule, JavaSrcModule wsdefJavaModule,
-			WorkspaceDefinitionContext wsDefCtx) {
+			WorkspaceModuleContext wsDefCtx) {
 		this.out = out;
 		this.err = err;
 		this.wsRoot = wsRoot;
@@ -68,7 +68,7 @@ public class WishEvaluator {
 		return ctx;
 	}
 
-	public void iwant(String wish, IwantWorkspace ws) {
+	public void iwant(String wish, Workspace ws) {
 		failIfConflictingPathDefinitions(ws);
 		if ("list-of/targets".equals(wish)) {
 			PrintWriter wr = new PrintWriter(out);
@@ -112,7 +112,7 @@ public class WishEvaluator {
 				+ "\nlegal targets:" + ws.targets(ctx));
 	}
 
-	private void failIfConflictingPathDefinitions(IwantWorkspace ws) {
+	private void failIfConflictingPathDefinitions(Workspace ws) {
 		PathDefinitionConflictChecker.failIfConflictingPathDefinitions(ws
 				.targets(ctx));
 	}

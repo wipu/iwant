@@ -26,11 +26,11 @@ import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.model.WsInfo;
-import net.sf.iwant.api.wsdef.IwantWorkspace;
-import net.sf.iwant.api.wsdef.IwantWorkspaceProvider;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.api.wsdef.TargetDefinitionContext;
-import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.api.wsdef.Workspace;
+import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
+import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;
 import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.coreservices.StreamUtil;
 import net.sf.iwant.entry.Iwant;
@@ -116,7 +116,7 @@ public class Iwant3 {
 
 		try {
 			Iwant.fileLog("Calling wsdefdef");
-			IwantWorkspaceProvider wsDefdef = (IwantWorkspaceProvider) wsDefdefClass
+			WorkspaceModuleProvider wsDefdef = (WorkspaceModuleProvider) wsDefdefClass
 					.newInstance();
 
 			Iwant.fileLog("Refreshing wsdef classes");
@@ -128,7 +128,7 @@ public class Iwant3 {
 					.locationUnderWsRoot(wsdefdefRelativeToWsRoot)
 					.mainJava("src/main/java").mainDeps(iwantApiModules).end();
 			URL iwantRootFromUrl = iwant.wishedIwantRootFromUrl(asSomeone);
-			WorkspaceDefinitionContext wsDefCtx = new WorkspaceDefinitionContextImpl(
+			WorkspaceModuleContext wsDefCtx = new WorkspaceDefinitionContextImpl(
 					iwantApiModules, iwantRootFromUrl, wsdefdefJavaModule);
 			JavaSrcModule wsdDefClassesModule = wsDefdef
 					.workspaceModule(wsDefCtx);
@@ -152,7 +152,7 @@ public class Iwant3 {
 							wishEvaluator.targetEvaluationContext(),
 							wsDefClassesTarget, wsDefdefClasses, wsDefClasses));
 			Iwant.fileLog("Instantiating " + wsDefClass);
-			IwantWorkspace wsDef = (IwantWorkspace) wsDefClass.newInstance();
+			Workspace wsDef = (Workspace) wsDefClass.newInstance();
 			refreshWishScripts(asSomeone, wsDef,
 					wishEvaluator.targetDefinitionContext(),
 					wishEvaluator.sideEffectDefinitionContext());
@@ -258,9 +258,8 @@ public class Iwant3 {
 		return cp;
 	}
 
-	private static void refreshWishScripts(File asSomeone,
-			IwantWorkspace wsDef, TargetDefinitionContext tdCtx,
-			SideEffectDefinitionContext sedCtx) {
+	private static void refreshWishScripts(File asSomeone, Workspace wsDef,
+			TargetDefinitionContext tdCtx, SideEffectDefinitionContext sedCtx) {
 		refreshWishScripts(asSomeone, wsDef.targets(tdCtx),
 				wsDef.sideEffects(sedCtx));
 	}
@@ -286,7 +285,7 @@ public class Iwant3 {
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
 				+ "api/model/Path.class"));
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
-				+ "api/wsdef/IwantWorkspace.class"));
+				+ "api/wsdef/Workspace.class"));
 		// TODO maybe make eclipse-settings an optional plugin
 		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
 				+ "eclipsesettings/EclipseSettings.class"));

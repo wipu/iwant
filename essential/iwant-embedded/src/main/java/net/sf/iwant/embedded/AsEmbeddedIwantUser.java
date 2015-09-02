@@ -8,7 +8,7 @@ import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Caches;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.WsInfo;
-import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry3.CachesImpl;
 import net.sf.iwant.entry3.WishEvaluator;
@@ -70,7 +70,7 @@ public class AsEmbeddedIwantUser {
 						int workerCount = 1;
 						JavaSrcModule wsdefdefJavaModule = null;
 						JavaSrcModule wsdefJavaModule = null;
-						WorkspaceDefinitionContext wsdefCtx = null;
+						WorkspaceModuleContext wsdefCtx = null;
 						WishEvaluator evaluator = new WishEvaluator(out, err,
 								wsRoot, iwant, wsInfo, caches, workerCount,
 								wsdefdefJavaModule, wsdefJavaModule, wsdefCtx);

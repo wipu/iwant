@@ -29,10 +29,10 @@ import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.SideEffectContext;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.api.wsdef.TargetDefinitionContext;
-import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.api.wsdef.Workspace;
+import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
 import net.sf.iwant.apimocks.TargetMock;
 import net.sf.iwant.apimocks.WsInfoMock;
 import net.sf.iwant.coreservices.FileUtil;
@@ -62,7 +62,7 @@ public class WishEvaluatorTest extends TestCase {
 	private InputStream originalIn;
 	private PrintStream originalOut;
 	private PrintStream originalErr;
-	private WorkspaceDefinitionContext wsdefCtx;
+	private WorkspaceModuleContext wsdefCtx;
 	private JavaModule wsdefdefModule;
 	private URL iwantFromUrl;
 
@@ -119,7 +119,7 @@ public class WishEvaluatorTest extends TestCase {
 		}
 	}
 
-	private void evaluateAndFail(String wish, IwantWorkspace ws,
+	private void evaluateAndFail(String wish, Workspace ws,
 			String expectedErrorMessage) {
 		try {
 			evaluator.iwant(wish, ws);
@@ -129,7 +129,7 @@ public class WishEvaluatorTest extends TestCase {
 		}
 	}
 
-	private class Hello implements IwantWorkspace {
+	private class Hello implements Workspace {
 
 		@Override
 		public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -144,7 +144,7 @@ public class WishEvaluatorTest extends TestCase {
 
 	}
 
-	private class TwoHellos implements IwantWorkspace {
+	private class TwoHellos implements Workspace {
 
 		@Override
 		public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -161,7 +161,7 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	public void testIllegalWishFromHello() {
-		IwantWorkspace hello = new Hello();
+		Workspace hello = new Hello();
 		try {
 			evaluator.iwant("illegal/wish", hello);
 			fail();
@@ -173,13 +173,13 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	public void testListOfTargetsFromHello() {
-		IwantWorkspace hello = new Hello();
+		Workspace hello = new Hello();
 		evaluator.iwant("list-of/targets", hello);
 		assertEquals("hello\n", out.toString());
 	}
 
 	public void testTargetHelloAsPathFromHello() {
-		IwantWorkspace hello = new Hello();
+		Workspace hello = new Hello();
 
 		evaluator.iwant("target/hello/as-path", hello);
 
@@ -189,19 +189,19 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	public void testTargetHelloContentFromHello() {
-		IwantWorkspace hello = new Hello();
+		Workspace hello = new Hello();
 		evaluator.iwant("target/hello/content", hello);
 		assertEquals("hello content", out.toString());
 	}
 
 	public void testListOfTargetsFromTwoHellos() {
-		IwantWorkspace hellos = new TwoHellos();
+		Workspace hellos = new TwoHellos();
 		evaluator.iwant("list-of/targets", hellos);
 		assertEquals("hello1\nhello2\n", out.toString());
 	}
 
 	public void testTargetHello1AsPathFromTwoHellos() {
-		IwantWorkspace hellos = new TwoHellos();
+		Workspace hellos = new TwoHellos();
 
 		evaluator.iwant("target/hello1/as-path", hellos);
 
@@ -211,13 +211,13 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	public void testTargetHello1ContentFromTwoHellos() {
-		IwantWorkspace hellos = new TwoHellos();
+		Workspace hellos = new TwoHellos();
 		evaluator.iwant("target/hello1/content", hellos);
 		assertEquals("content 1", out.toString());
 	}
 
 	public void testTargetHello2AsPathFromTwoHellos() {
-		IwantWorkspace hellos = new TwoHellos();
+		Workspace hellos = new TwoHellos();
 
 		evaluator.iwant("target/hello2/as-path", hellos);
 
@@ -227,7 +227,7 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	public void testTargetHello2ContentFromTwoHellos() {
-		IwantWorkspace hellos = new TwoHellos();
+		Workspace hellos = new TwoHellos();
 		evaluator.iwant("target/hello2/content", hellos);
 		assertEquals("content 2", out.toString());
 	}
@@ -331,7 +331,7 @@ public class WishEvaluatorTest extends TestCase {
 
 	// side-effects
 
-	private class OnlyEclipseSettingsAsSideEffect implements IwantWorkspace {
+	private class OnlyEclipseSettingsAsSideEffect implements Workspace {
 
 		@Override
 		public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -347,7 +347,7 @@ public class WishEvaluatorTest extends TestCase {
 
 	}
 
-	private class TwoSideEffects implements IwantWorkspace {
+	private class TwoSideEffects implements Workspace {
 
 		@Override
 		public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -364,25 +364,25 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	public void testEmptyListOfSideEffects() {
-		IwantWorkspace hellos = new TwoHellos();
+		Workspace hellos = new TwoHellos();
 		evaluator.iwant("list-of/side-effects", hellos);
 		assertEquals("", out.toString());
 	}
 
 	public void testListOfSideEffectsOfOnlyEclipseSettingsAsSideEffect() {
-		IwantWorkspace hellos = new OnlyEclipseSettingsAsSideEffect();
+		Workspace hellos = new OnlyEclipseSettingsAsSideEffect();
 		evaluator.iwant("list-of/side-effects", hellos);
 		assertEquals("eclipse-settings\n", out.toString());
 	}
 
 	public void testListOfSideEffectsOfTwoSideEffects() {
-		IwantWorkspace hellos = new TwoSideEffects();
+		Workspace hellos = new TwoSideEffects();
 		evaluator.iwant("list-of/side-effects", hellos);
 		assertEquals("hello-1\nhello-2\n", out.toString());
 	}
 
 	public void testHello1EffectiveOfTwoSideEffects() {
-		IwantWorkspace hellos = new TwoSideEffects();
+		Workspace hellos = new TwoSideEffects();
 
 		evaluator.iwant("side-effect/hello-1/effective", hellos);
 
@@ -390,7 +390,7 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	public void testHello2EffectiveOfTwoSideEffects() {
-		IwantWorkspace hellos = new TwoSideEffects();
+		Workspace hellos = new TwoSideEffects();
 
 		evaluator.iwant("side-effect/hello-2/effective", hellos);
 
@@ -592,7 +592,7 @@ public class WishEvaluatorTest extends TestCase {
 
 	public void testSideEffectDefinitionContextPassesIwantApiClasses() {
 		final AtomicReference<Set<? extends JavaModule>> fromCtx = new AtomicReference<>();
-		IwantWorkspace ws = new IwantWorkspace() {
+		Workspace ws = new Workspace() {
 
 			@Override
 			public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -613,7 +613,7 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	public void testSameNameOnPathAndTargetCausesErrorAtListOfOrAsPath() {
-		IwantWorkspace ws = new IwantWorkspace() {
+		Workspace ws = new Workspace() {
 
 			@Override
 			public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -670,7 +670,7 @@ public class WishEvaluatorTest extends TestCase {
 		target.hasContent("failing content");
 		target.hasIngredients(ingredient);
 
-		IwantWorkspace ws = new IwantWorkspace() {
+		Workspace ws = new Workspace() {
 			@Override
 			public List<? extends Target> targets(TargetDefinitionContext ctx) {
 				return Arrays.asList(target);
@@ -714,7 +714,7 @@ public class WishEvaluatorTest extends TestCase {
 		d.hasContent("d content");
 		d.hasIngredients(c);
 
-		IwantWorkspace ws = new IwantWorkspace() {
+		Workspace ws = new Workspace() {
 			@Override
 			public List<? extends Target> targets(TargetDefinitionContext ctx) {
 				return Arrays.asList(d);
@@ -761,7 +761,7 @@ public class WishEvaluatorTest extends TestCase {
 		c.hasContent("c content");
 		c.hasIngredients(b);
 
-		IwantWorkspace ws = new IwantWorkspace() {
+		Workspace ws = new Workspace() {
 			@Override
 			public List<? extends Target> targets(TargetDefinitionContext ctx) {
 				return Arrays.asList(b, c);
@@ -798,7 +798,7 @@ public class WishEvaluatorTest extends TestCase {
 		final Target target1 = new HelloTarget("target1", "target1 content");
 		final Target target2 = Concatenated.named("target2")
 				.string("target2 using ").contentOf(target1).end();
-		IwantWorkspace ws = new IwantWorkspace() {
+		Workspace ws = new Workspace() {
 			@Override
 			public List<? extends Target> targets(TargetDefinitionContext ctx) {
 				return Arrays.asList(target1, target2);
@@ -852,7 +852,7 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	private class IwantPluginReferenceInSideEffectDefinition implements
-			IwantWorkspace {
+			Workspace {
 
 		@Override
 		public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -871,7 +871,7 @@ public class WishEvaluatorTest extends TestCase {
 	}
 
 	public void testSideEffectThatReferencesIwantPlugin() {
-		IwantWorkspace hellos = new IwantPluginReferenceInSideEffectDefinition();
+		Workspace hellos = new IwantPluginReferenceInSideEffectDefinition();
 
 		evaluator.iwant("side-effect/ant-plugin-print/effective", hellos);
 

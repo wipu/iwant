@@ -12,13 +12,13 @@ import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
 import net.sf.iwant.core.download.SvnExported;
 
 public class WorkspaceDefinitionContextImplTest extends TestCase {
 
 	private Set<JavaModule> apiModules;
-	private WorkspaceDefinitionContext ctx;
+	private WorkspaceModuleContext ctx;
 	private JavaBinModule iwantApiModule1;
 	private JavaBinModule iwantApiModule2;
 	private JavaBinModule wsdefdefModule;

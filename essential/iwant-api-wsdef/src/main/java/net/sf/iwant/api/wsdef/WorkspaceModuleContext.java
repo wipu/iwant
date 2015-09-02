@@ -4,7 +4,7 @@ import java.util.Set;
 
 import net.sf.iwant.api.javamodules.JavaModule;
 
-public interface WorkspaceDefinitionContext {
+public interface WorkspaceModuleContext {
 
 	Set<JavaModule> iwantApiModules();
 

@@ -1465,9 +1465,19 @@
   * current IwantWorkspace will just be the factory so it has a default
     constructor and a factory method
   - so better to rename stuff
-    - IwantWorkspaceProvider -> WorkspaceModuleDefinition
-    - IwantWorkspace -> WorkspaceFactory
-    - new: Workspace
+    + IwantWorkspaceProvider -> WorkspaceModuleProvider
+    + WorkspaceDefinitionContext -> WorkspaceModuleContext
+    + IwantWorkspace -> Workspace
+    + Workspace -> ExampleWorkspace
+    - new: WorkspaceFactory and WorkspaceContext
+  - use the factory
+    - cast wsdef to factory, use it to create ws
+    - the wscontext impl
+    - example factory creation
+  - remove redundant stuff from wishdefcontexts
+  - fix implementations according to new naming
+  - fix variables according to new naming
+  - fix documentation according to new naming
   
 - As @developer I want tests for impossible enum switch cases so I can get 100% test coverage
   * generate extended enums, use in test

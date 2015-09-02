@@ -5,7 +5,7 @@ import java.util.List;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
 
-public interface IwantWorkspace {
+public interface Workspace {
 
 	/**
 	 * TODO SortedSet

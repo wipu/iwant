@@ -2,9 +2,9 @@ package net.sf.iwant.api.wsdef;
 
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 
-public interface IwantWorkspaceProvider {
+public interface WorkspaceModuleProvider {
 
-	JavaSrcModule workspaceModule(WorkspaceDefinitionContext ctx);
+	JavaSrcModule workspaceModule(WorkspaceModuleContext ctx);
 
 	String workspaceClassname();
 

@@ -27,9 +27,11 @@ class ExampleWsDefGenerator {
 
 	public static String exampleWsdef(File essential, String newPackage,
 			String newName) {
-		String src = exampleJava(essential, "com/example/wsdef/Workspace.java");
+		String src = exampleJava(essential,
+				"com/example/wsdef/ExampleWorkspace.java");
 		return src.replaceFirst("package.*;", "package " + newPackage + ";")
-				.replaceFirst("class Workspace ", "class " + newName + " ");
+				.replaceFirst("class ExampleWorkspace ",
+						"class " + newName + " ");
 	}
 
 	static String proposedWsdefSimpleName(String wsName) {

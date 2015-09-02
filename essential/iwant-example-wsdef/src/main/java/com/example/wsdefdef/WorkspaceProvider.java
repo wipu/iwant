@@ -1,13 +1,13 @@
 package com.example.wsdefdef;
 
 import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.wsdef.IwantWorkspaceProvider;
-import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
+import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;
 
-public class WorkspaceProvider implements IwantWorkspaceProvider {
+public class WorkspaceProvider implements WorkspaceModuleProvider {
 
 	@Override
-	public JavaSrcModule workspaceModule(WorkspaceDefinitionContext ctx) {
+	public JavaSrcModule workspaceModule(WorkspaceModuleContext ctx) {
 		return JavaSrcModule.with().name("WSNAME-wsdef")
 				.locationUnderWsRoot("as-WSNAME-developer/i-have/wsdef")
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())

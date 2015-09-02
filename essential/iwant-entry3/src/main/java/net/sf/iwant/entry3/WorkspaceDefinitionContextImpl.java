@@ -11,15 +11,14 @@ import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.wsdef.IwantPluginWish;
 import net.sf.iwant.api.wsdef.IwantPluginWishes;
-import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
 import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.core.download.SvnExported;
 import net.sf.iwant.core.download.TestedIwantDependencies;
 import net.sf.iwant.entry.Iwant;
 
-public class WorkspaceDefinitionContextImpl implements
-		WorkspaceDefinitionContext {
+public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 
 	private final Set<JavaModule> iwantApiModules;
 	private final JavaModule wsdefdefModule;

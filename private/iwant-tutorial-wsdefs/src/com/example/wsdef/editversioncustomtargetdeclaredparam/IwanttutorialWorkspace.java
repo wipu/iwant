@@ -7,12 +7,12 @@ import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.api.wsdef.TargetDefinitionContext;
+import net.sf.iwant.api.wsdef.Workspace;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 
-public class IwanttutorialWorkspace implements IwantWorkspace {
+public class IwanttutorialWorkspace implements Workspace {
 
 	private final Path ingredient1 = new HelloTarget("ingredient1", "12");
 	private final Path ingredient2 = new HelloTarget("ingredient2", "345");

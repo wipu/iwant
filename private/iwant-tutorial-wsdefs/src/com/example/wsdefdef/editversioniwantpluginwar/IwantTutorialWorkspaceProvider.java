@@ -1,13 +1,13 @@
 package com.example.wsdefdef.editversioniwantpluginwar;
 
 import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.wsdef.IwantWorkspaceProvider;
-import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
+import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;
 
-public class IwantTutorialWorkspaceProvider implements IwantWorkspaceProvider {
+public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {
 
 	@Override
-	public JavaSrcModule workspaceModule(WorkspaceDefinitionContext ctx) {
+	public JavaSrcModule workspaceModule(WorkspaceModuleContext ctx) {
 		return JavaSrcModule
 				.with()
 				.name("iwant-tutorial-wsdef")
