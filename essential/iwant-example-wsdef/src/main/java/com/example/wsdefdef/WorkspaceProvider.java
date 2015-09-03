@@ -15,7 +15,7 @@ public class WorkspaceProvider implements WorkspaceModuleProvider {
 	}
 
 	@Override
-	public String workspaceClassname() {
+	public String workspaceFactoryClassname() {
 		return "WSDEF";
 	}
 

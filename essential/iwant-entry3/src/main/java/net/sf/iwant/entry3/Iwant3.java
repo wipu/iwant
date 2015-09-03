@@ -145,10 +145,10 @@ public class Iwant3 {
 			File wsDefClasses = wishEvaluator
 					.freshCachedContent(wsDefClassesTarget);
 
-			Iwant.fileLog("Classloading wsdef");
+			Iwant.fileLog("Classloading workspace factory");
 			Class<?> wsDefClass = loadClass(
 					getClass().getClassLoader(),
-					wsDefdef.workspaceClassname(),
+					wsDefdef.workspaceFactoryClassname(),
 					wsdefRuntimeClasspath(
 							wishEvaluator.targetEvaluationContext(),
 							wsDefClassesTarget, wsDefdefClasses, wsDefClasses));

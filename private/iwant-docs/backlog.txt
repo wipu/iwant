@@ -1481,6 +1481,7 @@
   - remove redundant stuff from wishdefcontexts: if given at ws creation,
     not needed there (maybe other contexts can be removed)
   - fix implementations according to new naming
+    + method workspaceClassname -> workspaceFactoryClassname
   - fix variables according to new naming
   - fix documentation according to new naming
   

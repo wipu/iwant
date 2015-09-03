@@ -415,7 +415,7 @@ public class Iwant3Test extends TestCase {
 		b.append("      }\n");
 		b.append("\n");
 		b.append("      @Override\n");
-		b.append("      public String workspaceClassname() {\n");
+		b.append("      public String workspaceFactoryClassname() {\n");
 		b.append("              return \"com.example.wsdef.ExampleWsFactory\";\n");
 		b.append("      }\n");
 		b.append("\n");

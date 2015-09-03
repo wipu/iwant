@@ -22,7 +22,7 @@ public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {
 	}
 
 	@Override
-	public String workspaceClassname() {
+	public String workspaceFactoryClassname() {
 		return "com.example.wsdef.IwanttutorialWorkspaceFactory";
 	}
 

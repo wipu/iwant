@@ -6,6 +6,6 @@ public interface WorkspaceModuleProvider {
 
 	JavaSrcModule workspaceModule(WorkspaceModuleContext ctx);
 
-	String workspaceClassname();
+	String workspaceFactoryClassname();
 
 }
