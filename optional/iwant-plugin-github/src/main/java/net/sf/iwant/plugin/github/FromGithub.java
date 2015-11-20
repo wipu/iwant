@@ -33,10 +33,10 @@ public class FromGithub {
 			}
 
 			public Target commit(String commit) {
-				Path zip = Downloaded
-						.withName(project + "-code.zip")
+				Path zip = Downloaded.withName(project + "-code.zip")
 						.url("https://github.com/" + user + "/" + project
-								+ "/archive/" + commit + ".zip").noCheck();
+								+ "/archive/" + commit + ".zip")
+						.noCheck();
 				Path zipUnzipped = Unzipped.with().name(zip + ".unzipped")
 						.from(zip).end();
 				Target code = new SubPath(project + "-code", zipUnzipped,

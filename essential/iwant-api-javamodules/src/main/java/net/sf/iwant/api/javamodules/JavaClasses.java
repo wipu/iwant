@@ -209,8 +209,8 @@ public class JavaClasses extends TargetBase {
 					"Source directory does not exist: " + dir);
 		}
 		if (!dir.isDirectory()) {
-			throw new IllegalArgumentException("Source is not a directory: "
-					+ dir);
+			throw new IllegalArgumentException(
+					"Source is not a directory: " + dir);
 		}
 		List<File> srcFiles = new ArrayList<>();
 		File[] files = dir.listFiles();

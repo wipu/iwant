@@ -46,9 +46,7 @@ public class IwanttutorialWorkspace implements Workspace {
 	private static Target antGenerated() {
 		final String antGroup = "org/apache/ant";
 		final String antVersion = "1.7.1";
-		return AntGenerated
-				.with()
-				.name("antGenerated")
+		return AntGenerated.with().name("antGenerated")
 				.antJars(
 						FromRepository.ibiblio().group(antGroup).name("ant")
 								.version(antVersion),
@@ -60,12 +58,9 @@ public class IwanttutorialWorkspace implements Workspace {
 	@Override
 	public List<? extends SideEffect> sideEffects(
 			SideEffectDefinitionContext ctx) {
-		return Arrays
-				.asList(EclipseSettings
-						.with()
-						.name("eclipse-settings")
-						.modules(ctx.wsdefdefJavaModule(),
-								ctx.wsdefJavaModule()).end());
+		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")
+				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())
+				.end());
 	}
 
 }

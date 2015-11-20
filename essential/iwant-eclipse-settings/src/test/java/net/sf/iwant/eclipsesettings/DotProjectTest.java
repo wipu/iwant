@@ -21,13 +21,15 @@ public class DotProjectTest extends TestCase {
 		expected.append("        </projects>\n");
 		expected.append("        <buildSpec>\n");
 		expected.append("                <buildCommand>\n");
-		expected.append("                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
+		expected.append(
+				"                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
 		expected.append("                        <arguments>\n");
 		expected.append("                        </arguments>\n");
 		expected.append("                </buildCommand>\n");
 		expected.append("        </buildSpec>\n");
 		expected.append("        <natures>\n");
-		expected.append("                <nature>org.eclipse.jdt.core.javanature</nature>\n");
+		expected.append(
+				"                <nature>org.eclipse.jdt.core.javanature</nature>\n");
 		expected.append("        </natures>\n");
 		expected.append("</projectDescription>\n");
 		assertEquals(expected.toString(), dp.asFileContent());
@@ -43,13 +45,15 @@ public class DotProjectTest extends TestCase {
 		expected.append("        </projects>\n");
 		expected.append("        <buildSpec>\n");
 		expected.append("                <buildCommand>\n");
-		expected.append("                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
+		expected.append(
+				"                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
 		expected.append("                        <arguments>\n");
 		expected.append("                        </arguments>\n");
 		expected.append("                </buildCommand>\n");
 		expected.append("        </buildSpec>\n");
 		expected.append("        <natures>\n");
-		expected.append("                <nature>org.eclipse.jdt.core.javanature</nature>\n");
+		expected.append(
+				"                <nature>org.eclipse.jdt.core.javanature</nature>\n");
 		expected.append("        </natures>\n");
 		expected.append("</projectDescription>\n");
 		assertEquals(expected.toString(), dp.asFileContent());
@@ -73,22 +77,27 @@ public class DotProjectTest extends TestCase {
 		expected.append("        </projects>\n");
 		expected.append("        <buildSpec>\n");
 		expected.append("                <buildCommand>\n");
-		expected.append("                        <name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>\n");
+		expected.append(
+				"                        <name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>\n");
 		expected.append("                        <arguments>\n");
 		expected.append("                                <dictionary>\n");
-		expected.append("                                        <key>LaunchConfigHandle</key>\n");
-		expected.append("                                        <value>&lt;project&gt;/.externalToolBuilders/codegen.launch</value>\n");
+		expected.append(
+				"                                        <key>LaunchConfigHandle</key>\n");
+		expected.append(
+				"                                        <value>&lt;project&gt;/.externalToolBuilders/codegen.launch</value>\n");
 		expected.append("                                </dictionary>\n");
 		expected.append("                        </arguments>\n");
 		expected.append("                </buildCommand>\n");
 		expected.append("                <buildCommand>\n");
-		expected.append("                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
+		expected.append(
+				"                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
 		expected.append("                        <arguments>\n");
 		expected.append("                        </arguments>\n");
 		expected.append("                </buildCommand>\n");
 		expected.append("        </buildSpec>\n");
 		expected.append("        <natures>\n");
-		expected.append("                <nature>org.eclipse.jdt.core.javanature</nature>\n");
+		expected.append(
+				"                <nature>org.eclipse.jdt.core.javanature</nature>\n");
 		expected.append("        </natures>\n");
 		expected.append("</projectDescription>\n");
 		assertEquals(expected.toString(), dp.asFileContent());

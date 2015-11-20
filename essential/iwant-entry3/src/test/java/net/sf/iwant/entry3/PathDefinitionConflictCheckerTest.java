@@ -44,11 +44,12 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 		HelloTarget helloA = new HelloTarget("a", "a");
 		Concatenated concatenatedA = Concatenated.named("a").end();
 
-		assertError("Two conflicting definitions for Path name a:\n"
-				+ "One is of\n" + " class net.sf.iwant.api.core.Concatenated\n"
-				+ "and another is of\n"
-				+ " class net.sf.iwant.api.core.HelloTarget", helloA,
-				concatenatedA);
+		assertError(
+				"Two conflicting definitions for Path name a:\n" + "One is of\n"
+						+ " class net.sf.iwant.api.core.Concatenated\n"
+						+ "and another is of\n"
+						+ " class net.sf.iwant.api.core.HelloTarget",
+				helloA, concatenatedA);
 	}
 
 	public void testPathIngredientOfTargetConflictsWithAnotherTarget() {
@@ -151,8 +152,10 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 	public void testNullName() {
 		Path path = new HelloTarget(null, "");
 
-		assertError("A Path of class "
-				+ "net.sf.iwant.api.core.HelloTarget has null name.", path);
+		assertError(
+				"A Path of class "
+						+ "net.sf.iwant.api.core.HelloTarget has null name.",
+				path);
 	}
 
 }

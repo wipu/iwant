@@ -2,10 +2,11 @@ package net.sf.iwant.entrymocks;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import net.sf.iwant.testarea.TestArea;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import net.sf.iwant.testarea.TestArea;
 
 public class IwantNetworkMockTest {
 

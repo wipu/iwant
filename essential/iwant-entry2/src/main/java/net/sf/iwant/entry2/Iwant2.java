@@ -29,8 +29,8 @@ public class Iwant2 {
 		this.iwant = Iwant.using(network);
 	}
 
-	public static class ClassesFromUnmodifiableIwantEssential extends
-			UnmodifiableSource<File> {
+	public static class ClassesFromUnmodifiableIwantEssential
+			extends UnmodifiableSource<File> {
 
 		public ClassesFromUnmodifiableIwantEssential(File location) {
 			super(location);
@@ -63,8 +63,8 @@ public class Iwant2 {
 
 		File wsRootMarker = new File(iwantEssential, "iwant-wsroot-marker");
 		Iwant.fileLog("iwant-wsroot-marker=" + wsRootMarker);
-		List<File> classLocations = Arrays
-				.asList(wsRootMarker, allIwantClasses);
+		List<File> classLocations = Arrays.asList(wsRootMarker,
+				allIwantClasses);
 
 		String[] iwant3Args = new String[args.length + 1];
 		iwant3Args[0] = iwantEssential.getCanonicalPath();
@@ -103,9 +103,8 @@ public class Iwant2 {
 
 	public File allIwantClasses(File iwantEssential) {
 		Iwant.fileLog("allIwantClasses, iwantEssential=" + iwantEssential);
-		File allIwantClasses = network
-				.cacheLocation(new ClassesFromUnmodifiableIwantEssential(
-						iwantEssential));
+		File allIwantClasses = network.cacheLocation(
+				new ClassesFromUnmodifiableIwantEssential(iwantEssential));
 		Iwant.fileLog("allIwantClasses, dest=" + allIwantClasses);
 
 		SortedSet<File> javaFiles = new TreeSet<>();
@@ -114,8 +113,9 @@ public class Iwant2 {
 		}
 
 		TimestampHandler timestampHandler = new TimestampHandler(
-				allIwantClasses, new File(allIwantClasses.getAbsolutePath()
-						+ ".srcdescr"), javaFiles);
+				allIwantClasses,
+				new File(allIwantClasses.getAbsolutePath() + ".srcdescr"),
+				javaFiles);
 		if (!timestampHandler.needsRefresh()) {
 			Iwant.fileLog("allIwantClasses does not need refresh.");
 			return allIwantClasses;
@@ -280,7 +280,8 @@ public class Iwant2 {
 		}
 	}
 
-	static SortedSet<File> filesByNameSuffix(Collection<File> in, String suffix) {
+	static SortedSet<File> filesByNameSuffix(Collection<File> in,
+			String suffix) {
 		SortedSet<File> out = new TreeSet<>();
 		for (File candidate : in) {
 			if (candidate.getName().endsWith(suffix)) {

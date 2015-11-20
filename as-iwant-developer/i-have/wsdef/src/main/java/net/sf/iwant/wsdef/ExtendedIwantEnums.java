@@ -58,8 +58,8 @@ public class ExtendedIwantEnums extends TargetBase {
 		}
 
 		File destination(TargetEvaluationContext ctx) {
-			return new File(ctx.cached(ExtendedIwantEnums.this), package_ + "/"
-					+ fileName);
+			return new File(ctx.cached(ExtendedIwantEnums.this),
+					package_ + "/" + fileName);
 		}
 
 	}

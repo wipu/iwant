@@ -12,8 +12,8 @@ public class CopyPasteReportTest extends PmdTestBase {
 		Path src1 = Source.underWsroot("src1");
 		Path src2 = Source.underWsroot("src2");
 
-		CopyPasteReport report = CopyPasteReport.with()
-				.name("copypaste-report").from(src1, src2).end();
+		CopyPasteReport report = CopyPasteReport.with().name("copypaste-report")
+				.from(src1, src2).end();
 
 		assertTrue(report.ingredients().contains(src1));
 		assertTrue(report.ingredients().contains(src2));
@@ -23,8 +23,8 @@ public class CopyPasteReportTest extends PmdTestBase {
 		Path src1 = Source.underWsroot("src-one");
 		Path src2 = Source.underWsroot("src-two");
 
-		CopyPasteReport report = CopyPasteReport.with()
-				.name("copypaste-report").from(src1, src2).end();
+		CopyPasteReport report = CopyPasteReport.with().name("copypaste-report")
+				.from(src1, src2).end();
 
 		assertTrue(report.contentDescriptor().contains(src1.name()));
 		assertTrue(report.contentDescriptor().contains(src2.name()));
@@ -44,8 +44,8 @@ public class CopyPasteReportTest extends PmdTestBase {
 		File srcDir = new File(wsRoot, "src");
 		srcDir.mkdirs();
 
-		CopyPasteReport report = CopyPasteReport.with()
-				.name("copypaste-report").end();
+		CopyPasteReport report = CopyPasteReport.with().name("copypaste-report")
+				.end();
 		try {
 			report.path(ctx);
 			fail();
@@ -61,8 +61,8 @@ public class CopyPasteReportTest extends PmdTestBase {
 		File srcDir = new File(wsRoot, "src");
 		srcDir.mkdirs();
 
-		CopyPasteReport report = CopyPasteReport.with()
-				.name("copypaste-report").from(Source.underWsroot("src")).end();
+		CopyPasteReport report = CopyPasteReport.with().name("copypaste-report")
+				.from(Source.underWsroot("src")).end();
 		report.path(ctx);
 
 		assertEquals("", txtReportContent(report));
@@ -76,8 +76,7 @@ public class CopyPasteReportTest extends PmdTestBase {
 		File src2 = new File(wsRoot, "src2");
 		srcDirHasPmdFodder(src2, "testfodder2", "CopyOfClassWithPmdIssues");
 
-		CopyPasteReport report = CopyPasteReport.with()
-				.name("copypaste-report")
+		CopyPasteReport report = CopyPasteReport.with().name("copypaste-report")
 				.from(Source.underWsroot("src1"), Source.underWsroot("src2"))
 				.end();
 		report.path(ctx);
@@ -94,8 +93,7 @@ public class CopyPasteReportTest extends PmdTestBase {
 		File src2 = new File(wsRoot, "src2");
 		srcDirHasPmdFodder(src2, "testfodder2", "CopyOfClassWithPmdIssues");
 
-		CopyPasteReport report = CopyPasteReport.with()
-				.name("copypaste-report")
+		CopyPasteReport report = CopyPasteReport.with().name("copypaste-report")
 				.from(Source.underWsroot("src1"), Source.underWsroot("src2"))
 				.minimumTokenCount(10).end();
 		report.path(ctx);
@@ -113,8 +111,7 @@ public class CopyPasteReportTest extends PmdTestBase {
 		File src2 = new File(wsRoot, "src2");
 		srcDirHasPmdFodder(src2, "testfodder2", "CopyOfClassWithPmdIssues");
 
-		CopyPasteReport report = CopyPasteReport.with()
-				.name("copypaste-report")
+		CopyPasteReport report = CopyPasteReport.with().name("copypaste-report")
 				.from(Source.underWsroot("src1"), Source.underWsroot("src2"))
 				.minimumTokenCount(100).end();
 		report.path(ctx);

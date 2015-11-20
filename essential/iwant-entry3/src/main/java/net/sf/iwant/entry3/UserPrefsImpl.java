@@ -14,8 +14,8 @@ public class UserPrefsImpl implements UserPrefs {
 		this.file = file;
 		String workerCountString = props.getProperty("workerCount");
 		if (workerCountString == null) {
-			throw new Iwant.IwantException("Please specify workerCount in "
-					+ file);
+			throw new Iwant.IwantException(
+					"Please specify workerCount in " + file);
 		}
 		try {
 			workerCount = Integer.parseInt(workerCountString);

@@ -47,14 +47,16 @@ public class EclipseSettings implements SideEffect {
 			ensureSrcDirs(ctx);
 			if (refreshFailure != null) {
 				PrintWriter err = new PrintWriter(ctx.err());
-				err.println("WARNING: Refresh of eclipse settings references failed:\n"
-						+ refreshFailure);
+				err.println(
+						"WARNING: Refresh of eclipse settings references failed:\n"
+								+ refreshFailure);
 				err.close();
 			}
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new RuntimeException("Eclipse settings generation failed.", e);
+			throw new RuntimeException("Eclipse settings generation failed.",
+					e);
 		}
 	}
 
@@ -66,7 +68,8 @@ public class EclipseSettings implements SideEffect {
 		}
 	}
 
-	private static void ensureSrcDirs(SideEffectContext ctx, JavaSrcModule mod) {
+	private static void ensureSrcDirs(SideEffectContext ctx,
+			JavaSrcModule mod) {
 		File modDir = new File(ctx.wsRoot(), mod.locationUnderWsRoot());
 		ensureSrcDirs(modDir, mod.mainJavas());
 		ensureSrcDirs(modDir, mod.mainResources());
@@ -74,7 +77,8 @@ public class EclipseSettings implements SideEffect {
 		ensureSrcDirs(modDir, mod.testResources());
 	}
 
-	private static void ensureSrcDirs(File modDir, List<String> relativeSrcDirs) {
+	private static void ensureSrcDirs(File modDir,
+			List<String> relativeSrcDirs) {
 		for (String relativeSrcDir : relativeSrcDirs) {
 			File srcDir = new File(modDir, relativeSrcDir);
 			srcDir.mkdirs();
@@ -82,8 +86,8 @@ public class EclipseSettings implements SideEffect {
 	}
 
 	private Exception bestEffortToEnsureFreshReferences(SideEffectContext ctx) {
-		ConcatenatedBuilder classLocations = Concatenated.named(name
-				+ ".bin-refs");
+		ConcatenatedBuilder classLocations = Concatenated
+				.named(name + ".bin-refs");
 		Set<Path> paths = new LinkedHashSet<>();
 		for (JavaModule mod : javaModules) {
 			Set<JavaModule> modDeps = EclipseProject.dependenciesOf(mod);
@@ -112,8 +116,8 @@ public class EclipseSettings implements SideEffect {
 	}
 
 	private void generateEclipseSettings(SideEffectContext ctx) {
-		EclipseSettingsWriter writer = EclipseSettingsWriter.with()
-				.context(ctx).modules(javaModules).end();
+		EclipseSettingsWriter writer = EclipseSettingsWriter.with().context(ctx)
+				.modules(javaModules).end();
 		writer.write();
 	}
 

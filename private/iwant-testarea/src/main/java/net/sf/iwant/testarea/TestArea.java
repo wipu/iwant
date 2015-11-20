@@ -24,8 +24,9 @@ public final class TestArea {
 
 	private File testAreaRoot() {
 		try {
-			File wsRootCandidate = new File(getClass().getResource(
-					getClass().getSimpleName() + ".class").toURI());
+			File wsRootCandidate = new File(getClass()
+					.getResource(getClass().getSimpleName() + ".class")
+					.toURI());
 			while (wsRootCandidate.getParentFile() != null) {
 				wsRootCandidate = wsRootCandidate.getParentFile();
 				File testAreaRootCandidate = new File(wsRootCandidate,
@@ -157,8 +158,8 @@ public final class TestArea {
 	public void shallContainFragmentIn(String path, String fragment) {
 		String actual = contentOf(path);
 		if (!actual.contains(fragment)) {
-			Assert.assertEquals("File " + path + "\nshould contain:\n"
-					+ fragment, actual);
+			Assert.assertEquals(
+					"File " + path + "\nshould contain:\n" + fragment, actual);
 		}
 	}
 

@@ -18,8 +18,8 @@ import net.sf.iwant.eclipsesettings.EclipseSettings;
 
 public class IwanttutorialWorkspace implements Workspace {
 
-	private final JavaModule junit = JavaBinModule.providing(
-			TestedIwantDependencies.junit()).end();
+	private final JavaModule junit = JavaBinModule
+			.providing(TestedIwantDependencies.junit()).end();
 	private final JavaSrcModule exampleHello = JavaSrcModule.with()
 			.name("example-hello").mavenLayout().noMainResources()
 			.testDeps(junit).end();
@@ -39,11 +39,10 @@ public class IwanttutorialWorkspace implements Workspace {
 	@Override
 	public List<? extends SideEffect> sideEffects(
 			SideEffectDefinitionContext ctx) {
-		return Arrays.asList(EclipseSettings
-				.with()
-				.name("eclipse-settings")
+		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")
 				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule(),
-						exampleHello).end());
+						exampleHello)
+				.end());
 	}
 
 }

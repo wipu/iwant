@@ -33,10 +33,8 @@ public class CodeFormatterPolicy {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime
-				* result
-				+ ((alignmentForEnumConstants == null) ? 0
-						: alignmentForEnumConstants.hashCode());
+		result = prime * result + ((alignmentForEnumConstants == null) ? 0
+				: alignmentForEnumConstants.hashCode());
 		result = prime * result
 				+ ((lineSplit == null) ? 0 : lineSplit.hashCode());
 		result = prime * result

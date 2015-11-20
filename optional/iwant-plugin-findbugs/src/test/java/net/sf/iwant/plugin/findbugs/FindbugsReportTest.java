@@ -3,6 +3,8 @@ package net.sf.iwant.plugin.findbugs;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
@@ -16,8 +18,6 @@ import net.sf.iwant.core.download.TestedIwantDependencies;
 import net.sf.iwant.embedded.AsEmbeddedIwantUser;
 import net.sf.iwant.entry.Iwant;
 
-import org.apache.commons.io.FileUtils;
-
 public class FindbugsReportTest extends IwantTestCase {
 
 	@Override
@@ -26,9 +26,8 @@ public class FindbugsReportTest extends IwantTestCase {
 	}
 
 	private Path downloaded(Path downloaded) throws IOException {
-		return new ExternalSource(AsEmbeddedIwantUser.with()
-				.workspaceAt(wsRoot).cacheAt(cached).iwant()
-				.target((Target) downloaded).asPath());
+		return new ExternalSource(AsEmbeddedIwantUser.with().workspaceAt(wsRoot)
+				.cacheAt(cached).iwant().target((Target) downloaded).asPath());
 	}
 
 	private Path antJar() throws IOException {
@@ -62,8 +61,8 @@ public class FindbugsReportTest extends IwantTestCase {
 
 	protected String reportContent(Target report, String extension)
 			throws IOException {
-		File reportFile = new File(ctx.cached(report), "findbugs-report/"
-				+ report.name() + "." + extension);
+		File reportFile = new File(ctx.cached(report),
+				"findbugs-report/" + report.name() + "." + extension);
 		if (!reportFile.exists()) {
 			return null;
 		}
@@ -95,9 +94,7 @@ public class FindbugsReportTest extends IwantTestCase {
 		Path emptyClasses = Source.underWsroot("empty-classes");
 
 		try {
-			FindbugsReport
-					.with()
-					.name("distro-missing")
+			FindbugsReport.with().name("distro-missing")
 					.classesToAnalyze(
 							new JavaClassesAndSources(emptyClasses, emptySrc))
 					.end();
@@ -113,17 +110,16 @@ public class FindbugsReportTest extends IwantTestCase {
 		Path emptyClasses = Source.underWsroot("empty-classes");
 		Path bin = Source.underWsroot("bin.jar");
 
-		Target report = FindbugsReport
-				.with()
-				.name("fb-empty")
+		Target report = FindbugsReport.with().name("fb-empty")
 				.using(distroToTest(), antJar(), antLauncherJar())
 				.classesToAnalyze(
 						new JavaClassesAndSources(emptyClasses, emptySrc))
 				.auxClasses(bin).end();
 
-		assertEquals("[findbugs-3.0.0, " + antJar() + ", " + antLauncherJar()
-				+ ", empty-classes, empty-src, bin.jar]", report.ingredients()
-				.toString());
+		assertEquals(
+				"[findbugs-3.0.0, " + antJar() + ", " + antLauncherJar()
+						+ ", empty-classes, empty-src, bin.jar]",
+				report.ingredients().toString());
 		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport\n"
 				+ "i:findbugs:\n" + "  findbugs-3.0.0\n" + "i:antJar:\n" + "  "
 				+ antJar() + "\ni:antLauncherJar:\n" + "  " + antLauncherJar()
@@ -136,25 +132,21 @@ public class FindbugsReportTest extends IwantTestCase {
 	public void testExplicitHtmlOutputFormat() throws IOException {
 		Path emptySrc = Source.underWsroot("empty-src");
 		Path emptyClasses = Source.underWsroot("empty-classes");
-		Target report = FindbugsReport
-				.with()
-				.name("fb-empty")
+		Target report = FindbugsReport.with().name("fb-empty")
 				.outputFormat(FindbugsOutputFormat.HTML)
 				.using(distroToTest(), antJar(), antLauncherJar())
 				.classesToAnalyze(
 						new JavaClassesAndSources(emptyClasses, emptySrc))
 				.end();
 
-		assertTrue(report.contentDescriptor()
-				.contains("output-format:\n  html"));
+		assertTrue(
+				report.contentDescriptor().contains("output-format:\n  html"));
 	}
 
 	public void testContentDescriptorWithXmlOutputFormat() throws IOException {
 		Path emptySrc = Source.underWsroot("empty-src");
 		Path emptyClasses = Source.underWsroot("empty-classes");
-		Target report = FindbugsReport
-				.with()
-				.name("fb-empty")
+		Target report = FindbugsReport.with().name("fb-empty")
 				.outputFormat(FindbugsOutputFormat.XML)
 				.using(distroToTest(), antJar(), antLauncherJar())
 				.classesToAnalyze(
@@ -177,9 +169,7 @@ public class FindbugsReportTest extends IwantTestCase {
 
 		distroToTest().path(ctx);
 
-		Target report = FindbugsReport
-				.with()
-				.name("fb-empty")
+		Target report = FindbugsReport.with().name("fb-empty")
 				.using(distroToTest(), antJar(), antLauncherJar())
 				.classesToAnalyze(
 						new JavaClassesAndSources(emptyClasses, emptySrc))
@@ -193,7 +183,8 @@ public class FindbugsReportTest extends IwantTestCase {
 
 	public void testReportMentionsIssuesFromTheGivenClass() throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDirHasFindbugsFodder(srcDir, "testfodder", "ClassWithFindbugsIssues");
+		srcDirHasFindbugsFodder(srcDir, "testfodder",
+				"ClassWithFindbugsIssues");
 
 		Source src = Source.underWsroot("src");
 		JavaClasses classes = JavaClasses.with().name("classes").srcDirs(src)
@@ -224,18 +215,17 @@ public class FindbugsReportTest extends IwantTestCase {
 		srcDirHasFindbugsFodder(src2Dir, "testfodder2", "BinaryDependency");
 
 		Source src2 = Source.underWsroot("src2");
-		JavaClasses classes2 = JavaClasses.with().name("classes2")
-				.srcDirs(src2).end();
+		JavaClasses classes2 = JavaClasses.with().name("classes2").srcDirs(src2)
+				.end();
 		classes2.path(ctx);
 		Source src1 = Source.underWsroot("src1");
-		JavaClasses classes1 = JavaClasses.with().name("classes1")
-				.srcDirs(src1).classLocations(classes2).end();
+		JavaClasses classes1 = JavaClasses.with().name("classes1").srcDirs(src1)
+				.classLocations(classes2).end();
 		classes1.path(ctx);
 
 		distroToTest().path(ctx);
 
-		FindbugsReport report = FindbugsReport.with()
-				.name("without-auxclasses")
+		FindbugsReport report = FindbugsReport.with().name("without-auxclasses")
 				.using(distroToTest(), antJar(), antLauncherJar())
 				.classesToAnalyze(new JavaClassesAndSources(classes1, src1))
 				.end();
@@ -262,12 +252,12 @@ public class FindbugsReportTest extends IwantTestCase {
 		srcDirHasFindbugsFodder(src2Dir, "testfodder2", "BinaryDependency");
 
 		Source src2 = Source.underWsroot("src2");
-		JavaClasses classes2 = JavaClasses.with().name("classes2")
-				.srcDirs(src2).end();
+		JavaClasses classes2 = JavaClasses.with().name("classes2").srcDirs(src2)
+				.end();
 		classes2.path(ctx);
 		Source src1 = Source.underWsroot("src1");
-		JavaClasses classes1 = JavaClasses.with().name("classes1")
-				.srcDirs(src1).classLocations(classes2).end();
+		JavaClasses classes1 = JavaClasses.with().name("classes1").srcDirs(src1)
+				.classLocations(classes2).end();
 		classes1.path(ctx);
 
 		distroToTest().path(ctx);
@@ -286,7 +276,8 @@ public class FindbugsReportTest extends IwantTestCase {
 	public void testReportUsesXmlFormatWhenExplicitlyRequested()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDirHasFindbugsFodder(srcDir, "testfodder", "ClassWithFindbugsIssues");
+		srcDirHasFindbugsFodder(srcDir, "testfodder",
+				"ClassWithFindbugsIssues");
 
 		Source src = Source.underWsroot("src");
 		JavaClasses classes = JavaClasses.with().name("classes").srcDirs(src)
@@ -303,16 +294,16 @@ public class FindbugsReportTest extends IwantTestCase {
 		report.path(ctx);
 
 		String xmlReportContent = xmlReportContent(report);
-		assertTrue(xmlReportContent
-				.contains("<Method classname="
-						+ "\"net.sf.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues\""
-						+ " name=\"nullReference\""));
+		assertTrue(xmlReportContent.contains("<Method classname="
+				+ "\"net.sf.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues\""
+				+ " name=\"nullReference\""));
 	}
 
 	public void testReportUsesTextFormatWhenExplicitlyRequested()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDirHasFindbugsFodder(srcDir, "testfodder", "ClassWithFindbugsIssues");
+		srcDirHasFindbugsFodder(srcDir, "testfodder",
+				"ClassWithFindbugsIssues");
 
 		Source src = Source.underWsroot("src");
 		JavaClasses classes = JavaClasses.with().name("classes").srcDirs(src)
@@ -338,8 +329,8 @@ public class FindbugsReportTest extends IwantTestCase {
 
 	public void testModulesToAnalyzeMeansSrcsAnalyzedUsingBins()
 			throws IOException {
-		JavaBinModule bin1 = JavaBinModule
-				.providing(Source.underWsroot("bin1")).end();
+		JavaBinModule bin1 = JavaBinModule.providing(Source.underWsroot("bin1"))
+				.end();
 
 		JavaSrcModule javaless = JavaSrcModule.with().name("javaless").end();
 		JavaSrcModule mainless = JavaSrcModule.with().name("mainless")
@@ -347,15 +338,14 @@ public class FindbugsReportTest extends IwantTestCase {
 		JavaSrcModule testless = JavaSrcModule.with().name("testless")
 				.mainJava("src").end();
 		JavaSrcModule modWithTestRuntimeDeps = JavaSrcModule.with()
-				.name("modWithTestRuntimeDeps").mainJava("src")
-				.testJava("test").testRuntimeDeps(bin1).end();
+				.name("modWithTestRuntimeDeps").mainJava("src").testJava("test")
+				.testRuntimeDeps(bin1).end();
 
-		FindbugsReport report = FindbugsReport
-				.with()
-				.name("with-auxclasses")
+		FindbugsReport report = FindbugsReport.with().name("with-auxclasses")
 				.using(distroToTest(), antJar(), antLauncherJar())
 				.modulesToAnalyze(javaless, mainless, testless,
-						modWithTestRuntimeDeps).end();
+						modWithTestRuntimeDeps)
+				.end();
 
 		assertEquals(
 				"[JavaClassesAndSources {mainless-test-classes [mainless/test]},"

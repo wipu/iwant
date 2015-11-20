@@ -59,8 +59,8 @@ public class Iwant3 {
 		String[] args2 = new String[args.length - 2];
 		System.arraycopy(args, 2, args2, 0, args2.length);
 		try {
-			using(Iwant.usingRealNetwork().network(), iwantEssential).evaluate(
-					asSomeone, args2);
+			using(Iwant.usingRealNetwork().network(), iwantEssential)
+					.evaluate(asSomeone, args2);
 		} catch (IwantException e) {
 			System.err.println(e.getMessage());
 			System.exit(1);
@@ -77,8 +77,7 @@ public class Iwant3 {
 		SortedSet<JavaModule> iwantApiModules = new TreeSet<>();
 		for (File apiClasses : apiClassLocations) {
 			iwantApiModules
-					.add(JavaBinModule.providing(
-							new ExternalSource(apiClasses),
+					.add(JavaBinModule.providing(new ExternalSource(apiClasses),
 							combinedIwantSources).end());
 		}
 		return iwantApiModules;
@@ -108,8 +107,9 @@ public class Iwant3 {
 		Set<JavaModule> iwantApiModules = iwantApiModules(apiClassLocations);
 
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
-		iwant.compiledClasses(wsDefdefClasses, srcFiles, new ArrayList<>(
-				apiClassLocations), Iwant.bootstrappingJavacOptions(), null);
+		iwant.compiledClasses(wsDefdefClasses, srcFiles,
+				new ArrayList<>(apiClassLocations),
+				Iwant.bootstrappingJavacOptions(), null);
 
 		List<File> runtimeClasses = Arrays.asList(wsDefdefClasses);
 		Class<?> wsDefdefClass = loadClass(getClass().getClassLoader(),
@@ -146,8 +146,7 @@ public class Iwant3 {
 					.freshCachedContent(wsDefClassesTarget);
 
 			Iwant.fileLog("Classloading workspace factory");
-			Class<?> wsDefClass = loadClass(
-					getClass().getClassLoader(),
+			Class<?> wsDefClass = loadClass(getClass().getClassLoader(),
 					wsDefdef.workspaceFactoryClassname(),
 					wsdefRuntimeClasspath(
 							wishEvaluator.targetEvaluationContext(),
@@ -160,13 +159,10 @@ public class Iwant3 {
 					wishEvaluator.targetDefinitionContext(),
 					wishEvaluator.sideEffectDefinitionContext());
 			if (args.length == 0) {
-				throw new IwantException("(Using "
-						+ userPrefs
-						+ ")\nTry "
+				throw new IwantException("(Using " + userPrefs + ")\nTry "
 						+ new File(withBashIwantFile(asSomeone),
 								WISH_LIST_OF_SIDE_EFFECTS)
-						+ "\nor\n"
-						+ new File(withBashIwantFile(asSomeone),
+						+ "\nor\n" + new File(withBashIwantFile(asSomeone),
 								WISH_LIST_OF_TARGETS));
 			}
 			String wish = args[0];
@@ -192,8 +188,8 @@ public class Iwant3 {
 		return new ExternalSource(combinedSources);
 	}
 
-	static class CombinedSrcFromUnmodifiableIwantEssential extends
-			UnmodifiableSource<File> {
+	static class CombinedSrcFromUnmodifiableIwantEssential
+			extends UnmodifiableSource<File> {
 
 		public CombinedSrcFromUnmodifiableIwantEssential(File location) {
 			super(location);
@@ -219,19 +215,20 @@ public class Iwant3 {
 	private static IwantException createExampleWsdefdefAndWsdefAndWs(
 			File asSomeone, File iHave, WsInfo wsInfo) {
 		File essential = IwantWsRootFinder.essential();
-		String wsDefPackage = ExampleWsDefGenerator.proposedWsdefPackage(wsInfo
-				.wsdefdefPackage());
-		String wsDefName = ExampleWsDefGenerator.proposedWsdefSimpleName(wsInfo
-				.wsName());
-		FileUtil.newTextFile(wsInfo.wsdefdefJava(), ExampleWsDefGenerator
-				.exampleWsdefdef(essential, wsInfo.wsdefdefPackage(),
+		String wsDefPackage = ExampleWsDefGenerator
+				.proposedWsdefPackage(wsInfo.wsdefdefPackage());
+		String wsDefName = ExampleWsDefGenerator
+				.proposedWsdefSimpleName(wsInfo.wsName());
+		FileUtil.newTextFile(wsInfo.wsdefdefJava(),
+				ExampleWsDefGenerator.exampleWsdefdef(essential,
+						wsInfo.wsdefdefPackage(),
 						wsInfo.wsdefdefClassSimpleName(), wsInfo.wsName(),
 						wsDefPackage + "." + wsDefName));
-		File wsDefJava = new File(iHave, "/wsdef/src/main/java" + "/"
-				+ wsDefPackage.replace(".", "/") + "/" + wsDefName
-				+ "Factory.java");
-		FileUtil.newTextFile(wsDefJava, ExampleWsDefGenerator.exampleWsdef(
-				essential, wsDefPackage, wsDefName));
+		File wsDefJava = new File(iHave,
+				"/wsdef/src/main/java" + "/" + wsDefPackage.replace(".", "/")
+						+ "/" + wsDefName + "Factory.java");
+		FileUtil.newTextFile(wsDefJava, ExampleWsDefGenerator
+				.exampleWsdef(essential, wsDefPackage, wsDefName));
 		File wsJava = new File(iHave, "/wsdef/src/main/java" + "/"
 				+ wsDefPackage.replace(".", "/") + "/" + wsDefName + ".java");
 		FileUtil.newTextFile(wsJava, ExampleWsDefGenerator.exampleWs(essential,
@@ -244,15 +241,12 @@ public class Iwant3 {
 				Arrays.asList(new HelloTarget("hello", "not needed")),
 				Arrays.asList(stubEclipseSettingsSe));
 		IwantException e = new IwantException(
-				"I created\n"
-						+ wsInfo.wsdefdefJava()
-						+ "\nand\n"
-						+ wsDefJava
-						+ "\nand\n"
-						+ wsJava
+				"I created\n" + wsInfo.wsdefdefJava() + "\nand\n" + wsDefJava
+						+ "\nand\n" + wsJava
 						+ "\nPlease edit them and rerun me.\nIf you want to use Eclipse for editing, run "
 						+ new File(withBashIwantFile(asSomeone),
-								toWish(stubEclipseSettingsSe)) + " first.");
+								toWish(stubEclipseSettingsSe))
+						+ " first.");
 		return e;
 	}
 
@@ -288,17 +282,17 @@ public class Iwant3 {
 	private static SortedSet<File> iwantApiClassLocations()
 			throws URISyntaxException {
 		SortedSet<File> apiClassLocations = new TreeSet<>();
-		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
-				+ "api/core/HelloTarget.class"));
-		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
-				+ "api/javamodules/JavaModule.class"));
-		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
-				+ "api/model/Path.class"));
-		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
-				+ "api/wsdef/Workspace.class"));
+		apiClassLocations.add(
+				classesDirOf("/net/sf/iwant/" + "api/core/HelloTarget.class"));
+		apiClassLocations.add(classesDirOf(
+				"/net/sf/iwant/" + "api/javamodules/JavaModule.class"));
+		apiClassLocations
+				.add(classesDirOf("/net/sf/iwant/" + "api/model/Path.class"));
+		apiClassLocations.add(
+				classesDirOf("/net/sf/iwant/" + "api/wsdef/Workspace.class"));
 		// TODO maybe make eclipse-settings an optional plugin
-		apiClassLocations.add(classesDirOf("/net/sf/iwant/"
-				+ "eclipsesettings/EclipseSettings.class"));
+		apiClassLocations.add(classesDirOf(
+				"/net/sf/iwant/" + "eclipsesettings/EclipseSettings.class"));
 		return apiClassLocations;
 	}
 
@@ -371,8 +365,8 @@ public class Iwant3 {
 			return wsInfoFile;
 		}
 		createExampleWsInfo(wsInfoFile);
-		throw new IwantException("I created " + wsInfoFile
-				+ "\nPlease edit it and rerun me.");
+		throw new IwantException(
+				"I created " + wsInfoFile + "\nPlease edit it and rerun me.");
 	}
 
 	private static WsInfo parseWsInfo(File wsInfoFile, File asSomeone)
@@ -387,11 +381,9 @@ public class Iwant3 {
 	}
 
 	private static void createExampleWsInfo(File wsInfo) {
-		FileUtil.newTextFile(
-				wsInfo,
+		FileUtil.newTextFile(wsInfo,
 				"# paths are relative to this file's directory\n"
-						+ "WSNAME=example\n"
-						+ "WSROOT=../../..\n"
+						+ "WSNAME=example\n" + "WSROOT=../../..\n"
 						+ "WSDEFDEF_MODULE=../wsdefdef\n"
 						+ "WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 	}

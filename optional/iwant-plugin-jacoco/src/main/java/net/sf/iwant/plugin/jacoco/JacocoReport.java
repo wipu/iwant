@@ -7,12 +7,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.core.ant.AntGenerated;
-
-import org.apache.commons.io.FileUtils;
 
 public class JacocoReport extends TargetBase {
 
@@ -23,9 +23,8 @@ public class JacocoReport extends TargetBase {
 	private final Collection<? extends Path> classes;
 	private final Collection<? extends Path> sources;
 
-	public JacocoReport(String name, JacocoDistribution jacoco,
-			List<Path> deps, List<Path> antJars,
-			Collection<? extends JacocoCoverage> coverages,
+	public JacocoReport(String name, JacocoDistribution jacoco, List<Path> deps,
+			List<Path> antJars, Collection<? extends JacocoCoverage> coverages,
 			Collection<? extends Path> classes,
 			Collection<? extends Path> sources) {
 		super(name);
@@ -77,7 +76,8 @@ public class JacocoReport extends TargetBase {
 			return antJars(Arrays.asList(antJars));
 		}
 
-		public JacocoReportSpexPlease antJars(Collection<? extends Path> antJars) {
+		public JacocoReportSpexPlease antJars(
+				Collection<? extends Path> antJars) {
 			this.antJars.addAll(antJars);
 			return this;
 		}
@@ -96,7 +96,8 @@ public class JacocoReport extends TargetBase {
 			return classes(Arrays.asList(classes));
 		}
 
-		public JacocoReportSpexPlease classes(Collection<? extends Path> classes) {
+		public JacocoReportSpexPlease classes(
+				Collection<? extends Path> classes) {
 			this.classes.addAll(classes);
 			return this;
 		}
@@ -105,7 +106,8 @@ public class JacocoReport extends TargetBase {
 			return sources(Arrays.asList(sources));
 		}
 
-		public JacocoReportSpexPlease sources(Collection<? extends Path> sources) {
+		public JacocoReportSpexPlease sources(
+				Collection<? extends Path> sources) {
 			this.sources.addAll(sources);
 			return this;
 		}
@@ -151,7 +153,8 @@ public class JacocoReport extends TargetBase {
 		b.append("<project name=\"" + name() + "\" default=\"" + name()
 				+ "\" xmlns:jacoco=\"antlib:org.jacoco.ant\" basedir=\".\">\n");
 		b.append("\n");
-		b.append("      <taskdef uri=\"antlib:org.jacoco.ant\" resource=\"org/jacoco/ant/antlib.xml\">\n");
+		b.append(
+				"      <taskdef uri=\"antlib:org.jacoco.ant\" resource=\"org/jacoco/ant/antlib.xml\">\n");
 		for (Path dep : deps) {
 			b.append("              <classpath location=\"" + ctx.cached(dep)
 					+ "\" />\n");
@@ -177,19 +180,22 @@ public class JacocoReport extends TargetBase {
 				// jacoco is like emma here, omitting exec when zero coverage
 				continue;
 			}
-			b.append("				<file file=\"" + cachedCoverage + "\" />\n");
+			b.append("				<file file=\"" + cachedCoverage
+					+ "\" />\n");
 		}
 		b.append("			</executiondata>\n");
 		b.append("\n");
 		b.append("			<structure name=\"" + name() + "\">\n");
 		b.append("				<classfiles>\n");
 		for (Path classLoc : classes) {
-			b.append("					<fileset dir=\"" + ctx.cached(classLoc) + "\" />\n");
+			b.append("					<fileset dir=\"" + ctx.cached(classLoc)
+					+ "\" />\n");
 		}
 		b.append("				</classfiles>\n");
 		b.append("				<sourcefiles encoding=\"UTF-8\">\n");
 		for (Path source : sources) {
-			b.append("					<fileset dir=\"" + ctx.cached(source) + "\" />\n");
+			b.append("					<fileset dir=\"" + ctx.cached(source)
+					+ "\" />\n");
 		}
 		b.append("				</sourcefiles>\n");
 		b.append("			</structure>\n");

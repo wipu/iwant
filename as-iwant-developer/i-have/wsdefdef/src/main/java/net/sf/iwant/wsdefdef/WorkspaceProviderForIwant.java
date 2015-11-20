@@ -28,9 +28,8 @@ public class WorkspaceProviderForIwant implements IwantWorkspaceProvider {
 	}
 
 	private static JavaModule commonsIo() {
-		return JavaBinModule.providing(
-				FromRepository.ibiblio().group("commons-io").name("commons-io")
-						.version("1.4")).end();
+		return JavaBinModule.providing(FromRepository.ibiblio()
+				.group("commons-io").name("commons-io").version("1.4")).end();
 	}
 
 }

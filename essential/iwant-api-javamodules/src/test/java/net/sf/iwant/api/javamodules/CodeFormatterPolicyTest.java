@@ -1,13 +1,13 @@
 package net.sf.iwant.api.javamodules;
 
+import com.google.common.testing.EqualsTester;
+
 import junit.framework.TestCase;
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy.FormatterSettingsListener;
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
 
-import com.google.common.testing.EqualsTester;
-
-public class CodeFormatterPolicyTest extends TestCase implements
-		FormatterSettingsListener {
+public class CodeFormatterPolicyTest extends TestCase
+		implements FormatterSettingsListener {
 
 	private Integer alignmentForEnumConstants;
 	private TabulationCharValue tabulationChar;

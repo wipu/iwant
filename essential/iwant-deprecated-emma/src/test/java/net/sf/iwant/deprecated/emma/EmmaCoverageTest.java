@@ -21,9 +21,9 @@ import net.sf.iwant.entry.Iwant;
 public class EmmaCoverageTest extends IwantTestCase {
 
 	private Path downloaded(Path downloaded) throws IOException {
-		return new ExternalSource(AsEmbeddedIwantUser.with()
-				.workspaceAt(wsRoot).cacheAt(cacheDir).iwant()
-				.target((Target) downloaded).asPath());
+		return new ExternalSource(
+				AsEmbeddedIwantUser.with().workspaceAt(wsRoot).cacheAt(cacheDir)
+						.iwant().target((Target) downloaded).asPath());
 	}
 
 	private Path emma() throws IOException {
@@ -49,7 +49,8 @@ public class EmmaCoverageTest extends IwantTestCase {
 
 		StringBuilder code = new StringBuilder();
 		code.append("public class " + className + " {\n");
-		code.append("  public static void main(String[] args) throws Throwable {\n");
+		code.append(
+				"  public static void main(String[] args) throws Throwable {\n");
 		for (String codeLine : codeLinesForMain) {
 			code.append(codeLine).append("\n");
 		}
@@ -93,9 +94,10 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.mainClassAndArguments("Hello").instrumentations(instr)
 				.nonInstrumentedClasses(junit()).end();
 
-		assertEquals("[" + emma() + ", " + antJar() + ", " + antLauncherJar()
-				+ ", instrtest-classes.emma-instr, " + junit() + "]", coverage
-				.ingredients().toString());
+		assertEquals(
+				"[" + emma() + ", " + antJar() + ", " + antLauncherJar()
+						+ ", instrtest-classes.emma-instr, " + junit() + "]",
+				coverage.ingredients().toString());
 	}
 
 	public void testMainClassArgumentPathIsAnIngredient() throws Exception {
@@ -124,15 +126,15 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.mainClassAndArguments("Hello", "arg1", "arg2")
 				.instrumentations(instr).end();
 
-		assertEquals("net.sf.iwant.deprecated.emma.EmmaCoverage\n"
-				+ "i:emma:\n" + "  " + emma() + "\n" + "i:antJars:\n" + "  "
-				+ antJar() + "\n  " + antLauncherJar() + "\n"
-				+ "p:mainClass:\n" + "  Hello\n" + "p:mainClassArguments:\n"
-				+ "  arg1\n" + "  arg2\n" + "i:mainClassArgumentsFile:\n"
-				+ " null\n" + "i:classpath:\n"
-				+ "  instrtest-classes.emma-instr\n" + "p:jvmargs:\n"
-				+ "  -XX:-UseSplitVerifier\n" + "  -Demma.rt.control=false\n"
-				+ "", coverage.contentDescriptor());
+		assertEquals("net.sf.iwant.deprecated.emma.EmmaCoverage\n" + "i:emma:\n"
+				+ "  " + emma() + "\n" + "i:antJars:\n" + "  " + antJar()
+				+ "\n  " + antLauncherJar() + "\n" + "p:mainClass:\n"
+				+ "  Hello\n" + "p:mainClassArguments:\n" + "  arg1\n"
+				+ "  arg2\n" + "i:mainClassArgumentsFile:\n" + " null\n"
+				+ "i:classpath:\n" + "  instrtest-classes.emma-instr\n"
+				+ "p:jvmargs:\n" + "  -XX:-UseSplitVerifier\n"
+				+ "  -Demma.rt.control=false\n" + "",
+				coverage.contentDescriptor());
 	}
 
 	public void testJvmArgsContainsSaneDefaultsIfNotSpecified()
@@ -369,8 +371,8 @@ public class EmmaCoverageTest extends IwantTestCase {
 		aTestJava.append("public class ATest {\n");
 		aTestJava.append("  @Test\n");
 		aTestJava.append("  public void a() {\n");
-		aTestJava
-				.append("    assertEquals(\"hello ATest\", A.hello(\"ATest\"));\n");
+		aTestJava.append(
+				"    assertEquals(\"hello ATest\", A.hello(\"ATest\"));\n");
 		aTestJava.append("  }\n");
 		aTestJava.append("}\n");
 		Iwant.newTextFile(new File(testsDir, "ATest.java"),
@@ -382,8 +384,8 @@ public class EmmaCoverageTest extends IwantTestCase {
 		bTestJava.append("public class BTest {\n");
 		bTestJava.append("  @Test\n");
 		bTestJava.append("  public void b() {\n");
-		bTestJava
-				.append("    assertEquals(\"hello BTest\", A.hello(\"BTest\"));\n");
+		bTestJava.append(
+				"    assertEquals(\"hello BTest\", A.hello(\"BTest\"));\n");
 		bTestJava.append("  }\n");
 		bTestJava.append("}\n");
 		Iwant.newTextFile(new File(testsDir, "BTest.java"),
@@ -408,13 +410,12 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.name("test-class-names").classes(testClasses).end();
 		testClassNames.path(ctx);
 
-		EmmaCoverage coverage = EmmaCoverage
-				.with()
+		EmmaCoverage coverage = EmmaCoverage.with()
 				.name("instrtest-emma-coverage")
-				.antJars(antJar(), antLauncherJar())
-				.emma(emma())
+				.antJars(antJar(), antLauncherJar()).emma(emma())
 				.mainClassAndArguments("org.junit.runner.JUnitCore",
-						testClassNames).instrumentations(instr)
+						testClassNames)
+				.instrumentations(instr)
 				.nonInstrumentedClasses(testClasses, junit()).end();
 		coverage.path(ctx);
 

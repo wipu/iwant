@@ -3,27 +3,25 @@ package net.sf.iwant.plugin.jacoco;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 
-import org.apache.commons.io.FileUtils;
-
 public class JacocoInstrumentationTest extends JacocoTestBase {
 
 	public void testNameIsDerivedFromTheNameOfJavaClassesAndSourcesPair()
 			throws IOException {
-		assertEquals(
-				"one.jacoco-instr",
+		assertEquals("one.jacoco-instr",
 				JacocoInstrumentation.of(Source.underWsroot("one"))
-						.using(jacoco(), antJar(), antLauncherJar())
-						.with(asm()).name());
-		assertEquals(
-				"two.jacoco-instr",
+						.using(jacoco(), antJar(), antLauncherJar()).with(asm())
+						.name());
+		assertEquals("two.jacoco-instr",
 				JacocoInstrumentation.of(Source.underWsroot("two"))
-						.using(jacoco(), antJar(), antLauncherJar())
-						.with(asm()).name());
+						.using(jacoco(), antJar(), antLauncherJar()).with(asm())
+						.name());
 	}
 
 	public void testIngredients() throws IOException {
@@ -31,24 +29,23 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 				"[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
 						+ antLauncherJar() + ", classes]",
 				JacocoInstrumentation.of(Source.underWsroot("classes"))
-						.using(jacoco(), antJar(), antLauncherJar())
-						.with(asm()).ingredients().toString());
+						.using(jacoco(), antJar(), antLauncherJar()).with(asm())
+						.ingredients().toString());
 	}
 
 	public void testContentDescriptor() throws IOException {
-		assertEquals(
-				"net.sf.iwant.plugin.jacoco.JacocoInstrumentation\n"
-						+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n"
-						+ "i:deps:\n" + "  " + asm() + "\ni:antJars:\n" + "  "
-						+ antJar() + "\n  " + antLauncherJar()
-						+ "\ni:classes:\n" + "  classes\n" + "",
+		assertEquals("net.sf.iwant.plugin.jacoco.JacocoInstrumentation\n"
+				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
+				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+				+ antLauncherJar() + "\ni:classes:\n" + "  classes\n" + "",
 				JacocoInstrumentation.of(Source.underWsroot("classes"))
-						.using(jacoco(), antJar(), antLauncherJar())
-						.with(asm()).contentDescriptor());
+						.using(jacoco(), antJar(), antLauncherJar()).with(asm())
+						.contentDescriptor());
 	}
 
 	public void testInstrumentationCreatesAModifiedClass() throws Exception {
-		wsRootHasFile("src/pak/Foo.java", "package pak;\npublic class Foo {}\n");
+		wsRootHasFile("src/pak/Foo.java",
+				"package pak;\npublic class Foo {}\n");
 		JavaClasses classes = JavaClasses.with().name("classes")
 				.srcDirs(Source.underWsroot("src")).end();
 		classes.path(ctx);

@@ -7,14 +7,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.types.FileSet;
+
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sourceforge.pmd.cpd.CPDTask;
-
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.FileSet;
 
 public class CopyPasteReport extends TargetBase {
 

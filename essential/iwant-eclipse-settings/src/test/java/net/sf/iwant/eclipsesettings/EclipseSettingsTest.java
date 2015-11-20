@@ -66,9 +66,10 @@ public class EclipseSettingsTest extends IwantTestCase {
 	}
 
 	public void testMutationUsingWsdefdefAndWsdefAndAnotherModuleUsedByWsdef() {
-		JavaModule iwantClasses = JavaBinModule.providing(
-				TargetMock.ingredientless("iwant-classes"),
-				TargetMock.ingredientless("combined-iwant-sources")).end();
+		JavaModule iwantClasses = JavaBinModule
+				.providing(TargetMock.ingredientless("iwant-classes"),
+						TargetMock.ingredientless("combined-iwant-sources"))
+				.end();
 		JavaModule wsdefdef = JavaSrcModule.with().name("test-wsdefdef")
 				.locationUnderWsRoot("as-someone/i-have/wsdefdef")
 				.mainJava("src/main/java").mainDeps(iwantClasses).end();
@@ -122,14 +123,15 @@ public class EclipseSettingsTest extends IwantTestCase {
 
 		es.mutate(seCtx);
 
-		assertFalse(contentOfFileUnderWsRoot("any/.classpath").contains(
-				"<classpathentry kind=\"src\" "));
+		assertFalse(contentOfFileUnderWsRoot("any/.classpath")
+				.contains("<classpathentry kind=\"src\" "));
 	}
 
 	public void testTestJavaAndTestDepsAffectDotClasspath() {
-		JavaModule testTools1 = JavaBinModule.providing(
-				TargetMock.ingredientless("test-tools-1"),
-				TargetMock.ingredientless("test-tools-1-src")).end();
+		JavaModule testTools1 = JavaBinModule
+				.providing(TargetMock.ingredientless("test-tools-1"),
+						TargetMock.ingredientless("test-tools-1-src"))
+				.end();
 		JavaModule testTools2 = JavaBinModule.providing(
 				TargetMock.ingredientless("test-tools-2-srcless"), null).end();
 
@@ -137,8 +139,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 				.locationUnderWsRoot("mod1").mainJava("src").testJava("tests1")
 				.testDeps(testTools1).end();
 		JavaModule mod2 = JavaSrcModule.with().name("mod2")
-				.locationUnderWsRoot("mod2").mainJava("src2")
-				.testJava("tests2").testDeps(testTools2).end();
+				.locationUnderWsRoot("mod2").mainJava("src2").testJava("tests2")
+				.testDeps(testTools2).end();
 		wsRootHasDirectory("mod1");
 		wsRootHasDirectory("mod2");
 
@@ -163,20 +165,23 @@ public class EclipseSettingsTest extends IwantTestCase {
 
 	public void testSetOfAllMainAndTestDependencyBinaryClassesAndSourcesGetsRefreshedSoEclipseWontComplainAboutMissingRefs() {
 		// 2 modules depend on this, but it's mentioned only once in refs:
-		JavaModule binWithoutSources = JavaBinModule.providing(
-				TargetMock.ingredientless("binWithoutSources")).end();
+		JavaModule binWithoutSources = JavaBinModule
+				.providing(TargetMock.ingredientless("binWithoutSources"))
+				.end();
 		// sources of this shall also be refreshed, they are dynamic:
-		JavaModule binWithSources = JavaBinModule.providing(
-				TargetMock.ingredientless("binWithSources"),
-				TargetMock.ingredientless("binWithSources-src")).end();
+		JavaModule binWithSources = JavaBinModule
+				.providing(TargetMock.ingredientless("binWithSources"),
+						TargetMock.ingredientless("binWithSources-src"))
+				.end();
 		// source dep shall not be refreshed, eclipse can do that by itself:
 		JavaSrcModule srcDep = JavaSrcModule.with().name("srcDep")
 				.locationUnderWsRoot("srcDep").mainJava("src")
 				.mainDeps(binWithoutSources).end();
 		// not only main, but test deps also:
-		JavaModule testUtilWithSources = JavaBinModule.providing(
-				TargetMock.ingredientless("testUtilWithSources"),
-				TargetMock.ingredientless("testUtilWithSources-src")).end();
+		JavaModule testUtilWithSources = JavaBinModule
+				.providing(TargetMock.ingredientless("testUtilWithSources"),
+						TargetMock.ingredientless("testUtilWithSources-src"))
+				.end();
 		JavaModule mod = JavaSrcModule.with().name("mod")
 				.locationUnderWsRoot("mod").mainJava("src").testJava("test")
 				.mainDeps(binWithoutSources, binWithSources, srcDep)
@@ -187,52 +192,52 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		assertEquals(1, seCtx.targetsWantedAsPath().size());
-		assertEquals("net.sf.iwant.api.core.Concatenated\n"
-				+ "i:native-path:\n" + "  testUtilWithSources\n"
+		assertEquals("net.sf.iwant.api.core.Concatenated\n" + "i:native-path:\n"
+				+ "  testUtilWithSources\n" + "p:string:\n" + "  \\n\n"
+				+ "i:native-path:\n" + "  testUtilWithSources-src\n"
 				+ "p:string:\n" + "  \\n\n" + "i:native-path:\n"
-				+ "  testUtilWithSources-src\n" + "p:string:\n" + "  \\n\n"
-				+ "i:native-path:\n" + "  binWithoutSources\n" + "p:string:\n"
-				+ "  \\n\n" + "i:native-path:\n" + "  binWithSources\n"
-				+ "p:string:\n" + "  \\n\n" + "i:native-path:\n"
-				+ "  binWithSources-src\n" + "p:string:\n" + "  \\n\n" + "",
+				+ "  binWithoutSources\n" + "p:string:\n" + "  \\n\n"
+				+ "i:native-path:\n" + "  binWithSources\n" + "p:string:\n"
+				+ "  \\n\n" + "i:native-path:\n" + "  binWithSources-src\n"
+				+ "p:string:\n" + "  \\n\n" + "",
 				seCtx.targetsWantedAsPath().get(0).contentDescriptor());
 	}
 
 	public void testClasspathIsGeneratedButWithWarningIfRefreshOfDepsFails() {
-		JavaModule util = JavaBinModule.providing(
-				TargetMock.ingredientless("util"),
-				TargetMock.ingredientless("util-src")).end();
+		JavaModule util = JavaBinModule
+				.providing(TargetMock.ingredientless("util"),
+						TargetMock.ingredientless("util-src"))
+				.end();
 		JavaModule mod = JavaSrcModule.with().name("mod")
 				.locationUnderWsRoot("mod").mainJava("src").mainDeps(util)
 				.end();
 
-		seCtx.shallFailIwantAsPathWith(new RuntimeException(
-				"compilation of util classes failed"));
+		seCtx.shallFailIwantAsPathWith(
+				new RuntimeException("compilation of util classes failed"));
 		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
 				.end();
 		es.mutate(seCtx);
 
 		assertEquals(1, seCtx.targetsWantedAsPath().size());
-		assertEquals("net.sf.iwant.api.core.Concatenated\n"
-				+ "i:native-path:\n" + "  util\n" + "p:string:\n" + "  \\n\n"
-				+ "i:native-path:\n" + "  util-src\n" + "p:string:\n"
-				+ "  \\n\n" + "", seCtx.targetsWantedAsPath().get(0)
-				.contentDescriptor());
+		assertEquals("net.sf.iwant.api.core.Concatenated\n" + "i:native-path:\n"
+				+ "  util\n" + "p:string:\n" + "  \\n\n" + "i:native-path:\n"
+				+ "  util-src\n" + "p:string:\n" + "  \\n\n" + "",
+				seCtx.targetsWantedAsPath().get(0).contentDescriptor());
 
 		assertDotClasspathContains("mod",
 				"<classpathentry kind=\"lib\" path=\"" + slashed(cacheDir)
 						+ "/util\" sourcepath=\"" + slashed(cacheDir)
 						+ "/util-src\"/>");
-		assertEquals(
-				"WARNING: Refresh of eclipse settings references failed:\n"
-						+ "java.lang.RuntimeException: compilation of util classes failed\n"
-						+ "", seCtx.err().toString());
+		assertEquals("WARNING: Refresh of eclipse settings references failed:\n"
+				+ "java.lang.RuntimeException: compilation of util classes failed\n"
+				+ "", seCtx.err().toString());
 	}
 
 	public void testNameOfBinDepRefreshTarget() {
-		JavaModule util = JavaBinModule.providing(
-				TargetMock.ingredientless("util"),
-				TargetMock.ingredientless("util-src")).end();
+		JavaModule util = JavaBinModule
+				.providing(TargetMock.ingredientless("util"),
+						TargetMock.ingredientless("util-src"))
+				.end();
 		JavaModule mod = JavaSrcModule.with().name("mod")
 				.locationUnderWsRoot("mod").mainJava("src").mainDeps(util)
 				.end();
@@ -282,8 +287,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 				.locationUnderWsRoot("mod-with-all").mavenLayout().end();
 		JavaModule modWithNone = JavaSrcModule.with().name("mod-with-none")
 				.locationUnderWsRoot("mod-with-all").end();
-		JavaBinModule binToBeExcluded = JavaBinModule.providing(
-				Source.underWsroot("bin")).end();
+		JavaBinModule binToBeExcluded = JavaBinModule
+				.providing(Source.underWsroot("bin")).end();
 
 		EclipseSettings es = EclipseSettings.with()
 				.modules(modWithAll, modWithNone, binToBeExcluded).name("es")
@@ -291,22 +296,25 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		assertFalse(new File(wsRoot, "mod-with-none/src/main/java").exists());
-		assertFalse(new File(wsRoot, "mod-with-none/src/main/resources")
-				.exists());
+		assertFalse(
+				new File(wsRoot, "mod-with-none/src/main/resources").exists());
 		assertFalse(new File(wsRoot, "mod-with-none/src/test/java").exists());
-		assertFalse(new File(wsRoot, "mod-with-none/src/test/resources")
-				.exists());
+		assertFalse(
+				new File(wsRoot, "mod-with-none/src/test/resources").exists());
 
 		assertTrue(new File(wsRoot, "mod-with-all/src/main/java").exists());
-		assertTrue(new File(wsRoot, "mod-with-all/src/main/resources").exists());
+		assertTrue(
+				new File(wsRoot, "mod-with-all/src/main/resources").exists());
 		assertTrue(new File(wsRoot, "mod-with-all/src/test/java").exists());
-		assertTrue(new File(wsRoot, "mod-with-all/src/test/resources").exists());
+		assertTrue(
+				new File(wsRoot, "mod-with-all/src/test/resources").exists());
 	}
 
 	public void testTestRuntimeDepenencyGoesToDotClasspath() {
-		JavaModule rtBinTool = JavaBinModule.providing(
-				TargetMock.ingredientless("rtBinTool"),
-				TargetMock.ingredientless("rtBinTool-src")).end();
+		JavaModule rtBinTool = JavaBinModule
+				.providing(TargetMock.ingredientless("rtBinTool"),
+						TargetMock.ingredientless("rtBinTool-src"))
+				.end();
 
 		JavaModule rtSrcTool = JavaSrcModule.with().name("rtSrcTool")
 				.locationUnderWsRoot("rtSrcTool").mainJava("src").end();
@@ -324,8 +332,7 @@ public class EclipseSettingsTest extends IwantTestCase {
 				"<classpathentry kind=\"lib\" path=\"" + slashed(cacheDir)
 						+ "/rtBinTool\" sourcepath=\"" + slashed(cacheDir)
 						+ "/rtBinTool-src\"/>");
-		assertDotClasspathContains(
-				"mod",
+		assertDotClasspathContains("mod",
 				"<classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/rtSrcTool\"/>");
 	}
 

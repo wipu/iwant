@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
@@ -15,8 +17,6 @@ import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.core.ant.AntGenerated;
-
-import org.apache.commons.io.FileUtils;
 
 public class FindbugsReport extends TargetBase {
 
@@ -28,9 +28,9 @@ public class FindbugsReport extends TargetBase {
 	private final FindbugsOutputFormat outputFormat;
 
 	public FindbugsReport(String name,
-			List<JavaClassesAndSources> classesToAnalyze,
-			List<Path> auxClasses, FindbugsDistribution findbugs, Path antJar,
-			Path antLauncherJar, FindbugsOutputFormat outputFormat) {
+			List<JavaClassesAndSources> classesToAnalyze, List<Path> auxClasses,
+			FindbugsDistribution findbugs, Path antJar, Path antLauncherJar,
+			FindbugsOutputFormat outputFormat) {
 		super(name);
 		this.classesToAnalyze = classesToAnalyze;
 		this.auxClasses = auxClasses;
@@ -123,7 +123,8 @@ public class FindbugsReport extends TargetBase {
 			return this;
 		}
 
-		public FindbugsReportSpex outputFormat(FindbugsOutputFormat outputFormat) {
+		public FindbugsReportSpex outputFormat(
+				FindbugsOutputFormat outputFormat) {
 			this.outputFormat = outputFormat;
 			return this;
 		}
@@ -167,29 +168,35 @@ public class FindbugsReport extends TargetBase {
 	}
 
 	private String antScript(TargetEvaluationContext ctx) {
-		String findbugsHomeString = ctx.iwant().pathWithoutBackslashes(
-				findbugs.homeDirectory(ctx));
+		String findbugsHomeString = ctx.iwant()
+				.pathWithoutBackslashes(findbugs.homeDirectory(ctx));
 		String destString = ctx.iwant()
 				.pathWithoutBackslashes(ctx.cached(this));
 
 		StringBuilder xml = new StringBuilder();
-		xml.append("<project name=\"findbugs\" basedir=\".\" default=\"findbugs-report\">\n");
+		xml.append(
+				"<project name=\"findbugs\" basedir=\".\" default=\"findbugs-report\">\n");
 		xml.append("\n");
-		xml.append("    <!-- This is a generated file, don't edit manually. -->\n");
+		xml.append(
+				"    <!-- This is a generated file, don't edit manually. -->\n");
 		xml.append("\n");
 		xml.append("    <target name=\"findbugs-home\">\n");
 		xml.append("        <property name=\"findbugs-home\" location=\""
 				+ findbugsHomeString + "\" />\n");
 		xml.append("    </target>\n");
 		xml.append("\n");
-		xml.append("    <target name=\"findbugs-task-classpath\" depends=\"findbugs-home\">\n");
+		xml.append(
+				"    <target name=\"findbugs-task-classpath\" depends=\"findbugs-home\">\n");
 		xml.append("        <path id=\"findbugs-task-classpath\">\n");
-		xml.append("            <fileset dir=\"${findbugs-home}/lib\" includes=\"*.jar\" />\n");
+		xml.append(
+				"            <fileset dir=\"${findbugs-home}/lib\" includes=\"*.jar\" />\n");
 		xml.append("        </path>\n");
 		xml.append("    </target>\n");
 		xml.append("\n");
-		xml.append("    <target name=\"findbugs-report\" description=\"findbugs report of all code\" depends=\"findbugs-task-classpath, findbugs-home\">\n");
-		xml.append("        <taskdef name=\"findbugs\" classname=\"edu.umd.cs.findbugs.anttask.FindBugsTask\" classpathref=\"findbugs-task-classpath\" />\n");
+		xml.append(
+				"    <target name=\"findbugs-report\" description=\"findbugs report of all code\" depends=\"findbugs-task-classpath, findbugs-home\">\n");
+		xml.append(
+				"        <taskdef name=\"findbugs\" classname=\"edu.umd.cs.findbugs.anttask.FindBugsTask\" classpathref=\"findbugs-task-classpath\" />\n");
 		xml.append("        <property name=\"findbugs-report\" location=\""
 				+ destString + "/findbugs-report\" />\n");
 		xml.append("        <delete dir=\"${findbugs-report}\" />\n");
@@ -201,12 +208,14 @@ public class FindbugsReport extends TargetBase {
 
 		for (JavaClassesAndSources cs : classesToAnalyze) {
 			xml.append("            <class location=\"")
-					.append(ctx.iwant().pathWithoutBackslashes(
-							ctx.cached(cs.classes()))).append("\" />\n");
+					.append(ctx.iwant()
+							.pathWithoutBackslashes(ctx.cached(cs.classes())))
+					.append("\" />\n");
 			for (Path src : cs.sources()) {
 				xml.append("            <sourcepath path=\"")
-						.append(ctx.iwant().pathWithoutBackslashes(
-								ctx.cached(src))).append("\" />\n");
+						.append(ctx.iwant()
+								.pathWithoutBackslashes(ctx.cached(src)))
+						.append("\" />\n");
 			}
 		}
 		for (Path aux : auxClasses) {

@@ -20,8 +20,8 @@ public class WsInfoTest extends TestCase {
 	}
 
 	private WsInfo newWsInfo() throws IOException {
-		return new WsInfoFileImpl(new StringReader(in.toString()), new File(
-				"/project/as-test/i-have/conf/wsinfo"), asSomeone);
+		return new WsInfoFileImpl(new StringReader(in.toString()),
+				new File("/project/as-test/i-have/conf/wsinfo"), asSomeone);
 	}
 
 	public void testEmpty() throws IOException {
@@ -41,7 +41,8 @@ public class WsInfoTest extends TestCase {
 	public void testMissingWsname() throws IOException {
 		in.append("WSROOT=../../..\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
-		in.append("WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
+		in.append(
+				"WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 
 		try {
 			newWsInfo();
@@ -57,7 +58,8 @@ public class WsInfoTest extends TestCase {
 	public void testMissingWsroot() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
-		in.append("WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
+		in.append(
+				"WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 
 		try {
 			newWsInfo();
@@ -73,7 +75,8 @@ public class WsInfoTest extends TestCase {
 	public void testMissingWsdefdefModule() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
-		in.append("WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
+		in.append(
+				"WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 
 		try {
 			newWsInfo();
@@ -106,7 +109,8 @@ public class WsInfoTest extends TestCase {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
-		in.append("WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
+		in.append(
+				"WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 		asSomeone = new File("/different-project/as-test");
 
 		try {
@@ -123,21 +127,23 @@ public class WsInfoTest extends TestCase {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
-		in.append("WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
+		in.append(
+				"WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n");
 
 		WsInfo wsInfo = newWsInfo();
 
 		assertEquals("example", wsInfo.wsName());
 		assertEquals("/project", wsInfo.wsRoot().toString());
-		assertEquals("/project/as-test/i-have/wsdef", wsInfo.wsdefdefModule()
-				.getCanonicalPath());
-		assertEquals("/project/as-test/i-have/wsdef/src/main/java", wsInfo
-				.wsdefdefSrc().getCanonicalPath());
+		assertEquals("/project/as-test/i-have/wsdef",
+				wsInfo.wsdefdefModule().getCanonicalPath());
+		assertEquals("/project/as-test/i-have/wsdef/src/main/java",
+				wsInfo.wsdefdefSrc().getCanonicalPath());
 		assertEquals("com.example.wsdefdef.ExampleWorkspaceProvider",
 				wsInfo.wsdefdefClass());
-		assertEquals("/project/as-test/i-have/wsdef/src/main/java/"
-				+ "com/example/wsdefdef/ExampleWorkspaceProvider.java", wsInfo
-				.wsdefdefJava().toString());
+		assertEquals(
+				"/project/as-test/i-have/wsdef/src/main/java/"
+						+ "com/example/wsdefdef/ExampleWorkspaceProvider.java",
+				wsInfo.wsdefdefJava().toString());
 		assertEquals("com.example.wsdefdef", wsInfo.wsdefdefPackage());
 		assertEquals("ExampleWorkspaceProvider",
 				wsInfo.wsdefdefClassSimpleName());
@@ -149,20 +155,22 @@ public class WsInfoTest extends TestCase {
 		in.append("WSNAME=example2\n");
 		in.append("WSROOT=../../../wsroot\n");
 		in.append("WSDEFDEF_MODULE=../../../wsroot/wsdefinition\n");
-		in.append("WSDEFDEF_CLASS=com.example2.wsdefdef.Example2WorkspaceProvider\n");
+		in.append(
+				"WSDEFDEF_CLASS=com.example2.wsdefdef.Example2WorkspaceProvider\n");
 
 		WsInfo wsInfo = newWsInfo();
 
 		assertEquals("example2", wsInfo.wsName());
 		assertEquals("/project/wsroot", wsInfo.wsRoot().getCanonicalPath());
-		assertEquals("/project/wsroot/wsdefinition", wsInfo.wsdefdefModule()
-				.toString());
-		assertEquals("/project/wsroot/wsdefinition/src/main/java", wsInfo
-				.wsdefdefSrc().toString());
+		assertEquals("/project/wsroot/wsdefinition",
+				wsInfo.wsdefdefModule().toString());
+		assertEquals("/project/wsroot/wsdefinition/src/main/java",
+				wsInfo.wsdefdefSrc().toString());
 		assertEquals("com.example2.wsdefdef.Example2WorkspaceProvider",
 				wsInfo.wsdefdefClass());
-		assertEquals("/project/wsroot/wsdefinition/src/main/java/"
-				+ "com/example2/wsdefdef/Example2WorkspaceProvider.java",
+		assertEquals(
+				"/project/wsroot/wsdefinition/src/main/java/"
+						+ "com/example2/wsdefdef/Example2WorkspaceProvider.java",
 				wsInfo.wsdefdefJava().toString());
 		assertEquals("com.example2.wsdefdef", wsInfo.wsdefdefPackage());
 		assertEquals("Example2WorkspaceProvider",

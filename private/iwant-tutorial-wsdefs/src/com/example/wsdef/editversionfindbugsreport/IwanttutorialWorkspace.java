@@ -27,21 +27,22 @@ public class IwanttutorialWorkspace implements Workspace {
 	@Override
 	public List<? extends SideEffect> sideEffects(
 			SideEffectDefinitionContext ctx) {
-		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")
-				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())
-				.modules(findbugsfodder()).end());
+		return Arrays
+				.asList(EclipseSettings.with().name("eclipse-settings")
+						.modules(ctx.wsdefdefJavaModule(),
+								ctx.wsdefJavaModule())
+						.modules(findbugsfodder()).end());
 	}
 
 	private static Target mainJavaFindbugsReportOf(JavaSrcModule mod) {
-		return FindbugsReport
-				.with()
+		return FindbugsReport.with()
 				.name(mod.name() + "-main-java-findbugs-report")
 				.using(FindbugsDistribution.ofVersion("3.0.0"),
 						TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar())
-				.classesToAnalyze(
-						new JavaClassesAndSources(mod.mainArtifact(), mod
-								.mainJavasAsPaths())).end();
+				.classesToAnalyze(new JavaClassesAndSources(mod.mainArtifact(),
+						mod.mainJavasAsPaths()))
+				.end();
 	}
 
 	private static JavaSrcModule findbugsfodder() {

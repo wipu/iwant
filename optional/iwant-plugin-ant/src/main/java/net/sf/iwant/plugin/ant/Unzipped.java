@@ -5,11 +5,11 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.tools.ant.taskdefs.Expand;
+
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
-
-import org.apache.tools.ant.taskdefs.Expand;
 
 public class Unzipped extends Target {
 

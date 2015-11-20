@@ -3,11 +3,11 @@ package net.sf.iwant.plugin.ant;
 import java.io.File;
 import java.io.InputStream;
 
+import org.apache.tools.ant.Project;
+
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
-
-import org.apache.tools.ant.Project;
 
 public class Jar extends TargetBase {
 
@@ -71,8 +71,8 @@ public class Jar extends TargetBase {
 		jar.setProject(project);
 
 		File cachedClasses = ctx.cached(classes);
-		File baseDir = classesSubDirectory == null ? cachedClasses : new File(
-				cachedClasses, classesSubDirectory);
+		File baseDir = classesSubDirectory == null ? cachedClasses
+				: new File(cachedClasses, classesSubDirectory);
 
 		jar.setBasedir(baseDir);
 		jar.setDestFile(ctx.cached(this));

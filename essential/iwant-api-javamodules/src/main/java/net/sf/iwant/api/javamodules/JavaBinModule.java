@@ -39,7 +39,8 @@ public abstract class JavaBinModule extends JavaModule {
 	public static IwantBinModuleSpex likeBinUnderLibs(JavaBinModule mod) {
 		ProvidedBySrcModule m = (ProvidedBySrcModule) mod;
 		IwantBinModuleSpex clone = named(m.name());
-		for (Class<? extends JavaModuleCharacteristic> c : m.characteristics()) {
+		for (Class<? extends JavaModuleCharacteristic> c : m
+				.characteristics()) {
 			clone.has(c);
 		}
 		clone.inside(m.libsModule);
@@ -51,7 +52,8 @@ public abstract class JavaBinModule extends JavaModule {
 	public static PathProviderSpex likePathProvider(JavaBinModule mod) {
 		PathProvider m = (PathProvider) mod;
 		PathProviderSpex clone = providing(mod.mainArtifact(), mod.source());
-		for (Class<? extends JavaModuleCharacteristic> c : m.characteristics()) {
+		for (Class<? extends JavaModuleCharacteristic> c : m
+				.characteristics()) {
 			clone.has(c);
 		}
 		clone.runtimeDeps(m.mainDepsForRunOnly());
@@ -179,8 +181,8 @@ public abstract class JavaBinModule extends JavaModule {
 
 		@Override
 		public Path mainArtifact() {
-			return Source.underWsroot(libsModule.locationUnderWsRoot() + "/"
-					+ name());
+			return Source.underWsroot(
+					libsModule.locationUnderWsRoot() + "/" + name());
 		}
 
 		@Override
@@ -188,8 +190,8 @@ public abstract class JavaBinModule extends JavaModule {
 			if (srcZip == null) {
 				return null;
 			}
-			return Source.underWsroot(libsModule.locationUnderWsRoot() + "/"
-					+ srcZip);
+			return Source.underWsroot(
+					libsModule.locationUnderWsRoot() + "/" + srcZip);
 		}
 
 	}

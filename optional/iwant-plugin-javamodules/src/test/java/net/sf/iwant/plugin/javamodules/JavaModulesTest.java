@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.Test;
+
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaCompliance;
@@ -13,8 +15,6 @@ import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.core.download.Downloaded;
-
-import org.junit.Test;
 
 public class JavaModulesTest {
 
@@ -111,12 +111,13 @@ public class JavaModulesTest {
 		}
 		Mods m = new Mods();
 
-		assertEquals("[commons-io-2.4.jar]", m.src.mainDepsForCompilation()
-				.toString());
+		assertEquals("[commons-io-2.4.jar]",
+				m.src.mainDepsForCompilation().toString());
 		Downloaded binArtifact = (Downloaded) m.bin.mainArtifact();
-		assertEquals("http://repo1.maven.org/maven2/commons-io/"
-				+ "commons-io/2.4/commons-io-2.4.jar", binArtifact.url()
-				.toString());
+		assertEquals(
+				"http://repo1.maven.org/maven2/commons-io/"
+						+ "commons-io/2.4/commons-io-2.4.jar",
+				binArtifact.url().toString());
 	}
 
 	@Test
@@ -131,18 +132,15 @@ public class JavaModulesTest {
 
 		List<Path> mas = JavaModules.mainArtifactsOf(m.bin, m.src, m.onlyTests);
 		assertEquals(2, mas.size());
-		assertEquals(
-				"net.sf.iwant.core.download.Downloaded\n"
-						+ "p:url:\n"
-						+ "  http://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar\n"
-						+ "p:md5:\n" + " null\n" + "", descr(mas.get(0)));
+		assertEquals("net.sf.iwant.core.download.Downloaded\n" + "p:url:\n"
+				+ "  http://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar\n"
+				+ "p:md5:\n" + " null\n" + "", descr(mas.get(0)));
 		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
-				+ "i:srcDirs:\n" + "  mod/src/main/java\n"
-				+ "i:resourceDirs:\n" + "  mod/src/main/resources\n"
-				+ "i:classLocations:\n" + "  commons-io-2.4.jar\n"
-				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
-				+ "  -source\n" + "  1.8\n" + "  -g\n" + "p:encoding:\n"
-				+ " null\n" + "", descr(mas.get(1)));
+				+ "i:srcDirs:\n" + "  mod/src/main/java\n" + "i:resourceDirs:\n"
+				+ "  mod/src/main/resources\n" + "i:classLocations:\n"
+				+ "  commons-io-2.4.jar\n" + "p:javacOptions:\n" + "  -Xlint\n"
+				+ "  -Xlint:-serial\n" + "  -source\n" + "  1.8\n" + "  -g\n"
+				+ "p:encoding:\n" + " null\n" + "", descr(mas.get(1)));
 		// test only module has no main artifact
 	}
 
@@ -181,20 +179,24 @@ public class JavaModulesTest {
 		List<Path> tas = JavaModules.testArtifactsOf(m.bin, m.src, m.onlyMain,
 				m.onlyTests);
 		assertEquals(2, tas.size());
-		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
-				+ "i:srcDirs:\n" + "  mod/src/test/java\n"
-				+ "i:resourceDirs:\n" + "  mod/src/test/resources\n"
-				+ "i:classLocations:\n" + "  mod-main-classes\n"
-				+ "  commons-io-2.4.jar\n" + "p:javacOptions:\n" + "  -Xlint\n"
-				+ "  -Xlint:-serial\n" + "  -source\n" + "  1.8\n" + "  -g\n"
-				+ "p:encoding:\n" + " null\n" + "", descr(tas.get(0)));
-		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
-				+ "i:srcDirs:\n" + "  only-tests/src/test/java\n"
-				+ "i:resourceDirs:\n" + "  only-tests/src/test/resources\n"
-				+ "i:classLocations:\n" + "  only-main-main-classes\n"
-				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
-				+ "  -source\n" + "  1.8\n" + "  -g\n" + "p:encoding:\n"
-				+ " null\n" + "", descr(tas.get(1)));
+		assertEquals(
+				"net.sf.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
+						+ "  mod/src/test/java\n" + "i:resourceDirs:\n"
+						+ "  mod/src/test/resources\n" + "i:classLocations:\n"
+						+ "  mod-main-classes\n" + "  commons-io-2.4.jar\n"
+						+ "p:javacOptions:\n" + "  -Xlint\n"
+						+ "  -Xlint:-serial\n" + "  -source\n" + "  1.8\n"
+						+ "  -g\n" + "p:encoding:\n" + " null\n" + "",
+				descr(tas.get(0)));
+		assertEquals(
+				"net.sf.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
+						+ "  only-tests/src/test/java\n" + "i:resourceDirs:\n"
+						+ "  only-tests/src/test/resources\n"
+						+ "i:classLocations:\n" + "  only-main-main-classes\n"
+						+ "p:javacOptions:\n" + "  -Xlint\n"
+						+ "  -Xlint:-serial\n" + "  -source\n" + "  1.8\n"
+						+ "  -g\n" + "p:encoding:\n" + " null\n" + "",
+				descr(tas.get(1)));
 		// bin and main only have no test artifact
 	}
 
@@ -216,9 +218,11 @@ public class JavaModulesTest {
 		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
 				+ "  mod-test-classes\n" + "p:classesSubDirectory:\n"
 				+ " null\n" + "", descr(jars.get(0)));
-		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
-				+ "  only-tests-test-classes\n" + "p:classesSubDirectory:\n"
-				+ " null\n" + "", descr(jars.get(1)));
+		assertEquals(
+				"net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
+						+ "  only-tests-test-classes\n"
+						+ "p:classesSubDirectory:\n" + " null\n" + "",
+				descr(jars.get(1)));
 		// bin and main only have no test artifact
 	}
 

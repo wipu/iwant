@@ -31,18 +31,17 @@ public class WarTest extends IwantTestCase {
 				.basedir(Source.underWsroot("empty-basedir"))
 				.webXml(Source.underWsroot("web.xml")).end();
 
-		assertEquals("net.sf.iwant.plugin.war.War {\n"
-				+ "  basedir:empty-basedir\n" + "  webxml:web.xml\n"
-				+ "  excludes {\n" + "  }\n" + "  libs {\n" + "  }\n"
-				+ "  classes {\n" + "  }\n" + "  resources {\n" + "  }\n"
-				+ "}\n" + "", war.contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.plugin.war.War {\n" + "  basedir:empty-basedir\n"
+						+ "  webxml:web.xml\n" + "  excludes {\n" + "  }\n"
+						+ "  libs {\n" + "  }\n" + "  classes {\n" + "  }\n"
+						+ "  resources {\n" + "  }\n" + "}\n" + "",
+				war.contentDescriptor());
 		assertEquals("[empty-basedir, web.xml]", war.ingredients().toString());
 	}
 
 	public void testIngredientsAndDescriptorOfWarWithFullFeatures() {
-		War war = War
-				.with()
-				.name("test.war")
+		War war = War.with().name("test.war")
 				.basedir(Source.underWsroot("empty-basedir"))
 				.exclude("exclude1", "exclude2")
 				.webXml(Source.underWsroot("confs"), "web.xml")
@@ -51,23 +50,26 @@ public class WarTest extends IwantTestCase {
 				.resourceDirectories(Source.underWsroot("res1"),
 						Source.underWsroot("res2"))
 				.libs(Source.underWsroot("lib/a.jar"),
-						Source.underWsroot("lib/b.jar")).end();
+						Source.underWsroot("lib/b.jar"))
+				.end();
 
-		assertEquals("net.sf.iwant.plugin.war.War {\n"
-				+ "  basedir:empty-basedir\n" + "  webxml:confs/web.xml\n"
-				+ "  excludes {\n" + "    exclude1\n" + "    exclude2\n"
-				+ "  }\n" + "  libs {\n" + "    lib/a.jar\n"
-				+ "    lib/b.jar\n" + "  }\n" + "  classes {\n"
-				+ "    classes1\n" + "    classes2\n" + "  }\n"
-				+ "  resources {\n" + "    res1\n" + "    res2\n" + "  }\n"
-				+ "}\n" + "", war.contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.plugin.war.War {\n" + "  basedir:empty-basedir\n"
+						+ "  webxml:confs/web.xml\n" + "  excludes {\n"
+						+ "    exclude1\n" + "    exclude2\n" + "  }\n"
+						+ "  libs {\n" + "    lib/a.jar\n" + "    lib/b.jar\n"
+						+ "  }\n" + "  classes {\n" + "    classes1\n"
+						+ "    classes2\n" + "  }\n" + "  resources {\n"
+						+ "    res1\n" + "    res2\n" + "  }\n" + "}\n" + "",
+				war.contentDescriptor());
 		assertEquals(
 				"[empty-basedir, confs, lib/a.jar, lib/b.jar, classes1, classes2, res1, res2]",
 				war.ingredients().toString());
 	}
 
 	public void testExplicitWebXml() throws Exception {
-		Source webXml = sourceWithContent("constant-web.xml", "web.xml content");
+		Source webXml = sourceWithContent("constant-web.xml",
+				"web.xml content");
 		File baseDir = new File(wsRoot, "empty-basedir");
 		baseDir.mkdirs();
 
@@ -78,8 +80,8 @@ public class WarTest extends IwantTestCase {
 
 		File tmp = newTmpDirWithUnzippedContentOf(war);
 
-		assertEquals("web.xml content", contentOf(new File(tmp,
-				"WEB-INF/web.xml")));
+		assertEquals("web.xml content",
+				contentOf(new File(tmp, "WEB-INF/web.xml")));
 	}
 
 	public void testWebXmlUnderGivenDirectory() throws Exception {
@@ -90,18 +92,17 @@ public class WarTest extends IwantTestCase {
 		File baseDir = new File(wsRoot, "empty-basedir");
 		baseDir.mkdirs();
 
-		War war = War
-				.with()
-				.name("test.war")
+		War war = War.with().name("test.war")
 				.basedir(Source.underWsroot("empty-basedir"))
 				.webXml(Source.underWsroot("generated-confs"),
-						"generated-web.xml").end();
+						"generated-web.xml")
+				.end();
 		war.path(ctx);
 
 		File tmp = newTmpDirWithUnzippedContentOf(war);
 
-		assertEquals("generated web.xml content", contentOf(new File(tmp,
-				"WEB-INF/web.xml")));
+		assertEquals("generated web.xml content",
+				contentOf(new File(tmp, "WEB-INF/web.xml")));
 	}
 
 	public void testNonEmptyBasedirWithFilesToExclude() throws Exception {
@@ -119,20 +120,19 @@ public class WarTest extends IwantTestCase {
 		Iwant.newTextFile(new File(wsRoot, "correct-web.xml"),
 				"web.xml content to use");
 
-		War war = War.with().name("test.war")
-				.basedir(Source.underWsroot("web"))
+		War war = War.with().name("test.war").basedir(Source.underWsroot("web"))
 				.webXml(Source.underWsroot("correct-web.xml"))
 				.exclude("WEB-INF/web.xml", "**/*exclude").end();
 		war.path(ctx);
 
 		File tmp = newTmpDirWithUnzippedContentOf(war);
 
-		assertEquals("web.xml content to use", contentOf(new File(tmp,
-				"WEB-INF/web.xml")));
+		assertEquals("web.xml content to use",
+				contentOf(new File(tmp, "WEB-INF/web.xml")));
 		assertEquals("index.html content",
 				contentOf(new File(tmp, "index.html")));
-		assertEquals("file.html content", contentOf(new File(tmp,
-				"subdir/file.html")));
+		assertEquals("file.html content",
+				contentOf(new File(tmp, "subdir/file.html")));
 
 		assertFalse(new File(tmp, "file-to-exclude").exists());
 		assertFalse(new File(tmp, "subdir/another-file-to-exclude").exists());
@@ -156,14 +156,14 @@ public class WarTest extends IwantTestCase {
 
 		File tmp = newTmpDirWithUnzippedContentOf(war);
 
-		assertEquals("a.jar content", contentOf(new File(tmp,
-				"WEB-INF/lib/a.jar")));
-		assertEquals("b.jar content", contentOf(new File(tmp,
-				"WEB-INF/lib/b.jar")));
-		assertEquals("A.class content", contentOf(new File(tmp,
-				"WEB-INF/classes/A.class")));
-		assertEquals("B.class content", contentOf(new File(tmp,
-				"WEB-INF/classes/B.class")));
+		assertEquals("a.jar content",
+				contentOf(new File(tmp, "WEB-INF/lib/a.jar")));
+		assertEquals("b.jar content",
+				contentOf(new File(tmp, "WEB-INF/lib/b.jar")));
+		assertEquals("A.class content",
+				contentOf(new File(tmp, "WEB-INF/classes/A.class")));
+		assertEquals("B.class content",
+				contentOf(new File(tmp, "WEB-INF/classes/B.class")));
 		assertEquals("a.txt content", contentOf(new File(tmp, "a.txt")));
 	}
 

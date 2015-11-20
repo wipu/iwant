@@ -91,8 +91,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 		};
 		services = new IwantCoreServicesImpl(iwant, testArea.root(), sysprops);
 
-		services.svnExported(new URL("http://localhost/an-url"), new File(
-				"an-file"));
+		services.svnExported(new URL("http://localhost/an-url"),
+				new File("an-file"));
 
 		assertEquals("[http://localhost/an-url]", urlsPassed.toString());
 		assertEquals("[an-file]", filesPassed.toString());

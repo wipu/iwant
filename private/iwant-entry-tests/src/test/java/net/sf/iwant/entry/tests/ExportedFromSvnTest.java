@@ -38,27 +38,23 @@ public class ExportedFromSvnTest extends TestCase {
 
 	public void testSubUrlOfFileSvnUrlWithoutRevision()
 			throws MalformedURLException {
-		assertEquals(
-				"file:/revless/url/optional/iwant-plugin-ant",
+		assertEquals("file:/revless/url/optional/iwant-plugin-ant",
 				Iwant.subUrlOfSvnUrl(new URL("file:///revless/url"),
 						"optional/iwant-plugin-ant").toExternalForm());
 	}
 
 	public void testSubUrlOfFileSvnUrlWithRevision()
 			throws MalformedURLException {
-		assertEquals(
-				"file:/local/url@123/optional/iwant-plugin-ant",
+		assertEquals("file:/local/url@123/optional/iwant-plugin-ant",
 				Iwant.subUrlOfSvnUrl(new URL("file:///local/url@123"),
 						"optional/iwant-plugin-ant").toExternalForm());
 	}
 
 	public void testSubUrlOfHttpsSvnUrlWithRevision()
 			throws MalformedURLException {
-		assertEquals(
-				"https://svn.code.sf.net/p/iwant/code/trunk/essential@687",
+		assertEquals("https://svn.code.sf.net/p/iwant/code/trunk/essential@687",
 				Iwant.subUrlOfSvnUrl(
-						new URL(
-								"https://svn.code.sf.net/p/iwant/code/trunk@687"),
+						new URL("https://svn.code.sf.net/p/iwant/code/trunk@687"),
 						"essential").toExternalForm());
 	}
 
@@ -73,9 +69,8 @@ public class ExportedFromSvnTest extends TestCase {
 		assertFalse(exported.equals(remote));
 		assertTrue(new File(exported, "iwant-entry2/src/main/java/"
 				+ "net/sf/iwant/entry2/Iwant2.java").exists());
-		assertTrue(new File(exported,
-				"iwant-entry/as-some-developer/with/java/"
-						+ "net/sf/iwant/entry/Iwant.java").exists());
+		assertTrue(new File(exported, "iwant-entry/as-some-developer/with/java/"
+				+ "net/sf/iwant/entry/Iwant.java").exists());
 	}
 
 	public void testExportIsDoneFromFileEvenWithoutReExportPermissionWhenLocalDoesNotExist() {
@@ -89,9 +84,8 @@ public class ExportedFromSvnTest extends TestCase {
 		assertFalse(exported.equals(remote));
 		assertTrue(new File(exported, "iwant-entry2/src/main/java/"
 				+ "net/sf/iwant/entry2/Iwant2.java").exists());
-		assertTrue(new File(exported,
-				"iwant-entry/as-some-developer/with/java/"
-						+ "net/sf/iwant/entry/Iwant.java").exists());
+		assertTrue(new File(exported, "iwant-entry/as-some-developer/with/java/"
+				+ "net/sf/iwant/entry/Iwant.java").exists());
 	}
 
 	public void testNothingIsExportedIfLocalFileExists() throws IOException {

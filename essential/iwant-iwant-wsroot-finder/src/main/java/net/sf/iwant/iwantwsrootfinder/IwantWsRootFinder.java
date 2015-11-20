@@ -6,8 +6,8 @@ public class IwantWsRootFinder {
 
 	public static File essential() {
 		try {
-			File marker = new File(IwantWsRootFinder.class.getResource(
-					"/iwant-wsroot-marker.txt").toURI());
+			File marker = new File(IwantWsRootFinder.class
+					.getResource("/iwant-wsroot-marker.txt").toURI());
 			return marker.getParentFile().getParentFile();
 		} catch (RuntimeException e) {
 			throw e;

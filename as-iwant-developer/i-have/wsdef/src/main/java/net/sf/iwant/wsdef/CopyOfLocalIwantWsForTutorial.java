@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
-
-import org.apache.commons.io.FileUtils;
 
 public class CopyOfLocalIwantWsForTutorial extends Target {
 
@@ -31,12 +31,12 @@ public class CopyOfLocalIwantWsForTutorial extends Target {
 	 * TODO reuse from somewhere
 	 */
 	private File findWsRoot() throws URISyntaxException {
-		File candidate = new File(getClass().getResource(
-				getClass().getSimpleName() + ".class").toURI());
+		File candidate = new File(getClass()
+				.getResource(getClass().getSimpleName() + ".class").toURI());
 		while (candidate.getParentFile() != null) {
 			if (new File(candidate,
 					"essential/iwant-wsroot-marker/iwant-wsroot-marker.txt")
-					.exists()) {
+							.exists()) {
 				return candidate;
 			}
 			candidate = candidate.getParentFile();
@@ -58,10 +58,8 @@ public class CopyOfLocalIwantWsForTutorial extends Target {
 				.addAll(mainJavasOfModulesUnder(new File(wsRoot, "essential")));
 		ingredients
 				.addAll(mainJavasOfModulesUnder(new File(wsRoot, "optional")));
-		ingredients
-				.add(Source
-						.underWsroot("as-iwant-developer/i-have/wsdef/"
-								+ "src/main/java/net/sf/iwant/wsdef/CopyOfLocalIwantWsForTutorial.java"));
+		ingredients.add(Source.underWsroot("as-iwant-developer/i-have/wsdef/"
+				+ "src/main/java/net/sf/iwant/wsdef/CopyOfLocalIwantWsForTutorial.java"));
 	}
 
 	private static List<Path> mainJavasOfModulesUnder(File modulesDir) {
@@ -147,7 +145,7 @@ public class CopyOfLocalIwantWsForTutorial extends Target {
 		System.err.println("Fixing permissions");
 		new File(dest,
 				"essential/iwant-entry/as-some-developer/with/bash/iwant/help.sh")
-				.setExecutable(true);
+						.setExecutable(true);
 	}
 
 }

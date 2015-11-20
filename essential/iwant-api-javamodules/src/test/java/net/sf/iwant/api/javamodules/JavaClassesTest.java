@@ -61,26 +61,20 @@ public class JavaClassesTest extends IwantTestCase {
 	}
 
 	public void testRelevantSettingsAreMentionedInContentDescriptor() {
-		assertEquals(
-				"net.sf.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
-						+ "  src\n" + "i:resourceDirs:\n"
-						+ "i:classLocations:\n" + "p:javacOptions:\n"
-						+ "  -Xlint\n" + "  -Xlint:-serial\n" + "p:encoding:\n"
-						+ "  UTF-8\n" + "",
+		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
+				+ "i:srcDirs:\n" + "  src\n" + "i:resourceDirs:\n"
+				+ "i:classLocations:\n" + "p:javacOptions:\n" + "  -Xlint\n"
+				+ "  -Xlint:-serial\n" + "p:encoding:\n" + "  UTF-8\n" + "",
 				JavaClasses.with().name("classes")
 						.srcDirs(Source.underWsroot("src")).classLocations()
 						.debug(false).encoding(Charset.forName("UTF-8")).end()
 						.contentDescriptor());
-		assertEquals(
-				"net.sf.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
-						+ "  src2\n" + "  src3\n" + "i:resourceDirs:\n"
-						+ "  res\n" + "i:classLocations:\n"
-						+ "p:javacOptions:\n" + "  -Xlint\n"
-						+ "  -Xlint:-serial\n" + "  -g\n" + "p:encoding:\n"
-						+ "  ISO-8859-1\n" + "",
-				JavaClasses
-						.with()
-						.name("classes2")
+		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
+				+ "i:srcDirs:\n" + "  src2\n" + "  src3\n" + "i:resourceDirs:\n"
+				+ "  res\n" + "i:classLocations:\n" + "p:javacOptions:\n"
+				+ "  -Xlint\n" + "  -Xlint:-serial\n" + "  -g\n"
+				+ "p:encoding:\n" + "  ISO-8859-1\n" + "",
+				JavaClasses.with().name("classes2")
 						.srcDirs(Source.underWsroot("src2"),
 								Source.underWsroot("src3"))
 						.resourceDirs(Source.underWsroot("res"))
@@ -166,10 +160,8 @@ public class JavaClassesTest extends IwantTestCase {
 		Iwant.newTextFile(new File(srcDir3, "pak2/Callee2.java"),
 				"package pak2;\npublic class Callee2 {}");
 
-		Target target = JavaClasses
-				.with()
-				.name("multiple")
-				.srcDirs(Source.underWsroot("src1"),
+		Target target = JavaClasses.with()
+				.name("multiple").srcDirs(Source.underWsroot("src1"),
 						Source.underWsroot("src2"), Source.underWsroot("src3"))
 				.classLocations().end();
 
@@ -182,16 +174,16 @@ public class JavaClassesTest extends IwantTestCase {
 
 	public void testClassWithDepToClassesCompiles() throws Exception {
 		Class<?> superClass = SuperClassForJavaClassesTestSubclass.class;
-		File superClassFile = new File(getClass().getResource(
-				superClass.getSimpleName() + ".class").toURI());
+		File superClassFile = new File(getClass()
+				.getResource(superClass.getSimpleName() + ".class").toURI());
 		File srcDir = new File(wsRoot, "src");
 		Iwant.newTextFile(new File(srcDir, "Subclass.java"),
 				"class Subclass extends " + superClass.getCanonicalName()
 						+ "{}");
 		Source src = Source.underWsroot("src");
 		File superClassClasses = superClassFile.getParentFile().getParentFile()
-				.getParentFile().getParentFile().getParentFile()
-				.getParentFile().getAbsoluteFile();
+				.getParentFile().getParentFile().getParentFile().getParentFile()
+				.getAbsoluteFile();
 		Target target = JavaClasses.with().name("valid").srcDirs(src)
 				.classLocations(new ExternalSource(superClassClasses)).end();
 
@@ -225,7 +217,8 @@ public class JavaClassesTest extends IwantTestCase {
 				+ "p:encoding:\n" + " null\n" + "", target.contentDescriptor());
 	}
 
-	public void testEmptySourceDirectoryProducesEmptyClasses() throws Exception {
+	public void testEmptySourceDirectoryProducesEmptyClasses()
+			throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDir.mkdirs();
 		Source src = Source.underWsroot("src");
@@ -300,13 +293,13 @@ public class JavaClassesTest extends IwantTestCase {
 				.classLocations().debug(true).end();
 		debug.path(ctx);
 
-		byte[] noDebugContent = FileUtil.contentAsBytes(new File(ctx
-				.cached(noDebug), "Foo.class"));
+		byte[] noDebugContent = FileUtil
+				.contentAsBytes(new File(ctx.cached(noDebug), "Foo.class"));
 		assertFalse(TestArea.bytesContain(noDebugContent, "message"));
 		assertFalse(TestArea.bytesContain(noDebugContent, "greeting"));
 
-		byte[] debugContent = FileUtil.contentAsBytes(new File(ctx
-				.cached(debug), "Foo.class"));
+		byte[] debugContent = FileUtil
+				.contentAsBytes(new File(ctx.cached(debug), "Foo.class"));
 		assertTrue(TestArea.bytesContain(debugContent, "message"));
 		assertTrue(TestArea.bytesContain(debugContent, "greeting"));
 	}
@@ -318,12 +311,11 @@ public class JavaClassesTest extends IwantTestCase {
 	}
 
 	public void testClearingResourceDirsAndSpecifyingManyOfThem() {
-		JavaClasses c = JavaClasses
-				.with()
+		JavaClasses c = JavaClasses.with()
 				.resourceDirs(Source.underWsroot("to-be-removed"))
-				.noResourceDirs()
-				.resourceDirs(Source.underWsroot("r1"),
-						Source.underWsroot("r2")).end();
+				.noResourceDirs().resourceDirs(Source.underWsroot("r1"),
+						Source.underWsroot("r2"))
+				.end();
 		assertEquals("[r1, r2]", c.resourceDirs().toString());
 	}
 
@@ -347,11 +339,8 @@ public class JavaClassesTest extends IwantTestCase {
 		Iwant.newTextFile(new File(wsRoot, "res2/pak2/res2.txt"),
 				"res2.txt content");
 
-		JavaClasses classes = JavaClasses
-				.with()
-				.name("classes")
-				.resourceDirs(Source.underWsroot("res1"),
-						Source.underWsroot("res2")).end();
+		JavaClasses classes = JavaClasses.with().name("classes").resourceDirs(
+				Source.underWsroot("res1"), Source.underWsroot("res2")).end();
 		classes.path(ctx);
 
 		assertEquals("res1.txt content",
@@ -393,8 +382,8 @@ public class JavaClassesTest extends IwantTestCase {
 
 		classes.path(ctx);
 
-		assertEquals("[-Xlint, -Xlint:-serial]", ctx.iwant().lastJavacOptions()
-				.toString());
+		assertEquals("[-Xlint, -Xlint:-serial]",
+				ctx.iwant().lastJavacOptions().toString());
 	}
 
 	public void testCustomArgs() throws Exception {
@@ -406,8 +395,8 @@ public class JavaClassesTest extends IwantTestCase {
 
 		classes.path(ctx);
 
-		assertEquals("[-Xlint, -Xlint:-serial, -cp, cploc0:cploc1]", ctx
-				.iwant().lastJavacOptions().toString());
+		assertEquals("[-Xlint, -Xlint:-serial, -cp, cploc0:cploc1]",
+				ctx.iwant().lastJavacOptions().toString());
 	}
 
 	public void testDifferentJavacOptionsPassedToServices() throws Exception {
@@ -419,8 +408,8 @@ public class JavaClassesTest extends IwantTestCase {
 
 		classes.path(ctx);
 
-		assertEquals("[-Xlint, -Xlint:-serial, -source, 1.7, -g]", ctx.iwant()
-				.lastJavacOptions().toString());
+		assertEquals("[-Xlint, -Xlint:-serial, -source, 1.7, -g]",
+				ctx.iwant().lastJavacOptions().toString());
 	}
 
 	public void testJavacOptionsAreInDescriptor() {

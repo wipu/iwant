@@ -28,9 +28,10 @@ public class SvnExportedTest extends IwantTestCase {
 		target = SvnExported.with().name("svn-exported").url(url).end();
 
 		assertEquals("[]", target.ingredients().toString());
-		assertEquals("net.sf.iwant.core.download.SvnExported\n" + "p:url:\n"
-				+ "  http://localhost/an-url\n" + "", target
-				.contentDescriptor().toString());
+		assertEquals(
+				"net.sf.iwant.core.download.SvnExported\n" + "p:url:\n"
+						+ "  http://localhost/an-url\n" + "",
+				target.contentDescriptor().toString());
 	}
 
 	/**
@@ -61,10 +62,10 @@ public class SvnExportedTest extends IwantTestCase {
 
 		assertTrue(exported.exists());
 		assertEquals(2, exported.list().length);
-		assertEquals("content of exported-0", contentOf(new File(exported,
-				"exported-0")));
-		assertEquals("content of exported-1", contentOf(new File(exported,
-				"exported-1")));
+		assertEquals("content of exported-0",
+				contentOf(new File(exported, "exported-0")));
+		assertEquals("content of exported-1",
+				contentOf(new File(exported, "exported-1")));
 	}
 
 	public void testPartiallySuccessfulExportProducesNoExport()
@@ -93,10 +94,10 @@ public class SvnExportedTest extends IwantTestCase {
 		target.path(ctx);
 		assertTrue(exported.exists());
 		assertEquals(2, exported.list().length);
-		assertEquals("content of exported-0", contentOf(new File(exported,
-				"exported-0")));
-		assertEquals("content of exported-1", contentOf(new File(exported,
-				"exported-1")));
+		assertEquals("content of exported-0",
+				contentOf(new File(exported, "exported-0")));
+		assertEquals("content of exported-1",
+				contentOf(new File(exported, "exported-1")));
 	}
 
 }

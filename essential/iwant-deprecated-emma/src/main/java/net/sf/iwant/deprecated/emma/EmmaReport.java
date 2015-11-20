@@ -89,13 +89,14 @@ public class EmmaReport extends TargetBase {
 		File reportTxt = new File(dest, "coverage.txt");
 		File reportHtml = new File(dest, "coverage/index.html");
 		File reportXml = new File(dest, "coverage.xml");
-		File reportProps = Iwant.newTextFile(new File(dest,
-				"emma-report.properties"), "report.txt.out.file="
-				+ ctx.iwant().pathWithoutBackslashes(reportTxt)
-				+ "\nreport.html.out.file="
-				+ ctx.iwant().pathWithoutBackslashes(reportHtml)
-				+ "\nreport.xml.out.file="
-				+ ctx.iwant().pathWithoutBackslashes(reportXml) + "\n");
+		File reportProps = Iwant.newTextFile(
+				new File(dest, "emma-report.properties"),
+				"report.txt.out.file="
+						+ ctx.iwant().pathWithoutBackslashes(reportTxt)
+						+ "\nreport.html.out.file="
+						+ ctx.iwant().pathWithoutBackslashes(reportHtml)
+						+ "\nreport.xml.out.file="
+						+ ctx.iwant().pathWithoutBackslashes(reportXml) + "\n");
 
 		List<String> reportArgs = new ArrayList<>();
 		reportArgs.add("report");
@@ -113,8 +114,8 @@ public class EmmaReport extends TargetBase {
 			reportArgs.add(ctx.iwant().pathWithoutBackslashes(em));
 			for (Path source : instr.classesAndSources().sources()) {
 				reportArgs.add("-sp");
-				reportArgs.add(ctx.iwant().pathWithoutBackslashes(
-						ctx.cached(source)));
+				reportArgs.add(
+						ctx.iwant().pathWithoutBackslashes(ctx.cached(source)));
 			}
 		}
 		for (EmmaCoverage coverage : coverages) {

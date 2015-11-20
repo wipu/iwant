@@ -64,8 +64,8 @@ public class EclipseProjectTest extends IwantTestCase {
 	}
 
 	public void testDotClasspathWithMavenLayout() {
-		JavaSrcModule module = JavaSrcModule.with().name("simple")
-				.mavenLayout().end();
+		JavaSrcModule module = JavaSrcModule.with().name("simple").mavenLayout()
+				.end();
 		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
@@ -75,7 +75,8 @@ public class EclipseProjectTest extends IwantTestCase {
 						+ ",         <classpathentry kind=\"src\" path=\"src/main/resources\"/>\n"
 						+ ",         <classpathentry kind=\"src\" path=\"src/test/java\"/>\n"
 						+ ",         <classpathentry kind=\"src\" path=\"src/test/resources\"/>\n"
-						+ "]", dotClasspath.srcs().toString());
+						+ "]",
+				dotClasspath.srcs().toString());
 		assertEquals("[]", dotClasspath.deps().toString());
 	}
 
@@ -94,10 +95,10 @@ public class EclipseProjectTest extends IwantTestCase {
 	}
 
 	public void testDotClasspathWithTwoSrcModulesAsMainDep() {
-		JavaSrcModule util1 = JavaSrcModule.with().name("util1")
-				.mainJava("src").end();
-		JavaSrcModule util2 = JavaSrcModule.with().name("util2")
-				.mainJava("src").end();
+		JavaSrcModule util1 = JavaSrcModule.with().name("util1").mainJava("src")
+				.end();
+		JavaSrcModule util2 = JavaSrcModule.with().name("util2").mainJava("src")
+				.end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainDeps(util1, util2).end();
 		EclipseProject project = new EclipseProject(module, ctx);
@@ -107,7 +108,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals(
 				"[        <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/util1\"/>\n"
 						+ ",         <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/util2\"/>\n"
-						+ "]", dotClasspath.deps().toString());
+						+ "]",
+				dotClasspath.deps().toString());
 	}
 
 	public void testDotClasspathWithMainDepsAndTestDeps() {
@@ -124,7 +126,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals(
 				"[        <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/test-util\"/>\n"
 						+ ",         <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/main-util\"/>\n"
-						+ "]", dotClasspath.deps().toString());
+						+ "]",
+				dotClasspath.deps().toString());
 	}
 
 	public void testModuleThatIsBothMainDepAndSrcDepIsOnlyOnceInDotClasspath() {
@@ -133,8 +136,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		JavaSrcModule testUtil = JavaSrcModule.with().name("test-util")
 				.mainJava("src").end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
-				.mainJava("src").mainDeps(mainUtil)
-				.testDeps(mainUtil, testUtil).end();
+				.mainJava("src").mainDeps(mainUtil).testDeps(mainUtil, testUtil)
+				.end();
 		EclipseProject project = new EclipseProject(module, ctx);
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
@@ -142,7 +145,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals(
 				"[        <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/main-util\"/>\n"
 						+ ",         <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/test-util\"/>\n"
-						+ "]", dotClasspath.deps().toString());
+						+ "]",
+				dotClasspath.deps().toString());
 	}
 
 	public void testDotClasspathWithOneDepToBinModuleProvidedBySrcModule() {
@@ -156,13 +160,14 @@ public class EclipseProjectTest extends IwantTestCase {
 
 		assertEquals(
 				"[        <classpathentry kind=\"lib\" path=\"/libs/util.jar\"/>\n"
-						+ "]", dotClasspath.deps().toString());
+						+ "]",
+				dotClasspath.deps().toString());
 	}
 
 	public void testDotClasspathWithOneDepToBinModuleWithSourcesProvidedBySrcModule() {
 		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
-		JavaModule util = JavaBinModule.named("util.jar")
-				.source("util-src.zip").inside(libs).end();
+		JavaModule util = JavaBinModule.named("util.jar").source("util-src.zip")
+				.inside(libs).end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainDeps(util).end();
 		EclipseProject project = new EclipseProject(module, ctx);
@@ -171,12 +176,13 @@ public class EclipseProjectTest extends IwantTestCase {
 
 		assertEquals(
 				"[        <classpathentry kind=\"lib\" path=\"/libs/util.jar\" sourcepath=\"/libs/util-src.zip\"/>\n"
-						+ "]", dotClasspath.deps().toString());
+						+ "]",
+				dotClasspath.deps().toString());
 	}
 
 	public void testDotClasspathIncludesRuntimeDepOfTestRuntimeBinaryDep() {
-		JavaBinModule depOfBinDep = JavaBinModule.providing(
-				new TargetMock("depOfBinDep.jar")).end();
+		JavaBinModule depOfBinDep = JavaBinModule
+				.providing(new TargetMock("depOfBinDep.jar")).end();
 		JavaBinModule binDep = JavaBinModule
 				.providing(new TargetMock("binDep.jar"))
 				.runtimeDeps(depOfBinDep).end();
@@ -186,10 +192,11 @@ public class EclipseProjectTest extends IwantTestCase {
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
-		assertEquals("[        <classpathentry kind=\"lib\" path=\""
-				+ slashed(cached) + "/binDep.jar\"/>\n"
-				+ ",         <classpathentry kind=\"lib\" path=\""
-				+ slashed(cached) + "/depOfBinDep.jar\"/>\n" + "]",
+		assertEquals(
+				"[        <classpathentry kind=\"lib\" path=\""
+						+ slashed(cached) + "/binDep.jar\"/>\n"
+						+ ",         <classpathentry kind=\"lib\" path=\""
+						+ slashed(cached) + "/depOfBinDep.jar\"/>\n" + "]",
 				dotClasspath.deps().toString());
 	}
 
@@ -226,7 +233,8 @@ public class EclipseProjectTest extends IwantTestCase {
 
 		assertEquals(
 				"[        <classpathentry exported=\"true\" kind=\"lib\" path=\"eclipse-ant-generated/generated-classes\" sourcepath=\"eclipse-ant-generated/generated-src\"/>\n"
-						+ "]", dotClasspath.deps().toString());
+						+ "]",
+				dotClasspath.deps().toString());
 	}
 
 	public void testProjectExternalBuilderLaunchIsNullWithoutCodeGeneration() {
@@ -272,8 +280,8 @@ public class EclipseProjectTest extends IwantTestCase {
 
 		assertEquals("code-generating-module", launch.name());
 		assertEquals("eclipse-ant-generated", launch.relativeOutputDirectory());
-		assertEquals("[gen-parent/gen-src-project/gen-src]", launch
-				.relativeInputPaths().toString());
+		assertEquals("[gen-parent/gen-src-project/gen-src]",
+				launch.relativeInputPaths().toString());
 	}
 
 	public void testProjectExternalBuilderLaunchUsesExplicitlyGivenRelativeInputPaths() {
@@ -291,14 +299,13 @@ public class EclipseProjectTest extends IwantTestCase {
 		Target generatedClasses = Concatenated.named("generated-classes")
 				.string("In reality this is compiled from")
 				.nativePathTo(generatedSrc).end();
-		JavaSrcModule module = JavaSrcModule
-				.with()
-				.name("code-generating-module")
-				.relativeParentDir("parent-dir")
+		JavaSrcModule module = JavaSrcModule.with()
+				.name("code-generating-module").relativeParentDir("parent-dir")
 				.mainResources("src/main/resources")
 				.exportsClasses(generatedClasses, generatedSrc)
 				.generatorSourcesToFollow(generatorMainJava,
-						generatorMainResources).end();
+						generatorMainResources)
+				.end();
 		EclipseProject project = new EclipseProject(module, ctx);
 
 		ProjectExternalBuilderLaunch launch = project.externalBuilderLaunch();
@@ -367,12 +374,12 @@ public class EclipseProjectTest extends IwantTestCase {
 
 		OrgEclipseJdtCorePrefs prefs = project.orgEclipseJdtCorePrefs();
 
-		assertEquals(
-				"org.eclipse.jdt.core.compiler.problem.deadCode=warning\n",
+		assertEquals("org.eclipse.jdt.core.compiler.problem.deadCode=warning\n",
 				prefs.asPropertyLine(CodeStyle.DEAD_CODE));
 		assertEquals(
 				"org.eclipse.jdt.core.compiler.problem.nonExternalizedStringLiteral=ignore\n",
-				prefs.asPropertyLine(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL));
+				prefs.asPropertyLine(
+						CodeStyle.NON_EXTERNALIZED_STRING_LITERAL));
 	}
 
 	public void testOverriddenCompilerSettings() {
@@ -390,7 +397,8 @@ public class EclipseProjectTest extends IwantTestCase {
 				prefs.asPropertyLine(CodeStyle.DEAD_CODE));
 		assertEquals(
 				"org.eclipse.jdt.core.compiler.problem.nonExternalizedStringLiteral=warning\n",
-				prefs.asPropertyLine(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL));
+				prefs.asPropertyLine(
+						CodeStyle.NON_EXTERNALIZED_STRING_LITERAL));
 	}
 
 	// formatter
@@ -417,7 +425,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		OrgEclipseJdtCorePrefs prefs = project.orgEclipseJdtCorePrefs();
 		CodeFormatterPolicy policyAgain = prefs.codeFormatterPolicy();
 
-		assertEquals(Integer.valueOf(48), policyAgain.alignmentForEnumConstants);
+		assertEquals(Integer.valueOf(48),
+				policyAgain.alignmentForEnumConstants);
 	}
 
 	// formatter reference

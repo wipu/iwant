@@ -21,9 +21,9 @@ import net.sf.iwant.entry.Iwant;
 public class EmmaInstrumentationTest extends IwantTestCase {
 
 	private Path downloaded(Path downloaded) throws IOException {
-		return new ExternalSource(AsEmbeddedIwantUser.with()
-				.workspaceAt(wsRoot).cacheAt(cacheDir).iwant()
-				.target((Target) downloaded).asPath());
+		return new ExternalSource(
+				AsEmbeddedIwantUser.with().workspaceAt(wsRoot).cacheAt(cacheDir)
+						.iwant().target((Target) downloaded).asPath());
 	}
 
 	private Path emma() throws IOException {
@@ -50,48 +50,38 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 
 	public void testNameIsDerivedFromTheNameOfJavaClassesAndSourcesPair()
 			throws IOException {
-		assertEquals(
-				"one.emma-instr",
+		assertEquals("one.emma-instr",
 				EmmaInstrumentation
-						.of(new JavaClassesAndSources(
-								Source.underWsroot("one"), Source
-										.underWsroot("irrelevant")))
+						.of(new JavaClassesAndSources(Source.underWsroot("one"),
+								Source.underWsroot("irrelevant")))
 						.using(emma()).name());
-		assertEquals(
-				"two.emma-instr",
+		assertEquals("two.emma-instr",
 				EmmaInstrumentation
-						.of(new JavaClassesAndSources(
-								Source.underWsroot("two"), Source
-										.underWsroot("irrelevant")))
+						.of(new JavaClassesAndSources(Source.underWsroot("two"),
+								Source.underWsroot("irrelevant")))
 						.using(emma()).name());
 	}
 
 	public void testIngredientsAreEmmaAndTheClassesIfNoFilter()
 			throws IOException {
-		assertEquals(
-				"[" + emma() + ", one]",
+		assertEquals("[" + emma() + ", one]",
 				EmmaInstrumentation
-						.of(new JavaClassesAndSources(
-								Source.underWsroot("one"), Source
-										.underWsroot("irrelevant")))
+						.of(new JavaClassesAndSources(Source.underWsroot("one"),
+								Source.underWsroot("irrelevant")))
 						.using(emma()).ingredients().toString());
-		assertEquals(
-				"[" + emma() + ", two]",
+		assertEquals("[" + emma() + ", two]",
 				EmmaInstrumentation
-						.of(new JavaClassesAndSources(
-								Source.underWsroot("two"), Source
-										.underWsroot("irrelevant")))
+						.of(new JavaClassesAndSources(Source.underWsroot("two"),
+								Source.underWsroot("irrelevant")))
 						.using(emma()).ingredients().toString());
 	}
 
 	public void testIngredientsAreEmmaAndTheClassesAndTheFilterIfTherIsOne()
 			throws IOException {
-		assertEquals(
-				"[" + emma() + ", one, emma-filter.txt]",
+		assertEquals("[" + emma() + ", one, emma-filter.txt]",
 				EmmaInstrumentation
-						.of(new JavaClassesAndSources(
-								Source.underWsroot("one"), Source
-										.underWsroot("irrelevant")))
+						.of(new JavaClassesAndSources(Source.underWsroot("one"),
+								Source.underWsroot("irrelevant")))
 						.filter(Source.underWsroot("emma-filter.txt"))
 						.using(emma()).ingredients().toString());
 	}
@@ -102,23 +92,22 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 						+ "i:emma:\n" + "  " + emma() + "\ni:classes:\n"
 						+ "  one\n" + "i:filter:\n" + " null\n" + "",
 				EmmaInstrumentation
-						.of(new JavaClassesAndSources(
-								Source.underWsroot("one"), Source
-										.underWsroot("irrelevant")))
+						.of(new JavaClassesAndSources(Source.underWsroot("one"),
+								Source.underWsroot("irrelevant")))
 						.using(emma()).contentDescriptor());
 		assertEquals(
 				"net.sf.iwant.deprecated.emma.EmmaInstrumentation\n"
 						+ "i:emma:\n" + "  " + emma() + "\ni:classes:\n"
 						+ "  two\n" + "i:filter:\n" + " null\n" + "",
 				EmmaInstrumentation
-						.of(new JavaClassesAndSources(
-								Source.underWsroot("two"), Source
-										.underWsroot("irrelevant")))
+						.of(new JavaClassesAndSources(Source.underWsroot("two"),
+								Source.underWsroot("irrelevant")))
 						.using(emma()).contentDescriptor());
 	}
 
 	public void testInstrumentationCreatesNeededFiles() throws Exception {
-		JavaClassesAndSources classesAndSources = newJavaClassesAndSources("instrtest");
+		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
+				"instrtest");
 		EmmaInstrumentation instr = EmmaInstrumentation.of(classesAndSources)
 				.using(emma());
 
@@ -126,9 +115,10 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 
 		File instrDir = new File(cacheDir, "instrtest-classes.emma-instr");
 
-		assertEquals("metadata.out.file=" + instrDir + "/emma.em\n"
-				+ "verbosity.level=warning\n" + "coverage.out.file=" + instrDir
-				+ "/please-override-when-running-tests.ec\n",
+		assertEquals(
+				"metadata.out.file=" + instrDir + "/emma.em\n"
+						+ "verbosity.level=warning\n" + "coverage.out.file="
+						+ instrDir + "/please-override-when-running-tests.ec\n",
 				contentOf(new File(instrDir, "emma-instr.properties")));
 		assertTrue(new File(instrDir, "emma.em").exists());
 		assertTrue(new File(instrDir, "instr-classes/Hello.class").exists());
@@ -144,11 +134,11 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 			throws Exception {
 		String srcDirString = "src";
 		File srcDir = new File(wsRoot, srcDirString);
-		Iwant.newTextFile(new File(srcDir,
-				"nottoinstrument/NotToInstrument.java"),
+		Iwant.newTextFile(
+				new File(srcDir, "nottoinstrument/NotToInstrument.java"),
 				"package nottoinstrument;\npublic class NotToInstrument {}\n");
-		Iwant.newTextFile(new File(srcDir,
-				"packagetoinstrument/AnInterface.java"),
+		Iwant.newTextFile(
+				new File(srcDir, "packagetoinstrument/AnInterface.java"),
 				"package packagetoinstrument;\npublic interface AnInterface {}\n");
 		JavaClasses classes = JavaClasses.with().name("classes")
 				.srcDirs(Source.underWsroot(srcDirString)).classLocations()
@@ -169,9 +159,11 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 
 		assertFalse(new File(instrDir, "emma.em").exists());
 		assertTrue(new File(instrDir,
-				"instr-classes/nottoinstrument/NotToInstrument.class").exists());
+				"instr-classes/nottoinstrument/NotToInstrument.class")
+						.exists());
 		assertTrue(new File(instrDir,
-				"instr-classes/packagetoinstrument/AnInterface.class").exists());
+				"instr-classes/packagetoinstrument/AnInterface.class")
+						.exists());
 	}
 
 	public void testLeavingClassByNameUninstrumentedByUsingAFilterFileMeansTheExcludedClassIsJustCopiedFromClasses()
@@ -180,8 +172,8 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 		File srcDir = new File(wsRoot, srcDirString);
 		Iwant.newTextFile(new File(srcDir, "toinstrument/ToInstrument.java"),
 				"package toinstrument;\npublic class ToInstrument {}\n");
-		Iwant.newTextFile(new File(srcDir,
-				"nottoinstrument/NotToInstrument.java"),
+		Iwant.newTextFile(
+				new File(srcDir, "nottoinstrument/NotToInstrument.java"),
 				"package nottoinstrument;\npublic class NotToInstrument {}\n");
 		JavaClasses classes = JavaClasses.with().name("classes")
 				.srcDirs(Source.underWsroot(srcDirString)).classLocations()
@@ -232,10 +224,10 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 		EmmaInstrumentation instr = EmmaInstrumentation.of(mod).using(emma());
 
 		assertEquals("mod-main-classes.emma-instr", instr.name());
-		assertEquals("mod-main-classes", instr.classesAndSources().classes()
-				.toString());
-		assertEquals("[mod/src]", instr.classesAndSources().sources()
-				.toString());
+		assertEquals("mod-main-classes",
+				instr.classesAndSources().classes().toString());
+		assertEquals("[mod/src]",
+				instr.classesAndSources().sources().toString());
 	}
 
 	public void testCreationFromJavaSrcModuleWithTestJavaOnly()
@@ -249,8 +241,8 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 	}
 
 	public void testCreationFromJavaBinModule() throws IOException {
-		JavaBinModule mod = JavaBinModule.providing(
-				Source.underWsroot("lib.jar")).end();
+		JavaBinModule mod = JavaBinModule
+				.providing(Source.underWsroot("lib.jar")).end();
 
 		EmmaInstrumentation instr = EmmaInstrumentation.of(mod).using(emma());
 

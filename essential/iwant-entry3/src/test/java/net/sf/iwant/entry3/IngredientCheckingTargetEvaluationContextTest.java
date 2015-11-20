@@ -87,7 +87,8 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 		} catch (IwantException e) {
 			assertEquals(
 					"Target target referred to implicit ingredient without "
-							+ "declaring it an ingredient.", e.getMessage());
+							+ "declaring it an ingredient.",
+					e.getMessage());
 		}
 	}
 

@@ -25,9 +25,9 @@ public class AntGeneratedTest extends IwantTestCase {
 	}
 
 	private Path downloaded(Path downloaded) throws IOException {
-		return new ExternalSource(AsEmbeddedIwantUser.with()
-				.workspaceAt(wsRoot).cacheAt(cacheDir).iwant()
-				.target((Target) downloaded).asPath());
+		return new ExternalSource(
+				AsEmbeddedIwantUser.with().workspaceAt(wsRoot).cacheAt(cacheDir)
+						.iwant().target((Target) downloaded).asPath());
 	}
 
 	private Path antJar() throws IOException {
@@ -40,8 +40,7 @@ public class AntGeneratedTest extends IwantTestCase {
 
 	public void testContentDescriptor() throws IOException {
 		assertEquals(
-				"net.sf.iwant.core.ant.AntGenerated\n"
-						+ "i:ant-jars:\n  "
+				"net.sf.iwant.core.ant.AntGenerated\n" + "i:ant-jars:\n  "
 						+ Iwant.IWANT_USER_DIR
 						+ "/cached/UnmodifiableUrl/http%3A/%2Fmirrors.ibiblio.org/maven2/org/apache/ant/ant/1.9.4/ant-1.9.4.jar\n"
 						+ "i:script:\n  script\n",
@@ -52,9 +51,7 @@ public class AntGeneratedTest extends IwantTestCase {
 				"net.sf.iwant.core.ant.AntGenerated\n" + "i:ant-jars:\n  "
 						+ antJar() + "\n" + "  another-ant.jar\n"
 						+ "i:script:\n  another-script\n",
-				AntGenerated
-						.with()
-						.name("another")
+				AntGenerated.with().name("another")
 						.antJars(antJar(),
 								Source.underWsroot("another-ant.jar"))
 						.script(Source.underWsroot("another-script")).end()
@@ -62,16 +59,12 @@ public class AntGeneratedTest extends IwantTestCase {
 	}
 
 	public void testIngredients() throws IOException {
-		assertEquals(
-				"[" + antJar() + ", script]",
+		assertEquals("[" + antJar() + ", script]",
 				AntGenerated.with().name("minimal").antJars(antJar())
 						.script(Source.underWsroot("script")).end()
 						.ingredients().toString());
-		assertEquals(
-				"[" + antJar() + ", another-ant.jar, another-script]",
-				AntGenerated
-						.with()
-						.name("another")
+		assertEquals("[" + antJar() + ", another-ant.jar, another-script]",
+				AntGenerated.with().name("another")
 						.antJars(antJar(),
 								Source.underWsroot("another-ant.jar"))
 						.script(Source.underWsroot("another-script")).end()
@@ -152,8 +145,8 @@ public class AntGeneratedTest extends IwantTestCase {
 				.string("' tofile='${iwant-outfile}'/>\n");
 		scriptContent
 				.string("    <echo file='${iwant-outfile}' append='true'"
-						+ " message=' appended with ").contentOf(ingredient2)
-				.string("'/>\n");
+						+ " message=' appended with ")
+				.contentOf(ingredient2).string("'/>\n");
 		scriptContent.string("  </target>\n");
 		scriptContent.string("</project>\n");
 		Concatenated script = scriptContent.end();

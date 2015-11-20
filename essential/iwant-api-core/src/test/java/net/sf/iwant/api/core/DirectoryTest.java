@@ -24,12 +24,14 @@ public class DirectoryTest extends IwantTestCase {
 		Directory dir = Directory.named("nonempty").dir("empty-sub").end()
 				.copyOf(ingr1).dir("nonempty-sub").copyOf(ingr2).end().end();
 
-		assertEquals("net.sf.iwant.api.core.Directory\n"
-				+ "p:fullRelativePath:\n" + "  \n" + "p:fullRelativePath:\n"
-				+ "  /empty-sub\n" + "i:copy-from:\n" + "  src\n"
-				+ "p:copy-as:\n" + "  src\n" + "p:fullRelativePath:\n"
-				+ "  /nonempty-sub\n" + "i:copy-from:\n" + "  hello\n"
-				+ "p:copy-as:\n" + "  hello\n" + "", dir.contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.api.core.Directory\n" + "p:fullRelativePath:\n"
+						+ "  \n" + "p:fullRelativePath:\n" + "  /empty-sub\n"
+						+ "i:copy-from:\n" + "  src\n" + "p:copy-as:\n"
+						+ "  src\n" + "p:fullRelativePath:\n"
+						+ "  /nonempty-sub\n" + "i:copy-from:\n" + "  hello\n"
+						+ "p:copy-as:\n" + "  hello\n" + "",
+				dir.contentDescriptor());
 		assertEquals("[src, hello]", dir.ingredients().toString());
 	}
 

@@ -63,7 +63,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsDescriptor(target, target.contentDescriptor());
 	}
 
-	private File cacheContainsDescriptor(Target target, String cachedDescriptor) {
+	private File cacheContainsDescriptor(Target target,
+			String cachedDescriptor) {
 		return Iwant.newTextFile(new File(cachedDescriptors, target.name()),
 				cachedDescriptor);
 	}
@@ -89,10 +90,12 @@ public class TargetRefreshTaskTest extends TestCase {
 		t2.hasNoIngredients();
 		HelloTarget hello = new HelloTarget("hello", "whatever");
 
-		assertEquals("net.sf.iwant.apimocks.TargetMock t1", task(t1).toString());
-		assertEquals("net.sf.iwant.apimocks.TargetMock t2", task(t2).toString());
-		assertEquals("net.sf.iwant.api.core.HelloTarget hello", task(hello)
-				.toString());
+		assertEquals("net.sf.iwant.apimocks.TargetMock t1",
+				task(t1).toString());
+		assertEquals("net.sf.iwant.apimocks.TargetMock t2",
+				task(t2).toString());
+		assertEquals("net.sf.iwant.api.core.HelloTarget hello",
+				task(hello).toString());
 	}
 
 	public void testEqualityAndHashcodeAreDeterminedByName() {
@@ -150,8 +153,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		// no cached content
 		cacheContainsFreshDescriptor(target);
 
-		assertEquals(TaskDirtiness.DIRTY_CACHED_CONTENT_MISSING, task(target)
-				.dirtiness());
+		assertEquals(TaskDirtiness.DIRTY_CACHED_CONTENT_MISSING,
+				task(target).dirtiness());
 	}
 
 	public void testIngredientlessTaskIsNotDirtyIfCachedTargetContentAndDescriptorExist() {
@@ -201,8 +204,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "old-descriptor");
 
-		assertEquals(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED, task(target)
-				.dirtiness());
+		assertEquals(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED,
+				task(target).dirtiness());
 	}
 
 	public void testTaskIsDirtyIfCachedDescriptorIsMissing() {
@@ -240,8 +243,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		assertEquals(TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED, task(target)
-				.dirtiness());
+		assertEquals(TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED,
+				task(target).dirtiness());
 	}
 
 	public void testTaskIsDirtyIfFileUnderSourceDirWasModifiedAtTheSameTimeAsDescriptor()
@@ -255,11 +258,12 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		assertEquals(TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED, task(target)
-				.dirtiness());
+		assertEquals(TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED,
+				task(target).dirtiness());
 	}
 
-	public void testTaskIsDirtyIfSourceIngredientIsMissing() throws IOException {
+	public void testTaskIsDirtyIfSourceIngredientIsMissing()
+			throws IOException {
 		File srcDir = new File(testArea.root(), "non-existent");
 
 		TargetMock target = new TargetMock("target");
@@ -268,8 +272,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		assertEquals(TaskDirtiness.DIRTY_SRC_INGREDIENT_MISSING, task(target)
-				.dirtiness());
+		assertEquals(TaskDirtiness.DIRTY_SRC_INGREDIENT_MISSING,
+				task(target).dirtiness());
 	}
 
 	public void testCleanTaskWithSourceIngredient() throws IOException {
@@ -292,10 +296,10 @@ public class TargetRefreshTaskTest extends TestCase {
 		ingredient.hasNoIngredients();
 		ingredient.hasContent("current");
 		ingredient.hasContentDescriptor("current");
-		cacheContainsContentOf(ingredient).setLastModified(
-				System.currentTimeMillis() - 2000);
-		cacheContainsDescriptor(ingredient, "current").setLastModified(
-				System.currentTimeMillis() + 2000);
+		cacheContainsContentOf(ingredient)
+				.setLastModified(System.currentTimeMillis() - 2000);
+		cacheContainsDescriptor(ingredient, "current")
+				.setLastModified(System.currentTimeMillis() + 2000);
 
 		TargetMock target = new TargetMock("target");
 		target.hasIngredients(ingredient);
@@ -303,8 +307,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		new File(cachedDescriptors, "ingredient").setLastModified(System
-				.currentTimeMillis() + 2000);
+		new File(cachedDescriptors, "ingredient")
+				.setLastModified(System.currentTimeMillis() + 2000);
 
 		assertEquals(TaskDirtiness.DIRTY_TARGET_INGREDIENT_MODIFIED,
 				task(target).dirtiness());
@@ -318,10 +322,10 @@ public class TargetRefreshTaskTest extends TestCase {
 		ingredient.hasNoIngredients();
 		ingredient.hasContent("current");
 		ingredient.hasContentDescriptor("current");
-		cacheContainsContentOf(ingredient).setLastModified(
-				System.currentTimeMillis() - 2000);
-		cacheContainsDescriptor(ingredient, "current").setLastModified(
-				System.currentTimeMillis() + 2000);
+		cacheContainsContentOf(ingredient)
+				.setLastModified(System.currentTimeMillis() - 2000);
+		cacheContainsDescriptor(ingredient, "current")
+				.setLastModified(System.currentTimeMillis() + 2000);
 
 		TargetMock target = new TargetMock("target");
 		target.hasIngredients(ingredient);
@@ -329,8 +333,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		File ownDescriptor = cacheContainsDescriptor(target, "current");
 
-		new File(cachedDescriptors, "ingredient").setLastModified(ownDescriptor
-				.lastModified());
+		new File(cachedDescriptors, "ingredient")
+				.setLastModified(ownDescriptor.lastModified());
 
 		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 	}
@@ -340,8 +344,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		ingredient.hasNoIngredients();
 		ingredient.hasContent("current");
 		ingredient.hasContentDescriptor("current");
-		cacheContainsContentOf(ingredient).setLastModified(
-				System.currentTimeMillis() - 2000);
+		cacheContainsContentOf(ingredient)
+				.setLastModified(System.currentTimeMillis() - 2000);
 
 		TargetMock target = new TargetMock("target");
 		target.hasIngredients(ingredient);
@@ -349,8 +353,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
 
-		new File(cachedDescriptors, "ingredient").setLastModified(System
-				.currentTimeMillis() + 2000);
+		new File(cachedDescriptors, "ingredient")
+				.setLastModified(System.currentTimeMillis() + 2000);
 
 		assertEquals(TaskDirtiness.DIRTY_TARGET_INGREDIENT_MODIFIED,
 				task(target).dirtiness());
@@ -362,8 +366,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		ingredient.hasContent("current");
 		ingredient.hasContentDescriptor("current");
 		cacheContainsContentOf(ingredient);
-		cacheContainsDescriptor(ingredient, "current").setLastModified(
-				System.currentTimeMillis() - 2000);
+		cacheContainsDescriptor(ingredient, "current")
+				.setLastModified(System.currentTimeMillis() - 2000);
 
 		TargetMock target = new TargetMock("target");
 		target.hasIngredients(ingredient);
@@ -420,8 +424,8 @@ public class TargetRefreshTaskTest extends TestCase {
 				fail("Parent of " + dest + " should exist.");
 			}
 			File subFile = new File(dest, fileNameToCreateUnderDirectory);
-			Iwant.newTextFile(subFile, fileNameToCreateUnderDirectory
-					+ " content");
+			Iwant.newTextFile(subFile,
+					fileNameToCreateUnderDirectory + " content");
 		}
 
 		private void verifyCachedTargetExistence(File dest) {
@@ -475,8 +479,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		// target content changes => f1 gets replaced by f2
 		target.willVerifyCachedTargetExistence();
 		target.willCreateFile("f2");
-		assertEquals(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED, task(target)
-				.dirtiness());
+		assertEquals(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED,
+				task(target).dirtiness());
 		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
 		assertEquals("f2 content", testArea.contentOf("cached/target/f2"));
 		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
@@ -498,8 +502,8 @@ public class TargetRefreshTaskTest extends TestCase {
 		// target content changes => f1 stays and f2 is created alongside it
 		target.willVerifyCachedTargetExistence();
 		target.willCreateFile("f2");
-		assertEquals(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED, task(target)
-				.dirtiness());
+		assertEquals(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED,
+				task(target).dirtiness());
 		task(target).refresh(Collections.<ResourcePool, Resource> emptyMap());
 		assertEquals("f1 content", testArea.contentOf("cached/target/f1"));
 		assertEquals("f2 content", testArea.contentOf("cached/target/f2"));

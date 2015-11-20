@@ -35,8 +35,8 @@ public class Directory extends TargetBase {
 
 	}
 
-	private abstract static class DirCreator<AFTEREND> implements
-			DirectoryContentPlease<AFTEREND>, FileCreator {
+	private abstract static class DirCreator<AFTEREND>
+			implements DirectoryContentPlease<AFTEREND>, FileCreator {
 
 		private final String fullRelativePath;
 		private final List<FileCreator> children = new ArrayList<>();
@@ -64,8 +64,8 @@ public class Directory extends TargetBase {
 				final String name) {
 			children.add(new FileCreator() {
 				@Override
-				public void createUnder(File parent, TargetEvaluationContext ctx)
-						throws Exception {
+				public void createUnder(File parent,
+						TargetEvaluationContext ctx) throws Exception {
 					File from = ctx.cached(path);
 					File to = new File(parent, name);
 					FileUtil.copyRecursively(from, to, true);
@@ -74,8 +74,8 @@ public class Directory extends TargetBase {
 				@Override
 				public IngredientsAndParametersPlease ingredientsAndAttributes(
 						IngredientsAndParametersPlease iUse) {
-					return iUse.ingredients("copy-from", path).parameter(
-							"copy-as", name);
+					return iUse.ingredients("copy-from", path)
+							.parameter("copy-as", name);
 				}
 
 				@Override

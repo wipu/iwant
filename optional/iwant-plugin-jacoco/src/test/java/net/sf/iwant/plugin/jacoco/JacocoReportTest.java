@@ -24,24 +24,27 @@ public class JacocoReportTest extends JacocoTestBase {
 		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
 				+ antLauncherJar() + ", thecoverage, theclasses, thesources]",
 				report.ingredients().toString());
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n"
-				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n" + "  "
-				+ asm() + "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
-				+ antLauncherJar() + "\n" + "i:coverages:\n"
-				+ "  thecoverage\n" + "i:classes:\n" + "  theclasses\n"
-				+ "i:sources:\n" + "  thesources\n" + "",
+		assertEquals(
+				"net.sf.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
+						+ "  " + jacoco() + "\n" + "i:deps:\n" + "  " + asm()
+						+ "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
+						+ antLauncherJar() + "\n" + "i:coverages:\n"
+						+ "  thecoverage\n" + "i:classes:\n" + "  theclasses\n"
+						+ "i:sources:\n" + "  thesources\n" + "",
 				report.contentDescriptor());
 	}
 
 	public void testReportWithNoncoveredAndPartlyCoveredModule()
 			throws Exception {
 		JavaClassesAndSources badTest = newJavaClassesAndSources("badtest",
-				"BadTest", "System.err.println(\"This test covers nothing.\");");
+				"BadTest",
+				"System.err.println(\"This test covers nothing.\");");
 		JavaClassesAndSources goodTest = newJavaClassesAndSources("goodtest",
 				"GoodTest", "System.err.println(\"This test covers code.\");",
 				"Class.forName(\"goodmain.GoodMain\").newInstance();");
 		JavaClassesAndSources badMain = newJavaClassesAndSources("badmain",
-				"BadMain", "System.err.println(\"This class is not covered\");");
+				"BadMain",
+				"System.err.println(\"This class is not covered\");");
 		JavaClassesAndSources goodMain = newJavaClassesAndSources("goodmain",
 				"GoodMain",
 				"System.err.println(\"This class is covered (some)\");");

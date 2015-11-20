@@ -3,10 +3,10 @@ package net.sf.iwant.plugin.pmd;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
-
-import org.apache.commons.io.FileUtils;
 
 public abstract class PmdTestBase extends IwantTestCase {
 
@@ -20,8 +20,8 @@ public abstract class PmdTestBase extends IwantTestCase {
 
 	protected String reportContent(Target report, String extension)
 			throws IOException {
-		File reportFile = new File(ctx.cached(report), report.name() + "."
-				+ extension);
+		File reportFile = new File(ctx.cached(report),
+				report.name() + "." + extension);
 		if (!reportFile.exists()) {
 			return null;
 		}

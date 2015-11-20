@@ -17,9 +17,9 @@ import net.sf.iwant.entry.Iwant;
 public class EmmaReportTest extends IwantTestCase {
 
 	private Path downloaded(Path downloaded) throws IOException {
-		return new ExternalSource(AsEmbeddedIwantUser.with()
-				.workspaceAt(wsRoot).cacheAt(cacheDir).iwant()
-				.target((Target) downloaded).asPath());
+		return new ExternalSource(
+				AsEmbeddedIwantUser.with().workspaceAt(wsRoot).cacheAt(cacheDir)
+						.iwant().target((Target) downloaded).asPath());
 	}
 
 	private Path emma() throws IOException {
@@ -46,7 +46,8 @@ public class EmmaReportTest extends IwantTestCase {
 		StringBuilder code = new StringBuilder();
 		code.append("package " + name + ";\n");
 		code.append("public class " + className + " {\n");
-		code.append("  public static void main(String[] args) throws Throwable {\n");
+		code.append(
+				"  public static void main(String[] args) throws Throwable {\n");
 		for (String codeLine : codeLinesForMain) {
 			code.append(codeLine).append("\n");
 		}
@@ -80,13 +81,14 @@ public class EmmaReportTest extends IwantTestCase {
 		EmmaReport report = EmmaReport.with().name("report").emma(emma())
 				.instrumentations(instr).coverages(coverage).end();
 
-		assertEquals("[" + emma()
-				+ ", classes.emma-instr, instrtest-emma-coverage]", report
-				.ingredients().toString());
-		assertEquals("net.sf.iwant.deprecated.emma.EmmaReport\n" + "i:emma:\n"
-				+ "  " + emma() + "\ni:instrumentations:\n"
-				+ "  classes.emma-instr\n" + "i:coverages:\n"
-				+ "  instrtest-emma-coverage\n" + "",
+		assertEquals(
+				"[" + emma() + ", classes.emma-instr, instrtest-emma-coverage]",
+				report.ingredients().toString());
+		assertEquals(
+				"net.sf.iwant.deprecated.emma.EmmaReport\n" + "i:emma:\n" + "  "
+						+ emma() + "\ni:instrumentations:\n"
+						+ "  classes.emma-instr\n" + "i:coverages:\n"
+						+ "  instrtest-emma-coverage\n" + "",
 				report.contentDescriptor());
 
 	}
@@ -111,7 +113,8 @@ public class EmmaReportTest extends IwantTestCase {
 		report.path(ctx);
 
 		assertTrue(new File(ctx.cached(report), "coverage.txt").exists());
-		assertTrue(new File(ctx.cached(report), "coverage/index.html").exists());
+		assertTrue(
+				new File(ctx.cached(report), "coverage/index.html").exists());
 		assertTrue(new File(ctx.cached(report), "coverage.xml").exists());
 	}
 
@@ -145,7 +148,8 @@ public class EmmaReportTest extends IwantTestCase {
 		report.path(ctx);
 
 		assertTrue(new File(ctx.cached(report), "coverage.txt").exists());
-		assertTrue(new File(ctx.cached(report), "coverage/index.html").exists());
+		assertTrue(
+				new File(ctx.cached(report), "coverage/index.html").exists());
 		assertTrue(new File(ctx.cached(report), "coverage.xml").exists());
 	}
 
@@ -164,28 +168,30 @@ public class EmmaReportTest extends IwantTestCase {
 
 		assertTrue(ctx.cached(report).exists());
 		assertFalse(new File(ctx.cached(report), "coverage.txt").exists());
-		assertFalse(new File(ctx.cached(report), "coverage/index.html")
-				.exists());
+		assertFalse(
+				new File(ctx.cached(report), "coverage/index.html").exists());
 		assertFalse(new File(ctx.cached(report), "coverage.xml").exists());
 	}
 
 	public void testMissingEcCausedByZeroCoverageIsIgnoredAndEmmaReportReportsZeroCoverage()
 			throws Exception {
 		JavaClassesAndSources badTest = newJavaClassesAndSources("badtest",
-				"BadTest", "System.err.println(\"This test covers nothing.\");");
+				"BadTest",
+				"System.err.println(\"This test covers nothing.\");");
 		JavaClassesAndSources goodTest = newJavaClassesAndSources("goodtest",
 				"GoodTest", "System.err.println(\"This test covers code.\");",
 				"Class.forName(\"goodmain.GoodMain\").newInstance();");
 		JavaClassesAndSources badMain = newJavaClassesAndSources("badmain",
-				"BadMain", "System.err.println(\"This class is not covered\");");
+				"BadMain",
+				"System.err.println(\"This class is not covered\");");
 		JavaClassesAndSources goodMain = newJavaClassesAndSources("goodmain",
 				"GoodMain",
 				"System.err.println(\"This class is covered (some)\");");
-		EmmaInstrumentation badInstr = EmmaInstrumentation.of(badMain).using(
-				emma());
+		EmmaInstrumentation badInstr = EmmaInstrumentation.of(badMain)
+				.using(emma());
 		badInstr.path(ctx);
-		EmmaInstrumentation goodInstr = EmmaInstrumentation.of(goodMain).using(
-				emma());
+		EmmaInstrumentation goodInstr = EmmaInstrumentation.of(goodMain)
+				.using(emma());
 		goodInstr.path(ctx);
 
 		EmmaCoverage badCoverage = EmmaCoverage.with().name("bad-coverage")

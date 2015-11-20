@@ -26,12 +26,12 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		iwantApiModule1 = JavaBinModule.providing(
-				Source.underWsroot("iwant-api-1")).end();
-		iwantApiModule2 = JavaBinModule.providing(
-				Source.underWsroot("iwant-api-2")).end();
-		wsdefdefModule = JavaBinModule
-				.providing(Source.underWsroot("wsdefdef")).end();
+		iwantApiModule1 = JavaBinModule
+				.providing(Source.underWsroot("iwant-api-1")).end();
+		iwantApiModule2 = JavaBinModule
+				.providing(Source.underWsroot("iwant-api-2")).end();
+		wsdefdefModule = JavaBinModule.providing(Source.underWsroot("wsdefdef"))
+				.end();
 
 		apiModules = new LinkedHashSet<>();
 		apiModules.add(iwantApiModule1);
@@ -90,7 +90,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 
 	public void testPluginJavaUrlWhenIwantUrlHasRevision()
 			throws MalformedURLException {
-		iwantFromUrl = new URL("https://svn.code.sf.net/p/iwant/code/trunk@687");
+		iwantFromUrl = new URL(
+				"https://svn.code.sf.net/p/iwant/code/trunk@687");
 		ctx = new WorkspaceDefinitionContextImpl(apiModules, iwantFromUrl,
 				wsdefdefModule);
 
@@ -102,9 +103,10 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 
 		SvnExported java = (SvnExported) classes.srcDirs().iterator().next();
 
-		assertEquals("https://svn.code.sf.net/p/iwant/code/trunk/"
-				+ "optional/iwant-plugin-ant/src/main/java@687", java.url()
-				.toExternalForm());
+		assertEquals(
+				"https://svn.code.sf.net/p/iwant/code/trunk/"
+						+ "optional/iwant-plugin-ant/src/main/java@687",
+				java.url().toExternalForm());
 	}
 
 	public void testIwantPluginPmdWithDependenciesContainsCorrectModules() {
@@ -142,9 +144,10 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 	public void testIwantPluginJacocoWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().jacoco().withDependencies();
 
-		assertEquals("[iwant-plugin-jacoco, iwant-api-1, iwant-api-2,"
-				+ " iwant-plugin-ant, ant-1.9.4.jar,"
-				+ " ant-launcher-1.9.4.jar, commons-io-1.3.2.jar]",
+		assertEquals(
+				"[iwant-plugin-jacoco, iwant-api-1, iwant-api-2,"
+						+ " iwant-plugin-ant, ant-1.9.4.jar,"
+						+ " ant-launcher-1.9.4.jar, commons-io-1.3.2.jar]",
 				mods.toString());
 	}
 
@@ -160,8 +163,10 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 	public void testIwantPluginTestngWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().testng().withDependencies();
 
-		assertEquals("[iwant-plugin-testng, iwant-api-1, iwant-api-2,"
-				+ " jcommander-1.48.jar, testng-6.9.4.jar]", mods.toString());
+		assertEquals(
+				"[iwant-plugin-testng, iwant-api-1, iwant-api-2,"
+						+ " jcommander-1.48.jar, testng-6.9.4.jar]",
+				mods.toString());
 	}
 
 }

@@ -24,9 +24,11 @@ public class IwanttutorialWorkspace implements Workspace {
 	@Override
 	public List<? extends SideEffect> sideEffects(
 			SideEffectDefinitionContext ctx) {
-		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")
-				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())
-				.modules(pmdfodder()).end());
+		return Arrays
+				.asList(EclipseSettings.with().name("eclipse-settings")
+						.modules(ctx.wsdefdefJavaModule(),
+								ctx.wsdefJavaModule())
+						.modules(pmdfodder()).end());
 	}
 
 	private static Target mainJavaPmdReportOf(JavaSrcModule mod) {

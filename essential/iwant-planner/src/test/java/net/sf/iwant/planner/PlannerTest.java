@@ -250,24 +250,18 @@ public class PlannerTest extends TestCase {
 
 	public void testDirtinessStringForLogMessage() {
 		assertEquals("  ", Planner.dirtinessToString(TaskDirtiness.NOT_DIRTY));
-		assertEquals(
-				"D~",
-				Planner.dirtinessToString(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED));
-		assertEquals(
-				"C!",
-				Planner.dirtinessToString(TaskDirtiness.DIRTY_CACHED_CONTENT_MISSING));
-		assertEquals(
-				"D!",
-				Planner.dirtinessToString(TaskDirtiness.DIRTY_CACHED_DESCRIPTOR_MISSING));
-		assertEquals(
-				"S~",
-				Planner.dirtinessToString(TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED));
-		assertEquals(
-				"S!",
-				Planner.dirtinessToString(TaskDirtiness.DIRTY_SRC_INGREDIENT_MISSING));
-		assertEquals(
-				"T~",
-				Planner.dirtinessToString(TaskDirtiness.DIRTY_TARGET_INGREDIENT_MODIFIED));
+		assertEquals("D~", Planner
+				.dirtinessToString(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED));
+		assertEquals("C!", Planner
+				.dirtinessToString(TaskDirtiness.DIRTY_CACHED_CONTENT_MISSING));
+		assertEquals("D!", Planner.dirtinessToString(
+				TaskDirtiness.DIRTY_CACHED_DESCRIPTOR_MISSING));
+		assertEquals("S~", Planner.dirtinessToString(
+				TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED));
+		assertEquals("S!", Planner
+				.dirtinessToString(TaskDirtiness.DIRTY_SRC_INGREDIENT_MISSING));
+		assertEquals("T~", Planner.dirtinessToString(
+				TaskDirtiness.DIRTY_TARGET_INGREDIENT_MODIFIED));
 	}
 
 }

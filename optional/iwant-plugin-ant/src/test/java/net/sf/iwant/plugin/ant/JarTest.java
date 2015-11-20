@@ -21,8 +21,9 @@ public class JarTest extends IwantTestCase {
 	public void testIngredientsAndDescriptorOfSimpleJarOfClasses() {
 		Jar jar = Jar.with().classes(Source.underWsroot("classes")).end();
 		assertEquals("[classes]", jar.ingredients().toString());
-		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
-				+ "  classes\n" + "p:classesSubDirectory:\n" + " null\n" + "",
+		assertEquals(
+				"net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n" + "  classes\n"
+						+ "p:classesSubDirectory:\n" + " null\n" + "",
 				jar.contentDescriptor());
 	}
 
@@ -36,8 +37,8 @@ public class JarTest extends IwantTestCase {
 	}
 
 	public void testJarOfDirectory() throws Exception {
-		File classes = new File(getClass().getResource(
-				"/net/sf/iwant/plugin/ant/dirtojar").toURI());
+		File classes = new File(getClass()
+				.getResource("/net/sf/iwant/plugin/ant/dirtojar").toURI());
 
 		Target jar = Jar.with().name("test.jar")
 				.classes(new ExternalSource(classes)).end();
@@ -50,11 +51,10 @@ public class JarTest extends IwantTestCase {
 
 	public void testJarOfDirectoryThatContainsClassesInSubDirectory()
 			throws Exception {
-		File classes = new File(getClass().getResource(
-				"/net/sf/iwant/plugin/ant").toURI());
+		File classes = new File(
+				getClass().getResource("/net/sf/iwant/plugin/ant").toURI());
 
-		Target jar = Jar.with().name("test.jar")
-				.classesSubDirectory("dirtojar")
+		Target jar = Jar.with().name("test.jar").classesSubDirectory("dirtojar")
 				.classes(new ExternalSource(classes)).end();
 		jar.path(ctx);
 

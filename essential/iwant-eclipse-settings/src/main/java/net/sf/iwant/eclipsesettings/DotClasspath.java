@@ -33,11 +33,13 @@ public class DotClasspath {
 		for (String src : srcs) {
 			b.append(src);
 		}
-		b.append("        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
+		b.append(
+				"        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
 		for (String dep : deps) {
 			b.append(dep);
 		}
-		b.append("        <classpathentry kind=\"output\" path=\"classes\"/>\n");
+		b.append(
+				"        <classpathentry kind=\"output\" path=\"classes\"/>\n");
 		b.append("</classpath>\n");
 		return b.toString();
 	}
@@ -58,8 +60,9 @@ public class DotClasspath {
 		}
 
 		public DotClasspathSpex srcDep(String projectName) {
-			deps.add("        <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/"
-					+ projectName + "\"/>\n");
+			deps.add(
+					"        <classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/"
+							+ projectName + "\"/>\n");
 			return this;
 		}
 
@@ -75,9 +78,12 @@ public class DotClasspath {
 			return this;
 		}
 
-		public DotClasspathSpex exportedClasses(String binPath, String srcPath) {
-			deps.add("        <classpathentry exported=\"true\" kind=\"lib\" path=\""
-					+ binPath + "\" sourcepath=\"" + srcPath + "\"/>\n");
+		public DotClasspathSpex exportedClasses(String binPath,
+				String srcPath) {
+			deps.add(
+					"        <classpathentry exported=\"true\" kind=\"lib\" path=\""
+							+ binPath + "\" sourcepath=\"" + srcPath
+							+ "\"/>\n");
 			return this;
 		}
 

@@ -19,19 +19,22 @@ public class UntarredTest extends IwantTestCase {
 	}
 
 	public void testContentDescriptor() {
-		assertEquals("net.sf.iwant.plugin.ant.Untarred:"
-				+ "compression=null:[a.tar]",
+		assertEquals(
+				"net.sf.iwant.plugin.ant.Untarred:"
+						+ "compression=null:[a.tar]",
 				Untarred.with().name("u").from(Source.underWsroot("a.tar"))
 						.end().contentDescriptor());
-		assertEquals("net.sf.iwant.plugin.ant.Untarred:"
-				+ "compression=gzip:[b.tar.gz]", Untarred.with().name("u")
-				.from(Source.underWsroot("b.tar.gz")).gzCompression().end()
-				.contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.plugin.ant.Untarred:"
+						+ "compression=gzip:[b.tar.gz]",
+				Untarred.with().name("u").from(Source.underWsroot("b.tar.gz"))
+						.gzCompression().end().contentDescriptor());
 	}
 
 	public void testSuccessfullyUntarringDirAndFileTar() throws Exception {
-		File tarFile = new File(getClass().getResource(
-				"/net/sf/iwant/testresources/untarred/dir-and-file.tar")
+		File tarFile = new File(getClass()
+				.getResource(
+						"/net/sf/iwant/testresources/untarred/dir-and-file.tar")
 				.toURI());
 
 		Target untarred = Untarred.with().name("untarred")
@@ -43,8 +46,9 @@ public class UntarredTest extends IwantTestCase {
 	}
 
 	public void testSuccessfullyUntarringDirAndFileTarGz() throws Exception {
-		File tarFile = new File(getClass().getResource(
-				"/net/sf/iwant/testresources/untarred/dir-and-file.tar.gz")
+		File tarFile = new File(getClass()
+				.getResource(
+						"/net/sf/iwant/testresources/untarred/dir-and-file.tar.gz")
 				.toURI());
 
 		Target untarred = Untarred.with().name("untarred")

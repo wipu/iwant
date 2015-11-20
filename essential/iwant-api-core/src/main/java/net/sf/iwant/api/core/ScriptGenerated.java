@@ -50,8 +50,8 @@ public class ScriptGenerated extends TargetBase {
 		execute(env);
 	}
 
-	ExecutionEnvironment prepareExecutionEnvironment(TargetEvaluationContext ctx)
-			throws IOException {
+	ExecutionEnvironment prepareExecutionEnvironment(
+			TargetEvaluationContext ctx) throws IOException {
 		File tmpDir = ctx.freshTemporaryDirectory();
 		File tmpScript = new File(tmpDir.getCanonicalPath(), "script");
 
@@ -72,14 +72,16 @@ public class ScriptGenerated extends TargetBase {
 		File cygwinBashExe = ctx.iwant().cygwinBashExe();
 		File executable;
 		if (cygwinBashExe != null) {
-			Iwant.debugLog("ScriptGenerated", "Using wrapper for "
-					+ cygwinBashExe);
+			Iwant.debugLog("ScriptGenerated",
+					"Using wrapper for " + cygwinBashExe);
 			executable = cygwinBashExe;
 
-			File wrapper = FileUtil.newTextFile(
-					new File(dir, userExecutable.getName()
-							+ "-cygwinwrapper.sh"),
-					cygwinBashWrapperFor(userExecutable, dir));
+			File wrapper = FileUtil
+					.newTextFile(
+							new File(dir,
+									userExecutable.getName()
+											+ "-cygwinwrapper.sh"),
+							cygwinBashWrapperFor(userExecutable, dir));
 			args.add(ctx.iwant().pathWithoutBackslashes(wrapper));
 		} else {
 			executable = userExecutable;
@@ -119,8 +121,8 @@ public class ScriptGenerated extends TargetBase {
 		return sh.toString();
 	}
 
-	private static void execute(ExecutionEnvironment env) throws IOException,
-			InterruptedException {
+	private static void execute(ExecutionEnvironment env)
+			throws IOException, InterruptedException {
 		List<String> cmdLine = new ArrayList<>();
 		cmdLine.add(env.executable.getCanonicalPath());
 		for (String arg : env.args) {
@@ -139,8 +141,8 @@ public class ScriptGenerated extends TargetBase {
 	}
 
 	public static void execute(TargetEvaluationContext ctx, File dir,
-			File executable, String[] args) throws IOException,
-			InterruptedException {
+			File executable, String[] args)
+					throws IOException, InterruptedException {
 		ExecutionEnvironment env = prepareExecutionEnvironment(ctx, dir,
 				executable, args);
 		execute(env);

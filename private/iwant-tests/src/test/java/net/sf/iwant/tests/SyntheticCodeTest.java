@@ -1,5 +1,7 @@
 package net.sf.iwant.tests;
 
+import org.junit.Test;
+
 import net.sf.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
 import net.sf.iwant.api.javamodules.CodeStyle;
 import net.sf.iwant.api.javamodules.CodeStyleValue;
@@ -12,8 +14,6 @@ import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import net.sf.iwant.plannerapi.TaskDirtiness;
 import net.sf.iwant.plugin.findbugs.FindbugsOutputFormat;
 import net.sf.iwant.plugin.github.FromGithub;
-
-import org.junit.Test;
 
 public class SyntheticCodeTest {
 

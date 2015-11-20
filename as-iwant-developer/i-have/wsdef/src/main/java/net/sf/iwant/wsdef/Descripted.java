@@ -35,8 +35,8 @@ public class Descripted extends Target {
 		this.doc = Source
 				.underWsroot("private/iwant-docs/src/main/descript/tutorial/"
 						+ docName + ".sh");
-		this.abstractArticle = Source
-				.underWsroot("private/iwant-docs/src/main/descript/tutorial/abstract-article.sh");
+		this.abstractArticle = Source.underWsroot(
+				"private/iwant-docs/src/main/descript/tutorial/abstract-article.sh");
 		this.descript = Source.underWsroot("iwant-lib-descript/descript.sh");
 	}
 
@@ -88,8 +88,8 @@ public class Descripted extends Target {
 		File htmlBodyContent = new File(dest, "body-content.html");
 		File fullHtml = new File(dest, "doc.html");
 
-		File iwantWsRoot = maybeIwantWsroot == null ? null : ctx
-				.cached(maybeIwantWsroot);
+		File iwantWsRoot = maybeIwantWsroot == null ? null
+				: ctx.cached(maybeIwantWsroot);
 
 		StringBuilder sh = new StringBuilder();
 		sh.append("#!/bin/bash\n");
@@ -113,7 +113,8 @@ public class Descripted extends Target {
 		sh.append("DOC=combined.sh\n");
 		sh.append("cat " + ctx.cached(abstractArticle) + " " + ctx.cached(doc)
 				+ " > \"$DOC\"\n");
-		sh.append("echo \"export PAGETITLE='" + titleText + "'\" >> \"$DOC\"\n");
+		sh.append(
+				"echo \"export PAGETITLE='" + titleText + "'\" >> \"$DOC\"\n");
 		sh.append("'" + ctx.cached(descript) + "' \"$DOC\" '" + htmlBodyContent
 				+ "' false\n");
 		sh.append("cat '" + htmlHeader + "' '" + htmlBodyContent + "' '"
@@ -130,17 +131,19 @@ public class Descripted extends Target {
 		html.append("<html>\n");
 		html.append("<head>\n");
 		html.append("<title>" + titleText + "</title>\n");
-		html.append("<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" charset=\"utf-8\" />\n");
+		html.append(
+				"<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" charset=\"utf-8\" />\n");
 		html.append("<link rel=\"icon\" href=\"favicon.ico\"/>\n");
 		html.append("<link rel=\"shortcut icon\" href=\"favicon.ico\"/>\n");
 		html.append("</head>\n");
 		html.append("<body>\n");
 		appendNavigationLinkPanelPlaceholder(html);
-		return Iwant
-				.newTextFile(new File(dest, "header.html"), html.toString());
+		return Iwant.newTextFile(new File(dest, "header.html"),
+				html.toString());
 	}
 
-	private static void appendNavigationLinkPanelPlaceholder(StringBuilder html) {
+	private static void appendNavigationLinkPanelPlaceholder(
+			StringBuilder html) {
 		html.append("NAVIGATION_LINK_PANEL_PLACEHOLDER\n");
 	}
 
@@ -148,8 +151,8 @@ public class Descripted extends Target {
 		StringBuilder html = new StringBuilder();
 		appendNavigationLinkPanelPlaceholder(html);
 		html.append("</body></html>\n");
-		return Iwant
-				.newTextFile(new File(dest, "footer.html"), html.toString());
+		return Iwant.newTextFile(new File(dest, "footer.html"),
+				html.toString());
 	}
 
 	@Override

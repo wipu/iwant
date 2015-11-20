@@ -27,13 +27,11 @@ public class ScriptGeneratedTest extends IwantTestCase {
 	}
 
 	public void testScriptIsTheIngredient() {
-		assertEquals(
-				"[src1.sh]",
+		assertEquals("[src1.sh]",
 				ScriptGenerated.named("s1")
 						.byScript(Source.underWsroot("src1.sh")).ingredients()
 						.toString());
-		assertEquals(
-				"[src2.sh]",
+		assertEquals("[src2.sh]",
 				ScriptGenerated.named("s2")
 						.byScript(Source.underWsroot("src2.sh")).ingredients()
 						.toString());
@@ -76,8 +74,8 @@ public class ScriptGeneratedTest extends IwantTestCase {
 
 		assertEquals("", out());
 		assertEquals("$0=" + unixPathOf(tmpDir) + "/script\n" + "$1="
-				+ unixPathOf(cacheDir) + "/sg\ncwd=" + unixPathOf(tmpDir)
-				+ "\n" + "stderr\n", err());
+				+ unixPathOf(cacheDir) + "/sg\ncwd=" + unixPathOf(tmpDir) + "\n"
+				+ "stderr\n", err());
 
 		assertEquals("hello from env demo\n", contentOfCached("sg"));
 	}
@@ -99,7 +97,8 @@ public class ScriptGeneratedTest extends IwantTestCase {
 			sg.path(ctx);
 			fail();
 		} catch (Iwant.IwantException e) {
-			assertEquals("Script exited with non-zero status 2", e.getMessage());
+			assertEquals("Script exited with non-zero status 2",
+					e.getMessage());
 		}
 
 		assertEquals("", out());
@@ -125,14 +124,16 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		File wrapper = new File(tmpDir, "script-cygwinwrapper.sh");
 		assertEquals(tmpDir, env.dir);
 		assertEquals(mockCygwinBashExe, env.executable);
-		assertEquals("[only-slashes:" + slashed(wrapper) + ", mock-unix-path:"
-				+ slashed(new File(cacheDir, "sg")) + "]",
+		assertEquals(
+				"[only-slashes:" + slashed(wrapper) + ", mock-unix-path:"
+						+ slashed(new File(cacheDir, "sg")) + "]",
 				Arrays.toString(env.args));
 
-		assertEquals("#!/bin/bash\n" + "SCRIPT=$(cygpath --unix -a '"
-				+ new File(tmpDir, "script") + "')\n"
-				+ "RUNDIR=$(cygpath --unix -a '" + tmpDir + "')\n"
-				+ "cd \"$RUNDIR\"\n" + "\"$SCRIPT\" \"$@\"\n" + "",
+		assertEquals(
+				"#!/bin/bash\n" + "SCRIPT=$(cygpath --unix -a '"
+						+ new File(tmpDir, "script") + "')\n"
+						+ "RUNDIR=$(cygpath --unix -a '" + tmpDir + "')\n"
+						+ "cd \"$RUNDIR\"\n" + "\"$SCRIPT\" \"$@\"\n" + "",
 				contentOf(wrapper));
 	}
 
@@ -151,8 +152,9 @@ public class ScriptGeneratedTest extends IwantTestCase {
 
 		assertEquals(tmpDir, env.dir);
 		assertEquals(new File(tmpDir, "script"), env.executable);
-		assertEquals("[mock-unix-path:" + slashed(new File(cacheDir, "sg"))
-				+ "]", Arrays.toString(env.args));
+		assertEquals(
+				"[mock-unix-path:" + slashed(new File(cacheDir, "sg")) + "]",
+				Arrays.toString(env.args));
 	}
 
 }

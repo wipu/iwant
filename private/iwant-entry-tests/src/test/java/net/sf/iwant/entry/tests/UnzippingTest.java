@@ -37,7 +37,8 @@ public class UnzippingTest extends TestCase {
 
 		File unzipped = iwant.unmodifiableZipUnzipped(src);
 
-		assertEquals(testArea.root() + "/unzipped", unzipped.getCanonicalPath());
+		assertEquals(testArea.root() + "/unzipped",
+				unzipped.getCanonicalPath());
 		assertTrue(unzipped.isDirectory());
 
 		assertEquals("[dir]", Arrays.toString(unzipped.list()));
@@ -46,13 +47,13 @@ public class UnzippingTest extends TestCase {
 	}
 
 	public void testCacheIsReturnedWithoutUnzippingWhenCacheExists() {
-		URL zip = Iwant.fileToUrl(new File(testArea.root(),
-				"not-to-be-accessed"));
+		URL zip = Iwant
+				.fileToUrl(new File(testArea.root(), "not-to-be-accessed"));
 		File unzipped = network.cachesZipAt(zip, "unzipped");
 		Iwant.newTextFile(new File(unzipped, "file"), "unzipped content");
 
-		File unzippedAgain = iwant.unmodifiableZipUnzipped(new UnmodifiableZip(
-				zip));
+		File unzippedAgain = iwant
+				.unmodifiableZipUnzipped(new UnmodifiableZip(zip));
 
 		assertEquals(unzipped, unzippedAgain);
 		assertTrue(unzipped.isDirectory());
@@ -67,7 +68,8 @@ public class UnzippingTest extends TestCase {
 
 		File unzipped = iwant.unmodifiableZipUnzipped(src);
 
-		assertEquals(testArea.root() + "/unzipped", unzipped.getCanonicalPath());
+		assertEquals(testArea.root() + "/unzipped",
+				unzipped.getCanonicalPath());
 		assertTrue(unzipped.isDirectory());
 
 		assertEquals("[root]", Arrays.toString(unzipped.list()));
@@ -85,14 +87,17 @@ public class UnzippingTest extends TestCase {
 
 		File unzipped = iwant.unmodifiableZipUnzipped(src);
 
-		assertEquals(testArea.root() + "/unzipped", unzipped.getCanonicalPath());
+		assertEquals(testArea.root() + "/unzipped",
+				unzipped.getCanonicalPath());
 		assertTrue(unzipped.isDirectory());
 
 		assertEquals("[svnkit-1.8.6]", Arrays.toString(unzipped.list()));
-		assertEquals(4035241, new File(unzipped,
-				"svnkit-1.8.6/lib/svnkit-1.8.6.jar").length());
-		assertEquals(365477, new File(unzipped,
-				"svnkit-1.8.6/lib/svnkit-cli-1.8.6.jar").length());
+		assertEquals(4035241,
+				new File(unzipped, "svnkit-1.8.6/lib/svnkit-1.8.6.jar")
+						.length());
+		assertEquals(365477,
+				new File(unzipped, "svnkit-1.8.6/lib/svnkit-cli-1.8.6.jar")
+						.length());
 	}
 
 }

@@ -3,13 +3,14 @@ package net.sf.iwant.plugin.testng;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.ExitCalledException;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.Iwant.ExitCalledException;
 
 public class TestngRunnerTest {
 
@@ -45,9 +46,9 @@ public class TestngRunnerTest {
 	@Test
 	public void runOfSuccessfulTests() {
 		try {
-			TestngRunner.main(new String[] {
-					Successful1.class.getCanonicalName(),
-					Successful2.class.getCanonicalName() });
+			TestngRunner
+					.main(new String[] { Successful1.class.getCanonicalName(),
+							Successful2.class.getCanonicalName() });
 			fail();
 		} catch (ExitCalledException e) {
 			assertEquals(0, e.status());

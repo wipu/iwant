@@ -22,8 +22,8 @@ public class FindbugsDistributionTest extends IwantTestCase {
 		assertEquals("findbugs-1.3.9.tar.gz", tarGz139.name());
 		assertEquals(
 				"http://downloads.sourceforge.net/project/findbugs/findbugs/"
-						+ "1.3.9/findbugs-1.3.9.tar.gz", tarGz139.url()
-						.toExternalForm());
+						+ "1.3.9/findbugs-1.3.9.tar.gz",
+				tarGz139.url().toExternalForm());
 
 		FindbugsDistribution distro202 = FindbugsDistribution
 				.ofVersion("2.0.2");
@@ -32,8 +32,8 @@ public class FindbugsDistributionTest extends IwantTestCase {
 		assertEquals("findbugs-2.0.2.tar.gz", tarGz202.name());
 		assertEquals(
 				"http://downloads.sourceforge.net/project/findbugs/findbugs/"
-						+ "2.0.2/findbugs-2.0.2.tar.gz", tarGz202.url()
-						.toExternalForm());
+						+ "2.0.2/findbugs-2.0.2.tar.gz",
+				tarGz202.url().toExternalForm());
 	}
 
 	private static FindbugsDistribution distroToTest() {

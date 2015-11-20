@@ -3,10 +3,10 @@ package net.sf.iwant.plugin.pmd;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
-
-import org.apache.commons.io.FileUtils;
 
 public class PmdReportTest extends PmdTestBase {
 
@@ -90,17 +90,17 @@ public class PmdReportTest extends PmdTestBase {
 				.contains("Avoid reassigning parameters such as 'parameter'"));
 
 		String txtReportContent = txtReportContent(report);
-		assertTrue(txtReportContent
-				.contains("net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:5"
+		assertTrue(txtReportContent.contains(
+				"net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:5"
 						+ "	Avoid reassigning parameters such as 'parameter'"));
-		assertTrue(txtReportContent
-				.contains("net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:9"
+		assertTrue(txtReportContent.contains(
+				"net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:9"
 						+ "	Method names should not start with capital letters"));
-		assertTrue(txtReportContent
-				.contains("net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:13"
+		assertTrue(txtReportContent.contains(
+				"net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:13"
 						+ "	Avoid unused private methods such as 'deadMethod()'."));
-		assertTrue(txtReportContent
-				.contains("net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:17"
+		assertTrue(txtReportContent.contains(
+				"net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:17"
 						+ "	Document empty method"));
 
 		String xmlReportContent = xmlReportContent(report);
@@ -115,9 +115,10 @@ public class PmdReportTest extends PmdTestBase {
 		File srcDir = new File(wsRoot, "src");
 		srcDirHasPmdFodder(srcDir, "testfodder", "ClassWithPmdIssues");
 
-		FileUtils.copyFile(FileUtils.toFile(getClass().getResource(
-				"ruleset-with-naming-only.xml")), new File(wsRoot,
-				"custom-ruleset.xml"));
+		FileUtils.copyFile(
+				FileUtils.toFile(
+						getClass().getResource("ruleset-with-naming-only.xml")),
+				new File(wsRoot, "custom-ruleset.xml"));
 
 		PmdReport report = PmdReport.with().name("pmd-report")
 				.from(Source.underWsroot("src"))
@@ -127,10 +128,10 @@ public class PmdReportTest extends PmdTestBase {
 		String txtReportContent = txtReportContent(report);
 		assertFalse(txtReportContent
 				.contains("Avoid reassigning parameters such as 'parameter'"));
-		assertTrue(txtReportContent
-				.contains("Method names should not start with capital letters"));
-		assertFalse(txtReportContent
-				.contains("Avoid unused private methods such as 'deadMethod()'."));
+		assertTrue(txtReportContent.contains(
+				"Method names should not start with capital letters"));
+		assertFalse(txtReportContent.contains(
+				"Avoid unused private methods such as 'deadMethod()'."));
 		assertFalse(txtReportContent.contains("Document empty method"));
 	}
 

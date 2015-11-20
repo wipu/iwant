@@ -16,7 +16,8 @@ public class FileFilterTest extends TestCase {
 		testArea = TestArea.forTest(this);
 	}
 
-	private static void assertResult(Collection<File> actual, File... expected) {
+	private static void assertResult(Collection<File> actual,
+			File... expected) {
 		assertEquals(expected.length, actual.size());
 		for (File f : expected) {
 			assertTrue(actual.contains(f));
@@ -26,8 +27,8 @@ public class FileFilterTest extends TestCase {
 	public void testFilesRecursivelyUnderPlainFileIsJustFileItsef() {
 		File plain = testArea.hasFile("file", "whatever");
 
-		Collection<File> result = Iwant2.plainFilesRecursivelyUnder(Arrays
-				.asList(plain));
+		Collection<File> result = Iwant2
+				.plainFilesRecursivelyUnder(Arrays.asList(plain));
 
 		assertResult(result, plain);
 	}
@@ -41,8 +42,8 @@ public class FileFilterTest extends TestCase {
 		File pack2class = testArea.hasFile("classes/example/pack2/C.class",
 				"whatever");
 
-		Collection<File> result = Iwant2.plainFilesRecursivelyUnder(Arrays
-				.asList(classes));
+		Collection<File> result = Iwant2
+				.plainFilesRecursivelyUnder(Arrays.asList(classes));
 
 		assertResult(result, pack1class1, pack1class2, pack2class);
 	}

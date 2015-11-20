@@ -47,8 +47,8 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 	}
 
 	private Path pluginMainJava(String pluginName) {
-		URL url = Iwant.subUrlOfSvnUrl(iwantRootFromUrl, "optional/"
-				+ pluginName + "/src/main/java");
+		URL url = Iwant.subUrlOfSvnUrl(iwantRootFromUrl,
+				"optional/" + pluginName + "/src/main/java");
 		return SvnExported.with().name(pluginName + "-main-java").url(url)
 				.end();
 	}
@@ -75,7 +75,8 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 		}
 
 		Set<JavaModule> mods = new LinkedHashSet<>();
-		mods.add(JavaBinModule.providing(pluginClasses.end(), pluginJava).end());
+		mods.add(
+				JavaBinModule.providing(pluginClasses.end(), pluginJava).end());
 		mods.addAll(iwantApiModules);
 		mods.addAll(dependencies);
 		return mods;
@@ -108,7 +109,8 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 					Set<JavaModule> deps = new LinkedHashSet<>();
 					deps.add(JavaBinModule.providing(commonsIoJar()).end());
 					deps.addAll(ant().withDependencies());
-					return pluginWithDependencies("iwant-plugin-findbugs", deps);
+					return pluginWithDependencies("iwant-plugin-findbugs",
+							deps);
 				}
 
 			};
@@ -159,9 +161,7 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 			return new IwantPluginWish() {
 				@Override
 				public Set<JavaModule> withDependencies() {
-					return pluginWithDependencies(
-							"iwant-plugin-pmd",
-							antJar(),
+					return pluginWithDependencies("iwant-plugin-pmd", antJar(),
 							FromRepository.ibiblio().group("asm").name("asm")
 									.version("3.2"),
 							commonsIoJar(),

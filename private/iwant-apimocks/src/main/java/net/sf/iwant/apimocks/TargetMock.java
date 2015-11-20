@@ -43,7 +43,8 @@ public class TargetMock extends Target {
 	}
 
 	@Override
-	public synchronized void path(TargetEvaluationContext ctx) throws Exception {
+	public synchronized void path(TargetEvaluationContext ctx)
+			throws Exception {
 		timesPathWasCalled++;
 		StreamUtil.pipeAndClose(content(ctx),
 				new FileOutputStream(ctx.cached(this)));

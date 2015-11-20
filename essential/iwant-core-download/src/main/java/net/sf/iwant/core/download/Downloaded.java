@@ -80,8 +80,8 @@ public class Downloaded extends TargetBase {
 			byte[] fileContent = FileUtil.contentAsBytes(dest);
 			String actualMd5 = md5(fileContent);
 			if (!md5.equals(actualMd5)) {
-				File corruptedFile = new File(dest.getCanonicalPath()
-						+ ".corrupted");
+				File corruptedFile = new File(
+						dest.getCanonicalPath() + ".corrupted");
 				dest.renameTo(corruptedFile);
 				Iwant.debugLog("Downloaded", "checksum failed " + dest);
 				throw new Iwant.IwantException("Actual MD5 was " + actualMd5

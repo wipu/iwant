@@ -29,10 +29,10 @@ public class JacocoDistribution extends TargetBase {
 
 	private static Downloaded zip(String version) {
 		String zipName = "jacoco-" + version + ".zip";
-		return Downloaded
-				.withName(zipName)
+		return Downloaded.withName(zipName)
 				.url("http://repo1.maven.org/maven2/org/jacoco/jacoco/"
-						+ version + "/" + zipName).noCheck();
+						+ version + "/" + zipName)
+				.noCheck();
 	}
 
 	public Downloaded zip() {
@@ -60,18 +60,18 @@ public class JacocoDistribution extends TargetBase {
 	}
 
 	public File orgJacocoAntJar(TargetEvaluationContext ctx) {
-		return new File(ctx.cached(this), "lib/org.jacoco.ant-" + version
-				+ ".jar");
+		return new File(ctx.cached(this),
+				"lib/org.jacoco.ant-" + version + ".jar");
 	}
 
 	public File orgJacocoCoreJar(TargetEvaluationContext ctx) {
-		return new File(ctx.cached(this), "lib/org.jacoco.core-" + version
-				+ ".jar");
+		return new File(ctx.cached(this),
+				"lib/org.jacoco.core-" + version + ".jar");
 	}
 
 	public File orgJacocoReportJar(TargetEvaluationContext ctx) {
-		return new File(ctx.cached(this), "lib/org.jacoco.report-" + version
-				+ ".jar");
+		return new File(ctx.cached(this),
+				"lib/org.jacoco.report-" + version + ".jar");
 	}
 
 }

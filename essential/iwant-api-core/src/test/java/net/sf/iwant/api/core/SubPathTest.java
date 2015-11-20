@@ -24,12 +24,14 @@ public class SubPathTest extends IwantTestCase {
 		assertEquals("[parent]", s.ingredients().toString());
 		assertEquals("[parent2]", s2.ingredients().toString());
 
-		assertEquals("net.sf.iwant.api.core.SubPath\n" + "i:parent:\n"
-				+ "  parent\n" + "p:relativePath:\n" + "  rel\n" + "", s
-				.contentDescriptor().toString());
-		assertEquals("net.sf.iwant.api.core.SubPath\n" + "i:parent:\n"
-				+ "  parent2\n" + "p:relativePath:\n" + "  rel2\n" + "", s2
-				.contentDescriptor().toString());
+		assertEquals(
+				"net.sf.iwant.api.core.SubPath\n" + "i:parent:\n" + "  parent\n"
+						+ "p:relativePath:\n" + "  rel\n" + "",
+				s.contentDescriptor().toString());
+		assertEquals(
+				"net.sf.iwant.api.core.SubPath\n" + "i:parent:\n"
+						+ "  parent2\n" + "p:relativePath:\n" + "  rel2\n" + "",
+				s2.contentDescriptor().toString());
 	}
 
 	public void testNonDirectorySubPathAsPath() throws Exception {

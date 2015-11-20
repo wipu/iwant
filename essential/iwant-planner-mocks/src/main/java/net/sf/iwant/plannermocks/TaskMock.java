@@ -109,8 +109,8 @@ public class TaskMock implements Task {
 	public void shallNotStartRefresh() {
 		synchronized (refreshStartLock) {
 			if (hasStartedRefresh) {
-				throw new IllegalStateException(this
-						+ " should not have started refresh.");
+				throw new IllegalStateException(
+						this + " should not have started refresh.");
 			}
 		}
 	}

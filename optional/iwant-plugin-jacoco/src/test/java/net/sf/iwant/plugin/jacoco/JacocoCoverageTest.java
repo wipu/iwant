@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.core.SystemEnv;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
@@ -11,8 +13,6 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.entry.Iwant.ExitCalledException;
-
-import org.apache.commons.io.FileUtils;
 
 public class JacocoCoverageTest extends JacocoTestBase {
 
@@ -46,14 +46,16 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
 				+ antLauncherJar() + ", instrtest-classes.jacoco-instr]",
 				coverage.ingredients().toString());
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
-				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
-				+ antLauncherJar() + "\ni:classLocations:\n"
-				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
-				+ "  instrtest.Main\n" + "p:mainClassArgs:\n" + "  arg0\n"
-				+ "  arg1\n" + "i:mainClassArgsFile:\n" + " null\n"
-				+ "p:jvmargs:\n", coverage.contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.plugin.jacoco.JacocoCoverage\n" + "i:jacoco:\n"
+						+ "  jacoco-0.7.2.201409121644\n" + "i:deps:\n" + "  "
+						+ asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+						+ antLauncherJar() + "\ni:classLocations:\n"
+						+ "  instrtest-classes.jacoco-instr\n"
+						+ "p:mainClassName:\n" + "  instrtest.Main\n"
+						+ "p:mainClassArgs:\n" + "  arg0\n" + "  arg1\n"
+						+ "i:mainClassArgsFile:\n" + " null\n" + "p:jvmargs:\n",
+				coverage.contentDescriptor());
 	}
 
 	public void testIngredientsAndDescriptorWithMainClassArgsGivenAsPath()
@@ -71,10 +73,11 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				.jacocoWithDeps(jacoco(), asm())
 				.mainClassAndArguments("instrtest.Main", args).end();
 
-		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
-				+ antLauncherJar()
-				+ ", instrtest-classes.jacoco-instr, args-file]", coverage
-				.ingredients().toString());
+		assertEquals(
+				"[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
+						+ antLauncherJar()
+						+ ", instrtest-classes.jacoco-instr, args-file]",
+				coverage.ingredients().toString());
 		assertEquals("net.sf.iwant.plugin.jacoco.JacocoCoverage\n"
 				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
 				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
@@ -217,9 +220,9 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		JacocoCoverage coverage = JacocoCoverage.with().name("cov")
 				.antJars(antJar(), antLauncherJar())
 				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("JunitReferrer")
-				.classLocations(classes1).classLocations(instr1)
-				.classLocations(classes2).classLocations(instr2).end();
+				.mainClassAndArguments("JunitReferrer").classLocations(classes1)
+				.classLocations(instr1).classLocations(classes2)
+				.classLocations(instr2).end();
 
 		List<Path> classpath = coverage.classLocations();
 		assertEquals(
@@ -310,8 +313,9 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		Path src = Source.underWsroot("aSrc");
 
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
-				"instrtest", "EnvChecker", "if(!\"[aString, " + wsRoot
-						+ "/aSrc]\".equals(" + "java.util.Arrays.asList("
+				"instrtest", "EnvChecker",
+				"if(!\"[aString, " + wsRoot + "/aSrc]\".equals("
+						+ "java.util.Arrays.asList("
 						+ "System.getenv(\"string\"),System.getenv(\"source\")"
 						+ ").toString())) System.exit(1);");
 		JacocoInstrumentation instr = JacocoInstrumentation
@@ -345,9 +349,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				.jacocoWithDeps(jacoco(), asm())
 				.mainClassAndArguments("instrtest.EnvChecker").env(env).end();
 
-		assertTrue(coverage.contentDescriptor().contains(
-				"p:env:string:\n" + "  aString\n" + "i:env:source:\n"
-						+ "  aSrc"));
+		assertTrue(coverage.contentDescriptor().contains("p:env:string:\n"
+				+ "  aString\n" + "i:env:source:\n" + "  aSrc"));
 	}
 
 }

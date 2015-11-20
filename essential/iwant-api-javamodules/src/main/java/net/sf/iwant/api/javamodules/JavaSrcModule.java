@@ -95,7 +95,8 @@ public class JavaSrcModule extends JavaModule {
 		clone.codeFormatter(m.codeFormatterPolicy());
 		clone.codeStyle(m.codeStylePolicy());
 		clone.encoding(m.encoding());
-		for (Class<? extends JavaModuleCharacteristic> c : m.characteristics()) {
+		for (Class<? extends JavaModuleCharacteristic> c : m
+				.characteristics()) {
 			clone.has(c);
 		}
 		clone.locationUnderWsRoot(m.locationUnderWsRoot());
@@ -156,8 +157,8 @@ public class JavaSrcModule extends JavaModule {
 			if (locationUnderWsRoot != null) {
 				locationUnderWsRootToUse = locationUnderWsRoot;
 			} else {
-				locationUnderWsRootToUse = normalizedRelativeParentDir(relativeParentDir)
-						+ name;
+				locationUnderWsRootToUse = normalizedRelativeParentDir(
+						relativeParentDir) + name;
 			}
 			return new JavaSrcModule(name, locationUnderWsRootToUse, mainJavas,
 					mainResources, testJavas, testResources, testEnv,
@@ -189,14 +190,14 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
-		public IwantSrcModuleSpex locationUnderWsRoot(String locationUnderWsRoot) {
+		public IwantSrcModuleSpex locationUnderWsRoot(
+				String locationUnderWsRoot) {
 			this.locationUnderWsRoot = locationUnderWsRoot;
 			return this;
 		}
 
 		public IwantSrcModuleSpex mavenLayout() {
-			return mainJava("src/main/java")
-					.mainResources("src/main/resources")
+			return mainJava("src/main/java").mainResources("src/main/resources")
 					.testJava("src/test/java")
 					.testResources("src/test/resources");
 		}
@@ -246,7 +247,8 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
-		public IwantSrcModuleSpex mainDeps(JavaModule... mainDepsForCompilation) {
+		public IwantSrcModuleSpex mainDeps(
+				JavaModule... mainDepsForCompilation) {
 			return mainDeps(Arrays.asList(mainDepsForCompilation));
 		}
 
@@ -269,8 +271,8 @@ public class JavaSrcModule extends JavaModule {
 
 		public IwantSrcModuleSpex testDeps(
 				JavaModule... testDepsForCompilationExcludingMainDeps) {
-			return testDeps(Arrays
-					.asList(testDepsForCompilationExcludingMainDeps));
+			return testDeps(
+					Arrays.asList(testDepsForCompilationExcludingMainDeps));
 		}
 
 		public IwantSrcModuleSpex testDeps(
@@ -282,8 +284,8 @@ public class JavaSrcModule extends JavaModule {
 
 		public IwantSrcModuleSpex testRuntimeDeps(
 				JavaModule... testDepsForRunOnlyExcludingMainDeps) {
-			return testRuntimeDeps(Arrays
-					.asList(testDepsForRunOnlyExcludingMainDeps));
+			return testRuntimeDeps(
+					Arrays.asList(testDepsForRunOnlyExcludingMainDeps));
 		}
 
 		public IwantSrcModuleSpex testRuntimeDeps(
@@ -317,8 +319,8 @@ public class JavaSrcModule extends JavaModule {
 
 		public IwantSrcModuleSpex generatorSourcesToFollow(
 				Source... generatorSourcesToFollow) {
-			return generatorSourcesToFollow(Arrays
-					.asList(generatorSourcesToFollow));
+			return generatorSourcesToFollow(
+					Arrays.asList(generatorSourcesToFollow));
 		}
 
 		public IwantSrcModuleSpex generatorSourcesToFollow(
@@ -338,13 +340,15 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
-		public IwantSrcModuleSpex javaCompliance(JavaCompliance javaCompliance) {
+		public IwantSrcModuleSpex javaCompliance(
+				JavaCompliance javaCompliance) {
 			this.javaCompliance = javaCompliance;
 			return this;
 		}
 
 		public IwantSrcModuleSpex testedBy(String testSuiteName) {
-			this.testClassNameFilter = new StringFilterByEquality(testSuiteName);
+			this.testClassNameFilter = new StringFilterByEquality(
+					testSuiteName);
 			return this;
 		}
 
@@ -445,8 +449,8 @@ public class JavaSrcModule extends JavaModule {
 		}
 		List<Path> retval = new ArrayList<>();
 		for (String mainJava : mainJavas) {
-			retval.add(Source.underWsroot(locationUnderWsRoot() + "/"
-					+ mainJava));
+			retval.add(
+					Source.underWsroot(locationUnderWsRoot() + "/" + mainJava));
 		}
 		return retval;
 	}
@@ -462,8 +466,8 @@ public class JavaSrcModule extends JavaModule {
 	public List<Path> testJavasAsPaths() {
 		List<Path> retval = new ArrayList<>();
 		for (String testJava : testJavas) {
-			retval.add(Source.underWsroot(locationUnderWsRoot() + "/"
-					+ testJava));
+			retval.add(
+					Source.underWsroot(locationUnderWsRoot() + "/" + testJava));
 		}
 		return retval;
 	}

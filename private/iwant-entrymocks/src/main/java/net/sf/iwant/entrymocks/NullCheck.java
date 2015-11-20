@@ -9,7 +9,8 @@ public class NullCheck {
 
 	public static <T> T nonNull(T value, String objectName) {
 		if (value == null) {
-			throw new IllegalStateException("You forgot to teach " + objectName);
+			throw new IllegalStateException(
+					"You forgot to teach " + objectName);
 		}
 		return value;
 	}

@@ -24,14 +24,13 @@ class FileSizeSum extends TargetBase {
 	@Override
 	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
-		return iUse
-				.ingredients("pathsToSum", pathsToSum)
+		return iUse.ingredients("pathsToSum", pathsToSum)
 				.parameter("headerLineContent", headerLineContent)
-				.ingredients(
-						"me",
-						Source.underWsroot("as-iwant-tutorial-developer/i-have/wsdef/"
-								+ "src/main/java/"
-								+ "com/example/wsdef/FileSizeSum.java"))
+				.ingredients("me",
+						Source.underWsroot(
+								"as-iwant-tutorial-developer/i-have/wsdef/"
+										+ "src/main/java/"
+										+ "com/example/wsdef/FileSizeSum.java"))
 				.nothingElse();
 	}
 
@@ -46,8 +45,8 @@ class FileSizeSum extends TargetBase {
 			int pathSize = FileUtil.contentAsBytes(pathFile).length;
 			pathSizeSum += pathSize;
 		}
-		FileUtil.newTextFile(dest, headerLineContent + "\n" + pathSizeSum
-				+ "\n");
+		FileUtil.newTextFile(dest,
+				headerLineContent + "\n" + pathSizeSum + "\n");
 	}
 
 }

@@ -44,8 +44,8 @@ public class EclipseProject {
 		}
 
 		if (hasExternalBuilder()) {
-			dcp = dcp.exportedClasses("eclipse-ant-generated/"
-					+ module.generatedClasses().name(),
+			dcp = dcp.exportedClasses(
+					"eclipse-ant-generated/" + module.generatedClasses().name(),
 					"eclipse-ant-generated/" + module.generatedSrc().name());
 		}
 
@@ -95,8 +95,8 @@ public class EclipseProject {
 				return dcp.binDep(binDep.eclipseBinaryReference(ctx), src);
 			}
 		}
-		throw new UnsupportedOperationException("Don't know how to handle "
-				+ dep.getClass());
+		throw new UnsupportedOperationException(
+				"Don't know how to handle " + dep.getClass());
 	}
 
 	private static DotClasspathSpex optionalSrc(DotClasspathSpex dcp,

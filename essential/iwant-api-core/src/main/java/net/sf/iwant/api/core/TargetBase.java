@@ -201,8 +201,8 @@ public abstract class TargetBase extends Target {
 
 	}
 
-	private abstract class BaseBuilder implements
-			IngredientsAndParametersPlease {
+	private abstract class BaseBuilder
+			implements IngredientsAndParametersPlease {
 
 		@Override
 		public final IngredientsAndParametersDefined nothingElse() {

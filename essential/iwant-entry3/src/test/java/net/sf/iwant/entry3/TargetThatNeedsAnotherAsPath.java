@@ -31,8 +31,8 @@ class TargetThatNeedsAnotherAsPath extends Target {
 	@Override
 	public InputStream content(TargetEvaluationContext ctx) throws Exception {
 		StringBuilder content = new StringBuilder();
-		String ingredientContent = StreamUtil.toString(new FileInputStream(ctx
-				.cached(ingredient)));
+		String ingredientContent = StreamUtil
+				.toString(new FileInputStream(ctx.cached(ingredient)));
 		content.append("Stream using '");
 		content.append(ingredientContent);
 		content.append("' as ingredient");

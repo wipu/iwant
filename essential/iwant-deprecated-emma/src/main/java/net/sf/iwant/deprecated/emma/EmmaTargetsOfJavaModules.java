@@ -29,8 +29,8 @@ public class EmmaTargetsOfJavaModules {
 	private final Map<String, EmmaCoverage> coveragesByName = new HashMap<>();
 	private final SortedSet<String> modulesNotToInstrument = new TreeSet<>();
 
-	private EmmaTargetsOfJavaModules(Path emma, List<Path> antJars,
-			Path filter, SortedSet<JavaModule> modules,
+	private EmmaTargetsOfJavaModules(Path emma, List<Path> antJars, Path filter,
+			SortedSet<JavaModule> modules,
 			SortedSet<JavaModule> modulesNotToInstrument) {
 		this.emma = emma;
 		this.antJars = antJars;

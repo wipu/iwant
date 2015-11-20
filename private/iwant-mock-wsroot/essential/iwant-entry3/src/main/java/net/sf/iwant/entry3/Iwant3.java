@@ -15,8 +15,8 @@ public class Iwant3 {
 		System.out.println("args: " + Arrays.toString(args));
 		if (Arrays.toString(args).contains("--printClassLoaderUrls")) {
 			URLClassLoader cl = (URLClassLoader) Iwant3.class.getClassLoader();
-			System.out.println("classloader urls: "
-					+ Arrays.toString(cl.getURLs()));
+			System.out.println(
+					"classloader urls: " + Arrays.toString(cl.getURLs()));
 		}
 	}
 

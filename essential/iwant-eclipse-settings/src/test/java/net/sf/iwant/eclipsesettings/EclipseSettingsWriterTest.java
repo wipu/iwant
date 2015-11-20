@@ -20,16 +20,16 @@ public class EclipseSettingsWriterTest extends IwantTestCase {
 		EclipseSettingsWriter.with().modules(module).context(seCtx).end()
 				.write();
 
-		assertTrue(contentOfFileUnderWsRoot("minimal/.project").contains(
-				"<name>minimal</name>"));
-		assertTrue(contentOfFileUnderWsRoot("minimal/.classpath").contains(
-				"<classpathentry"));
+		assertTrue(contentOfFileUnderWsRoot("minimal/.project")
+				.contains("<name>minimal</name>"));
+		assertTrue(contentOfFileUnderWsRoot("minimal/.classpath")
+				.contains("<classpathentry"));
 		assertTrue(contentOfFileUnderWsRoot(
 				"minimal/.settings/org.eclipse.jdt.core.prefs").contains(
-				"org.eclipse.jdt.core.compiler.problem.deadCode=warning\n"));
+						"org.eclipse.jdt.core.compiler.problem.deadCode=warning\n"));
 		assertTrue(contentOfFileUnderWsRoot(
-				"minimal/.settings/org.eclipse.jdt.ui.prefs").contains(
-				"formatter_settings_version=12\n"));
+				"minimal/.settings/org.eclipse.jdt.ui.prefs")
+						.contains("formatter_settings_version=12\n"));
 	}
 
 	public void testMinimalWithLocationThatDiffersFromName() {
@@ -45,11 +45,11 @@ public class EclipseSettingsWriterTest extends IwantTestCase {
 				.contains("<classpathentry"));
 		assertTrue(contentOfFileUnderWsRoot(
 				"parent/dir-name/.settings/org.eclipse.jdt.core.prefs")
-				.contains(
-						"org.eclipse.jdt.core.compiler.problem.deadCode=warning\n"));
+						.contains(
+								"org.eclipse.jdt.core.compiler.problem.deadCode=warning\n"));
 		assertTrue(contentOfFileUnderWsRoot(
-				"parent/dir-name/.settings/org.eclipse.jdt.ui.prefs").contains(
-				"formatter_settings_version=12\n"));
+				"parent/dir-name/.settings/org.eclipse.jdt.ui.prefs")
+						.contains("formatter_settings_version=12\n"));
 	}
 
 	public void testCodeGeneration() {
@@ -72,15 +72,14 @@ public class EclipseSettingsWriterTest extends IwantTestCase {
 
 		assertTrue(contentOfFileUnderWsRoot(
 				"code-generating-module/eclipse-ant-build.xml").contains(
-				"name=\"code-generating-module-eclipse-ant-build\""));
+						"name=\"code-generating-module-eclipse-ant-build\""));
 		assertTrue(contentOfFileUnderWsRoot(
-				"code-generating-module/eclipse-ant-build.xml")
-				.contains(
+				"code-generating-module/eclipse-ant-build.xml").contains(
 						"<property name=\"as-someone\" location=\"${basedir}/as-writer-test\" />"));
 
 		assertTrue(contentOfFileUnderWsRoot(
 				"code-generating-module/.externalToolBuilders/code-generating-module.launch")
-				.contains("code-generating-module"));
+						.contains("code-generating-module"));
 	}
 
 }

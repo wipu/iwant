@@ -25,18 +25,20 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		JacocoInstrumentation instr = jacocoTargets
 				.jacocoInstrumentationOf(mod);
 		assertEquals("mod-main-classes.jacoco-instr", instr.name());
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoInstrumentation\n"
-				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
-				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
-				+ antLauncherJar() + "\ni:classes:\n" + "  mod-main-classes\n"
-				+ "", instr.contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.plugin.jacoco.JacocoInstrumentation\n"
+						+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n"
+						+ "i:deps:\n" + "  " + asm() + "\ni:antJars:\n" + "  "
+						+ antJar() + "\n  " + antLauncherJar()
+						+ "\ni:classes:\n" + "  mod-main-classes\n" + "",
+				instr.contentDescriptor());
 
 		assertNull(jacocoTargets.jacocoCoverageOf(mod));
 
 		JacocoReport report = jacocoTargets.jacocoReport("coverage-report");
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n"
-				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n" + "  "
-				+ asm() + "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
+		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
+				+ "  " + jacoco() + "\n" + "i:deps:\n" + "  " + asm() + "\n"
+				+ "i:antJars:\n" + "  " + antJar() + "\n" + "  "
 				+ antLauncherJar() + "\n" + "i:coverages:\n" + "i:classes:\n"
 				+ "  mod-main-classes\n" + "i:sources:\n" + "  mod/src\n" + "",
 				report.contentDescriptor());
@@ -64,11 +66,13 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertNull(jacocoTargets.jacocoCoverageOf(mod));
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n"
-				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n" + "  "
-				+ asm() + "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
-				+ antLauncherJar() + "\n" + "i:coverages:\n" + "i:classes:\n"
-				+ "i:sources:\n" + "", report.contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
+						+ "  " + jacoco() + "\n" + "i:deps:\n" + "  " + asm()
+						+ "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
+						+ antLauncherJar() + "\n" + "i:coverages:\n"
+						+ "i:classes:\n" + "i:sources:\n" + "",
+				report.contentDescriptor());
 	}
 
 	public void testTargetsFromOneMinimalTestOnlyModule() throws IOException {
@@ -94,9 +98,9 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				coverage.contentDescriptor());
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n"
-				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n" + "  "
-				+ asm() + "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
+		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
+				+ "  " + jacoco() + "\n" + "i:deps:\n" + "  " + asm() + "\n"
+				+ "i:antJars:\n" + "  " + antJar() + "\n" + "  "
 				+ antLauncherJar() + "\n" + "i:coverages:\n"
 				+ "  mod.jacococoverage\n" + "i:classes:\n" + "i:sources:\n"
 				+ "", report.contentDescriptor());
@@ -115,11 +119,13 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertNull(jacocoTargets.jacocoCoverageOf(mod));
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n"
-				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
-				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
-				+ antLauncherJar() + "\ni:coverages:\n" + "i:classes:\n"
-				+ "  lib\n" + "i:sources:\n" + "", report.contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
+						+ "  jacoco-0.7.2.201409121644\n" + "i:deps:\n" + "  "
+						+ asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+						+ antLauncherJar() + "\ni:coverages:\n" + "i:classes:\n"
+						+ "  lib\n" + "i:sources:\n" + "",
+				report.contentDescriptor());
 	}
 
 	public void testCoverageArgsForJunitIsClassNameListUnlessOnlyOneTestDefined()
@@ -151,8 +157,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.jacocoCoverageOf(testedByOneClass);
 		assertEquals("org.junit.runner.JUnitCore",
 				coverageOfOneClass.mainClassName());
-		assertEquals("[custom.Test]", coverageOfOneClass.mainClassArgs()
-				.toString());
+		assertEquals("[custom.Test]",
+				coverageOfOneClass.mainClassArgs().toString());
 		assertNull(coverageOfOneClass.mainClassArgsFile());
 
 		JacocoCoverage coverageOfManyClasses = jacocoTargets
@@ -162,23 +168,25 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertNull(coverageOfManyClasses.mainClassArgs());
 		ClassNameList testNames = (ClassNameList) coverageOfManyClasses
 				.mainClassArgsFile();
-		assertEquals("net.sf.iwant.api.core.ClassNameList\n" + "i:classes:\n"
-				+ "  testedByClassnameFilter-test-classes\n" + "p:filter:\n"
-				+ "  just-a-filter\n" + "", testNames.contentDescriptor());
+		assertEquals(
+				"net.sf.iwant.api.core.ClassNameList\n" + "i:classes:\n"
+						+ "  testedByClassnameFilter-test-classes\n"
+						+ "p:filter:\n" + "  just-a-filter\n" + "",
+				testNames.contentDescriptor());
 	}
 
 	public void testCoverageOfJavaSrcModuleWithCumulativeDeps()
 			throws IOException {
-		JavaBinModule bin1 = JavaBinModule
-				.providing(Source.underWsroot("bin1")).end();
+		JavaBinModule bin1 = JavaBinModule.providing(Source.underWsroot("bin1"))
+				.end();
 		JavaSrcModule src1 = JavaSrcModule.with().name("src1").mainJava("src")
 				.mainDeps(bin1).end();
 		JavaSrcModule src2 = JavaSrcModule.with().name("src2").mainJava("src")
 				.end();
-		JavaBinModule bin2 = JavaBinModule
-				.providing(Source.underWsroot("bin2")).end();
-		JavaBinModule testLib = JavaBinModule.providing(
-				Source.underWsroot("testLib")).end();
+		JavaBinModule bin2 = JavaBinModule.providing(Source.underWsroot("bin2"))
+				.end();
+		JavaBinModule testLib = JavaBinModule
+				.providing(Source.underWsroot("testLib")).end();
 
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
 				.testJava("test").mainDeps(src1, bin2, src2).testDeps(testLib)
@@ -191,17 +199,18 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
 
 		assertEquals("mod.jacococoverage", coverage.name());
-		assertEquals("[mod-test-classes, testLib,"
-				+ " mod-main-classes.jacoco-instr,"
-				+ " src1-main-classes.jacoco-instr, bin1, bin2,"
-				+ " src2-main-classes.jacoco-instr]", coverage.classLocations()
-				.toString());
+		assertEquals(
+				"[mod-test-classes, testLib,"
+						+ " mod-main-classes.jacoco-instr,"
+						+ " src1-main-classes.jacoco-instr, bin1, bin2,"
+						+ " src2-main-classes.jacoco-instr]",
+				coverage.classLocations().toString());
 	}
 
 	public void testCoverageOfSubsetOfSrcModulesWithDepToModuleOutsideTheSubset()
 			throws Exception {
-		JavaSrcModule uninteresting = JavaSrcModule.with()
-				.name("uninteresting").mainJava("src").end();
+		JavaSrcModule uninteresting = JavaSrcModule.with().name("uninteresting")
+				.mainJava("src").end();
 		JavaSrcModule interesting1 = JavaSrcModule.with().name("interesting1")
 				.mainJava("src").testJava("test").mainDeps(uninteresting)
 				.testDeps(junit()).end();
@@ -212,12 +221,10 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				"package uninteresting;\npublic class Uninteresting {"
 						+ "public static int value() {return 1;}}\n");
 
-		wsRootHasFile(
-				"interesting1/src/interesting1/Interesting1.java",
+		wsRootHasFile("interesting1/src/interesting1/Interesting1.java",
 				"package interesting1;\npublic class Interesting1 {"
 						+ "public static int value() {return 2 + uninteresting.Uninteresting.value();}}\n");
-		wsRootHasFile(
-				"interesting1/test/interesting1/Interesting1Test.java",
+		wsRootHasFile("interesting1/test/interesting1/Interesting1Test.java",
 				"package interesting1;import org.junit.Test;\nimport static org.junit.Assert.*;\n"
 						+ "\npublic class Interesting1Test {"
 						+ "@Test public void test() {assertEquals(3, Interesting1.value());}}\n");
@@ -225,8 +232,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		wsRootHasFile("interesting2/src/interesting2/Interesting2.java",
 				"package interesting2;\npublic class Interesting2 {"
 						+ "public static int value() {return 4;}}\n");
-		wsRootHasFile(
-				"interesting2/test/interesting2/Interesting2Test.java",
+		wsRootHasFile("interesting2/test/interesting2/Interesting2Test.java",
 				"package interesting2;import org.junit.Test;\nimport static org.junit.Assert.*;\n"
 						+ "\npublic class Interesting2Test {"
 						+ "@Test public void test() {assertEquals(4, Interesting2.value());}}\n");
@@ -250,8 +256,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				"GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED\n"
 						+ "report,interesting1,Interesting1,7,0,0,0,1,0,2,0,2,0\n"
 						+ "report,interesting2,Interesting2,5,0,0,0,1,0,2,0,2,0\n"
-						+ "", contentOf(new File(ctx.cached(report),
-						"report.csv")));
+						+ "",
+				contentOf(new File(ctx.cached(report), "report.csv")));
 	}
 
 	public void testJacocoCoverageUsesModulesTestEnv() throws IOException {

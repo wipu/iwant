@@ -100,8 +100,8 @@ public class Planner {
 		case NOT_DIRTY:
 			return "  ";
 		default:
-			throw new UnsupportedOperationException("Unsupported dirtiness: "
-					+ dirtiness);
+			throw new UnsupportedOperationException(
+					"Unsupported dirtiness: " + dirtiness);
 		}
 	}
 
@@ -130,7 +130,8 @@ public class Planner {
 					Map<ResourcePool, Resource> resources = allocation
 							.allocatedResources();
 					workersWorking.incrementAndGet();
-					consoleLog(taskStartMessage(id, workersWorking.get(), task));
+					consoleLog(
+							taskStartMessage(id, workersWorking.get(), task));
 					task.refresh(resources);
 				} catch (Throwable e) {
 					consoleLog("(FAILED " + allocation.task() + ")");

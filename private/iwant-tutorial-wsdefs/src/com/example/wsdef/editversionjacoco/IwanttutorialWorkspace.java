@@ -39,8 +39,8 @@ public class IwanttutorialWorkspace implements Workspace {
 				hamcrestCore);
 		final JavaSrcModule helloUtil = srcModule("example-helloutil")
 				.noMainResources().end();
-		final JavaSrcModule hello = srcModule("example-hello")
-				.noMainResources().mainDeps(helloUtil).end();
+		final JavaSrcModule hello = srcModule("example-hello").noMainResources()
+				.mainDeps(helloUtil).end();
 
 	}
 
@@ -53,8 +53,7 @@ public class IwanttutorialWorkspace implements Workspace {
 	}
 
 	private Target jacocoReport() {
-		return JacocoTargetsOfJavaModules
-				.with()
+		return JacocoTargetsOfJavaModules.with()
 				.jacocoWithDeps(jacoco(), modules.asmAll.mainArtifact())
 				.antJars(TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar())
@@ -70,7 +69,8 @@ public class IwanttutorialWorkspace implements Workspace {
 	private Target classpathStringOfAll() {
 		ConcatenatedBuilder cp = Concatenated.named("all-as-cp");
 		cp.string(".");
-		for (Path jar : JavaModules.mainArtifactJarsOf(modules.allSrcModules())) {
+		for (Path jar : JavaModules
+				.mainArtifactJarsOf(modules.allSrcModules())) {
 			cp.string(File.pathSeparator).nativePathTo(jar);
 		}
 		return cp.end();
@@ -79,8 +79,10 @@ public class IwanttutorialWorkspace implements Workspace {
 	@Override
 	public List<? extends SideEffect> sideEffects(
 			SideEffectDefinitionContext ctx) {
-		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")
-				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())
+		return Arrays
+				.asList(EclipseSettings.with().name("eclipse-settings")
+						.modules(ctx.wsdefdefJavaModule(),
+								ctx.wsdefJavaModule())
 				.modules(modules.allSrcModules()).end());
 	}
 

@@ -147,7 +147,8 @@ public class Concatenated extends TargetBase {
 		public void writeTo(OutputStream out, TargetEvaluationContext ctx)
 				throws IOException {
 			PrintWriter writer = new PrintWriter(out);
-			writer.append(ctx.iwant().pathWithoutBackslashes(ctx.cached(value)));
+			writer.append(
+					ctx.iwant().pathWithoutBackslashes(ctx.cached(value)));
 			writer.flush();
 		}
 

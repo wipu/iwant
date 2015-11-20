@@ -7,12 +7,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.core.ant.AntGenerated;
-
-import org.apache.commons.io.FileUtils;
 
 public class JacocoInstrumentation extends TargetBase {
 
@@ -92,8 +92,8 @@ public class JacocoInstrumentation extends TargetBase {
 	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
 		return iUse.ingredients("jacoco", jacoco).ingredients("deps", deps)
-				.ingredients("antJars", antJars)
-				.ingredients("classes", classes).nothingElse();
+				.ingredients("antJars", antJars).ingredients("classes", classes)
+				.nothingElse();
 	}
 
 	@Override
@@ -118,7 +118,8 @@ public class JacocoInstrumentation extends TargetBase {
 		b.append("<project name=\"" + name() + "\" default=\"" + name()
 				+ "\" xmlns:jacoco=\"antlib:org.jacoco.ant\" basedir=\".\">\n");
 		b.append("\n");
-		b.append("      <taskdef uri=\"antlib:org.jacoco.ant\" resource=\"org/jacoco/ant/antlib.xml\">\n");
+		b.append(
+				"      <taskdef uri=\"antlib:org.jacoco.ant\" resource=\"org/jacoco/ant/antlib.xml\">\n");
 		for (Path dep : deps) {
 			b.append("              <classpath location=\"" + ctx.cached(dep)
 					+ "\" />\n");

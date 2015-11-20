@@ -24,10 +24,10 @@ public class FindbugsDistribution extends TargetBase {
 
 	private static Downloaded tarGz(String version) {
 		String tarGzName = "findbugs-" + version + ".tar.gz";
-		return Downloaded
-				.withName(tarGzName)
+		return Downloaded.withName(tarGzName)
 				.url("http://downloads.sourceforge.net/project/findbugs/findbugs/"
-						+ version + "/" + tarGzName).noCheck();
+						+ version + "/" + tarGzName)
+				.noCheck();
 	}
 
 	public Downloaded tarGz() {

@@ -29,24 +29,29 @@ public class DotProject {
 		b.append("        <buildSpec>\n");
 		if (hasExternalBuilder) {
 			b.append("                <buildCommand>\n");
-			b.append("                        <name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>\n");
+			b.append(
+					"                        <name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>\n");
 			b.append("                        <arguments>\n");
 			b.append("                                <dictionary>\n");
-			b.append("                                        <key>LaunchConfigHandle</key>\n");
-			b.append("                                        <value>&lt;project&gt;/.externalToolBuilders/"
-					+ name() + ".launch</value>\n");
+			b.append(
+					"                                        <key>LaunchConfigHandle</key>\n");
+			b.append(
+					"                                        <value>&lt;project&gt;/.externalToolBuilders/"
+							+ name() + ".launch</value>\n");
 			b.append("                                </dictionary>\n");
 			b.append("                        </arguments>\n");
 			b.append("                </buildCommand>\n");
 		}
 		b.append("                <buildCommand>\n");
-		b.append("                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
+		b.append(
+				"                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
 		b.append("                        <arguments>\n");
 		b.append("                        </arguments>\n");
 		b.append("                </buildCommand>\n");
 		b.append("        </buildSpec>\n");
 		b.append("        <natures>\n");
-		b.append("                <nature>org.eclipse.jdt.core.javanature</nature>\n");
+		b.append(
+				"                <nature>org.eclipse.jdt.core.javanature</nature>\n");
 		b.append("        </natures>\n");
 		b.append("</projectDescription>\n");
 		return b.toString();

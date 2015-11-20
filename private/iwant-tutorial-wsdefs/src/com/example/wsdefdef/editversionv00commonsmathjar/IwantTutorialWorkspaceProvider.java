@@ -11,14 +11,12 @@ public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {
 
 	@Override
 	public JavaSrcModule workspaceModule(WorkspaceModuleContext ctx) {
-		return JavaSrcModule
-				.with()
-				.name("iwant-tutorial-wsdef")
+		return JavaSrcModule.with().name("iwant-tutorial-wsdef")
 				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")
-				.mainJava("src/main/java")
-				.mainDeps(ctx.iwantApiModules())
+				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
 				.mainDeps(JavaBinModule.providing(commonsMathJar()).end(),
-						ctx.wsdefdefModule()).end();
+						ctx.wsdefdefModule())
+				.end();
 	}
 
 	@Override
@@ -28,8 +26,7 @@ public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {
 
 	private static Target commonsMathJar() {
 		final String v = "1.2";
-		return Downloaded
-				.withName("commonsMathJar")
+		return Downloaded.withName("commonsMathJar")
 				.url("http://mirrors.ibiblio.org/maven2/commons-math/commons-math/"
 						+ v + "/commons-math-" + v + ".jar")
 				.md5("5d3ce091a67e863549de4493e19df069");

@@ -23,18 +23,20 @@ public class JavaBinModuleTest extends IwantTestCase {
 
 	public void testEqualsUsesNameAndClass() {
 		assertTrue(JavaBinModule.providing(Source.underWsroot("a")).end()
-				.equals(JavaBinModule.providing(Source.underWsroot("a")).end()));
+				.equals(JavaBinModule.providing(Source.underWsroot("a"))
+						.end()));
 
 		assertFalse(JavaBinModule.providing(Source.underWsroot("a")).end()
 				.equals(JavaSrcModule.with().name("a").end()));
 		assertFalse(JavaBinModule.providing(Source.underWsroot("a")).end()
-				.equals(JavaBinModule.providing(Source.underWsroot("b")).end()));
+				.equals(JavaBinModule.providing(Source.underWsroot("b"))
+						.end()));
 	}
 
 	public void testHashCodeIsSameIfNameIsSame() {
 		assertTrue(JavaBinModule.providing(Source.underWsroot("a")).end()
 				.hashCode() == JavaBinModule.providing(Source.underWsroot("a"))
-				.end().hashCode());
+						.end().hashCode());
 		assertTrue(JavaBinModule.providing(Source.underWsroot("a")).end()
 				.hashCode() == JavaSrcModule.with().name("a").end().hashCode());
 	}
@@ -74,8 +76,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		Source src = (Source) lib.source();
 		assertEquals("libs/sourced-src.zip", src.name());
 
-		assertNull(JavaBinModule.named("unsourced.jar").inside(libsModule)
-				.end().source());
+		assertNull(JavaBinModule.named("unsourced.jar").inside(libsModule).end()
+				.source());
 	}
 
 	public void testCharacteristicsForBinaryModuleInsideLibraryModule() {
@@ -90,23 +92,24 @@ public class JavaBinModuleTest extends IwantTestCase {
 	}
 
 	public void testObservableDepsOfBinInsideLibraryModuleThatHasRuntimeDeps() {
-		JavaBinModule dep1 = JavaBinModule.providing(
-				Source.underWsroot("dep1.jar")).end();
-		JavaBinModule dep2 = JavaBinModule.providing(
-				Source.underWsroot("dep2.jar")).end();
+		JavaBinModule dep1 = JavaBinModule
+				.providing(Source.underWsroot("dep1.jar")).end();
+		JavaBinModule dep2 = JavaBinModule
+				.providing(Source.underWsroot("dep2.jar")).end();
 
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaBinModule lib = JavaBinModule.named("lib.jar")
 				.runtimeDeps(dep2, dep1, dep1).inside(libsModule).end();
 
 		assertEquals("[]", lib.mainDepsForCompilation().toString());
-		assertEquals("[dep2.jar, dep1.jar]", lib.mainDepsForRunOnly()
-				.toString());
-		assertEquals("[lib.jar, dep2.jar, dep1.jar]", lib
-				.effectivePathForMainRuntime().toString());
-		assertEquals("[]", lib.testDepsForCompilationExcludingMainDeps()
-				.toString());
-		assertEquals("[]", lib.testDepsForRunOnlyExcludingMainDeps().toString());
+		assertEquals("[dep2.jar, dep1.jar]",
+				lib.mainDepsForRunOnly().toString());
+		assertEquals("[lib.jar, dep2.jar, dep1.jar]",
+				lib.effectivePathForMainRuntime().toString());
+		assertEquals("[]",
+				lib.testDepsForCompilationExcludingMainDeps().toString());
+		assertEquals("[]",
+				lib.testDepsForRunOnlyExcludingMainDeps().toString());
 		assertEquals("[]", lib.effectivePathForTestCompile().toString());
 		// bin module itself is not tested so no effective deps either:
 		assertEquals("[]", lib.effectivePathForTestRuntime().toString());
@@ -114,12 +117,9 @@ public class JavaBinModuleTest extends IwantTestCase {
 
 	public void testModuleLikeABinUnderLibsIsReallyLikeIt() {
 		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
-		JavaBinModule m1 = JavaBinModule
-				.named("bin.jar")
-				.has(TestUtility.class)
-				.runtimeDeps(
-						JavaBinModule.providing(
-								Source.underWsroot("runtime.jar")).end())
+		JavaBinModule m1 = JavaBinModule.named("bin.jar").has(TestUtility.class)
+				.runtimeDeps(JavaBinModule
+						.providing(Source.underWsroot("runtime.jar")).end())
 				.source("bin-src.zip").inside(libs).end();
 
 		JavaBinModule m2 = JavaBinModule.likeBinUnderLibs(m1).end();
@@ -187,22 +187,22 @@ public class JavaBinModuleTest extends IwantTestCase {
 				.inside(JavaSrcModule.with().name("libs").end()).end();
 		assertTrue(binInsideLibs.testDepsForCompilationExcludingMainDeps()
 				.isEmpty());
-		assertTrue(binInsideLibs.testDepsForRunOnlyExcludingMainDeps()
-				.isEmpty());
-		assertEquals("[]", binInsideLibs.effectivePathForTestCompile()
-				.toString());
-		assertEquals("[]", binInsideLibs.effectivePathForTestRuntime()
-				.toString());
+		assertTrue(
+				binInsideLibs.testDepsForRunOnlyExcludingMainDeps().isEmpty());
+		assertEquals("[]",
+				binInsideLibs.effectivePathForTestCompile().toString());
+		assertEquals("[]",
+				binInsideLibs.effectivePathForTestRuntime().toString());
 
-		JavaBinModule binProvider = JavaBinModule.providing(
-				Source.underWsroot("lib")).end();
+		JavaBinModule binProvider = JavaBinModule
+				.providing(Source.underWsroot("lib")).end();
 		assertTrue(binProvider.testDepsForCompilationExcludingMainDeps()
 				.isEmpty());
 		assertTrue(binProvider.testDepsForRunOnlyExcludingMainDeps().isEmpty());
-		assertEquals("[]", binInsideLibs.effectivePathForTestCompile()
-				.toString());
-		assertEquals("[]", binInsideLibs.effectivePathForTestRuntime()
-				.toString());
+		assertEquals("[]",
+				binInsideLibs.effectivePathForTestCompile().toString());
+		assertEquals("[]",
+				binInsideLibs.effectivePathForTestRuntime().toString());
 	}
 
 	public void testSourcesOfProviderModule() {
@@ -224,23 +224,24 @@ public class JavaBinModuleTest extends IwantTestCase {
 	}
 
 	public void testObservableDepsOfPathProviderModuleThatHasRuntimeDeps() {
-		JavaBinModule dep1 = JavaBinModule.providing(
-				Source.underWsroot("dep1.jar")).end();
-		JavaBinModule dep2 = JavaBinModule.providing(
-				Source.underWsroot("dep2.jar")).end();
+		JavaBinModule dep1 = JavaBinModule
+				.providing(Source.underWsroot("dep1.jar")).end();
+		JavaBinModule dep2 = JavaBinModule
+				.providing(Source.underWsroot("dep2.jar")).end();
 
 		JavaBinModule lib = JavaBinModule
 				.providing(Source.underWsroot("lib.jar"))
 				.runtimeDeps(dep2, dep1, dep1).end();
 
 		assertEquals("[]", lib.mainDepsForCompilation().toString());
-		assertEquals("[dep2.jar, dep1.jar]", lib.mainDepsForRunOnly()
-				.toString());
-		assertEquals("[lib.jar, dep2.jar, dep1.jar]", lib
-				.effectivePathForMainRuntime().toString());
-		assertEquals("[]", lib.testDepsForCompilationExcludingMainDeps()
-				.toString());
-		assertEquals("[]", lib.testDepsForRunOnlyExcludingMainDeps().toString());
+		assertEquals("[dep2.jar, dep1.jar]",
+				lib.mainDepsForRunOnly().toString());
+		assertEquals("[lib.jar, dep2.jar, dep1.jar]",
+				lib.effectivePathForMainRuntime().toString());
+		assertEquals("[]",
+				lib.testDepsForCompilationExcludingMainDeps().toString());
+		assertEquals("[]",
+				lib.testDepsForRunOnlyExcludingMainDeps().toString());
 		assertEquals("[]", lib.effectivePathForTestCompile().toString());
 		// bin module itself is not tested so no effective deps either:
 		assertEquals("[]", lib.effectivePathForTestRuntime().toString());
@@ -251,9 +252,9 @@ public class JavaBinModuleTest extends IwantTestCase {
 				.providing(Source.underWsroot("lib.jar"),
 						Source.underWsroot("lib-src.zip"))
 				.has(TestUtility.class)
-				.runtimeDeps(
-						JavaBinModule.providing(
-								Source.underWsroot("runtime.jar")).end()).end();
+				.runtimeDeps(JavaBinModule
+						.providing(Source.underWsroot("runtime.jar")).end())
+				.end();
 
 		JavaBinModule m2 = JavaBinModule.likePathProvider(m1).end();
 

@@ -57,8 +57,8 @@ public class WishEvaluatorTest extends TestCase {
 	private JavaSrcModule wsdefdefJavaModule;
 	private JavaSrcModule wsdefJavaModule;
 	private Set<JavaModule> iwantApiModules = Collections
-			.<JavaModule> singleton(JavaBinModule.providing(
-					Source.underWsroot("mock-iwant-classes")).end());
+			.<JavaModule> singleton(JavaBinModule
+					.providing(Source.underWsroot("mock-iwant-classes")).end());
 	private InputStream originalIn;
 	private PrintStream originalOut;
 	private PrintStream originalErr;
@@ -245,7 +245,8 @@ public class WishEvaluatorTest extends TestCase {
 
 	public void testStreamOfTargetThatUsesAnotherTargetStreamAsIngredient() {
 		Target ingredient = new HelloTarget("ingredient", "ingredient content");
-		Target target = new TargetThatNeedsAnotherAsStream("target", ingredient);
+		Target target = new TargetThatNeedsAnotherAsStream("target",
+				ingredient);
 		evaluator.content(target);
 		assertEquals("Stream using 'ingredient content' as ingredient",
 				out.toString());
@@ -253,7 +254,8 @@ public class WishEvaluatorTest extends TestCase {
 
 	public void testPathToTargetThatUsesAnotherTargetStreamAsIngredient() {
 		Target ingredient = new HelloTarget("ingredient", "ingredient content");
-		Target target = new TargetThatNeedsAnotherAsStream("target", ingredient);
+		Target target = new TargetThatNeedsAnotherAsStream("target",
+				ingredient);
 
 		evaluator.asPath(target);
 
@@ -288,9 +290,11 @@ public class WishEvaluatorTest extends TestCase {
 	public void testStreamOfTargetThatUsesASourceStreamAsIngredient() {
 		testArea.hasFile("wsroot/src", "src content");
 		Path ingredient = Source.underWsroot("src");
-		Target target = new TargetThatNeedsAnotherAsStream("target", ingredient);
+		Target target = new TargetThatNeedsAnotherAsStream("target",
+				ingredient);
 		evaluator.content(target);
-		assertEquals("Stream using 'src content' as ingredient", out.toString());
+		assertEquals("Stream using 'src content' as ingredient",
+				out.toString());
 	}
 
 	public void testStreamOfTargetThatUsesASourcePathAsIngredient() {
@@ -298,7 +302,8 @@ public class WishEvaluatorTest extends TestCase {
 		Path ingredient = Source.underWsroot("src");
 		Target target = new TargetThatNeedsAnotherAsPath("target", ingredient);
 		evaluator.content(target);
-		assertEquals("Stream using 'src content' as ingredient", out.toString());
+		assertEquals("Stream using 'src content' as ingredient",
+				out.toString());
 	}
 
 	// ...
@@ -314,8 +319,9 @@ public class WishEvaluatorTest extends TestCase {
 
 		evaluator.asPath(t3);
 
-		assertEquals("Stream using 'Stream using 't1 content 1'"
-				+ " as ingredient' as ingredient",
+		assertEquals(
+				"Stream using 'Stream using 't1 content 1'"
+						+ " as ingredient' as ingredient",
 				testArea.contentOf(new File(asSomeone, ".i-cached/target/t3")));
 
 		// modification:
@@ -324,8 +330,9 @@ public class WishEvaluatorTest extends TestCase {
 
 		evaluator.asPath(t3);
 
-		assertEquals("Stream using 'Stream using 't1 content 2'"
-				+ " as ingredient' as ingredient",
+		assertEquals(
+				"Stream using 'Stream using 't1 content 2'"
+						+ " as ingredient' as ingredient",
 				testArea.contentOf(new File(asSomeone, ".i-cached/target/t3")));
 	}
 
@@ -341,8 +348,8 @@ public class WishEvaluatorTest extends TestCase {
 		@Override
 		public List<? extends SideEffect> sideEffects(
 				SideEffectDefinitionContext ctx) {
-			return Arrays.asList(EclipseSettings.with()
-					.name("eclipse-settings").end());
+			return Arrays.asList(
+					EclipseSettings.with().name("eclipse-settings").end());
 		}
 
 	}
@@ -452,9 +459,8 @@ public class WishEvaluatorTest extends TestCase {
 		}
 
 		// correct shall succeed:
-		assertEquals(asSomeone + "/.i-cached/target/src",
-				testArea.contentOf(new File(asSomeone,
-						".i-cached/target/correct")));
+		assertEquals(asSomeone + "/.i-cached/target/src", testArea
+				.contentOf(new File(asSomeone, ".i-cached/target/correct")));
 
 		// incorrect shall not even produce the file:
 		assertFalse(new File(asSomeone, ".i-cached/target/incorrect").exists());
@@ -523,16 +529,16 @@ public class WishEvaluatorTest extends TestCase {
 		thread.join();
 		// =>
 
-		assertEquals("part1", testArea.contentOf(new File(asSomeone,
-				".i-cached/target/part1")));
-		assertEquals("part2", testArea.contentOf(new File(asSomeone,
-				".i-cached/target/part2")));
-		assertEquals("part3", testArea.contentOf(new File(asSomeone,
-				".i-cached/target/part3")));
-		assertEquals("part4", testArea.contentOf(new File(asSomeone,
-				".i-cached/target/part4")));
-		assertEquals("listOfParts", testArea.contentOf(new File(asSomeone,
-				".i-cached/target/listOfParts")));
+		assertEquals("part1", testArea
+				.contentOf(new File(asSomeone, ".i-cached/target/part1")));
+		assertEquals("part2", testArea
+				.contentOf(new File(asSomeone, ".i-cached/target/part2")));
+		assertEquals("part3", testArea
+				.contentOf(new File(asSomeone, ".i-cached/target/part3")));
+		assertEquals("part4", testArea
+				.contentOf(new File(asSomeone, ".i-cached/target/part4")));
+		assertEquals("listOfParts", testArea.contentOf(
+				new File(asSomeone, ".i-cached/target/listOfParts")));
 	}
 
 	public void testContextUsesThreadNameToMakeSureAllWorkersGetOwnTemporaryDirectory()
@@ -569,8 +575,8 @@ public class WishEvaluatorTest extends TestCase {
 		List<Target> parts = new ArrayList<>();
 		ConcatenatedBuilder listOfPartsSpex = Concatenated.named("listOfParts");
 		for (int i = 0; i < partCount; i++) {
-			ConcatenatedBuilder scriptContent = Concatenated.named("script-"
-					+ i);
+			ConcatenatedBuilder scriptContent = Concatenated
+					.named("script-" + i);
 			scriptContent.string("#!/bin/bash\n");
 			scriptContent.string("set -eu\n");
 			scriptContent.string("DEST=$1\n");
@@ -585,8 +591,8 @@ public class WishEvaluatorTest extends TestCase {
 		evaluator.asPath(listOfParts);
 
 		for (int i = 0; i < partCount; i++) {
-			assertEquals(i + "\n", testArea.contentOf(new File(asSomeone,
-					".i-cached/target/part-" + i)));
+			assertEquals(i + "\n", testArea.contentOf(
+					new File(asSomeone, ".i-cached/target/part-" + i)));
 		}
 	}
 
@@ -645,11 +651,13 @@ public class WishEvaluatorTest extends TestCase {
 			evaluator.iwant("list-of/targets", ws);
 			fail();
 		} catch (Iwant.IwantException e) {
-			assertEquals("Two conflicting definitions for Path name b:\n"
-					+ "One is of\n"
-					+ " class net.sf.iwant.api.core.HelloTarget\n"
-					+ "and another is of\n"
-					+ " class net.sf.iwant.api.model.Source", e.getMessage());
+			assertEquals(
+					"Two conflicting definitions for Path name b:\n"
+							+ "One is of\n"
+							+ " class net.sf.iwant.api.core.HelloTarget\n"
+							+ "and another is of\n"
+							+ " class net.sf.iwant.api.model.Source",
+					e.getMessage());
 		}
 
 	}
@@ -839,8 +847,8 @@ public class WishEvaluatorTest extends TestCase {
 		expectedErr.append("Wanting target2\n");
 		expectedErr
 				.append("(0/1 D! net.sf.iwant.api.core.HelloTarget target1)\n");
-		expectedErr
-				.append("(0/1 D! net.sf.iwant.api.core.Concatenated target2)\n");
+		expectedErr.append(
+				"(0/1 D! net.sf.iwant.api.core.Concatenated target2)\n");
 		expectedErr.append("Content:\n");
 		expectedErr.append("target2 using target1 content\n");
 		expectedErr.append("Wanting target1\n");
@@ -851,8 +859,8 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals("", out());
 	}
 
-	private class IwantPluginReferenceInSideEffectDefinition implements
-			Workspace {
+	private class IwantPluginReferenceInSideEffectDefinition
+			implements Workspace {
 
 		@Override
 		public List<? extends Target> targets(TargetDefinitionContext ctx) {

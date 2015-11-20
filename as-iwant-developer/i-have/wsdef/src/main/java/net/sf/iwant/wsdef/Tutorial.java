@@ -6,12 +6,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
-
-import org.apache.commons.io.FileUtils;
 
 public class Tutorial extends Target {
 
@@ -24,8 +24,8 @@ public class Tutorial extends Target {
 	private Tutorial(String namePrefix, List<Descripted> bootstrappingDocs) {
 		super(namePrefix + "tutorial");
 		this.namePrefix = namePrefix;
-		this.styleCss = Source
-				.underWsroot("private/iwant-docs/src/main/html/website/style.css");
+		this.styleCss = Source.underWsroot(
+				"private/iwant-docs/src/main/html/website/style.css");
 
 		pages.add(new Descripted(namePrefix, "concepts-intro",
 				"Introduction of concepts", tutorialWsdefSrc(), null, null));
@@ -84,9 +84,7 @@ public class Tutorial extends Target {
 
 	public static Tutorial local(Path copyOfLocalIwantWs) {
 		List<Descripted> bs = new ArrayList<>();
-		bs.add(new Descripted(
-				"",
-				"bootstrapping-locally",
+		bs.add(new Descripted("", "bootstrapping-locally",
 				"Acquiring iwant bootstrapper by svn-exporting it from a local directory",
 				tutorialWsdefSrc(), copyOfLocalIwantWs, null));
 		return new Tutorial("local-", bs);
@@ -97,9 +95,7 @@ public class Tutorial extends Target {
 		bs.add(new Descripted("", "bootstrapping",
 				"The command line interface and bootstrapping",
 				tutorialWsdefSrc(), null, null));
-		bs.add(new Descripted(
-				"",
-				"bootstrapping-with-svnexternals",
+		bs.add(new Descripted("", "bootstrapping-with-svnexternals",
 				"Alternative: acquiring iwant bootstrapper by using svn:externals",
 				tutorialWsdefSrc(), null, null));
 		return new Tutorial("remote-", bs);
@@ -157,7 +153,8 @@ public class Tutorial extends Target {
 		index.append("<html>\n");
 		index.append("<head>\n");
 		index.append("<title>iwant tutorial</title>\n");
-		index.append("<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" charset=\"utf-8\" />\n");
+		index.append(
+				"<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" charset=\"utf-8\" />\n");
 		index.append("<link rel=\"icon\" href=\"favicon.ico\"/>\n");
 		index.append("<link rel=\"shortcut icon\" href=\"favicon.ico\"/>\n");
 		index.append("</head>\n");
@@ -181,7 +178,8 @@ public class Tutorial extends Target {
 	}
 
 	private String page(TargetEvaluationContext ctx, String fileName,
-			Path fromPath, Descripted prev, Descripted next) throws IOException {
+			Path fromPath, Descripted prev, Descripted next)
+					throws IOException {
 		File dest = ctx.cached(this);
 		File to = new File(dest, fileName);
 		File from = new File(ctx.cached(fromPath), "doc.html");

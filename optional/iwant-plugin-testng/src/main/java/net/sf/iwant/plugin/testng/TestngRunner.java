@@ -3,9 +3,9 @@ package net.sf.iwant.plugin.testng;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.iwant.api.javamodules.TestRunner;
-
 import org.testng.TestNG;
+
+import net.sf.iwant.api.javamodules.TestRunner;
 
 public class TestngRunner implements TestRunner {
 

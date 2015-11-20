@@ -12,8 +12,8 @@ public class ExternalSourceTest {
 
 	@Test
 	public void absolutePathToString() throws IOException {
-		assertEquals("/an/absolute/path", new ExternalSource(new File(
-				"/an/absolute/path")).toString());
+		assertEquals("/an/absolute/path",
+				new ExternalSource(new File("/an/absolute/path")).toString());
 	}
 
 	/**
@@ -22,8 +22,8 @@ public class ExternalSourceTest {
 	@Test
 	public void relativePathToString() throws IOException {
 		String cwd = System.getProperty("user.dir");
-		assertEquals(cwd + "/relative/path", new ExternalSource(new File(
-				"relative/path")).toString());
+		assertEquals(cwd + "/relative/path",
+				new ExternalSource(new File("relative/path")).toString());
 	}
 
 	@Test

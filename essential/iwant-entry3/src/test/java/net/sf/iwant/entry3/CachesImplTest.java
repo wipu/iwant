@@ -67,10 +67,8 @@ public class CachesImplTest extends TestCase {
 		File cached = testArea.newDir("cached-url");
 		network.cachesAt(new UnmodifiableUrl(url), cached);
 
-		assertFile(
-				cached,
-				caches.contentOf(Downloaded.withName("downloaded")
-						.url(urlString).md5("any")));
+		assertFile(cached, caches.contentOf(
+				Downloaded.withName("downloaded").url(urlString).md5("any")));
 	}
 
 	public void testContentDescriptorOfNormalTarget() {
@@ -85,12 +83,10 @@ public class CachesImplTest extends TestCase {
 	 * even though the cached content is reused between workspaces.
 	 */
 	public void testContentDescriptorOfDownloadedTarget() {
-		assertFile(
-				new File(cacheDir, "descriptor/dl1"),
+		assertFile(new File(cacheDir, "descriptor/dl1"),
 				caches.contentDescriptorOf(Downloaded.withName("dl1")
 						.url("file:///any").md5("any")));
-		assertFile(
-				new File(cacheDir, "descriptor/dl2"),
+		assertFile(new File(cacheDir, "descriptor/dl2"),
 				caches.contentDescriptorOf(Downloaded.withName("dl2")
 						.url("file:///any").md5("any")));
 	}

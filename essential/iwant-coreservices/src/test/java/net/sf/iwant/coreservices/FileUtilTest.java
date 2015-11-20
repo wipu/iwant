@@ -62,14 +62,14 @@ public class FileUtilTest extends TestCase {
 
 	public void testRelativePathIsBForAB() {
 		File parent = new File("/a");
-		assertEquals("b", FileUtil.relativePathOfFileUnderParent(new File(
-				"/a/b"), parent));
+		assertEquals("b", FileUtil
+				.relativePathOfFileUnderParent(new File("/a/b"), parent));
 	}
 
 	public void testRelativePathIsBCForABC() {
 		File parent = new File("/a");
-		assertEquals("b/c", FileUtil.relativePathOfFileUnderParent(new File(
-				"/a/b/c"), parent));
+		assertEquals("b/c", FileUtil
+				.relativePathOfFileUnderParent(new File("/a/b/c"), parent));
 	}
 
 	public void testCopyMissingFilesExcludesSvnMetafiles() throws IOException {

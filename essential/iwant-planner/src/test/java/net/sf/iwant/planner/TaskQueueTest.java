@@ -21,8 +21,8 @@ public class TaskQueueTest extends TestCase {
 		assertFalse(queue.isEmpty());
 		TaskAllocation nextAllocation = queue.next();
 		assertSame(task, nextAllocation.task());
-		assertEquals(Arrays.toString(allocatedResources), nextAllocation
-				.allocatedResources().values().toString());
+		assertEquals(Arrays.toString(allocatedResources),
+				nextAllocation.allocatedResources().values().toString());
 		return nextAllocation;
 	}
 
@@ -211,8 +211,8 @@ public class TaskQueueTest extends TestCase {
 
 		TaskMock subModule = TaskMock.named("subModule").dirty()
 				.deps(utilCopy1);
-		TaskMock root = TaskMock.named("root").clean()
-				.deps(subModule, utilCopy2);
+		TaskMock root = TaskMock.named("root").clean().deps(subModule,
+				utilCopy2);
 		queue = new TaskQueue(root);
 
 		TaskAllocation utilA = nextIs(utilCopy1);

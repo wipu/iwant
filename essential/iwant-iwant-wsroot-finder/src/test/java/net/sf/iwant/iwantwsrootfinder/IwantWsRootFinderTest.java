@@ -3,9 +3,9 @@ package net.sf.iwant.iwantwsrootfinder;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.io.FileUtils;
+
+import junit.framework.TestCase;
 
 public class IwantWsRootFinderTest extends TestCase {
 
@@ -14,8 +14,8 @@ public class IwantWsRootFinderTest extends TestCase {
 				"as-iwant-developer/i-have/conf/ws-info");
 
 		assertTrue(wsInfo.exists());
-		assertTrue(FileUtils.readFileToString(wsInfo)
-				.contains("WSNAME=iwant\n"));
+		assertTrue(
+				FileUtils.readFileToString(wsInfo).contains("WSNAME=iwant\n"));
 	}
 
 	public void testKnownFileIsFoundUnderMockEssential() throws IOException {
@@ -24,8 +24,8 @@ public class IwantWsRootFinderTest extends TestCase {
 						+ "net/sf/iwant/api/wsdef/MockedApiWsdef.java");
 
 		assertTrue(mockedApiWsdef.exists());
-		assertTrue(FileUtils.readFileToString(mockedApiWsdef).contains(
-				"public class MockedApiWsdef"));
+		assertTrue(FileUtils.readFileToString(mockedApiWsdef)
+				.contains("public class MockedApiWsdef"));
 	}
 
 }

@@ -37,8 +37,8 @@ class FileSizeSum extends TargetBase {
 			int pathSize = FileUtil.contentAsBytes(pathFile).length;
 			pathSizeSum += pathSize;
 		}
-		FileUtil.newTextFile(dest, headerLineContent + "\n" + pathSizeSum
-				+ "\n");
+		FileUtil.newTextFile(dest,
+				headerLineContent + "\n" + pathSizeSum + "\n");
 	}
 
 }

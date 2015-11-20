@@ -30,8 +30,8 @@ public class WsInfoFileImpl implements WsInfo {
 		wsName = property(p, wsInfo, "WSNAME");
 		wsRoot = new File(iHaveConf, property(p, wsInfo, "WSROOT"))
 				.getCanonicalFile();
-		wsdefdefModule = new File(iHaveConf, property(p, wsInfo,
-				"WSDEFDEF_MODULE"));
+		wsdefdefModule = new File(iHaveConf,
+				property(p, wsInfo, "WSDEFDEF_MODULE"));
 		wsdefdefClass = property(p, wsInfo, "WSDEFDEF_CLASS");
 		wsdefdefJava = wsdefdefJava(wsdefdefSrc(), wsdefdefClass);
 		relativeAsSomeone = FileUtil.relativePathOfFileUnderParent(asSomeone,

@@ -93,8 +93,8 @@ public class EmmaCoverage extends TargetBase {
 		public EmmaCoverageSpex instrumentations(
 				EmmaInstrumentation... instrumentations) {
 			for (EmmaInstrumentation instrumentation : instrumentations) {
-				this.classpath.add(new InstrumentedClasspathItem(
-						instrumentation));
+				this.classpath
+						.add(new InstrumentedClasspathItem(instrumentation));
 			}
 			return this;
 		}
@@ -141,8 +141,8 @@ public class EmmaCoverage extends TargetBase {
 		dest.mkdirs();
 
 		String script = antScriptContent(ctx);
-		File scriptFile = Iwant
-				.newTextFile(new File(dest, "build.xml"), script);
+		File scriptFile = Iwant.newTextFile(new File(dest, "build.xml"),
+				script);
 
 		List<File> cachedAntJars = new ArrayList<>();
 		for (Path antJar : antJars) {
@@ -157,7 +157,8 @@ public class EmmaCoverage extends TargetBase {
 		List<String> mainArgsToUse = mainArgsToUse(ctx);
 
 		StringBuilder script = new StringBuilder();
-		script.append("<project name='emma-coverage' default='emma-coverage'>\n");
+		script.append(
+				"<project name='emma-coverage' default='emma-coverage'>\n");
 		script.append("  <target name='emma-coverage'>\n");
 		script.append("    <echo message='Running " + mainClass + "' />\n");
 		script.append("    <java\n");
@@ -247,8 +248,9 @@ public class EmmaCoverage extends TargetBase {
 		public void toAnt(TargetEvaluationContext ctx, StringBuilder script)
 				throws IOException {
 			script.append("        <pathelement location='")
-					.append(ctx.iwant().pathWithoutBackslashes(
-							ctx.cached(classes))).append("'/>\n");
+					.append(ctx.iwant()
+							.pathWithoutBackslashes(ctx.cached(classes)))
+					.append("'/>\n");
 		}
 
 		@Override
@@ -279,9 +281,7 @@ public class EmmaCoverage extends TargetBase {
 	@Override
 	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
-		return iUse
-				.ingredients("emma", emma)
-				.ingredients("antJars", antJars)
+		return iUse.ingredients("emma", emma).ingredients("antJars", antJars)
 				.parameter("mainClass", mainClass)
 				.parameter("mainClassArguments", mainClassArguments)
 				.optionalIngredients("mainClassArgumentsFile",

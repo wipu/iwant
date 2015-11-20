@@ -19,18 +19,20 @@ public class JacocoDistributionTest extends IwantTestCase {
 		Downloaded zip072 = distro072.zip();
 
 		assertEquals("jacoco-0.7.2.201409121644.zip", zip072.name());
-		assertEquals("http://repo1.maven.org/maven2/org/jacoco/jacoco/"
-				+ "0.7.2.201409121644/jacoco-0.7.2.201409121644.zip", zip072
-				.url().toExternalForm());
+		assertEquals(
+				"http://repo1.maven.org/maven2/org/jacoco/jacoco/"
+						+ "0.7.2.201409121644/jacoco-0.7.2.201409121644.zip",
+				zip072.url().toExternalForm());
 
 		JacocoDistribution distroOther = JacocoDistribution
 				.ofVersion("other.version");
 		Downloaded zipOther = distroOther.zip();
 
 		assertEquals("jacoco-other.version.zip", zipOther.name());
-		assertEquals("http://repo1.maven.org/maven2/org/jacoco/jacoco/"
-				+ "other.version/jacoco-other.version.zip", zipOther.url()
-				.toExternalForm());
+		assertEquals(
+				"http://repo1.maven.org/maven2/org/jacoco/jacoco/"
+						+ "other.version/jacoco-other.version.zip",
+				zipOther.url().toExternalForm());
 	}
 
 	private static JacocoDistribution distroToTest() {
@@ -66,7 +68,8 @@ public class JacocoDistributionTest extends IwantTestCase {
 
 		distro.path(ctx);
 
-		assertJarNameAndExistence("jacocoagent.jar", distro.jacocoagentJar(ctx));
+		assertJarNameAndExistence("jacocoagent.jar",
+				distro.jacocoagentJar(ctx));
 		assertJarNameAndExistence("org.jacoco.ant-0.7.2.201409121644.jar",
 				distro.orgJacocoAntJar(ctx));
 		assertJarNameAndExistence("org.jacoco.core-0.7.2.201409121644.jar",

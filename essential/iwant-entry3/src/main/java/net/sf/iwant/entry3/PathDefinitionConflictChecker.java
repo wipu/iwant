@@ -18,14 +18,14 @@ class PathDefinitionConflictChecker {
 		}
 	}
 
-	private static void failIfConflictingPathDefinitions(
-			Map<String, Path> seen, Path path) {
+	private static void failIfConflictingPathDefinitions(Map<String, Path> seen,
+			Path path) {
 		if (path == null) {
 			throw new Iwant.IwantException("Null Path");
 		}
 		if (path.name() == null) {
-			throw new Iwant.IwantException("A Path of " + path.getClass()
-					+ " has null name.");
+			throw new Iwant.IwantException(
+					"A Path of " + path.getClass() + " has null name.");
 		}
 		Path seenPath = seen.get(path.name());
 		if (seenPath == path) {
@@ -35,7 +35,8 @@ class PathDefinitionConflictChecker {
 			seen.put(path.name(), path);
 		} else {
 			// shallow check
-			String errorMessage = definitionConflictErrorMessage(path, seenPath);
+			String errorMessage = definitionConflictErrorMessage(path,
+					seenPath);
 			if (errorMessage != null) {
 				throw newConflictException(path, errorMessage);
 			}

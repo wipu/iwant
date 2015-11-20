@@ -8,16 +8,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.types.FileSet;
+
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sourceforge.pmd.ant.Formatter;
 import net.sourceforge.pmd.ant.PMDTask;
 import net.sourceforge.pmd.ant.RuleSetWrapper;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.FileSet;
 
 public class PmdReport extends TargetBase {
 
@@ -139,10 +139,13 @@ public class PmdReport extends TargetBase {
 	private String rulesetXml() {
 		StringBuilder b = new StringBuilder();
 		b.append("<?xml version=\"1.0\"?>\n");
-		b.append("<ruleset name=\"SNC ruleset\" xmlns=\"http://pmd.sf.net/ruleset/1.0.0\"\n");
+		b.append(
+				"<ruleset name=\"SNC ruleset\" xmlns=\"http://pmd.sf.net/ruleset/1.0.0\"\n");
 		b.append("	xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n");
-		b.append("	xsi:schemaLocation=\"http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd\"\n");
-		b.append("	xsi:noNamespaceSchemaLocation=\"http://pmd.sf.net/ruleset_xml_schema.xsd\">\n");
+		b.append(
+				"	xsi:schemaLocation=\"http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd\"\n");
+		b.append(
+				"	xsi:noNamespaceSchemaLocation=\"http://pmd.sf.net/ruleset_xml_schema.xsd\">\n");
 		b.append("\n");
 		b.append("	<description>PMD rules for " + name() + "</description>\n");
 		b.append("\n");

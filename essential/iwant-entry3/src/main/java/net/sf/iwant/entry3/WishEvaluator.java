@@ -113,13 +113,13 @@ public class WishEvaluator {
 				return;
 			}
 		}
-		throw new IllegalArgumentException("Illegal wish: " + wish
-				+ "\nlegal targets:" + ws.targets(ctx));
+		throw new IllegalArgumentException(
+				"Illegal wish: " + wish + "\nlegal targets:" + ws.targets(ctx));
 	}
 
 	private void failIfConflictingPathDefinitions(Workspace ws) {
-		PathDefinitionConflictChecker.failIfConflictingPathDefinitions(ws
-				.targets(ctx));
+		PathDefinitionConflictChecker
+				.failIfConflictingPathDefinitions(ws.targets(ctx));
 	}
 
 	File freshCachedContent(Path path) {
@@ -128,8 +128,9 @@ public class WishEvaluator {
 		if (path instanceof Target) {
 			Target target = (Target) path;
 			try {
-				Planner planner = new Planner(new TargetRefreshTask(target,
-						ctx, caches), workerCount);
+				Planner planner = new Planner(
+						new TargetRefreshTask(target, ctx, caches),
+						workerCount);
 				planner.start();
 				planner.join();
 			} catch (RuntimeException e) {

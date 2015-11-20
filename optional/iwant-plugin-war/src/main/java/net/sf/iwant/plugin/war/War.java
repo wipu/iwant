@@ -7,14 +7,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.PatternSet.NameEntry;
 import org.apache.tools.ant.types.ZipFileSet;
+
+import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.model.TargetEvaluationContext;
 
 public class War extends Target {
 
@@ -106,8 +106,8 @@ public class War extends Target {
 		war.setDestFile(ctx.cached(this));
 
 		File cachedWebXml = ctx.cached(webXmlOrWebXmlDirectory);
-		File webXmlFile = webXmlName == null ? cachedWebXml : new File(
-				cachedWebXml, webXmlName);
+		File webXmlFile = webXmlName == null ? cachedWebXml
+				: new File(cachedWebXml, webXmlName);
 		war.setWebxml(webXmlFile);
 
 		for (String exclude : excludes) {

@@ -111,8 +111,9 @@ public class Iwant2Test extends TestCase {
 
 	public void testIwant2CompilesIwantAndCallsIwant3() throws Exception {
 		File iwantEssential = IwantWsRootFinder.mockEssential();
-		network.cachesAt(new ClassesFromUnmodifiableIwantEssential(
-				iwantEssential), "all-iwant-classes");
+		network.cachesAt(
+				new ClassesFromUnmodifiableIwantEssential(iwantEssential),
+				"all-iwant-classes");
 
 		iwant2.evaluate(iwantEssential, "args", "to be", "passed");
 
@@ -123,8 +124,9 @@ public class Iwant2Test extends TestCase {
 
 	public void testIwant2CallsIwant3UsingCorrectClasspath() throws Exception {
 		File iwantEssential = IwantWsRootFinder.mockEssential();
-		network.cachesAt(new ClassesFromUnmodifiableIwantEssential(
-				iwantEssential), "all-iwant-classes");
+		network.cachesAt(
+				new ClassesFromUnmodifiableIwantEssential(iwantEssential),
+				"all-iwant-classes");
 
 		iwant2.evaluate(iwantEssential, "--printClassLoaderUrls");
 		assertEquals(":        compiled -> all-iwant-classes\n", err());
@@ -137,8 +139,9 @@ public class Iwant2Test extends TestCase {
 
 	public void testIwant2CompilesIwantWithDebugInformation() throws Exception {
 		File iwantEssential = IwantWsRootFinder.mockEssential();
-		network.cachesAt(new ClassesFromUnmodifiableIwantEssential(
-				iwantEssential), "all-iwant-classes");
+		network.cachesAt(
+				new ClassesFromUnmodifiableIwantEssential(iwantEssential),
+				"all-iwant-classes");
 
 		iwant2.evaluate(iwantEssential);
 
@@ -163,8 +166,8 @@ public class Iwant2Test extends TestCase {
 		File bJava = Iwant.newTextFile(new File(pak1, "B.java"), "");
 		Iwant.newTextFile(new File(pak1, "crap.notjava"), "");
 
-		assertEquals("[" + aJava + ", " + bJava + "]", Iwant2
-				.javaFilesRecursivelyUnder(src).toString());
+		assertEquals("[" + aJava + ", " + bJava + "]",
+				Iwant2.javaFilesRecursivelyUnder(src).toString());
 	}
 
 }

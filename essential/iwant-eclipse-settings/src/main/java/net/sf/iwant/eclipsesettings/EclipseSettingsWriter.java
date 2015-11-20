@@ -16,7 +16,8 @@ public class EclipseSettingsWriter {
 	private final Set<JavaModule> modules;
 	private final SideEffectContext ctx;
 
-	public EclipseSettingsWriter(Set<JavaModule> modules, SideEffectContext ctx) {
+	public EclipseSettingsWriter(Set<JavaModule> modules,
+			SideEffectContext ctx) {
 		this.modules = modules;
 		this.ctx = ctx;
 	}
@@ -82,12 +83,13 @@ public class EclipseSettingsWriter {
 
 		ProjectExternalBuilderLaunch extBuild = project.externalBuilderLaunch();
 		if (extBuild != null) {
-			writeFile(modDir, ".externalToolBuilders/" + module.name()
-					+ ".launch", extBuild.asFileContent());
+			writeFile(modDir,
+					".externalToolBuilders/" + module.name() + ".launch",
+					extBuild.asFileContent());
 		}
 
-		EclipseAntScript antScript = project.eclipseAntScript(ctx.wsInfo()
-				.relativeAsSomeone());
+		EclipseAntScript antScript = project
+				.eclipseAntScript(ctx.wsInfo().relativeAsSomeone());
 		if (antScript != null) {
 			writeFile(modDir, "eclipse-ant-build.xml",
 					antScript.asFileContent());

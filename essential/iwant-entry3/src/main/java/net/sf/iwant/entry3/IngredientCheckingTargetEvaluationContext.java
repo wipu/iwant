@@ -8,8 +8,8 @@ import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.entry.Iwant;
 
-public class IngredientCheckingTargetEvaluationContext implements
-		TargetEvaluationContext {
+public class IngredientCheckingTargetEvaluationContext
+		implements TargetEvaluationContext {
 
 	private final Target target;
 	private final TargetEvaluationContext delegate;
@@ -49,13 +49,14 @@ public class IngredientCheckingTargetEvaluationContext implements
 			Path ingredientCandidate, Path target) {
 		for (Path ingredient : target.ingredients()) {
 			if (ingredient == null) {
-				throw new Iwant.IwantException("Path '" + target
-						+ "' has a null ingredient.");
+				throw new Iwant.IwantException(
+						"Path '" + target + "' has a null ingredient.");
 			}
 			if (equals(ingredientCandidate, ingredient)) {
 				return true;
 			}
-			if (isDirectOrIndirectIngredientOf(ingredientCandidate, ingredient)) {
+			if (isDirectOrIndirectIngredientOf(ingredientCandidate,
+					ingredient)) {
 				return true;
 			}
 		}

@@ -19,7 +19,8 @@ import net.sf.iwant.entry2.Iwant2;
  */
 public class FileUtil {
 
-	public static String relativePathOfFileUnderParent(File child, File parent) {
+	public static String relativePathOfFileUnderParent(File child,
+			File parent) {
 		File absChild = child.getAbsoluteFile();
 		File absParent = parent.getAbsoluteFile();
 		List<String> names = new LinkedList<>();
@@ -27,8 +28,8 @@ public class FileUtil {
 		while (true) {
 			if (parentCandidate == null) {
 				// we are already at root, not a child of parent
-				throw new IllegalArgumentException(absChild
-						+ " is not a child of " + absParent);
+				throw new IllegalArgumentException(
+						absChild + " is not a child of " + absParent);
 			}
 			if (absParent.equals(parentCandidate)) {
 				// tracking ready
@@ -39,7 +40,8 @@ public class FileUtil {
 			}
 		}
 		StringBuilder b = new StringBuilder();
-		for (Iterator<String> iterator = names.iterator(); iterator.hasNext();) {
+		for (Iterator<String> iterator = names.iterator(); iterator
+				.hasNext();) {
 			String name = iterator.next();
 			b.append(name);
 			if (iterator.hasNext()) {
@@ -104,8 +106,8 @@ public class FileUtil {
 		return copyRecursively(from, to, false);
 	}
 
-	public static int copyRecursively(File from, File to, boolean includeSvnDirs)
-			throws IOException {
+	public static int copyRecursively(File from, File to,
+			boolean includeSvnDirs) throws IOException {
 		if (!includeSvnDirs && ".svn".equals(from.getName())) {
 			// TODO handle svn filtering only once
 			return 0;

@@ -43,14 +43,14 @@ public class IwanttutorialWorkspace implements Workspace {
 				"hamcrest-core", "1.3");
 		final JavaBinModule junit = binModule("junit", "junit", "4.11",
 				hamcrestCore);
-		final JavaBinModule jcommander = binModule(TestedIwantDependencies
-				.jcommander());
-		final JavaBinModule testng = binModule(
-				TestedIwantDependencies.testng(), jcommander);
+		final JavaBinModule jcommander = binModule(
+				TestedIwantDependencies.jcommander());
+		final JavaBinModule testng = binModule(TestedIwantDependencies.testng(),
+				jcommander);
 		final JavaSrcModule helloUtil = srcModule("example-helloutil")
 				.noMainResources().end();
-		final JavaSrcModule hello = srcModule("example-hello")
-				.noMainResources().mainDeps(helloUtil).end();
+		final JavaSrcModule hello = srcModule("example-hello").noMainResources()
+				.mainDeps(helloUtil).end();
 		final JavaSrcModule testngUser = srcModule("example-testnguser")
 				.noMainResources().noTestResources()
 				.testDeps(wishDefCtx.iwantPlugin().testng().withDependencies())
@@ -95,8 +95,8 @@ public class IwanttutorialWorkspace implements Workspace {
 	private Target classpathStringOfAll(WishDefinitionContext ctx) {
 		ConcatenatedBuilder cp = Concatenated.named("all-as-cp");
 		cp.string(".");
-		for (Path jar : JavaModules.mainArtifactJarsOf(modules(ctx)
-				.allSrcModules())) {
+		for (Path jar : JavaModules
+				.mainArtifactJarsOf(modules(ctx).allSrcModules())) {
 			cp.string(File.pathSeparator).nativePathTo(jar);
 		}
 		return cp.end();
@@ -105,8 +105,10 @@ public class IwanttutorialWorkspace implements Workspace {
 	@Override
 	public List<? extends SideEffect> sideEffects(
 			SideEffectDefinitionContext ctx) {
-		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")
-				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())
+		return Arrays
+				.asList(EclipseSettings.with().name("eclipse-settings")
+						.modules(ctx.wsdefdefJavaModule(),
+								ctx.wsdefJavaModule())
 				.modules(modules(ctx).allSrcModules()).end());
 	}
 

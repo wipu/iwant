@@ -8,14 +8,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.iwant.api.core.SystemEnv;
 import net.sf.iwant.api.core.SystemEnv.SystemEnvPlease;
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.core.ant.AntGenerated;
-
-import org.apache.commons.io.FileUtils;
 
 public class JacocoCoverage extends TargetBase {
 
@@ -189,11 +189,11 @@ public class JacocoCoverage extends TargetBase {
 				+ "\" fork=\"true\" failonerror=\"true\">\n");
 		b.append("			<classpath>\n");
 		for (Path classLocation : classLocations) {
-			b.append("				<pathelement location=\"" + ctx.cached(classLocation)
-					+ "\" />\n");
+			b.append("				<pathelement location=\""
+					+ ctx.cached(classLocation) + "\" />\n");
 		}
-		b.append("				<pathelement location=\"" + jacoco.jacocoagentJar(ctx)
-				+ "\" />\n");
+		b.append("				<pathelement location=\""
+				+ jacoco.jacocoagentJar(ctx) + "\" />\n");
 		b.append("			</classpath>\n");
 		b.append("			<sysproperty key=\"jacoco-agent.destfile\" file=\""
 				+ ctx.cached(this) + "\" />\n");

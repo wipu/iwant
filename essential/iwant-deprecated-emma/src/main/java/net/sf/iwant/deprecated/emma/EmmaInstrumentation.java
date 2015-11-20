@@ -51,7 +51,8 @@ public class EmmaInstrumentation extends TargetBase {
 		private final JavaClassesAndSources classesAndSources;
 		private Path filter;
 
-		public EmmaInstrumentationUsing(JavaClassesAndSources classesAndSources) {
+		public EmmaInstrumentationUsing(
+				JavaClassesAndSources classesAndSources) {
 			this.classesAndSources = classesAndSources;
 		}
 
@@ -81,11 +82,12 @@ public class EmmaInstrumentation extends TargetBase {
 		File ec = new File(dir, "please-override-when-running-tests.ec");
 		File instrClasses = new File(dir, "instr-classes");
 		String emmaLogLevel = "warning";
-		File instrProps = Iwant.newTextFile(new File(dir,
-				"emma-instr.properties"), "metadata.out.file="
-				+ ctx.iwant().pathWithoutBackslashes(em) + "\nverbosity.level="
-				+ emmaLogLevel + "\n" + "coverage.out.file="
-				+ ctx.iwant().pathWithoutBackslashes(ec) + "\n");
+		File instrProps = Iwant.newTextFile(
+				new File(dir, "emma-instr.properties"),
+				"metadata.out.file=" + ctx.iwant().pathWithoutBackslashes(em)
+						+ "\nverbosity.level=" + emmaLogLevel + "\n"
+						+ "coverage.out.file="
+						+ ctx.iwant().pathWithoutBackslashes(ec) + "\n");
 
 		File cachedClasses = ctx.cached(classesAndSources.classes());
 		File cachedEmma = ctx.cached(emma);

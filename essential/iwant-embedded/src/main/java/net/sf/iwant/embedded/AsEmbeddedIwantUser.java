@@ -65,8 +65,8 @@ public class AsEmbeddedIwantUser {
 						File iwantApiClasses = null;
 						Iwant iwant = Iwant.usingRealNetwork();
 						WsInfo wsInfo = null;
-						Caches caches = new CachesImpl(wsCache,
-								iwantApiClasses, iwant.network());
+						Caches caches = new CachesImpl(wsCache, iwantApiClasses,
+								iwant.network());
 						int workerCount = 1;
 						JavaSrcModule wsdefdefJavaModule = null;
 						JavaSrcModule wsdefJavaModule = null;

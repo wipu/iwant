@@ -186,8 +186,8 @@ public class Iwant {
 		@Override
 		public File cacheLocation(UnmodifiableSource<?> src) {
 			File cached = new File(IWANT_USER_DIR, "cached");
-			File cachedFromSrc = new File(cached, src.getClass()
-					.getSimpleName());
+			File cachedFromSrc = new File(cached,
+					src.getClass().getSimpleName());
 			String fileName = toSafeFilename(src.rawLocationString());
 			return new File(cachedFromSrc, fileName);
 		}
@@ -271,9 +271,9 @@ public class Iwant {
 			String iwantFrom = iwantFromProps
 					.getProperty(iwantFromPropertyName);
 			if (iwantFrom == null) {
-				throw new IwantException("Please define '"
-						+ iwantFromPropertyName + "' in "
-						+ iwantFromFile(asSomeone));
+				throw new IwantException(
+						"Please define '" + iwantFromPropertyName + "' in "
+								+ iwantFromFile(asSomeone));
 			}
 			return new URL(iwantFrom);
 		} catch (RuntimeException e) {
@@ -304,8 +304,8 @@ public class Iwant {
 			URL iwantRootUrl = wishedIwantRootFromUrl(asSomeone);
 			URL iwantEssentialLocation = subUrlOfSvnUrl(iwantRootUrl,
 					"essential");
-			boolean reExportNotNeeded = "false".equals(iwantFromProps
-					.getProperty("re-export"));
+			boolean reExportNotNeeded = "false"
+					.equals(iwantFromProps.getProperty("re-export"));
 			File iwantWsEssential = exportedFromSvn(iwantEssentialLocation,
 					!reExportNotNeeded);
 			return iwantWsEssential;
@@ -328,8 +328,7 @@ public class Iwant {
 			iwantFromParent.mkdirs();
 		}
 		if (!iwantFrom.exists()) {
-			newTextFile(
-					iwantFrom,
+			newTextFile(iwantFrom,
 					"# uncomment and optionally change the revision:\n"
 							+ "#iwant-from=https://svn.code.sf.net/p/iwant/code/trunk@721\n");
 			throw new IwantException("I created " + iwantFrom
@@ -366,8 +365,8 @@ public class Iwant {
 	}
 
 	private File iwantBootstrapperClasses(File iwantEssential) {
-		File classes = network
-				.cacheLocation(new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
+		File classes = network.cacheLocation(
+				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
 						iwantEssential));
 		return compiledClasses(classes,
 				iwantBootstrappingJavaSources(iwantEssential),
@@ -485,7 +484,8 @@ public class Iwant {
 		fileLog(b.toString());
 	}
 
-	private static List<File> iwantBootstrappingJavaSources(File iwantEssential) {
+	private static List<File> iwantBootstrappingJavaSources(
+			File iwantEssential) {
 		File iwant2 = new File(iwantEssential,
 				"iwant-entry2/src/main/java/net/sf/iwant/entry2/Iwant2.java");
 		File iwant = new File(iwantEssential,
@@ -529,7 +529,8 @@ public class Iwant {
 				&& catchStreamsAndSystemExitsRequestCount <= 0) {
 			System.setOut(originalStreamsAndSecurityManager.out);
 			System.setErr(originalStreamsAndSecurityManager.err);
-			System.setSecurityManager(originalStreamsAndSecurityManager.securityManager);
+			System.setSecurityManager(
+					originalStreamsAndSecurityManager.securityManager);
 			originalStreamsAndSecurityManager = null;
 		}
 	}
@@ -538,9 +539,10 @@ public class Iwant {
 			boolean hideIwantClasses, String className,
 			List<File> classLocations, String... args) throws Exception {
 		debugLog("runJavaMain", "class: " + className,
-				"args: " + Arrays.toString(args), "catchPrintsAndSystemExit="
-						+ catchPrintsAndSystemExit, "hideIwantClasses="
-						+ hideIwantClasses, "classLocations: " + classLocations);
+				"args: " + Arrays.toString(args),
+				"catchPrintsAndSystemExit=" + catchPrintsAndSystemExit,
+				"hideIwantClasses=" + hideIwantClasses,
+				"classLocations: " + classLocations);
 		ClassLoader classLoader = classLoader(hideIwantClasses, classLocations);
 		Class<?> mainClass = classLoader.loadClass(className);
 		Method mainMethod = mainClass.getMethod("main", String[].class);
@@ -554,8 +556,8 @@ public class Iwant {
 			mainMethod.invoke(null, invocationArgs);
 		} catch (ExitCalledException e) {
 			if (e.status() != 0) {
-				throw new IwantException(className + " exited with "
-						+ e.status());
+				throw new IwantException(
+						className + " exited with " + e.status());
 			}
 		} finally {
 			if (catchPrintsAndSystemExit) {
@@ -619,8 +621,8 @@ public class Iwant {
 		private static boolean isIwantClassnameToHide(String name) {
 			// canonical name of inner classes is not compatible with
 			// classloading (!!) so this manual name tweaking is needed:
-			if ((Iwant.class.getCanonicalName() + "$" + ExitCalledException.class
-					.getSimpleName()).equals(name)) {
+			if ((Iwant.class.getCanonicalName() + "$"
+					+ ExitCalledException.class.getSimpleName()).equals(name)) {
 				// this is an exceptional case, for catches to work
 				return false;
 			}
@@ -723,8 +725,8 @@ public class Iwant {
 		return to;
 	}
 
-	private static byte[] downloadBytes(URL url) throws MalformedURLException,
-			IOException {
+	private static byte[] downloadBytes(URL url)
+			throws MalformedURLException, IOException {
 		enableHttpProxy();
 		InputStream in = url.openStream();
 		byte[] respBody = readBytes(in);
@@ -777,7 +779,8 @@ public class Iwant {
 			}
 			log("unzipped", dest);
 			dest.mkdirs();
-			ZipInputStream zip = new ZipInputStream(src.location().openStream());
+			ZipInputStream zip = new ZipInputStream(
+					src.location().openStream());
 			ZipEntry e = null;
 			byte[] buffer = new byte[32 * 1024];
 			while ((e = zip.getNextEntry()) != null) {
@@ -809,8 +812,8 @@ public class Iwant {
 		try {
 			URL url = network.svnkitUrl();
 			File cached = downloaded(url);
-			File unzipped = unmodifiableZipUnzipped(new UnmodifiableZip(
-					fileToUrl(cached)));
+			File unzipped = unmodifiableZipUnzipped(
+					new UnmodifiableZip(fileToUrl(cached)));
 			return unzipped;
 		} catch (RuntimeException e) {
 			throw e;
@@ -834,8 +837,8 @@ public class Iwant {
 										+ " remote is a file.");
 						return exported;
 					}
-					debugLog("svn-exported", "re-export needed,"
-							+ " remote is a file.");
+					debugLog("svn-exported",
+							"re-export needed," + " remote is a file.");
 					del(exported);
 				} else {
 					return exported;

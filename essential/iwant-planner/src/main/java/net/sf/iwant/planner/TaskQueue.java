@@ -87,8 +87,8 @@ public class TaskQueue {
 		boolean wasDirty = stillDirty.remove(finishedTask);
 		boolean wasRefreshing = refreshing.remove(finishedTask);
 		if (!wasDirty || !wasRefreshing) {
-			throw new IllegalStateException("Unexpected removal: "
-					+ finishedTask.name());
+			throw new IllegalStateException(
+					"Unexpected removal: " + finishedTask.name());
 		}
 		refreshable.clear();
 		refreshable.addAll(refreshable(rootTask, stillDirty));
@@ -113,7 +113,8 @@ public class TaskQueue {
 		return next;
 	}
 
-	private TaskAllocation topmostRefreshable(Task task, Set<Task> refreshable) {
+	private TaskAllocation topmostRefreshable(Task task,
+			Set<Task> refreshable) {
 		if (refreshable.contains(task)) {
 			if (refreshing.contains(task)) {
 				// the task is already refreshing

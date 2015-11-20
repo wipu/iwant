@@ -40,7 +40,8 @@ public class HttpProxyInitializationTest extends TestCase {
 	}
 
 	private static void assertJavaSettings(String httpProxyHost,
-			String httpProxyPort, String httpsProxyHost, String httpsProxyPort) {
+			String httpProxyPort, String httpsProxyHost,
+			String httpsProxyPort) {
 		assertEquals(httpProxyHost, System.getProperty(H_KEY));
 		assertEquals(httpProxyPort, System.getProperty(P_KEY));
 		assertEquals(httpsProxyHost, System.getProperty(SH_KEY));

@@ -95,8 +95,8 @@ public class TimestampHandlerTest extends TestCase {
 		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
 		File cachedTarget = fileHasContentAndTimestamp("cachedTarget",
 				"cached content", 2);
-		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr", src1
-				+ "\n" + src2 + "\n", 2);
+		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr",
+				src1 + "\n" + src2 + "\n", 2);
 
 		TimestampHandler timestampHandler = new TimestampHandler(cachedTarget,
 				sourceDescriptor, sources);
@@ -112,8 +112,8 @@ public class TimestampHandlerTest extends TestCase {
 		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
 		File cachedTarget = fileHasContentAndTimestamp("cachedTarget",
 				"cached content", 2);
-		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr", src1
-				+ "\n" + src2 + "\n", 2);
+		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr",
+				src1 + "\n" + src2 + "\n", 2);
 
 		TimestampHandler timestampHandler = new TimestampHandler(cachedTarget,
 				sourceDescriptor, sources);
@@ -129,8 +129,8 @@ public class TimestampHandlerTest extends TestCase {
 		File src2 = fileHasContentAndTimestamp("src2", "whatever", 1);
 		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
 		File cachedTarget = null;
-		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr", src1
-				+ "\n" + src2 + "\n", 2);
+		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr",
+				src1 + "\n" + src2 + "\n", 2);
 
 		TimestampHandler timestampHandler = new TimestampHandler(cachedTarget,
 				sourceDescriptor, sources);

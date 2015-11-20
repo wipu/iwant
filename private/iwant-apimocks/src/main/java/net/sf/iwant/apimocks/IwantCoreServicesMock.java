@@ -32,8 +32,8 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 			List<File> classLocations, List<String> javacOptions,
 			Charset encoding) {
 		lastJavacOptions = new ArrayList<>(javacOptions);
-		return delegate.compiledClasses(dest, src, classLocations,
-				javacOptions, encoding);
+		return delegate.compiledClasses(dest, src, classLocations, javacOptions,
+				encoding);
 	}
 
 	public List<String> lastJavacOptions() {

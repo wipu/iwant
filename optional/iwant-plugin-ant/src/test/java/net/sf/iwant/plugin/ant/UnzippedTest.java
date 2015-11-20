@@ -16,14 +16,14 @@ public class UnzippedTest extends IwantTestCase {
 	}
 
 	public void testContentDescriptor() {
-		assertEquals("net.sf.iwant.plugin.ant.Unzipped:[a.zip]", Unzipped
-				.with().name("u").from(Source.underWsroot("a.zip")).end()
-				.contentDescriptor());
+		assertEquals("net.sf.iwant.plugin.ant.Unzipped:[a.zip]",
+				Unzipped.with().name("u").from(Source.underWsroot("a.zip"))
+						.end().contentDescriptor());
 	}
 
 	public void testUnzippedDirAndFileZip() throws Exception {
-		File zipFile = new File(getClass().getResource("unzipped-test.zip")
-				.toURI());
+		File zipFile = new File(
+				getClass().getResource("unzipped-test.zip").toURI());
 
 		Target unzipped = Unzipped.with().name("unzipped")
 				.from(new ExternalSource(zipFile)).end();

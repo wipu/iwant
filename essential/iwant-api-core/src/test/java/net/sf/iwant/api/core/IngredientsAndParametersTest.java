@@ -4,14 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.apimocks.TargetMock;
-
-import org.junit.Before;
-import org.junit.Test;
 
 public class IngredientsAndParametersTest {
 
@@ -57,7 +57,8 @@ public class IngredientsAndParametersTest {
 		assertEquals("[]", t.ingredients().toString());
 		assertEquals(
 				"net.sf.iwant.api.core.IngredientsAndParametersTest.NoIngredientsOrParameters\n"
-						+ "", t.contentDescriptor());
+						+ "",
+				t.contentDescriptor());
 	}
 
 	private class SomeIngredientsAndParameters extends TestTarget {
@@ -77,14 +78,8 @@ public class IngredientsAndParametersTest {
 		assertEquals("[i1, i2, i3, i4]", t.ingredients().toString());
 		assertEquals(
 				"net.sf.iwant.api.core.IngredientsAndParametersTest.SomeIngredientsAndParameters\n"
-						+ "p:flags:\n"
-						+ "  --int\n"
-						+ "  1\n"
-						+ "i:c-files:\n"
-						+ "  i1\n"
-						+ "  i2\n"
-						+ "p:-W:\n"
-						+ "  all\n"
+						+ "p:flags:\n" + "  --int\n" + "  1\n" + "i:c-files:\n"
+						+ "  i1\n" + "  i2\n" + "p:-W:\n" + "  all\n"
 						+ "i:h-files:\n" + "  i3\n" + "  i4\n" + "",
 				t.contentDescriptor());
 	}
@@ -99,13 +94,13 @@ public class IngredientsAndParametersTest {
 		@Override
 		protected IngredientsAndParametersDefined ingredientsAndParameters(
 				IngredientsAndParametersPlease iUse) {
-			return iUse
-					.parameter("multiline\npname", "multiline\npvalue")
+			return iUse.parameter("multiline\npname", "multiline\npvalue")
 					.parameter("escchar\\pname", "escchar\\pvalue")
 					.ingredients("multiline\niname",
 							new TargetMock("multiline\nivalue"))
 					.ingredients("escchar\\iname",
-							new TargetMock("escchar\\ivalue")).nothingElse();
+							new TargetMock("escchar\\ivalue"))
+					.nothingElse();
 		}
 	}
 
@@ -113,15 +108,16 @@ public class IngredientsAndParametersTest {
 	public void multiLineToStringsAreEscaped() {
 		Target t = new EscapeTest();
 
-		assertEquals("[multiline\n" + "ivalue, escchar\\ivalue]", t
-				.ingredients().toString());
+		assertEquals("[multiline\n" + "ivalue, escchar\\ivalue]",
+				t.ingredients().toString());
 		assertEquals(
 				"net.sf.iwant.api.core.IngredientsAndParametersTest.EscapeTest\n"
 						+ "p:multiline\\npname:\n" + "  multiline\\npvalue\n"
 						+ "p:escchar\\\\pname:\n" + "  escchar\\\\pvalue\n"
 						+ "i:multiline\\niname:\n" + "  multiline\\nivalue\n"
 						+ "i:escchar\\\\iname:\n" + "  escchar\\\\ivalue\n"
-						+ "", t.contentDescriptor());
+						+ "",
+				t.contentDescriptor());
 	}
 
 	/**
@@ -153,7 +149,8 @@ public class IngredientsAndParametersTest {
 						+ "p:nullp:\n" + " null\n" + "p:nullps:\n"
 						+ " null-collection\n" + "i:nulli:\n" + " null\n"
 						+ "i:nullis:\n" + " null-collection\n" + "i:nullois:\n"
-						+ " null-collection\n" + "", t.contentDescriptor());
+						+ " null-collection\n" + "",
+				t.contentDescriptor());
 
 	}
 
@@ -174,7 +171,8 @@ public class IngredientsAndParametersTest {
 		assertEquals(
 				"net.sf.iwant.api.core.IngredientsAndParametersTest.OptionalIngredients\n"
 						+ "i:o1:\n" + " null\n" + "  i1\n" + "i:o2:\n"
-						+ "  i2\n" + " null\n" + "", t.contentDescriptor());
+						+ "  i2\n" + " null\n" + "",
+				t.contentDescriptor());
 
 	}
 

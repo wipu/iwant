@@ -26,9 +26,9 @@ public abstract class JacocoTestBase extends IwantTestCase {
 	}
 
 	private Path downloaded(Path downloaded) throws IOException {
-		return new ExternalSource(AsEmbeddedIwantUser.with()
-				.workspaceAt(wsRoot).cacheAt(cacheDir).iwant()
-				.target((Target) downloaded).asPath());
+		return new ExternalSource(
+				AsEmbeddedIwantUser.with().workspaceAt(wsRoot).cacheAt(cacheDir)
+						.iwant().target((Target) downloaded).asPath());
 	}
 
 	protected static JacocoDistribution jacoco() {
@@ -53,8 +53,8 @@ public abstract class JacocoTestBase extends IwantTestCase {
 	}
 
 	protected JavaModule junit() throws IOException {
-		return JavaBinModule.providing(
-				downloaded(TestedIwantDependencies.junit())).end();
+		return JavaBinModule
+				.providing(downloaded(TestedIwantDependencies.junit())).end();
 	}
 
 	protected JavaClassesAndSources newJavaClassesAndSources(String name,
@@ -65,7 +65,8 @@ public abstract class JacocoTestBase extends IwantTestCase {
 		StringBuilder code = new StringBuilder();
 		code.append("package " + name + ";\n");
 		code.append("public class " + className + " {\n");
-		code.append("  public static void main(String[] args) throws Throwable {\n");
+		code.append(
+				"  public static void main(String[] args) throws Throwable {\n");
 		for (String codeLine : codeLinesForMain) {
 			code.append(codeLine).append("\n");
 		}

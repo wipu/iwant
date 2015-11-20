@@ -46,8 +46,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	@Override
 	public List<? extends SideEffect> sideEffects(
 			SideEffectDefinitionContext ctx) {
-		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")
-				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())
+		return Arrays
+				.asList(EclipseSettings.with().name("eclipse-settings")
+						.modules(ctx.wsdefdefJavaModule(),
+								ctx.wsdefJavaModule())
 				.modules(modules.allSrcModules()).end());
 	}
 
@@ -62,8 +64,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private Target jacocoReport() {
-		return JacocoTargetsOfJavaModules
-				.with()
+		return JacocoTargetsOfJavaModules.with()
 				.jacocoWithDeps(jacoco(), asm501Jar)
 				.antJars(TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar())
@@ -73,11 +74,10 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private Target emmaCoverageReport() {
-		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules
-				.with()
+		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
 				.antJars(TestedIwantDependencies.antJar(),
-						TestedIwantDependencies.antLauncherJar()).emma(emma())
-				.modules(modules.allSrcModules())
+						TestedIwantDependencies.antLauncherJar())
+				.emma(emma()).modules(modules.allSrcModules())
 				.butNotInstrumenting(modules.iwantMockWsroot)
 				.filter(emmaFilter()).end();
 		return emmaTargets.emmaReport("emma-coverage");
@@ -98,11 +98,9 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	}
 
 	private FindbugsReport findbugsReport(String name,
-			Collection<JavaSrcModule> modules, FindbugsOutputFormat outputFormat) {
-		return FindbugsReport
-				.with()
-				.name(name)
-				.outputFormat(outputFormat)
+			Collection<JavaSrcModule> modules,
+			FindbugsOutputFormat outputFormat) {
+		return FindbugsReport.with().name(name).outputFormat(outputFormat)
 				.using(findbugs, TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar())
 				.modulesToAnalyze(modules).end();

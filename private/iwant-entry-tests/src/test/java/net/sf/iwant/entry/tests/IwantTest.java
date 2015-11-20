@@ -197,18 +197,18 @@ public class IwantTest extends TestCase {
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantFrom = IwantWsRootFinder.mockWsRoot();
 		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
-		URL iwantEssentialFromUrl = Iwant.fileToUrl(new File(iwantFrom,
-				"essential"));
-		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
-				+ iwantFromUrl + "\n");
+		URL iwantEssentialFromUrl = Iwant
+				.fileToUrl(new File(iwantFrom, "essential"));
+		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
+				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
 		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
 				"exported-iwant-wsroot/essential");
 
-		assertEquals(exportedWsEssential, Iwant.using(network)
-				.iwantEssentialOfWishedVersion(asSomeone));
+		assertEquals(exportedWsEssential,
+				Iwant.using(network).iwantEssentialOfWishedVersion(asSomeone));
 		assertTrue(new File(exportedWsEssential, "iwant-api-model").exists());
 	}
 
@@ -220,10 +220,10 @@ public class IwantTest extends TestCase {
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantFrom = IwantWsRootFinder.mockWsRoot();
 		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
-		URL iwantEssentialFromUrl = Iwant.fileToUrl(new File(iwantFrom,
-				"essential"));
-		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
-				+ iwantFromUrl + "\n");
+		URL iwantEssentialFromUrl = Iwant
+				.fileToUrl(new File(iwantFrom, "essential"));
+		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
+				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
@@ -232,8 +232,8 @@ public class IwantTest extends TestCase {
 		File preExisting = new File(exportedWsEssential, "existing");
 		preExisting.mkdirs();
 
-		assertEquals(exportedWsEssential, Iwant.using(network)
-				.iwantEssentialOfWishedVersion(asSomeone));
+		assertEquals(exportedWsEssential,
+				Iwant.using(network).iwantEssentialOfWishedVersion(asSomeone));
 
 		assertTrue(new File(exportedWsEssential, "iwant-api-model").exists());
 		assertFalse(preExisting.exists());
@@ -247,10 +247,10 @@ public class IwantTest extends TestCase {
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantFrom = IwantWsRootFinder.mockWsRoot();
 		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
-		URL iwantEssentialFromUrl = Iwant.fileToUrl(new File(iwantFrom,
-				"essential"));
-		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
-				+ iwantFromUrl + "\nre-export=false\n");
+		URL iwantEssentialFromUrl = Iwant
+				.fileToUrl(new File(iwantFrom, "essential"));
+		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
+				"iwant-from=" + iwantFromUrl + "\nre-export=false\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
@@ -259,8 +259,8 @@ public class IwantTest extends TestCase {
 		File preExisting = new File(exportedWsEssential, "existing");
 		preExisting.mkdirs();
 
-		assertEquals(exportedWsEssential, Iwant.using(network)
-				.iwantEssentialOfWishedVersion(asSomeone));
+		assertEquals(exportedWsEssential,
+				Iwant.using(network).iwantEssentialOfWishedVersion(asSomeone));
 
 		assertFalse(new File(exportedWsEssential, "iwant-api-model").exists());
 		assertTrue(preExisting.exists());
@@ -272,10 +272,10 @@ public class IwantTest extends TestCase {
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantFrom = IwantWsRootFinder.mockWsRoot();
 		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
-		URL iwantEssentialFromUrl = Iwant.fileToUrl(new File(iwantFrom,
-				"essential"));
-		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
-				+ iwantFromUrl + "\n");
+		URL iwantEssentialFromUrl = Iwant
+				.fileToUrl(new File(iwantFrom, "essential"));
+		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
+				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
@@ -283,7 +283,8 @@ public class IwantTest extends TestCase {
 				"exported-iwant-wsroot/essential");
 		network.cachesAt(
 				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
-						exportedWsEssential), "iwant-bootstrapper-classes");
+						exportedWsEssential),
+				"iwant-bootstrapper-classes");
 
 		Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
 				"for", "entry two");
@@ -316,8 +317,8 @@ public class IwantTest extends TestCase {
 		dir.mkdir();
 		UnmodifiableIwantBootstrapperClassesFromIwantWsRoot with = new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
 				dir);
-		assertEquals(with.location().toExternalForm(), without.location()
-				.toExternalForm());
+		assertEquals(with.location().toExternalForm(),
+				without.location().toExternalForm());
 	}
 
 	/**
@@ -329,10 +330,10 @@ public class IwantTest extends TestCase {
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantFrom = IwantWsRootFinder.mockWsRoot();
 		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
-		URL iwantEssentialFromUrl = Iwant.fileToUrl(new File(iwantFrom,
-				"essential"));
-		Iwant.newTextFile(new File(iHaveConf, "iwant-from"), "iwant-from="
-				+ iwantFromUrl + "\n");
+		URL iwantEssentialFromUrl = Iwant
+				.fileToUrl(new File(iwantFrom, "essential"));
+		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
+				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
 		network.usesRealSvnkitUrlAndCacheAndUnzipped();
@@ -342,7 +343,8 @@ public class IwantTest extends TestCase {
 				"exported-iwant-wsroot/essential");
 		network.cachesAt(
 				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
-						exportedWsEssential), "iwant-bootstrapper-classes");
+						exportedWsEssential),
+				"iwant-bootstrapper-classes");
 
 		try {
 			Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
