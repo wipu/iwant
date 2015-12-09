@@ -7,7 +7,7 @@ import net.sf.iwant.entry.Iwant;
 public class FromRepository {
 
 	public static ArtifactGroup ibiblio() {
-		return new ArtifactGroup("http://mirrors.ibiblio.org/maven2/");
+		return new ArtifactGroup("http://maven.ibiblio.org/maven2/");
 	}
 
 	public static ArtifactGroup repo1MavenOrg() {

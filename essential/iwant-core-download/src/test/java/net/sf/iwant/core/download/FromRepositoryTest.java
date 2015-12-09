@@ -10,7 +10,7 @@ public class FromRepositoryTest extends TestCase {
 
 		assertEquals("ant-1.7.1.jar", ant171.name());
 		assertEquals(
-				"http://mirrors.ibiblio.org/maven2/"
+				"http://maven.ibiblio.org/maven2/"
 						+ "org/apache/ant/ant/1.7.1/ant-1.7.1.jar",
 				ant171.url().toString());
 		// TODO refer to correct checksum url
@@ -23,7 +23,7 @@ public class FromRepositoryTest extends TestCase {
 
 		assertEquals("commons-math-1.2.jar", commonsMath12.name());
 		assertEquals(
-				"http://mirrors.ibiblio.org/maven2/"
+				"http://maven.ibiblio.org/maven2/"
 						+ "commons-math/commons-math/1.2/commons-math-1.2.jar",
 				commonsMath12.url().toString());
 		// TODO refer to correct checksum url
@@ -46,7 +46,7 @@ public class FromRepositoryTest extends TestCase {
 
 	public void testDotsInGroupTurnIntoSlashes() {
 		assertEquals(
-				"http://mirrors.ibiblio.org/maven2/"
+				"http://maven.ibiblio.org/maven2/"
 						+ "org/apache/ant/ant/1.7.1/ant-1.7.1.jar",
 				FromRepository.ibiblio().group("org.apache.ant").name("ant")
 						.version("1.7.1").url().toString());

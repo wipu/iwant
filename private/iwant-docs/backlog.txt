@@ -1428,6 +1428,10 @@
 = In progress
 #################################################################
 
+- @bugfix @maintenance: replace "mirrors.ibiblio.org" with "maven.ibiblio.org" so bootstrapping again works with the changed url
+  + fix
+  - real test
+
 - As @buildscriptauthor I want coverage for modules that have TestNG tests so I don't have to use junit only
   + descript
     + wsdef uses testng plugin

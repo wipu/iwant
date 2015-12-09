@@ -27,7 +27,7 @@ public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {
 	private static Target commonsMathJar() {
 		final String v = "1.2";
 		return Downloaded.withName("commonsMathJar")
-				.url("http://mirrors.ibiblio.org/maven2/commons-math/commons-math/"
+				.url("http://maven.ibiblio.org/maven2/commons-math/commons-math/"
 						+ v + "/commons-math-" + v + ".jar")
 				.md5("5d3ce091a67e863549de4493e19df069");
 	}
