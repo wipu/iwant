@@ -1424,13 +1424,24 @@
   * just change the signature (also better name)
   + small hackfix (cast) to a mock impl of the interface
 
++ @bugfix @maintenance: replace "mirrors.ibiblio.org" with "maven.ibiblio.org" so bootstrapping again works with the changed url
+  + fix
+  + update iwant for iwant to fix bootstrapping also here
+  + real test
+
 #################################################################
 = In progress
 #################################################################
 
-- @bugfix @maintenance: replace "mirrors.ibiblio.org" with "maven.ibiblio.org" so bootstrapping again works with the changed url
-  + fix
-  - real test
+- As @buildscriptauthor I want to declare a given version of scala for a module so I can define java classes as a mixture of java and scala sources
+  * don't bother modularizing this, it's good to have scala support easily accessible to all modules
+    (even iwant workspace definitions and iwant itself)
+  - descript driven api
+    - JavaSrcModule ... scalaVersion(ScalaVersion.of("xxx")).mainScala("src/main/scala") ...
+    - java and scala files with cross dependency accross the language border
+    - compile and run them
+  - make it pass: the implementation
+  - eclipse settings
 
 - As @buildscriptauthor I want coverage for modules that have TestNG tests so I don't have to use junit only
   + descript
@@ -1660,6 +1671,8 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @eclipseuser I want an option to have eclipse installed with the scala plugin so I can edit scala without manually installing the plugin
 
 - As @buildscriptauthor I want to optionally use full names for binary modules loaded from repository so I can use org.eclipse.core.runtime and swt.runtime of the same version at the same time
   * on the other hand, these jars may not even work together, but there may be other cases like this
