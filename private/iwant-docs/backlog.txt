@@ -1451,12 +1451,10 @@
     - proper output in descript
   - eclipse settings
   - cleanup
-    - scala support for iwant-tutorial-wsdefs so it compiles
-    - remove ScalaThatDependsOnJava.java
-      - maven-style src dirs for the module
-      - scala support
-      - move the scala file under scala dir
-      - then remove
+    + scala support for iwant-tutorial-wsdefs so it compiles
+    - make iwant-tutorial-wsdefs compile in eclipse
+      - eclipse settings
+      - maven-style src dirs if required by the scala plugin
     - remove redundancy: 2 methods copied from AntGenerated to ScalaClasses
     - mention that srcmod.mainJava and mainScala make no difference
 

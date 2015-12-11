@@ -11,12 +11,15 @@ import net.sf.iwant.api.javamodules.JavaCompliance;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import net.sf.iwant.api.javamodules.ScalaVersion;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.plugin.javamodules.JavaModules;
 
 public class IwantModules extends JavaModules {
+
+	private static final ScalaVersion SCALA = ScalaVersion._2_11_7();
 
 	@Override
 	protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {
@@ -164,9 +167,9 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantApiJavamodules = essentialModule(
 			"api-javamodules")
 					.mainDeps(iwantApiCore, iwantApiModel, iwantCoreDownload,
-							iwantEntry)
-					.testDeps(iwantApimocks, iwantCoreservices, iwantTestarea,
-							guava, guavaTestlib, junit)
+							iwantCoreservices, iwantEntry)
+					.testDeps(iwantApimocks, iwantTestarea, guava, guavaTestlib,
+							junit)
 					.end();
 
 	private JavaSrcModule iwantApiWsdef = essentialModule("api-wsdef")
@@ -303,7 +306,7 @@ public class IwantModules extends JavaModules {
 			.end();
 
 	private JavaSrcModule iwantTutorialWsdefs = privateModule("tutorial-wsdefs")
-			.noMainJava().noTestJava().mainJava("src")
+			.scalaVersion(SCALA).noMainJava().noTestJava().mainJava("src")
 			.mainDeps(commonsMath, iwantApiCore, iwantApiJavamodules,
 					iwantApiModel, iwantApiWsdef, iwantCoreAnt,
 					iwantCoreDownload, iwantCoreservices, iwantEntry3,
