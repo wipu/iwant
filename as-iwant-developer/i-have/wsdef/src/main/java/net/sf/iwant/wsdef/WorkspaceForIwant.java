@@ -12,8 +12,9 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.wsdef.IwantWorkspace;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
+import net.sf.iwant.api.wsdef.TargetDefinitionContext;
+import net.sf.iwant.api.wsdef.Workspace;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.core.download.TestedIwantDependencies;
 import net.sf.iwant.deprecated.emma.EmmaTargetsOfJavaModules;
@@ -24,7 +25,7 @@ import net.sf.iwant.plugin.findbugs.FindbugsReport;
 import net.sf.iwant.plugin.jacoco.JacocoDistribution;
 import net.sf.iwant.plugin.jacoco.JacocoTargetsOfJavaModules;
 
-public class WorkspaceForIwant implements IwantWorkspace {
+public class WorkspaceForIwant implements Workspace {
 
 	private final FindbugsDistribution findbugs = FindbugsDistribution
 			.ofVersion("3.0.0");
@@ -37,7 +38,7 @@ public class WorkspaceForIwant implements IwantWorkspace {
 	private final IwantModules modules = new IwantModules();
 
 	@Override
-	public List<? extends Target> targets() {
+	public List<? extends Target> targets(TargetDefinitionContext ctx) {
 		return Arrays.asList(copyOfLocalIwantWs, emmaCoverageReport(),
 				faviconIco(), findbugsReport(), jacocoReport(), localWebsite(),
 				logoGif(), remoteWebsite());

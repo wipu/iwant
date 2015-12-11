@@ -4,14 +4,14 @@ import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaCompliance;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.wsdef.IwantWorkspaceProvider;
-import net.sf.iwant.api.wsdef.WorkspaceDefinitionContext;
+import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
+import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;
 import net.sf.iwant.core.download.FromRepository;
 
-public class WorkspaceProviderForIwant implements IwantWorkspaceProvider {
+public class WorkspaceProviderForIwant implements WorkspaceModuleProvider {
 
 	@Override
-	public JavaSrcModule workspaceModule(WorkspaceDefinitionContext ctx) {
+	public JavaSrcModule workspaceModule(WorkspaceModuleContext ctx) {
 		return JavaSrcModule.with().name("iwant-workspace")
 				.locationUnderWsRoot("as-iwant-developer/i-have/wsdef")
 				.javaCompliance(JavaCompliance.JAVA_1_8)
@@ -23,8 +23,8 @@ public class WorkspaceProviderForIwant implements IwantWorkspaceProvider {
 	}
 
 	@Override
-	public String workspaceClassname() {
-		return "net.sf.iwant.wsdef.WorkspaceForIwant";
+	public String workspaceFactoryClassname() {
+		return "net.sf.iwant.wsdef.WorkspaceFactoryForIwant";
 	}
 
 	private static JavaModule commonsIo() {
