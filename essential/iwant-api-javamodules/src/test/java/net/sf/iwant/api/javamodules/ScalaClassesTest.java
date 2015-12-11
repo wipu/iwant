@@ -32,6 +32,19 @@ public class ScalaClassesTest extends IwantTestCase {
 
 	public void testScalaAndJavaCompileAndRunWhenThereIsACrossDependencyBetweenTheLanguages()
 			throws Exception {
+		wsRootHasDirectory("depsrc/deppak");
+		StringBuilder dep = new StringBuilder();
+		dep.append("package deppak;\n");
+		dep.append("public class Dependency {\n");
+		dep.append("  public static String stringFromDependency() {\n");
+		dep.append("    return \"string from dependency\";\n");
+		dep.append("  \n}");
+		dep.append("}\n");
+		wsRootHasFile("depsrc/deppak/Dependency.java", dep.toString());
+		JavaClasses depClasses = JavaClasses.with().name("dep-classes")
+				.srcDirs(Source.underWsroot("depsrc")).end();
+		depClasses.path(ctx);
+
 		wsRootHasDirectory("src/main/java/pak");
 		StringBuilder javaRoot = new StringBuilder();
 		javaRoot.append("package pak;\n");
@@ -58,7 +71,8 @@ public class ScalaClassesTest extends IwantTestCase {
 		scala.append("  class ScalaClass {\n");
 		scala.append("    def stringFromScala() : String = {\n");
 		scala.append("      \"string from scala using \""
-				+ " + pak.JavaHello.stringFromJava();\n");
+				+ " + pak.JavaHello.stringFromJava() + \" and \""
+				+ " + deppak.Dependency.stringFromDependency();\n");
 		scala.append("    \n}");
 		scala.append("  }\n");
 		scala.append("}\n");
@@ -66,9 +80,10 @@ public class ScalaClassesTest extends IwantTestCase {
 
 		// scala src compiles:
 		ScalaClasses scalaClasses = ScalaClasses.with().name("scala-classes")
-				.scala(SCALA).srcDirs(Source.underWsroot("src/main/java"),
+				.scala(SCALA)
+				.srcDirs(Source.underWsroot("src/main/java"),
 						Source.underWsroot("src/main/scala"))
-				.end();
+				.classLocations(depClasses).end();
 		scalaClasses.path(ctx);
 		assertTrue(new File(cached, "scala-classes").exists());
 
@@ -81,9 +96,12 @@ public class ScalaClassesTest extends IwantTestCase {
 		// they run together:
 		Iwant.runJavaMain(false, true, "pak.JavaRoot",
 				Arrays.asList(ctx.cached(scalaClasses), ctx.cached(javaClasses),
+						ctx.cached(depClasses),
 						ctx.cached(SCALA.libraryJar())));
 
-		assertEquals("string from scala using string from java\n", out());
+		assertEquals(
+				"string from scala using string from java and string from dependency\n",
+				out());
 	}
 
 	public void testContentDescriptorAndIngredients() {

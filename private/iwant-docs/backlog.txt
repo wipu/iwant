@@ -1445,10 +1445,12 @@
     + main scala&java => java classes that depend on scala classes
     + scalac works
     + copy scala classes to java classes by declaring them as resources
-    - deps for scalac
+    + proper output in descript
+    + deps for scalac
     - only scala => only scala artifact
     - all the same for tests
-    - proper output in descript
+      - done features
+      - only scala => only scala artifact
   - eclipse settings
   - cleanup
     + scala support for iwant-tutorial-wsdefs so it compiles

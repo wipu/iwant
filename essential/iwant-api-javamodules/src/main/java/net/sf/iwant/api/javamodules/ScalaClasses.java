@@ -145,6 +145,10 @@ public class ScalaClasses extends TargetBase {
 		ant.append("\n");
 		ant.append("	<target name=\"scalac-classpath\">\n");
 		ant.append("		<path id=\"scalac-classpath\">\n");
+		for (Path dep : classLocations) {
+			ant.append("			<pathelement location=\"" + ctx.cached(dep)
+					+ "\" />\n");
+		}
 		ant.append(
 				"			<pathelement location=\"${scala-library.jar}\" />\n");
 		ant.append("		</path>\n");
