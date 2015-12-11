@@ -156,19 +156,21 @@ public class IwantModules extends JavaModules {
 			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
 			.testDeps(iwantApimocks, junit).end();
 
+	private JavaSrcModule iwantCoreDownload = essentialModule("core-download")
+			.mainDeps(iwantApiCore, iwantApiModel, iwantCoreservices,
+					iwantEntry)
+			.testDeps(iwantApimocks, iwantTestarea, junit).end();
+
 	private JavaSrcModule iwantApiJavamodules = essentialModule(
-			"api-javamodules").mainDeps(iwantApiCore, iwantApiModel, iwantEntry)
+			"api-javamodules")
+					.mainDeps(iwantApiCore, iwantApiModel, iwantCoreDownload,
+							iwantEntry)
 					.testDeps(iwantApimocks, iwantCoreservices, iwantTestarea,
 							guava, guavaTestlib, junit)
 					.end();
 
 	private JavaSrcModule iwantApiWsdef = essentialModule("api-wsdef")
 			.noTestJava().mainDeps(iwantApiModel, iwantApiJavamodules).end();
-
-	private JavaSrcModule iwantCoreDownload = essentialModule("core-download")
-			.mainDeps(iwantApiCore, iwantApiModel, iwantCoreservices,
-					iwantEntry)
-			.testDeps(iwantApimocks, iwantTestarea, junit).end();
 
 	private JavaSrcModule iwantPlannerApi = essentialModule("planner-api")
 			.mainDeps(iwantEntry).testDeps(junit).end();

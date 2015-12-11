@@ -1436,12 +1436,29 @@
 - As @buildscriptauthor I want to declare a given version of scala for a module so I can define java classes as a mixture of java and scala sources
   * don't bother modularizing this, it's good to have scala support easily accessible to all modules
     (even iwant workspace definitions and iwant itself)
-  - descript driven api
-    - JavaSrcModule ... scalaVersion(ScalaVersion.of("xxx")).mainScala("src/main/scala") ...
-    - java and scala files with cross dependency accross the language border
-    - compile and run them
+  + descript driven api
+    + JavaSrcModule ... scalaVersion(ScalaVersion.of("xxx")).mainScala("src/main/scala") ...
+    + generate eclipse settings
+    + java and scala files with cross dependency accross the language border
+    + compile and run them
   - make it pass: the implementation
+    + main scala&java => java classes that depend on scala classes
+    + scalac works
+    + copy scala classes to java classes by declaring them as resources
+    - deps for scalac
+    - only scala => only scala artifact
+    - all the same for tests
+    - proper output in descript
   - eclipse settings
+  - cleanup
+    - scala support for iwant-tutorial-wsdefs so it compiles
+    - remove ScalaThatDependsOnJava.java
+      - maven-style src dirs for the module
+      - scala support
+      - move the scala file under scala dir
+      - then remove
+    - remove redundancy: 2 methods copied from AntGenerated to ScalaClasses
+    - mention that srcmod.mainJava and mainScala make no difference
 
 - As @buildscriptauthor I want coverage for modules that have TestNG tests so I don't have to use junit only
   + descript

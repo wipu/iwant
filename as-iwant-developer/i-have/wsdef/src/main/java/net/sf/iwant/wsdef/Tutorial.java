@@ -36,6 +36,12 @@ public class Tutorial extends Target {
 				bootstrappingDoc);
 		pages.add(this.creatingWsdefDoc);
 
+		pages.add(pageAboutUsingWsdef("scalamodules",
+				"Using Scala in Java modules"));
+
+		if (true)
+			return;
+
 		pages.add(pageAboutUsingWsdef("helloworld-with-eclipse",
 				"Hello world with Eclipse"));
 		pages.add(pageAboutUsingWsdef("ant-cli",
@@ -61,6 +67,9 @@ public class Tutorial extends Target {
 
 		pages.add(pageAboutUsing("testng", "Using TestNG instead of JUnit",
 				jacocoDoc));
+
+		pages.add(pageAboutUsing("scalamodules", "Using scala in java modules",
+				javamodulesDoc));
 
 		pages.add(pageAboutUsingWsdef("pmdreport",
 				"Static code analysis report using PMD"));

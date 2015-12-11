@@ -12,6 +12,7 @@ import java.util.Set;
 
 import net.sf.iwant.api.core.StringFilterByEquality;
 import net.sf.iwant.api.core.SystemEnv;
+import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.StringFilter;
@@ -39,6 +40,7 @@ public class JavaSrcModule extends JavaModule {
 	private final StringFilter testClassNameFilter;
 	private final Charset encoding;
 	private final List<String> rawCompilerArgs;
+	private final ScalaVersion scalaVersion;
 	private Path mainArtifact;
 	private Path testArtifact;
 	private TestRunner testRunner;
@@ -57,7 +59,8 @@ public class JavaSrcModule extends JavaModule {
 			JavaCompliance javaCompliance, StringFilter testClassNameFilter,
 			Charset encoding,
 			Set<Class<? extends JavaModuleCharacteristic>> characteristics,
-			List<String> rawCompilerArgs, TestRunner testRunner) {
+			List<String> rawCompilerArgs, TestRunner testRunner,
+			ScalaVersion scalaVersion) {
 		super(characteristics);
 		this.name = name;
 		this.generatorSourcesToFollow = generatorSourcesToFollow;
@@ -74,6 +77,7 @@ public class JavaSrcModule extends JavaModule {
 		this.encoding = encoding;
 		this.rawCompilerArgs = rawCompilerArgs;
 		this.testRunner = testRunner;
+		this.scalaVersion = scalaVersion;
 		this.mainDepsForCompilation = Collections
 				.unmodifiableSet(mainDepsForCompilation);
 		this.mainDepsForRunOnly = Collections
@@ -147,6 +151,7 @@ public class JavaSrcModule extends JavaModule {
 		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<>();
 		private final List<String> rawCompilerArgs = new ArrayList<>();
 		private TestRunner testRunner;
+		private ScalaVersion scalaVersion;
 
 		public JavaSrcModule end() {
 			if (locationUnderWsRoot != null && relativeParentDir != null) {
@@ -167,7 +172,8 @@ public class JavaSrcModule extends JavaModule {
 					testDepsForRunOnlyExcludingMainDeps, generatedClasses,
 					generatedSrc, generatorSourcesToFollow, codeStylePolicy,
 					codeFormatterPolicy, javaCompliance, testClassNameFilter,
-					encoding, characteristics, rawCompilerArgs, testRunner);
+					encoding, characteristics, rawCompilerArgs, testRunner,
+					scalaVersion);
 		}
 
 		private static String normalizedRelativeParentDir(String value) {
@@ -205,6 +211,10 @@ public class JavaSrcModule extends JavaModule {
 		public IwantSrcModuleSpex mainJava(String mainJava) {
 			this.mainJavas.add(mainJava);
 			return this;
+		}
+
+		public IwantSrcModuleSpex mainScala(String mainScala) {
+			return mainJava(mainScala);
 		}
 
 		public IwantSrcModuleSpex noMainJava() {
@@ -368,6 +378,11 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
+		public IwantSrcModuleSpex scalaVersion(ScalaVersion scalaVersion) {
+			this.scalaVersion = scalaVersion;
+			return this;
+		}
+
 	}
 
 	@Override
@@ -495,18 +510,30 @@ public class JavaSrcModule extends JavaModule {
 		if (mainJavas.isEmpty()) {
 			return null;
 		}
-		Collection<Path> classpath = new ArrayList<>();
+		List<Path> classpath = new ArrayList<>();
 		for (JavaModule mainDep : mainDepsForCompilation()) {
 			Path depArtifact = mainDep.mainArtifact();
 			if (depArtifact != null) {
 				classpath.add(depArtifact);
 			}
 		}
-		return JavaClasses.with().name(name() + "-main-classes")
-				.srcDirs(mainJavasAsPaths()).encoding(encoding)
-				.sourceVersion(javaCompliance)
+		Path scalaClasses = null;
+		if (scalaVersion != null) {
+			scalaClasses = ScalaClasses.with()
+					.name(name() + "-main-classes-from-scala")
+					.scala(scalaVersion).srcDirs(mainJavasAsPaths())
+					.classLocations(classpath).end();
+			classpath.add(0, scalaClasses);
+		}
+		JavaClassesSpex javaClasses = JavaClasses.with()
+				.name(name() + "-main-classes").srcDirs(mainJavasAsPaths())
+				.encoding(encoding).sourceVersion(javaCompliance)
 				.resourceDirs(mainResourcesAsPaths()).classLocations(classpath)
-				.debug(true).rawArgs(rawCompilerArgs).end();
+				.debug(true).rawArgs(rawCompilerArgs);
+		if (scalaClasses != null) {
+			javaClasses.resourceDirs(scalaClasses);
+		}
+		return javaClasses.end();
 	}
 
 	public synchronized Path testArtifact() {

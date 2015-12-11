@@ -40,10 +40,11 @@ module-edit() {
   local SRCDIR=$2
   local NAME=$3
   local CLASS=$4
+  local EXT=${5:-java}
   log "module-edit $MODULE $SRCDIR $NAME $CLASS"
-  cat "$IWANT_TUTORIAL_WSDEF_SRC/com/example/$MODULE/editversion$NAME/${CLASS}.java" |
+  cat "$IWANT_TUTORIAL_WSDEF_SRC/com/example/$MODULE/editversion$NAME/${CLASS}.$EXT" |
     without-subpackage "$NAME" |
-    edit example-$MODULE/${SRCDIR}/com/example/$MODULE/${CLASS}.java "$MODULE-$NAME"
+    edit example-$MODULE/${SRCDIR}/com/example/$MODULE/${CLASS}.$EXT "$MODULE-$NAME"
 }
 
 def-edit() {
