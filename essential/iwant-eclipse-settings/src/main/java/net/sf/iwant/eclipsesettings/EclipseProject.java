@@ -21,7 +21,12 @@ public class EclipseProject {
 
 	public DotProject eclipseDotProject() {
 		return DotProject.named(module.name())
-				.hasExternalBuilder(hasExternalBuilder()).end();
+				.hasExternalBuilder(hasExternalBuilder())
+				.hasScalaSupport(hasScalaSupport()).end();
+	}
+
+	private boolean hasScalaSupport() {
+		return module.scalaVersion() != null;
 	}
 
 	public DotClasspath eclipseDotClasspath() {

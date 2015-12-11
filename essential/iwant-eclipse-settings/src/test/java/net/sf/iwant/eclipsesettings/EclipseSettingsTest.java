@@ -7,6 +7,7 @@ import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaCompliance;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
+import net.sf.iwant.api.javamodules.ScalaVersion;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.apimocks.TargetMock;
@@ -334,6 +335,22 @@ public class EclipseSettingsTest extends IwantTestCase {
 						+ "/rtBinTool-src\"/>");
 		assertDotClasspathContains("mod",
 				"<classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/rtSrcTool\"/>");
+	}
+
+	public void testDotProjectHasScalaSupportIfEnabledByTheModule() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mixed")
+				.scalaVersion(ScalaVersion._2_11_7()).mainJava("src/main/java")
+				.mainScala("src/main/scala").end();
+
+		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
+				.end();
+
+		es.mutate(seCtx);
+
+		assertDotProjectContains("mixed",
+				"<name>org.scala-ide.sdt.core.scalabuilder</name>");
+		assertDotProjectContains("mixed",
+				"<nature>org.scala-ide.sdt.core.scalanature</nature>");
 	}
 
 }

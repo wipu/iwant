@@ -9,6 +9,7 @@ import net.sf.iwant.api.javamodules.CodeStylePolicy.CodeStylePolicySpex;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
+import net.sf.iwant.api.javamodules.ScalaVersion;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
@@ -439,6 +440,16 @@ public class EclipseProjectTest extends IwantTestCase {
 		OrgEclipseJdtUiPrefs uiPrefs = project.orgEclipseJdtUiPrefs();
 
 		assertNotNull(uiPrefs);
+	}
+
+	public void testDotProjectHasScalaSupportWhenEnabled() {
+		JavaSrcModule module = JavaSrcModule.with().name("mixed")
+				.scalaVersion(ScalaVersion._2_11_7()).mainJava("src/main/java")
+				.mainScala("src/main/scala").end();
+		EclipseProject project = new EclipseProject(module, ctx);
+
+		DotProject dotProject = project.eclipseDotProject();
+		assertTrue(dotProject.hasScalaSupport());
 	}
 
 }

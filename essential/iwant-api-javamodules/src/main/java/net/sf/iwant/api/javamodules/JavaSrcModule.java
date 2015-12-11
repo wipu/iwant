@@ -616,4 +616,8 @@ public class JavaSrcModule extends JavaModule {
 		return testRunner;
 	}
 
+	public ScalaVersion scalaVersion() {
+		return scalaVersion;
+	}
+
 }

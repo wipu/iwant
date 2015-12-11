@@ -4,18 +4,30 @@ public class DotProject {
 
 	private final String name;
 	private final boolean hasExternalBuilder;
+	private final boolean hasScalaSupport;
 
-	public DotProject(String name, boolean hasExternalBuilder) {
+	public DotProject(String name, boolean hasExternalBuilder,
+			boolean hasScalaSupport) {
 		this.name = name;
 		this.hasExternalBuilder = hasExternalBuilder;
+		this.hasScalaSupport = hasScalaSupport;
 	}
 
 	public static DotProjectSpex named(String name) {
 		return new DotProjectSpex(name);
 	}
 
+	private String builderName() {
+		return hasScalaSupport ? "org.scala-ide.sdt.core.scalabuilder"
+				: "org.eclipse.jdt.core.javabuilder";
+	}
+
 	public String name() {
 		return name;
+	}
+
+	public boolean hasScalaSupport() {
+		return hasScalaSupport;
 	}
 
 	public String asFileContent() {
@@ -44,12 +56,16 @@ public class DotProject {
 		}
 		b.append("                <buildCommand>\n");
 		b.append(
-				"                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
+				"                        <name>" + builderName() + "</name>\n");
 		b.append("                        <arguments>\n");
 		b.append("                        </arguments>\n");
 		b.append("                </buildCommand>\n");
 		b.append("        </buildSpec>\n");
 		b.append("        <natures>\n");
+		if (hasScalaSupport) {
+			b.append(
+					"                <nature>org.scala-ide.sdt.core.scalanature</nature>\n");
+		}
 		b.append(
 				"                <nature>org.eclipse.jdt.core.javanature</nature>\n");
 		b.append("        </natures>\n");
@@ -65,6 +81,7 @@ public class DotProject {
 
 		private final String name;
 		private boolean hasExternalBuilder;
+		private boolean hasScalaSupport;
 
 		public DotProjectSpex(String name) {
 			this.name = name;
@@ -75,8 +92,13 @@ public class DotProject {
 			return this;
 		}
 
+		public DotProjectSpex hasScalaSupport(boolean hasScalaSupport) {
+			this.hasScalaSupport = hasScalaSupport;
+			return this;
+		}
+
 		public DotProject end() {
-			return new DotProject(name, hasExternalBuilder);
+			return new DotProject(name, hasExternalBuilder, hasScalaSupport);
 		}
 
 	}

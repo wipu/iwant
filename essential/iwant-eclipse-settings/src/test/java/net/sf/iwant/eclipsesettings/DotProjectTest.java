@@ -103,4 +103,30 @@ public class DotProjectTest extends TestCase {
 		assertEquals(expected.toString(), dp.asFileContent());
 	}
 
+	public void testScalaSupport() {
+		DotProject dp = DotProject.named("mixed").hasScalaSupport(true).end();
+		expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		expected.append("<projectDescription>\n");
+		expected.append("        <name>mixed</name>\n");
+		expected.append("        <comment></comment>\n");
+		expected.append("        <projects>\n");
+		expected.append("        </projects>\n");
+		expected.append("        <buildSpec>\n");
+		expected.append("                <buildCommand>\n");
+		expected.append(
+				"                        <name>org.scala-ide.sdt.core.scalabuilder</name>\n");
+		expected.append("                        <arguments>\n");
+		expected.append("                        </arguments>\n");
+		expected.append("                </buildCommand>\n");
+		expected.append("        </buildSpec>\n");
+		expected.append("        <natures>\n");
+		expected.append(
+				"                <nature>org.scala-ide.sdt.core.scalanature</nature>\n");
+		expected.append(
+				"                <nature>org.eclipse.jdt.core.javanature</nature>\n");
+		expected.append("        </natures>\n");
+		expected.append("</projectDescription>\n");
+		assertEquals(expected.toString(), dp.asFileContent());
+	}
+
 }
