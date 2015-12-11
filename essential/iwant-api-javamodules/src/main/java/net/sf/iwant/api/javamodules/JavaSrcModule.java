@@ -237,6 +237,10 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
+		public IwantSrcModuleSpex testScala(String testScala) {
+			return testJava(testScala);
+		}
+
 		public IwantSrcModuleSpex noTestJava() {
 			this.testJavas.clear();
 			return this;
@@ -547,7 +551,7 @@ public class JavaSrcModule extends JavaModule {
 		if (testJavas.isEmpty()) {
 			return null;
 		}
-		Collection<Path> classpath = new ArrayList<>();
+		List<Path> classpath = new ArrayList<>();
 		Path mainClasses = mainArtifact();
 		if (mainClasses != null) {
 			classpath.add(mainClasses);
@@ -564,11 +568,23 @@ public class JavaSrcModule extends JavaModule {
 				classpath.add(depArtifact);
 			}
 		}
-		return JavaClasses.with().name(name() + "-test-classes")
-				.srcDirs(testJavasAsPaths()).encoding(encoding)
-				.sourceVersion(javaCompliance)
+		Path scalaClasses = null;
+		if (scalaVersion != null) {
+			scalaClasses = ScalaClasses.with()
+					.name(name() + "-test-classes-from-scala")
+					.scala(scalaVersion).srcDirs(testJavasAsPaths())
+					.classLocations(classpath).end();
+			classpath.add(0, scalaClasses);
+		}
+		JavaClassesSpex javaClasses = JavaClasses.with()
+				.name(name() + "-test-classes").srcDirs(testJavasAsPaths())
+				.encoding(encoding).sourceVersion(javaCompliance)
 				.resourceDirs(testResourcesAsPaths()).classLocations(classpath)
-				.debug(true).rawArgs(rawCompilerArgs).end();
+				.debug(true).rawArgs(rawCompilerArgs);
+		if (scalaClasses != null) {
+			javaClasses.resourceDirs(scalaClasses);
+		}
+		return javaClasses.end();
 	}
 
 	public String locationUnderWsRoot() {

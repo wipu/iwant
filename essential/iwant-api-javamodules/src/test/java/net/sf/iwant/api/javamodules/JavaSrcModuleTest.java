@@ -788,7 +788,7 @@ public class JavaSrcModuleTest extends TestCase {
 		assertEquals(nonDefaultCompliance, testClasses.sourceCompliance());
 	}
 
-	public void testMainClassesHasCorrectKindOfClassesFromScalaInClasspathWhenScalaInUse() {
+	public void testMainClassesHasCorrectKindOfClassesWhenScalaInUse() {
 		ScalaVersion scala = ScalaVersion._2_11_7();
 		JavaModule dep = JavaBinModule.providing(Source.underWsroot("dep"))
 				.end();
@@ -807,6 +807,30 @@ public class JavaSrcModuleTest extends TestCase {
 		assertEquals("[mod/src/main/java, mod/src/main/scala]",
 				scalaClasses.srcDirs().toString());
 		assertEquals("[dep]", scalaClasses.classLocations().toString());
+		assertSame(scala, scalaClasses.scala());
+	}
+
+	public void testTestClassesHasCorrectKindOfClassesWhenScalaInUse() {
+		ScalaVersion scala = ScalaVersion._2_11_7();
+		JavaModule dep = JavaBinModule.providing(Source.underWsroot("dep"))
+				.end();
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").scalaVersion(scala)
+				.mainJava("src/main/java").mainScala("src/main/scala")
+				.testJava("src/test/java").testScala("src/test/scala")
+				.mainDeps(dep).end();
+		JavaClasses testClasses = (JavaClasses) mod.testArtifact();
+
+		assertEquals("[mod-test-classes-from-scala, mod-main-classes, dep]",
+				testClasses.classLocations().toString());
+		assertEquals("[mod-test-classes-from-scala]",
+				testClasses.resourceDirs().toString());
+
+		ScalaClasses scalaClasses = (ScalaClasses) testClasses.classLocations()
+				.iterator().next();
+		assertEquals("[mod/src/test/java, mod/src/test/scala]",
+				scalaClasses.srcDirs().toString());
+		assertEquals("[mod-main-classes, dep]",
+				scalaClasses.classLocations().toString());
 		assertSame(scala, scalaClasses.scala());
 	}
 

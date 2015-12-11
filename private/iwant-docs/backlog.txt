@@ -1449,7 +1449,7 @@
     + deps for scalac
     - only scala => only scala artifact
     - all the same for tests
-      - done features
+      + done features
       - only scala => only scala artifact
   - eclipse settings
   - cleanup
