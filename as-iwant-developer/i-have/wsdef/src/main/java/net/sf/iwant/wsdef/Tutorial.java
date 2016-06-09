@@ -188,7 +188,7 @@ public class Tutorial extends Target {
 
 	private String page(TargetEvaluationContext ctx, String fileName,
 			Path fromPath, Descripted prev, Descripted next)
-					throws IOException {
+			throws IOException {
 		File dest = ctx.cached(this);
 		File to = new File(dest, fileName);
 		File from = new File(ctx.cached(fromPath), "doc.html");

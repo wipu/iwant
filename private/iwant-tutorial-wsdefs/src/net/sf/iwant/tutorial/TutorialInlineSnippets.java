@@ -14,7 +14,7 @@ public class TutorialInlineSnippets {
 	/* snippet-start coolAppMainClasses */
 	Target coolAppMainClasses = JavaClasses.with().name("cool-app-main-classes")
 			.srcDirs(coolAppMainJava).end();
-			/* snippet-end coolAppMainClasses */
+	/* snippet-end coolAppMainClasses */
 
 	/* snippet-start coolAppJar */
 	Target coolAppJar = Jar.with().name("cool-app.jar")

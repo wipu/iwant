@@ -79,10 +79,8 @@ public class IwanttutorialWorkspace implements Workspace {
 	@Override
 	public List<? extends SideEffect> sideEffects(
 			SideEffectDefinitionContext ctx) {
-		return Arrays
-				.asList(EclipseSettings.with().name("eclipse-settings")
-						.modules(ctx.wsdefdefJavaModule(),
-								ctx.wsdefJavaModule())
+		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")
+				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())
 				.modules(modules.allSrcModules()).end());
 	}
 

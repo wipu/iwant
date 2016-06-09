@@ -40,7 +40,7 @@ public class IwanttutorialWorkspace implements Workspace {
 				.asList(EclipseSettings.with().name("eclipse-settings")
 						.modules(ctx.wsdefdefJavaModule(),
 								ctx.wsdefJavaModule(), mixedScalaAndJava)
-				.end());
+						.end());
 	}
 
 }

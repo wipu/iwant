@@ -142,7 +142,7 @@ public class ScriptGenerated extends TargetBase {
 
 	public static void execute(TargetEvaluationContext ctx, File dir,
 			File executable, String[] args)
-					throws IOException, InterruptedException {
+			throws IOException, InterruptedException {
 		ExecutionEnvironment env = prepareExecutionEnvironment(ctx, dir,
 				executable, args);
 		execute(env);
