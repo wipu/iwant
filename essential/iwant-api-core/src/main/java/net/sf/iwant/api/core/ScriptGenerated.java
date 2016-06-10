@@ -128,7 +128,13 @@ public class ScriptGenerated extends TargetBase {
 		for (String arg : env.args) {
 			cmdLine.add(arg);
 		}
-		Process process = new ProcessBuilder(cmdLine).directory(env.dir)
+
+		execute(env.dir, cmdLine);
+	}
+
+	public static void execute(File dir, List<String> cmdLine)
+			throws IOException, InterruptedException {
+		Process process = new ProcessBuilder(cmdLine).directory(dir)
 				.redirectErrorStream(true).start();
 		InputStream out = process.getInputStream();
 		StreamUtil.pipe(out, System.err);

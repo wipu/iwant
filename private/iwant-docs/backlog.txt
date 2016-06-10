@@ -1433,6 +1433,97 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
+  * difference to ScriptGenerated: here the script defines ingredients and name,
+    not just the recipe; also script is a separate source file, not dynamically
+    generated
+  * iwant will provide libraries for different scripting languages
+  + spike solution in private ws
+  + plan new requirements that will help in proper impl
+    + ingredients phase needs to be able to find the script from
+      under wsroot
+      * option: TargetDefinitionContext needs to give wsroot
+        * downside: users may misuse this
+      * option: the target casts the iUse to something that gives it
+        (WsRootProvider)
+        * TargetBase needs it in constructor so cast comes from targetdefctx
+      * option: when engine asks for target list, it will go through it, detect
+        these special targets (by an interface) and inject a needed context to them
+      + decide: impl the last, it will help in finding ingrs by name
+        (- funnel call to targets through one place
+           * no, needed only when wishing as path (or content))
+    + ingredients must be found by name
+      (- refactor: remove getter ingredients() and use the
+        ingredientsAndParameters solution for all targets
+        - make all targets extend TargetBase
+        - move the impl away from TargetBase, to a place where ingrs and params are needed
+        * no, too difficult: ingredients and contentDescriptor are used a lot in
+          target unit tests)
+      * use the context created above
+      * iUse.ingredientsNamed("rolename", "ingrname")
+  (- don't require the targets to be full shell scripts but instead
+    require them to just define functions ingr.. and path and source
+    them from the script to run
+    * no, otoh, it's better for understanding and debugging to run them, also
+      there may be cases where user doesn't want to delegate to our library)
+  + name for the target
+    * TargetImplementedInBash
+  + tdd the solution
+    * driving test needs to be more high-level than one that just calls the target methods
+      like ingredients and path
+    * too difficult to test e2e from java: bootstrapping of iwant
+    + ok, so then plan: not-quite-e2e
+      * entry is iwant3
+      * do as Iwant3Test, but here we can (must) use real iwant essentials
+    + ingredientless target
+      + make script itself ingredient
+      + execute using ScriptGenerated
+      + pwd is an empty subdir of tmpdir, for easy use of *
+    + target with explicitly named ingredients
+    + make tests pass with iwant, not only in eclipse (use resource dirs, Iwant2 must copy them)
+    + run bash test during jacoco-coverage
+    + ergonomics: rerun ingredients before path so the names will actually be used as bash variables
+      => no need to refer by path name anymore in the path function, also practically impossible to
+      refer to ingredient without declaring it
+    + test deprefs syntax bash functions
+      + also test and fix behaviour with windows backslashes (rolleyes)
+  + java tool that finds executables in a given directory and returns .sh files
+    as list of TargetImplementedInBash
+  * split contexts into separate "services" when different contexts extend more services
+  (- target can declare many different instances of it
+    * example: find image files, generate thumbnail targets for all)
+  - it's easier, and probably better for the user in the long run, to require
+    _index.sh to declare all target instances
+    + integr test: params
+    + don't call java *.sh finding magic, but a factory that consumes _index.sh
+    + pass test with hardcoded java target instances
+    + tdd: really execute _index.sh, parse its output, create instances from it
+    + remove redundancy btw ingredient type-name-value and indented-string[] parsing
+    (- find sources and generate target instances for them
+       * no, even in java we don't do this)
+    - test incorrect usage of target function in _index.sh
+  - naming: functions in target.sh: input and output?
+  - is needed: use ScriptGenerated in a way we get cygwin support
+  - corner case tests needed
+    - escape cases for ingredients-and-parameters output
+      - especially parameters that can contain anything
+  - source target script before defining nonoverridable functions, for robustness
+  - descript
+    * most probably Iwant2 needs to copy iwant-api-core resources
+  - further stories
+    + java target impls accessable via script language libraries?
+      * yes, this follows naturally
+    - side-effects, or are they easy enough with "iwantish" scripts?
+    - python library
+    - script that creates ws that supports writing targets only using
+      bash&editor (downloadable so no installation needed)
+    - split to dedicated modules?
+    - prefix all bash functions so no accidental name clashes with user code
+    - target that finds ingredients from list of targets
+      * if this is needed!
+      - simple case
+      - prevent cycle
+
 - As @buildscriptauthor I want to declare a given version of scala for a module so I can define java classes as a mixture of java and scala sources
   * don't bother modularizing this, it's good to have scala support easily accessible to all modules
     (even iwant workspace definitions and iwant itself)
@@ -1688,6 +1779,14 @@
 #################################################################
 = Planned
 #################################################################
+
+- As @buildscriptuser I want iwant to first test a module whose sources I have touched most recently so I get test failure as fast as possible
+  * more generic: refresh ordering depends on ingredient timestamps
+
+- IwantWsRootFinder: give the root, not only essential, and use that instead of essential whenever
+  you really want the parent (the root)
+
+- As @buildscriptauthor I want to define ingredients without names so that I can save typing; I never read content descriptors so it's ok if the names are generated
 
 - As @eclipseuser I want an option to have eclipse installed with the scala plugin so I can edit scala without manually installing the plugin
 

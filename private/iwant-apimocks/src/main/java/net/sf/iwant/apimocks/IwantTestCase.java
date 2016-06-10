@@ -116,7 +116,11 @@ public abstract class IwantTestCase extends TestCase {
 	}
 
 	protected String contentOfCached(String targetName) {
-		return testArea.contentOf(new File(cached, targetName));
+		return testArea.contentOf(cachedTarget(targetName));
+	}
+
+	protected File cachedTarget(String targetName) {
+		return new File(cached, targetName);
 	}
 
 	protected String contentOfFileUnderWsRoot(String relativePath) {

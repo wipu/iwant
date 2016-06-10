@@ -188,7 +188,7 @@ public class Iwant3 {
 		return new ExternalSource(combinedSources);
 	}
 
-	static class CombinedSrcFromUnmodifiableIwantEssential
+	public static class CombinedSrcFromUnmodifiableIwantEssential
 			extends UnmodifiableSource<File> {
 
 		public CombinedSrcFromUnmodifiableIwantEssential(File location) {

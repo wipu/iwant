@@ -1,18 +1,24 @@
 package net.sf.iwant.apimocks;
 
 import java.io.File;
+import java.util.List;
 
+import net.sf.iwant.api.model.IngredientDefinitionContext;
 import net.sf.iwant.api.model.Path;
+import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.coreservices.IwantCoreServicesImpl;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entrymocks.NullCheck;
 
-public class TargetEvaluationContextMock implements TargetEvaluationContext {
+public class TargetEvaluationContextMock
+		implements TargetEvaluationContext, IngredientDefinitionContext {
 
 	private File wsRoot;
 	private final CachesMock caches;
 	private final IwantCoreServicesMock iwantCoreServices;
+	private List<? extends Target> targets;
 
 	public TargetEvaluationContextMock(Iwant iwant, CachesMock caches) {
 		this.caches = caches;
@@ -43,6 +49,20 @@ public class TargetEvaluationContextMock implements TargetEvaluationContext {
 	@Override
 	public File freshTemporaryDirectory() {
 		return caches.temporaryDirectory("mock-worker");
+	}
+
+	@Override
+	public List<? extends Target> targets() {
+		return targets;
+	}
+
+	public void setTargets(List<? extends Target> targets) {
+		this.targets = targets;
+	}
+
+	@Override
+	public File locationOf(Source source) {
+		return cached(source);
 	}
 
 }

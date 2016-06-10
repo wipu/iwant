@@ -156,6 +156,8 @@ public class IwantModules extends JavaModules {
 			.noTestJava().end();
 
 	private JavaSrcModule iwantApiCore = essentialModule("api-core")
+			.mainResources("src/main/resources")
+			.testResources("src/test/resources")
 			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
 			.testDeps(iwantApimocks, junit).end();
 
@@ -327,8 +329,8 @@ public class IwantModules extends JavaModules {
 			.providing(extendedIwantEnumsClasses, extendedIwantEnumsJava).end();
 
 	private final JavaSrcModule iwantTests = privateModule("tests").noMainJava()
-			.testDeps(iwantExtendedEnums).testDeps(allSrcModules())
-			.testDeps(junit).end();
+			.testResources("src/test/resources").testDeps(iwantExtendedEnums)
+			.testDeps(allSrcModules()).testDeps(commonsIo, junit).end();
 
 	/**
 	 * Just for documenting, to help detect dead stuff

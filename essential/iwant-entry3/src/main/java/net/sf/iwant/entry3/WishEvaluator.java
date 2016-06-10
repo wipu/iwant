@@ -3,18 +3,23 @@ package net.sf.iwant.entry3;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Set;
 
+import net.sf.iwant.api.core.TargetImplementedInBash;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Caches;
+import net.sf.iwant.api.model.IngredientDefinitionContext;
 import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.SideEffectContext;
+import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.model.WsInfo;
+import net.sf.iwant.api.wsdef.IKnowWhatIAmDoingContext;
 import net.sf.iwant.api.wsdef.IwantPluginWishes;
 import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
 import net.sf.iwant.api.wsdef.TargetDefinitionContext;
@@ -74,7 +79,11 @@ public class WishEvaluator {
 	}
 
 	public void iwant(String wish, Workspace ws) {
-		failIfConflictingPathDefinitions(ws);
+		List<? extends Target> targets = ws.targets(ctx);
+		ctx.setTargetsAndInjectIngrDefCtx(targets);
+
+		failIfConflictingPathDefinitions(targets);
+
 		if ("list-of/targets".equals(wish)) {
 			PrintWriter wr = new PrintWriter(out);
 			for (Target target : ws.targets(ctx)) {
@@ -91,7 +100,7 @@ public class WishEvaluator {
 			wr.close();
 			return;
 		}
-		for (Target target : ws.targets(ctx)) {
+		for (Target target : targets) {
 			if (wish.equals("target/" + target.name() + "/as-path")) {
 				asPath(target);
 				return;
@@ -114,12 +123,12 @@ public class WishEvaluator {
 			}
 		}
 		throw new IllegalArgumentException(
-				"Illegal wish: " + wish + "\nlegal targets:" + ws.targets(ctx));
+				"Illegal wish: " + wish + "\nlegal targets:" + targets);
 	}
 
-	private void failIfConflictingPathDefinitions(Workspace ws) {
-		PathDefinitionConflictChecker
-				.failIfConflictingPathDefinitions(ws.targets(ctx));
+	private static void failIfConflictingPathDefinitions(
+			List<? extends Target> targets) {
+		PathDefinitionConflictChecker.failIfConflictingPathDefinitions(targets);
 	}
 
 	File freshCachedContent(Path path) {
@@ -162,10 +171,28 @@ public class WishEvaluator {
 
 	private class Ctx implements TargetEvaluationContext, SideEffectContext,
 			SideEffectDefinitionContext, TargetDefinitionContext,
-			WorkspaceContext {
+			WorkspaceContext, IngredientDefinitionContext,
+			IKnowWhatIAmDoingContext {
 
 		private final IwantCoreServices iwantCoreServices = new IwantCoreServicesImpl(
 				iwant);
+		private List<? extends Target> targets;
+
+		private void setTargetsAndInjectIngrDefCtx(
+				List<? extends Target> targets) {
+			this.targets = targets;
+			for (Target target : targets) {
+				if (target instanceof TargetImplementedInBash) {
+					TargetImplementedInBash tib = (TargetImplementedInBash) target;
+					tib.setIngredientDefinitionContext(this);
+				}
+			}
+		}
+
+		@Override
+		public List<? extends Target> targets() {
+			return targets;
+		}
 
 		@Override
 		public IwantCoreServices iwant() {
@@ -180,6 +207,11 @@ public class WishEvaluator {
 		@Override
 		public File cached(Path path) {
 			return caches.contentOf(path);
+		}
+
+		@Override
+		public File locationOf(Source src) {
+			return cached(src);
 		}
 
 		@Override
