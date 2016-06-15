@@ -1492,7 +1492,7 @@
   * split contexts into separate "services" when different contexts extend more services
   (- target can declare many different instances of it
     * example: find image files, generate thumbnail targets for all)
-  - it's easier, and probably better for the user in the long run, to require
+  + it's easier, and probably better for the user in the long run, to require
     _index.sh to declare all target instances
     + integr test: params
     + don't call java *.sh finding magic, but a factory that consumes _index.sh
@@ -1501,15 +1501,25 @@
     + remove redundancy btw ingredient type-name-value and indented-string[] parsing
     (- find sources and generate target instances for them
        * no, even in java we don't do this)
-    - test incorrect usage of target function in _index.sh
+  + descript
+    * most probably Iwant2 needs to copy iwant-api-core resources
+    + wsdef
+    + article
+    + fix classpath by copying resources
+  - descript target with ingredients
+  - descript multiple instances of target
+  - cleanup of target creation
+    - remove need for cast
+      - is it possible to pass targetevaluationctx? maybe split targimplinbash into dedicated module?
+    - make it possible to use defaults or override:
+      - path src/main/bash
+      - name _index.sh
   - naming: functions in target.sh: input and output?
   - is needed: use ScriptGenerated in a way we get cygwin support
   - corner case tests needed
     - escape cases for ingredients-and-parameters output
       - especially parameters that can contain anything
   - source target script before defining nonoverridable functions, for robustness
-  - descript
-    * most probably Iwant2 needs to copy iwant-api-core resources
   - further stories
     + java target impls accessable via script language libraries?
       * yes, this follows naturally
@@ -1519,6 +1529,7 @@
       bash&editor (downloadable so no installation needed)
     - split to dedicated modules?
     - prefix all bash functions so no accidental name clashes with user code
+    - test incorrect usage of target function in _index.sh
     - target that finds ingredients from list of targets
       * if this is needed!
       - simple case

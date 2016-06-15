@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -131,8 +132,32 @@ public class Iwant2 {
 		iwant.compiledClasses(allIwantClasses, javaFileList,
 				Collections.<File> emptyList(),
 				Iwant.bootstrappingJavacOptions(), null);
+
+		String pak = "net/sf/iwant/api/core";
+		File resources = new File(iwantEssential,
+				"iwant-api-core/src/main/resources/" + pak);
+		File resourcesDest = new File(allIwantClasses, pak);
+		resourcesDest.mkdirs();
+		for (File file : resources.listFiles()) {
+			copy(file, resourcesDest);
+		}
+
 		timestampHandler.markFresh();
 		return allIwantClasses;
+	}
+
+	private static void copy(File file, File destDir) {
+		String name = file.getName();
+		try {
+			Files.copy(javaNioFile(file), javaNioFile(new File(destDir, name)));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
+	private static java.nio.file.Path javaNioFile(File file) {
+		return java.nio.file.Paths.get(file.toURI());
 	}
 
 	public static SortedSet<File> javaFilesRecursivelyUnder(File dir) {

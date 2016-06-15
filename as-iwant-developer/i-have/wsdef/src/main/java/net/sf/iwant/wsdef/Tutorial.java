@@ -36,6 +36,12 @@ public class Tutorial extends Target {
 				bootstrappingDoc);
 		pages.add(this.creatingWsdefDoc);
 
+		if (true) {
+			pages.add(pageAboutUsingWsdef("targetimplementedinbash",
+					"Defining targets in bash"));
+			return;
+		}
+
 		if (false) {
 			pages.add(pageAboutUsingWsdef("scalamodules",
 					"Using Scala in Java modules"));
