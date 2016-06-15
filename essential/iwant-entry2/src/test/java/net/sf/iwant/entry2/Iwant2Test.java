@@ -170,4 +170,17 @@ public class Iwant2Test extends TestCase {
 				Iwant2.javaFilesRecursivelyUnder(src).toString());
 	}
 
+	public void testIwant2CopiesApiCoreResourcesToIwantClasses()
+			throws Exception {
+		File iwantEssential = IwantWsRootFinder.mockEssential();
+		network.cachesAt(
+				new ClassesFromUnmodifiableIwantEssential(iwantEssential),
+				"all-iwant-classes");
+
+		iwant2.evaluate(iwantEssential);
+
+		assertEquals("represents api core resources\n", testArea.contentOf(
+				"all-iwant-classes/net/sf/iwant/api/core/mock-resource.txt"));
+	}
+
 }

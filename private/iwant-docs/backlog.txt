@@ -1506,6 +1506,11 @@
     + wsdef
     + article
     + fix classpath by copying resources
+  + fix unit test: add mock resources to copy in Iwant2Test
+    + also add a test that resources are indeed copied
+  - real test
+    + make target
+    - fix problem: ext-jar-list-numbered depends on target from java: jar-list, dep resolve fails
   - descript target with ingredients
   - descript multiple instances of target
   - cleanup of target creation
