@@ -154,4 +154,28 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		assertEquals("[t1a0, t1a1]", targets.get(1).arguments().toString());
 	}
 
+	/**
+	 * There was a bug with this
+	 */
+	public void testIngredientWhoseNameIsContainedInTargetsOwnName()
+			throws Exception {
+		Target ingr = new HelloTarget("ingr", "ingr content");
+		ingr.path(ctx);
+
+		wsRootHasFile("user-of-ingr-target.sh",
+				"ingredients() {\n" + "target-dep INGR ingr\n" + "}\n"
+						+ "path() {\n"
+						+ "echo \"using $INGR\" > \"$IWANT_DEST\"\n"
+						+ "cat \"$INGR\" >> \"$IWANT_DEST\"\n" + "}\n");
+		TargetImplementedInBash target = new TargetImplementedInBash(
+				"user-of-ingr-target",
+				Source.underWsroot("user-of-ingr-target.sh"), Arrays.asList());
+
+		prepareContext(target, ingr);
+		target.path(ctx);
+
+		assertEquals("using " + cached + "/ingr\n" + "ingr content",
+				contentOfCached("user-of-ingr-target"));
+	}
+
 }

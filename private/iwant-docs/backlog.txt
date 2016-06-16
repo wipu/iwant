@@ -1510,7 +1510,9 @@
     + also add a test that resources are indeed copied
   - real test
     + make target
-    - fix problem: ext-jar-list-numbered depends on target from java: jar-list, dep resolve fails
+    + fix problem: ext-jar-list-numbered depends on target from java: jar-list, dep resolve fails
+    - test more
+  - add runtime assertion that path names must not contain "::", otherwise the deprefs syntax will break
   - descript target with ingredients
   - descript multiple instances of target
   - cleanup of target creation

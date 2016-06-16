@@ -19,7 +19,7 @@ ingredients() {
 
 iwant-cached() {
     local NAME=$(echo "$1" | sed 's/\\/\\\\/g')
-    grep "$NAME" "$IWANT_DEPREFS" | sed 's/^.*:://'
+    grep "^$NAME::" "$IWANT_DEPREFS" | sed 's/^.*:://'
 }
 
 targets() {

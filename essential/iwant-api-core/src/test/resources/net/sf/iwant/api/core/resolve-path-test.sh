@@ -33,6 +33,10 @@ all-cases() {
     $OP "sla/sh/ed" "/cached/sla/sh/ed"
     $OP "C:/windows" "C:/windows"
     $OP 'C:\windows\crap' 'C:\windows\crap'
+
+    # there was a bug, if target name was contained in another:
+    $OP "contained-name" "contained-name"
+    $OP "name-with-contained-name-in-it" "name-with-contained-name-in-it"
 }
 
 all-cases unparse > "$IWANT_DEPREFS"
