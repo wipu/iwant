@@ -1508,10 +1508,10 @@
     + fix classpath by copying resources
   + fix unit test: add mock resources to copy in Iwant2Test
     + also add a test that resources are indeed copied
-  - real test
+  + real test
     + make target
     + fix problem: ext-jar-list-numbered depends on target from java: jar-list, dep resolve fails
-    - test more
+    + test more
   - add runtime assertion that path names must not contain "::", otherwise the deprefs syntax will break
   - descript target with ingredients
   - descript multiple instances of target
