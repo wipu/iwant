@@ -282,6 +282,8 @@ public class Iwant3 {
 	private static SortedSet<File> iwantApiClassLocations()
 			throws URISyntaxException {
 		SortedSet<File> apiClassLocations = new TreeSet<>();
+		apiClassLocations.add(classesDirOf(
+				"/net/sf/iwant/" + "api/bash/TargetImplementedInBash.class"));
 		apiClassLocations.add(
 				classesDirOf("/net/sf/iwant/" + "api/core/HelloTarget.class"));
 		apiClassLocations.add(classesDirOf(

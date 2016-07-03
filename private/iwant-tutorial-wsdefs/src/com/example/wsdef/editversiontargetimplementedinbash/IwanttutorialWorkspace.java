@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.iwant.api.core.TargetImplementedInBash;
+import net.sf.iwant.api.bash.TargetImplementedInBash;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.wsdef.IKnowWhatIAmDoingContext;

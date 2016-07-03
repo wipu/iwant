@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
 
-import net.sf.iwant.api.core.TargetImplementedInBash;
+import net.sf.iwant.api.bash.TargetImplementedInBash;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Caches;

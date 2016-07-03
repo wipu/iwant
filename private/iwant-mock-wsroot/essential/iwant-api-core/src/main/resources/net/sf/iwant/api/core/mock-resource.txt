@@ -1,1 +1,0 @@
-represents api core resources

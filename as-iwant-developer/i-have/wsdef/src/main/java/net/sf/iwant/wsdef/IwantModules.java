@@ -156,10 +156,14 @@ public class IwantModules extends JavaModules {
 			.noTestJava().end();
 
 	private JavaSrcModule iwantApiCore = essentialModule("api-core")
-			.mainResources("src/main/resources")
-			.testResources("src/test/resources")
 			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
 			.testDeps(iwantApimocks, junit).end();
+
+	private JavaSrcModule iwantApiBash = essentialModule("api-bash")
+			.mainResources("src/main/resources")
+			.testResources("src/test/resources")
+			.mainDeps(iwantApiCore, iwantApiModel, iwantCoreservices)
+			.testDeps(iwantApimocks, iwantEntry, junit).end();
 
 	private JavaSrcModule iwantCoreDownload = essentialModule("core-download")
 			.mainDeps(iwantApiCore, iwantApiModel, iwantCoreservices,
@@ -194,10 +198,10 @@ public class IwantModules extends JavaModules {
 					.testDeps(iwantApimocks, junit).end();
 
 	private JavaSrcModule iwantEntry3 = essentialModule("entry3")
-			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
-					iwantApiWsdef, iwantCoreDownload, iwantCoreservices,
-					iwantEntry, iwantEntry2, iwantIwantWsrootFinder,
-					iwantPlanner, iwantPlannerApi)
+			.mainDeps(iwantApiBash, iwantApiCore, iwantApiJavamodules,
+					iwantApiModel, iwantApiWsdef, iwantCoreDownload,
+					iwantCoreservices, iwantEntry, iwantEntry2,
+					iwantIwantWsrootFinder, iwantPlanner, iwantPlannerApi)
 			.testDeps(iwantApimocks, iwantEclipseSettings, iwantEntrymocks,
 					iwantPlannerMocks, iwantTestarea, junit)
 			.end();
@@ -309,11 +313,11 @@ public class IwantModules extends JavaModules {
 
 	private JavaSrcModule iwantTutorialWsdefs = privateModule("tutorial-wsdefs")
 			.scalaVersion(SCALA).noMainJava().noTestJava().mainJava("src")
-			.mainDeps(commonsMath, iwantApiCore, iwantApiJavamodules,
-					iwantApiModel, iwantApiWsdef, iwantCoreAnt,
-					iwantCoreDownload, iwantCoreservices, iwantEntry3,
-					iwantEclipseSettings, iwantPluginAnt, iwantPluginFindbugs,
-					iwantPluginGithub, iwantPluginJacoco,
+			.mainDeps(commonsMath, iwantApiBash, iwantApiCore,
+					iwantApiJavamodules, iwantApiModel, iwantApiWsdef,
+					iwantCoreAnt, iwantCoreDownload, iwantCoreservices,
+					iwantEntry3, iwantEclipseSettings, iwantPluginAnt,
+					iwantPluginFindbugs, iwantPluginGithub, iwantPluginJacoco,
 					iwantPluginJavamodules, iwantPluginPmd, iwantPluginTestng,
 					iwantPluginWar, junit, testng)
 			.end();

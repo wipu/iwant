@@ -76,6 +76,7 @@ public class Iwant2 {
 
 	private static List<String> relativeIwantSrcDirs() {
 		List<String> srcDirs = new ArrayList<>();
+		srcDirs.add("iwant-api-bash/" + "src/main/java");
 		srcDirs.add("iwant-api-core/" + "src/main/java");
 		srcDirs.add("iwant-api-javamodules/" + "src/main/java");
 		srcDirs.add("iwant-api-model/" + "src/main/java");
@@ -133,9 +134,9 @@ public class Iwant2 {
 				Collections.<File> emptyList(),
 				Iwant.bootstrappingJavacOptions(), null);
 
-		String pak = "net/sf/iwant/api/core";
+		String pak = "net/sf/iwant/api/bash";
 		File resources = new File(iwantEssential,
-				"iwant-api-core/src/main/resources/" + pak);
+				"iwant-api-bash/src/main/resources/" + pak);
 		File resourcesDest = new File(allIwantClasses, pak);
 		resourcesDest.mkdirs();
 		for (File file : resources.listFiles()) {

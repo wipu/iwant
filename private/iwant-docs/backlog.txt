@@ -1518,6 +1518,7 @@
   - cleanup of target creation
     - remove need for cast
       - is it possible to pass targetevaluationctx? maybe split targimplinbash into dedicated module?
+        + split modules anyway, it's never harmful
     - make it possible to use defaults or override:
       - path src/main/bash
       - name _index.sh

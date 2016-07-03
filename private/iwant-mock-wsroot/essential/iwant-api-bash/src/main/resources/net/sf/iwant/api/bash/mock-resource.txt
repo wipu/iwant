@@ -1,0 +1,1 @@
+represents api bash resources
