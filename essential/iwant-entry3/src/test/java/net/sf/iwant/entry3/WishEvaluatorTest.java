@@ -889,4 +889,41 @@ public class WishEvaluatorTest extends TestCase {
 				+ " ant-launcher-1.9.4.jar]", err.toString());
 	}
 
+	private class WorkspaceWithTarget implements Workspace {
+
+		private final Target target;
+
+		WorkspaceWithTarget(Target target) {
+			this.target = target;
+		}
+
+		@Override
+		public List<? extends Target> targets(TargetDefinitionContext ctx) {
+			return Arrays.asList(target);
+		}
+
+		@Override
+		public List<? extends SideEffect> sideEffects(
+				SideEffectDefinitionContext ctx) {
+			return Collections.emptyList();
+		}
+
+	}
+
+	/**
+	 * More cases are tested in TargetNameCheckerTest
+	 */
+	public void testIllegalTargetNameCausesFailure() {
+		WorkspaceWithTarget ws = new WorkspaceWithTarget(
+				new HelloTarget("a::b", ""));
+		try {
+			evaluator.iwant("list-of/targets", ws);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals(
+					"Name contains double colon (breaks TargetImplementedInBash): a::b",
+					e.getMessage());
+		}
+	}
+
 }

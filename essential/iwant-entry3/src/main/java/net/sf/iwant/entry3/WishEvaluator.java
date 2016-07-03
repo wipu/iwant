@@ -83,6 +83,7 @@ public class WishEvaluator {
 		ctx.setTargetsAndInjectIngrDefCtx(targets);
 
 		failIfConflictingPathDefinitions(targets);
+		TargetNameChecker.check(targets);
 
 		if ("list-of/targets".equals(wish)) {
 			PrintWriter wr = new PrintWriter(out);
