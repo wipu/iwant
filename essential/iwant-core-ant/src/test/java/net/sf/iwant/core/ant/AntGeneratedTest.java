@@ -42,7 +42,7 @@ public class AntGeneratedTest extends IwantTestCase {
 		assertEquals(
 				"net.sf.iwant.core.ant.AntGenerated\n" + "i:ant-jars:\n  "
 						+ Iwant.IWANT_USER_DIR
-						+ "/cached/UnmodifiableUrl/http%3A/%2Fmaven.ibiblio.org/maven2/org/apache/ant/ant/1.9.4/ant-1.9.4.jar\n"
+						+ "/cached/UnmodifiableUrl/http%3A/%2Frepo1.maven.org/maven2/org/apache/ant/ant/1.9.4/ant-1.9.4.jar\n"
 						+ "i:script:\n  script\n",
 				AntGenerated.with().name("minimal").antJars(antJar())
 						.script(Source.underWsroot("script")).end()

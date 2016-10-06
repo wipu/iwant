@@ -7,32 +7,32 @@ public class TestedIwantDependencies {
 	private static final String ANT_VER = "1.9.4";
 
 	public static Path antJar() {
-		return FromRepository.ibiblio().group("org/apache/ant").name("ant")
-				.version(ANT_VER);
+		return FromRepository.repo1MavenOrg().group("org/apache/ant")
+				.name("ant").version(ANT_VER);
 	}
 
 	public static Path antLauncherJar() {
-		return FromRepository.ibiblio().group("org/apache/ant")
+		return FromRepository.repo1MavenOrg().group("org/apache/ant")
 				.name("ant-launcher").version(ANT_VER);
 	}
 
 	public static Path emma() {
-		return FromRepository.ibiblio().group("emma").name("emma")
+		return FromRepository.repo1MavenOrg().group("emma").name("emma")
 				.version("2.0.5312");
 	}
 
 	public static Path jcommander() {
-		return FromRepository.ibiblio().group("com/beust").name("jcommander")
-				.version("1.48");
+		return FromRepository.repo1MavenOrg().group("com/beust")
+				.name("jcommander").version("1.48");
 	}
 
 	public static Path junit() {
-		return FromRepository.ibiblio().group("junit").name("junit")
+		return FromRepository.repo1MavenOrg().group("junit").name("junit")
 				.version("4.8.2");
 	}
 
 	public static Path testng() {
-		return FromRepository.ibiblio().group("org/testng").name("testng")
+		return FromRepository.repo1MavenOrg().group("org/testng").name("testng")
 				.version("6.9.4");
 	}
 

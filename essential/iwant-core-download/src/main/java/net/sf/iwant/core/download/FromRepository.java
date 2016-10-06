@@ -6,10 +6,6 @@ import net.sf.iwant.entry.Iwant;
 
 public class FromRepository {
 
-	public static ArtifactGroup ibiblio() {
-		return new ArtifactGroup("http://maven.ibiblio.org/maven2/");
-	}
-
 	public static ArtifactGroup repo1MavenOrg() {
 		return new ArtifactGroup("http://repo1.maven.org/maven2/");
 	}

@@ -73,17 +73,16 @@ public class IwantModules extends JavaModules {
 					.name("ant-launcher").version("1.9.4"))
 			.end();
 
-	private JavaModule asm = JavaBinModule.providing(
-			FromRepository.ibiblio().group("asm").name("asm").version("3.2"))
-			.end();
+	private JavaModule asm = JavaBinModule.providing(FromRepository
+			.repo1MavenOrg().group("asm").name("asm").version("3.2")).end();
 
-	private JavaModule commonsIo = JavaBinModule
-			.providing(FromRepository.ibiblio().group("org/apache/commons")
+	private JavaModule commonsIo = JavaBinModule.providing(
+			FromRepository.repo1MavenOrg().group("org/apache/commons")
 					.name("commons-io").version("1.3.2"))
 			.end();
 
 	private JavaModule commonsMath = JavaBinModule
-			.providing(FromRepository.ibiblio().group("commons-math")
+			.providing(FromRepository.repo1MavenOrg().group("commons-math")
 					.name("commons-math").version("1.2"))
 			.end();
 
@@ -97,16 +96,17 @@ public class IwantModules extends JavaModules {
 					.name("guava-testlib").version("18.0"))
 			.runtimeDeps(guava).end();
 
-	private JavaModule jaxen = JavaBinModule.providing(FromRepository.ibiblio()
-			.group("jaxen").name("jaxen").version("1.1.4")).end();
+	private JavaModule jaxen = JavaBinModule.providing(FromRepository
+			.repo1MavenOrg().group("jaxen").name("jaxen").version("1.1.4"))
+			.end();
 
-	private JavaModule junit = JavaBinModule.providing(FromRepository.ibiblio()
-			.group("junit").name("junit").version("4.8.2")).end();
+	private JavaModule junit = JavaBinModule.providing(FromRepository
+			.repo1MavenOrg().group("junit").name("junit").version("4.8.2"))
+			.end();
 
 	// TODO document dependency to asm, jaxen
-	private JavaModule pmd = JavaBinModule.providing(
-			FromRepository.ibiblio().group("pmd").name("pmd").version("4.3"))
-			.end();
+	private JavaModule pmd = JavaBinModule.providing(FromRepository
+			.repo1MavenOrg().group("pmd").name("pmd").version("4.3")).end();
 
 	private final JavaBinModule jcommander = binModule("com.beust",
 			"jcommander", "1.48");

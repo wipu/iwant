@@ -162,13 +162,13 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 				@Override
 				public Set<JavaModule> withDependencies() {
 					return pluginWithDependencies("iwant-plugin-pmd", antJar(),
-							FromRepository.ibiblio().group("asm").name("asm")
-									.version("3.2"),
+							FromRepository.repo1MavenOrg().group("asm")
+									.name("asm").version("3.2"),
 							commonsIoJar(),
-							FromRepository.ibiblio().group("jaxen")
+							FromRepository.repo1MavenOrg().group("jaxen")
 									.name("jaxen").version("1.1.4"),
-							FromRepository.ibiblio().group("pmd").name("pmd")
-									.version("4.3"));
+							FromRepository.repo1MavenOrg().group("pmd")
+									.name("pmd").version("4.3"));
 				}
 
 			};
@@ -209,7 +209,7 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 	}
 
 	private static Downloaded commonsIoJar() {
-		return FromRepository.ibiblio().group("org/apache/commons")
+		return FromRepository.repo1MavenOrg().group("org/apache/commons")
 				.name("commons-io").version("1.3.2");
 	}
 
