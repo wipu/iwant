@@ -1433,13 +1433,13 @@
   + fix it
   + upgrade iwant for iwant
 
++ fix: remove ibiblio usage, it is no more, use repo1.maven.org
+  + fix as much as possible
+  + upgrade iwant for iwant and fix more
+
 #################################################################
 = In progress
 #################################################################
-
-- fix: remove ibiblio usage, it is no more, use repo1.maven.org
-  + fix as much as possible
-  - upgrade iwant for iwant and fix more
 
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,
