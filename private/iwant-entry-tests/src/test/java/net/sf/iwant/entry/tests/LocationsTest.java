@@ -36,7 +36,7 @@ public class LocationsTest extends TestCase {
 
 	public void testRealUrls() throws MalformedURLException {
 		assertUrl(
-				new URL("http://www.svnkit.com/org.tmatesoft.svn_1.8.6.standalone.nojna.zip"),
+				new URL("https://svnkit.com/org.tmatesoft.svn_1.8.13.standalone.nojna.zip"),
 				Iwant.usingRealNetwork().svnkitUrl());
 	}
 

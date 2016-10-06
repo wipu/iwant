@@ -194,8 +194,8 @@ public class Iwant {
 
 		@Override
 		public URL svnkitUrl() {
-			return url("http://www.svnkit.com/"
-					+ "org.tmatesoft.svn_1.8.6.standalone.nojna.zip");
+			return url("https://svnkit.com/"
+					+ "org.tmatesoft.svn_1.8.13.standalone.nojna.zip");
 		}
 
 		@Override
@@ -862,7 +862,7 @@ public class Iwant {
 				urlString = from.getFile();
 			}
 			File svnkit = unzippedSvnkit();
-			File svnkitLib = new File(svnkit, "svnkit-1.8.6/lib");
+			File svnkitLib = new File(svnkit, "svnkit-1.8.13/lib");
 			List<File> svnkitJars = Arrays.asList(svnkitLib.listFiles());
 			enableHttpProxy();
 			runJavaMain(true, false, "org.tmatesoft.svn.cli.SVN", svnkitJars,

@@ -1433,6 +1433,10 @@
 = In progress
 #################################################################
 
+- fix (and upgrade) svnkit url, they changed them so bootstrapping no more works
+  + fix it
+  - upgrade iwant for iwant
+
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,
     not just the recipe; also script is a separate source file, not dynamically
