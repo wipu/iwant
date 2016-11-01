@@ -119,6 +119,28 @@ public class IwantModules extends JavaModules {
 	final JavaBinModule scalaLibrary = binModule("org/scala-lang",
 			"scala-library", SCALA_VER.value());
 
+	private final JavaBinModule vertxCore = binModule("io.vertx", "vertx-core",
+			"3.3.3");
+	private final JavaBinModule vertxWeb = binModule("io.vertx", "vertx-web",
+			"3.3.3");
+
+	private JavaBinModule nettyModule(String name) {
+		return binModule("io.netty", "netty-" + name, "4.1.6.Final");
+	}
+
+	private final JavaBinModule nettyBuffer = nettyModule("buffer");
+	private final JavaBinModule nettyCodec = nettyModule("codec");
+	private final JavaBinModule nettyCodecDns = nettyModule("codec-dns");
+	private final JavaBinModule nettyCodecHttp = nettyModule("codec-http");
+	private final JavaBinModule nettyCodecHttp2 = nettyModule("codec-http2");
+	private final JavaBinModule nettyCommon = nettyModule("common");
+	private final JavaBinModule nettyResolver = nettyModule("resolver");
+	private final JavaBinModule nettyResolverDns = nettyModule("resolver-dns");
+	private final JavaBinModule nettyTransport = nettyModule("transport");
+	private final JavaBinModule nettyHandler = nettyModule("handler");
+	private final JavaBinModule nettyHandlerProxy = nettyModule(
+			"handler-proxy");
+
 	private JavaSrcModule iwantApiModel = essentialModule("api-model")
 			.mainDeps().testDeps(junit).end();
 
@@ -142,8 +164,12 @@ public class IwantModules extends JavaModules {
 
 	private JavaSrcModule iwantEntryTests = privateModule("entry-tests")
 			.noMainJava().testResources("src/test/resources")
-			.testDeps(guava, guavaTestlib, iwantEntry, iwantEntrymocks,
-					iwantIwantWsrootFinder, iwantTestarea, junit)
+			.testDeps(commonsIo, guava, guavaTestlib, iwantEntry,
+					iwantEntrymocks, iwantIwantWsrootFinder, iwantTestarea,
+					junit, nettyBuffer, nettyCodec, nettyCodecDns,
+					nettyCodecHttp, nettyCodecHttp2, nettyCommon, nettyHandler,
+					nettyHandlerProxy, nettyResolver, nettyResolverDns,
+					nettyTransport, vertxCore, vertxWeb)
 			.end();
 
 	private JavaSrcModule iwantEntry2 = essentialModule("entry2")

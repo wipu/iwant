@@ -1443,6 +1443,11 @@
 = In progress
 #################################################################
 
+- As @buildscriptuser I want iwant to follow redirects so I can declare dependencies to sourceforge
+  + test with vert.x server that responds with 301
+  * hmm, maybe jdk has fixed urlconnection, it does follow redirects
+  - manual test with a workspace that had problems
+
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,
     not just the recipe; also script is a separate source file, not dynamically
