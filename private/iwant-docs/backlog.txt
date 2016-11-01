@@ -1446,7 +1446,11 @@
 - As @buildscriptuser I want iwant to follow redirects so I can declare dependencies to sourceforge
   + test with vert.x server that responds with 301
   * hmm, maybe jdk has fixed urlconnection, it does follow redirects
-  - manual test with a workspace that had problems
+  + manual test with a workspace that had problems
+    * problem with http://sourceforge.net/projects/ictk/files/ictk/Version%200.2/ictk-0.2.0.zip/download
+      that redirects with 301 to same with https
+    * using https redirects with 302 to http://downloads.sourceforge.net/project/ictk...
+  - test with redirect from http to https (and vice versa)
 
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,
