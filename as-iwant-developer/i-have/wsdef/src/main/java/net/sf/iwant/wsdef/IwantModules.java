@@ -19,7 +19,7 @@ import net.sf.iwant.plugin.javamodules.JavaModules;
 
 public class IwantModules extends JavaModules {
 
-	private static final ScalaVersion SCALA = ScalaVersion._2_11_7();
+	private static final ScalaVersion SCALA_VER = ScalaVersion._2_11_7();
 
 	@Override
 	protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {
@@ -115,6 +115,9 @@ public class IwantModules extends JavaModules {
 
 	private final JavaBinModule testng = binModule("org.testng", "testng",
 			"6.9.4", jcommander);
+
+	final JavaBinModule scalaLibrary = binModule("org/scala-lang",
+			"scala-library", SCALA_VER.value());
 
 	private JavaSrcModule iwantApiModel = essentialModule("api-model")
 			.mainDeps().testDeps(junit).end();
@@ -314,14 +317,14 @@ public class IwantModules extends JavaModules {
 			.end();
 
 	private JavaSrcModule iwantTutorialWsdefs = privateModule("tutorial-wsdefs")
-			.scalaVersion(SCALA).noMainJava().noTestJava().mainJava("src")
+			.scalaVersion(SCALA_VER).noMainJava().noTestJava().mainJava("src")
 			.mainDeps(commonsMath, iwantApiBash, iwantApiCore,
 					iwantApiJavamodules, iwantApiModel, iwantApiWsdef,
 					iwantCoreAnt, iwantCoreDownload, iwantCoreservices,
 					iwantEntry3, iwantEclipseSettings, iwantPluginAnt,
 					iwantPluginFindbugs, iwantPluginGithub, iwantPluginJacoco,
 					iwantPluginJavamodules, iwantPluginPmd, iwantPluginTestng,
-					iwantPluginWar, junit, testng)
+					iwantPluginWar, junit, scalaLibrary, testng)
 			.end();
 
 	private final Target extendedIwantEnumsJava = new ExtendedIwantEnums(

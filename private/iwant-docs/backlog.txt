@@ -1437,6 +1437,8 @@
   + fix as much as possible
   + upgrade iwant for iwant and fix more
 
++ fix: scala library as dependency to tutorial-wsdefs module
+
 #################################################################
 = In progress
 #################################################################
