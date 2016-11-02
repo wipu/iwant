@@ -13,6 +13,7 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -728,10 +729,21 @@ public class Iwant {
 	private static byte[] downloadBytes(URL url)
 			throws MalformedURLException, IOException {
 		enableHttpProxy();
-		InputStream in = url.openStream();
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		int status = conn.getResponseCode();
+		if (isRedirect(status)) {
+			String location = conn.getHeaderField("Location");
+			conn.disconnect();
+			return downloadBytes(new URL(location));
+		}
+		InputStream in = conn.getInputStream();
 		byte[] respBody = readBytes(in);
 		in.close();
 		return respBody;
+	}
+
+	private static boolean isRedirect(int status) {
+		return 300 <= status && status < 400;
 	}
 
 	private static void enableHttpProxy() {

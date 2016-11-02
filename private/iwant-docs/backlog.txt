@@ -1450,7 +1450,11 @@
     * problem with http://sourceforge.net/projects/ictk/files/ictk/Version%200.2/ictk-0.2.0.zip/download
       that redirects with 301 to same with https
     * using https redirects with 302 to http://downloads.sourceforge.net/project/ictk...
-  - test with redirect from http to https (and vice versa)
+  + test with redirect from http to https (and vice versa)
+    * this reveals that redirect is not followed
+  + implement redirect follow
+  + commit, it seems to work although https tests fail: they don't trust the embedded vert.x cert 
+  - unignore https tests when I've found a way to _temporarily_ disable certificate checks
 
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,
