@@ -540,7 +540,8 @@ public class TargetRefreshTaskTest extends TestCase {
 			fail("Internal failure, expected " + urlThatShallNotBeContacted
 					+ " not to respond.");
 		} catch (ConnectException e) {
-			assertEquals("Connection refused", e.getMessage());
+			assertEquals("Connection refused (Connection refused)",
+					e.getMessage());
 		}
 
 		// cached file exists but descriptor doesn't

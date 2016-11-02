@@ -1453,7 +1453,8 @@
   + test with redirect from http to https (and vice versa)
     * this reveals that redirect is not followed
   + implement redirect follow
-  + commit, it seems to work although https tests fail: they don't trust the embedded vert.x cert 
+  + commit, it seems to work although https tests fail: they don't trust the embedded vert.x cert
+  + fix: check if conn is HttpURLConnection, e.g. during tests it's FileURLConnection
   - unignore https tests when I've found a way to _temporarily_ disable certificate checks
 
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)

@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.security.Permission;
@@ -729,12 +730,15 @@ public class Iwant {
 	private static byte[] downloadBytes(URL url)
 			throws MalformedURLException, IOException {
 		enableHttpProxy();
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		int status = conn.getResponseCode();
-		if (isRedirect(status)) {
-			String location = conn.getHeaderField("Location");
-			conn.disconnect();
-			return downloadBytes(new URL(location));
+		URLConnection conn = url.openConnection();
+		if (conn instanceof HttpURLConnection) {
+			HttpURLConnection httpConn = (HttpURLConnection) conn;
+			int status = httpConn.getResponseCode();
+			if (isRedirect(status)) {
+				String location = conn.getHeaderField("Location");
+				httpConn.disconnect();
+				return downloadBytes(new URL(location));
+			}
 		}
 		InputStream in = conn.getInputStream();
 		byte[] respBody = readBytes(in);
