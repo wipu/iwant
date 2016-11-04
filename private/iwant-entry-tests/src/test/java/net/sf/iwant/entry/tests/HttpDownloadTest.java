@@ -1,19 +1,37 @@
 package net.sf.iwant.entry.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.X509Certificate;
 import java.util.concurrent.CountDownLatch;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import io.vertx.core.Vertx;
@@ -32,6 +50,10 @@ public class HttpDownloadTest {
 	private TestArea testArea;
 	private HttpServer httpServer;
 	private HttpServer httpsServer;
+	private KeyManager[] defaultKeyManagers;
+	private HostnameVerifier defaultHostnameVerifier;
+	private SSLSocketFactory defaultSocketFactory;
+	private TrustManager[] defaultTrustManagers;
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -39,15 +61,87 @@ public class HttpDownloadTest {
 	}
 
 	@Before
-	public void before() throws InterruptedException, URISyntaxException {
+	public void before() throws InterruptedException, URISyntaxException,
+			NoSuchAlgorithmException, KeyStoreException, KeyManagementException,
+			UnrecoverableKeyException {
 		testArea = TestArea.forTest(this);
 		createRedirectingServer();
+		disableCertificateChecks();
 	}
 
 	@After
-	public void after() throws InterruptedException {
+	public void after() throws InterruptedException, KeyManagementException,
+			NoSuchAlgorithmException {
+		enableDefaultCertificateChecks();
 		stopServer(httpServer);
 		stopServer(httpsServer);
+	}
+
+	private void disableCertificateChecks()
+			throws NoSuchAlgorithmException, KeyStoreException,
+			KeyManagementException, UnrecoverableKeyException {
+		defaultTrustManagers = findDefaultTrustManagers();
+		defaultKeyManagers = findDefaultKeyManagers();
+		defaultSocketFactory = HttpsURLConnection.getDefaultSSLSocketFactory();
+		defaultHostnameVerifier = HttpsURLConnection
+				.getDefaultHostnameVerifier();
+
+		SSLContext sc = reinitializedSslContext(null,
+				new TrustManager[] { new BlueEyedTrustManager() });
+
+		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+		HttpsURLConnection.setDefaultHostnameVerifier((name, ssls) -> true);
+	}
+
+	private static SSLContext reinitializedSslContext(KeyManager[] km,
+			TrustManager[] tm)
+			throws NoSuchAlgorithmException, KeyManagementException {
+		SSLContext sc = SSLContext.getInstance("TLS");
+		sc.init(km, tm, new java.security.SecureRandom());
+		return sc;
+	}
+
+	private static KeyManager[] findDefaultKeyManagers()
+			throws NoSuchAlgorithmException, UnrecoverableKeyException,
+			KeyStoreException {
+		KeyManagerFactory kmf = KeyManagerFactory
+				.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+		kmf.init(null, null);
+		return kmf.getKeyManagers();
+	}
+
+	private static TrustManager[] findDefaultTrustManagers()
+			throws NoSuchAlgorithmException, KeyStoreException {
+		TrustManagerFactory tmf = TrustManagerFactory
+				.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+		tmf.init((KeyStore) null);
+		return tmf.getTrustManagers();
+	}
+
+	private void enableDefaultCertificateChecks()
+			throws NoSuchAlgorithmException, KeyManagementException {
+		reinitializedSslContext(defaultKeyManagers, defaultTrustManagers);
+		HttpsURLConnection.setDefaultSSLSocketFactory(defaultSocketFactory);
+		HttpsURLConnection.setDefaultHostnameVerifier(defaultHostnameVerifier);
+	}
+
+	private static class BlueEyedTrustManager implements X509TrustManager {
+		@Override
+		public X509Certificate[] getAcceptedIssuers() {
+			return new X509Certificate[0];
+		}
+
+		@Override
+		public void checkClientTrusted(
+				java.security.cert.X509Certificate[] certs, String authType) {
+			// we trust anything
+		}
+
+		@Override
+		public void checkServerTrusted(
+				java.security.cert.X509Certificate[] certs, String authType) {
+			// we trust anything
+		}
 	}
 
 	private static void stopServer(HttpServer httpServer)
@@ -138,18 +232,39 @@ public class HttpDownloadTest {
 				"final-http-body");
 	}
 
-	@Ignore
 	@Test
 	public void directDownloadFromHttpsWorks() throws IOException {
 		contentOfUrlShallBe("https://localhost:" + HTTPS_PORT + "/final-https",
-				"hello via redirect");
+				"final-https-body");
 	}
 
-	@Ignore
 	@Test
 	public void downloadFollowsHttpToHttpsRedirect() throws IOException {
 		contentOfUrlShallBe("http://localhost:" + HTTP_PORT + "/http-to-https",
-				"hello via redirect");
+				"final-https-body");
+	}
+
+	/**
+	 * Internal test: let's make sure we don't leave security off after this
+	 * test
+	 */
+	@Test
+	public void certificateCheckRestorationWorks() throws IOException,
+			KeyManagementException, NoSuchAlgorithmException {
+		enableDefaultCertificateChecks();
+		try {
+			directDownloadFromHttpsWorks();
+			fail();
+		} catch (RuntimeException e) {
+			assertTrue(e.getCause() instanceof SSLHandshakeException);
+			Throwable cause = e;
+			while (cause.getCause() != null) {
+				cause = cause.getCause();
+			}
+			assertEquals(
+					"unable to find valid certification path to requested target",
+					cause.getMessage());
+		}
 	}
 
 }

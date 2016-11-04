@@ -1439,11 +1439,7 @@
 
 + fix: scala library as dependency to tutorial-wsdefs module
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptuser I want iwant to follow redirects so I can declare dependencies to sourceforge
++ As @buildscriptuser I want iwant to follow redirects so I can declare dependencies to sourceforge
   + test with vert.x server that responds with 301
   * hmm, maybe jdk has fixed urlconnection, it does follow redirects
   + manual test with a workspace that had problems
@@ -1455,7 +1451,12 @@
   + implement redirect follow
   + commit, it seems to work although https tests fail: they don't trust the embedded vert.x cert
   + fix: check if conn is HttpURLConnection, e.g. during tests it's FileURLConnection
-  - unignore https tests when I've found a way to _temporarily_ disable certificate checks
+  + unignore https tests when I've found a way to _temporarily_ disable certificate checks
+    * oh cm'on what hacking to get this done!
+
+#################################################################
+= In progress
+#################################################################
 
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,
