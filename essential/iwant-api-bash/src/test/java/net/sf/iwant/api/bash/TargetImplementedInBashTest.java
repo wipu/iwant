@@ -90,18 +90,17 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 	}
 
 	public void testIndexWithNoTargetsDefined() {
-		wsRootHasFile("_index.sh", "");
+		File indexSh = wsRootHasFile("_index.sh", "");
 
 		try {
-			TargetImplementedInBash.instancesFrom(ctx,
-					new File(wsRoot, "_index.sh"));
+			TargetImplementedInBash.instancesFrom(ctx, indexSh);
 			fail();
 		} catch (IwantException e) {
 			assertEquals("Script exited with non-zero status 1",
 					e.getMessage());
 		}
-		assertEquals("--- Determining targets from " + wsRoot + "/_index.sh\n"
-				+ "--- Please define targets\n" + "", err());
+		assertEquals("--- Please define targets in " + indexSh + "\n" + "",
+				err());
 	}
 
 	public void testIndexWithEmptyTargetList() {

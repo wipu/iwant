@@ -11,7 +11,7 @@ shift
 IWANT_INGR_OUT=$1
 shift
 
-iwant-log "Determining ingredients of $IWANT_INGR_SCRIPT $@"
+iwant-filelog "Determining ingredients of $IWANT_INGR_SCRIPT $@"
 
 param() {
     _ingr param "$@"

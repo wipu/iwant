@@ -9,7 +9,7 @@ HERE=$(dirname "$0")
 IWANT_TARGETS_SCRIPT=$1
 IWANT_TARGETS_OUT=$2
 
-iwant-log "Determining targets from $IWANT_TARGETS_SCRIPT"
+iwant-filelog "Determining targets from $IWANT_TARGETS_SCRIPT"
 
 target() {
     _target "$@" >> "$IWANT_TARGETS_OUT"
@@ -29,4 +29,4 @@ _target() {
 }
 
 . "$IWANT_TARGETS_SCRIPT"
-targets
+targets "$IWANT_TARGETS_SCRIPT"

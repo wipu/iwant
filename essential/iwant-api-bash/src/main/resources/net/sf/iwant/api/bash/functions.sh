@@ -1,7 +1,13 @@
 # to be sourced
 
 iwant-log() {
-    echo "--- $@" >&2
+    local MSG="--- $@"
+    echo "$MSG" >&2
+    iwant-filelog "$MSG"
+}
+
+iwant-filelog() {
+    echo "$@" >> ~/.net.sf.iwant/shell-log
 }
 
 die() {
@@ -14,7 +20,7 @@ indented() {
 }
 
 ingredients() {
-    iwant-log "No ingredients declared"
+    iwant-filelog "No ingredients declared"
 }
 
 iwant-cached() {
@@ -23,5 +29,5 @@ iwant-cached() {
 }
 
 targets() {
-    die "Please define targets"
+    die "Please define targets in $1"
 }

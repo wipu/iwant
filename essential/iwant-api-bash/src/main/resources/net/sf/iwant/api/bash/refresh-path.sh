@@ -47,7 +47,7 @@ path() {
 
 . "$IWANT_SCRIPT"
 
-iwant-log "Resolving ingredient values"
+iwant-filelog "Resolving ingredient values"
 ingredients "$@"
-iwant-log "Refreshing"
+iwant-filelog "Refreshing"
 path
