@@ -1454,6 +1454,30 @@
   + unignore https tests when I've found a way to _temporarily_ disable certificate checks
     * oh cm'on what hacking to get this done!
 
++ As @buildscriptauthor I want coverage for modules that have TestNG tests so I don't have to use junit only
+  + descript
+    + wsdef uses testng plugin
+    + a module declares it uses TestngRunner
+      + new interface TestRunner, java module may optionally define
+      + new plugin: testng, with TestngRunner
+    + write test, run, fix, rerun, cat jacoco report
+  + extract existing JacocoCoverage test running to a JunitRunner
+    + remove unnecessary taskdef of jacoco
+    * nothing more to do: after all runner is just a cli replacement for junit
+  + TestngRunner passes correct args to TestNG
+  + JacocoTargetsOfJavaModules passes as main: runner defined by javamodule or junit as default
+  + plugin deps
+  + verify descript details ok
+    + TestngRunner cannot be found => iwant-plugin classes to test-time classpath
+      + target def ctx that gives them
+        + cleanup: common super for target def ctx and s.e. def ctx
+      * not enough to put as runtime deps for jacoco report because
+        tests are run without ant runtime deps
+      + make plugin testdep of the module
+      * UGLY: modules need wishevaluationctx => targets(ctx) and
+        sideEffects(ctx) need to save it to file and modules just needs
+        to trust they have been called first :( (another story will fix)
+
 #################################################################
 = In progress
 #################################################################
@@ -1589,40 +1613,12 @@
   + eclipse settings
   - cleanup
     + scala support for iwant-tutorial-wsdefs so it compiles
-    - make iwant-tutorial-wsdefs compile in eclipse
-      - manually install scala plugin
-      - maven-style src dirs if required by the scala plugin
+    + make iwant-tutorial-wsdefs compile in eclipse
+      + manually install scala plugin
+      (- maven-style src dirs if required by the scala plugin)
+      + add dep to scala library
     - remove redundancy: 2 methods copied from AntGenerated to ScalaClasses
     - mention that srcmod.mainJava and mainScala make no difference
-
-- As @buildscriptauthor I want coverage for modules that have TestNG tests so I don't have to use junit only
-  + descript
-    + wsdef uses testng plugin
-    + a module declares it uses TestngRunner
-      + new interface TestRunner, java module may optionally define
-      + new plugin: testng, with TestngRunner
-    + write test, run, fix, rerun, cat jacoco report
-  + extract existing JacocoCoverage test running to a JunitRunner
-    + remove unnecessary taskdef of jacoco
-    * nothing more to do: after all runner is just a cli replacement for junit
-  + TestngRunner passes correct args to TestNG
-  + JacocoTargetsOfJavaModules passes as main: runner defined by javamodule or junit as default
-  + plugin deps
-  + verify descript details ok
-    + TestngRunner cannot be found => iwant-plugin classes to test-time classpath
-      + target def ctx that gives them
-        + cleanup: common super for target def ctx and s.e. def ctx
-      * not enough to put as runtime deps for jacoco report because
-        tests are run without ant runtime deps
-      + make plugin testdep of the module
-      * UGLY: modules need wishevaluationctx => targets(ctx) and
-        sideEffects(ctx) need to save it to file and modules just needs
-        to trust they have been called first :( (another story will fix)
-  - stories about more helpful and cleaner output at test failure
-  - cleanup: WorkspaceDefinitionContextImpl.commonsIoJar is Path, not Downloaded
-  - cleanup: iwantExampleWsdef module deps in alphabetical order
-  - real test
-  - polish text for descript
 
 - As @buildscriptauthor I want ws def ctx stuff in wsdef constructor, not
   separately for functions targets and sideEffects so I can instantiate
@@ -1823,6 +1819,13 @@
 #################################################################
 = Planned
 #################################################################
+
+- more TestNG tasks
+  - stories about more helpful and cleaner output at test failure
+  - cleanup: WorkspaceDefinitionContextImpl.commonsIoJar is Path, not Downloaded
+  - cleanup: iwantExampleWsdef module deps in alphabetical order
+  - real test
+  - polish text for descript
 
 - As @buildscriptuser I want iwant to first test a module whose sources I have touched most recently so I get test failure as fast as possible
   * more generic: refresh ordering depends on ingredient timestamps
