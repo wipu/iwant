@@ -1566,6 +1566,7 @@
   + log index.sh and ingredient parsing only to file, not stderr
     + separate log for this: ~/.net.sf.net/shell-log
     + also mention _index.sh path in "please define targets" error message
+    + replace more stderr logs with filelogging
   - descript multiple instances of target
   - clean junit tests: take file from wsRootHasFile(...index.sh...) and use in assertions
   - cleanup of target creation

@@ -18,7 +18,7 @@ target() {
 _target() {
     local NAME=$(indented "$1")
     shift
-    iwant-log "  $NAME"
+    iwant-filelog "  $NAME"
     echo ":$NAME"
     while [ $# -gt 0 ]; do
 	local ARG=$(indented "$1")

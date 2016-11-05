@@ -22,7 +22,7 @@ param() {
 _set-var-to-value() {
     local NAME=$1
     local VALUE=$2
-    iwant-log "Resolved ingredient: $NAME=$VALUE"
+    iwant-filelog "Resolved ingredient: $NAME=$VALUE"
     export $NAME="$VALUE"
 }
 
