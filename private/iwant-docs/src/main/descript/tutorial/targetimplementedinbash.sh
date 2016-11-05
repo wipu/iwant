@@ -25,6 +25,18 @@ cmd 'echo "source-ingredient-content" > source-ingredient'
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
 cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/target-with-ingredients/as-path | xargs -r cat"
 
+p "parameterized target"
+
+target-with-parameters | edit-script "target-with-parameters.sh" "target-with-parameters-v0"
+
+p "name, script name, then arguments for ingredients"
+
+index-sh-parameters | edit-script "_index.sh" "index-v-parameters"
+
+cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/target-with-parameters-v1/as-path | xargs -r cat"
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/target-with-parameters-v2/as-path | xargs -r cat"
+
 }
 
 # hello
@@ -69,6 +81,35 @@ path() {
     cat "$INGR1" >> "$IWANT_DEST"
     echo "--- $INGR2:" >> "$IWANT_DEST"
     cat "$INGR2" >> "$IWANT_DEST"
+}
+
+EOF
+}
+
+# target with parameters
+
+index-sh-parameters() {
+    cat <<\EOF
+targets() {
+    target hello-from-bash
+    target target-with-ingredients
+    target target-with-parameters-v1 target-with-parameters.sh 1 one
+    target target-with-parameters-v2 target-with-parameters.sh 2 two
+}
+EOF
+}
+
+target-with-parameters() {
+    cat <<\EOF
+ingredients() {
+    param PARAM1 "$1"
+    param PARAM2 "$2"
+}
+
+path() {
+    echo "Target derived from parameters:" > "$IWANT_DEST"
+    echo "--- PARAM1: $PARAM1" >> "$IWANT_DEST"
+    echo "--- PARAM2: $PARAM2" >> "$IWANT_DEST"
 }
 
 EOF
