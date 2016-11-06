@@ -1,6 +1,5 @@
 ingredients() {
-    PARAM=$1
-    param PARAM "$PARAM"
+    param PARAM "$1"
     source-dep INGR1 "src-ingr"
 }
 

@@ -1568,7 +1568,7 @@
     + also mention _index.sh path in "please define targets" error message
     + replace more stderr logs with filelogging
   + descript multiple instances of target (target with parameters)
-  - simplify params in junit tests: don't bother naming function params, do it like in the
+  + simplify params in junit tests: don't bother naming function params, do it like in the
     descript example, naming only once
   - make descript examples less abstract, do something at least semi-useful
     at least add such an example after the artificial examples
