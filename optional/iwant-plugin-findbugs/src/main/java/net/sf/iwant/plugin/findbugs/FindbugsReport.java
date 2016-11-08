@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
+import net.sf.iwant.api.antrunner.AntRunner;
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
@@ -16,7 +17,6 @@ import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.core.ant.AntGenerated;
 
 public class FindbugsReport extends TargetBase {
 
@@ -164,7 +164,7 @@ public class FindbugsReport extends TargetBase {
 		cachedAnts.add(ctx.cached(antJar));
 		cachedAnts.add(ctx.cached(antLauncherJar));
 
-		AntGenerated.runAnt(cachedAnts, buildXml);
+		AntRunner.runAnt(cachedAnts, buildXml);
 	}
 
 	private String antScript(TargetEvaluationContext ctx) {

@@ -195,10 +195,14 @@ public class IwantModules extends JavaModules {
 					iwantEntry)
 			.testDeps(iwantApimocks, iwantTestarea, junit).end();
 
+	private JavaSrcModule iwantApiAntrunner = essentialModule("api-antrunner")
+			.noMainResources().noTestJava().noTestResources()
+			.mainDeps(iwantEntry).end();
+
 	private JavaSrcModule iwantApiJavamodules = essentialModule(
 			"api-javamodules")
-					.mainDeps(iwantApiCore, iwantApiModel, iwantCoreDownload,
-							iwantCoreservices, iwantEntry)
+					.mainDeps(iwantApiAntrunner, iwantApiCore, iwantApiModel,
+							iwantCoreDownload, iwantCoreservices, iwantEntry)
 					.testDeps(iwantApimocks, iwantTestarea, guava, guavaTestlib,
 							junit)
 					.end();
@@ -244,17 +248,17 @@ public class IwantModules extends JavaModules {
 			.testDeps(iwantApimocks, iwantApiCore, iwantTestarea, junit).end();
 
 	private JavaSrcModule iwantCoreAnt = essentialModule("core-ant")
-			.mainDeps(iwantApiCore, iwantApiModel, iwantCoreservices,
-					iwantEntry)
+			.mainDeps(iwantApiAntrunner, iwantApiCore, iwantApiModel,
+					iwantCoreservices, iwantEntry)
 			.testDeps(iwantApimocks, iwantCoreDownload, iwantEmbedded,
 					iwantTestarea, junit)
 			.end();
 
 	private JavaSrcModule iwantDeprecatedEmma = essentialModule(
 			"deprecated-emma")
-					.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
-							iwantCoreAnt, iwantCoreservices, iwantEntry,
-							iwantEntry3)
+					.mainDeps(iwantApiAntrunner, iwantApiCore,
+							iwantApiJavamodules, iwantApiModel, iwantCoreAnt,
+							iwantCoreservices, iwantEntry, iwantEntry3)
 					.testDeps(iwantApimocks, iwantCoreDownload, iwantEmbedded,
 							junit)
 					.end();
@@ -299,9 +303,9 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantPluginFindbugs = optionalModule(
 			"plugin-findbugs")
 					.testResources("src/test/resources")
-					.mainDeps(commonsIo, iwantApiCore, iwantApiJavamodules,
-							iwantApiModel, iwantCoreAnt, iwantCoreDownload,
-							iwantEntry3, iwantPluginAnt)
+					.mainDeps(commonsIo, iwantApiAntrunner, iwantApiCore,
+							iwantApiJavamodules, iwantApiModel, iwantCoreAnt,
+							iwantCoreDownload, iwantEntry3, iwantPluginAnt)
 					.testDeps(junit, iwantApimocks, iwantEntry, iwantEmbedded,
 							iwantTestarea)
 					.end();
@@ -312,7 +316,7 @@ public class IwantModules extends JavaModules {
 			.testDeps(junit).end();
 
 	private JavaSrcModule iwantPluginJacoco = optionalModule("plugin-jacoco")
-			.mainDeps(commonsIo, iwantApiCore, iwantApiModel,
+			.mainDeps(commonsIo, iwantApiAntrunner, iwantApiCore, iwantApiModel,
 					iwantApiJavamodules, iwantCoreAnt, iwantCoreDownload,
 					iwantEntry3, iwantPluginAnt)
 			.testDeps(junit, iwantApimocks, iwantEntry, iwantEmbedded,

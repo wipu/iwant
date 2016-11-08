@@ -9,10 +9,10 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
+import net.sf.iwant.api.antrunner.AntRunner;
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.core.ant.AntGenerated;
 
 public class JacocoReport extends TargetBase {
 
@@ -143,7 +143,7 @@ public class JacocoReport extends TargetBase {
 		for (Path antJar : antJars) {
 			cachedAntJars.add(ctx.cached(antJar));
 		}
-		AntGenerated.runAnt(cachedAntJars, antScript);
+		AntRunner.runAnt(cachedAntJars, antScript);
 	}
 
 	private String antScript(TargetEvaluationContext ctx) {

@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.sf.iwant.api.antrunner.AntRunner;
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.core.ant.AntGenerated;
 import net.sf.iwant.coreservices.FileUtil;
 import net.sf.iwant.entry.Iwant;
 
@@ -148,7 +148,7 @@ public class EmmaCoverage extends TargetBase {
 		for (Path antJar : antJars) {
 			cachedAntJars.add(ctx.cached(antJar));
 		}
-		AntGenerated.runAnt(cachedAntJars, scriptFile);
+		AntRunner.runAnt(cachedAntJars, scriptFile);
 	}
 
 	private String antScriptContent(TargetEvaluationContext ctx)
