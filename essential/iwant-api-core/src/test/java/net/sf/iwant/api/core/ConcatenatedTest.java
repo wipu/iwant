@@ -38,7 +38,7 @@ public class ConcatenatedTest extends IwantTestCase {
 		Concatenated c = Concatenated.named("empty").end();
 		c.path(ctx);
 
-		assertEquals("", contentOf(new File(cacheDir, "empty")));
+		assertEquals("", contentOf(new File(cached, "empty")));
 	}
 
 	public void testPathToConcatenationOfAllKinds() throws Exception {
@@ -55,8 +55,8 @@ public class ConcatenatedTest extends IwantTestCase {
 
 		assertEquals(
 				"AB\n" + slashed(wsRoot) + "/src:src-content\n"
-						+ slashed(cacheDir) + "/target:target-content\n",
-				contentOf(new File(cacheDir, "all")));
+						+ slashed(cached) + "/target:target-content\n",
+				contentOf(new File(cached, "all")));
 	}
 
 	/**

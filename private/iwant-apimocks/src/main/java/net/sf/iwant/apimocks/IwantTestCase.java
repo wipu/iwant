@@ -18,10 +18,6 @@ public abstract class IwantTestCase extends TestCase {
 	private IwantMockEnvironment e;
 	private TestArea testArea;
 	protected File wsRoot;
-	/**
-	 * TODO only one name
-	 */
-	protected File cacheDir;
 	protected File cached;
 	protected TargetEvaluationContextMock ctx;
 	/**
@@ -41,8 +37,7 @@ public abstract class IwantTestCase extends TestCase {
 		e = IwantMockEnvironment.forTest(this).end();
 		testArea = e.testArea();
 		wsRoot = e.wsRoot();
-		cacheDir = e.cacheDir();
-		cached = cacheDir;
+		cached = e.cacheDir();
 		ctx = e.ctx();
 		evCtx = ctx;
 		caches = e.caches();

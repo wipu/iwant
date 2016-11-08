@@ -25,9 +25,8 @@ public class AntGeneratedTest extends IwantTestCase {
 	}
 
 	private Path downloaded(Path downloaded) throws IOException {
-		return new ExternalSource(
-				AsEmbeddedIwantUser.with().workspaceAt(wsRoot).cacheAt(cacheDir)
-						.iwant().target((Target) downloaded).asPath());
+		return new ExternalSource(AsEmbeddedIwantUser.with().workspaceAt(wsRoot)
+				.cacheAt(cached).iwant().target((Target) downloaded).asPath());
 	}
 
 	private Path antJar() throws IOException {
@@ -127,7 +126,7 @@ public class AntGeneratedTest extends IwantTestCase {
 		antGen.path(ctx);
 
 		assertEquals("", out());
-		assertContains(err(), "((" + cacheDir + "/ant))");
+		assertContains(err(), "((" + cached + "/ant))");
 	}
 
 	public void testFileGeneratingScriptWithIngredients() throws Exception {
@@ -160,7 +159,7 @@ public class AntGeneratedTest extends IwantTestCase {
 		assertContains(err(), "[copy]");
 
 		assertEquals("ingredient1 content appended with ingredient2 content",
-				contentOf(new File(cacheDir, "ant")));
+				contentOf(new File(cached, "ant")));
 	}
 
 }

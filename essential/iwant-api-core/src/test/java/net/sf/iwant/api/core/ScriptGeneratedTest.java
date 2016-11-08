@@ -74,7 +74,7 @@ public class ScriptGeneratedTest extends IwantTestCase {
 
 		assertEquals("", out());
 		assertEquals("$0=" + unixPathOf(tmpDir) + "/script\n" + "$1="
-				+ unixPathOf(cacheDir) + "/sg\ncwd=" + unixPathOf(tmpDir) + "\n"
+				+ unixPathOf(cached) + "/sg\ncwd=" + unixPathOf(tmpDir) + "\n"
 				+ "stderr\n", err());
 
 		assertEquals("hello from env demo\n", contentOfCached("sg"));
@@ -126,7 +126,7 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		assertEquals(mockCygwinBashExe, env.executable);
 		assertEquals(
 				"[only-slashes:" + slashed(wrapper) + ", mock-unix-path:"
-						+ slashed(new File(cacheDir, "sg")) + "]",
+						+ slashed(new File(cached, "sg")) + "]",
 				Arrays.toString(env.args));
 
 		assertEquals(
@@ -152,8 +152,7 @@ public class ScriptGeneratedTest extends IwantTestCase {
 
 		assertEquals(tmpDir, env.dir);
 		assertEquals(new File(tmpDir, "script"), env.executable);
-		assertEquals(
-				"[mock-unix-path:" + slashed(new File(cacheDir, "sg")) + "]",
+		assertEquals("[mock-unix-path:" + slashed(new File(cached, "sg")) + "]",
 				Arrays.toString(env.args));
 	}
 

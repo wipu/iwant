@@ -44,7 +44,7 @@ public class JarTest extends IwantTestCase {
 				.classes(new ExternalSource(classes)).end();
 		jar.path(ctx);
 
-		File cachedJar = new File(cacheDir, "test.jar");
+		File cachedJar = new File(cached, "test.jar");
 		assertTrue(cachedJar.exists());
 		assertJarContainsTestStuff(cachedJar);
 	}
@@ -58,7 +58,7 @@ public class JarTest extends IwantTestCase {
 				.classes(new ExternalSource(classes)).end();
 		jar.path(ctx);
 
-		File cachedJar = new File(cacheDir, "test.jar");
+		File cachedJar = new File(cached, "test.jar");
 		assertTrue(cachedJar.exists());
 		assertJarContainsTestStuff(cachedJar);
 	}

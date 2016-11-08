@@ -21,9 +21,8 @@ import net.sf.iwant.entry.Iwant;
 public class EmmaInstrumentationTest extends IwantTestCase {
 
 	private Path downloaded(Path downloaded) throws IOException {
-		return new ExternalSource(
-				AsEmbeddedIwantUser.with().workspaceAt(wsRoot).cacheAt(cacheDir)
-						.iwant().target((Target) downloaded).asPath());
+		return new ExternalSource(AsEmbeddedIwantUser.with().workspaceAt(wsRoot)
+				.cacheAt(cached).iwant().target((Target) downloaded).asPath());
 	}
 
 	private Path emma() throws IOException {
@@ -113,7 +112,7 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 
 		instr.path(ctx);
 
-		File instrDir = new File(cacheDir, "instrtest-classes.emma-instr");
+		File instrDir = new File(cached, "instrtest-classes.emma-instr");
 
 		assertEquals(
 				"metadata.out.file=" + instrDir + "/emma.em\n"
@@ -155,7 +154,7 @@ public class EmmaInstrumentationTest extends IwantTestCase {
 				.filter(Source.underWsroot(filterFileString)).using(emma());
 
 		instr.path(ctx);
-		File instrDir = new File(cacheDir, "classes.emma-instr");
+		File instrDir = new File(cached, "classes.emma-instr");
 
 		assertFalse(new File(instrDir, "emma.em").exists());
 		assertTrue(new File(instrDir,

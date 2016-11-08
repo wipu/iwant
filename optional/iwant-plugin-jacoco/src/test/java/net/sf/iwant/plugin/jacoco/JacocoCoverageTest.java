@@ -128,7 +128,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				.mainClassAndArguments("instrtest.Hello").end();
 		coverage.path(ctx);
 
-		File cachedExec = new File(cacheDir, "coverage.exec");
+		File cachedExec = new File(cached, "coverage.exec");
 		assertTrue(cachedExec.exists());
 		assertTrue(FileUtils.readFileToByteArray(cachedExec).length > 0);
 	}
@@ -152,7 +152,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				.end();
 		coverage.path(ctx);
 
-		assertTrue(new File(cacheDir, "coverage.exec").exists());
+		assertTrue(new File(cached, "coverage.exec").exists());
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				.mainClassAndArguments("instrtest.ArgChecker", args).end();
 		coverage.path(ctx);
 
-		assertTrue(new File(cacheDir, "coverage.exec").exists());
+		assertTrue(new File(cached, "coverage.exec").exists());
 	}
 
 	public void testItFailsIfMainClassMakeNonZeroExit() throws Exception {
@@ -331,7 +331,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				.mainClassAndArguments("instrtest.EnvChecker").env(env).end();
 		coverage.path(ctx);
 
-		assertTrue(new File(cacheDir, "coverage.exec").exists());
+		assertTrue(new File(cached, "coverage.exec").exists());
 	}
 
 	public void testEnvIsUsedAsIngredientsAndParameters() throws IOException {

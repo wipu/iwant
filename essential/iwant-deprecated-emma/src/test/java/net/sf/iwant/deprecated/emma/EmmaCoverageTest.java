@@ -21,9 +21,8 @@ import net.sf.iwant.entry.Iwant;
 public class EmmaCoverageTest extends IwantTestCase {
 
 	private Path downloaded(Path downloaded) throws IOException {
-		return new ExternalSource(
-				AsEmbeddedIwantUser.with().workspaceAt(wsRoot).cacheAt(cacheDir)
-						.iwant().target((Target) downloaded).asPath());
+		return new ExternalSource(AsEmbeddedIwantUser.with().workspaceAt(wsRoot)
+				.cacheAt(cached).iwant().target((Target) downloaded).asPath());
 	}
 
 	private Path emma() throws IOException {
@@ -179,7 +178,7 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.mainClassAndArguments("Hello").instrumentations(instr).end();
 		coverage.path(ctx);
 
-		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+		assertTrue(new File(cached, "instrtest-emma-coverage/coverage.ec")
 				.exists());
 	}
 
@@ -197,7 +196,7 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.end();
 		coverage.path(ctx);
 
-		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+		assertTrue(new File(cached, "instrtest-emma-coverage/coverage.ec")
 				.exists());
 	}
 
@@ -238,7 +237,7 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.mainClassAndArguments("Caller").instrumentations(instr).end();
 		coverage.path(ctx);
 
-		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+		assertTrue(new File(cached, "instrtest-emma-coverage/coverage.ec")
 				.exists());
 	}
 
@@ -257,7 +256,7 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.instrumentations(instr).end();
 		coverage.path(ctx);
 
-		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+		assertTrue(new File(cached, "instrtest-emma-coverage/coverage.ec")
 				.exists());
 
 		assertTrue(err().contains("args:[arg1, arg2]\n"));
@@ -282,7 +281,7 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.instrumentations(instr).end();
 		coverage.path(ctx);
 
-		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+		assertTrue(new File(cached, "instrtest-emma-coverage/coverage.ec")
 				.exists());
 
 		assertTrue(err().contains("args:[arg1 from file, arg2 from file]\n"));
@@ -303,7 +302,7 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.nonInstrumentedClasses(junit()).end();
 		coverage.path(ctx);
 
-		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+		assertTrue(new File(cached, "instrtest-emma-coverage/coverage.ec")
 				.exists());
 
 		assertTrue(err().contains("found class org.junit.runner.JUnitCore\n"));
@@ -349,7 +348,7 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.mainClassAndArguments("Impl").instrumentations(instr).end();
 		coverage.path(ctx);
 
-		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+		assertTrue(new File(cached, "instrtest-emma-coverage/coverage.ec")
 				.exists());
 	}
 
@@ -419,7 +418,7 @@ public class EmmaCoverageTest extends IwantTestCase {
 				.nonInstrumentedClasses(testClasses, junit()).end();
 		coverage.path(ctx);
 
-		assertTrue(new File(cacheDir, "instrtest-emma-coverage/coverage.ec")
+		assertTrue(new File(cached, "instrtest-emma-coverage/coverage.ec")
 				.exists());
 
 		assertTrue(err().contains("A called by ATest\n"));

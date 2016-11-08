@@ -96,8 +96,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 		assertDotClasspathContains("as-someone/i-have/wsdefdef",
 				"<classpathentry kind=\"src\" path=\"src/main/java\"/>");
 		assertDotClasspathContains("as-someone/i-have/wsdefdef",
-				"<classpathentry kind=\"lib\" path=\"" + slashed(cacheDir)
-						+ "/iwant-classes\" sourcepath=\"" + slashed(cacheDir)
+				"<classpathentry kind=\"lib\" path=\"" + slashed(cached)
+						+ "/iwant-classes\" sourcepath=\"" + slashed(cached)
 						+ "/combined-iwant-sources\"/>");
 
 		assertDotClasspathContains("utils/wsdef-tools",
@@ -106,8 +106,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 		assertDotClasspathContains("as-someone/i-have/wsdef",
 				"<classpathentry kind=\"src\" path=\"src/main/java\"/>");
 		assertDotClasspathContains("as-someone/i-have/wsdef",
-				"<classpathentry kind=\"lib\" path=\"" + slashed(cacheDir)
-						+ "/iwant-classes\" sourcepath=\"" + slashed(cacheDir)
+				"<classpathentry kind=\"lib\" path=\"" + slashed(cached)
+						+ "/iwant-classes\" sourcepath=\"" + slashed(cached)
 						+ "/combined-iwant-sources\"/>");
 		assertDotClasspathContains("as-someone/i-have/wsdef",
 				"<classpathentry combineaccessrules=\"false\""
@@ -156,11 +156,11 @@ public class EclipseSettingsTest extends IwantTestCase {
 				"<classpathentry kind=\"src\" path=\"tests2\"/>");
 
 		assertDotClasspathContains("mod1",
-				"<classpathentry kind=\"lib\" path=\"" + slashed(cacheDir)
-						+ "/test-tools-1\" sourcepath=\"" + slashed(cacheDir)
+				"<classpathentry kind=\"lib\" path=\"" + slashed(cached)
+						+ "/test-tools-1\" sourcepath=\"" + slashed(cached)
 						+ "/test-tools-1-src\"/>");
 		assertDotClasspathContains("mod2",
-				"<classpathentry kind=\"lib\" path=\"" + slashed(cacheDir)
+				"<classpathentry kind=\"lib\" path=\"" + slashed(cached)
 						+ "/test-tools-2-srcless\"/>");
 	}
 
@@ -226,8 +226,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 				seCtx.targetsWantedAsPath().get(0).contentDescriptor());
 
 		assertDotClasspathContains("mod",
-				"<classpathentry kind=\"lib\" path=\"" + slashed(cacheDir)
-						+ "/util\" sourcepath=\"" + slashed(cacheDir)
+				"<classpathentry kind=\"lib\" path=\"" + slashed(cached)
+						+ "/util\" sourcepath=\"" + slashed(cached)
 						+ "/util-src\"/>");
 		assertEquals("WARNING: Refresh of eclipse settings references failed:\n"
 				+ "java.lang.RuntimeException: compilation of util classes failed\n"
@@ -330,8 +330,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		assertDotClasspathContains("mod",
-				"<classpathentry kind=\"lib\" path=\"" + slashed(cacheDir)
-						+ "/rtBinTool\" sourcepath=\"" + slashed(cacheDir)
+				"<classpathentry kind=\"lib\" path=\"" + slashed(cached)
+						+ "/rtBinTool\" sourcepath=\"" + slashed(cached)
 						+ "/rtBinTool-src\"/>");
 		assertDotClasspathContains("mod",
 				"<classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/rtSrcTool\"/>");

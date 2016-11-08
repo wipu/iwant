@@ -26,9 +26,8 @@ public abstract class JacocoTestBase extends IwantTestCase {
 	}
 
 	private Path downloaded(Path downloaded) throws IOException {
-		return new ExternalSource(
-				AsEmbeddedIwantUser.with().workspaceAt(wsRoot).cacheAt(cacheDir)
-						.iwant().target((Target) downloaded).asPath());
+		return new ExternalSource(AsEmbeddedIwantUser.with().workspaceAt(wsRoot)
+				.cacheAt(cached).iwant().target((Target) downloaded).asPath());
 	}
 
 	protected static JacocoDistribution jacoco() {
