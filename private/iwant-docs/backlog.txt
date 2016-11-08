@@ -1580,7 +1580,7 @@
     + friendly error message when _index.sh is not found
   (- clean junit tests: take file from wsRootHasFile(...index.sh...) and use in assertions
      * not valid anymore: index.sh is a Path now)
-  - utilize friendly error of "_index.sh not found" in descript
+  + utilize friendly error of "_index.sh not found" in descript
   - make descript examples less abstract, do something at least semi-useful
     at least add such an example after the artificial examples
   - explanative text to the descript chapter

@@ -8,13 +8,22 @@ cmd "find as-iwant-tutorial-developer/i-have/wsdef/src"
 
 wsdef-edit targetimplementedinbash
 
-cmd "mkdir as-iwant-tutorial-developer/i-have/wsdef/src/main/bash"
+p "Let's see where we need to define the index."
 
+cmde "1" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
+
+p "We create an index with one target."
+
+cmd "mkdir as-iwant-tutorial-developer/i-have/wsdef/src/main/bash"
 index-sh-hello | edit-script "_index.sh" "index-v-hello"
+
+p "We define the target in a script named after the target name."
+
 hello-from-bash | edit-script "hello-from-bash.sh" "hello-v0"
 
-cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
+p "Now we can evaluate our first target defined in bash."
 
+cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
 cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/hello-from-bash/as-path | xargs -r cat"
 
 p "target with ingredients"
