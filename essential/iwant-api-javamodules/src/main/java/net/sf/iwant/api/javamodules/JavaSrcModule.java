@@ -213,6 +213,11 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
+		/**
+		 * At the moment there is no difference between calling this and
+		 * mainJava, but it's recommended to declare the intent, if you use
+		 * separate source directories.
+		 */
 		public IwantSrcModuleSpex mainScala(String mainScala) {
 			return mainJava(mainScala);
 		}

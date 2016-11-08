@@ -1624,7 +1624,7 @@
       + done features
       - only scala => only scala artifact
   + eclipse settings
-  - cleanup
+  + cleanup
     + scala support for iwant-tutorial-wsdefs so it compiles
     + make iwant-tutorial-wsdefs compile in eclipse
       + manually install scala plugin
@@ -1633,7 +1633,8 @@
     + remove redundancy: 2 methods copied from AntGenerated to ScalaClasses
       + move to dedicated iwant-api-antrunner, use everywhere
       + fix iwant2 and mock-wsroot (bootstrapping)
-    - mention that srcmod.mainJava and mainScala make no difference
+    + mention that srcmod.mainJava and mainScala make no difference
+      + just do it in javadoc of mainScala
 
 - As @buildscriptauthor I want ws def ctx stuff in wsdef constructor, not
   separately for functions targets and sideEffects so I can instantiate
