@@ -6,8 +6,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.sf.iwant.api.core.HelloTarget;
+import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.wsdef.TargetDefinitionContext;
 import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.entry.Iwant.IwantException;
 
@@ -15,7 +17,16 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 
 	@Override
 	protected void moreSetUp() throws Exception {
+		ctx = new IKnowWhatIAmDoingContextMock(ctx);
 		ctx.hasWsRoot(wsRoot);
+	}
+
+	private IKnowWhatIAmDoingContextMock ctxMock() {
+		return (IKnowWhatIAmDoingContextMock) ctx;
+	}
+
+	private TargetDefinitionContext tdCtx() {
+		return ctxMock();
 	}
 
 	private void prepareContext(TargetImplementedInBash target,
@@ -93,7 +104,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		File indexSh = wsRootHasFile("_index.sh", "");
 
 		try {
-			TargetImplementedInBash.instancesFrom(ctx, indexSh);
+			TargetImplementedInBash.instancesFromIndexSh(tdCtx(),
+					Source.underWsroot("_index.sh"));
 			fail();
 		} catch (IwantException e) {
 			assertEquals("Script exited with non-zero status 1",
@@ -107,7 +119,7 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		wsRootHasFile("_index.sh", "targets() { true; }");
 
 		List<TargetImplementedInBash> targets = TargetImplementedInBash
-				.instancesFrom(ctx, new File(wsRoot, "_index.sh"));
+				.instancesFromIndexSh(tdCtx(), Source.underWsroot("_index.sh"));
 
 		assertEquals(0, targets.size());
 	}
@@ -116,7 +128,7 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		wsRootHasFile("_index.sh", "targets() { target simple; }");
 
 		List<TargetImplementedInBash> targets = TargetImplementedInBash
-				.instancesFrom(ctx, new File(wsRoot, "_index.sh"));
+				.instancesFromIndexSh(tdCtx(), Source.underWsroot("_index.sh"));
 
 		assertEquals(1, targets.size());
 		assertEquals("simple", targets.get(0).name());
@@ -128,7 +140,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		wsRootHasFile("a/b/_index.sh", "targets() { target simple2; }");
 
 		List<TargetImplementedInBash> targets = TargetImplementedInBash
-				.instancesFrom(ctx, new File(wsRoot, "a/b/_index.sh"));
+				.instancesFromIndexSh(tdCtx(),
+						Source.underWsroot("a/b/_index.sh"));
 
 		assertEquals(1, targets.size());
 		assertEquals("simple2", targets.get(0).name());
@@ -141,7 +154,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 				"targets() { target t0 t0.sh t0a0; target t1 t1.sh t1a0 t1a1; }");
 
 		List<TargetImplementedInBash> targets = TargetImplementedInBash
-				.instancesFrom(ctx, new File(wsRoot, "scripts/_index.sh"));
+				.instancesFromIndexSh(tdCtx(),
+						Source.underWsroot("scripts/_index.sh"));
 
 		assertEquals(2, targets.size());
 
@@ -176,6 +190,34 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 
 		assertEquals("using " + cached + "/ingr\n" + "ingr content",
 				contentOfCached("user-of-ingr-target"));
+	}
+
+	public void testNonexistentIndexShCausesFriendlyWarning() {
+		try {
+			TargetImplementedInBash.instancesFromIndexSh(tdCtx(),
+					Source.underWsroot("_index.sh"));
+			fail();
+		} catch (IwantException e) {
+			assertEquals("Please define targets in " + wsRoot + "/_index.sh",
+					e.getMessage());
+		}
+
+	}
+
+	public void testNonexistentDefaultIndexShCausesFriendlyWarningWithCorrectLocation() {
+		ctxMock().hasWsdefModule(JavaSrcModule.with().name("wsdef")
+				.locationUnderWsRoot("wsdef-location").end());
+
+		try {
+			TargetImplementedInBash.instancesFromDefaultIndexSh(tdCtx());
+			fail();
+		} catch (IwantException e) {
+			assertEquals(
+					"Please define targets in " + wsRoot
+							+ "/wsdef-location/src/main/bash/_index.sh",
+					e.getMessage());
+		}
+
 	}
 
 }

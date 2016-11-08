@@ -10,11 +10,9 @@ import net.sf.iwant.api.bash.TargetImplementedInBash;
 import net.sf.iwant.api.javamodules.JavaModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Caches;
-import net.sf.iwant.api.model.IngredientDefinitionContext;
 import net.sf.iwant.api.model.IwantCoreServices;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
-import net.sf.iwant.api.model.SideEffectContext;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
@@ -170,10 +168,7 @@ public class WishEvaluator {
 		wr.close();
 	}
 
-	private class Ctx implements TargetEvaluationContext, SideEffectContext,
-			SideEffectDefinitionContext, TargetDefinitionContext,
-			WorkspaceContext, IngredientDefinitionContext,
-			IKnowWhatIAmDoingContext {
+	private class Ctx implements IKnowWhatIAmDoingContext {
 
 		private final IwantCoreServices iwantCoreServices = new IwantCoreServicesImpl(
 				iwant);

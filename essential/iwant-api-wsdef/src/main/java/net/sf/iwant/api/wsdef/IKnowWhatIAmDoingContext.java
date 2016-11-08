@@ -1,5 +1,8 @@
 package net.sf.iwant.api.wsdef;
 
+import net.sf.iwant.api.model.IngredientDefinitionContext;
+import net.sf.iwant.api.model.SideEffectContext;
+import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.model.WsRootProvider;
 
 /**
@@ -7,7 +10,9 @@ import net.sf.iwant.api.model.WsRootProvider;
  * you are able to access. You need to know how to use it without breaking
  * contracts.
  */
-public interface IKnowWhatIAmDoingContext extends WsRootProvider {
+public interface IKnowWhatIAmDoingContext extends TargetEvaluationContext,
+		SideEffectContext, SideEffectDefinitionContext, TargetDefinitionContext,
+		WorkspaceContext, IngredientDefinitionContext, WsRootProvider {
 
 	// nothing to add
 

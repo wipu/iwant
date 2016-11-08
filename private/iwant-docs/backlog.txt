@@ -1570,17 +1570,20 @@
   + descript multiple instances of target (target with parameters)
   + simplify params in junit tests: don't bother naming function params, do it like in the
     descript example, naming only once
+  + cleanup of target creation
+    + remove need for cast
+      + is it possible to pass targetdefinitionctx? maybe split targimplinbash into dedicated module?
+        + split modules anyway, it's never harmful
+      + create mock for iknowhatimdoingctx (in this module for now)
+    + make it possible to use defaults or override:
+      + path to _index.sh
+    + friendly error message when _index.sh is not found
+  (- clean junit tests: take file from wsRootHasFile(...index.sh...) and use in assertions
+     * not valid anymore: index.sh is a Path now)
+  - utilize friendly error of "_index.sh not found" in descript
   - make descript examples less abstract, do something at least semi-useful
     at least add such an example after the artificial examples
   - explanative text to the descript chapter
-  - clean junit tests: take file from wsRootHasFile(...index.sh...) and use in assertions
-  - cleanup of target creation
-    - remove need for cast
-      - is it possible to pass targetevaluationctx? maybe split targimplinbash into dedicated module?
-        + split modules anyway, it's never harmful
-    - make it possible to use defaults or override:
-      - path src/main/bash
-      - name _index.sh
   - naming: functions in target.sh: input and output?
   - is needed: use ScriptGenerated in a way we get cygwin support
   - corner case tests needed

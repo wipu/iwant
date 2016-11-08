@@ -17,9 +17,10 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.model.TemporaryDirectoryProvider;
-import net.sf.iwant.api.model.WsRootProvider;
+import net.sf.iwant.api.wsdef.IKnowWhatIAmDoingContext;
+import net.sf.iwant.api.wsdef.TargetDefinitionContext;
 import net.sf.iwant.coreservices.FileUtil;
+import net.sf.iwant.entry.Iwant;
 
 public class TargetImplementedInBash extends TargetBase {
 
@@ -35,27 +36,39 @@ public class TargetImplementedInBash extends TargetBase {
 		this.arguments = arguments;
 	}
 
-	public static List<TargetImplementedInBash> instancesFrom(
-			WsRootProvider ctx, File indexSh) {
+	public static List<TargetImplementedInBash> instancesFromDefaultIndexSh(
+			TargetDefinitionContext ctx) {
+		String wsdef = ctx.wsdefJavaModule().locationUnderWsRoot();
+		return instancesFromIndexSh(ctx,
+				Source.underWsroot(wsdef + "/src/main/bash/_index.sh"));
+	}
+
+	public static List<TargetImplementedInBash> instancesFromIndexSh(
+			TargetDefinitionContext ctx, Path indexSh) {
 		try {
-			return tryInstancesFrom(ctx, indexSh);
+			return tryInstancesFrom((IKnowWhatIAmDoingContext) ctx, indexSh);
 		} catch (IOException | InterruptedException e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
 	private static List<TargetImplementedInBash> tryInstancesFrom(
-			WsRootProvider ctx, File indexSh)
+			IKnowWhatIAmDoingContext ctx, Path indexSh)
 			throws IOException, InterruptedException {
 		List<TargetImplementedInBash> instances = new ArrayList<>();
-		TemporaryDirectoryProvider tdp = (TemporaryDirectoryProvider) ctx;
-		File tmpDir = tdp.freshTemporaryDirectory();
+		File tmpDir = ctx.freshTemporaryDirectory();
 		File tmpFile = new File(tmpDir, "targets");
 		File getTargetsSh = internalScriptReadyToExecute("get-targets.sh");
 
+		File indexShFile = ctx.cached(indexSh);
+		if (!indexShFile.exists()) {
+			throw new Iwant.IwantException(
+					"Please define targets in " + indexShFile);
+		}
+
 		List<String> cmdLine = new ArrayList<>();
 		cmdLine.add(getTargetsSh.getCanonicalPath());
-		cmdLine.add(indexSh.getCanonicalPath());
+		cmdLine.add(indexShFile.getCanonicalPath());
 		cmdLine.add(tmpFile.getCanonicalPath());
 
 		ScriptGenerated.execute(tmpDir, cmdLine);
@@ -75,7 +88,7 @@ public class TargetImplementedInBash extends TargetBase {
 						scriptAndArgs.length);
 			}
 			String srcDirRelpath = wsRootRelativePath(ctx.wsRoot(),
-					indexSh.getParentFile());
+					indexShFile.getParentFile());
 			Source scriptSrc = Source.underWsroot(srcDirRelpath + script);
 			TargetImplementedInBash target = new TargetImplementedInBash(name,
 					scriptSrc, args);

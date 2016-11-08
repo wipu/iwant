@@ -21,10 +21,19 @@ public class TargetEvaluationContextMock
 	private List<? extends Target> targets;
 
 	public TargetEvaluationContextMock(Iwant iwant, CachesMock caches) {
-		this.caches = caches;
 		// TODO dependency injection:
-		this.iwantCoreServices = new IwantCoreServicesMock(
-				new IwantCoreServicesImpl(iwant));
+		this(caches,
+				new IwantCoreServicesMock(new IwantCoreServicesImpl(iwant)));
+	}
+
+	private TargetEvaluationContextMock(CachesMock caches,
+			IwantCoreServicesMock iwantCoreServices) {
+		this.caches = caches;
+		this.iwantCoreServices = iwantCoreServices;
+	}
+
+	public TargetEvaluationContextMock(TargetEvaluationContextMock o) {
+		this(o.caches, o.iwantCoreServices);
 	}
 
 	@Override
