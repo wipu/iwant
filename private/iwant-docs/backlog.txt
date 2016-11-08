@@ -1686,28 +1686,6 @@
     + path value is an ingredient
   - real test with the tool that drives this story
 
-- reliable assert of jacoco txt report content
-  - find out what jacoco promises
-  - if nothing, suggest they do
-  - sort in test before asserting
-
-- robust update of jvm: refresh targets
-  - maybe put version in global cache dir name
-  - maybe automatically add to content descriptors
-
-- define default java compliance in JavaClasses, not the caller of it
-
-- jdk1.7 location from user-preferences
-  - missing prefs file fails only if needed
-  - missing pref in file fails only if needed
-  (- fail if jre/lib/rt.jar not found
-     and other finetuning by real usage, this is only
-     a temporarily needed functionality)
-  - pass in ctx via constr/factory for wsdef
-    big change to api!
-
-- delete emma plugin, it's dead with java 8
-
 - As @buildscriptauthor and @buildscriptauthor I want the core concepts explained in the tutorial so I'll be able to write and use build programs
   + explain declarative dep graph of Paths
     + derive idea from some objects explained in English
@@ -1798,6 +1776,32 @@
       - explain the idea: minimal amount of iwant text to commit to
         project's own repo
 
+#################################################################
+= Planned
+#################################################################
+
+- reliable assert of jacoco txt report content
+  - find out what jacoco promises
+  - if nothing, suggest they do
+  - sort in test before asserting
+
+- robust update of jvm: refresh targets
+  - maybe put version in global cache dir name
+  - maybe automatically add to content descriptors
+
+- define default java compliance in JavaClasses, not the caller of it
+
+- jdk1.7 location from user-preferences
+  - missing prefs file fails only if needed
+  - missing pref in file fails only if needed
+  (- fail if jre/lib/rt.jar not found
+     and other finetuning by real usage, this is only
+     a temporarily needed functionality)
+  - pass in ctx via constr/factory for wsdef
+    big change to api!
+
+- delete emma plugin, it's dead with java 8
+
 - As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
   + use Windows to develop the wrapper
   + fix ScriptGenerated test to tolerate Windows paths in output
@@ -1834,10 +1838,6 @@
   + and also a new concept: SubPath, because the github zip has a directory in it
   + descript to verify the actual effect
   - descript the real "so that": classes compiled from code from github
-
-#################################################################
-= Planned
-#################################################################
 
 - more TestNG tasks
   - stories about more helpful and cleaner output at test failure
