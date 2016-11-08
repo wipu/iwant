@@ -1632,6 +1632,7 @@
       + add dep to scala library
     + remove redundancy: 2 methods copied from AntGenerated to ScalaClasses
       + move to dedicated iwant-api-antrunner, use everywhere
+      + fix iwant2 and mock-wsroot (bootstrapping)
     - mention that srcmod.mainJava and mainScala make no difference
 
 - As @buildscriptauthor I want ws def ctx stuff in wsdef constructor, not

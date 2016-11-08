@@ -278,6 +278,7 @@ public class IwantModules extends JavaModules {
 	private static IwantSrcModuleSpex withMockrootMainJavas(
 			IwantSrcModuleSpex mod) {
 		mod.noMainJava();
+		mod.mainJava("essential/iwant-api-antrunner/src/main/java");
 		mod.mainJava("essential/iwant-api-javamodules/src/main/java");
 		mod.mainJava("essential/iwant-apimocks/src/main/java");
 		mod.mainJava("essential/iwant-api-model/src/main/java");

@@ -76,6 +76,7 @@ public class Iwant2 {
 
 	private static List<String> relativeIwantSrcDirs() {
 		List<String> srcDirs = new ArrayList<>();
+		srcDirs.add("iwant-api-antrunner/" + "src/main/java");
 		srcDirs.add("iwant-api-bash/" + "src/main/java");
 		srcDirs.add("iwant-api-core/" + "src/main/java");
 		srcDirs.add("iwant-api-javamodules/" + "src/main/java");
