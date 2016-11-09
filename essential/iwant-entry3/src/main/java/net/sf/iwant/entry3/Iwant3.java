@@ -283,6 +283,8 @@ public class Iwant3 {
 			throws URISyntaxException {
 		SortedSet<File> apiClassLocations = new TreeSet<>();
 		apiClassLocations.add(classesDirOf(
+				"/net/sf/iwant/" + "api/antrunner/AntRunner.class"));
+		apiClassLocations.add(classesDirOf(
 				"/net/sf/iwant/" + "api/bash/TargetImplementedInBash.class"));
 		apiClassLocations.add(
 				classesDirOf("/net/sf/iwant/" + "api/core/HelloTarget.class"));

@@ -1512,6 +1512,9 @@
     + mention that srcmod.mainJava and mainScala make no difference
       + just do it in javadoc of mainScala
 
++ @bugfix: classload api-antrunner in Iwant3
+  * currently parts of tutorial disabled so this wasn't revealed (shame!)
+
 #################################################################
 = In progress
 #################################################################
