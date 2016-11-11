@@ -16,11 +16,6 @@ public class TestedIwantDependencies {
 				.name("ant-launcher").version(ANT_VER);
 	}
 
-	public static Path emma() {
-		return FromRepository.repo1MavenOrg().group("emma").name("emma")
-				.version("2.0.5312");
-	}
-
 	public static Path jcommander() {
 		return FromRepository.repo1MavenOrg().group("com/beust")
 				.name("jcommander").version("1.48");

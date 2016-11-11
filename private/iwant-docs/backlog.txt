@@ -1529,7 +1529,9 @@
   + delete the module
   + commit
   + fix: iwant2 must not try to compile it
-  - upgrade iwant for iwant and delete own use of it
+  + upgrade iwant for iwant and delete own use of it
+  + delete from testediwantdependencies
+  - any other refs? if not, done
   
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,

@@ -17,7 +17,6 @@ import net.sf.iwant.api.wsdef.TargetDefinitionContext;
 import net.sf.iwant.api.wsdef.Workspace;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.core.download.TestedIwantDependencies;
-import net.sf.iwant.deprecated.emma.EmmaTargetsOfJavaModules;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 import net.sf.iwant.plugin.findbugs.FindbugsDistribution;
 import net.sf.iwant.plugin.findbugs.FindbugsOutputFormat;
@@ -39,9 +38,8 @@ public class WorkspaceForIwant implements Workspace {
 
 	@Override
 	public List<? extends Target> targets(TargetDefinitionContext ctx) {
-		return Arrays.asList(copyOfLocalIwantWs, emmaCoverageReport(),
-				faviconIco(), findbugsReport(), jacocoReport(), localWebsite(),
-				logoGif(), remoteWebsite());
+		return Arrays.asList(copyOfLocalIwantWs, faviconIco(), findbugsReport(),
+				jacocoReport(), localWebsite(), logoGif(), remoteWebsite());
 	}
 
 	@Override
@@ -53,10 +51,6 @@ public class WorkspaceForIwant implements Workspace {
 	}
 
 	// the targets
-
-	private static Path emma() {
-		return TestedIwantDependencies.emma();
-	}
 
 	private static JacocoDistribution jacoco() {
 		return JacocoDistribution.newestTestedVersion();
@@ -70,24 +64,6 @@ public class WorkspaceForIwant implements Workspace {
 				.modules(modules.modulesForCoverage()).end()
 				.jacocoReport("jacoco-report");
 
-	}
-
-	private Target emmaCoverageReport() {
-		EmmaTargetsOfJavaModules emmaTargets = EmmaTargetsOfJavaModules.with()
-				.antJars(TestedIwantDependencies.antJar(),
-						TestedIwantDependencies.antLauncherJar())
-				.emma(emma()).modules(modules.allSrcModules())
-				.butNotInstrumenting(modules.iwantMockWsroot)
-				.filter(emmaFilter()).end();
-		return emmaTargets.emmaReport("emma-coverage");
-
-	}
-
-	private static Path emmaFilter() {
-		ConcatenatedBuilder filter = Concatenated.named("emma-filter");
-		// only used in the tutorial, not "real" code:
-		filter.string("-com.example.*\n");
-		return filter.end();
 	}
 
 	private Target findbugsReport() {
