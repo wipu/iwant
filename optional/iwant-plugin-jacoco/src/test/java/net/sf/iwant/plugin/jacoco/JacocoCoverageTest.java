@@ -134,7 +134,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 	}
 
 	/**
-	 * TODO why cannot we assert err() like in EmmaCoverageTest
+	 * We cannot we assert err() because jacoco forks a new jvm process
 	 */
 	public void testItCallsGivenClassWithArgsGivenAsStrings() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
@@ -156,7 +156,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 	}
 
 	/**
-	 * TODO why cannot we assert err() like in EmmaCoverageTest
+	 * We cannot we assert err() because jacoco forks a new jvm process
 	 */
 	public void testItCallsGivenClassWithArgsGivenAsPath() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(

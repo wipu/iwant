@@ -32,7 +32,6 @@ public class IwantModules extends JavaModules {
 		mods.remove(iwantExampleWsdef);
 		mods.remove(iwantMockWsroot);
 		mods.remove(iwantTutorialWsdefs);
-		mods.remove(iwantDeprecatedEmma);
 		return mods;
 	}
 
@@ -254,15 +253,6 @@ public class IwantModules extends JavaModules {
 					iwantTestarea, junit)
 			.end();
 
-	private JavaSrcModule iwantDeprecatedEmma = essentialModule(
-			"deprecated-emma")
-					.mainDeps(iwantApiAntrunner, iwantApiCore,
-							iwantApiJavamodules, iwantApiModel, iwantCoreAnt,
-							iwantCoreservices, iwantEntry, iwantEntry3)
-					.testDeps(iwantApimocks, iwantCoreDownload, iwantEmbedded,
-							junit)
-					.end();
-
 	private JavaSrcModule iwantDocs = privateModule("docs").noMainJava()
 			.noTestJava().end();
 
@@ -378,7 +368,6 @@ public class IwantModules extends JavaModules {
 	 */
 	@SuppressWarnings("unused")
 	private final List<JavaSrcModule> modulesNotDependedByOthers = Arrays
-			.asList(iwantDeprecatedEmma, iwantDocs, iwantEntryTests,
-					iwantTests);
+			.asList(iwantDocs, iwantEntryTests, iwantTests);
 
 }
