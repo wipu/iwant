@@ -12,7 +12,7 @@ p "The result of a test run is basically a boolean: the tests either all passed 
 
 html "<p class='text'>So, with iwant, <i>\"running tests\" means wishing for a coverage report</i>.</p>"
 
-p "Let's see how this is done. First we'll enable the needed plugin, jacoco, and refresh eclipse settings. (There is also a plugin for emma, but since that is a dead project, jacoco is recommended instead.)"
+p "Let's see how this is done. First we'll enable the needed plugin, jacoco, and refresh eclipse settings."
 wsdefdef-edit jacoco
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective"
 

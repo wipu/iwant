@@ -1515,11 +1515,7 @@
 + @bugfix: classload api-antrunner in Iwant3
   * currently parts of tutorial disabled so this wasn't revealed (shame!)
 
-#################################################################
-= In progress
-#################################################################
-
-- delete emma plugin, it's dead with java 8
++ delete emma plugin, it's dead with java 8
   + before deletion, see how to assert err() in jacoco tests like in emma tests
     * jacoco forks a new jdk process so our control stream redirection and flushing is limited
       (verified by printing java.lang.management.ManagementFactory.getRuntimeMXBean().getName()
@@ -1531,8 +1527,13 @@
   + fix: iwant2 must not try to compile it
   + upgrade iwant for iwant and delete own use of it
   + delete from testediwantdependencies
-  - any other refs? if not, done
+  + any other refs? if not, done
+    * just one mention of emma in JacocoReport.java, comparing jacoco behaviour to it
   
+#################################################################
+= In progress
+#################################################################
+
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,
     not just the recipe; also script is a separate source file, not dynamically
