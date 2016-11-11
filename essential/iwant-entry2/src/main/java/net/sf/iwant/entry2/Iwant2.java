@@ -85,7 +85,6 @@ public class Iwant2 {
 		srcDirs.add("iwant-core-ant/" + "src/main/java");
 		srcDirs.add("iwant-core-download/" + "src/main/java");
 		srcDirs.add("iwant-coreservices/" + "src/main/java");
-		srcDirs.add("iwant-deprecated-emma/" + "src/main/java");
 		srcDirs.add("iwant-entry/" + "as-some-developer/with/java");
 		srcDirs.add("iwant-eclipse-settings/" + "src/main/java");
 		srcDirs.add("iwant-entry2/" + "src/main/java");

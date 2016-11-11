@@ -1527,7 +1527,9 @@
     * so we just have to live with it
   + document this in jacococoveragetest
   + delete the module
-  - commit, upgrade iwant for iwant and delete own use of it
+  + commit
+  + fix: iwant2 must not try to compile it
+  - upgrade iwant for iwant and delete own use of it
   
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,
