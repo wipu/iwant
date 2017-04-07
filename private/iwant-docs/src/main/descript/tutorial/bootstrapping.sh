@@ -34,12 +34,12 @@ A    as-iwant-tutorial-developer/with/java/net
 A    as-iwant-tutorial-developer/with/java/net/sf
 A    as-iwant-tutorial-developer/with/java/net/sf/iwant
 A    as-iwant-tutorial-developer/with/java/net/sf/iwant/entry
-A    as-iwant-tutorial-developer/with/java/net/sf/iwant/entry/Iwant.java
 A    as-iwant-tutorial-developer/with/ant
 A    as-iwant-tutorial-developer/with/ant/iw
-A    as-iwant-tutorial-developer/with/ant/iw/build.xml
 A    as-iwant-tutorial-developer/with/bash
 A    as-iwant-tutorial-developer/with/bash/iwant
+A    as-iwant-tutorial-developer/with/java/net/sf/iwant/entry/Iwant.java
+A    as-iwant-tutorial-developer/with/ant/iw/build.xml
 A    as-iwant-tutorial-developer/with/bash/iwant/help.sh
 Exported revision $REV_TO_TEST.
 EOF

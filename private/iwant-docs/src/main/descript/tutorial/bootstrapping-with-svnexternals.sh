@@ -19,7 +19,7 @@ p "A commit and update is needed for svn to fetch the external bootstrapper."
 cmd "svn commit -m 'external iwant bootstrapper'"
 out-was <<EOF
 Adding         as-iwant-tutorial-developer
-
+Committing transaction...
 Committed revision 1.
 EOF
 cmd "svn up"
@@ -32,12 +32,12 @@ A    as-iwant-tutorial-developer/with/java/net
 A    as-iwant-tutorial-developer/with/java/net/sf
 A    as-iwant-tutorial-developer/with/java/net/sf/iwant
 A    as-iwant-tutorial-developer/with/java/net/sf/iwant/entry
-A    as-iwant-tutorial-developer/with/java/net/sf/iwant/entry/Iwant.java
 A    as-iwant-tutorial-developer/with/ant
 A    as-iwant-tutorial-developer/with/ant/iw
-A    as-iwant-tutorial-developer/with/ant/iw/build.xml
 A    as-iwant-tutorial-developer/with/bash
 A    as-iwant-tutorial-developer/with/bash/iwant
+A    as-iwant-tutorial-developer/with/java/net/sf/iwant/entry/Iwant.java
+A    as-iwant-tutorial-developer/with/ant/iw/build.xml
 A    as-iwant-tutorial-developer/with/bash/iwant/help.sh
 Updated external to revision $REV_TO_TEST.
 
