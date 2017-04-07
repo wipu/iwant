@@ -36,18 +36,6 @@ public class Tutorial extends Target {
 				bootstrappingDoc);
 		pages.add(this.creatingWsdefDoc);
 
-		if (true) {
-			pages.add(pageAboutUsingWsdef("targetimplementedinbash",
-					"Defining targets in bash"));
-			return;
-		}
-
-		if (false) {
-			pages.add(pageAboutUsingWsdef("scalamodules",
-					"Using Scala in Java modules"));
-			return;
-		}
-
 		pages.add(pageAboutUsingWsdef("helloworld-with-eclipse",
 				"Hello world with Eclipse"));
 		pages.add(pageAboutUsingWsdef("ant-cli",
@@ -91,8 +79,12 @@ public class Tutorial extends Target {
 		pages.add(pageAboutUsingWsdef("custom-target",
 				"Writing a custom Target"));
 
+		pages.add(pageAboutUsingWsdef("targetimplementedinbash",
+				"Defining targets in bash"));
+		
 		pages.add(pageAboutUsingWsdef("ws-symlink",
 				"Using a symbolic link for the workspace"));
+
 		pages.add(new Descripted(namePrefix, "iwantmore", "I want more",
 				tutorialWsdefSrc(), null, null));
 	}

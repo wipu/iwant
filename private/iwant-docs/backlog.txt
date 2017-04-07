@@ -1529,11 +1529,16 @@
   + delete from testediwantdependencies
   + any other refs? if not, done
     * just one mention of emma in JacocoReport.java, comparing jacoco behaviour to it
-  
+
 #################################################################
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
+  + use em instead of px so browsers support zooming better
+  + make the font bigger so it's readily bigger
+  - deploy and get feedback
+  
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,
     not just the recipe; also script is a separate source file, not dynamically
