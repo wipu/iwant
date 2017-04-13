@@ -1,6 +1,7 @@
 package net.sf.iwant.plugin.javamodules;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,7 @@ import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.core.download.Downloaded;
+import net.sf.iwant.plugin.ant.Jar;
 
 public class JavaModulesTest {
 
@@ -159,9 +161,8 @@ public class JavaModulesTest {
 		assertEquals(2, jars.size());
 		assertEquals(descr(m.bin.mainArtifact()), descr(jars.get(0)));
 		assertEquals("mod.jar", jars.get(1).name());
-		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
-				+ "  mod-main-classes\n" + "p:classesSubDirectory:\n"
-				+ " null\n" + "", descr(jars.get(1)));
+		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
+				+ "  mod-main-classes\n" + "", descr(jars.get(1)));
 		// test only module has no main artifact
 	}
 
@@ -180,9 +181,8 @@ public class JavaModulesTest {
 		assertEquals(2, jars.size());
 		assertEquals(descr(m.bin.mainArtifact()), descr(jars.get(0)));
 		assertEquals("mod-0.9.jar", jars.get(1).name());
-		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
-				+ "  mod-main-classes\n" + "p:classesSubDirectory:\n"
-				+ " null\n" + "", descr(jars.get(1)));
+		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
+				+ "  mod-main-classes\n" + "", descr(jars.get(1)));
 		// test only module has no main artifact
 	}
 
@@ -248,15 +248,45 @@ public class JavaModulesTest {
 		List<Path> jars = JavaModules.testArtifactJarsOf(m.bin, m.src,
 				m.onlyMain, m.onlyTests);
 		assertEquals(2, jars.size());
-		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
-				+ "  mod-test-classes\n" + "p:classesSubDirectory:\n"
-				+ " null\n" + "", descr(jars.get(0)));
+		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
+				+ "  mod-test-classes\n" + "", descr(jars.get(0)));
 		assertEquals(
-				"net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
-						+ "  only-tests-test-classes\n"
-						+ "p:classesSubDirectory:\n" + " null\n" + "",
+				"net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
+						+ "  only-tests-test-classes\n" + "",
 				descr(jars.get(1)));
 		// bin and main only have no test artifact
+	}
+
+	@Test
+	public void srcJarOfModuleContainsAllMainJavasScalasAndResources() {
+		Jar src = JavaModules.srcJarOf(JavaSrcModule.with().name("mod")
+				.mainJava("java1").mainJava("java2").mainScala("scala1")
+				.mainScala("scala2").mainResources("res1").mainResources("res2")
+				.end());
+
+		assertEquals(
+				"[mod/java1, mod/java2, mod/scala1, mod/scala2, mod/res1, mod/res2]",
+				src.classDirs().toString());
+	}
+
+	@Test
+	public void moduleWithOnlyTestSourcesHasNoSrcJar() {
+		Jar src = JavaModules.srcJarOf(JavaSrcModule.with().name("mod")
+				.testJava("java1").testJava("java2").testScala("scala1")
+				.testScala("scala2").testResources("res1").testResources("res2")
+				.end());
+
+		assertNull(src);
+	}
+
+	@Test
+	public void srcJarNameContainsVersionIfGiven() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
+				.end();
+
+		assertEquals("mod-sources.jar", JavaModules.srcJarOf(mod).name());
+		assertEquals("mod-1.0-sources.jar",
+				JavaModules.srcJarOf("1.0", mod).name());
 	}
 
 }

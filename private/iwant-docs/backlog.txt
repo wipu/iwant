@@ -1530,9 +1530,14 @@
   + any other refs? if not, done
     * just one mention of emma in JacocoReport.java, comparing jacoco behaviour to it
 
-- As @buildscriptauthor I want a method for getting main jars with version numbers from my modules so I can publish them in a context that uses them
++ As @buildscriptauthor I want a method for getting main jars with version numbers from my modules so I can publish them in a context that uses them
   + JavaModules.mainArtifactJarsOf
   + JavaModules.mainJarOf
+
++ As @buildscriptauthor I want a method for getting a sources jar for my module so I can publish it, with or without version
+  + support multiple directories in Jar
+    * get rid of the subdir feature: if needed, it can be implemented with SubPath
+  + JavaModules.srcJarOf
 
 #################################################################
 = In progress

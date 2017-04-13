@@ -1,9 +1,12 @@
 package net.sf.iwant.plugin.ant;
 
-import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.types.FileSet;
 
 import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
@@ -11,13 +14,11 @@ import net.sf.iwant.api.model.TargetEvaluationContext;
 
 public class Jar extends TargetBase {
 
-	private final Path classes;
-	private final String classesSubDirectory;
+	private final List<Path> classDirs;
 
-	public Jar(String name, Path classes, String classesSubDirectory) {
+	public Jar(String name, List<Path> classDirs) {
 		super(name);
-		this.classes = classes;
-		this.classesSubDirectory = classesSubDirectory;
+		this.classDirs = classDirs;
 	}
 
 	public static JarSpex with() {
@@ -27,8 +28,7 @@ public class Jar extends TargetBase {
 	public static class JarSpex {
 
 		private String name;
-		private Path classes;
-		private String classesSubDirectory;
+		private final List<Path> classDirs = new ArrayList<>();
 
 		public JarSpex name(String name) {
 			this.name = name;
@@ -36,17 +36,12 @@ public class Jar extends TargetBase {
 		}
 
 		public JarSpex classes(Path classes) {
-			this.classes = classes;
-			return this;
-		}
-
-		public JarSpex classesSubDirectory(String classesSubDirectory) {
-			this.classesSubDirectory = classesSubDirectory;
+			this.classDirs.add(classes);
 			return this;
 		}
 
 		public Jar end() {
-			return new Jar(name, classes, classesSubDirectory);
+			return new Jar(name, classDirs);
 		}
 
 	}
@@ -59,9 +54,11 @@ public class Jar extends TargetBase {
 	@Override
 	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
-		return iUse.ingredients("classes", classes)
-				.parameter("classesSubDirectory", classesSubDirectory)
-				.nothingElse();
+		return iUse.ingredients("classDirs", classDirs).nothingElse();
+	}
+
+	public List<Path> classDirs() {
+		return Collections.unmodifiableList(classDirs);
 	}
 
 	@Override
@@ -70,12 +67,12 @@ public class Jar extends TargetBase {
 		org.apache.tools.ant.taskdefs.Jar jar = new org.apache.tools.ant.taskdefs.Jar();
 		jar.setProject(project);
 
-		File cachedClasses = ctx.cached(classes);
-		File baseDir = classesSubDirectory == null ? cachedClasses
-				: new File(cachedClasses, classesSubDirectory);
-
-		jar.setBasedir(baseDir);
 		jar.setDestFile(ctx.cached(this));
+		for (Path classDir : classDirs) {
+			FileSet fileSet = new FileSet();
+			fileSet.setDir(ctx.cached(classDir));
+			jar.addFileset(fileSet);
+		}
 
 		jar.execute();
 	}

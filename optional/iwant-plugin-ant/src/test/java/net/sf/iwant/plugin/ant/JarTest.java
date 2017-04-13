@@ -21,19 +21,18 @@ public class JarTest extends IwantTestCase {
 	public void testIngredientsAndDescriptorOfSimpleJarOfClasses() {
 		Jar jar = Jar.with().classes(Source.underWsroot("classes")).end();
 		assertEquals("[classes]", jar.ingredients().toString());
-		assertEquals(
-				"net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n" + "  classes\n"
-						+ "p:classesSubDirectory:\n" + " null\n" + "",
-				jar.contentDescriptor());
+		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
+				+ "  classes\n" + "", jar.contentDescriptor());
 	}
 
-	public void testIngredientsAndDescriptorOfJarOfClassesUnderSubDirectory() {
+	public void testIngredientsAndDescriptorOfJarOfMultipleClassDirs() {
 		Jar jar = Jar.with().classes(Source.underWsroot("classes"))
-				.classesSubDirectory("classes-subdir").end();
-		assertEquals("[classes]", jar.ingredients().toString());
-		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
-				+ "  classes\n" + "p:classesSubDirectory:\n"
-				+ "  classes-subdir\n" + "", jar.contentDescriptor());
+				.classes(Source.underWsroot("classes2")).end();
+		assertEquals("[classes, classes2]", jar.ingredients().toString());
+		assertEquals(
+				"net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
+						+ "  classes\n" + "  classes2\n" + "",
+				jar.contentDescriptor());
 	}
 
 	public void testJarOfDirectory() throws Exception {
@@ -41,20 +40,6 @@ public class JarTest extends IwantTestCase {
 				.getResource("/net/sf/iwant/plugin/ant/dirtojar").toURI());
 
 		Target jar = Jar.with().name("test.jar")
-				.classes(new ExternalSource(classes)).end();
-		jar.path(ctx);
-
-		File cachedJar = new File(cached, "test.jar");
-		assertTrue(cachedJar.exists());
-		assertJarContainsTestStuff(cachedJar);
-	}
-
-	public void testJarOfDirectoryThatContainsClassesInSubDirectory()
-			throws Exception {
-		File classes = new File(
-				getClass().getResource("/net/sf/iwant/plugin/ant").toURI());
-
-		Target jar = Jar.with().name("test.jar").classesSubDirectory("dirtojar")
 				.classes(new ExternalSource(classes)).end();
 		jar.path(ctx);
 

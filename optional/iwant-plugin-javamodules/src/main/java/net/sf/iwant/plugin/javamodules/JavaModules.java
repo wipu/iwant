@@ -15,6 +15,7 @@ import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.plugin.ant.Jar;
+import net.sf.iwant.plugin.ant.Jar.JarSpex;
 
 public abstract class JavaModules {
 
@@ -170,6 +171,30 @@ public abstract class JavaModules {
 		}
 		return Jar.with().name(srcModule.name() + "-tests.jar").classes(tests)
 				.end();
+	}
+
+	public static Jar srcJarOf(JavaModule module) {
+		return srcJarOf(null, module);
+	}
+
+	public static Jar srcJarOf(String version, JavaModule module) {
+		if (!(module instanceof JavaSrcModule)) {
+			return null;
+		}
+		JavaSrcModule srcModule = (JavaSrcModule) module;
+		if (srcModule.mainJavasAsPaths().isEmpty()) {
+			return null;
+		}
+		String versionString = version == null ? "" : "-" + version;
+		JarSpex jar = Jar.with()
+				.name(module.name() + versionString + "-sources.jar");
+		for (Path srcDir : srcModule.mainJavasAsPaths()) {
+			jar.classes(srcDir);
+		}
+		for (Path res : srcModule.mainResourcesAsPaths()) {
+			jar.classes(res);
+		}
+		return jar.end();
 	}
 
 }
