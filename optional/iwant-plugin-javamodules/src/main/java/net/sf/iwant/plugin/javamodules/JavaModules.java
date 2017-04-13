@@ -101,7 +101,12 @@ public abstract class JavaModules {
 	}
 
 	public static List<Path> mainArtifactJarsOf(JavaModule... modules) {
-		return mainArtifactJarsOf(Arrays.asList(modules));
+		return mainArtifactJarsOf(null, modules);
+	}
+
+	public static List<Path> mainArtifactJarsOf(String version,
+			JavaModule... modules) {
+		return mainArtifactJarsOf(version, Arrays.asList(modules));
 	}
 
 	public static List<Path> testArtifactJarsOf(JavaModule... modules) {
@@ -110,9 +115,14 @@ public abstract class JavaModules {
 
 	public static List<Path> mainArtifactJarsOf(
 			Collection<? extends JavaModule> modules) {
+		return mainArtifactJarsOf(null, modules);
+	}
+
+	public static List<Path> mainArtifactJarsOf(String version,
+			Collection<? extends JavaModule> modules) {
 		List<Path> jars = new ArrayList<>();
 		for (JavaModule module : modules) {
-			Path jar = mainJarOf(module);
+			Path jar = mainJarOf(version, module);
 			if (jar != null) {
 				jars.add(jar);
 			}
@@ -133,13 +143,18 @@ public abstract class JavaModules {
 	}
 
 	public static Path mainJarOf(JavaModule module) {
+		return mainJarOf(null, module);
+	}
+
+	public static Path mainJarOf(String version, JavaModule module) {
 		if (module.mainArtifact() == null) {
 			return null;
 		}
 		if (module instanceof JavaBinModule) {
 			return module.mainArtifact();
 		} else {
-			return Jar.with().name(module.name() + ".jar")
+			String versionString = version == null ? "" : "-" + version;
+			return Jar.with().name(module.name() + versionString + ".jar")
 					.classes(module.mainArtifact()).end();
 		}
 	}

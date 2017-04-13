@@ -1530,6 +1530,10 @@
   + any other refs? if not, done
     * just one mention of emma in JacocoReport.java, comparing jacoco behaviour to it
 
+- As @buildscriptauthor I want a method for getting main jars with version numbers from my modules so I can publish them in a context that uses them
+  + JavaModules.mainArtifactJarsOf
+  + JavaModules.mainJarOf
+
 #################################################################
 = In progress
 #################################################################

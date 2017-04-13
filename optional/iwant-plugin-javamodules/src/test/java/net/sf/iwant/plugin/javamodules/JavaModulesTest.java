@@ -145,7 +145,7 @@ public class JavaModulesTest {
 	}
 
 	@Test
-	public void mainArtifactJarsOfModules() {
+	public void mainArtifactJarsOfModulesWithoutVersionNumber() {
 		class Mods extends JavaModules {
 			JavaBinModule bin = binModule("commons-io", "commons-io", "2.4");
 			JavaSrcModule src = srcModule("mod").mainDeps(bin).end();
@@ -158,10 +158,43 @@ public class JavaModulesTest {
 				m.onlyTests);
 		assertEquals(2, jars.size());
 		assertEquals(descr(m.bin.mainArtifact()), descr(jars.get(0)));
+		assertEquals("mod.jar", jars.get(1).name());
 		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
 				+ "  mod-main-classes\n" + "p:classesSubDirectory:\n"
 				+ " null\n" + "", descr(jars.get(1)));
 		// test only module has no main artifact
+	}
+
+	@Test
+	public void mainArtifactJarsOfModulesWithVersionNumber() {
+		class Mods extends JavaModules {
+			JavaBinModule bin = binModule("commons-io", "commons-io", "2.4");
+			JavaSrcModule src = srcModule("mod").mainDeps(bin).end();
+			JavaSrcModule onlyTests = srcModule("only-tests").noMainJava()
+					.testDeps(src).end();
+		}
+		Mods m = new Mods();
+
+		List<Path> jars = JavaModules.mainArtifactJarsOf("0.9", m.bin, m.src,
+				m.onlyTests);
+		assertEquals(2, jars.size());
+		assertEquals(descr(m.bin.mainArtifact()), descr(jars.get(0)));
+		assertEquals("mod-0.9.jar", jars.get(1).name());
+		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classes:\n"
+				+ "  mod-main-classes\n" + "p:classesSubDirectory:\n"
+				+ " null\n" + "", descr(jars.get(1)));
+		// test only module has no main artifact
+	}
+
+	@Test
+	public void mainArtifactJarOfModuleUsesVersionNumberIfGiven() {
+		class Mods extends JavaModules {
+			JavaSrcModule src = srcModule("mod").end();
+		}
+		Mods m = new Mods();
+
+		assertEquals("mod-1.0.jar", JavaModules.mainJarOf("1.0", m.src).name());
+		assertEquals("mod.jar", JavaModules.mainJarOf(m.src).name());
 	}
 
 	@Test
