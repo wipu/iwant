@@ -81,7 +81,7 @@ public class Tutorial extends Target {
 
 		pages.add(pageAboutUsingWsdef("targetimplementedinbash",
 				"Defining targets in bash"));
-		
+
 		pages.add(pageAboutUsingWsdef("ws-symlink",
 				"Using a symbolic link for the workspace"));
 

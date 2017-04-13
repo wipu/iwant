@@ -289,4 +289,22 @@ public class JavaModulesTest {
 				JavaModules.srcJarOf("1.0", mod).name());
 	}
 
+	@Test
+	public void runtimeDepsOfModules() {
+		class Mods extends JavaModules {
+			JavaSrcModule commonUtil = srcModule("commonUtil").end();
+			JavaSrcModule mainUtil = srcModule("mainUtil").end();
+			JavaSrcModule mainRtUtil = srcModule("mainRtUtil").end();
+			JavaSrcModule testUtil = srcModule("testUtil").end();
+			JavaSrcModule mod = srcModule("mod").mainDeps(mainUtil, commonUtil)
+					.mainRuntimeDeps(mainRtUtil).testDeps(testUtil).end();
+			JavaSrcModule mod2 = srcModule("mod2").mainDeps(mod, commonUtil)
+					.end();
+		}
+		Mods m = new Mods();
+
+		assertEquals("[mod2, mod, mainUtil, commonUtil, mainRtUtil]",
+				JavaModules.runtimeDepsOf(m.mod2).toString());
+	}
+
 }

@@ -3,7 +3,9 @@ package net.sf.iwant.plugin.javamodules;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -195,6 +197,37 @@ public abstract class JavaModules {
 			jar.classes(res);
 		}
 		return jar.end();
+	}
+
+	public static Set<JavaModule> runtimeDepsOf(JavaModule... modules) {
+		return runtimeDepsOf(new TreeSet<>(Arrays.asList(modules)));
+	}
+
+	public static Set<JavaModule> runtimeDepsOf(
+			Collection<JavaModule> modules) {
+		Set<JavaModule> deps = new LinkedHashSet<>();
+		Set<JavaModule> seen = new LinkedHashSet<>();
+		runtimeDepsOf(deps, seen, modules);
+		return deps;
+	}
+
+	private static void runtimeDepsOf(Set<JavaModule> deps,
+			Set<JavaModule> seen, Collection<JavaModule> modules) {
+		for (JavaModule module : modules) {
+			runtimeDepsOf(deps, seen, module);
+		}
+	}
+
+	private static void runtimeDepsOf(Set<JavaModule> deps,
+			Set<JavaModule> seen, JavaModule module) {
+		if (seen.contains(module)) {
+			return;
+		}
+		seen.add(module);
+		for (JavaModule dep : module.effectivePathForMainRuntime()) {
+			deps.add(dep);
+			runtimeDepsOf(deps, seen, dep);
+		}
 	}
 
 }
