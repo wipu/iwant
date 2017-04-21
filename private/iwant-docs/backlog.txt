@@ -1542,14 +1542,14 @@
 + As @buildscriptauthor I want a method for getting the runtime dependency modules of a module so I can build the runtime classpath or include the deps in a distribution package
   + JavaModules.runtimeDepsOf
 
++ @bugfix As @buildscriptuser I want iwant to just warn instead of crashing if a declared resource directory is missing so that I don't need to remove the declaration if I (temporarily) delete the last resource
+  * especially with git this is an issue, since a new clone doesn't create the directory if there is nothing in it
+  + fix
+  + real test in iwant-demo
+
 #################################################################
 = In progress
 #################################################################
-
-- @bugfix As @buildscriptuser I want iwant to just warn instead of crashing if a declared resource directory is missing so that I don't need to remove the declaration if I (temporarily) delete the last resource
-  * especially with git this is an issue, since a new clone doesn't create the directory if there is nothing in it
-  + fix
-  - real test in iwant-demo
 
 - As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
   + use em instead of px so browsers support zooming better
