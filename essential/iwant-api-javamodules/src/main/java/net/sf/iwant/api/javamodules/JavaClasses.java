@@ -199,6 +199,11 @@ public class JavaClasses extends TargetBase {
 		}
 		for (Path res : resourceDirs()) {
 			File cachedRes = ctx.cached(res);
+			if (!cachedRes.exists()) {
+				System.err
+						.println("WARNING: Missing resource dir: " + cachedRes);
+				continue;
+			}
 			ctx.iwant().copyMissingFiles(cachedRes, dest);
 		}
 	}

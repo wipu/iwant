@@ -1546,6 +1546,11 @@
 = In progress
 #################################################################
 
+- @bugfix As @buildscriptuser I want iwant to just warn instead of crashing if a declared resource directory is missing so that I don't need to remove the declaration if I (temporarily) delete the last resource
+  * especially with git this is an issue, since a new clone doesn't create the directory if there is nothing in it
+  + fix
+  - real test in iwant-demo
+
 - As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
   + use em instead of px so browsers support zooming better
   + make the font bigger so it's readily bigger

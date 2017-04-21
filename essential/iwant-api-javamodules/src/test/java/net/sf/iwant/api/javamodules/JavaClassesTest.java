@@ -18,6 +18,11 @@ import net.sf.iwant.testarea.TestArea;
 
 public class JavaClassesTest extends IwantTestCase {
 
+	@Override
+	protected boolean mustCaptureSystemOutAndErr() {
+		return true;
+	}
+
 	public void testSrcDirIsAnIgredient() {
 		Path src = Source.underWsroot("src");
 		Target target = JavaClasses.with().name("classes").srcDirs(src)
@@ -331,6 +336,27 @@ public class JavaClassesTest extends IwantTestCase {
 
 		assertTrue(new File(cached, "classes/Foo.class").exists());
 		assertEquals("res.txt content", contentOfCached("classes/res.txt"));
+	}
+
+	public void testMissingResourceDirectoryIsIgnoredWithWarningAndWithoutThrowing()
+			throws Exception {
+		wsRootHasFile("src/Foo.java", "public class Foo {}");
+		// wsroot does not have directory "res1"
+		wsRootHasFile("res2/res2.txt", "res2.txt content");
+
+		JavaClasses classes = JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot("src"))
+				.resourceDirs(Source.underWsroot("res1"),
+						Source.underWsroot("res2"))
+				.end();
+		classes.path(ctx);
+
+		assertTrue(new File(cached, "classes/Foo.class").exists());
+		assertEquals("res2.txt content", contentOfCached("classes/res2.txt"));
+
+		assertEquals(
+				"WARNING: Missing resource dir: " + wsRoot + "/res1\n" + "",
+				err());
 	}
 
 	public void testTwoResourceDirsAndNoSrc() throws Exception {
