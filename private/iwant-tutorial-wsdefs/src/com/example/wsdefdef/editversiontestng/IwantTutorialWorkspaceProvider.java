@@ -13,7 +13,6 @@ public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
 				.mainDeps(ctx.wsdefdefModule())
 				.mainDeps(ctx.iwantPlugin().jacoco().withDependencies())
-				.mainDeps(ctx.iwantPlugin().javamodules().withDependencies())
 				.mainDeps(ctx.iwantPlugin().testng().withDependencies()).end();
 	}
 

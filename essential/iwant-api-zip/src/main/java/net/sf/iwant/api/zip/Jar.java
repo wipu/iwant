@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.ant;
+package net.sf.iwant.api.zip;
 
 import java.io.InputStream;
 import java.util.ArrayList;

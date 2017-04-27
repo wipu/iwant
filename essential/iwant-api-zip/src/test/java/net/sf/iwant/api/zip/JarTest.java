@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.ant;
+package net.sf.iwant.api.zip;
 
 import java.io.File;
 
@@ -21,7 +21,7 @@ public class JarTest extends IwantTestCase {
 	public void testIngredientsAndDescriptorOfSimpleJarOfClasses() {
 		Jar jar = Jar.with().classes(Source.underWsroot("classes")).end();
 		assertEquals("[classes]", jar.ingredients().toString());
-		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
+		assertEquals("net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
 				+ "  classes\n" + "", jar.contentDescriptor());
 	}
 
@@ -29,15 +29,13 @@ public class JarTest extends IwantTestCase {
 		Jar jar = Jar.with().classes(Source.underWsroot("classes"))
 				.classes(Source.underWsroot("classes2")).end();
 		assertEquals("[classes, classes2]", jar.ingredients().toString());
-		assertEquals(
-				"net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
-						+ "  classes\n" + "  classes2\n" + "",
-				jar.contentDescriptor());
+		assertEquals("net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
+				+ "  classes\n" + "  classes2\n" + "", jar.contentDescriptor());
 	}
 
 	public void testJarOfDirectory() throws Exception {
 		File classes = new File(getClass()
-				.getResource("/net/sf/iwant/plugin/ant/dirtojar").toURI());
+				.getResource("/net/sf/iwant/api/zip/dirtojar").toURI());
 
 		Target jar = Jar.with().name("test.jar")
 				.classes(new ExternalSource(classes)).end();

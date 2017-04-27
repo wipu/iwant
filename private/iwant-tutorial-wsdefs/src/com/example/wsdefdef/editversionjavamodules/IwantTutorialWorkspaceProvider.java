@@ -11,9 +11,7 @@ public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {
 		return JavaSrcModule.with().name("iwant-tutorial-wsdef")
 				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
-				.mainDeps(ctx.wsdefdefModule())
-				.mainDeps(ctx.iwantPlugin().javamodules().withDependencies())
-				.end();
+				.mainDeps(ctx.wsdefdefModule()).end();
 	}
 
 	@Override

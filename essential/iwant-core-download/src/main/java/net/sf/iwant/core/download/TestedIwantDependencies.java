@@ -1,19 +1,18 @@
 package net.sf.iwant.core.download;
 
 import net.sf.iwant.api.model.Path;
+import net.sf.iwant.entry2.Iwant2;
 
 public class TestedIwantDependencies {
 
-	private static final String ANT_VER = "1.9.4";
-
 	public static Path antJar() {
 		return FromRepository.repo1MavenOrg().group("org/apache/ant")
-				.name("ant").version(ANT_VER);
+				.name("ant").version(Iwant2.ANT_VER);
 	}
 
 	public static Path antLauncherJar() {
 		return FromRepository.repo1MavenOrg().group("org/apache/ant")
-				.name("ant-launcher").version(ANT_VER);
+				.name("ant-launcher").version(Iwant2.ANT_VER);
 	}
 
 	public static Path jcommander() {

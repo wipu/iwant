@@ -3,8 +3,8 @@ package net.sf.iwant.plugin.github;
 import net.sf.iwant.api.core.SubPath;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.zip.Unzipped;
 import net.sf.iwant.core.download.Downloaded;
-import net.sf.iwant.plugin.ant.Unzipped;
 
 public class FromGithub {
 

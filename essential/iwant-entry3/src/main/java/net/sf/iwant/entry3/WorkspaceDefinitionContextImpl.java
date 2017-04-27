@@ -144,19 +144,6 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 		}
 
 		@Override
-		public IwantPluginWish javamodules() {
-			return new IwantPluginWish() {
-				@Override
-				public Set<JavaModule> withDependencies() {
-					Set<JavaModule> deps = ant().withDependencies();
-					Set<JavaModule> modules = pluginWithDependencies(
-							"iwant-plugin-javamodules", deps);
-					return modules;
-				}
-			};
-		}
-
-		@Override
 		public IwantPluginWish pmd() {
 			return new IwantPluginWish() {
 				@Override

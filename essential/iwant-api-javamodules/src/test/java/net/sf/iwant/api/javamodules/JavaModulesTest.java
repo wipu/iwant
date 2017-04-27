@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.javamodules;
+package net.sf.iwant.api.javamodules;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -8,15 +8,11 @@ import java.util.List;
 
 import org.junit.Test;
 
-import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaCompliance;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
+import net.sf.iwant.api.zip.Jar;
 import net.sf.iwant.core.download.Downloaded;
-import net.sf.iwant.plugin.ant.Jar;
 
 public class JavaModulesTest {
 
@@ -161,7 +157,7 @@ public class JavaModulesTest {
 		assertEquals(2, jars.size());
 		assertEquals(descr(m.bin.mainArtifact()), descr(jars.get(0)));
 		assertEquals("mod.jar", jars.get(1).name());
-		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
+		assertEquals("net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
 				+ "  mod-main-classes\n" + "", descr(jars.get(1)));
 		// test only module has no main artifact
 	}
@@ -181,7 +177,7 @@ public class JavaModulesTest {
 		assertEquals(2, jars.size());
 		assertEquals(descr(m.bin.mainArtifact()), descr(jars.get(0)));
 		assertEquals("mod-0.9.jar", jars.get(1).name());
-		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
+		assertEquals("net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
 				+ "  mod-main-classes\n" + "", descr(jars.get(1)));
 		// test only module has no main artifact
 	}
@@ -248,10 +244,10 @@ public class JavaModulesTest {
 		List<Path> jars = JavaModules.testArtifactJarsOf(m.bin, m.src,
 				m.onlyMain, m.onlyTests);
 		assertEquals(2, jars.size());
-		assertEquals("net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
+		assertEquals("net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
 				+ "  mod-test-classes\n" + "", descr(jars.get(0)));
 		assertEquals(
-				"net.sf.iwant.plugin.ant.Jar\n" + "i:classDirs:\n"
+				"net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
 						+ "  only-tests-test-classes\n" + "",
 				descr(jars.get(1)));
 		// bin and main only have no test artifact

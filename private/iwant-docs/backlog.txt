@@ -1551,6 +1551,13 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want JavaModules in classpath already for wsdefdef so I can more easily define modules to be reused between code that builds and code to be built
+  + move stuff around
+  + download ant jars already in Iwant2 so they are available for Jar
+  * had to disable stderr assertions from AntGeneratedTest, see @antstderrbug
+  + upgrade ant to 1.10.1 to see if it helps with stderr, it didn't but let's keep it
+  - real test with iwant-demo
+
 - As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
   + use em instead of px so browsers support zooming better
   + make the font bigger so it's readily bigger
@@ -1819,6 +1826,11 @@
 #################################################################
 = Planned
 #################################################################
+
+- @bugfix @antstderrbug
+  * AntGeneratedTest started failing: if >2 tests methods are run, assertions of stderr fail
+    * ant really doesn't print anything after mentioning the build script: I printed stuff before
+      and after calling ant, and they can be seen by the test
 
 - reliable assert of jacoco txt report content
   - find out what jacoco promises

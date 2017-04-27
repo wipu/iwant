@@ -2,12 +2,12 @@ package net.sf.iwant.core.download;
 
 import java.net.URL;
 
-import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry2.Iwant2;
 
 public class FromRepository {
 
 	public static ArtifactGroup repo1MavenOrg() {
-		return new ArtifactGroup("http://repo1.maven.org/maven2/");
+		return new ArtifactGroup(Iwant2.REPO_MAVEN_ORG);
 	}
 
 	public static class ArtifactGroup {
@@ -21,7 +21,7 @@ public class FromRepository {
 		}
 
 		public ArtifactName group(String group) {
-			this.group = group.replace(".", "/");
+			this.group = group;
 			return new ArtifactName();
 		}
 
@@ -44,12 +44,11 @@ public class FromRepository {
 			}
 
 			private String jarName(String version) {
-				return name + "-" + version + ".jar";
+				return Iwant2.jarName(name, version);
 			}
 
 			private URL url(String version) {
-				return Iwant.url(urlPrefix + group + "/" + name + "/" + version
-						+ "/" + jarName(version));
+				return Iwant2.urlForGnv(urlPrefix, group, name, version);
 			}
 
 		}

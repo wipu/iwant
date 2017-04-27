@@ -43,6 +43,10 @@ public class IwantNetworkMock implements IwantNetwork {
 		return cachesAt(new UnmodifiableUrl(url), pathInTestArea);
 	}
 
+	public File cachesUrlAt(URL url, File cached) {
+		return cachesAt(new UnmodifiableUrl(url), cached);
+	}
+
 	public File cachesZipAt(URL url, String pathInTestArea) {
 		return cachesAt(new UnmodifiableZip(url), pathInTestArea);
 	}

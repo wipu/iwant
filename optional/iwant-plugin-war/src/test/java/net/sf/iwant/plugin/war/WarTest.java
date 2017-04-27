@@ -3,9 +3,9 @@ package net.sf.iwant.plugin.war;
 import java.io.File;
 
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.zip.Unzipped;
 import net.sf.iwant.apimocks.IwantTestCase;
 import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.plugin.ant.Unzipped;
 
 public class WarTest extends IwantTestCase {
 

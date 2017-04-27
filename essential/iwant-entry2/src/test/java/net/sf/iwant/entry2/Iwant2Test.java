@@ -34,7 +34,12 @@ public class Iwant2Test extends TestCase {
 	private String originalLineSeparator;
 
 	private IwantNetworkMock network;
+
 	private Iwant2 iwant2;
+
+	private File antJar;
+
+	private File antLauncherJar;
 
 	/**
 	 * TODO a reusable main-method testing tools project
@@ -51,7 +56,16 @@ public class Iwant2Test extends TestCase {
 		startOfOutAndErrCapture();
 		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
+		useRealAntJars(network);
 		iwant2 = Iwant2.using(network);
+	}
+
+	private void useRealAntJars(IwantNetworkMock network) {
+		Iwant2 iw2 = new Iwant2(Iwant.usingRealNetwork().network());
+		antJar = iw2.antJar();
+		network.cachesUrlAt(iw2.antJarUrl(), antJar);
+		antLauncherJar = iw2.antLauncherJar();
+		network.cachesUrlAt(iw2.antLauncherJarUrl(), antLauncherJar);
 	}
 
 	private void startOfOutAndErrCapture() {
@@ -134,7 +148,8 @@ public class Iwant2Test extends TestCase {
 				+ iwantEssential + ", --printClassLoaderUrls]\n"
 				+ "classloader urls: [file:" + iwantEssential
 				+ "/iwant-wsroot-marker/, file:" + testArea.root()
-				+ "/all-iwant-classes/]\n", out());
+				+ "/all-iwant-classes/, " + antJar.toURI() + ", "
+				+ antLauncherJar.toURI() + "]\n", out());
 	}
 
 	public void testIwant2CompilesIwantWithDebugInformation() throws Exception {

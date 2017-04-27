@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.ant;
+package net.sf.iwant.api.zip;
 
 import java.io.File;
 
@@ -16,7 +16,7 @@ public class UnzippedTest extends IwantTestCase {
 	}
 
 	public void testContentDescriptor() {
-		assertEquals("net.sf.iwant.plugin.ant.Unzipped:[a.zip]",
+		assertEquals("net.sf.iwant.api.zip.Unzipped:[a.zip]",
 				Unzipped.with().name("u").from(Source.underWsroot("a.zip"))
 						.end().contentDescriptor());
 	}

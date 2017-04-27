@@ -3,7 +3,7 @@ package net.sf.iwant.tutorial;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
-import net.sf.iwant.plugin.ant.Jar;
+import net.sf.iwant.api.zip.Jar;
 
 public class TutorialInlineSnippets {
 

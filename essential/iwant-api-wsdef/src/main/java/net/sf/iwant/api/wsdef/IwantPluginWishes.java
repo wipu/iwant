@@ -10,8 +10,6 @@ public interface IwantPluginWishes {
 
 	IwantPluginWish jacoco();
 
-	IwantPluginWish javamodules();
-
 	IwantPluginWish pmd();
 
 	IwantPluginWish testng();

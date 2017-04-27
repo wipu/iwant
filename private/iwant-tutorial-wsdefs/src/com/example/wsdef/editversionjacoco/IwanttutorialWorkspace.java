@@ -8,6 +8,7 @@ import net.sf.iwant.api.core.Concatenated;
 import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
 import net.sf.iwant.api.core.HelloTarget;
 import net.sf.iwant.api.javamodules.JavaBinModule;
+import net.sf.iwant.api.javamodules.JavaModules;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 import net.sf.iwant.api.model.Path;
@@ -20,7 +21,6 @@ import net.sf.iwant.core.download.TestedIwantDependencies;
 import net.sf.iwant.eclipsesettings.EclipseSettings;
 import net.sf.iwant.plugin.jacoco.JacocoDistribution;
 import net.sf.iwant.plugin.jacoco.JacocoTargetsOfJavaModules;
-import net.sf.iwant.plugin.javamodules.JavaModules;
 
 public class IwanttutorialWorkspace implements Workspace {
 

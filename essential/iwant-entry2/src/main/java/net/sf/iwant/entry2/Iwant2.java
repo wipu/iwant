@@ -6,11 +6,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -22,6 +22,8 @@ import net.sf.iwant.entry.Iwant.UnmodifiableSource;
 
 public class Iwant2 {
 
+	public static final String REPO_MAVEN_ORG = "http://repo1.maven.org/maven2/";
+	public static final String ANT_VER = "1.10.1";
 	private final IwantNetwork network;
 	private final Iwant iwant;
 
@@ -64,8 +66,10 @@ public class Iwant2 {
 
 		File wsRootMarker = new File(iwantEssential, "iwant-wsroot-marker");
 		Iwant.fileLog("iwant-wsroot-marker=" + wsRootMarker);
-		List<File> classLocations = Arrays.asList(wsRootMarker,
-				allIwantClasses);
+		List<File> classLocations = new ArrayList<>();
+		classLocations.add(wsRootMarker);
+		classLocations.add(allIwantClasses);
+		classLocations.addAll(iwantBinDeps());
 
 		String[] iwant3Args = new String[args.length + 1];
 		iwant3Args[0] = iwantEssential.getCanonicalPath();
@@ -82,6 +86,7 @@ public class Iwant2 {
 		srcDirs.add("iwant-api-javamodules/" + "src/main/java");
 		srcDirs.add("iwant-api-model/" + "src/main/java");
 		srcDirs.add("iwant-api-wsdef/" + "src/main/java");
+		srcDirs.add("iwant-api-zip/" + "src/main/java");
 		srcDirs.add("iwant-core-ant/" + "src/main/java");
 		srcDirs.add("iwant-core-download/" + "src/main/java");
 		srcDirs.add("iwant-coreservices/" + "src/main/java");
@@ -93,6 +98,40 @@ public class Iwant2 {
 		srcDirs.add("iwant-planner/" + "src/main/java");
 		srcDirs.add("iwant-planner-api/" + "src/main/java");
 		return srcDirs;
+	}
+
+	private List<File> iwantBinDeps() {
+		List<File> deps = new ArrayList<>();
+		deps.add(antJar());
+		deps.add(antLauncherJar());
+		return deps;
+	}
+
+	public URL antJarUrl() {
+		return urlForGnv(REPO_MAVEN_ORG, "org.apache.ant", "ant", ANT_VER);
+	}
+
+	public URL antLauncherJarUrl() {
+		return urlForGnv(REPO_MAVEN_ORG, "org.apache.ant", "ant-launcher",
+				ANT_VER);
+	}
+
+	public File antJar() {
+		return iwant.downloaded(antJarUrl());
+	}
+
+	public File antLauncherJar() {
+		return iwant.downloaded(antLauncherJarUrl());
+	}
+
+	public static URL urlForGnv(String repoPrefix, String group, String name,
+			String version) {
+		return Iwant.url(repoPrefix + group.replace(".", "/") + "/" + name + "/"
+				+ version + "/" + jarName(name, version));
+	}
+
+	public static String jarName(String name, String version) {
+		return name + "-" + version + ".jar";
 	}
 
 	public static SortedSet<File> srcDirsOfIwantWs(File iwantEssential) {
@@ -130,8 +169,8 @@ public class Iwant2 {
 		allIwantClasses.mkdirs();
 
 		List<File> javaFileList = new ArrayList<>(javaFiles);
-		iwant.compiledClasses(allIwantClasses, javaFileList,
-				Collections.<File> emptyList(),
+
+		iwant.compiledClasses(allIwantClasses, javaFileList, iwantBinDeps(),
 				Iwant.bootstrappingJavacOptions(), null);
 
 		String pak = "net/sf/iwant/api/bash";
