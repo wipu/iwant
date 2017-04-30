@@ -357,4 +357,42 @@ public class IwantTest extends TestCase {
 		}
 	}
 
+	public void testBootstrapperIsNotCompiledIfNotNecessary() throws Exception {
+		File asSomeone = testArea.newDir("as-test");
+		File iHaveConf = testArea.newDir("as-test/i-have/conf");
+		File iwantFrom = IwantWsRootFinder.mockWsRoot();
+		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
+		URL iwantEssentialFromUrl = Iwant
+				.fileToUrl(new File(iwantFrom, "essential"));
+		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
+				"iwant-from=" + iwantFromUrl + "\n");
+
+		IwantNetworkMock network = new IwantNetworkMock(testArea);
+		network.usesRealSvnkitUrlAndCacheAndUnzipped();
+		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
+				"exported-iwant-wsroot/essential");
+		network.cachesAt(
+				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
+						exportedWsEssential),
+				"iwant-bootstrapper-classes");
+
+		Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
+				"for", "entry two");
+
+		String cwd = System.getProperty("user.dir");
+		assertEquals("Mocked iwant entry2\n" + "CWD: " + cwd + "\n" + "args: ["
+				+ exportedWsEssential + ", " + asSomeone
+				+ ", args, for, entry two]\n"
+				+ "And hello from mocked entry one.\n", out());
+
+		File bsClasses = new File(testArea.root(),
+				"iwant-bootstrapper-classes");
+		long t1 = bsClasses.lastModified();
+		Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "new args",
+				"for", "entry two");
+		long t2 = bsClasses.lastModified();
+
+		assertEquals(t1, t2);
+	}
+
 }

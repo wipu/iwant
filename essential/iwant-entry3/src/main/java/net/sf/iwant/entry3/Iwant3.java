@@ -179,9 +179,12 @@ public class Iwant3 {
 
 	private static boolean ingredientsChanged(File target, List<File> srcDeps,
 			List<File> classDeps) {
-		long ts = target.exists() ? target.lastModified() : Long.MIN_VALUE;
-		return TargetRefreshTask.isModifiedSince(srcDeps, ts)
-				|| TargetRefreshTask.isModifiedSince(classDeps, ts);
+		if (!target.exists()) {
+			return true;
+		}
+		long ts = target.lastModified();
+		return Iwant.isModifiedSince(srcDeps, ts)
+				|| Iwant.isModifiedSince(classDeps, ts);
 	}
 
 	private Path combinedIwantSources() throws IOException {

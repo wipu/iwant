@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import net.sf.iwant.api.model.Caches;
@@ -110,38 +109,13 @@ public class TargetRefreshTask implements Task {
 					logReasonOfDirtiness(src, " is missing");
 					return TaskDirtiness.DIRTY_SRC_INGREDIENT_MISSING;
 				}
-				if (isModifiedSince(src, time)) {
+				if (Iwant.isModifiedSince(src, time)) {
 					logReasonOfDirtiness(src, " was modified");
 					return TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED;
 				}
 			}
 		}
 		return TaskDirtiness.NOT_DIRTY;
-	}
-
-	/**
-	 * TODO put all this time stamp logic to one place
-	 */
-	private static boolean isModifiedSince(File src, long time) {
-		if (src.lastModified() >= time) {
-			return true;
-		}
-		if (src.isDirectory()) {
-			for (File child : src.listFiles()) {
-				if (isModifiedSince(child, time)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public static boolean isModifiedSince(List<File> srcs, long time) {
-		for (File src : srcs) {
-			if (isModifiedSince(src, time))
-				return true;
-		}
-		return false;
 	}
 
 	@Override

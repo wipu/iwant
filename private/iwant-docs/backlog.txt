@@ -1566,6 +1566,7 @@
       * this should avoid compiling wsdef
       * bonus: this feature will also make targets dirty when upgrading iwant
       * bonus2: performance shouldn't get worse, at least
+    + not enough: Iwant must not compile bootstrapper unless needed
     - all targets automatically dirty if not newer than all classpath items
 
 - As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
