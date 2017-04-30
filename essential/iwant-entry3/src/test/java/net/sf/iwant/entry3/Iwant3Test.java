@@ -793,4 +793,18 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", errIgnoringDebugLog());
 	}
 
+	public void testUsersWsClassesAreNotRecompiledIfNoIngredientHasChanged()
+			throws Exception {
+		testEmptyWishAfterCreationOfExampleWsDef();
+
+		File wsdefdefClasses = new File(asTest, ".i-cached/wsdefdef-classes");
+		long t1 = wsdefdefClasses.lastModified();
+
+		iwant3.evaluate(asTest, "list-of/targets");
+
+		long t2 = wsdefdefClasses.lastModified();
+
+		assertEquals(t1, t2);
+	}
+
 }

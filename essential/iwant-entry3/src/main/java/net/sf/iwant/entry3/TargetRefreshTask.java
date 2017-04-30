@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import net.sf.iwant.api.model.Caches;
@@ -121,7 +122,7 @@ public class TargetRefreshTask implements Task {
 	/**
 	 * TODO put all this time stamp logic to one place
 	 */
-	private boolean isModifiedSince(File src, long time) {
+	private static boolean isModifiedSince(File src, long time) {
 		if (src.lastModified() >= time) {
 			return true;
 		}
@@ -131,6 +132,14 @@ public class TargetRefreshTask implements Task {
 					return true;
 				}
 			}
+		}
+		return false;
+	}
+
+	public static boolean isModifiedSince(List<File> srcs, long time) {
+		for (File src : srcs) {
+			if (isModifiedSince(src, time))
+				return true;
 		}
 		return false;
 	}

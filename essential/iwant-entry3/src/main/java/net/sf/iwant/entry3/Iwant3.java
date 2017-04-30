@@ -71,7 +71,7 @@ public class Iwant3 {
 		return new Iwant3(network, iwantEssential);
 	}
 
-	private Set<JavaModule> iwantApiModules(SortedSet<File> apiClassLocations)
+	private Set<JavaModule> iwantApiModules(List<File> apiClassLocations)
 			throws IOException {
 		Path combinedIwantSources = combinedIwantSources();
 		SortedSet<JavaModule> iwantApiModules = new TreeSet<>();
@@ -103,13 +103,15 @@ public class Iwant3 {
 				iwant.network());
 		File wsDefdefClasses = new File(wsCache, "wsdefdef-classes");
 
-		SortedSet<File> apiClassLocations = iwantApiClassLocations();
+		List<File> apiClassLocations = iwantApiClassLocations();
 		Set<JavaModule> iwantApiModules = iwantApiModules(apiClassLocations);
-
 		List<File> srcFiles = Arrays.asList(wsInfo.wsdefdefJava());
-		iwant.compiledClasses(wsDefdefClasses, srcFiles,
-				new ArrayList<>(apiClassLocations),
-				Iwant.bootstrappingJavacOptions(), null);
+
+		if (ingredientsChanged(wsDefdefClasses, srcFiles, apiClassLocations)) {
+			iwant.compiledClasses(wsDefdefClasses, srcFiles,
+					new ArrayList<>(apiClassLocations),
+					Iwant.bootstrappingJavacOptions(), null);
+		}
 
 		List<File> runtimeClasses = Arrays.asList(wsDefdefClasses);
 		Class<?> wsDefdefClass = loadClass(getClass().getClassLoader(),
@@ -173,6 +175,13 @@ public class Iwant3 {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Error invoking user code.", e);
 		}
+	}
+
+	private static boolean ingredientsChanged(File target, List<File> srcDeps,
+			List<File> classDeps) {
+		long ts = target.exists() ? target.lastModified() : Long.MIN_VALUE;
+		return TargetRefreshTask.isModifiedSince(srcDeps, ts)
+				|| TargetRefreshTask.isModifiedSince(classDeps, ts);
 	}
 
 	private Path combinedIwantSources() throws IOException {
@@ -279,7 +288,7 @@ public class Iwant3 {
 		}
 	}
 
-	private static SortedSet<File> iwantApiClassLocations()
+	private static List<File> iwantApiClassLocations()
 			throws URISyntaxException {
 		SortedSet<File> apiClassLocations = new TreeSet<>();
 		apiClassLocations.add(classesDirOf(
@@ -299,7 +308,7 @@ public class Iwant3 {
 				"/net/sf/iwant/" + "eclipsesettings/EclipseSettings.class"));
 		apiClassLocations.add(
 				classesDirOf("/net/sf/iwant/" + "api/target/TargetBase.class"));
-		return apiClassLocations;
+		return new ArrayList<>(apiClassLocations);
 	}
 
 	private static File classesDirOf(String resourceInsideClassLocation)
