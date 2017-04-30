@@ -1547,16 +1547,16 @@
   + fix
   + real test in iwant-demo
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I want JavaModules in classpath already for wsdefdef so I can more easily define modules to be reused between code that builds and code to be built
++ As @buildscriptauthor I want JavaModules in classpath already for wsdefdef so I can more easily define modules to be reused between code that builds and code to be built
   + move stuff around
   + download ant jars already in Iwant2 so they are available for Jar
   * had to disable stderr assertions from AntGeneratedTest, see @antstderrbug
   + upgrade ant to 1.10.1 to see if it helps with stderr, it didn't but let's keep it
-  - real test with iwant-demo
+  + real test with iwant-demo
+
+#################################################################
+= In progress
+#################################################################
 
 - As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
   + use em instead of px so browsers support zooming better
