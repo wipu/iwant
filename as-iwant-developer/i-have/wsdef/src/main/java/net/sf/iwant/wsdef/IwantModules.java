@@ -1,6 +1,6 @@
 package net.sf.iwant.wsdef;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -185,29 +185,28 @@ public class IwantModules extends JavaModules {
 					iwantEntrymocks, iwantTestarea, junit)
 			.noTestJava().end();
 
-	private JavaSrcModule iwantApiCore = essentialModule("api-core")
-			.mainDeps(iwantApiModel, iwantCoreservices, iwantEntry)
-			.testDeps(iwantApimocks, junit).end();
+	private JavaSrcModule iwantApiTarget = essentialModule("api-target")
+			.mainDeps(iwantApiModel).testDeps(junit).end();
 
-	private JavaSrcModule iwantCoreDownload = essentialModule("core-download")
-			.mainDeps(iwantApiCore, iwantApiModel, iwantCoreservices,
-					iwantEntry, iwantEntry2)
-			.testDeps(iwantApimocks, iwantTestarea, junit).end();
+	private JavaSrcModule iwantApiCore = essentialModule("api-core")
+			.mainDeps(iwantApiModel, iwantApiTarget, iwantCoreservices,
+					iwantEntry)
+			.testDeps(iwantApimocks, junit).end();
 
 	private JavaSrcModule iwantApiAntrunner = essentialModule("api-antrunner")
 			.noMainResources().noTestJava().noTestResources()
 			.mainDeps(iwantEntry).end();
 
-	private JavaSrcModule iwantApiZip = essentialModule("api-zip")
-			.testResources("src/test/resources")
-			.mainDeps(ant, antLauncher, iwantApiCore, iwantApiModel)
-			.testDeps(iwantApimocks, junit).end();
+	private JavaSrcModule iwantCoreDownload = essentialModule("core-download")
+			.mainDeps(iwantApiCore, iwantApiModel, iwantApiTarget,
+					iwantCoreservices, iwantEntry, iwantEntry2)
+			.testDeps(iwantApimocks, iwantTestarea, junit).end();
 
 	private JavaSrcModule iwantApiJavamodules = essentialModule(
 			"api-javamodules")
 					.mainDeps(iwantApiAntrunner, iwantApiCore, iwantApiModel,
-							iwantApiZip, iwantCoreDownload, iwantCoreservices,
-							iwantEntry)
+							iwantApiTarget, iwantCoreDownload,
+							iwantCoreservices, iwantEntry)
 					.testDeps(iwantApimocks, iwantTestarea, guava, guavaTestlib,
 							junit)
 					.end();
@@ -215,11 +214,23 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantApiWsdef = essentialModule("api-wsdef")
 			.noTestJava().mainDeps(iwantApiModel, iwantApiJavamodules).end();
 
+	private JavaSrcModule iwantApiZip = essentialModule("api-zip")
+			.testResources("src/test/resources").mainDeps(ant, antLauncher,
+					iwantApiCore, iwantApiModel, iwantApiTarget)
+			.testDeps(iwantApimocks, junit).end();
+
+	private JavaSrcModule iwantCoreJavamodules = essentialModule(
+			"core-javamodules")
+					.mainDeps(iwantApiJavamodules, iwantApiModel,
+							iwantApiTarget, iwantApiZip, iwantCoreDownload)
+					.testDeps(junit).end();
+
 	private JavaSrcModule iwantApiBash = essentialModule("api-bash")
 			.mainResources("src/main/resources")
 			.testResources("src/test/resources")
 			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
-					iwantApiWsdef, iwantCoreservices, iwantEntry)
+					iwantApiTarget, iwantApiWsdef, iwantCoreservices,
+					iwantEntry)
 			.testDeps(iwantApimocks, junit).end();
 
 	private JavaSrcModule iwantPlannerApi = essentialModule("planner-api")
@@ -235,26 +246,27 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantEclipseSettings = essentialModule(
 			"eclipse-settings")
 					.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
-							iwantEntry)
+							iwantApiTarget, iwantEntry)
 					.testDeps(iwantApimocks, junit).end();
 
 	private JavaSrcModule iwantEntry3 = essentialModule("entry3")
 			.mainDeps(iwantApiBash, iwantApiCore, iwantApiJavamodules,
-					iwantApiModel, iwantApiWsdef, iwantCoreDownload,
-					iwantCoreservices, iwantEntry, iwantEntry2,
-					iwantIwantWsrootFinder, iwantPlanner, iwantPlannerApi)
+					iwantApiModel, iwantApiTarget, iwantApiWsdef,
+					iwantCoreDownload, iwantCoreservices, iwantEntry,
+					iwantEntry2, iwantIwantWsrootFinder, iwantPlanner,
+					iwantPlannerApi)
 			.testDeps(iwantApimocks, iwantEclipseSettings, iwantEntrymocks,
 					iwantPlannerMocks, iwantTestarea, junit)
 			.end();
 
 	private JavaSrcModule iwantEmbedded = essentialModule("embedded")
-			.mainDeps(iwantApiModel, iwantApiJavamodules, iwantApiWsdef,
-					iwantCoreservices, iwantEntry, iwantEntry3)
+			.mainDeps(iwantApiModel, iwantApiJavamodules, iwantApiTarget,
+					iwantApiWsdef, iwantCoreservices, iwantEntry, iwantEntry3)
 			.testDeps(iwantApimocks, iwantApiCore, iwantTestarea, junit).end();
 
 	private JavaSrcModule iwantCoreAnt = essentialModule("core-ant")
 			.mainDeps(iwantApiAntrunner, iwantApiCore, iwantApiModel,
-					iwantCoreservices, iwantEntry)
+					iwantApiTarget, iwantCoreservices, iwantEntry)
 			.testDeps(iwantApimocks, iwantCoreDownload, iwantEmbedded,
 					iwantTestarea, junit)
 			.end();
@@ -265,7 +277,8 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantExampleWsdef = essentialModule("example-wsdef")
 			.noTestJava()
 			.mainDeps(iwantApiCore, iwantApiJavamodules, iwantApiModel,
-					iwantApiWsdef, iwantEntry3, iwantEclipseSettings)
+					iwantApiTarget, iwantApiWsdef, iwantEntry3,
+					iwantEclipseSettings)
 			.end();
 
 	final JavaSrcModule iwantMockWsroot = withMockrootMainJavas(
@@ -300,21 +313,23 @@ public class IwantModules extends JavaModules {
 			"plugin-findbugs")
 					.testResources("src/test/resources")
 					.mainDeps(commonsIo, iwantApiAntrunner, iwantApiCore,
-							iwantApiJavamodules, iwantApiModel, iwantCoreAnt,
-							iwantCoreDownload, iwantEntry3, iwantPluginAnt)
+							iwantApiJavamodules, iwantApiModel, iwantApiTarget,
+							iwantCoreAnt, iwantCoreDownload, iwantEntry3,
+							iwantPluginAnt)
 					.testDeps(junit, iwantApimocks, iwantEntry, iwantEmbedded,
 							iwantTestarea)
 					.end();
 
 	private JavaSrcModule iwantPluginGithub = optionalModule("plugin-github")
-			.mainDeps(iwantApiCore, iwantApiModel, iwantApiZip,
+			.mainDeps(iwantApiCore, iwantApiModel, iwantApiTarget, iwantApiZip,
 					iwantCoreDownload, iwantEntry3, iwantPluginAnt)
 			.testDeps(junit).end();
 
 	private JavaSrcModule iwantPluginJacoco = optionalModule("plugin-jacoco")
 			.mainDeps(commonsIo, iwantApiAntrunner, iwantApiCore, iwantApiModel,
-					iwantApiJavamodules, iwantApiZip, iwantCoreAnt,
-					iwantCoreDownload, iwantEntry3, iwantPluginAnt)
+					iwantApiJavamodules, iwantApiTarget, iwantApiZip,
+					iwantCoreAnt, iwantCoreDownload, iwantEntry3,
+					iwantPluginAnt)
 			.testDeps(junit, iwantApimocks, iwantEntry, iwantEmbedded,
 					iwantTestarea)
 			.end();
@@ -323,7 +338,7 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantPluginPmd = optionalModule("plugin-pmd")
 			.testResources("src/test/resources")
 			.mainDeps(ant, asm, commonsIo, iwantApiCore, iwantApiModel,
-					iwantEntry, jaxen, pmd)
+					iwantApiTarget, iwantEntry, jaxen, pmd)
 			.testDeps(junit, iwantApimocks, iwantTestarea, iwantTestresources)
 			.end();
 
@@ -340,12 +355,13 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantTutorialWsdefs = privateModule("tutorial-wsdefs")
 			.scalaVersion(SCALA_VER).noMainJava().noTestJava().mainJava("src")
 			.mainDeps(commonsMath, iwantApiBash, iwantApiCore,
-					iwantApiJavamodules, iwantApiModel, iwantApiWsdef,
-					iwantApiZip, iwantCoreAnt, iwantCoreDownload,
-					iwantCoreservices, iwantEntry3, iwantEclipseSettings,
-					iwantPluginAnt, iwantPluginFindbugs, iwantPluginGithub,
-					iwantPluginJacoco, iwantPluginPmd, iwantPluginTestng,
-					iwantPluginWar, junit, scalaLibrary, testng)
+					iwantApiJavamodules, iwantApiModel, iwantApiTarget,
+					iwantApiWsdef, iwantApiZip, iwantCoreAnt, iwantCoreDownload,
+					iwantCoreJavamodules, iwantCoreservices, iwantEntry3,
+					iwantEclipseSettings, iwantPluginAnt, iwantPluginFindbugs,
+					iwantPluginGithub, iwantPluginJacoco, iwantPluginPmd,
+					iwantPluginTestng, iwantPluginWar, junit, scalaLibrary,
+					testng)
 			.end();
 
 	private final Target extendedIwantEnumsJava = new ExtendedIwantEnums(
@@ -366,7 +382,15 @@ public class IwantModules extends JavaModules {
 	 * Just for documenting, to help detect dead stuff
 	 */
 	@SuppressWarnings("unused")
-	private final List<JavaSrcModule> modulesNotDependedByOthers = Arrays
-			.asList(iwantDocs, iwantEntryTests, iwantTests);
+	private List<JavaSrcModule> modulesNotDependedByOthers() {
+		List<JavaSrcModule> m = new ArrayList<>();
+		// convenience for user's java module definitions:
+		m.add(iwantCoreJavamodules);
+		// internal:
+		m.add(iwantDocs);
+		m.add(iwantEntryTests);
+		m.add(iwantTests);
+		return m;
+	}
 
 }

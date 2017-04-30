@@ -12,9 +12,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 
-import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.target.TargetBase;
 import net.sourceforge.pmd.ant.Formatter;
 import net.sourceforge.pmd.ant.PMDTask;
 import net.sourceforge.pmd.ant.RuleSetWrapper;

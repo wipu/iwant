@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.target.TargetBase;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.plannerapi.Resource;
 import net.sf.iwant.plannerapi.ResourcePool;

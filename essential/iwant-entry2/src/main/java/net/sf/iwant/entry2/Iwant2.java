@@ -85,10 +85,12 @@ public class Iwant2 {
 		srcDirs.add("iwant-api-core/" + "src/main/java");
 		srcDirs.add("iwant-api-javamodules/" + "src/main/java");
 		srcDirs.add("iwant-api-model/" + "src/main/java");
+		srcDirs.add("iwant-api-target/" + "src/main/java");
 		srcDirs.add("iwant-api-wsdef/" + "src/main/java");
 		srcDirs.add("iwant-api-zip/" + "src/main/java");
 		srcDirs.add("iwant-core-ant/" + "src/main/java");
 		srcDirs.add("iwant-core-download/" + "src/main/java");
+		srcDirs.add("iwant-core-javamodules/" + "src/main/java");
 		srcDirs.add("iwant-coreservices/" + "src/main/java");
 		srcDirs.add("iwant-entry/" + "as-some-developer/with/java");
 		srcDirs.add("iwant-eclipse-settings/" + "src/main/java");

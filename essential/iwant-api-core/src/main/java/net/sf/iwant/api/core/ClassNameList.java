@@ -8,6 +8,7 @@ import java.util.List;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.StringFilter;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.target.TargetBase;
 import net.sf.iwant.entry.Iwant;
 
 public class ClassNameList extends TargetBase {

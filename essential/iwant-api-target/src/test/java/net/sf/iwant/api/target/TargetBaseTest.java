@@ -1,10 +1,11 @@
-package net.sf.iwant.api.core;
+package net.sf.iwant.api.target;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.SystemEnv;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 
@@ -40,7 +41,7 @@ public class TargetBaseTest {
 
 		Target target = new TargetUsingEnv(env);
 
-		assertEquals("net.sf.iwant.api.core.TargetBaseTest.TargetUsingEnv\n"
+		assertEquals("net.sf.iwant.api.target.TargetBaseTest.TargetUsingEnv\n"
 				+ "p:env:s1:\n" + "  s1v\n" + "i:env:p1:\n" + "  p1v\n"
 				+ "p:env:s2:\n" + "  s2v\n" + "i:env:p2:\n" + "  p2v\n" + "",
 				target.contentDescriptor());
@@ -52,7 +53,7 @@ public class TargetBaseTest {
 		Target target = new TargetUsingEnv(null);
 
 		assertEquals(
-				"net.sf.iwant.api.core.TargetBaseTest.TargetUsingEnv\n" + "",
+				"net.sf.iwant.api.target.TargetBaseTest.TargetUsingEnv\n" + "",
 				target.contentDescriptor());
 		assertEquals("[]", target.ingredients().toString());
 	}

@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
-import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.CacheScopeChoices;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.target.TargetBase;
 import net.sf.iwant.coreservices.FileUtil;
 
 public class SvnExported extends TargetBase {

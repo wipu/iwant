@@ -1558,6 +1558,10 @@
 = In progress
 #################################################################
 
+- As @buildscriptauthor I want an easy way of declaring the java file of my custom target its own ingredient so I don't get cache invalidation while developing the target code
+  + split some modules in preparation for getting a needed context to TargetBase for this
+  - design a cycleless way to inject a suitable context
+
 - As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
   + use em instead of px so browsers support zooming better
   + make the font bigger so it's readily bigger

@@ -3,8 +3,8 @@ package net.sf.iwant.plugin.jacoco;
 import java.io.File;
 import java.io.InputStream;
 
-import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.target.TargetBase;
 import net.sf.iwant.api.zip.Unzipped;
 import net.sf.iwant.core.download.Downloaded;
 

@@ -297,6 +297,8 @@ public class Iwant3 {
 		// TODO maybe make eclipse-settings an optional plugin
 		apiClassLocations.add(classesDirOf(
 				"/net/sf/iwant/" + "eclipsesettings/EclipseSettings.class"));
+		apiClassLocations.add(
+				classesDirOf("/net/sf/iwant/" + "api/target/TargetBase.class"));
 		return apiClassLocations;
 	}
 

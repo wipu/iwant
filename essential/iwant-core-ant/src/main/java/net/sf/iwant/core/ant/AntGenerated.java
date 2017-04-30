@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.sf.iwant.api.antrunner.AntRunner;
-import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.target.TargetBase;
 
 public class AntGenerated extends TargetBase {
 

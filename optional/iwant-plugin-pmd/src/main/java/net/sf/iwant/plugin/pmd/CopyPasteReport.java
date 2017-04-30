@@ -10,9 +10,9 @@ import java.util.List;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 
-import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.target.TargetBase;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sourceforge.pmd.cpd.CPDTask;
 

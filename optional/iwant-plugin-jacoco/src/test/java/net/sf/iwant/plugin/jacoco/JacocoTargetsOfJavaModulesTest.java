@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.IOException;
 
 import net.sf.iwant.api.core.ClassNameList;
-import net.sf.iwant.api.core.SystemEnv;
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.javamodules.TestRunner;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.StringFilter;
+import net.sf.iwant.api.model.SystemEnv;
 import net.sf.iwant.api.model.Target;
 
 public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {

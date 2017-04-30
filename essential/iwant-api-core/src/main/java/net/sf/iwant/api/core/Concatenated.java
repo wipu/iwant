@@ -12,6 +12,7 @@ import java.util.List;
 
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.target.TargetBase;
 
 public class Concatenated extends TargetBase {
 

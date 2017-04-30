@@ -3,10 +3,10 @@ package com.example.wsdef.editversioncustomtargetselfingr;
 import java.io.File;
 import java.util.List;
 
-import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.target.TargetBase;
 import net.sf.iwant.coreservices.FileUtil;
 
 class FileSizeSum extends TargetBase {

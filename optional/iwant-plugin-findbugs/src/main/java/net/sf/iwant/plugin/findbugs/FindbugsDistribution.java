@@ -2,8 +2,8 @@ package net.sf.iwant.plugin.findbugs;
 
 import java.io.File;
 
-import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.target.TargetBase;
 import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.plugin.ant.Untarred;
 

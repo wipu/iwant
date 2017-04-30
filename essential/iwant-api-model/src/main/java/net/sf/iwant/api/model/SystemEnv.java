@@ -1,10 +1,8 @@
-package net.sf.iwant.api.core;
+package net.sf.iwant.api.model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import net.sf.iwant.api.model.Path;
 
 public class SystemEnv {
 

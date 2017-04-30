@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Set;
 
 import net.sf.iwant.api.core.StringFilterByEquality;
-import net.sf.iwant.api.core.SystemEnv;
 import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.StringFilter;
+import net.sf.iwant.api.model.SystemEnv;
 import net.sf.iwant.api.model.Target;
 
 public class JavaSrcModule extends JavaModule {

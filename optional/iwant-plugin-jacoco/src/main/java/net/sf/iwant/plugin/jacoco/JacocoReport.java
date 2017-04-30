@@ -10,9 +10,9 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 import net.sf.iwant.api.antrunner.AntRunner;
-import net.sf.iwant.api.core.TargetBase;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
+import net.sf.iwant.api.target.TargetBase;
 
 public class JacocoReport extends TargetBase {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.api.core;
+package net.sf.iwant.api.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -6,9 +6,7 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import net.sf.iwant.api.core.SystemEnv.SystemEnvPlease;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
+import net.sf.iwant.api.model.SystemEnv.SystemEnvPlease;
 
 public class SystemEnvTest {
 
