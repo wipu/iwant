@@ -311,6 +311,8 @@ public class Iwant3 {
 				"/net/sf/iwant/" + "eclipsesettings/EclipseSettings.class"));
 		apiClassLocations.add(
 				classesDirOf("/net/sf/iwant/" + "api/target/TargetBase.class"));
+		apiClassLocations.add(classesDirOf(
+				"/net/sf/iwant/" + "core/javafinder/WsdefJavaOf.class"));
 		return new ArrayList<>(apiClassLocations);
 	}
 

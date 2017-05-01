@@ -90,6 +90,7 @@ public class Iwant2 {
 		srcDirs.add("iwant-api-zip/" + "src/main/java");
 		srcDirs.add("iwant-core-ant/" + "src/main/java");
 		srcDirs.add("iwant-core-download/" + "src/main/java");
+		srcDirs.add("iwant-core-javafinder/" + "src/main/java");
 		srcDirs.add("iwant-core-javamodules/" + "src/main/java");
 		srcDirs.add("iwant-coreservices/" + "src/main/java");
 		srcDirs.add("iwant-entry/" + "as-some-developer/with/java");

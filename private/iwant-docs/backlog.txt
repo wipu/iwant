@@ -1560,14 +1560,20 @@
 
 - As @buildscriptauthor I want an easy way of declaring the java file of my custom target its own ingredient so I don't get cache invalidation while developing the target code
   + split some modules in preparation for getting a needed context to TargetBase for this
-  (- design a cycleless way to inject a suitable context)
-  - even better: automatic tracking
+  (- design a cycleless way to inject a suitable context: too difficult with the current modularization)
+  (- even better: automatic tracking
     + Iwant3 compiles wsdefdef only if needed
       * this should avoid compiling wsdef
       * bonus: this feature will also make targets dirty when upgrading iwant
       * bonus2: performance shouldn't get worse, at least
     + not enough: Iwant must not compile bootstrapper unless needed
-    - all targets automatically dirty if not newer than all classpath items
+    (- all targets automatically dirty if not newer than all classpath items
+      * hmm, but this will ruin performance of targets that don't depend on modified targets so
+        better to keep this explicit, the responsibility belongs to the target author))
+  - separate tool for finding java files and locations of classes
+    + tdd the tools
+    + change the tutorial to use java file finding
+    - manually test class location finding in iwant-demo (the javabean generator)
 
 - As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
   + use em instead of px so browsers support zooming better

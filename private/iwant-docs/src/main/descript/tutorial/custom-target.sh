@@ -114,6 +114,8 @@ p "When developing a target, it is convenient to declare its own source an ingre
 p "Let's try it for our target."
 
 def-edit wsdef customtargetselfingr FileSizeSum
+wsdef-edit customtargetselfingr
+def-edit wsdef customtargetselfingr IwanttutorialWorkspaceFactory
 cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat"
 out-was <<EOF
 (0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)

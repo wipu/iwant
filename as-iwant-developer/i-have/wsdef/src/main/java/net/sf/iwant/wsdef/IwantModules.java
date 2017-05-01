@@ -249,12 +249,18 @@ public class IwantModules extends JavaModules {
 							iwantApiTarget, iwantEntry)
 					.testDeps(iwantApimocks, junit).end();
 
+	private JavaSrcModule iwantCoreJavafinder = essentialModule(
+			"core-javafinder")
+					.mainDeps(iwantApiJavamodules, iwantApiModel, iwantApiWsdef,
+							iwantEntry)
+					.testDeps(junit).end();
+
 	private JavaSrcModule iwantEntry3 = essentialModule("entry3")
 			.mainDeps(iwantApiBash, iwantApiCore, iwantApiJavamodules,
 					iwantApiModel, iwantApiTarget, iwantApiWsdef,
-					iwantCoreDownload, iwantCoreservices, iwantEntry,
-					iwantEntry2, iwantIwantWsrootFinder, iwantPlanner,
-					iwantPlannerApi)
+					iwantCoreDownload, iwantCoreJavafinder, iwantCoreservices,
+					iwantEntry, iwantEntry2, iwantIwantWsrootFinder,
+					iwantPlanner, iwantPlannerApi)
 			.testDeps(iwantApimocks, iwantEclipseSettings, iwantEntrymocks,
 					iwantPlannerMocks, iwantTestarea, junit)
 			.end();
@@ -357,11 +363,11 @@ public class IwantModules extends JavaModules {
 			.mainDeps(commonsMath, iwantApiBash, iwantApiCore,
 					iwantApiJavamodules, iwantApiModel, iwantApiTarget,
 					iwantApiWsdef, iwantApiZip, iwantCoreAnt, iwantCoreDownload,
-					iwantCoreJavamodules, iwantCoreservices, iwantEntry3,
-					iwantEclipseSettings, iwantPluginAnt, iwantPluginFindbugs,
-					iwantPluginGithub, iwantPluginJacoco, iwantPluginPmd,
-					iwantPluginTestng, iwantPluginWar, junit, scalaLibrary,
-					testng)
+					iwantCoreJavamodules, iwantCoreservices,
+					iwantCoreJavafinder, iwantEntry3, iwantEclipseSettings,
+					iwantPluginAnt, iwantPluginFindbugs, iwantPluginGithub,
+					iwantPluginJacoco, iwantPluginPmd, iwantPluginTestng,
+					iwantPluginWar, junit, scalaLibrary, testng)
 			.end();
 
 	private final Target extendedIwantEnumsJava = new ExtendedIwantEnums(
@@ -384,8 +390,7 @@ public class IwantModules extends JavaModules {
 	@SuppressWarnings("unused")
 	private List<JavaSrcModule> modulesNotDependedByOthers() {
 		List<JavaSrcModule> m = new ArrayList<>();
-		// convenience for user's java module definitions:
-		m.add(iwantCoreJavamodules);
+
 		// internal:
 		m.add(iwantDocs);
 		m.add(iwantEntryTests);

@@ -7,18 +7,21 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.target.TargetBase;
+import net.sf.iwant.core.javafinder.WsdefJavaOf;
 import net.sf.iwant.coreservices.FileUtil;
 
 class FileSizeSum extends TargetBase {
 
 	private final List<Path> pathsToSum;
 	private final String headerLineContent;
+	private final Source me;
 
 	public FileSizeSum(String name, List<Path> pathsToSum,
-			String headerLineContent) {
+			String headerLineContent, WsdefJavaOf wsdefJavaOf) {
 		super(name);
 		this.pathsToSum = pathsToSum;
 		this.headerLineContent = headerLineContent;
+		this.me = wsdefJavaOf.classUnderSrcMainJava(getClass());
 	}
 
 	@Override
@@ -26,12 +29,7 @@ class FileSizeSum extends TargetBase {
 			IngredientsAndParametersPlease iUse) {
 		return iUse.ingredients("pathsToSum", pathsToSum)
 				.parameter("headerLineContent", headerLineContent)
-				.ingredients("me",
-						Source.underWsroot(
-								"as-iwant-tutorial-developer/i-have/wsdef/"
-										+ "src/main/java/"
-										+ "com/example/wsdef/FileSizeSum.java"))
-				.nothingElse();
+				.ingredients("me", me).nothingElse();
 	}
 
 	@Override
