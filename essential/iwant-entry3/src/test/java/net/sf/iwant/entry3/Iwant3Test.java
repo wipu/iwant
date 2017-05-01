@@ -153,6 +153,11 @@ public class Iwant3Test extends TestCase {
 				"WSNAME=example\n" + "WSROOT=../../..\n"
 						+ "WSDEFDEF_MODULE=../wsdefdef\n"
 						+ "WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
+
+		// act slowly like a normal user so the ingredients will be strictly
+		// older than files derived from them:
+		Thread.sleep(1000L);
+
 		try {
 			iwant3.evaluate(asTest);
 			fail();
