@@ -6,7 +6,7 @@ p "Let's write another target using ant, downloaded from ibiblio.org. The ant sc
 
 wsdef-edit v02antgeneratedtarget
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
-cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/antGenerated/as-path | xargs cat "
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/antGenerated/as-path | xargs -r cat "
 
 
 }

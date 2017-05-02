@@ -20,7 +20,7 @@ cmd 'echo "hello" > index.html'
 p "Finally we list the content of the war file."
 
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
-cmde "0 0 0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/demo.war/as-path | xargs unzip -l | tail -n +4 | cut -b 30-"
+cmde "0 0 0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/demo.war/as-path | xargs -r unzip -l | tail -n +4 | cut -b 30-"
 
 out-was <<EOF
 (0/1 D! net.sf.iwant.api.core.Concatenated web.xml)

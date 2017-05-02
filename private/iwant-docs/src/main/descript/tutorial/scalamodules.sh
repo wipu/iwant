@@ -21,8 +21,8 @@ module-edit mixedscala src/main/java first ScalaThatDependsOnJava
 p "Finally, we can build and run some classes."
 
 cmd "as-iwant-tutorial-developer/with/bash/iwant/target/example-mixedscala-classpath/as-path"
-cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/example-mixedscala-classpath/as-path | xargs cat"
-cmd 'java -cp "$(as-iwant-tutorial-developer/with/bash/iwant/target/example-mixedscala-classpath/as-path | xargs cat)" com.example.mixedscala.JavaThatDependsOnScala'
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/example-mixedscala-classpath/as-path | xargs -r cat"
+cmd 'java -cp "$(as-iwant-tutorial-developer/with/bash/iwant/target/example-mixedscala-classpath/as-path | xargs -r cat)" com.example.mixedscala.JavaThatDependsOnScala'
 out-was <<EOF
 scala calling hello from java
 EOF

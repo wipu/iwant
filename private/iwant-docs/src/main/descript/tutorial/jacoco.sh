@@ -28,7 +28,7 @@ cmd "as-iwant-tutorial-developer/with/bash/iwant/target/jacoco-report/as-path"
 
 p "Let's see what is in the report. Here we already benefit from our declarative wish: since we didn't tell iwant to run anything and we haven't touched anything, we can just make the same wish again without having to wait for another test run."
 
-cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/jacoco-report/as-path | xargs ls"
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/jacoco-report/as-path | xargs -r ls"
 
 p "You are probably more interested in the html version, but here we'll take a look at the csv file."
 

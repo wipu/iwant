@@ -1583,6 +1583,9 @@
   + italics for the "quote" in the beginning, with keywords in bold
   + BOLD (both style and attitude) adjectives to prefix the features list bullets!!
 
++ As @buildscriptuser I want xargs used with option -r in the tutorial so I don't get into trouble (hang) if e.g. i call "xargs cat" with empty input 
+  + Also fix typo in index.html
+
 #################################################################
 = In progress
 #################################################################

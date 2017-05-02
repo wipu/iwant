@@ -31,7 +31,7 @@ hello
 example-pmdfodder-main-java-pmd-report
 EOF
 
-cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/example-pmdfodder-main-java-pmd-report/as-path | xargs ls"
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/example-pmdfodder-main-java-pmd-report/as-path | xargs -r ls"
 cmd "cat as-iwant-tutorial-developer/.i-cached/target/example-pmdfodder-main-java-pmd-report/example-pmdfodder-main-java-pmd-report.txt"
 (echo;echo -e "com/example/pmdfodder/PmdFodder.java:5\tMethod names should not start with capital letters") | out-was
 cmde "0 0" "cat as-iwant-tutorial-developer/.i-cached/target/example-pmdfodder-main-java-pmd-report/example-pmdfodder-main-java-pmd-report.xml | wc -l"

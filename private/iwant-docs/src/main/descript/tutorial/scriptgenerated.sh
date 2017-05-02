@@ -6,7 +6,7 @@ p "In case java-based tools are not enough, you can use a script to define conte
 
 wsdef-edit v03scriptgeneratedtarget
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
-cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/scriptGenerated/as-path | xargs cat "
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/scriptGenerated/as-path | xargs -r cat "
 out-was <<EOF
 (0/1 D! net.sf.iwant.api.core.Concatenated shellScript)
 (0/1 D! net.sf.iwant.api.core.ScriptGenerated scriptGenerated)

@@ -12,7 +12,7 @@ cmd "as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/ef
 p "Now we can use commons-math in the workspace definition."
 wsdef-edit v01commonsmathjar
 cmd "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
-cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/arithmeticWithExtLib/as-path | xargs cat "
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/arithmeticWithExtLib/as-path | xargs -r cat "
 out-was <<EOF
 (0/1 D! net.sf.iwant.api.core.HelloTarget arithmeticWithExtLib)
 1/2 + 2/4 = 1

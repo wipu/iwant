@@ -15,6 +15,6 @@ p "Now the utility is available in our build as well as being served by it."
 wsdef-edit usingmoduleinbuild
 
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
-cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/targetUsingModuleFromSameWs/as-path | xargs cat "
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/targetUsingModuleFromSameWs/as-path | xargs -r cat "
 
 }

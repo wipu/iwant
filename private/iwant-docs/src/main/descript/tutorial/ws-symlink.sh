@@ -6,7 +6,7 @@ p "Canonical paths are used so even if you use a symbolic link to your workspace
 
 CACHED_HELLO=$(readlink -f ../iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/hello)
 
-cmde "0 0" "find as-iwant-tutorial-developer -name '*.java' | xargs touch"
+cmde "0 0" "find as-iwant-tutorial-developer -name '*.java' | xargs -r touch"
 
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
 out-was <<EOF

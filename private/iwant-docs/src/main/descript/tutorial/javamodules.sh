@@ -19,7 +19,7 @@ module-edit hello src/main/java first HelloMain
 p "Finally, we can build and run some classes."
 
 cmd "as-iwant-tutorial-developer/with/bash/iwant/target/hello-classes/as-path"
-cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/hello-classes/as-path | xargs cat"
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/hello-classes/as-path | xargs -r cat"
 cmd "java -cp as-iwant-tutorial-developer/.i-cached/target/example-hello-main-classes com.example.hello.HelloMain tutorial"
 out-was <<EOF
 Hello tutorial
@@ -43,10 +43,10 @@ module-edit helloutil src/main/java first HelloUtil
 module-edit hello src/main/java useutil HelloMain
 
 p "Now we can get all our classes as a classpath string."
-cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/all-as-cp/as-path | xargs cat"
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/all-as-cp/as-path | xargs -r cat"
 
 p "Let's use the classpath to run the application again."
-cmd 'java -cp $(as-iwant-tutorial-developer/with/bash/iwant/target/all-as-cp/as-path | xargs cat) com.example.hello.HelloMain "same tutorial"'
+cmd 'java -cp $(as-iwant-tutorial-developer/with/bash/iwant/target/all-as-cp/as-path | xargs -r cat) com.example.hello.HelloMain "same tutorial"'
 out-was <<EOF
 Hello same tutorial
 EOF

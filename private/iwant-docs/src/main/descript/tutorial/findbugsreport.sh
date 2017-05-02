@@ -31,7 +31,7 @@ hello
 example-findbugsfodder-main-java-findbugs-report
 EOF
 
-cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/example-findbugsfodder-main-java-findbugs-report/as-path | xargs -I x find x -type f"
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/example-findbugsfodder-main-java-findbugs-report/as-path | xargs -r -I x find x -type f"
 cmd "grep 'Null pointer dereference.*FindbugsFodder' as-iwant-tutorial-developer/.i-cached/target/example-findbugsfodder-main-java-findbugs-report/findbugs-report/example-findbugsfodder-main-java-findbugs-report.html"
 out-was <<EOF
 <td>Null pointer dereference of o in com.example.findbugsfodder.FindbugsFodder.nullReference(Object)</td>

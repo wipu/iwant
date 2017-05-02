@@ -22,7 +22,7 @@ cmd 'rm -rf Untarred-test'
 p "Finally we list the content of the untarred tar file."
 
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
-cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/Untarred-test/as-path | xargs find"
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/Untarred-test/as-path | xargs -r find"
 
 # TODO enable assertion when ws classes compilation line is always there or always not:
 

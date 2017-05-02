@@ -47,7 +47,7 @@ EOF
 
 p "iwant only prints the requested path to stdout, all diagnostic output goes to stderr. This means we can redirect the path to further processing. This is a convenient idiom for showing the content of a target:"
 
-cmde "0 0" 'as-iwant-tutorial-developer/with/bash/iwant/target/hello2/as-path | xargs cat'
+cmde "0 0" 'as-iwant-tutorial-developer/with/bash/iwant/target/hello2/as-path | xargs -r cat'
 out-was <<EOF
 hello from my first target
 EOF
