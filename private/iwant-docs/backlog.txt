@@ -1575,6 +1575,14 @@
   + upgrade descript
   + fix css
 
++ As @developer I want the main webpage improved as per feedback so it can advertise iwant better
+  + advertise iwant-demo
+  + advertise examples (iwant-demo and tutorial) earlier
+  + subtitles to help with reading
+  + fix backlog link
+  + italics for the "quote" in the beginning, with keywords in bold
+  + BOLD (both style and attitude) adjectives to prefix the features list bullets!!
+
 #################################################################
 = In progress
 #################################################################
