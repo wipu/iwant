@@ -1571,6 +1571,10 @@
     + change the tutorial to use java file finding
     + manually test class location finding in iwant-demo (the javabean generator)
 
++ As @developer I want newest descript in use so the html will be better and easier to diff while development
+  + upgrade descript
+  + fix css
+
 #################################################################
 = In progress
 #################################################################
@@ -1578,6 +1582,7 @@
 - As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
   + use em instead of px so browsers support zooming better
   + make the font bigger so it's readily bigger
+  + make text div less wide so it's easier to read
   - deploy and get feedback
   
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
