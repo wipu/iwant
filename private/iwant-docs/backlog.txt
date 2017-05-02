@@ -1554,11 +1554,7 @@
   + upgrade ant to 1.10.1 to see if it helps with stderr, it didn't but let's keep it
   + real test with iwant-demo
 
-#################################################################
-= In progress
-#################################################################
-
-- As @buildscriptauthor I want an easy way of declaring the java file of my custom target its own ingredient so I don't get cache invalidation while developing the target code
++ As @buildscriptauthor I want an easy way of declaring the java file of my custom target its own ingredient so I don't get cache invalidation while developing the target code
   + split some modules in preparation for getting a needed context to TargetBase for this
   (- design a cycleless way to inject a suitable context: too difficult with the current modularization)
   (- even better: automatic tracking
@@ -1570,10 +1566,14 @@
     (- all targets automatically dirty if not newer than all classpath items
       * hmm, but this will ruin performance of targets that don't depend on modified targets so
         better to keep this explicit, the responsibility belongs to the target author))
-  - separate tool for finding java files and locations of classes
+  + separate tool for finding java files and locations of classes
     + tdd the tools
     + change the tutorial to use java file finding
-    - manually test class location finding in iwant-demo (the javabean generator)
+    + manually test class location finding in iwant-demo (the javabean generator)
+
+#################################################################
+= In progress
+#################################################################
 
 - As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
   + use em instead of px so browsers support zooming better
