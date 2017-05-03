@@ -200,7 +200,7 @@ public class Tutorial extends Target {
 
 	private static String navigationPanel(Descripted prev, Descripted next) {
 		StringBuilder html = new StringBuilder();
-		html.append("<div>");
+		html.append("<div class='navipanel'>");
 		if (prev != null) {
 			html.append("<a href='").append(fileName(prev)).append("'>");
 			html.append("<< ").append(prev.titleText());

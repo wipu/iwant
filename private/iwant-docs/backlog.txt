@@ -1594,7 +1594,7 @@
   + upgrade iwant for the remote website target
   + find and editor div width that looks good in chrome
   + fix some edits that seem to be nonminimal after some changes: scalamodule
-  - make navigation div smaller
+  + make navigation div smaller
   - deploy
 
 - As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
