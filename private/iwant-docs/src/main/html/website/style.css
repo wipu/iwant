@@ -6,7 +6,7 @@ body {background: white; font-family: verdana, arial, sans-serif; font-size: 1em
 .cmd {color:white;}
 .output {color:gray;}
 .output-asserted {font-size:8px; background-color: #def9de;; margin-left:33px;}
-.editor {font-family:monospace;border-style:solid;border-width:1px;margin-left:30px;margin-top:5px;margin-bottom:5px;background-color: #ffffd0;;width:85%;padding:2px;}
+.editor {font-family:monospace;border-style:solid;border-width:1px;margin-left:30px;margin-top:5px;margin-bottom:5px;background-color: #ffffd0;;width:65em;padding:2px;}
 div.line {white-space:pre;margin-bottom:1px;min-height:1em;}
 div.add  {background-color: #def9de;;}
 div.del  {background-color: #f9dede;; text-decoration:line-through;}
