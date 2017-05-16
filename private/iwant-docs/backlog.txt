@@ -1586,23 +1586,23 @@
 + As @buildscriptuser I want xargs used with option -r in the tutorial so I don't get into trouble (hang) if e.g. i call "xargs cat" with empty input 
   + Also fix typo in index.html
 
-#################################################################
-= In progress
-#################################################################
-
-- As @developer I want the current website polished and deployed so I can do more advertising
++ As @developer I want the current website polished and deployed so I can do more advertising
   + upgrade iwant for the remote website target
   + find and editor div width that looks good in chrome
   + fix some edits that seem to be nonminimal after some changes: scalamodule
   + make navigation div smaller
-  - deploy
+  + deploy
 
-- As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
++ As @buildscriptauthor I want nonfixed font size on the web page so I can see it properly
   + use em instead of px so browsers support zooming better
   + make the font bigger so it's readily bigger
   + make text div less wide so it's easier to read
-  - deploy and get feedback
+  + deploy and get feedback
   
+#################################################################
+= In progress
+#################################################################
+
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,
     not just the recipe; also script is a separate source file, not dynamically
