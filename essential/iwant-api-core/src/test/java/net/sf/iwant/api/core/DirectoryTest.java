@@ -23,16 +23,17 @@ public class DirectoryTest extends IwantTestCase {
 		Source ingr1 = Source.underWsroot("src");
 		Target ingr2 = new HelloTarget("hello", "hello content");
 		Directory dir = Directory.named("nonempty").dir("empty-sub").end()
-				.copyOf(ingr1).end().dir("nonempty-sub").copyOf(ingr2).end()
-				.end().end();
+				.copyOf(ingr1).end().dir("nonempty-sub").copyOf(ingr2)
+				.executable(true).end().end().end();
 
 		assertEquals(
 				"net.sf.iwant.api.core.Directory\n" + "p:fullRelativePath:\n"
 						+ "  \n" + "p:fullRelativePath:\n" + "  /empty-sub\n"
 						+ "i:copy-from:\n" + "  src\n" + "p:copy-as:\n"
-						+ "  src\n" + "p:fullRelativePath:\n"
-						+ "  /nonempty-sub\n" + "i:copy-from:\n" + "  hello\n"
-						+ "p:copy-as:\n" + "  hello\n" + "",
+						+ "  src\n" + "p:executable:\n" + " null\n"
+						+ "p:fullRelativePath:\n" + "  /nonempty-sub\n"
+						+ "i:copy-from:\n" + "  hello\n" + "p:copy-as:\n"
+						+ "  hello\n" + "p:executable:\n" + "  true\n" + "",
 				dir.contentDescriptor());
 		assertEquals("[src, hello]", dir.ingredients().toString());
 	}

@@ -149,8 +149,9 @@ public class Directory extends TargetBase {
 		@Override
 		public IngredientsAndParametersPlease ingredientsAndAttributes(
 				IngredientsAndParametersPlease iUse) {
-			return iUse.ingredients("copy-from", path).parameter("copy-as",
-					nameOfCopy);
+			return iUse.ingredients("copy-from", path)
+					.parameter("copy-as", nameOfCopy)
+					.parameter("executable", executable);
 		}
 
 		@Override

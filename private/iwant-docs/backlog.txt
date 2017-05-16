@@ -1603,6 +1603,8 @@
   + tdd
   + also now is a good time to move the name out from copyOf and into a separate method
 
++ @bugfix file under Directory must mention executable as parameter so changing it will render the target dirty
+
 #################################################################
 = In progress
 #################################################################
