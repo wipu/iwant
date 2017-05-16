@@ -30,9 +30,21 @@ public class Directory extends TargetBase {
 		DirectoryContentPlease<DirectoryContentPlease<AFTEREND>> dir(
 				String dirName);
 
-		DirectoryContentPlease<AFTEREND> copyOf(Path path, String name);
+		FileAttributesPlease<DirectoryContentPlease<AFTEREND>> copyOf(
+				Path path);
 
-		DirectoryContentPlease<AFTEREND> copyOf(Path path);
+	}
+
+	public interface FileAttributesPlease<AFTEREND> {
+
+		/**
+		 * An optional way to get back to the parent, for fluent sentences.
+		 */
+		AFTEREND end();
+
+		FileAttributesPlease<AFTEREND> named(String newName);
+
+		FileAttributesPlease<AFTEREND> executable(boolean executable);
 
 	}
 
@@ -56,36 +68,12 @@ public class Directory extends TargetBase {
 		}
 
 		@Override
-		public DirectoryContentPlease<AFTEREND> copyOf(Path path) {
-			return copyOf(path, path.name());
-		}
-
-		@Override
-		public DirectoryContentPlease<AFTEREND> copyOf(final Path path,
-				final String name) {
-			children.add(new FileCreator() {
-				@Override
-				public void createUnder(File parent,
-						TargetEvaluationContext ctx) throws Exception {
-					File from = ctx.cached(path);
-					File to = new File(parent, name);
-					FileUtil.copyRecursively(from, to, true);
-				}
-
-				@Override
-				public IngredientsAndParametersPlease ingredientsAndAttributes(
-						IngredientsAndParametersPlease iUse) {
-					return iUse.ingredients("copy-from", path)
-							.parameter("copy-as", name);
-				}
-
-				@Override
-				public String toString() {
-					return "COPY " + name + " <- " + path;
-				}
-
-			});
-			return this;
+		public FileAttributesPlease<DirectoryContentPlease<AFTEREND>> copyOf(
+				Path path) {
+			FileCopier<DirectoryContentPlease<AFTEREND>> fileCopier = new FileCopier<>(
+					path, this);
+			children.add(fileCopier);
+			return fileCopier;
 		}
 
 		@Override
@@ -112,6 +100,62 @@ public class Directory extends TargetBase {
 				weUse = child.ingredientsAndAttributes(weUse);
 			}
 			return weUse;
+		}
+
+	}
+
+	private static class FileCopier<AFTEREND>
+			implements FileAttributesPlease<AFTEREND>, FileCreator {
+
+		private final Path path;
+		private final AFTEREND afterEnd;
+		private String nameOfCopy;
+		private Boolean executable = null;
+
+		public FileCopier(Path path, AFTEREND afterEnd) {
+			this.path = path;
+			this.afterEnd = afterEnd;
+			this.nameOfCopy = path.name();
+		}
+
+		@Override
+		public AFTEREND end() {
+			return afterEnd;
+		}
+
+		@Override
+		public FileAttributesPlease<AFTEREND> named(String newName) {
+			this.nameOfCopy = newName;
+			return this;
+		}
+
+		@Override
+		public FileAttributesPlease<AFTEREND> executable(boolean executable) {
+			this.executable = executable;
+			return this;
+		}
+
+		@Override
+		public void createUnder(File parent, TargetEvaluationContext ctx)
+				throws Exception {
+			File from = ctx.cached(path);
+			File to = new File(parent, nameOfCopy);
+			FileUtil.copyRecursively(from, to, true);
+			if (executable != null) {
+				to.setExecutable(executable);
+			}
+		}
+
+		@Override
+		public IngredientsAndParametersPlease ingredientsAndAttributes(
+				IngredientsAndParametersPlease iUse) {
+			return iUse.ingredients("copy-from", path).parameter("copy-as",
+					nameOfCopy);
+		}
+
+		@Override
+		public String toString() {
+			return "COPY " + nameOfCopy + " <- " + path;
 		}
 
 	}

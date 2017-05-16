@@ -1599,6 +1599,10 @@
   + make text div less wide so it's easier to read
   + deploy and get feedback
   
++ As @buildscriptauthor I want to declare the x flag for a file under a Directory so I can easily define an application distribution directory with a start script
+  + tdd
+  + also now is a good time to move the name out from copyOf and into a separate method
+
 #################################################################
 = In progress
 #################################################################

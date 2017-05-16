@@ -3,6 +3,7 @@ package net.sf.iwant.api.core;
 import java.io.File;
 import java.util.Arrays;
 
+import net.sf.iwant.api.core.Directory.DirectoryContentPlease;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
@@ -22,7 +23,8 @@ public class DirectoryTest extends IwantTestCase {
 		Source ingr1 = Source.underWsroot("src");
 		Target ingr2 = new HelloTarget("hello", "hello content");
 		Directory dir = Directory.named("nonempty").dir("empty-sub").end()
-				.copyOf(ingr1).dir("nonempty-sub").copyOf(ingr2).end().end();
+				.copyOf(ingr1).end().dir("nonempty-sub").copyOf(ingr2).end()
+				.end().end();
 
 		assertEquals(
 				"net.sf.iwant.api.core.Directory\n" + "p:fullRelativePath:\n"
@@ -55,8 +57,8 @@ public class DirectoryTest extends IwantTestCase {
 		hello2.path(ctx);
 
 		Directory nonempty = Directory.named("nonempty").dir("empty-sub").end()
-				.copyOf(src).dir("nonempty-sub").copyOf(hello1)
-				.copyOf(hello2, "hello2-renamed").end().end();
+				.copyOf(src).end().dir("nonempty-sub").copyOf(hello1).end()
+				.copyOf(hello2).named("hello2-renamed").end().end().end();
 		nonempty.path(ctx);
 
 		assertEquals("src content", contentOfCached("nonempty/src"));
@@ -65,6 +67,46 @@ public class DirectoryTest extends IwantTestCase {
 				contentOfCached("nonempty/nonempty-sub/hello1"));
 		assertEquals("hello2 content",
 				contentOfCached("nonempty/nonempty-sub/hello2-renamed"));
+	}
+
+	public void testCopyOfNormalFileIsExecutableOnlyIfDeclaredSo()
+			throws Exception {
+		Target i1 = new HelloTarget("i1", "i1");
+		Target i2 = new HelloTarget("i2", "i2");
+		Target i3 = new HelloTarget("i3", "i3");
+		i1.path(ctx);
+		i2.path(ctx);
+		i3.path(ctx);
+
+		DirectoryContentPlease<Directory> root = Directory.named("root");
+		root.copyOf(i1);
+		root.copyOf(i2).executable(false);
+		root.copyOf(i3).executable(true);
+		root.end().path(ctx);
+
+		assertFalse(new File(cached, "root/i1").canExecute());
+		assertFalse(new File(cached, "root/i2").canExecute());
+		assertTrue(new File(cached, "root/i3").canExecute());
+	}
+
+	public void testCopyOfDirectoryIsExecutableUnlessToldNotToBe()
+			throws Exception {
+		Target i1 = Directory.named("i1").end();
+		Target i2 = Directory.named("i2").end();
+		Target i3 = Directory.named("i3").end();
+		i1.path(ctx);
+		i2.path(ctx);
+		i3.path(ctx);
+
+		DirectoryContentPlease<Directory> root = Directory.named("root");
+		root.copyOf(i1);
+		root.copyOf(i2).executable(false);
+		root.copyOf(i3).executable(true);
+		root.end().path(ctx);
+
+		assertTrue(new File(cached, "root/i1").canExecute());
+		assertFalse(new File(cached, "root/i2").canExecute());
+		assertTrue(new File(cached, "root/i3").canExecute());
 	}
 
 }
