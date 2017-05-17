@@ -18,8 +18,7 @@ class DefaultUserPrefs implements UserPrefs {
 
 	@Override
 	public int workerCount() {
-		// let's play safe by default
-		return 1;
+		return Runtime.getRuntime().availableProcessors();
 	}
 
 }

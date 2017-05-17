@@ -24,7 +24,7 @@ import net.sf.iwant.testarea.TestArea;
 public class Iwant3Test extends TestCase {
 
 	private static final String LINE_SEPARATOR_KEY = "line.separator";
-
+	private static final int NCPU = Runtime.getRuntime().availableProcessors();
 	private TestArea testArea;
 	private IwantNetworkMock network;
 	private Iwant3 iwant3;
@@ -506,7 +506,7 @@ public class Iwant3Test extends TestCase {
 			assertEquals(
 					"(Using default user preferences (file " + asTest
 							+ "/i-have/conf/user-preferences is missing):\n"
-							+ "[workerCount=1])\n" + "Try " + asTest
+							+ "[workerCount=" + NCPU + "])\n" + "Try " + asTest
 							+ "/with/bash/iwant/list-of/side-effects\nor\n"
 							+ asTest + "/with/bash/iwant/list-of/targets",
 					e.getMessage());
@@ -698,7 +698,7 @@ public class Iwant3Test extends TestCase {
 			assertEquals(
 					"(Using default user preferences (file " + asTest
 							+ "/i-have/conf/user-preferences is missing):\n"
-							+ "[workerCount=1])\n" + "Try " + asTest
+							+ "[workerCount=" + NCPU + "])\n" + "Try " + asTest
 							+ "/with/bash/iwant/list-of/side-effects\nor\n"
 							+ asTest + "/with/bash/iwant/list-of/targets",
 					e.getMessage());

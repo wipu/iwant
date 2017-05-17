@@ -1605,6 +1605,8 @@
 
 + @bugfix file under Directory must mention executable as parameter so changing it will render the target dirty
 
++ As @buildscriptuser I want iwant to use the number of processor as the default workerCount so that I can automatically benefit from parallel computation
+
 #################################################################
 = In progress
 #################################################################
