@@ -4,58 +4,60 @@ import junit.framework.TestCase;
 
 public class FromRepositoryTest extends TestCase {
 
-	public void testAnt171() {
-		Downloaded ant171 = FromRepository.repo1MavenOrg()
-				.group("org/apache/ant").name("ant").version("1.7.1");
+	public void testFactsOfArtifactGivenWithSlashesInGroup() {
+		GnvArtifact<Downloaded> t = FromRepository.repo1MavenOrg()
+				.group("org/apache/ant").name("ant").version("1.7.1").jar();
 
-		assertEquals("ant-1.7.1.jar", ant171.name());
+		assertEquals("ant-1.7.1.jar", t.name());
+		assertEquals("http://repo1.maven.org/maven2/", t.urlPrefix());
+		assertEquals("org.apache.ant", t.group());
+		assertEquals("ant", t.shortName());
+		assertEquals("1.7.1", t.version());
+
 		assertEquals(
 				"http://repo1.maven.org/maven2/"
 						+ "org/apache/ant/ant/1.7.1/ant-1.7.1.jar",
-				ant171.url().toString());
+				t.artifact().url().toString());
 		// TODO refer to correct checksum url
-		assertNull(ant171.md5());
+		assertNull(t.artifact().md5());
 	}
 
-	public void testCommonsMath12() {
-		Downloaded commonsMath12 = FromRepository.repo1MavenOrg()
-				.group("commons-math").name("commons-math").version("1.2");
+	public void testFactsOfArtifactGivenWithDotsInGroup() {
+		GnvArtifact<Downloaded> t = FromRepository.repo1MavenOrg()
+				.group("com.google.code.findbugs").name("findbugs")
+				.version("1.3.9").jar();
 
-		assertEquals("commons-math-1.2.jar", commonsMath12.name());
-		assertEquals(
-				"http://repo1.maven.org/maven2/"
-						+ "commons-math/commons-math/1.2/commons-math-1.2.jar",
-				commonsMath12.url().toString());
-		// TODO refer to correct checksum url
-		assertNull(commonsMath12.md5());
-	}
+		assertEquals("findbugs-1.3.9.jar", t.name());
+		assertEquals("http://repo1.maven.org/maven2/", t.urlPrefix());
+		assertEquals("com.google.code.findbugs", t.group());
+		assertEquals("findbugs", t.shortName());
+		assertEquals("1.3.9", t.version());
 
-	public void testRepo1MavenOrgFindbugs139() {
-		Downloaded findbugs139 = FromRepository.repo1MavenOrg()
-				.group("com/google/code/findbugs").name("findbugs")
-				.version("1.3.9");
-
-		assertEquals("findbugs-1.3.9.jar", findbugs139.name());
 		assertEquals(
 				"http://repo1.maven.org/maven2/"
 						+ "com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9.jar",
-				findbugs139.url().toExternalForm());
+				t.artifact().url().toExternalForm());
 		// TODO refer to correct checksum url
-		assertNull(findbugs139.md5());
+		assertNull(t.artifact().md5());
 	}
 
-	public void testDotsInGroupTurnIntoSlashes() {
+	public void testFactsOfSourceArtifact() {
+		GnvArtifact<Downloaded> t = FromRepository.repo1MavenOrg()
+				.group("com.google.code.findbugs").name("findbugs")
+				.version("1.3.9").sourcesJar();
+
+		assertEquals("findbugs-1.3.9-sources.jar", t.name());
+		assertEquals("http://repo1.maven.org/maven2/", t.urlPrefix());
+		assertEquals("com.google.code.findbugs", t.group());
+		assertEquals("findbugs", t.shortName());
+		assertEquals("1.3.9", t.version());
+
 		assertEquals(
 				"http://repo1.maven.org/maven2/"
-						+ "org/apache/ant/ant/1.7.1/ant-1.7.1.jar",
-				FromRepository.repo1MavenOrg().group("org.apache.ant")
-						.name("ant").version("1.7.1").url().toString());
-		assertEquals(
-				"http://repo1.maven.org/maven2/"
-						+ "com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9.jar",
-				FromRepository.repo1MavenOrg().group("com.google.code.findbugs")
-						.name("findbugs").version("1.3.9").url()
-						.toExternalForm());
+						+ "com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9-sources.jar",
+				t.artifact().url().toExternalForm());
+		// TODO refer to correct checksum url
+		assertNull(t.artifact().md5());
 	}
 
 }

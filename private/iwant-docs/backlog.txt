@@ -1875,6 +1875,13 @@
 = Planned
 #################################################################
 
+- as @buildscriptuser I want JavaModules.binModule to have sources by default to I can navigate to them when using 3rd party libraries
+  * also: as @developer I want FromRepository to return an object that remembers group,name,version because I know it helps e.g. when generating poms    
+  + FromRepository returns GnvArtifact<Downloaded> instead of Downloaded
+  + it also requires type: jar or sourcesJar
+  + JavaModules.binModule includes sources by default
+  - upgrade iwant for own projects and do some real testing
+
 - @bugfix @antstderrbug
   * AntGeneratedTest started failing: if >2 tests methods are run, assertions of stderr fail
     * ant really doesn't print anything after mentioning the build script: I printed stuff before

@@ -14,6 +14,7 @@ import net.sf.iwant.api.wsdef.IwantPluginWishes;
 import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
 import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.core.download.FromRepository;
+import net.sf.iwant.core.download.GnvArtifact;
 import net.sf.iwant.core.download.SvnExported;
 import net.sf.iwant.core.download.TestedIwantDependencies;
 import net.sf.iwant.entry.Iwant;
@@ -150,12 +151,12 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 				public Set<JavaModule> withDependencies() {
 					return pluginWithDependencies("iwant-plugin-pmd", antJar(),
 							FromRepository.repo1MavenOrg().group("asm")
-									.name("asm").version("3.2"),
+									.name("asm").version("3.2").jar(),
 							commonsIoJar(),
 							FromRepository.repo1MavenOrg().group("jaxen")
-									.name("jaxen").version("1.1.4"),
+									.name("jaxen").version("1.1.4").jar(),
 							FromRepository.repo1MavenOrg().group("pmd")
-									.name("pmd").version("4.3"));
+									.name("pmd").version("4.3").jar());
 				}
 
 			};
@@ -195,9 +196,9 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 		return TestedIwantDependencies.antLauncherJar();
 	}
 
-	private static Downloaded commonsIoJar() {
+	private static GnvArtifact<Downloaded> commonsIoJar() {
 		return FromRepository.repo1MavenOrg().group("org/apache/commons")
-				.name("commons-io").version("1.3.2");
+				.name("commons-io").version("1.3.2").jar();
 	}
 
 	private static Path jcommanderJar() {

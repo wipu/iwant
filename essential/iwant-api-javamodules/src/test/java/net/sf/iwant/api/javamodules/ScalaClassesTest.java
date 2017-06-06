@@ -7,7 +7,6 @@ import java.util.Arrays;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.core.download.TestedIwantDependencies;
 import net.sf.iwant.entry.Iwant;
 
@@ -17,13 +16,13 @@ public class ScalaClassesTest extends IwantTestCase {
 
 	@Override
 	protected void moreSetUp() throws Exception {
-		cacheProvidesRealDownloaded(SCALA.compilerJar().url());
-		cacheProvidesRealDownloaded(SCALA.libraryJar().url());
-		cacheProvidesRealDownloaded(SCALA.reflectJar().url());
+		cacheProvidesRealDownloaded(SCALA.compilerJar().artifact().url());
+		cacheProvidesRealDownloaded(SCALA.libraryJar().artifact().url());
+		cacheProvidesRealDownloaded(SCALA.reflectJar().artifact().url());
 		cacheProvidesRealDownloaded(
-				((Downloaded) TestedIwantDependencies.antJar()).url());
+				TestedIwantDependencies.antJar().artifact().url());
 		cacheProvidesRealDownloaded(
-				((Downloaded) TestedIwantDependencies.antLauncherJar()).url());
+				TestedIwantDependencies.antLauncherJar().artifact().url());
 	}
 
 	private void cacheProvidesRealDownloaded(URL url) {

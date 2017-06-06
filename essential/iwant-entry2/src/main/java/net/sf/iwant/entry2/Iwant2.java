@@ -111,12 +111,12 @@ public class Iwant2 {
 	}
 
 	public URL antJarUrl() {
-		return urlForGnv(REPO_MAVEN_ORG, "org.apache.ant", "ant", ANT_VER);
+		return urlForGnv(REPO_MAVEN_ORG, "org.apache.ant", "ant", ANT_VER, "");
 	}
 
 	public URL antLauncherJarUrl() {
 		return urlForGnv(REPO_MAVEN_ORG, "org.apache.ant", "ant-launcher",
-				ANT_VER);
+				ANT_VER, "");
 	}
 
 	public File antJar() {
@@ -128,13 +128,13 @@ public class Iwant2 {
 	}
 
 	public static URL urlForGnv(String repoPrefix, String group, String name,
-			String version) {
+			String version, String typeExt) {
 		return Iwant.url(repoPrefix + group.replace(".", "/") + "/" + name + "/"
-				+ version + "/" + jarName(name, version));
+				+ version + "/" + jarName(name, version, typeExt));
 	}
 
-	public static String jarName(String name, String version) {
-		return name + "-" + version + ".jar";
+	public static String jarName(String name, String version, String typeExt) {
+		return name + "-" + version + typeExt + ".jar";
 	}
 
 	public static SortedSet<File> srcDirsOfIwantWs(File iwantEssential) {

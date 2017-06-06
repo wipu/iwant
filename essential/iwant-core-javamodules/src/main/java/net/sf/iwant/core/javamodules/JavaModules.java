@@ -57,14 +57,28 @@ public abstract class JavaModules {
 	protected JavaBinModule binModule(String group, String name, String version,
 			JavaModule... runtimeDeps) {
 		Path jar = FromRepository.repo1MavenOrg().group(group).name(name)
-				.version(version);
+				.version(version).jar();
+		Path src = FromRepository.repo1MavenOrg().group(group).name(name)
+				.version(version).sourcesJar();
+		return binModule(jar, src, runtimeDeps);
+	}
+
+	protected JavaBinModule srclessBinModule(String group, String name,
+			String version, JavaModule... runtimeDeps) {
+		Path jar = FromRepository.repo1MavenOrg().group(group).name(name)
+				.version(version).jar();
 		return binModule(jar, runtimeDeps);
 	}
 
 	public static JavaBinModule binModule(Path mainArtifact,
 			JavaModule... runtimeDeps) {
-		return JavaBinModule.providing(mainArtifact).runtimeDeps(runtimeDeps)
-				.end();
+		return binModule(mainArtifact, null, runtimeDeps);
+	}
+
+	public static JavaBinModule binModule(Path mainArtifact,
+			Path mainArtifactSrc, JavaModule... runtimeDeps) {
+		return JavaBinModule.providing(mainArtifact, mainArtifactSrc)
+				.runtimeDeps(runtimeDeps).end();
 	}
 
 	public static List<Path> mainArtifactsOf(JavaModule... modules) {

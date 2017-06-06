@@ -2,6 +2,7 @@ package net.sf.iwant.api.javamodules;
 
 import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.core.download.FromRepository;
+import net.sf.iwant.core.download.GnvArtifact;
 
 public class ScalaVersion {
 
@@ -24,20 +25,20 @@ public class ScalaVersion {
 		return new ScalaVersion("2.11.7");
 	}
 
-	private Downloaded jar(String name) {
+	private GnvArtifact<Downloaded> jar(String name) {
 		return FromRepository.repo1MavenOrg().group("org.scala-lang").name(name)
-				.version(value);
+				.version(value).jar();
 	}
 
-	public Downloaded compilerJar() {
+	public GnvArtifact<Downloaded> compilerJar() {
 		return jar("scala-compiler");
 	}
 
-	public Downloaded libraryJar() {
+	public GnvArtifact<Downloaded> libraryJar() {
 		return jar("scala-library");
 	}
 
-	public Downloaded reflectJar() {
+	public GnvArtifact<Downloaded> reflectJar() {
 		return jar("scala-reflect");
 	}
 

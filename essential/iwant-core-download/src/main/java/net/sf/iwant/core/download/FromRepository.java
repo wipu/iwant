@@ -15,13 +15,14 @@ public class FromRepository {
 		private final String urlPrefix;
 		private String group;
 		private String name;
+		private String version;
 
 		public ArtifactGroup(String urlPrefix) {
 			this.urlPrefix = urlPrefix;
 		}
 
 		public ArtifactName group(String group) {
-			this.group = group;
+			this.group = group.replace("/", ".");
 			return new ArtifactName();
 		}
 
@@ -36,19 +37,41 @@ public class FromRepository {
 
 		public class ArtifactVersion {
 
-			public Downloaded version(String version) {
-				URL url = url(version);
+			public ArtifactType version(String version) {
+				ArtifactGroup.this.version = version;
+				return new ArtifactType();
+			}
+
+		}
+
+		public class ArtifactType {
+
+			public GnvArtifact<Downloaded> jar() {
+				return artifact("");
+			}
+
+			public GnvArtifact<Downloaded> sourcesJar() {
+				return artifact("-sources");
+			}
+
+			private GnvArtifact<Downloaded> artifact(String typeExt) {
+				URL url = url(version, typeExt);
 				// TODO specify checksum urls when supported
-				return Downloaded.withName(jarName(version)).url(url.toString())
+				Downloaded artifact = Downloaded
+						.withName(jarName(version, typeExt)).url(url.toString())
 						.noCheck();
+
+				return new GnvArtifact<>(artifact, urlPrefix, group, name,
+						version);
 			}
 
-			private String jarName(String version) {
-				return Iwant2.jarName(name, version);
+			private String jarName(String version, String typeExt) {
+				return Iwant2.jarName(name, version, typeExt);
 			}
 
-			private URL url(String version) {
-				return Iwant2.urlForGnv(urlPrefix, group, name, version);
+			private URL url(String version, String typeExt) {
+				return Iwant2.urlForGnv(urlPrefix, group, name, version,
+						typeExt);
 			}
 
 		}

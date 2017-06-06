@@ -49,9 +49,9 @@ public class IwanttutorialWorkspace implements Workspace {
 		return AntGenerated.with().name("antGenerated")
 				.antJars(
 						FromRepository.repo1MavenOrg().group(antGroup)
-								.name("ant").version(antVersion),
+								.name("ant").version(antVersion).jar(),
 						FromRepository.repo1MavenOrg().group(antGroup)
-								.name("ant-launcher").version(antVersion))
+								.name("ant-launcher").version(antVersion).jar())
 				.script(antScript()).end();
 	}
 

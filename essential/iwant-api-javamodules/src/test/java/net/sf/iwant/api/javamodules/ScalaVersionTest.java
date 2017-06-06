@@ -18,15 +18,15 @@ public class ScalaVersionTest {
 		assertUrl(
 				"http://repo1.maven.org/maven2/org/scala-lang/"
 						+ "scala-compiler/2.11.7/scala-compiler-2.11.7.jar",
-				scala.compilerJar());
+				scala.compilerJar().artifact());
 		assertUrl(
 				"http://repo1.maven.org/maven2/org/scala-lang/"
 						+ "scala-library/2.11.7/scala-library-2.11.7.jar",
-				scala.libraryJar());
+				scala.libraryJar().artifact());
 		assertUrl(
 				"http://repo1.maven.org/maven2/org/scala-lang/"
 						+ "scala-reflect/2.11.7/scala-reflect-2.11.7.jar",
-				scala.reflectJar());
+				scala.reflectJar().artifact());
 	}
 
 	@Test

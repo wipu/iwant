@@ -17,6 +17,7 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.api.zip.Jar;
 import net.sf.iwant.core.download.Downloaded;
+import net.sf.iwant.core.download.GnvArtifact;
 
 public class JavaModulesTest {
 
@@ -115,11 +116,36 @@ public class JavaModulesTest {
 
 		assertEquals("[commons-io-2.4.jar]",
 				m.src.mainDepsForCompilation().toString());
-		Downloaded binArtifact = (Downloaded) m.bin.mainArtifact();
+		@SuppressWarnings("unchecked")
+		GnvArtifact<Downloaded> binArtifact = (GnvArtifact<Downloaded>) m.bin
+				.mainArtifact();
 		assertEquals(
 				"http://repo1.maven.org/maven2/commons-io/"
 						+ "commons-io/2.4/commons-io-2.4.jar",
-				binArtifact.url().toString());
+				binArtifact.artifact().url().toString());
+
+		@SuppressWarnings("unchecked")
+		GnvArtifact<Downloaded> binArtifactSrc = (GnvArtifact<Downloaded>) m.bin
+				.source();
+		assertEquals(
+				"http://repo1.maven.org/maven2/commons-io/"
+						+ "commons-io/2.4/commons-io-2.4-sources.jar",
+				binArtifactSrc.artifact().url().toString());
+	}
+
+	@Test
+	public void srclessBinModuleHasNoSource() {
+		class Mods extends JavaModules {
+			JavaBinModule bin = srclessBinModule("commons-io", "commons-io",
+					"2.4");
+			JavaSrcModule src = srcModule("mod").mainDeps(bin).end();
+		}
+		Mods m = new Mods();
+
+		assertEquals("[commons-io-2.4.jar]",
+				m.src.mainDepsForCompilation().toString());
+
+		assertNull(m.bin.source());
 	}
 
 	@Test
