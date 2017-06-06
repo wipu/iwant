@@ -1881,6 +1881,7 @@
   + it also requires type: jar or sourcesJar
   + JavaModules.binModule includes sources by default
   - upgrade iwant for own projects and do some real testing
+    + make binModule methods public static for wsdefdefs
 
 - @bugfix @antstderrbug
   * AntGeneratedTest started failing: if >2 tests methods are run, assertions of stderr fail

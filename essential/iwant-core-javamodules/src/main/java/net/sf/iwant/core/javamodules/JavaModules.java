@@ -54,8 +54,8 @@ public abstract class JavaModules {
 		}
 	}
 
-	protected JavaBinModule binModule(String group, String name, String version,
-			JavaModule... runtimeDeps) {
+	public static JavaBinModule binModule(String group, String name,
+			String version, JavaModule... runtimeDeps) {
 		Path jar = FromRepository.repo1MavenOrg().group(group).name(name)
 				.version(version).jar();
 		Path src = FromRepository.repo1MavenOrg().group(group).name(name)
@@ -63,7 +63,7 @@ public abstract class JavaModules {
 		return binModule(jar, src, runtimeDeps);
 	}
 
-	protected JavaBinModule srclessBinModule(String group, String name,
+	public static JavaBinModule srclessBinModule(String group, String name,
 			String version, JavaModule... runtimeDeps) {
 		Path jar = FromRepository.repo1MavenOrg().group(group).name(name)
 				.version(version).jar();
