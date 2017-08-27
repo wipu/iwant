@@ -45,26 +45,18 @@ EOF
 
 p "It is advisable to ignore the wish scripts (except for help.sh, the iwant cli) from the version control, since iwant regenerates them at every wish, according to the workspace definition."
 
-NCPU=$(grep "^physical id" /proc/cpuinfo | wc -l)
+section "Optional: configuring the worker thread count"
+
+p "In this tutorial we'll use only one worker thread to keep the output deterministic. You should probably use a bigger number, depending on your machine. You'll probably want to skip this phase and use the default value, the number of cores in your system:"
+cmd 'echo workerCount=1 > as-iwant-tutorial-developer/i-have/conf/user-preferences'
+
+section "Finishing with the wizard"
 
 p "Let's end the wizard by wishing for help one more time."
 cmde "1" "as-iwant-tutorial-developer/with/bash/iwant/help.sh"
 out-was <<EOF
 (0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)
 (0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
-(Using default user preferences (file $PWD/as-iwant-tutorial-developer/i-have/conf/user-preferences is missing):
-[workerCount=$NCPU])
-Try $PWD/as-iwant-tutorial-developer/with/bash/iwant/list-of/side-effects
-or
-$PWD/as-iwant-tutorial-developer/with/bash/iwant/list-of/targets
-EOF
-
-section "Configuring the worker thread count"
-
-p "In this tutorial we'll use only one worker thread to keep the output deterministic. You should probably use a bigger number, depending on your machine."
-cmd 'echo workerCount=1 > as-iwant-tutorial-developer/i-have/conf/user-preferences'
-cmde "1" "as-iwant-tutorial-developer/with/bash/iwant/help.sh"
-out-was <<EOF
 (Using user preferences from file $PWD/as-iwant-tutorial-developer/i-have/conf/user-preferences:
 [workerCount=1])
 Try $PWD/as-iwant-tutorial-developer/with/bash/iwant/list-of/side-effects
