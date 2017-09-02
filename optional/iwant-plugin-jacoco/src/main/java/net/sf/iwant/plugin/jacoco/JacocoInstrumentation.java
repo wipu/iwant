@@ -13,6 +13,7 @@ import net.sf.iwant.api.antrunner.AntRunner;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.target.TargetBase;
+import net.sf.iwant.entry.Iwant;
 
 public class JacocoInstrumentation extends TargetBase {
 
@@ -98,7 +99,7 @@ public class JacocoInstrumentation extends TargetBase {
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
-		ctx.cached(this).mkdirs();
+		Iwant.mkdirs(ctx.cached(this));
 		File tmp = ctx.freshTemporaryDirectory();
 
 		File antScript = new File(tmp, name() + ".xml");

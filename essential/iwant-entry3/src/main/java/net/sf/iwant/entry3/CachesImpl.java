@@ -59,7 +59,7 @@ public class CachesImpl implements Caches {
 		File parent = new File(wsCache, "temp");
 		File tmpDir = new File(parent, workerName);
 		Iwant.del(tmpDir);
-		tmpDir.mkdirs();
+		Iwant.mkdirs(tmpDir);
 		return tmpDir;
 	}
 

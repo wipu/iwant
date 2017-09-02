@@ -75,7 +75,7 @@ public class FindbugsReportTest extends IwantTestCase {
 		final String packageDirName = "net/sf/iwant/plugin/findbugs/"
 				+ lastPartOfPackage;
 		File packageDir = new File(srcDir, packageDirName);
-		packageDir.mkdirs();
+		Iwant.mkdirs(packageDir);
 
 		FileUtils.copyFile(
 				FileUtils.toFile(getClass().getResource(

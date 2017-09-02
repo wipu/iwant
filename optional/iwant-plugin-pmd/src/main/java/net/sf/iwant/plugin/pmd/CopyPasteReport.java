@@ -13,6 +13,7 @@ import org.apache.tools.ant.types.FileSet;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.target.TargetBase;
+import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sourceforge.pmd.cpd.CPDTask;
 
@@ -85,7 +86,7 @@ public class CopyPasteReport extends TargetBase {
 			throw new IwantException("No source directories given.");
 		}
 		File dest = ctx.cached(this);
-		dest.mkdirs();
+		Iwant.mkdirs(dest);
 
 		File txtReport = new File(dest, name() + ".txt");
 

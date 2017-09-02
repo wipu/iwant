@@ -9,6 +9,7 @@ import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.target.TargetBase;
 import net.sf.iwant.coreservices.FileUtil;
+import net.sf.iwant.entry.Iwant;
 
 public class Directory extends TargetBase {
 
@@ -80,7 +81,7 @@ public class Directory extends TargetBase {
 		public void createUnder(File parent, TargetEvaluationContext ctx)
 				throws Exception {
 			File me = new File(parent, fullRelativePath);
-			me.mkdirs();
+			Iwant.mkdirs(me);
 			for (FileCreator child : children) {
 				child.createUnder(me, ctx);
 			}

@@ -40,12 +40,12 @@ public class TargetRefreshTask implements Task {
 	@Override
 	public void refresh(Map<ResourcePool, Resource> allocatedResources) {
 		File cachedDescriptor = cachedDescriptorFile();
-		cachedDescriptor.getParentFile().mkdirs();
+		Iwant.mkdirs(cachedDescriptor.getParentFile());
 		// make sure refresh is retried even if it's interrupted
 		cachedDescriptor.delete();
 
 		File cachedTarget = ctx.cached(target);
-		cachedTarget.getParentFile().mkdirs();
+		Iwant.mkdirs(cachedTarget.getParentFile());
 		if (target.expectsCachedTargetMissingBeforeRefresh()) {
 			Iwant.del(cachedTarget);
 		}

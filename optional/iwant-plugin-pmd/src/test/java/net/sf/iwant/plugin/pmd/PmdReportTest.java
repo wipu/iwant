@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.entry.Iwant;
 
 public class PmdReportTest extends PmdTestBase {
 
@@ -54,7 +55,7 @@ public class PmdReportTest extends PmdTestBase {
 	public void testReportOfZeroSrcDirectoriesProducesReportFiles()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDir.mkdirs();
+		Iwant.mkdirs(srcDir);
 
 		PmdReport report = PmdReport.with().name("pmd-report").end();
 		report.path(ctx);
@@ -66,7 +67,7 @@ public class PmdReportTest extends PmdTestBase {
 	public void testReportOfEmptySrcDirectoryProducesReportFiles()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDir.mkdirs();
+		Iwant.mkdirs(srcDir);
 
 		PmdReport report = PmdReport.with().name("pmd-report")
 				.from(Source.underWsroot("src")).end();

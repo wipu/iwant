@@ -89,7 +89,7 @@ public class Iwant3 {
 
 	private void doEvaluate(File asSomeone, String... args) throws Exception {
 		File iHave = new File(asSomeone, "i-have");
-		iHave.mkdirs();
+		Iwant.mkdirs(iHave);
 		File iHaveConf = new File(iHave, "conf");
 		File wsInfoFile = wsInfoFile(iHaveConf);
 		WsInfo wsInfo = parseWsInfo(wsInfoFile, asSomeone);
@@ -192,7 +192,7 @@ public class Iwant3 {
 				new CombinedSrcFromUnmodifiableIwantEssential(iwantEssential));
 		Iwant.fileLog("Combining iwant sources from " + iwantEssential + " to "
 				+ combinedSources);
-		combinedSources.mkdirs();
+		Iwant.mkdirs(combinedSources);
 		SortedSet<File> srcDirs = Iwant2.srcDirsOfIwantWs(iwantEssential);
 		for (File srcDir : srcDirs) {
 			FileUtil.copyMissingFiles(srcDir, combinedSources);

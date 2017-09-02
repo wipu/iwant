@@ -230,7 +230,7 @@ public class IwantTest extends TestCase {
 		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
 				"exported-iwant-wsroot/essential");
 		File preExisting = new File(exportedWsEssential, "existing");
-		preExisting.mkdirs();
+		Iwant.mkdirs(preExisting);
 
 		assertEquals(exportedWsEssential,
 				Iwant.using(network).iwantEssentialOfWishedVersion(asSomeone));
@@ -257,7 +257,7 @@ public class IwantTest extends TestCase {
 		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
 				"exported-iwant-wsroot/essential");
 		File preExisting = new File(exportedWsEssential, "existing");
-		preExisting.mkdirs();
+		Iwant.mkdirs(preExisting);
 
 		assertEquals(exportedWsEssential,
 				Iwant.using(network).iwantEssentialOfWishedVersion(asSomeone));
@@ -314,7 +314,7 @@ public class IwantTest extends TestCase {
 		File dir = new File(testArea.root(), "dir");
 		UnmodifiableIwantBootstrapperClassesFromIwantWsRoot without = new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
 				dir);
-		dir.mkdir();
+		Iwant.mkdirs(dir);
 		UnmodifiableIwantBootstrapperClassesFromIwantWsRoot with = new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
 				dir);
 		assertEquals(with.location().toExternalForm(),
@@ -393,6 +393,54 @@ public class IwantTest extends TestCase {
 		long t2 = bsClasses.lastModified();
 
 		assertEquals(t1, t2);
+	}
+
+	public void testMkdirsCreatesDirectoryWithParent() {
+		File dir = new File(testArea.root(), "a/b");
+		Iwant.mkdirs(dir);
+
+		assertTrue(dir.exists());
+		assertTrue(dir.isDirectory());
+	}
+
+	public void testMkdirsIsOkForExistentDirectory() {
+		File dir = new File(testArea.root(), "a/b");
+		Iwant.mkdirs(dir);
+		Iwant.mkdirs(dir);
+
+		assertTrue(dir.exists());
+		assertTrue(dir.isDirectory());
+	}
+
+	public void testMkdirsThrowsAndRefusesToTouchExistingNonDir() {
+		File nondir = testArea.hasFile("nondir", "anything");
+
+		try {
+			Iwant.mkdirs(nondir);
+			fail();
+		} catch (IwantException e) {
+			assertEquals("mkdirs failed for existing non-directory " + nondir,
+					e.getMessage());
+			assertEquals("anything", testArea.contentOf(nondir));
+		}
+	}
+
+	public void testMkdirsThrowsIfNoPermissions() {
+		File parent = testArea.newDir("parent");
+		File dir = new File(parent, "a/b");
+
+		try {
+			parent.setWritable(false);
+
+			Iwant.mkdirs(dir);
+
+			fail();
+		} catch (IwantException e) {
+			assertEquals("mkdirs failed for " + dir, e.getMessage());
+			assertFalse(dir.exists());
+		} finally {
+			parent.setWritable(true);
+		}
 	}
 
 }

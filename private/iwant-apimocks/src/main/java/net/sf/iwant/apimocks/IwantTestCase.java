@@ -102,7 +102,7 @@ public abstract class IwantTestCase extends TestCase {
 
 	protected File wsRootHasDirectory(String relativePath) {
 		File dir = new File(wsRoot, relativePath);
-		dir.mkdirs();
+		Iwant.mkdirs(dir);
 		return dir;
 	}
 

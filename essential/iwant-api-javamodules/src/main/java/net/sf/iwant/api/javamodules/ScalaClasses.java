@@ -12,6 +12,7 @@ import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.target.TargetBase;
 import net.sf.iwant.core.download.TestedIwantDependencies;
 import net.sf.iwant.coreservices.FileUtil;
+import net.sf.iwant.entry.Iwant;
 
 public class ScalaClasses extends TargetBase {
 
@@ -91,7 +92,7 @@ public class ScalaClasses extends TargetBase {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.cached(this);
-		dest.mkdirs();
+		Iwant.mkdirs(dest);
 
 		File tmp = ctx.freshTemporaryDirectory();
 		File buildXml = new File(tmp, "build.xml");

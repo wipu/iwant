@@ -169,7 +169,7 @@ public class Iwant2 {
 		if (allIwantClasses.exists()) {
 			Iwant.del(allIwantClasses);
 		}
-		allIwantClasses.mkdirs();
+		Iwant.mkdirs(allIwantClasses);
 
 		List<File> javaFileList = new ArrayList<>(javaFiles);
 
@@ -180,7 +180,7 @@ public class Iwant2 {
 		File resources = new File(iwantEssential,
 				"iwant-api-bash/src/main/resources/" + pak);
 		File resourcesDest = new File(allIwantClasses, pak);
-		resourcesDest.mkdirs();
+		Iwant.mkdirs(resourcesDest);
 		for (File file : resources.listFiles()) {
 			copy(file, resourcesDest);
 		}

@@ -173,11 +173,11 @@ public class Iwant2Test extends TestCase {
 
 	public void testFindingJavaFilesUnderSrcDirThatContainsNonJavaAndSvnMetadata() {
 		File src = testArea.newDir("src");
-		new File(src, ".svn").mkdirs();
+		Iwant.mkdirs(new File(src, ".svn"));
 		File aJava = Iwant.newTextFile(new File(src, "A.java"), "");
 
 		File pak1 = new File(src, "pak1");
-		new File(pak1, ".svn").mkdirs();
+		Iwant.mkdirs(new File(pak1, ".svn"));
 		File bJava = Iwant.newTextFile(new File(pak1, "B.java"), "");
 		Iwant.newTextFile(new File(pak1, "crap.notjava"), "");
 

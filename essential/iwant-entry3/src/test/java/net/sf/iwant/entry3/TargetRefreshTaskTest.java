@@ -55,7 +55,7 @@ public class TargetRefreshTaskTest extends TestCase {
 
 	private File cacheContainsContentOf(Target target) {
 		File cached = ctx.cached(target);
-		cached.mkdir();
+		Iwant.mkdirs(cached);
 		return cached;
 	}
 

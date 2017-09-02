@@ -289,7 +289,7 @@ public class TargetImplementedInBash extends TargetBase {
 		FileUtil.newTextFile(deprefs, deprefsContent.toString());
 
 		File runDir = new File(tmpDir, "rundir");
-		runDir.mkdirs();
+		Iwant.mkdirs(runDir);
 
 		List<String> cmdLine = new ArrayList<>();
 		cmdLine.add(refreshPathSh.getCanonicalPath());

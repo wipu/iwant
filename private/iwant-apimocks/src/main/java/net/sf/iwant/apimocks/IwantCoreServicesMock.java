@@ -60,7 +60,7 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 		int fileCount = numberOfFilesToSvnExport.get(new UrlString(from));
 		Integer failAfter = numberOfFilesToSvnExportBeforeFailure
 				.get(new UrlString(from));
-		to.mkdirs();
+		Iwant.mkdirs(to);
 		for (int i = 0; i < fileCount; i++) {
 			if (failAfter != null && i >= failAfter) {
 				throw new IllegalStateException("Simulated svn export failure");

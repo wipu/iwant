@@ -51,7 +51,7 @@ public class Iwant {
 	public static final File IWANT_USER_DIR = new File(HOME, ".net.sf.iwant");
 
 	static {
-		IWANT_USER_DIR.mkdir();
+		mkdirs(IWANT_USER_DIR);
 	}
 
 	private final IwantNetwork network;
@@ -327,7 +327,7 @@ public class Iwant {
 		File iwantFrom = iwantFromFile(asSomeone);
 		File iwantFromParent = iwantFrom.getParentFile();
 		if (!iwantFromParent.exists()) {
-			iwantFromParent.mkdirs();
+			mkdirs(iwantFromParent);
 		}
 		if (!iwantFrom.exists()) {
 			newTextFile(iwantFrom,
@@ -345,7 +345,7 @@ public class Iwant {
 
 	private static File tryToWriteTextFile(File file, String content)
 			throws IOException {
-		file.getParentFile().mkdirs();
+		mkdirs(file.getParentFile());
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(file);
@@ -453,7 +453,7 @@ public class Iwant {
 			debugLog("compiledClasses", "dest: " + dest, "src: " + src,
 					"classpath: " + classpath, "javacOptions:" + javacOptions);
 			del(dest);
-			dest.mkdirs();
+			mkdirs(dest);
 			JavaCompiler compiler = network.systemJavaCompiler();
 			if (compiler == null) {
 				throw new IwantException(
@@ -741,7 +741,7 @@ public class Iwant {
 			if (to.exists()) {
 				return;
 			}
-			to.getParentFile().mkdirs();
+			mkdirs(to.getParentFile());
 			debugLog("downloaded", "from " + from);
 			log("downloaded", to);
 			byte[] bytes = downloadBytes(from);
@@ -828,7 +828,7 @@ public class Iwant {
 				return dest;
 			}
 			log("unzipped", dest);
-			dest.mkdirs();
+			mkdirs(dest);
 			ZipInputStream zip = new ZipInputStream(
 					src.location().openStream());
 			ZipEntry e = null;
@@ -836,7 +836,7 @@ public class Iwant {
 			while ((e = zip.getNextEntry()) != null) {
 				File entryFile = new File(dest, e.getName());
 				if (e.isDirectory()) {
-					entryFile.mkdirs();
+					mkdirs(entryFile);
 					continue;
 				}
 				OutputStream out = new FileOutputStream(entryFile);
@@ -933,5 +933,18 @@ public class Iwant {
 			return string;
 		}
 		return string.substring(0, string.length() - 1);
+	}
+
+	public static synchronized void mkdirs(File dir) {
+		if (dir.exists()) {
+			if (!dir.isDirectory()) {
+				throw new IwantException(
+						"mkdirs failed for existing non-directory " + dir);
+			}
+			return;
+		}
+		if (!dir.mkdirs()) {
+			throw new IwantException("mkdirs failed for " + dir);
+		}
 	}
 }

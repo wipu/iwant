@@ -19,6 +19,7 @@ import net.sf.iwant.api.javamodules.JavaSrcModule;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.SideEffect;
 import net.sf.iwant.api.model.SideEffectContext;
+import net.sf.iwant.entry.Iwant;
 
 public class EclipseSettings implements SideEffect {
 
@@ -81,7 +82,7 @@ public class EclipseSettings implements SideEffect {
 			List<String> relativeSrcDirs) {
 		for (String relativeSrcDir : relativeSrcDirs) {
 			File srcDir = new File(modDir, relativeSrcDir);
-			srcDir.mkdirs();
+			Iwant.mkdirs(srcDir);
 		}
 	}
 

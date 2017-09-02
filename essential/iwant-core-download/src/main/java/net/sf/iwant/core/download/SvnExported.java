@@ -8,6 +8,7 @@ import net.sf.iwant.api.model.CacheScopeChoices;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.target.TargetBase;
 import net.sf.iwant.coreservices.FileUtil;
+import net.sf.iwant.entry.Iwant;
 
 public class SvnExported extends TargetBase {
 
@@ -74,7 +75,7 @@ public class SvnExported extends TargetBase {
 		ctx.iwant().svnExported(url, tmpExported);
 
 		File dest = ctx.cached(this);
-		dest.mkdirs();
+		Iwant.mkdirs(dest);
 		FileUtil.copyRecursively(tmpExported, dest, true);
 	}
 

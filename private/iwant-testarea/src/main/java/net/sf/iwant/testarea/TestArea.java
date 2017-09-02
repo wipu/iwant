@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import junit.framework.Assert;
+import net.sf.iwant.entry.Iwant;
 
 public final class TestArea {
 
@@ -65,17 +66,8 @@ public final class TestArea {
 		file.delete();
 	}
 
-	/**
-	 * TODO create and reuse a fluent reusable file declaration library
-	 */
 	public static void ensureDir(File dir) {
-		File parent = dir.getParentFile();
-		if (!parent.exists()) {
-			ensureDir(parent);
-		}
-		if (!dir.exists()) {
-			dir.mkdir();
-		}
+		Iwant.mkdirs(dir);
 	}
 
 	public String contentOf(String relativePath) {
@@ -142,7 +134,7 @@ public final class TestArea {
 	 */
 	private static File tryToWriteTextFile(File file, String content)
 			throws IOException {
-		file.getParentFile().mkdirs();
+		Iwant.mkdirs(file.getParentFile());
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(file);

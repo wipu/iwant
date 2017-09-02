@@ -182,7 +182,7 @@ public class JavaClasses extends TargetBase {
 		if (javaFiles.isEmpty() && resourceDirs().isEmpty()) {
 			ctx.iwant().debugLog(getClass().getSimpleName(),
 					"No java files to compile or resources to copy.");
-			dest.mkdirs();
+			Iwant.mkdirs(dest);
 			return;
 		}
 		if (!javaFiles.isEmpty()) {
@@ -195,7 +195,7 @@ public class JavaClasses extends TargetBase {
 					javacOptions(), encoding);
 		} else {
 			// create dest for resource copying
-			dest.mkdirs();
+			Iwant.mkdirs(dest);
 		}
 		for (Path res : resourceDirs()) {
 			File cachedRes = ctx.cached(res);

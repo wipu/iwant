@@ -15,6 +15,7 @@ import org.apache.tools.ant.types.FileSet;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.TargetEvaluationContext;
 import net.sf.iwant.api.target.TargetBase;
+import net.sf.iwant.entry.Iwant;
 import net.sourceforge.pmd.ant.Formatter;
 import net.sourceforge.pmd.ant.PMDTask;
 import net.sourceforge.pmd.ant.RuleSetWrapper;
@@ -80,7 +81,7 @@ public class PmdReport extends TargetBase {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.cached(this);
-		dest.mkdirs();
+		Iwant.mkdirs(dest);
 
 		File rulesetXml = rulesetFile(ctx, dest);
 

@@ -225,7 +225,7 @@ public class JavaClassesTest extends IwantTestCase {
 	public void testEmptySourceDirectoryProducesEmptyClasses()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDir.mkdirs();
+		Iwant.mkdirs(srcDir);
 		Source src = Source.underWsroot("src");
 		Target target = JavaClasses.with().name("empty").srcDirs(src)
 				.classLocations().end();
@@ -265,7 +265,7 @@ public class JavaClassesTest extends IwantTestCase {
 
 	public void testUsingNonDirectoryAsSourceDirectoryCausesFriendlyError()
 			throws Exception {
-		wsRoot.mkdirs();
+		Iwant.mkdirs(wsRoot);
 		File srcFile = new File(wsRoot, "Valid.java");
 		Iwant.newTextFile(srcFile, "class Valid {}");
 		Source src = Source.underWsroot("Valid.java");

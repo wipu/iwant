@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.apimocks.IwantTestCase;
+import net.sf.iwant.entry.Iwant;
 
 public abstract class PmdTestBase extends IwantTestCase {
 
@@ -34,7 +35,7 @@ public abstract class PmdTestBase extends IwantTestCase {
 		final String packageDirName = "net/sf/iwant/plugin/pmd/"
 				+ lastPartOfPackage;
 		File packageDir = new File(srcDir, packageDirName);
-		packageDir.mkdirs();
+		Iwant.mkdirs(packageDir);
 
 		FileUtils.copyFile(
 				FileUtils.toFile(getClass().getResource(

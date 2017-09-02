@@ -4,6 +4,7 @@ import java.io.File;
 
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.model.Source;
+import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 
 public class CopyPasteReportTest extends PmdTestBase {
@@ -42,7 +43,7 @@ public class CopyPasteReportTest extends PmdTestBase {
 
 	public void testReportOfZeroSrcDirectoriesIsAnError() throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDir.mkdirs();
+		Iwant.mkdirs(srcDir);
 
 		CopyPasteReport report = CopyPasteReport.with().name("copypaste-report")
 				.end();
@@ -59,7 +60,7 @@ public class CopyPasteReportTest extends PmdTestBase {
 	public void testReportOfEmptySrcDirectoryDoesProducesAnEmptyReportFile()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
-		srcDir.mkdirs();
+		Iwant.mkdirs(srcDir);
 
 		CopyPasteReport report = CopyPasteReport.with().name("copypaste-report")
 				.from(Source.underWsroot("src")).end();

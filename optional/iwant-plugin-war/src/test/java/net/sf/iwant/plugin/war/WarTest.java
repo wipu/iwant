@@ -18,7 +18,7 @@ public class WarTest extends IwantTestCase {
 
 	private Source sourceWithContent(String path, String content) {
 		File file = new File(wsRoot, path);
-		file.getParentFile().mkdirs();
+		Iwant.mkdirs(file.getParentFile());
 		Iwant.newTextFile(file, content);
 		return Source.underWsroot(path);
 	}
@@ -71,7 +71,7 @@ public class WarTest extends IwantTestCase {
 		Source webXml = sourceWithContent("constant-web.xml",
 				"web.xml content");
 		File baseDir = new File(wsRoot, "empty-basedir");
-		baseDir.mkdirs();
+		Iwant.mkdirs(baseDir);
 
 		War war = War.with().name("test.war")
 				.basedir(Source.underWsroot("empty-basedir")).webXml(webXml)
@@ -86,11 +86,11 @@ public class WarTest extends IwantTestCase {
 
 	public void testWebXmlUnderGivenDirectory() throws Exception {
 		File generatedConfs = new File(wsRoot, "generated-confs");
-		generatedConfs.mkdirs();
+		Iwant.mkdirs(generatedConfs);
 		Iwant.newTextFile(new File(generatedConfs, "generated-web.xml"),
 				"generated web.xml content");
 		File baseDir = new File(wsRoot, "empty-basedir");
-		baseDir.mkdirs();
+		Iwant.mkdirs(baseDir);
 
 		War war = War.with().name("test.war")
 				.basedir(Source.underWsroot("empty-basedir"))
@@ -107,7 +107,7 @@ public class WarTest extends IwantTestCase {
 
 	public void testNonEmptyBasedirWithFilesToExclude() throws Exception {
 		File web = new File(wsRoot, "web");
-		web.mkdirs();
+		Iwant.mkdirs(web);
 		Iwant.newTextFile(new File(web, "index.html"), "index.html content");
 		Iwant.newTextFile(new File(web, "file-to-exclude"),
 				"file-to-exclude content");
@@ -140,7 +140,7 @@ public class WarTest extends IwantTestCase {
 
 	public void testWarWithClassesLibsAndResources() throws Exception {
 		File baseDir = new File(wsRoot, "basedir");
-		baseDir.mkdirs();
+		Iwant.mkdirs(baseDir);
 		Source webXml = sourceWithContent("web.xml", "web.xml content");
 		Source aJar = sourceWithContent("lib1/a.jar", "a.jar content");
 		Source bJar = sourceWithContent("lib2/b.jar", "b.jar content");

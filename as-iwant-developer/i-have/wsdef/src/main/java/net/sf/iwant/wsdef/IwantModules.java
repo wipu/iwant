@@ -143,9 +143,6 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantApiModel = essentialModule("api-model")
 			.mainDeps().testDeps(junit).end();
 
-	private JavaSrcModule iwantTestarea = privateModule("testarea").noTestJava()
-			.mainDeps(junit).end();
-
 	private JavaBinModule iwantWsRootMarker = JavaBinModule
 			.providing(Source.underWsroot("essential/iwant-wsroot-marker"))
 			.end();
@@ -157,6 +154,9 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantEntry = essentialModule("entry").noMainJava()
 			.mainJava("as-some-developer/with/java").noTestJava().mainDeps()
 			.end();
+
+	private JavaSrcModule iwantTestarea = privateModule("testarea").noTestJava()
+			.mainDeps(iwantEntry, junit).end();
 
 	private JavaSrcModule iwantEntrymocks = privateModule("entrymocks")
 			.mainDeps(iwantEntry, iwantTestarea).testDeps(junit).end();
@@ -320,9 +320,9 @@ public class IwantModules extends JavaModules {
 					.testResources("src/test/resources")
 					.mainDeps(commonsIo, iwantApiAntrunner, iwantApiCore,
 							iwantApiJavamodules, iwantApiModel, iwantApiTarget,
-							iwantCoreAnt, iwantCoreDownload, iwantEntry3,
-							iwantPluginAnt)
-					.testDeps(junit, iwantApimocks, iwantEntry, iwantEmbedded,
+							iwantCoreAnt, iwantCoreDownload, iwantEntry,
+							iwantEntry3, iwantPluginAnt)
+					.testDeps(junit, iwantApimocks, iwantEmbedded,
 							iwantTestarea)
 					.end();
 
@@ -334,11 +334,9 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantPluginJacoco = optionalModule("plugin-jacoco")
 			.mainDeps(commonsIo, iwantApiAntrunner, iwantApiCore, iwantApiModel,
 					iwantApiJavamodules, iwantApiTarget, iwantApiZip,
-					iwantCoreAnt, iwantCoreDownload, iwantEntry3,
+					iwantCoreAnt, iwantCoreDownload, iwantEntry, iwantEntry3,
 					iwantPluginAnt)
-			.testDeps(junit, iwantApimocks, iwantEntry, iwantEmbedded,
-					iwantTestarea)
-			.end();
+			.testDeps(junit, iwantApimocks, iwantEmbedded, iwantTestarea).end();
 
 	// TODO don't depend directly on asm, jaxen: pmd depends on them
 	private JavaSrcModule iwantPluginPmd = optionalModule("plugin-pmd")

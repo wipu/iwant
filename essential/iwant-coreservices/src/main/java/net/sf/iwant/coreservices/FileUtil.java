@@ -114,7 +114,7 @@ public class FileUtil {
 		}
 		if (from.isDirectory()) {
 			int count = 0;
-			to.mkdir();
+			Iwant.mkdirs(to);
 			for (File child : from.listFiles()) {
 				File toChild = new File(to, child.getName());
 				count += copyRecursively(child, toChild, includeSvnDirs);
