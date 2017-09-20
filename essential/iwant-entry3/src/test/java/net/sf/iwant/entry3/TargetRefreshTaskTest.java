@@ -390,7 +390,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		assertTrue(task(par).supportsParallelism());
 	}
 
-	private class TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory
+	private static class TargetThatVerifiesDirectoryExistenceAndThenCreatesADirectory
 			extends Target {
 
 		private String fileNameToCreateUnderDirectory;

@@ -443,4 +443,41 @@ public class IwantTest extends TestCase {
 		}
 	}
 
+	public void testDelDeletesEvenANonEmptyDirectory() {
+		File dirToDelete = testArea.newDir("dir");
+		testArea.hasFile("dir/file", "anything");
+
+		Iwant.del(dirToDelete);
+
+		assertFalse(dirToDelete.exists());
+	}
+
+	public void testDelDoesNotComplainAboutNonexistentFile() {
+		File nonexistent = new File(testArea.root(), "nonexistent");
+		assertFalse(nonexistent.exists());
+
+		Iwant.del(nonexistent);
+
+		assertFalse(nonexistent.exists());
+	}
+
+	public void testDelThrowsIfNoPermissions() {
+		File parent = testArea.newDir("parent");
+		File fileToDelete = new File(parent, "file");
+		testArea.fileHasContent(fileToDelete, "anything");
+
+		try {
+			parent.setWritable(false);
+
+			Iwant.del(fileToDelete);
+
+			fail();
+		} catch (IwantException e) {
+			assertEquals("del failed for " + fileToDelete, e.getMessage());
+			assertTrue(fileToDelete.exists());
+		} finally {
+			parent.setWritable(true);
+		}
+	}
+
 }

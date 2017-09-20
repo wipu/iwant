@@ -727,13 +727,18 @@ public class Iwant {
 		}
 	}
 
-	public static void del(File file) {
+	public static synchronized void del(File file) {
+		if (!file.exists()) {
+			return; // nothing to do
+		}
 		if (file.isDirectory()) {
 			for (File child : file.listFiles()) {
 				del(child);
 			}
 		}
-		file.delete();
+		if (!file.delete()) {
+			throw new IwantException("del failed for " + file);
+		}
 	}
 
 	public void downloaded(URL from, File to) {

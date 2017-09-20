@@ -58,12 +58,7 @@ public final class TestArea {
 	}
 
 	private static void del(File file) {
-		if (file.isDirectory()) {
-			for (File child : file.listFiles()) {
-				del(child);
-			}
-		}
-		file.delete();
+		Iwant.del(file);
 	}
 
 	public static void ensureDir(File dir) {

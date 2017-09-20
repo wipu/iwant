@@ -24,7 +24,7 @@ import net.sf.iwant.plugin.jacoco.JacocoTargetsOfJavaModules;
 
 public class IwanttutorialWorkspace implements Workspace {
 
-	class ExampleModules extends JavaModules {
+	static class ExampleModules extends JavaModules {
 
 		@Override
 		protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {

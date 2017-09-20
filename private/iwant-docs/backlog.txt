@@ -1622,6 +1622,8 @@
 - As @developer I want mkdirs return value findbugs issued fixed so I can concentrate on less trivial issues
   + Iwant.mkdirs (surprisingly many corner cases for this case assumedly handled by a standard library!)
   + call it everywhere
+  + do the same for Iwant.del
+  + fix some trivial warnings like "could be static/final"
   - commit, upgrade iwant and fix for own build
 
 - As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)

@@ -246,7 +246,7 @@ public class Iwant2 {
 			boolean needsRefresh = checkIfNeedsToRefresh();
 			if (needsRefresh) {
 				Iwant.fileLog("Deleting " + sourceDescriptor);
-				sourceDescriptor.delete();
+				Iwant.del(sourceDescriptor);
 			}
 			return needsRefresh;
 		}

@@ -21,7 +21,7 @@ import net.sf.iwant.eclipsesettings.EclipseSettings;
 
 public class IwanttutorialWorkspace implements Workspace {
 
-	class ExampleModules extends JavaModules {
+	static class ExampleModules extends JavaModules {
 
 		@Override
 		protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {

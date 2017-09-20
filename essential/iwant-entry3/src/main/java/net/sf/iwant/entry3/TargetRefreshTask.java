@@ -42,7 +42,7 @@ public class TargetRefreshTask implements Task {
 		File cachedDescriptor = cachedDescriptorFile();
 		Iwant.mkdirs(cachedDescriptor.getParentFile());
 		// make sure refresh is retried even if it's interrupted
-		cachedDescriptor.delete();
+		Iwant.del(cachedDescriptor);
 
 		File cachedTarget = ctx.cached(target);
 		Iwant.mkdirs(cachedTarget.getParentFile());

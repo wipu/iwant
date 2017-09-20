@@ -129,7 +129,7 @@ public class WishEvaluatorTest extends TestCase {
 		}
 	}
 
-	private class Hello implements Workspace {
+	private static class Hello implements Workspace {
 
 		@Override
 		public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -144,7 +144,7 @@ public class WishEvaluatorTest extends TestCase {
 
 	}
 
-	private class TwoHellos implements Workspace {
+	private static class TwoHellos implements Workspace {
 
 		@Override
 		public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -338,7 +338,7 @@ public class WishEvaluatorTest extends TestCase {
 
 	// side-effects
 
-	private class OnlyEclipseSettingsAsSideEffect implements Workspace {
+	private static class OnlyEclipseSettingsAsSideEffect implements Workspace {
 
 		@Override
 		public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -354,7 +354,7 @@ public class WishEvaluatorTest extends TestCase {
 
 	}
 
-	private class TwoSideEffects implements Workspace {
+	private static class TwoSideEffects implements Workspace {
 
 		@Override
 		public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -422,7 +422,7 @@ public class WishEvaluatorTest extends TestCase {
 				.exists());
 
 		// no retry with Callee.java missing
-		calleeJava.delete();
+		Iwant.del(calleeJava);
 
 		try {
 			evaluator.asPath(target);
@@ -859,7 +859,7 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals("", out());
 	}
 
-	private class IwantPluginReferenceInSideEffectDefinition
+	private static class IwantPluginReferenceInSideEffectDefinition
 			implements Workspace {
 
 		@Override
@@ -889,7 +889,7 @@ public class WishEvaluatorTest extends TestCase {
 				+ " ant-launcher-1.10.1.jar]", err.toString());
 	}
 
-	private class WorkspaceWithTarget implements Workspace {
+	private static class WorkspaceWithTarget implements Workspace {
 
 		private final Target target;
 

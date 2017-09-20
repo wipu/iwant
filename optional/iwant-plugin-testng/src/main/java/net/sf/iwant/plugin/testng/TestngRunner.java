@@ -9,7 +9,7 @@ import net.sf.iwant.api.javamodules.TestRunner;
 
 public class TestngRunner implements TestRunner {
 
-	public static TestngRunner INSTANCE = new TestngRunner();
+	public static final TestngRunner INSTANCE = new TestngRunner();
 
 	public static void main(String[] args) {
 		List<String> newArgs = new ArrayList<>();

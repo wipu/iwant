@@ -25,7 +25,7 @@ public class WsdefJavaOfTest {
 		ctx = new Ctx();
 	}
 
-	class Ctx implements WishDefinitionContext {
+	static class Ctx implements WishDefinitionContext {
 
 		private JavaSrcModule wsdefJavaModule;
 

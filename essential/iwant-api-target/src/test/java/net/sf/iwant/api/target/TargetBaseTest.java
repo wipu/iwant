@@ -11,7 +11,7 @@ import net.sf.iwant.api.model.TargetEvaluationContext;
 
 public class TargetBaseTest {
 
-	private class TargetUsingEnv extends TargetBase {
+	private static class TargetUsingEnv extends TargetBase {
 
 		private final SystemEnv env;
 
