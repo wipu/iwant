@@ -2,3 +2,11 @@
 .project
 .settings/
 **/classes/
+
+/private/iwant-testarea/testarea-root/*
+!/private/iwant-testarea/testarea-root/.keep
+
+# svn, remove when no migration from sf.net finished:
+/.svn/
+/as-iwant-developer/with/.svn/
+/iwant-lib-descript/

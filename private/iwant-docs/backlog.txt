@@ -1634,8 +1634,11 @@
   + gitignores
   + initial github pages index.html: https://wipu.github.io/iwant/
   - make tests pass in a clone that is not an svn workingcopy
+    * work in a workingcopy that is both a github and sf.net wc
+    + add ignores so both vcses show empty status
     - remove svn bootstrap and tests that svn export from workspace itself
     - SvnExported uses svnkit directly, not via Iwant
+  - remove unnecessary gitignores from root .gitignore (under # svn...)
   - publish non-sf.net webpage
   - update tutorial
   - mention migration on sf.net
