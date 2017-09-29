@@ -1,9 +1,4 @@
 .classpath
 .project
-.settings
-/private/iwant-testarea/testarea-root/*
-!/private/iwant-testarea/testarea-root/.keep
+.settings/
 **/classes/
-/as-iwant-developer/with/bash/iwant/list-of/
-/as-iwant-developer/with/bash/iwant/target/
-/as-iwant-developer/.i-cached/*
