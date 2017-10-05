@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.UnmodifiableZip;
 import net.sf.iwant.entrymocks.IwantNetworkMock;
 import net.sf.iwant.testarea.TestArea;
@@ -98,6 +99,27 @@ public class UnzippingTest extends TestCase {
 		assertEquals(378602,
 				new File(unzipped, "svnkit-1.8.13/lib/svnkit-cli-1.8.13.jar")
 						.length());
+	}
+
+	/**
+	 * This way the error message will be seen again on later runs
+	 */
+	public void testUnzipLeavesNoResultIfUnzipFails() throws IOException {
+		File zip = new File(testArea.root(), "zip");
+		UnmodifiableZip src = new UnmodifiableZip(zip.toURI().toURL());
+		File cachedZip = network.cachesAt(src, "unzipped");
+
+		testArea.fileHasContent(zip, "corrupted zip file");
+		try {
+			iwant.unmodifiableZipUnzipped(src);
+			fail();
+		} catch (IwantException e) {
+			assertEquals(
+					"Corrupt (or empty, no way to tell): UnmodifiableZip:file:"
+							+ zip,
+					e.getMessage());
+		}
+		assertFalse(cachedZip.exists());
 	}
 
 }

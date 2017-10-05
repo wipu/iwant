@@ -1633,6 +1633,9 @@
   + iwant/iwant.sh
   + gitignores
   + initial github pages index.html: https://wipu.github.io/iwant/
+  - bootstrap from github
+    + @bugfix retry if unzip fails so bootstrap failure will be seen on every retry
+    - iwant-from ends with => download and unzip instead of svn co
   - license (also rethink what it shall be)
   - make tests pass in a clone that is not an svn workingcopy
     * work in a workingcopy that is both a github and sf.net wc

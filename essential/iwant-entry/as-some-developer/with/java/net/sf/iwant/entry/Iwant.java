@@ -833,13 +833,17 @@ public class Iwant {
 				return dest;
 			}
 			log("unzipped", dest);
-			mkdirs(dest);
+			File tmp = new File(dest + ".tmp");
+			del(tmp);
+			mkdirs(tmp);
 			ZipInputStream zip = new ZipInputStream(
 					src.location().openStream());
 			ZipEntry e = null;
 			byte[] buffer = new byte[32 * 1024];
+			boolean zipHasContent = false;
 			while ((e = zip.getNextEntry()) != null) {
-				File entryFile = new File(dest, e.getName());
+				zipHasContent = true;
+				File entryFile = new File(tmp, e.getName());
 				if (e.isDirectory()) {
 					mkdirs(entryFile);
 					continue;
@@ -855,11 +859,22 @@ public class Iwant {
 				out.close();
 			}
 			zip.close();
+			if (!zipHasContent) {
+				throw new IwantException(
+						"Corrupt (or empty, no way to tell): " + src);
+			}
+			fileRenamedTo(tmp, dest);
 			return dest;
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	public static void fileRenamedTo(File src, File dest) {
+		if (!src.renameTo(dest)) {
+			throw new IwantException("Failed to rename " + src + " to " + dest);
 		}
 	}
 
