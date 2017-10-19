@@ -1633,12 +1633,17 @@
   + iwant/iwant.sh
   + gitignores
   + initial github pages index.html: https://wipu.github.io/iwant/
-  - current web page under custom domain
+  + current web page under custom domain
     + buy domain: iwant-build.org
     + set up pages to use the domain (from dir /docs)
     + script that ensures fresh cached website and repopulates docs from it
-  - remove sf.net references from website
+  + remove sf.net references from website
+    * keep bootstrap refs, that's the only way of bootstrapping, and will be supported for some
+      period even after adding github bootstrap support
     + replace sf.net link with a ribbon from https://github.com/blog/273-github-ribbons
+    + backlog.txt link
+    + checkout from sf -> clone from github
+    + remove contact via sfnet, only email
   - bootstrap from github
     + @bugfix retry if unzip fails so bootstrap failure will be seen on every retry
     - iwant-from ends with => download and unzip instead of svn co
