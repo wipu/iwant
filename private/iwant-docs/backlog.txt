@@ -1644,10 +1644,13 @@
     + backlog.txt link
     + checkout from sf -> clone from github
     + remove contact via sfnet, only email
+  + license (also rethink what it shall be)
+    * play it safe: MIT instead of LGPL (Thank you Richard M. Stallman for everything, but as iwant
+      developer I want my tool to be used even by the most paranoid companies; also: as a FOSS believer
+      I belive real freedom doesn't force freedom upon anybody.)
   - bootstrap from github
     + @bugfix retry if unzip fails so bootstrap failure will be seen on every retry
     - iwant-from ends with => download and unzip instead of svn co
-  - license (also rethink what it shall be)
   - make tests pass in a clone that is not an svn workingcopy
     * work in a workingcopy that is both a github and sf.net wc
     + add ignores so both vcses show empty status
