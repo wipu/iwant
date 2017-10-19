@@ -4,4 +4,4 @@ Can use ant tasks and ant and shell scripts as backend.
 
 Plese see [iwant-build.org](http://iwant-build.org) for more information.
 
-This is a clone from [sourceforge](http://iwant.sourceforge.net). Things don't yet work in this git clone (there are still dependencies to svn), but migration is in progress.
+**NOTE** This is a clone from [sourceforge](http://iwant.sourceforge.net). Things don't yet work in this git clone (there are still dependencies to svn), but migration is in progress.
