@@ -1648,6 +1648,7 @@
     * play it safe: MIT instead of LGPL (Thank you Richard M. Stallman for everything, but as iwant
       developer I want my tool to be used even by the most paranoid companies; also: as a FOSS believer
       I belive real freedom doesn't force freedom upon anybody.)
+  - make sf.net webpage redirect to iwant-build.org
   - bootstrap from github
     + @bugfix retry if unzip fails so bootstrap failure will be seen on every retry
     - iwant-from ends with => download and unzip instead of svn co
