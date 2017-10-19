@@ -1,0 +1,199 @@
+<html>
+<head>
+<title>Defining targets in bash</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='custom-target.html'><< Writing a custom Target</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='ws-symlink.html'>Using a symbolic link for the workspace >></a></div>
+
+<p><i>This chapter continues from where <a href='creating-wsdef.html'>Creating the workspace definition</a> left us.</i></p><h2>Defining targets in bash</h2>
+<p class='text'>
+bash targets
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>find as-iwant-tutorial-developer/i-have/wsdef/src</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/i-have/wsdef/src</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/i-have/wsdef/src/main</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/i-have/wsdef/src/main/java</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspaceFactory.java</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='add line'>import java.util.ArrayList;</div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='del line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='add line'>import net.sf.iwant.api.bash.TargetImplementedInBash;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='del line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"));</div>
+<div class='add line'>		List&lt;Target> t = new ArrayList&lt;>();</div>
+<div class='add line'>		t.addAll(TargetImplementedInBash.instancesFromDefaultIndexSh(ctx));</div>
+<div class='add line'>		return t;</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='keep line'>				.end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+Let's see where we need to define the index.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>Please define targets in /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/_index.sh</kbd><br/>
+</samp></div>
+<p class='text'>
+We create an index with one target.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>mkdir as-iwant-tutorial-developer/i-have/wsdef/src/main/bash</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/_index.sh"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>targets() {</div>
+<div class='add line'>    target hello-from-bash</div>
+<div class='add line'>}</div>
+</div>
+<p class='text'>
+We define the target in a script named after the target name.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/hello-from-bash.sh"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>path() {</div>
+<div class='add line'>    echo "Hello from bash" > "$IWANT_DEST"</div>
+<div class='add line'>}</div>
+</div>
+<p class='text'>
+Now we can evaluate our first target defined in bash.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>hello-from-bash</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/hello-from-bash/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.bash.TargetImplementedInBash hello-from-bash)</kbd><br/>
+<kbd class='shell output'>--- Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/hello-from-bash.sh </kbd><br/>
+<kbd class='shell output'>Hello from bash</kbd><br/>
+</samp></div>
+<p class='text'>
+target with ingredients
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/_index.sh"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>targets() {</div>
+<div class='keep line'>    target hello-from-bash</div>
+<div class='add line'>    target target-with-ingredients</div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/target-with-ingredients.sh"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>ingredients() {</div>
+<div class='add line'>    source-dep INGR1 source-ingredient</div>
+<div class='add line'>    target-dep INGR2 hello-from-bash</div>
+<div class='add line'>}</div>
+<div class='add line'></div>
+<div class='add line'>path() {</div>
+<div class='add line'>    echo "Target derived from ingredients:" > "$IWANT_DEST"</div>
+<div class='add line'>    echo "--- $INGR1:" >> "$IWANT_DEST"</div>
+<div class='add line'>    cat "$INGR1" >> "$IWANT_DEST"</div>
+<div class='add line'>    echo "--- $INGR2:" >> "$IWANT_DEST"</div>
+<div class='add line'>    cat "$INGR2" >> "$IWANT_DEST"</div>
+<div class='add line'>}</div>
+<div class='add line'></div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>echo "source-ingredient-content" > source-ingredient</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>hello-from-bash</kbd><br/>
+<kbd class='shell output'>target-with-ingredients</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/target-with-ingredients/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.bash.TargetImplementedInBash target-with-ingredients)</kbd><br/>
+<kbd class='shell output'>--- Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/target-with-ingredients.sh </kbd><br/>
+<kbd class='shell output'>Target derived from ingredients:</kbd><br/>
+<kbd class='shell output'>--- /home/hacker/iwant-tutorial/source-ingredient:</kbd><br/>
+<kbd class='shell output'>source-ingredient-content</kbd><br/>
+<kbd class='shell output'>--- /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/hello-from-bash:</kbd><br/>
+<kbd class='shell output'>Hello from bash</kbd><br/>
+</samp></div>
+<p class='text'>
+parameterized target
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/target-with-parameters.sh"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>ingredients() {</div>
+<div class='add line'>    param PARAM1 "$1"</div>
+<div class='add line'>    param PARAM2 "$2"</div>
+<div class='add line'>}</div>
+<div class='add line'></div>
+<div class='add line'>path() {</div>
+<div class='add line'>    echo "Target derived from parameters:" > "$IWANT_DEST"</div>
+<div class='add line'>    echo "--- PARAM1: $PARAM1" >> "$IWANT_DEST"</div>
+<div class='add line'>    echo "--- PARAM2: $PARAM2" >> "$IWANT_DEST"</div>
+<div class='add line'>}</div>
+<div class='add line'></div>
+</div>
+<p class='text'>
+name, script name, then arguments for ingredients
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/_index.sh"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>targets() {</div>
+<div class='keep line'>    target hello-from-bash</div>
+<div class='keep line'>    target target-with-ingredients</div>
+<div class='add line'>    target target-with-parameters-v1 target-with-parameters.sh 1 one</div>
+<div class='add line'>    target target-with-parameters-v2 target-with-parameters.sh 2 two</div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>hello-from-bash</kbd><br/>
+<kbd class='shell output'>target-with-ingredients</kbd><br/>
+<kbd class='shell output'>target-with-parameters-v1</kbd><br/>
+<kbd class='shell output'>target-with-parameters-v2</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/target-with-parameters-v1/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.bash.TargetImplementedInBash target-with-parameters-v1)</kbd><br/>
+<kbd class='shell output'>--- Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/target-with-parameters.sh 1 one</kbd><br/>
+<kbd class='shell output'>Target derived from parameters:</kbd><br/>
+<kbd class='shell output'>--- PARAM1: 1</kbd><br/>
+<kbd class='shell output'>--- PARAM2: one</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/target-with-parameters-v2/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.bash.TargetImplementedInBash target-with-parameters-v2)</kbd><br/>
+<kbd class='shell output'>--- Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/target-with-parameters.sh 2 two</kbd><br/>
+<kbd class='shell output'>Target derived from parameters:</kbd><br/>
+<kbd class='shell output'>--- PARAM1: 2</kbd><br/>
+<kbd class='shell output'>--- PARAM2: two</kbd><br/>
+</samp></div>
+<div class='navipanel'><a href='custom-target.html'><< Writing a custom Target</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='ws-symlink.html'>Using a symbolic link for the workspace >></a></div>
+
+</body></html>

@@ -1,0 +1,186 @@
+<html>
+<head>
+<title>Static code analysis report using PMD</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='scalamodules.html'><< Using Scala in Java modules</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='findbugsreport.html'>Static code analysis report using findbugs >></a></div>
+
+<p><i>This chapter continues from where <a href='creating-wsdef.html'>Creating the workspace definition</a> left us.</i></p><h2>Static code analysis report using PMD</h2>
+<p class='text'>
+First we add the iwant pmd plugin to the project.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdefdef/src/main/java/com/example/wsdefdef/IwantTutorialWorkspaceProvider.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdefdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public JavaSrcModule workspaceModule(WorkspaceModuleContext ctx) {</div>
+<div class='keep line'>		return JavaSrcModule.with().name("iwant-tutorial-wsdef")</div>
+<div class='keep line'>				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")</div>
+<div class='keep line'>				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())</div>
+<div class='del line'>				.mainDeps(ctx.wsdefdefModule()).end();</div>
+<div class='add line'>				.mainDeps(ctx.wsdefdefModule())</div>
+<div class='add line'>				.mainDeps(ctx.iwantPlugin().pmd().withDependencies()).end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public String workspaceFactoryClassname() {</div>
+<div class='keep line'>		return "com.example.wsdef.IwanttutorialWorkspaceFactory";</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+We refresh eclipse settings so we can use the plugin in our workspace definition.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.SvnExported iwant-plugin-pmd-main-java)</kbd><br/>
+<kbd class='shell output'>svn exporting (may take a while) https://svn.code.sf.net/p/iwant/code/trunk/optional/iwant-plugin-pmd/src/main/java@899</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact asm-3.2.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact commons-io-1.3.2.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact jaxen-1.1.4.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact pmd-4.3.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-plugin-pmd)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdefdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+</samp></div>
+<p class='text'>
+After refreshing eclipse we define a module to test PMD on, and define a PMD report target for its main java.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='add line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='add line'>import net.sf.iwant.plugin.pmd.PmdReport;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='del line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"));</div>
+<div class='add line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='add line'>				mainJavaPmdReportOf(pmdfodder()));</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='del line'>				.end());</div>
+<div class='add line'>				.modules(pmdfodder()).end());</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private static Target mainJavaPmdReportOf(JavaSrcModule mod) {</div>
+<div class='add line'>		return PmdReport.with().name(mod.name() + "-main-java-pmd-report")</div>
+<div class='add line'>				.from(mod.mainJavasAsPaths()).end();</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private static JavaSrcModule pmdfodder() {</div>
+<div class='add line'>		return JavaSrcModule.with().name("example-pmdfodder").mainJava("src")</div>
+<div class='add line'>				.end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+Another eclipse settings refresh to create the new eclipse project.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(example-pmdfodder)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdefdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+</samp></div>
+<p class='text'>
+After importing the new project into eclipse we create some code with an PMD issue in it.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>mkdir -p example-pmdfodder/src/com/example/pmdfodder</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "example-pmdfodder/src/com/example/pmdfodder/PmdFodder.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>package com.example.pmdfodder;</div>
+<div class='add line'></div>
+<div class='add line'>public class PmdFodder {</div>
+<div class='add line'></div>
+<div class='add line'>	public void DiscouragedMethodName() {</div>
+<div class='add line'>		// PMD shall complain about this method name</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>}</div>
+</div>
+<p class='text'>
+Now we can analyze the code.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>hello</kbd><br/>
+<kbd class='shell output'>example-pmdfodder-main-java-pmd-report</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/example-pmdfodder-main-java-pmd-report/as-path | xargs -r ls</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.pmd.PmdReport example-pmdfodder-main-java-pmd-report)</kbd><br/>
+<kbd class='shell output'>Running PMD on [example-pmdfodder/src]</kbd><br/>
+<kbd class='shell output'>example-pmdfodder-main-java-pmd-report.html</kbd><br/>
+<kbd class='shell output'>example-pmdfodder-main-java-pmd-report.txt</kbd><br/>
+<kbd class='shell output'>example-pmdfodder-main-java-pmd-report.xml</kbd><br/>
+<kbd class='shell output'>ruleset.xml</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>cat as-iwant-tutorial-developer/.i-cached/target/example-pmdfodder-main-java-pmd-report/example-pmdfodder-main-java-pmd-report.txt</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>com/example/pmdfodder/PmdFodder.java:5	Method names should not start with capital letters</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>cat as-iwant-tutorial-developer/.i-cached/target/example-pmdfodder-main-java-pmd-report/example-pmdfodder-main-java-pmd-report.xml | wc -l</kbd><br/>
+<kbd class='shell output'>8</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='navipanel'><a href='scalamodules.html'><< Using Scala in Java modules</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='findbugsreport.html'>Static code analysis report using findbugs >></a></div>
+
+</body></html>

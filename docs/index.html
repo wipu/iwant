@@ -1,1 +1,71 @@
-<h1>hello</h1>
+<html>
+<head>
+<title>iwant</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+
+<body>
+<img src="iwant-logo.gif" />
+
+<p class="text">
+<i>"As a developer, I don't want to tell my build script what to <b>do</b>,
+I want to just tell <b>what</b> (file) I want so the script can then decide what really needs to be done.</i> If anything."
+</p>
+
+<h2>What is iwant</h2>
+
+<p class="text">
+<code>iwant</code> is a build system. Some of its key features are:
+<ul class="text">
+<li><b>Powerful:</b> The build "scripts" (programs) are written in Java, which gives the author access to the full power of IDEs and Java libraries, including those being built by the build program (reusing code between build-time and run-time).
+<li><b>Expressive:</b> The API for writing build programs is fluent, resulting in compact and readable code.</li>
+<li><b>Ergonomic:</b> The build script author does not need to declare dependencies. If a target (a file with dynamically defined content) refers to another path (source or target) in its definition, <code>iwant</code> automatically tracks this as a dependency.</li>
+<li><b>Parallel:</b> Multi-threaded building is supported by default, transparently. It only needs to be disabled for targets that don't support it (for example because they use shared resources.)</li>
+<li><b>Easy to use:</b> Command-line user interface utilizes bash completion so the user can avoid a lot of typing by using <code>tab</code></li>
+<li><b>Reprodicible:</b> <code>iwant</code> bootstraps itself from a specific revision, so the build system itself is also under configuration management, resulting in reproducible build results.</li>
+<li><b>LAZY:</b> Target evaluation is <i>referentially transparent</i>, which enables maximal laziness. Side effects (like deployments) are explicitly declared in a different way.</li>
+</ul>
+</p>
+
+<h2>Concrete examples, please</h2>
+
+
+<p class="text">
+To see and try out <code>iwant</code> in action, please git clone <a href="https://github.com/wipu/iwant-demo">iwant-demo</a>, a multi-module project that uses <code>iwant</code> as the build system to demonstrate several of its features. Feel free to clone it, to try things out, or even to develop new things for others to learn and reuse.
+</p>
+
+<p class="text">
+Also, some more details, like <i>taking </i><code>iwant</code> <i>into use</i>, are documented in the <a href="tutorial.html">tutorial</a> (in a <i>documentation driven</i> manner by <a href="http://descript.sf.net/">descript</a>). 
+</p>
+
+<h2>About the project</h2>
+
+<p class="text">
+General status of the project:
+<ul class="text">
+<li>The engine is quite solid. It has been used in several projects for several years, on Linux and Windows. There are some caveats, though (to be fixed later):</li>
+<ul>
+<li>It is not recommended to run several <code>iwant</code> processes at the same time by the same user, since the shared cache is not locked.</li>
+<li>It is not recommended to touch sources during build, since timestamp comparison is only done before refreshing targets, resulting in false clean status for a target that is being refreshed while one of its sources is touched.</li>
+</ul>
+<li>The API hasn't yet been stablized so build programs may need modifications when upgrading.</li>
+<li>Although the number of plugins is still small, the utility of <code>iwant</code> is already good, because it is easy to extend the functionality by calling shell or ant scripts or java libraries.</li>
+</ul>
+</p>
+
+<p class="text">You can track the project progress and plans in the
+<a href="https://sourceforge.net/p/iwant/code/HEAD/tree/trunk/private/iwant-docs/backlog.txt">
+backlog.txt</a>.
+</p>
+
+<p class="text">
+<a href="http://sourceforge.net/projects/iwant"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=277479&amp;type=10" width="80" height="15" alt="Get iwant at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>
+</p>
+
+<p><center><small><code>iwant</code> - developed by Ville Oikarinen since 2009</small></center></p>
+
+</body>
+
+</html>

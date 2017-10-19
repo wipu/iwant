@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>Using ant cli instead of bash</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='helloworld-with-eclipse.html'><< Hello world with Eclipse</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='antgenerated.html'>Using ant to define target content >></a></div>
+
+<p><i>This chapter continues from where <a href='creating-wsdef.html'>Creating the workspace definition</a> left us.</i></p><h2>Using ant cli instead of bash</h2>
+<p class='text'>
+In addition to the shell user interface there is also an ant interface. It is handy not only for Windows users, but also for calling iwant from java applications like Eclipse.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>cd as-iwant-tutorial-developer/with/ant/iw</kbd><br/>
+</samp></div>
+<p class='text'>
+Here we filter out the time to keep this tutorial reproducible.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial/as-iwant-tutorial-developer/with/ant/iw $ </kbd><kbd class='shell cmd'>ant | grep -v '^Total time:'</kbd><br/>
+<kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/with/ant/iw/build.xml</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>entry-classes:</kbd><br/>
+<kbd class='shell output'>    [mkdir] Created dir: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/entry-classes</kbd><br/>
+<kbd class='shell output'>    [javac] Compiling 1 source file to /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/entry-classes</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>empty-wish:</kbd><br/>
+<kbd class='shell output'>     [echo] Try again with -Dwish=list-of/targets</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>nonempty-wish:</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>wish:</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>BUILD SUCCESSFUL</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial/as-iwant-tutorial-developer/with/ant/iw $ </kbd><kbd class='shell cmd'>ant -Dwish=list-of/targets | grep -v '^Total time:'</kbd><br/>
+<kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/with/ant/iw/build.xml</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>entry-classes:</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>empty-wish:</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>nonempty-wish:</kbd><br/>
+<kbd class='shell output'>     [java] hello</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>wish:</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>BUILD SUCCESSFUL</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial/as-iwant-tutorial-developer/with/ant/iw $ </kbd><kbd class='shell cmd'>ant -Dwish=target/hello/as-path | grep -v '^Total time:'</kbd><br/>
+<kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/with/ant/iw/build.xml</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>entry-classes:</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>empty-wish:</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>nonempty-wish:</kbd><br/>
+<kbd class='shell output'>     [java] (0/1 D! net.sf.iwant.api.core.HelloTarget hello)/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/hello</kbd><br/>
+<kbd class='shell output'>     [java] </kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>wish:</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>BUILD SUCCESSFUL</kbd><br/>
+</samp></div>
+<div class='navipanel'><a href='helloworld-with-eclipse.html'><< Hello world with Eclipse</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='antgenerated.html'>Using ant to define target content >></a></div>
+
+</body></html>

@@ -1,0 +1,131 @@
+<html>
+<head>
+<title>Using external libraries in workspace definition</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='using-iwant-plugin-ant.html'><< Using an iwant plugin (for untarring)</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='javamodules.html'>Defining Java modules >></a></div>
+
+<p><i>This chapter continues from where <a href='creating-wsdef.html'>Creating the workspace definition</a> left us.</i></p><h2>Using external libraries in workspace definition</h2>
+<p class='text'>
+Next we add downloaded classes to be used in the workspace definition.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdefdef/src/main/java/com/example/wsdefdef/IwantTutorialWorkspaceProvider.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdefdef;</div>
+<div class='keep line'></div>
+<div class='add line'>import net.sf.iwant.api.javamodules.JavaBinModule;</div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='add line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;</div>
+<div class='add line'>import net.sf.iwant.core.download.Downloaded;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public JavaSrcModule workspaceModule(WorkspaceModuleContext ctx) {</div>
+<div class='keep line'>		return JavaSrcModule.with().name("iwant-tutorial-wsdef")</div>
+<div class='keep line'>				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")</div>
+<div class='keep line'>				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())</div>
+<div class='del line'>				.mainDeps(ctx.wsdefdefModule()).end();</div>
+<div class='add line'>				.mainDeps(JavaBinModule.providing(commonsMathJar()).end(),</div>
+<div class='add line'>						ctx.wsdefdefModule())</div>
+<div class='add line'>				.end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public String workspaceFactoryClassname() {</div>
+<div class='keep line'>		return "com.example.wsdef.IwanttutorialWorkspaceFactory";</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='add line'>	private static Target commonsMathJar() {</div>
+<div class='add line'>		final String v = "1.2";</div>
+<div class='add line'>		return Downloaded.withName("commonsMathJar")</div>
+<div class='add line'>				.url("http://repo1.maven.org/maven2/commons-math/commons-math/"</div>
+<div class='add line'>						+ v + "/commons-math-" + v + ".jar")</div>
+<div class='add line'>				.md5("5d3ce091a67e863549de4493e19df069");</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+Eclipse settings need to be regenerated, because we have a new dependency.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.Downloaded commonsMathJar)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdefdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+</samp></div>
+<p class='text'>
+Now we can use commons-math in the workspace definition.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='add line'>import org.apache.commons.math.fraction.Fraction;</div>
+<div class='add line'></div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='del line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"));</div>
+<div class='add line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='add line'>				arithmeticWithExtLib());</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private static Target arithmeticWithExtLib() {</div>
+<div class='add line'>		return new HelloTarget("arithmeticWithExtLib", "1/2 + 2/4 = "</div>
+<div class='add line'>				+ new Fraction(1, 2).add(new Fraction(2, 4)).intValue() + "\n");</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='keep line'>				.end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>hello</kbd><br/>
+<kbd class='shell output'>arithmeticWithExtLib</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/arithmeticWithExtLib/as-path | xargs -r cat </kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.HelloTarget arithmeticWithExtLib)</kbd><br/>
+<kbd class='shell output'>1/2 + 2/4 = 1</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='navipanel'><a href='using-iwant-plugin-ant.html'><< Using an iwant plugin (for untarring)</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='javamodules.html'>Defining Java modules >></a></div>
+
+</body></html>

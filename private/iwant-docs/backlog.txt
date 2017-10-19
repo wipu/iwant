@@ -1633,6 +1633,11 @@
   + iwant/iwant.sh
   + gitignores
   + initial github pages index.html: https://wipu.github.io/iwant/
+  - current web page under custom domain
+    + buy domain: iwant-build.org
+    + set up pages to use the domain (from dir /docs)
+    + script that ensures fresh cached website and repopulates docs from it
+  - remove sf.net references from website
   - bootstrap from github
     + @bugfix retry if unzip fails so bootstrap failure will be seen on every retry
     - iwant-from ends with => download and unzip instead of svn co

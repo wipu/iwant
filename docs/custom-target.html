@@ -1,0 +1,588 @@
+<html>
+<head>
+<title>Writing a custom Target</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='usingmoduleinbuild.html'><< Using a module of the workspace in the build</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='targetimplementedinbash.html'>Defining targets in bash >></a></div>
+
+<p><i>This chapter continues from where <a href='creating-wsdef.html'>Creating the workspace definition</a> left us.</i></p><h2>Writing a custom Target</h2>
+<p class='text'>
+When the existing functionality is not enough, you can implement your own target.
+</p>
+<h3>Target with ingredients</h3>
+<p class='text'>
+Let's define a custom target that sums the sizes of (the cached contents of) given paths. First we will write a naive implementation that just uses the cached contents of other paths without declaring them ingredients.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='add line'>import net.sf.iwant.api.model.Path;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='add line'>	private final Path ingredient1 = new HelloTarget("ingredient1", "12");</div>
+<div class='add line'>	private final Path ingredient2 = new HelloTarget("ingredient2", "345");</div>
+<div class='add line'>	private final Target myTarget = new FileSizeSum("file-size-sum",</div>
+<div class='add line'>			Arrays.asList(ingredient1, ingredient2));</div>
+<div class='add line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='del line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"));</div>
+<div class='add line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='add line'>				myTarget);</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='keep line'>				.end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/FileSizeSum.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>package com.example.wsdef;</div>
+<div class='add line'></div>
+<div class='add line'>import java.io.File;</div>
+<div class='add line'>import java.util.List;</div>
+<div class='add line'></div>
+<div class='add line'>import net.sf.iwant.api.model.Path;</div>
+<div class='add line'>import net.sf.iwant.api.model.TargetEvaluationContext;</div>
+<div class='add line'>import net.sf.iwant.api.target.TargetBase;</div>
+<div class='add line'>import net.sf.iwant.coreservices.FileUtil;</div>
+<div class='add line'></div>
+<div class='add line'>class FileSizeSum extends TargetBase {</div>
+<div class='add line'></div>
+<div class='add line'>	private final List&lt;Path> pathsToSum;</div>
+<div class='add line'></div>
+<div class='add line'>	public FileSizeSum(String name, List&lt;Path> pathsToSum) {</div>
+<div class='add line'>		super(name);</div>
+<div class='add line'>		this.pathsToSum = pathsToSum;</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	@Override</div>
+<div class='add line'>	protected IngredientsAndParametersDefined ingredientsAndParameters(</div>
+<div class='add line'>			IngredientsAndParametersPlease iUse) {</div>
+<div class='add line'>		return iUse.nothingElse();</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	@Override</div>
+<div class='add line'>	public void path(TargetEvaluationContext ctx) throws Exception {</div>
+<div class='add line'>		File dest = ctx.cached(this);</div>
+<div class='add line'>		System.err.println("Refreshing " + dest);</div>
+<div class='add line'></div>
+<div class='add line'>		int pathSizeSum = 0;</div>
+<div class='add line'>		for (Path path : pathsToSum) {</div>
+<div class='add line'>			File pathFile = ctx.cached(path);</div>
+<div class='add line'>			int pathSize = FileUtil.contentAsBytes(pathFile).length;</div>
+<div class='add line'>			pathSizeSum += pathSize;</div>
+<div class='add line'>		}</div>
+<div class='add line'>		FileUtil.newTextFile(dest, pathSizeSum + "\n");</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>hello</kbd><br/>
+<kbd class='shell output'>file-size-sum</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r find</kbd><br/>
+<kbd class='shell output'>(0/1 D! com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
+<kbd class='shell output'>Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/file-size-sum</kbd><br/>
+<kbd class='shell output'>(FAILED com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
+<kbd class='shell output'>Target file-size-sum referred to ingredient1 without declaring it an ingredient.</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>
+The context iwant passes to our target allows us to resolve a path to a file that contains its cached content. But if we haven't declared the referred path an ingredient, iwant will throw an exception.
+</p>
+<p class='text'>
+We can fix this by declaring the ingredients:
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/FileSizeSum.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.io.File;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
+<div class='keep line'>import net.sf.iwant.api.model.TargetEvaluationContext;</div>
+<div class='keep line'>import net.sf.iwant.api.target.TargetBase;</div>
+<div class='keep line'>import net.sf.iwant.coreservices.FileUtil;</div>
+<div class='keep line'></div>
+<div class='keep line'>class FileSizeSum extends TargetBase {</div>
+<div class='keep line'></div>
+<div class='keep line'>	private final List&lt;Path> pathsToSum;</div>
+<div class='keep line'></div>
+<div class='keep line'>	public FileSizeSum(String name, List&lt;Path> pathsToSum) {</div>
+<div class='keep line'>		super(name);</div>
+<div class='keep line'>		this.pathsToSum = pathsToSum;</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	protected IngredientsAndParametersDefined ingredientsAndParameters(</div>
+<div class='keep line'>			IngredientsAndParametersPlease iUse) {</div>
+<div class='del line'>		return iUse.nothingElse();</div>
+<div class='add line'>		return iUse.ingredients("pathsToSum", pathsToSum).nothingElse();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public void path(TargetEvaluationContext ctx) throws Exception {</div>
+<div class='keep line'>		File dest = ctx.cached(this);</div>
+<div class='keep line'>		System.err.println("Refreshing " + dest);</div>
+<div class='keep line'></div>
+<div class='keep line'>		int pathSizeSum = 0;</div>
+<div class='keep line'>		for (Path path : pathsToSum) {</div>
+<div class='keep line'>			File pathFile = ctx.cached(path);</div>
+<div class='keep line'>			int pathSize = FileUtil.contentAsBytes(pathFile).length;</div>
+<div class='keep line'>			pathSizeSum += pathSize;</div>
+<div class='keep line'>		}</div>
+<div class='keep line'>		FileUtil.newTextFile(dest, pathSizeSum + "\n");</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.HelloTarget ingredient1)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.HelloTarget ingredient2)</kbd><br/>
+<kbd class='shell output'>(0/1 D! com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
+<kbd class='shell output'>Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/file-size-sum</kbd><br/>
+<kbd class='shell output'>5</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>
+Now that we declared the ingredients, iwant automatically told them to refresh their cached contents before telling our target to refresh its. We can see this from the output. The D! before a target's type and name means the target is refreshed because its cached content descriptor (and thus also its content) is missing.
+</p>
+<p class='text'>
+(We can also see that the workspace definition classes were updated. The S~ in the output means they were updated because of modified source ingredients. We just modified the source of our target, a part of the workspace definition.)
+</p>
+<p class='text'>
+iwant uses a target's cached content descriptor and its timestamp to determine whether the target is dirty (needs refreshing) or up-to-date. We as target authors just defined the content descriptor in the method ingredientsAndParameters.
+</p>
+<p class='text'>
+This is what our cached content descriptor looks like:
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>cat as-iwant-tutorial-developer/.i-cached/descriptor/file-size-sum</kbd><br/>
+<kbd class='shell output'>com.example.wsdef.FileSizeSum</kbd><br/>
+<kbd class='shell output'>i:pathsToSum:</kbd><br/>
+<kbd class='shell output'>  ingredient1</kbd><br/>
+<kbd class='shell output'>  ingredient2</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<h3>Target with parameters</h3>
+<p class='text'>
+Next we will make our target accept static input, a parameter. We will add a header line above the size sum line. Again, we first try what happens if we don't declare this change to our content definition.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	private final Path ingredient1 = new HelloTarget("ingredient1", "12");</div>
+<div class='keep line'>	private final Path ingredient2 = new HelloTarget("ingredient2", "345");</div>
+<div class='keep line'>	private final Target myTarget = new FileSizeSum("file-size-sum",</div>
+<div class='del line'>			Arrays.asList(ingredient1, ingredient2));</div>
+<div class='add line'>			Arrays.asList(ingredient1, ingredient2), "The sum");</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='keep line'>				myTarget);</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='keep line'>				.end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/FileSizeSum.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.io.File;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
+<div class='keep line'>import net.sf.iwant.api.model.TargetEvaluationContext;</div>
+<div class='keep line'>import net.sf.iwant.api.target.TargetBase;</div>
+<div class='keep line'>import net.sf.iwant.coreservices.FileUtil;</div>
+<div class='keep line'></div>
+<div class='keep line'>class FileSizeSum extends TargetBase {</div>
+<div class='keep line'></div>
+<div class='keep line'>	private final List&lt;Path> pathsToSum;</div>
+<div class='add line'>	private final String headerLineContent;</div>
+<div class='keep line'></div>
+<div class='del line'>	public FileSizeSum(String name, List&lt;Path> pathsToSum) {</div>
+<div class='add line'>	public FileSizeSum(String name, List&lt;Path> pathsToSum,</div>
+<div class='add line'>			String headerLineContent) {</div>
+<div class='keep line'>		super(name);</div>
+<div class='keep line'>		this.pathsToSum = pathsToSum;</div>
+<div class='add line'>		this.headerLineContent = headerLineContent;</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	protected IngredientsAndParametersDefined ingredientsAndParameters(</div>
+<div class='keep line'>			IngredientsAndParametersPlease iUse) {</div>
+<div class='keep line'>		return iUse.ingredients("pathsToSum", pathsToSum).nothingElse();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public void path(TargetEvaluationContext ctx) throws Exception {</div>
+<div class='keep line'>		File dest = ctx.cached(this);</div>
+<div class='keep line'>		System.err.println("Refreshing " + dest);</div>
+<div class='keep line'></div>
+<div class='keep line'>		int pathSizeSum = 0;</div>
+<div class='keep line'>		for (Path path : pathsToSum) {</div>
+<div class='keep line'>			File pathFile = ctx.cached(path);</div>
+<div class='keep line'>			int pathSize = FileUtil.contentAsBytes(pathFile).length;</div>
+<div class='keep line'>			pathSizeSum += pathSize;</div>
+<div class='keep line'>		}</div>
+<div class='del line'>		FileUtil.newTextFile(dest, pathSizeSum + "\n");</div>
+<div class='add line'>		FileUtil.newTextFile(dest,</div>
+<div class='add line'>				headerLineContent + "\n" + pathSizeSum + "\n");</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>5</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>Whoops, cache invalidation! Unfortunately, <u>at the moment iwant cannot help, if the target author forgets to declare a parameter</u> i.e. input that is not a reference to another path, an ingredient.<p><p class='text'>
+We can fix this by declaring the header line a parameter:
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/FileSizeSum.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.io.File;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
+<div class='keep line'>import net.sf.iwant.api.model.TargetEvaluationContext;</div>
+<div class='keep line'>import net.sf.iwant.api.target.TargetBase;</div>
+<div class='keep line'>import net.sf.iwant.coreservices.FileUtil;</div>
+<div class='keep line'></div>
+<div class='keep line'>class FileSizeSum extends TargetBase {</div>
+<div class='keep line'></div>
+<div class='keep line'>	private final List&lt;Path> pathsToSum;</div>
+<div class='keep line'>	private final String headerLineContent;</div>
+<div class='keep line'></div>
+<div class='keep line'>	public FileSizeSum(String name, List&lt;Path> pathsToSum,</div>
+<div class='keep line'>			String headerLineContent) {</div>
+<div class='keep line'>		super(name);</div>
+<div class='keep line'>		this.pathsToSum = pathsToSum;</div>
+<div class='keep line'>		this.headerLineContent = headerLineContent;</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	protected IngredientsAndParametersDefined ingredientsAndParameters(</div>
+<div class='keep line'>			IngredientsAndParametersPlease iUse) {</div>
+<div class='del line'>		return iUse.ingredients("pathsToSum", pathsToSum).nothingElse();</div>
+<div class='add line'>		return iUse.ingredients("pathsToSum", pathsToSum)</div>
+<div class='add line'>				.parameter("headerLineContent", headerLineContent)</div>
+<div class='add line'>				.nothingElse();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public void path(TargetEvaluationContext ctx) throws Exception {</div>
+<div class='keep line'>		File dest = ctx.cached(this);</div>
+<div class='keep line'>		System.err.println("Refreshing " + dest);</div>
+<div class='keep line'></div>
+<div class='keep line'>		int pathSizeSum = 0;</div>
+<div class='keep line'>		for (Path path : pathsToSum) {</div>
+<div class='keep line'>			File pathFile = ctx.cached(path);</div>
+<div class='keep line'>			int pathSize = FileUtil.contentAsBytes(pathFile).length;</div>
+<div class='keep line'>			pathSizeSum += pathSize;</div>
+<div class='keep line'>		}</div>
+<div class='keep line'>		FileUtil.newTextFile(dest,</div>
+<div class='keep line'>				headerLineContent + "\n" + pathSizeSum + "\n");</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
+<kbd class='shell output'>Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/file-size-sum</kbd><br/>
+<kbd class='shell output'>The sum</kbd><br/>
+<kbd class='shell output'>5</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>
+Now, after the last wish, our target is up-to-date:
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>The sum</kbd><br/>
+<kbd class='shell output'>5</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>
+But if we change the value of the parameter, the target will become dirty and be refreshed.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	private final Path ingredient1 = new HelloTarget("ingredient1", "12");</div>
+<div class='keep line'>	private final Path ingredient2 = new HelloTarget("ingredient2", "345");</div>
+<div class='keep line'>	private final Target myTarget = new FileSizeSum("file-size-sum",</div>
+<div class='del line'>			Arrays.asList(ingredient1, ingredient2), "The sum");</div>
+<div class='add line'>			Arrays.asList(ingredient1, ingredient2), "The sum of file sizes");</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='keep line'>				myTarget);</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='keep line'>				.end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
+<kbd class='shell output'>Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/file-size-sum</kbd><br/>
+<kbd class='shell output'>The sum of file sizes</kbd><br/>
+<kbd class='shell output'>5</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>
+The D~ in the output means the target was refreshed because of a changed content descriptor. Out of curiosity, let's see what our content descriptor now looks like.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>cat as-iwant-tutorial-developer/.i-cached/descriptor/file-size-sum</kbd><br/>
+<kbd class='shell output'>com.example.wsdef.FileSizeSum</kbd><br/>
+<kbd class='shell output'>i:pathsToSum:</kbd><br/>
+<kbd class='shell output'>  ingredient1</kbd><br/>
+<kbd class='shell output'>  ingredient2</kbd><br/>
+<kbd class='shell output'>p:headerLineContent:</kbd><br/>
+<kbd class='shell output'>  The sum of file sizes</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<h3>Target under construction</h3>
+<p class='text'>
+When developing a target, it is convenient to declare its own source an ingredient. This way any change to its source makes it dirty. If the target uses other classes, they or their classes also need to be declared.
+</p>
+<p class='text'>
+Let's try it for our target.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/FileSizeSum.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.io.File;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
+<div class='add line'>import net.sf.iwant.api.model.Source;</div>
+<div class='keep line'>import net.sf.iwant.api.model.TargetEvaluationContext;</div>
+<div class='keep line'>import net.sf.iwant.api.target.TargetBase;</div>
+<div class='add line'>import net.sf.iwant.core.javafinder.WsdefJavaOf;</div>
+<div class='keep line'>import net.sf.iwant.coreservices.FileUtil;</div>
+<div class='keep line'></div>
+<div class='keep line'>class FileSizeSum extends TargetBase {</div>
+<div class='keep line'></div>
+<div class='keep line'>	private final List&lt;Path> pathsToSum;</div>
+<div class='keep line'>	private final String headerLineContent;</div>
+<div class='add line'>	private final Source me;</div>
+<div class='keep line'></div>
+<div class='keep line'>	public FileSizeSum(String name, List&lt;Path> pathsToSum,</div>
+<div class='del line'>			String headerLineContent) {</div>
+<div class='add line'>			String headerLineContent, WsdefJavaOf wsdefJavaOf) {</div>
+<div class='keep line'>		super(name);</div>
+<div class='keep line'>		this.pathsToSum = pathsToSum;</div>
+<div class='keep line'>		this.headerLineContent = headerLineContent;</div>
+<div class='add line'>		this.me = wsdefJavaOf.classUnderSrcMainJava(getClass());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	protected IngredientsAndParametersDefined ingredientsAndParameters(</div>
+<div class='keep line'>			IngredientsAndParametersPlease iUse) {</div>
+<div class='keep line'>		return iUse.ingredients("pathsToSum", pathsToSum)</div>
+<div class='keep line'>				.parameter("headerLineContent", headerLineContent)</div>
+<div class='del line'>				.nothingElse();</div>
+<div class='add line'>				.ingredients("me", me).nothingElse();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public void path(TargetEvaluationContext ctx) throws Exception {</div>
+<div class='keep line'>		File dest = ctx.cached(this);</div>
+<div class='keep line'>		System.err.println("Refreshing " + dest);</div>
+<div class='keep line'></div>
+<div class='keep line'>		int pathSizeSum = 0;</div>
+<div class='keep line'>		for (Path path : pathsToSum) {</div>
+<div class='keep line'>			File pathFile = ctx.cached(path);</div>
+<div class='keep line'>			int pathSize = FileUtil.contentAsBytes(pathFile).length;</div>
+<div class='keep line'>			pathSizeSum += pathSize;</div>
+<div class='keep line'>		}</div>
+<div class='keep line'>		FileUtil.newTextFile(dest,</div>
+<div class='keep line'>				headerLineContent + "\n" + pathSizeSum + "\n");</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='add line'>import net.sf.iwant.api.wsdef.WorkspaceContext;</div>
+<div class='add line'>import net.sf.iwant.core.javafinder.WsdefJavaOf;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	private final Path ingredient1 = new HelloTarget("ingredient1", "12");</div>
+<div class='keep line'>	private final Path ingredient2 = new HelloTarget("ingredient2", "345");</div>
+<div class='del line'>	private final Target myTarget = new FileSizeSum("file-size-sum",</div>
+<div class='del line'>			Arrays.asList(ingredient1, ingredient2), "The sum of file sizes");</div>
+<div class='add line'>	private final Target myTarget;</div>
+<div class='add line'></div>
+<div class='add line'>	public IwanttutorialWorkspace(WorkspaceContext ctx) {</div>
+<div class='add line'>		myTarget = new FileSizeSum("file-size-sum",</div>
+<div class='add line'>				Arrays.asList(ingredient1, ingredient2),</div>
+<div class='add line'>				"The sum of file sizes", new WsdefJavaOf(ctx));</div>
+<div class='add line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='keep line'>				myTarget);</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='keep line'>				.end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspaceFactory.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceFactory;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspaceFactory implements WorkspaceFactory {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public Workspace workspace(WorkspaceContext ctx) {</div>
+<div class='del line'>		return new IwanttutorialWorkspace();</div>
+<div class='add line'>		return new IwanttutorialWorkspace(ctx);</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
+<kbd class='shell output'>Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/file-size-sum</kbd><br/>
+<kbd class='shell output'>The sum of file sizes</kbd><br/>
+<kbd class='shell output'>5</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>
+Our target is now up-to-date, but if we touch its source, it will be refreshed.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>The sum of file sizes</kbd><br/>
+<kbd class='shell output'>5</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>touch as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/FileSizeSum.java</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
+<kbd class='shell output'>Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/file-size-sum</kbd><br/>
+<kbd class='shell output'>The sum of file sizes</kbd><br/>
+<kbd class='shell output'>5</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='navipanel'><a href='usingmoduleinbuild.html'><< Using a module of the workspace in the build</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='targetimplementedinbash.html'>Defining targets in bash >></a></div>
+
+</body></html>

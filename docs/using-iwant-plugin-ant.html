@@ -1,0 +1,136 @@
+<html>
+<head>
+<title>Using an iwant plugin (for untarring)</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='scriptgenerated.html'><< Using a script/program define target content</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='ext-libs-in-wsdef.html'>Using external libraries in workspace definition >></a></div>
+
+<p><i>This chapter continues from where <a href='creating-wsdef.html'>Creating the workspace definition</a> left us.</i></p><h2>Using an iwant plugin (for untarring)</h2>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdefdef/src/main/java/com/example/wsdefdef/IwantTutorialWorkspaceProvider.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdefdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public JavaSrcModule workspaceModule(WorkspaceModuleContext ctx) {</div>
+<div class='keep line'>		return JavaSrcModule.with().name("iwant-tutorial-wsdef")</div>
+<div class='keep line'>				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")</div>
+<div class='keep line'>				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())</div>
+<div class='del line'>				.mainDeps(ctx.wsdefdefModule()).end();</div>
+<div class='add line'>				.mainDeps(ctx.wsdefdefModule())</div>
+<div class='add line'>				.mainDeps(ctx.iwantPlugin().ant().withDependencies()).end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public String workspaceFactoryClassname() {</div>
+<div class='keep line'>		return "com.example.wsdef.IwanttutorialWorkspaceFactory";</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+We have to generate Eclipse settings before editing the workspace definition.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.SvnExported iwant-plugin-ant-main-java)</kbd><br/>
+<kbd class='shell output'>svn exporting (may take a while) https://svn.code.sf.net/p/iwant/code/trunk/optional/iwant-plugin-ant/src/main/java@899</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-launcher-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-plugin-ant)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdefdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+</samp></div>
+<p class='text'>
+Now we define an untarred target using iwant-plugin-ant.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='add line'>import net.sf.iwant.api.model.Source;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='add line'>import net.sf.iwant.plugin.ant.Untarred;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='del line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"));</div>
+<div class='add line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='add line'>				untarredTest());</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private static Target untarredTest() {</div>
+<div class='add line'>		return Untarred.with().name("Untarred-test").gzCompression()</div>
+<div class='add line'>				.from(Source.underWsroot("Untarred-test.tar.gz")).end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='keep line'>				.end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+We create the source tar to be untarred.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>mkdir Untarred-test</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>echo "hello" > Untarred-test/tarred-file</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>tar czf Untarred-test.tar.gz Untarred-test/</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>rm -rf Untarred-test</kbd><br/>
+</samp></div>
+<p class='text'>
+Finally we list the content of the untarred tar file.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>hello</kbd><br/>
+<kbd class='shell output'>Untarred-test</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/Untarred-test/as-path | xargs -r find</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.ant.Untarred Untarred-test)</kbd><br/>
+<kbd class='shell output'>Expanding: /home/hacker/iwant-tutorial/Untarred-test.tar.gz into /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/Untarred-test</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/Untarred-test</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/Untarred-test/Untarred-test</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/Untarred-test/Untarred-test/tarred-file</kbd><br/>
+</samp></div>
+<div class='navipanel'><a href='scriptgenerated.html'><< Using a script/program define target content</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='ext-libs-in-wsdef.html'>Using external libraries in workspace definition >></a></div>
+
+</body></html>

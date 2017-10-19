@@ -1,0 +1,83 @@
+<html>
+<head>
+<title>The command line interface and bootstrapping</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='concepts-intro.html'><< Introduction of concepts</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='bootstrapping-with-svnexternals.html'>Alternative: acquiring iwant bootstrapper by using svn:externals >></a></div>
+
+<h2>The command line interface and bootstrapping</h2>
+<h2>Introduction to the iwant cli and bootstrapping</h2>
+<p class='text'>
+Since a build system is so integral a part of a reproducible build, each project that uses iwant defines the exact version of iwant to use. To achieve this, the command line interface of iwant is a very shallow bootstrapper that only knows how to download and build the actual iwant engine and delegates the actual work to it.
+</p>
+<p class='text'>The bootstrapper contains two command line interfaces: a bash script and an ant script. They both do the same thing: they compile and run the third part of the bootstrapper, a java class. This java class is the <i>entry</i> to iwant.</p><p class='text'>
+The entry class makes (if necessary, of course) an svn checkout of the requested version of iwant code and compiles and runs the next phase of bootstrapping, called entry2.
+</p>
+<p class='text'>
+The entry2 phase compiles the full iwant system it itself is part of and runs the actual entry to the system, called entry3.
+</p>
+<p class='text'>
+If in any of the bootstrapping phases some configuration is missing, the bootstrapper acts as a wizard that helps the user in creating the configuration.
+</p>
+<p class='text'>In this tutorial we'll be mostly using the bash interface. The <a href='ant-cli.html'>Ant cli</a> chapter gives a short introduction to the ant command line interface.</p><h2>Bootstrapping</h2>
+<p class='text'>
+Let's see how all this works in practice.
+</p>
+<p class='text'>
+First we'll create a directory for our project workspace.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~ $ </kbd><kbd class='shell cmd'>mkdir iwant-tutorial</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~ $ </kbd><kbd class='shell cmd'>cd iwant-tutorial</kbd><br/>
+</samp></div>
+<p class='text'>
+Then we acquire the iwant command line interface, or bootstrapper, by svn exporting it. In this tutorial we use revision 899, but you may want to use a newer revision or to omit the -r option to get the latest revision.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>svn export -r 899 https://svn.code.sf.net/p/iwant/code/trunk/essential/iwant-entry/as-some-developer as-iwant-tutorial-developer</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/net</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/net/sf</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/net/sf/iwant</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/net/sf/iwant/entry</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/ant</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/ant/iw</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/bash</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/bash/iwant</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/net/sf/iwant/entry/Iwant.java</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/ant/iw/build.xml</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/bash/iwant/help.sh</kbd><br/>
+<kbd class='shell output'>Exported revision 899.</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<h2>Choosing url for iwant to use as engine</h2>
+<p class='text'>
+Now we are ready to make our first wish. By using the code completion feature (tab) of bash, we see that the only wish available is 'help':
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/help.sh</kbd><br/>
+<kbd class='shell output'>I created /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/conf/iwant-from</kbd><br/>
+<kbd class='shell output'>Please edit it and rerun me.</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>
+Since we just started creating our workspace, the wizard starts helping us. We follow its advice by choosing a revision of iwant and asking for help again. Note: here it is not wise to leave the revision out.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/conf/iwant-from"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='del line'># uncomment and optionally change the revision:</div>
+<div class='del line'>#iwant-from=https://svn.code.sf.net/p/iwant/code/trunk@721</div>
+<div class='add line'>iwant-from=https://svn.code.sf.net/p/iwant/code/trunk@899</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/help.sh</kbd><br/>
+<kbd class='shell output'>I created /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/conf/ws-info</kbd><br/>
+<kbd class='shell output'>Please edit it and rerun me.</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>We will <a href='creating-wsdef.html'>continue defining the workspace</a> in a separate chapter. The next chapter shows <a href='bootstrapping-with-svnexternals.html'>an alternative way of acquiring the bootstrapper using svn:externals</a>, a handy mechanism for projects that use svn for version control.</p><div class='navipanel'><a href='concepts-intro.html'><< Introduction of concepts</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='bootstrapping-with-svnexternals.html'>Alternative: acquiring iwant bootstrapper by using svn:externals >></a></div>
+
+</body></html>

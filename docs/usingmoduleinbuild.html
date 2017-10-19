@@ -1,0 +1,136 @@
+<html>
+<head>
+<title>Using a module of the workspace in the build</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='fromgithub.html'><< (Code) from github</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='custom-target.html'>Writing a custom Target >></a></div>
+
+<p><i>This chapter continues from where <a href='creating-wsdef.html'>Creating the workspace definition</a> left us.</i></p><h2>Using a module of the workspace in the build</h2>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdefdef/src/main/java/com/example/wsdefdef/IwantTutorialWorkspaceProvider.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdefdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public JavaSrcModule workspaceModule(WorkspaceModuleContext ctx) {</div>
+<div class='keep line'>		return JavaSrcModule.with().name("iwant-tutorial-wsdef")</div>
+<div class='keep line'>				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")</div>
+<div class='keep line'>				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())</div>
+<div class='del line'>				.mainDeps(ctx.wsdefdefModule()).end();</div>
+<div class='add line'>				.mainDeps(exampleUtil(), ctx.wsdefdefModule()).end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public String workspaceFactoryClassname() {</div>
+<div class='keep line'>		return "com.example.wsdef.IwanttutorialWorkspaceFactory";</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='add line'>	public static JavaSrcModule exampleUtil() {</div>
+<div class='add line'>		return JavaSrcModule.with().name("example-util")</div>
+<div class='add line'>				.mainJava("src/main/java").end();</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>mkdir -p example-util/src/main/java/com/example/util</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses example-util-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdefdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+</samp></div>
+<p class='text'>
+We import the new module to Eclipse and create a utility.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "example-util/src/main/java/com/example/util/ExampleUtil.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>package com.example.util;</div>
+<div class='add line'></div>
+<div class='add line'>public class ExampleUtil {</div>
+<div class='add line'></div>
+<div class='add line'>	public static String capitalize(String s) {</div>
+<div class='add line'>		return s.toUpperCase();</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>}</div>
+</div>
+<p class='text'>
+Now the utility is available in our build as well as being served by it.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='add line'>import com.example.util.ExampleUtil;</div>
+<div class='add line'>import com.example.wsdefdef.IwantTutorialWorkspaceProvider;</div>
+<div class='add line'></div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='del line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"));</div>
+<div class='add line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='add line'>				targetUsingModuleFromSameWs());</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private static Target targetUsingModuleFromSameWs() {</div>
+<div class='add line'>		return new HelloTarget("targetUsingModuleFromSameWs",</div>
+<div class='add line'>				ExampleUtil.capitalize("String made with ExampleUtil."));</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='del line'>				.end());</div>
+<div class='add line'>				.modules(IwantTutorialWorkspaceProvider.exampleUtil()).end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses example-util-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>hello</kbd><br/>
+<kbd class='shell output'>targetUsingModuleFromSameWs</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/targetUsingModuleFromSameWs/as-path | xargs -r cat </kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.HelloTarget targetUsingModuleFromSameWs)</kbd><br/>
+</samp></div>
+<div class='navipanel'><a href='fromgithub.html'><< (Code) from github</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='custom-target.html'>Writing a custom Target >></a></div>
+
+</body></html>

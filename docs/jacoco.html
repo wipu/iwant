@@ -1,0 +1,278 @@
+<html>
+<head>
+<title>Test coverage report using jacoco</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='javamodules.html'><< Defining Java modules</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='testng.html'>Using TestNG instead of JUnit >></a></div>
+
+<p><i>This chapter continues from where <a href='javamodules.html'>Defining Java modules</a> left us.</i></p><h2>Test coverage report using jacoco</h2>
+<p class='text'>
+In addition to compiling, running automated tests is one of the main tasks of build scripts.
+</p>
+<p class='text'>
+But since we want to keep things declarative instead of imperative, we don't want to tell iwant to compile or run tests. Instead we wish for paths to targets that include the results of compiling and running tests.
+</p>
+<p class='text'>
+The result of a compilation as a noun is easy, and many build solutions manage to keep the vocabulary declarative there. But how to avoid being imperative with test runs?
+</p>
+<p class='text'>
+The result of a test run is basically a boolean: the tests either all passed or there was a failure. But we can do better than that: in addition to the success of the tests, we are also interested in the code coverage they give us.
+</p>
+<p class='text'>So, with iwant, <i>"running tests" means wishing for a coverage report</i>.</p><p class='text'>
+Let's see how this is done. First we'll enable the needed plugin, jacoco, and refresh eclipse settings.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdefdef/src/main/java/com/example/wsdefdef/IwantTutorialWorkspaceProvider.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdefdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public JavaSrcModule workspaceModule(WorkspaceModuleContext ctx) {</div>
+<div class='keep line'>		return JavaSrcModule.with().name("iwant-tutorial-wsdef")</div>
+<div class='keep line'>				.locationUnderWsRoot("as-iwant-tutorial-developer/i-have/wsdef")</div>
+<div class='keep line'>				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())</div>
+<div class='del line'>				.mainDeps(ctx.wsdefdefModule()).end();</div>
+<div class='add line'>				.mainDeps(ctx.wsdefdefModule())</div>
+<div class='add line'>				.mainDeps(ctx.iwantPlugin().jacoco().withDependencies()).end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public String workspaceFactoryClassname() {</div>
+<div class='keep line'>		return "com.example.wsdef.IwanttutorialWorkspaceFactory";</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.SvnExported iwant-plugin-jacoco-main-java)</kbd><br/>
+<kbd class='shell output'>svn exporting (may take a while) https://svn.code.sf.net/p/iwant/code/trunk/optional/iwant-plugin-jacoco/src/main/java@899</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.SvnExported iwant-plugin-ant-main-java)</kbd><br/>
+<kbd class='shell output'>svn exporting (may take a while) https://svn.code.sf.net/p/iwant/code/trunk/optional/iwant-plugin-ant/src/main/java@899</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-launcher-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-plugin-ant)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact commons-io-1.3.2.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-plugin-jacoco)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(example-hello)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(example-helloutil)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdefdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+</samp></div>
+<p class='text'>
+Then we define the jacoco-report target.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.io.File;</div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.core.Concatenated;</div>
+<div class='keep line'>import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaBinModule;</div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='add line'>import net.sf.iwant.core.download.TestedIwantDependencies;</div>
+<div class='keep line'>import net.sf.iwant.core.javamodules.JavaModules;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='add line'>import net.sf.iwant.plugin.jacoco.JacocoDistribution;</div>
+<div class='add line'>import net.sf.iwant.plugin.jacoco.JacocoTargetsOfJavaModules;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	static class ExampleModules extends JavaModules {</div>
+<div class='keep line'></div>
+<div class='keep line'>		@Override</div>
+<div class='keep line'>		protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {</div>
+<div class='keep line'>			return super.commonSettings(m).testDeps(junit);</div>
+<div class='keep line'>		}</div>
+<div class='keep line'></div>
+<div class='add line'>		final JavaBinModule asmAll = binModule("org/ow2/asm", "asm-all",</div>
+<div class='add line'>				"5.0.1");</div>
+<div class='keep line'>		final JavaBinModule hamcrestCore = binModule("org/hamcrest",</div>
+<div class='keep line'>				"hamcrest-core", "1.3");</div>
+<div class='keep line'>		final JavaBinModule junit = binModule("junit", "junit", "4.11",</div>
+<div class='keep line'>				hamcrestCore);</div>
+<div class='keep line'>		final JavaSrcModule helloUtil = srcModule("example-helloutil")</div>
+<div class='keep line'>				.noMainResources().end();</div>
+<div class='keep line'>		final JavaSrcModule hello = srcModule("example-hello").noMainResources()</div>
+<div class='keep line'>				.mainDeps(helloUtil).end();</div>
+<div class='keep line'></div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	private final ExampleModules modules = new ExampleModules();</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='del line'>				classpathStringOfAll());</div>
+<div class='add line'>				jacocoReport(), classpathStringOfAll());</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private Target jacocoReport() {</div>
+<div class='add line'>		return JacocoTargetsOfJavaModules.with()</div>
+<div class='add line'>				.jacocoWithDeps(jacoco(), modules.asmAll.mainArtifact())</div>
+<div class='add line'>				.antJars(TestedIwantDependencies.antJar(),</div>
+<div class='add line'>						TestedIwantDependencies.antLauncherJar())</div>
+<div class='add line'>				.modules(modules.allSrcModules()).end()</div>
+<div class='add line'>				.jacocoReport("jacoco-report");</div>
+<div class='add line'></div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private static JacocoDistribution jacoco() {</div>
+<div class='add line'>		return JacocoDistribution.newestTestedVersion();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	private Target classpathStringOfAll() {</div>
+<div class='keep line'>		ConcatenatedBuilder cp = Concatenated.named("all-as-cp");</div>
+<div class='keep line'>		cp.string(".");</div>
+<div class='keep line'>		for (Path jar : JavaModules</div>
+<div class='keep line'>				.mainArtifactJarsOf(modules.allSrcModules())) {</div>
+<div class='keep line'>			cp.string(File.pathSeparator).nativePathTo(jar);</div>
+<div class='keep line'>		}</div>
+<div class='keep line'>		return cp.end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='keep line'>				.modules(modules.allSrcModules()).end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+We list targets to refresh the wish scripts and then wish for the coverage report.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>hello</kbd><br/>
+<kbd class='shell output'>jacoco-report</kbd><br/>
+<kbd class='shell output'>all-as-cp</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/jacoco-report/as-path</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.Downloaded jacoco-0.7.2.201409121644.zip)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.jacoco.JacocoDistribution jacoco-0.7.2.201409121644)</kbd><br/>
+<kbd class='shell output'>Expanding: /home/hacker/.net.sf.iwant/cached/UnmodifiableUrl/http%3A/%2Frepo1.maven.org/maven2/org/jacoco/jacoco/0.7.2.201409121644/jacoco-0.7.2.201409121644.zip into /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/jacoco-0.7.2.201409121644</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact asm-all-5.0.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses example-hello-test-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.jacoco.JacocoInstrumentation example-hello-main-classes.jacoco-instr)</kbd><br/>
+<kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/temp/w-0/example-hello-main-classes.jacoco-instr.xml</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>example-hello-main-classes.jacoco-instr:</kbd><br/>
+<kbd class='shell output'>[jacoco:instrument] Instrumented 1 classes to /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-hello-main-classes.jacoco-instr</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>BUILD SUCCESSFUL</kbd><br/>
+<kbd class='shell output'>Total time: 0 seconds</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.jacoco.JacocoInstrumentation example-helloutil-main-classes.jacoco-instr)</kbd><br/>
+<kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/temp/w-0/example-helloutil-main-classes.jacoco-instr.xml</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>example-helloutil-main-classes.jacoco-instr:</kbd><br/>
+<kbd class='shell output'>[jacoco:instrument] Instrumented 1 classes to /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-helloutil-main-classes.jacoco-instr</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>BUILD SUCCESSFUL</kbd><br/>
+<kbd class='shell output'>Total time: 0 seconds</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.ClassNameList example-hello-test-class-names)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.jacoco.JacocoCoverage example-hello.jacococoverage)</kbd><br/>
+<kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/temp/w-0/example-hello.jacococoverage.xml</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>example-hello.jacococoverage:</kbd><br/>
+<kbd class='shell output'>     [java] JUnit version 4.11</kbd><br/>
+<kbd class='shell output'>     [java] .</kbd><br/>
+<kbd class='shell output'>     [java] Time: 0,103</kbd><br/>
+<kbd class='shell output'>     [java] </kbd><br/>
+<kbd class='shell output'>     [java] OK (1 test)</kbd><br/>
+<kbd class='shell output'>     [java] </kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>BUILD SUCCESSFUL</kbd><br/>
+<kbd class='shell output'>Total time: 0 seconds</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses example-helloutil-test-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.ClassNameList example-helloutil-test-class-names)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.jacoco.JacocoCoverage example-helloutil.jacococoverage)</kbd><br/>
+<kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/temp/w-0/example-helloutil.jacococoverage.xml</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>example-helloutil.jacococoverage:</kbd><br/>
+<kbd class='shell output'>     [java] JUnit version 4.11</kbd><br/>
+<kbd class='shell output'>     [java] .</kbd><br/>
+<kbd class='shell output'>     [java] Time: 0,124</kbd><br/>
+<kbd class='shell output'>     [java] </kbd><br/>
+<kbd class='shell output'>     [java] OK (1 test)</kbd><br/>
+<kbd class='shell output'>     [java] </kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>BUILD SUCCESSFUL</kbd><br/>
+<kbd class='shell output'>Total time: 0 seconds</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.jacoco.JacocoReport jacoco-report)</kbd><br/>
+<kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/temp/w-0/jacoco-report.xml</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>jacoco-report:</kbd><br/>
+<kbd class='shell output'>     [echo] Generating /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/jacoco-report</kbd><br/>
+<kbd class='shell output'>[jacoco:report] Loading execution data file /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-hello.jacococoverage</kbd><br/>
+<kbd class='shell output'>[jacoco:report] Loading execution data file /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-helloutil.jacococoverage</kbd><br/>
+<kbd class='shell output'>[jacoco:report] Writing bundle 'jacoco-report' with 2 classes</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>BUILD SUCCESSFUL</kbd><br/>
+<kbd class='shell output'>Total time: 0 seconds</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/jacoco-report</kbd><br/>
+</samp></div>
+<p class='text'>
+Let's see what is in the report. Here we already benefit from our declarative wish: since we didn't tell iwant to run anything and we haven't touched anything, we can just make the same wish again without having to wait for another test run.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/jacoco-report/as-path | xargs -r ls</kbd><br/>
+<kbd class='shell output'>com.example.hello</kbd><br/>
+<kbd class='shell output'>com.example.helloutil</kbd><br/>
+<kbd class='shell output'>index.html</kbd><br/>
+<kbd class='shell output'>report.csv</kbd><br/>
+<kbd class='shell output'>report.xml</kbd><br/>
+</samp></div>
+<p class='text'>
+You are probably more interested in the html version, but here we'll take a look at the csv file.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>cat as-iwant-tutorial-developer/.i-cached/target/jacoco-report/report.csv</kbd><br/>
+<kbd class='shell output'>GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED</kbd><br/>
+<kbd class='shell output'>jacoco-report,com.example.hello,HelloMain,10,4,0,0,3,1,2,1,2,1</kbd><br/>
+<kbd class='shell output'>jacoco-report,com.example.helloutil,HelloUtil,3,11,0,0,1,1,1,1,1,1</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='navipanel'><a href='javamodules.html'><< Defining Java modules</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='testng.html'>Using TestNG instead of JUnit >></a></div>
+
+</body></html>

@@ -1,0 +1,108 @@
+<html>
+<head>
+<title>Using ant to define target content</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='ant-cli.html'><< Using ant cli instead of bash</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='scriptgenerated.html'>Using a script/program define target content >></a></div>
+
+<p><i>This chapter continues from where <a href='creating-wsdef.html'>Creating the workspace definition</a> left us.</i></p><h2>Using ant to define target content</h2>
+<p class='text'>
+Let's write another target using ant, downloaded from ibiblio.org. The ant script refers to another target.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='add line'>import net.sf.iwant.api.core.Concatenated;</div>
+<div class='add line'>import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='add line'>import net.sf.iwant.core.ant.AntGenerated;</div>
+<div class='add line'>import net.sf.iwant.core.download.FromRepository;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='del line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"));</div>
+<div class='add line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='add line'>				antGenerated());</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private static HelloTarget justATargetUsedByAntScript() {</div>
+<div class='add line'>		return new HelloTarget("justATargetUsedByAntScript",</div>
+<div class='add line'>				"content of a target");</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private static Target antScript() {</div>
+<div class='add line'>		ConcatenatedBuilder xml = Concatenated.named("script");</div>
+<div class='add line'>		xml.string("&lt;project name='hello' default='hello'>\n");</div>
+<div class='add line'>		xml.string("  &lt;target name='hello'>\n");</div>
+<div class='add line'>		xml.string("    &lt;echo message='Refreshing ${iwant-outfile}'/>\n");</div>
+<div class='add line'>		xml.string("    &lt;copy file='")</div>
+<div class='add line'>				.nativePathTo(justATargetUsedByAntScript())</div>
+<div class='add line'>				.string("' tofile='${iwant-outfile}'/>\n");</div>
+<div class='add line'>		xml.string("    &lt;echo file='${iwant-outfile}' append='true'"</div>
+<div class='add line'>				+ " message=' appended by ant.'/>\n");</div>
+<div class='add line'>		xml.string("  &lt;/target>\n");</div>
+<div class='add line'>		xml.string("&lt;/project>\n");</div>
+<div class='add line'>		return xml.end();</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private static Target antGenerated() {</div>
+<div class='add line'>		final String antGroup = "org/apache/ant";</div>
+<div class='add line'>		final String antVersion = "1.7.1";</div>
+<div class='add line'>		return AntGenerated.with().name("antGenerated")</div>
+<div class='add line'>				.antJars(</div>
+<div class='add line'>						FromRepository.repo1MavenOrg().group(antGroup)</div>
+<div class='add line'>								.name("ant").version(antVersion).jar(),</div>
+<div class='add line'>						FromRepository.repo1MavenOrg().group(antGroup)</div>
+<div class='add line'>								.name("ant-launcher").version(antVersion).jar())</div>
+<div class='add line'>				.script(antScript()).end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='keep line'>				.end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>hello</kbd><br/>
+<kbd class='shell output'>antGenerated</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/antGenerated/as-path | xargs -r cat </kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-1.7.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-launcher-1.7.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.HelloTarget justATargetUsedByAntScript)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated script)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.ant.AntGenerated antGenerated)</kbd><br/>
+<kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/script</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>hello:</kbd><br/>
+<kbd class='shell output'>     [echo] Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/antGenerated</kbd><br/>
+<kbd class='shell output'>     [copy] Copying 1 file to /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>BUILD SUCCESSFUL</kbd><br/>
+<kbd class='shell output'>Total time: 0 seconds</kbd><br/>
+</samp></div>
+<div class='navipanel'><a href='ant-cli.html'><< Using ant cli instead of bash</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='scriptgenerated.html'>Using a script/program define target content >></a></div>
+
+</body></html>

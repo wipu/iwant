@@ -2,6 +2,7 @@
 .project
 .settings/
 **/classes/
+*~
 
 /private/iwant-testarea/testarea-root/*
 !/private/iwant-testarea/testarea-root/.keep

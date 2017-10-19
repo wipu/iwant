@@ -1,0 +1,214 @@
+<html>
+<head>
+<title>Using Scala in Java modules</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='testng.html'><< Using TestNG instead of JUnit</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='pmdreport.html'>Static code analysis report using PMD >></a></div>
+
+<p><i>This chapter continues from where <a href='javamodules.html'>Defining Java modules</a> left us.</i></p><h2>Using Scala in Java modules</h2>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.io.File;</div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.core.Concatenated;</div>
+<div class='keep line'>import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaBinModule;</div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;</div>
+<div class='add line'>import net.sf.iwant.api.javamodules.ScalaVersion;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import net.sf.iwant.core.javamodules.JavaModules;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='del line'>	static class ExampleModules extends JavaModules {</div>
+<div class='add line'>	private final ScalaVersion scala = ScalaVersion._2_11_7();</div>
+<div class='add line'></div>
+<div class='add line'>	class ExampleModules extends JavaModules {</div>
+<div class='keep line'></div>
+<div class='keep line'>		@Override</div>
+<div class='keep line'>		protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {</div>
+<div class='keep line'>			return super.commonSettings(m).testDeps(junit);</div>
+<div class='keep line'>		}</div>
+<div class='keep line'></div>
+<div class='keep line'>		final JavaBinModule hamcrestCore = binModule("org/hamcrest",</div>
+<div class='keep line'>				"hamcrest-core", "1.3");</div>
+<div class='keep line'>		final JavaBinModule junit = binModule("junit", "junit", "4.11",</div>
+<div class='keep line'>				hamcrestCore);</div>
+<div class='keep line'>		final JavaSrcModule helloUtil = srcModule("example-helloutil")</div>
+<div class='keep line'>				.noMainResources().end();</div>
+<div class='keep line'>		final JavaSrcModule hello = srcModule("example-hello").noMainResources()</div>
+<div class='keep line'>				.mainDeps(helloUtil).end();</div>
+<div class='add line'>		final JavaSrcModule mixedScalaAndJava = JavaSrcModule.with()</div>
+<div class='add line'>				.name("example-mixedscala").scalaVersion(scala)</div>
+<div class='add line'>				.mainJava("src/main/java").mainScala("src/main/scala").end();</div>
+<div class='keep line'></div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	private final ExampleModules modules = new ExampleModules();</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='del line'>				classpathStringOfAll());</div>
+<div class='add line'>				classpathStringOfAll(), exampleMixedscalaClasspath());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	private Target classpathStringOfAll() {</div>
+<div class='keep line'>		ConcatenatedBuilder cp = Concatenated.named("all-as-cp");</div>
+<div class='keep line'>		cp.string(".");</div>
+<div class='keep line'>		for (Path jar : JavaModules</div>
+<div class='keep line'>				.mainArtifactJarsOf(modules.allSrcModules())) {</div>
+<div class='keep line'>			cp.string(File.pathSeparator).nativePathTo(jar);</div>
+<div class='keep line'>		}</div>
+<div class='keep line'>		return cp.end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='add line'>	private Target exampleMixedscalaClasspath() {</div>
+<div class='add line'>		return Concatenated.named("example-mixedscala-classpath")</div>
+<div class='add line'>				.unixPathTo(modules.mixedScalaAndJava.mainArtifact())</div>
+<div class='add line'>				.string(":").unixPathTo(scala.libraryJar()).end();</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='keep line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='keep line'>				.modules(modules.allSrcModules()).end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+Then we generate Eclipse settings for it so we can use Eclipse for writing the code.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(example-hello)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(example-helloutil)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdefdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+</samp></div>
+<p class='text'>
+Now we can import the project to Eclipse and write some code.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "example-mixedscala/src/main/java/com/example/mixedscala/JavaThatDependsOnScala.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>package com.example.mixedscala;</div>
+<div class='add line'></div>
+<div class='add line'>public class JavaThatDependsOnScala {</div>
+<div class='add line'></div>
+<div class='add line'>	public static void main(String[] args) {</div>
+<div class='add line'>		System.out.println(</div>
+<div class='add line'>				new com.example.mixedscala.ScalaThatDependsOnJava()</div>
+<div class='add line'>						.stringFromScala());</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "example-mixedscala/src/main/scala/com/example/mixedscala/ScalaThatDependsOnJava.scala"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>package com.example.mixedscala {</div>
+<div class='add line'></div>
+<div class='add line'>  class ScalaThatDependsOnJava {</div>
+<div class='add line'></div>
+<div class='add line'>    def stringFromScala(): String = {</div>
+<div class='add line'>      var j = new com.example.mixedscala.JavaHello();</div>
+<div class='add line'>      return "scala calling " + j.stringFromJava();</div>
+<div class='add line'>    }</div>
+<div class='add line'></div>
+<div class='add line'>  }</div>
+<div class='add line'></div>
+<div class='add line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "example-mixedscala/src/main/java/com/example/mixedscala/JavaHello.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>package com.example.mixedscala;</div>
+<div class='add line'></div>
+<div class='add line'>public class JavaHello {</div>
+<div class='add line'></div>
+<div class='add line'>	public String stringFromJava() {</div>
+<div class='add line'>		return "hello from java";</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>}</div>
+</div>
+<p class='text'>
+TODO remove:
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "example-mixedscala/src/main/java/com/example/mixedscala/ScalaThatDependsOnJava.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+</div>
+<p class='text'>
+Finally, we can build and run some classes.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/example-mixedscala-classpath/as-path</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact scala-compiler-2.11.7.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact scala-library-2.11.7.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact scala-reflect-2.11.7.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-launcher-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.ScalaClasses example-mixedscala-main-classes-from-scala)</kbd><br/>
+<kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/temp/w-0/build.xml</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>scalac-taskdef:</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>scalac-classpath:</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>classes-from-scala:</kbd><br/>
+<kbd class='shell output'>   [scalac] Compiling 0 scala and 3 java source files to /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-mixedscala-main-classes-from-scala</kbd><br/>
+<kbd class='shell output'>   [scalac] Compiling 1 source file to /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-mixedscala-main-classes-from-scala</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>BUILD SUCCESSFUL</kbd><br/>
+<kbd class='shell output'>Total time: 6 seconds</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses example-mixedscala-main-classes)</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-mixedscala-main-classes-from-scala/com/example/mixedscala/ScalaThatDependsOnJava.class: warning: Cannot find annotation method 'bytes()' in type 'ScalaSignature': class file for scala.reflect.ScalaSignature not found</kbd><br/>
+<kbd class='shell output'>1 warning</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated example-mixedscala-classpath)</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-mixedscala-classpath</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/example-mixedscala-classpath/as-path | xargs -r cat</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>java -cp "$(as-iwant-tutorial-developer/with/bash/iwant/target/example-mixedscala-classpath/as-path | xargs -r cat)" com.example.mixedscala.JavaThatDependsOnScala</kbd><br/>
+<kbd class='shell output'>scala calling hello from java</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='navipanel'><a href='testng.html'><< Using TestNG instead of JUnit</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='pmdreport.html'>Static code analysis report using PMD >></a></div>
+
+</body></html>

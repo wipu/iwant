@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>Using a symbolic link for the workspace</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='targetimplementedinbash.html'><< Defining targets in bash</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='iwantmore.html'>I want more >></a></div>
+
+<p><i>This chapter continues from where <a href='creating-wsdef.html'>Creating the workspace definition</a> left us.</i></p><h2>Using a symbolic link for the workspace</h2>
+<p class='text'>
+Canonical paths are used so even if you use a symbolic link to your workspace, the cache works as expected.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>find as-iwant-tutorial-developer -name '*.java' | xargs -r touch</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>hello</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>cd ..</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~ $ </kbd><kbd class='shell cmd'>ln -s iwant-tutorial symlink-to-iwant-tutorial</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~ $ </kbd><kbd class='shell cmd'>cd symlink-to-iwant-tutorial</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/symlink-to-iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>hello</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='console'><samp><kbd class='shell prompt'>~/symlink-to-iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/hello/as-path</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.HelloTarget hello)</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/hello</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='navipanel'><a href='targetimplementedinbash.html'><< Defining targets in bash</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='iwantmore.html'>I want more >></a></div>
+
+</body></html>

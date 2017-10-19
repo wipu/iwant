@@ -1,0 +1,373 @@
+<html>
+<head>
+<title>Defining Java modules</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='ext-libs-in-wsdef.html'><< Using external libraries in workspace definition</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='jacoco.html'>Test coverage report using jacoco >></a></div>
+
+<p><i>This chapter continues from where <a href='creating-wsdef.html'>Creating the workspace definition</a> left us.</i></p><h2>Defining Java modules</h2>
+<p class='text'>
+First we define one java source module with main and test java and test resources and dependency to the binary module junit.
+</p>
+<p class='text'>
+We also add the module to the eclipse-settings side-effect, and also define a target that lists the java class directory artifacts of the module.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='add line'>import net.sf.iwant.api.core.Concatenated;</div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='add line'>import net.sf.iwant.api.javamodules.JavaBinModule;</div>
+<div class='add line'>import net.sf.iwant.api.javamodules.JavaModule;</div>
+<div class='add line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='add line'>import net.sf.iwant.core.download.TestedIwantDependencies;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='add line'>	private final JavaModule junit = JavaBinModule</div>
+<div class='add line'>			.providing(TestedIwantDependencies.junit()).end();</div>
+<div class='add line'>	private final JavaSrcModule exampleHello = JavaSrcModule.with()</div>
+<div class='add line'>			.name("example-hello").mavenLayout().noMainResources()</div>
+<div class='add line'>			.testDeps(junit).end();</div>
+<div class='add line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='del line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"));</div>
+<div class='add line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='add line'>				exampleHelloClasses());</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private Target exampleHelloClasses() {</div>
+<div class='add line'>		return Concatenated.named("hello-classes")</div>
+<div class='add line'>				.unixPathTo(exampleHello.mainArtifact()).string("\n")</div>
+<div class='add line'>				.unixPathTo(exampleHello.testArtifact()).string("\n").end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='del line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='add line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule(),</div>
+<div class='add line'>						exampleHello)</div>
+<div class='keep line'>				.end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+Then we generate Eclipse settings for it so we can use Eclipse for writing the code.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact junit-4.8.2.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(example-hello)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdefdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+</samp></div>
+<p class='text'>
+Now we can import the project to Eclipse and write some code.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "example-hello/src/test/java/com/example/hello/HelloMainTest.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>package com.example.hello;</div>
+<div class='add line'></div>
+<div class='add line'>import static org.junit.Assert.assertEquals;</div>
+<div class='add line'></div>
+<div class='add line'>import org.junit.Test;</div>
+<div class='add line'></div>
+<div class='add line'>public class HelloMainTest {</div>
+<div class='add line'></div>
+<div class='add line'>	@Test</div>
+<div class='add line'>	public void greetingUsesGivenTarget() {</div>
+<div class='add line'>		assertEquals("Hello world", HelloMain.greetingTo("world"));</div>
+<div class='add line'>		assertEquals("Hello Finland", HelloMain.greetingTo("Finland"));</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "example-hello/src/main/java/com/example/hello/HelloMain.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>package com.example.hello;</div>
+<div class='add line'></div>
+<div class='add line'>public class HelloMain {</div>
+<div class='add line'></div>
+<div class='add line'>	public static void main(String[] args) {</div>
+<div class='add line'>		System.out.println(greetingTo(args[0]));</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	public static String greetingTo(String target) {</div>
+<div class='add line'>		return "Hello " + target;</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>}</div>
+</div>
+<p class='text'>
+Finally, we can build and run some classes.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/hello-classes/as-path</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses example-hello-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses example-hello-test-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated hello-classes)</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/hello-classes</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/hello-classes/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-hello-main-classes</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-hello-test-classes</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>java -cp as-iwant-tutorial-developer/.i-cached/target/example-hello-main-classes com.example.hello.HelloMain tutorial</kbd><br/>
+<kbd class='shell output'>Hello tutorial</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>
+Next we will use an optional convenience class for easier definition of modules.
+</p>
+<p class='text'>
+First we'll enable the needed plugin and refresh eclipse settings.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdefdef/src/main/java/com/example/wsdefdef/IwantTutorialWorkspaceProvider.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1    net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(example-hello)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdefdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+</samp></div>
+<p class='text'>
+Now we will use the class JavaModule to define more modules and utilize some convenience functionality of it.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.wsdef;</div>
+<div class='keep line'></div>
+<div class='add line'>import java.io.File;</div>
+<div class='keep line'>import java.util.Arrays;</div>
+<div class='keep line'>import java.util.List;</div>
+<div class='keep line'></div>
+<div class='keep line'>import net.sf.iwant.api.core.Concatenated;</div>
+<div class='add line'>import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
+<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaBinModule;</div>
+<div class='del line'>import net.sf.iwant.api.javamodules.JavaModule;</div>
+<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='add line'>import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;</div>
+<div class='add line'>import net.sf.iwant.api.model.Path;</div>
+<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
+<div class='del line'>import net.sf.iwant.core.download.TestedIwantDependencies;</div>
+<div class='add line'>import net.sf.iwant.core.javamodules.JavaModules;</div>
+<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'></div>
+<div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
+<div class='keep line'></div>
+<div class='del line'>	private final JavaModule junit = JavaBinModule</div>
+<div class='del line'>			.providing(TestedIwantDependencies.junit()).end();</div>
+<div class='del line'>	private final JavaSrcModule exampleHello = JavaSrcModule.with()</div>
+<div class='del line'>			.name("example-hello").mavenLayout().noMainResources()</div>
+<div class='del line'>			.testDeps(junit).end();</div>
+<div class='add line'>	static class ExampleModules extends JavaModules {</div>
+<div class='add line'></div>
+<div class='add line'>		@Override</div>
+<div class='add line'>		protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {</div>
+<div class='add line'>			return super.commonSettings(m).testDeps(junit);</div>
+<div class='add line'>		}</div>
+<div class='add line'></div>
+<div class='add line'>		final JavaBinModule hamcrestCore = binModule("org/hamcrest",</div>
+<div class='add line'>				"hamcrest-core", "1.3");</div>
+<div class='add line'>		final JavaBinModule junit = binModule("junit", "junit", "4.11",</div>
+<div class='add line'>				hamcrestCore);</div>
+<div class='add line'>		final JavaSrcModule helloUtil = srcModule("example-helloutil")</div>
+<div class='add line'>				.noMainResources().end();</div>
+<div class='add line'>		final JavaSrcModule hello = srcModule("example-hello").noMainResources()</div>
+<div class='add line'>				.mainDeps(helloUtil).end();</div>
+<div class='add line'></div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>	private final ExampleModules modules = new ExampleModules();</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends Target> targets(TargetDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(new HelloTarget("hello", "hello from iwant\n"),</div>
+<div class='del line'>				exampleHelloClasses());</div>
+<div class='add line'>				classpathStringOfAll());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='del line'>	private Target exampleHelloClasses() {</div>
+<div class='del line'>		return Concatenated.named("hello-classes")</div>
+<div class='del line'>				.unixPathTo(exampleHello.mainArtifact()).string("\n")</div>
+<div class='del line'>				.unixPathTo(exampleHello.testArtifact()).string("\n").end();</div>
+<div class='add line'>	private Target classpathStringOfAll() {</div>
+<div class='add line'>		ConcatenatedBuilder cp = Concatenated.named("all-as-cp");</div>
+<div class='add line'>		cp.string(".");</div>
+<div class='add line'>		for (Path jar : JavaModules</div>
+<div class='add line'>				.mainArtifactJarsOf(modules.allSrcModules())) {</div>
+<div class='add line'>			cp.string(File.pathSeparator).nativePathTo(jar);</div>
+<div class='add line'>		}</div>
+<div class='add line'>		return cp.end();</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	@Override</div>
+<div class='keep line'>	public List&lt;? extends SideEffect> sideEffects(</div>
+<div class='keep line'>			SideEffectDefinitionContext ctx) {</div>
+<div class='keep line'>		return Arrays.asList(EclipseSettings.with().name("eclipse-settings")</div>
+<div class='del line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule(),</div>
+<div class='del line'>						exampleHello)</div>
+<div class='del line'>				.end());</div>
+<div class='add line'>				.modules(ctx.wsdefdefJavaModule(), ctx.wsdefJavaModule())</div>
+<div class='add line'>				.modules(modules.allSrcModules()).end());</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+We write some code to the new module
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
+<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact junit-4.11.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact junit-4.11-sources.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact hamcrest-core-1.3.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact hamcrest-core-1.3-sources.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(example-hello)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(example-helloutil)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+<kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdefdef)</kbd><br/>
+<kbd class='shell output'>(  .project)</kbd><br/>
+<kbd class='shell output'>(  .classpath)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.core.prefs)</kbd><br/>
+<kbd class='shell output'>(  .settings/org.eclipse.jdt.ui.prefs)</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "example-helloutil/src/test/java/com/example/helloutil/HelloUtilTest.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>package com.example.helloutil;</div>
+<div class='add line'></div>
+<div class='add line'>import static org.junit.Assert.assertEquals;</div>
+<div class='add line'></div>
+<div class='add line'>import org.junit.Test;</div>
+<div class='add line'></div>
+<div class='add line'>public class HelloUtilTest {</div>
+<div class='add line'></div>
+<div class='add line'>	@Test</div>
+<div class='add line'>	public void spaceSeparatedStrings() {</div>
+<div class='add line'>		assertEquals("Hello world",</div>
+<div class='add line'>				HelloUtil.spaceSeparatedWords("Hello", "world"));</div>
+<div class='add line'>		assertEquals("w0 w1", HelloUtil.spaceSeparatedWords("w0", "w1"));</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "example-helloutil/src/main/java/com/example/helloutil/HelloUtil.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='add line'>package com.example.helloutil;</div>
+<div class='add line'></div>
+<div class='add line'>public class HelloUtil {</div>
+<div class='add line'></div>
+<div class='add line'>	public static String spaceSeparatedWords(String word1, String word2) {</div>
+<div class='add line'>		return word1 + " " + word2;</div>
+<div class='add line'>	}</div>
+<div class='add line'></div>
+<div class='add line'>}</div>
+</div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "example-hello/src/main/java/com/example/hello/HelloMain.java"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'>package com.example.hello;</div>
+<div class='keep line'></div>
+<div class='add line'>import com.example.helloutil.HelloUtil;</div>
+<div class='add line'></div>
+<div class='keep line'>public class HelloMain {</div>
+<div class='keep line'></div>
+<div class='keep line'>	public static void main(String[] args) {</div>
+<div class='keep line'>		System.out.println(greetingTo(args[0]));</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>	public static String greetingTo(String target) {</div>
+<div class='del line'>		return "Hello " + target;</div>
+<div class='add line'>		return HelloUtil.spaceSeparatedWords("Hello", target);</div>
+<div class='keep line'>	}</div>
+<div class='keep line'></div>
+<div class='keep line'>}</div>
+</div>
+<p class='text'>
+Now we can get all our classes as a classpath string.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/all-as-cp/as-path | xargs -r cat</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses example-helloutil-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses example-hello-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.zip.Jar example-hello.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.zip.Jar example-helloutil.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated all-as-cp)</kbd><br/>
+</samp></div>
+<p class='text'>
+Let's use the classpath to run the application again.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>java -cp $(as-iwant-tutorial-developer/with/bash/iwant/target/all-as-cp/as-path | xargs -r cat) com.example.hello.HelloMain "same tutorial"</kbd><br/>
+<kbd class='shell output'>Hello same tutorial</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='navipanel'><a href='ext-libs-in-wsdef.html'><< Using external libraries in workspace definition</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='jacoco.html'>Test coverage report using jacoco >></a></div>
+
+</body></html>

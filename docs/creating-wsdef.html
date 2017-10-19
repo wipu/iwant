@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>Creating the workspace definition</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='bootstrapping-with-svnexternals.html'><< Alternative: acquiring iwant bootstrapper by using svn:externals</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='helloworld-with-eclipse.html'>Hello world with Eclipse >></a></div>
+
+<p><i>This chapter continues from where <a href='bootstrapping.html'>The command line interface and bootstrapping</a> left us.</i></p><h2>Creating the workspace definition</h2>
+<p class='text'>After defining the iwant revision to use, the wizard <a href='bootstrapping.html'>requested us to describe the workspace</a> by editing a configuration file it created. We'll do so now. We name our workspace "iwant-tutorial" and we also define a fully qualified name for the class that defines the entrypoint to our own build code, the <i>workspace definition definition</i>.</p><p class='text'>
+It is advisable to follow the convention of naming the last part of the workspace definition definition package "wsdefdef". It will help iwant to generate a good workspace definition name in the next phase.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>$EDITOR "as-iwant-tutorial-developer/i-have/conf/ws-info"</kbd><br/>
+</samp></div>
+<div class='editor'>
+<div class='keep line'># paths are relative to this file's directory</div>
+<div class='del line'>WSNAME=example</div>
+<div class='add line'>WSNAME=iwant-tutorial</div>
+<div class='keep line'>WSROOT=../../..</div>
+<div class='keep line'>WSDEFDEF_MODULE=../wsdefdef</div>
+<div class='del line'>WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider</div>
+<div class='add line'>WSDEFDEF_CLASS=com.example.wsdefdef.IwantTutorialWorkspaceProvider</div>
+</div>
+<p class='text'>
+We make another wish for help to continue.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/help.sh</kbd><br/>
+<kbd class='shell output'>I created</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdefdef/src/main/java/com/example/wsdefdef/IwantTutorialWorkspaceProvider.java</kbd><br/>
+<kbd class='shell output'>and</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspaceFactory.java</kbd><br/>
+<kbd class='shell output'>and</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/IwanttutorialWorkspace.java</kbd><br/>
+<kbd class='shell output'>Please edit them and rerun me.</kbd><br/>
+<kbd class='shell output'>If you want to use Eclipse for editing, run /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective first.</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>
+Now we have a functional workspace definition, also known as a build script, for our workspace.
+</p>
+<p class='text'>As we can see from the output, there is at least one new wish available for us, the side-effect of creating eclipse settings. iwant maintains a bash script, a <i>wish script</i> for each wish defined in the workspace definition. This makes it very convenient to make wishes by using tab.</p><p class='text'>
+Let's find out what wish scripts we have.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>find as-iwant-tutorial-developer/with/bash/iwant -type f | sort</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/with/bash/iwant/help.sh</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/with/bash/iwant/list-of/side-effects</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
+<kbd class='shell output'>as-iwant-tutorial-developer/with/bash/iwant/target/hello/as-path</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>
+It is advisable to ignore the wish scripts (except for help.sh, the iwant cli) from the version control, since iwant regenerates them at every wish, according to the workspace definition.
+</p>
+<h2>Optional: configuring the worker thread count</h2>
+<p class='text'>
+In this tutorial we'll use only one worker thread to keep the output deterministic. You should probably use a bigger number, depending on your machine. You'll probably want to skip this phase and use the default value, the number of cores in your system:
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>echo workerCount=1 > as-iwant-tutorial-developer/i-have/conf/user-preferences</kbd><br/>
+</samp></div>
+<h2>Finishing with the wizard</h2>
+<p class='text'>
+Let's end the wizard by wishing for help one more time.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/help.sh</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(Using user preferences from file /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/conf/user-preferences:</kbd><br/>
+<kbd class='shell output'>[workerCount=1])</kbd><br/>
+<kbd class='shell output'>Try /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/with/bash/iwant/list-of/side-effects</kbd><br/>
+<kbd class='shell output'>or</kbd><br/>
+<kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='navipanel'><a href='bootstrapping-with-svnexternals.html'><< Alternative: acquiring iwant bootstrapper by using svn:externals</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='helloworld-with-eclipse.html'>Hello world with Eclipse >></a></div>
+
+</body></html>
