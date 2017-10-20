@@ -729,7 +729,11 @@ public class Iwant {
 
 	public static synchronized void del(File file) {
 		if (!file.exists()) {
-			return; // nothing to do
+			// it may be a broken symlink so let's try delete anyway
+			if (!file.delete()) {
+				debugLog("del", "Failed to delete 'non-existing' " + file);
+			}
+			return; // nothing more to do
 		}
 		if (file.isDirectory()) {
 			for (File child : file.listFiles()) {

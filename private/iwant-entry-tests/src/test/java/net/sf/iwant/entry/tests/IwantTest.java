@@ -2,12 +2,15 @@ package net.sf.iwant.entry.tests;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URL;
 import java.security.Permission;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.core.ScriptGenerated;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
 import net.sf.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
@@ -478,6 +481,17 @@ public class IwantTest extends TestCase {
 		} finally {
 			parent.setWritable(true);
 		}
+	}
+
+	public void testDelWorksEvenWithBrokenSymlinkUnderDirToDelete()
+			throws IOException, InterruptedException {
+		File parent = testArea.newDir("parent");
+		ScriptGenerated.execute(parent, Arrays.asList("ln", "-s",
+				"/nonexistent/symlink/target", "broken-symlink"));
+
+		Iwant.del(parent);
+
+		assertFalse(parent.exists());
 	}
 
 }

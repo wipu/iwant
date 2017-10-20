@@ -161,16 +161,6 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantEntrymocks = privateModule("entrymocks")
 			.mainDeps(iwantEntry, iwantTestarea).testDeps(junit).end();
 
-	private JavaSrcModule iwantEntryTests = privateModule("entry-tests")
-			.noMainJava().testResources("src/test/resources")
-			.testDeps(commonsIo, guava, guavaTestlib, iwantEntry,
-					iwantEntrymocks, iwantIwantWsrootFinder, iwantTestarea,
-					junit, nettyBuffer, nettyCodec, nettyCodecDns,
-					nettyCodecHttp, nettyCodecHttp2, nettyCommon, nettyHandler,
-					nettyHandlerProxy, nettyResolver, nettyResolverDns,
-					nettyTransport, vertxCore, vertxWeb)
-			.end();
-
 	private JavaSrcModule iwantEntry2 = essentialModule("entry2")
 			.mainDeps(iwantEntry).testDeps(iwantEntrymocks,
 					iwantIwantWsrootFinder, iwantTestarea, junit)
@@ -377,6 +367,16 @@ public class IwantModules extends JavaModules {
 
 	private final JavaModule iwantExtendedEnums = JavaBinModule
 			.providing(extendedIwantEnumsClasses, extendedIwantEnumsJava).end();
+
+	private JavaSrcModule iwantEntryTests = privateModule("entry-tests")
+			.noMainJava().testResources("src/test/resources")
+			.testDeps(commonsIo, guava, guavaTestlib, iwantApiCore,
+					iwantApiModel, iwantApiTarget, iwantEntry, iwantEntrymocks,
+					iwantIwantWsrootFinder, iwantTestarea, junit, nettyBuffer,
+					nettyCodec, nettyCodecDns, nettyCodecHttp, nettyCodecHttp2,
+					nettyCommon, nettyHandler, nettyHandlerProxy, nettyResolver,
+					nettyResolverDns, nettyTransport, vertxCore, vertxWeb)
+			.end();
 
 	private final JavaSrcModule iwantTests = privateModule("tests").noMainJava()
 			.testResources("src/test/resources").testDeps(iwantExtendedEnums)

@@ -1615,6 +1615,10 @@
   + upgrade iwant for own projects and do some real testing
     + make binModule methods public static for wsdefdefs
 
++ @bugfix del of directory must succeed even if there is a broken symlink under it
+  * File.exists returns false for a broken link
+  + try to delete anyway, ignoring (logging) failure 
+
 #################################################################
 = In progress
 #################################################################
