@@ -39,9 +39,6 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
-/**
- * $Id$
- */
 public class Iwant {
 
 	private static final boolean DEBUG_LOG = "a".contains("b");

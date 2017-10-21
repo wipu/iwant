@@ -1641,6 +1641,7 @@
     + buy domain: iwant-build.org
     + set up pages to use the domain (from dir /docs)
     + script that ensures fresh cached website and repopulates docs from it
+    + publish webpage
   + remove sf.net references from website
     * keep bootstrap refs, that's the only way of bootstrapping, and will be supported for some
       period even after adding github bootstrap support
@@ -1652,10 +1653,26 @@
     * play it safe: MIT instead of LGPL (Thank you Richard M. Stallman for everything, but as iwant
       developer I want my tool to be used even by the most paranoid companies; also: as a FOSS believer
       I belive real freedom doesn't force freedom upon anybody.)
-  - make sf.net webpage redirect to iwant-build.org
+  + remove svn keywords from bootstrap files, to avoid unnecessary git diffs
   - bootstrap from github
     + @bugfix retry if unzip fails so bootstrap failure will be seen on every retry
-    - iwant-from ends with => download and unzip instead of svn co
+    (- iwant-from ends with "zip" => download and unzip instead of svn co)
+    * nah, github only supports downloading the whole repo
+    * besides, now is the time to simplify: just download it all anyway, it's not big
+    * also, drop svn checkout support: *if* we lose github zip, we can replace it with something else
+    * this is a big change, but just start doing, if it gets ouf of hand, split to "preparatory" tasks
+    - modify descript tutorial
+    - tdd
+      - Iwant, removing old svn tests and code
+      - Iwant2
+      - take plugin src from the already downloaded src
+      - move svn functionality to SvnExported
+      - update scripts that fetch the bootstrapper
+    - later: remove the plugin concept: they are already downloaded so no further price on just
+      having them unconditionally in the classpath 
+  - update sf.net site
+    - make webpage redirect to iwant-build.org
+    - mention migration
   - update external references (url and license have changed)
     - find out what they are :)
   - make tests pass in a clone that is not an svn workingcopy
@@ -1664,9 +1681,7 @@
     - remove svn bootstrap and tests that svn export from workspace itself
     - SvnExported uses svnkit directly, not via Iwant
   - remove unnecessary gitignores from root .gitignore (under # svn...)
-  - publish non-sf.net webpage
   - update tutorial
-  - mention migration on sf.net
   - advertise
     - mention in the reddit thread (if commenting still allowed)
     - elsewhere
