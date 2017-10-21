@@ -26,7 +26,7 @@ I want to just tell <b>what</b> (file) I want so the script can then decide what
 <li><b>Ergonomic:</b> The build script author does not need to declare dependencies. If a target (a file with dynamically defined content) refers to another path (source or target) in its definition, <code>iwant</code> automatically tracks this as a dependency.</li>
 <li><b>Parallel:</b> Multi-threaded building is supported by default, transparently. It only needs to be disabled for targets that don't support it (for example because they use shared resources.)</li>
 <li><b>Easy to use:</b> Command-line user interface utilizes bash completion so the user can avoid a lot of typing by using <code>tab</code></li>
-<li><b>Reprodicible:</b> <code>iwant</code> bootstraps itself from a specific revision, so the build system itself is also under configuration management, resulting in reproducible build results.</li>
+<li><b>Reproducible:</b> <code>iwant</code> bootstraps itself from a specific revision, so the build system itself is also under configuration management, resulting in reproducible build results.</li>
 <li><b>LAZY:</b> Target evaluation is <i>referentially transparent</i>, which enables maximal laziness. Side effects (like deployments) are explicitly declared in a different way.</li>
 </ul>
 </p>
