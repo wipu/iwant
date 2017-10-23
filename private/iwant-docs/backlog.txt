@@ -1682,6 +1682,7 @@
       + fix: IwantTest must assert existence of a mockwsroot dir that has content
         * git doesn't version dirs, unlike svn
       + fix: mockwsroot must have a .keep file under each src/main/java Iwant2 tries to find
+      + fix: module iwant-testresources doesn't have src/main/java, fix module def
     - after push: remote boostrap
     - for each project take into use
       - write mutable=false in bootstrap fetch scripts (iwant/iwant.sh)
