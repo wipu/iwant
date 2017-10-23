@@ -298,8 +298,10 @@ public class IwantTest extends TestCase {
 		// the src shall be the sole child of the unzipped source zip:
 		assertEquals(new File(cachedIwantZipUnzipped, "iwant-mock-wsroot"),
 				cachedIwantSrc);
+		// and it shall contain files from the mock wsroot
+		assertTrue(new File(cachedIwantSrc, "essential/iwant-entry").exists());
 		assertTrue(
-				new File(cachedIwantSrc, "essential/iwant-api-model").exists());
+				new File(cachedIwantSrc, "essential/iwant-api-bash").exists());
 	}
 
 	public void testIwantBootstrapsWhenNothingHasBeenDownloadedAndJustIwantFromFileIsGiven()

@@ -1678,6 +1678,9 @@
       + Iwant2
       + take plugin src from the already downloaded src
       (- move svn functionality to SvnExported: nah just delete svn functionality)
+    - try if tests now pass in clone that is not a svn workingcopy
+      + fix: IwantTest must assert existence of a mockwsroot dir that has content
+        * git doesn't version dirs, unlike svn
     - after push: remote boostrap
     - for each project take into use
       - write mutable=false in bootstrap fetch scripts (iwant/iwant.sh)
