@@ -1684,6 +1684,7 @@
       + fix: mockwsroot must have a .keep file under each src/main/java Iwant2 tries to find
       + fix: module iwant-testresources doesn't have src/main/java, fix module def
       + fix the fix: ah, main resources without main java is not supported so add a .keep file
+      + fix: touch private/iwant-mock-wsroot/essential/iwant-apimocks/src/main/java/.keep
     - after push: remote boostrap
     - for each project take into use
       - write mutable=false in bootstrap fetch scripts (iwant/iwant.sh)
