@@ -1678,13 +1678,14 @@
       + Iwant2
       + take plugin src from the already downloaded src
       (- move svn functionality to SvnExported: nah just delete svn functionality)
-    - try if tests now pass in clone that is not a svn workingcopy
+    + try if tests now pass in clone that is not a svn workingcopy
       + fix: IwantTest must assert existence of a mockwsroot dir that has content
         * git doesn't version dirs, unlike svn
       + fix: mockwsroot must have a .keep file under each src/main/java Iwant2 tries to find
       + fix: module iwant-testresources doesn't have src/main/java, fix module def
       + fix the fix: ah, main resources without main java is not supported so add a .keep file
       + fix: touch private/iwant-mock-wsroot/essential/iwant-apimocks/src/main/java/.keep
+      * that did it :)
     - after push: remote boostrap
     - for each project take into use
       - write mutable=false in bootstrap fetch scripts (iwant/iwant.sh)
