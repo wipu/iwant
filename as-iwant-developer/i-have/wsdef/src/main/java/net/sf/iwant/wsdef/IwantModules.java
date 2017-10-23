@@ -297,8 +297,7 @@ public class IwantModules extends JavaModules {
 	}
 
 	private JavaSrcModule iwantTestresources = privateModule("testresources")
-			.noMainResources().noTestJava().mainResources("src/main/resources")
-			.end();
+			.noTestJava().mainResources("src/main/resources").end();
 
 	private JavaSrcModule iwantPluginAnt = optionalModule("plugin-ant")
 			.mainDeps(ant, antLauncher, iwantApiCore, iwantApiModel)
