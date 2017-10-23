@@ -1691,12 +1691,14 @@
       + push to iwant repo so it will be available at
         https://raw.githubusercontent.com/wipu/iwant/master/essential/iwant-entry/
          as-some-developer/with/bash/iwant/iwant.sh
-      - in descript
-        - wget that
-        - edit the wanted commit to it
-        - chmod u+x it
-        - run it
-        - and continue as before
+      + in descript
+        + wget that
+        + edit the wanted commit to it
+        + chmod u+x it
+        + run it
+        + and continue as before
+        + modify text
+      - visually review the result
     - rename IwantNetwork.cacheLocation to locationOfCachedContentFrom
       * otherwise one thinks that it returns the cached zip file, not content of it
     - make Iwant.wishedIwantRootFromUrl static

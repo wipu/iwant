@@ -37,6 +37,7 @@ p "Let's find out what wish scripts we have."
 cmde "0 0" 'find as-iwant-tutorial-developer/with/bash/iwant -type f | sort'
 out-was <<EOF
 as-iwant-tutorial-developer/with/bash/iwant/help.sh
+as-iwant-tutorial-developer/with/bash/iwant/iwant.sh
 as-iwant-tutorial-developer/with/bash/iwant/list-of/side-effects
 as-iwant-tutorial-developer/with/bash/iwant/list-of/targets
 as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective
