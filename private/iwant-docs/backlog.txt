@@ -1687,12 +1687,23 @@
       + fix: touch private/iwant-mock-wsroot/essential/iwant-apimocks/src/main/java/.keep
       * that did it :)
     - after push: remote boostrap
-    - for each project take into use
-      - write mutable=false in bootstrap fetch scripts (iwant/iwant.sh)
+      + manually do in iwant-demo
+      + push to iwant repo so it will be available at
+        https://raw.githubusercontent.com/wipu/iwant/master/essential/iwant-entry/
+         as-some-developer/with/bash/iwant/iwant.sh
+      - in descript
+        - wget that
+        - edit the wanted commit to it
+        - chmod u+x it
+        - run it
+        - and continue as before
     - rename IwantNetwork.cacheLocation to locationOfCachedContentFrom
       * otherwise one thinks that it returns the cached zip file, not content of it
     - make Iwant.wishedIwantRootFromUrl static
-    - update scripts that fetch the bootstrapper
+    - for each project take into use
+      - update scripts that fetch the bootstrapper
+        + iwant-demo: done as spike for the new bootstrapping
+        - others
     (- later: remove the plugin concept: they are already downloaded so no further price on just
       having them unconditionally in the classpath
       * not quite: their dependencies need some specifying) 

@@ -99,7 +99,7 @@ public class Descripted extends Target {
 		if (iwantWsRoot != null) {
 			sh.append("export LOCAL_IWANT_WSROOT=" + iwantWsRoot + "\n");
 		} else {
-			sh.append("export REV_TO_TEST=899\n");
+			sh.append("export REV_TO_TEST=0b77c93c69797fcc6aeb44844a2aa8c6f08f331d\n");
 		}
 		if (maybeInitialState != null) {
 			File initialState = new File(ctx.cached(maybeInitialState),
