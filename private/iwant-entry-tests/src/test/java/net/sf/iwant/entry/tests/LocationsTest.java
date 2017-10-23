@@ -12,32 +12,12 @@ import net.sf.iwant.testarea.TestArea;
 
 public class LocationsTest extends TestCase {
 
-	private static void assertUrl(URL expected, URL actual) {
-		assertEquals(expected.toExternalForm(), actual.toExternalForm());
-	}
-
 	public void testNetworkGetter() {
 		TestArea testArea = TestArea.forTest(this);
 		IwantNetwork network = new IwantNetworkMock(testArea);
 		Iwant iwant = Iwant.using(network);
 
 		assertSame(network, iwant.network());
-	}
-
-	public void testSvnkitUrlConvenienceGetter() throws MalformedURLException {
-		TestArea testArea = TestArea.forTest(this);
-		IwantNetworkMock network = new IwantNetworkMock(testArea);
-		Iwant iwant = Iwant.using(network);
-
-		network.hasSvnkitUrl("file:///something");
-
-		assertUrl(new URL("file:///something"), iwant.svnkitUrl());
-	}
-
-	public void testRealUrls() throws MalformedURLException {
-		assertUrl(
-				new URL("https://svnkit.com/org.tmatesoft.svn_1.8.13.standalone.nojna.zip"),
-				Iwant.usingRealNetwork().svnkitUrl());
 	}
 
 	public void testRealCacheLocationEscapesUrl() throws MalformedURLException {

@@ -6,12 +6,9 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.sf.iwant.api.model.IwantCoreServices;
-import net.sf.iwant.entry.Iwant;
 
 public class IwantCoreServicesMock implements IwantCoreServices {
 
@@ -19,8 +16,6 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	private File taughtCygwinBashExe;
 	private boolean cygwinBashExeWasTaught;
 	private boolean shallMockWintoySafePaths;
-	private final Map<UrlString, Integer> numberOfFilesToSvnExport = new HashMap<>();
-	private final Map<UrlString, Integer> numberOfFilesToSvnExportBeforeFailure = new HashMap<>();
 	private List<String> lastJavacOptions;
 
 	public IwantCoreServicesMock(IwantCoreServices delegate) {
@@ -53,21 +48,6 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	@Override
 	public void downloaded(URL from, File to) {
 		delegate.downloaded(from, to);
-	}
-
-	@Override
-	public void svnExported(URL from, File to) {
-		int fileCount = numberOfFilesToSvnExport.get(new UrlString(from));
-		Integer failAfter = numberOfFilesToSvnExportBeforeFailure
-				.get(new UrlString(from));
-		Iwant.mkdirs(to);
-		for (int i = 0; i < fileCount; i++) {
-			if (failAfter != null && i >= failAfter) {
-				throw new IllegalStateException("Simulated svn export failure");
-			}
-			Iwant.newTextFile(new File(to, "exported-" + i),
-					"content of exported-" + i);
-		}
 	}
 
 	@Override
@@ -120,17 +100,6 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 
 	public void shallMockWintoySafePaths() {
 		this.shallMockWintoySafePaths = true;
-	}
-
-	public void shallSvnExport(URL url, int numberOfFilesToSvnExport) {
-		this.numberOfFilesToSvnExport.put(new UrlString(url),
-				numberOfFilesToSvnExport);
-	}
-
-	public void shallFailSvnExportAfterFileCount(URL url,
-			Integer numberOfFilesToSvnExportBeforeFailure) {
-		this.numberOfFilesToSvnExportBeforeFailure.put(new UrlString(url),
-				numberOfFilesToSvnExportBeforeFailure);
 	}
 
 }

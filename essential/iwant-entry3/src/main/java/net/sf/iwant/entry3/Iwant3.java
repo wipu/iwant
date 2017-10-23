@@ -130,9 +130,9 @@ public class Iwant3 {
 					.name(wsInfo.wsName() + "-wsdefdef")
 					.locationUnderWsRoot(wsdefdefRelativeToWsRoot)
 					.mainJava("src/main/java").mainDeps(iwantApiModules).end();
-			URL iwantRootFromUrl = iwant.wishedIwantRootFromUrl(asSomeone);
+			File iwantSrcRoot = iwant.iwantSourceOfWishedVersion(asSomeone);
 			WorkspaceModuleContext wsDefCtx = new WorkspaceDefinitionContextImpl(
-					iwantApiModules, iwantRootFromUrl, wsdefdefJavaModule);
+					iwantApiModules, iwantSrcRoot, wsdefdefJavaModule);
 			JavaSrcModule wsdDefClassesModule = wsDefdef
 					.workspaceModule(wsDefCtx);
 			// TODO don't cast when no more necessary

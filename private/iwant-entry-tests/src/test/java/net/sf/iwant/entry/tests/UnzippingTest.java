@@ -79,28 +79,6 @@ public class UnzippingTest extends TestCase {
 		assertEquals("b\n", testArea.contentOf(new File(unzipped, "root/b")));
 	}
 
-	public void testNeededJarsAreUnzippedFromRealSvnkitZip()
-			throws FileNotFoundException, IOException {
-		URL realCachedSvnkit = Iwant.fileToUrl(Iwant.usingRealNetwork()
-				.downloaded(Iwant.usingRealNetwork().svnkitUrl()));
-		UnmodifiableZip src = new UnmodifiableZip(realCachedSvnkit);
-		network.cachesAt(src, "unzipped");
-
-		File unzipped = iwant.unmodifiableZipUnzipped(src);
-
-		assertEquals(testArea.root() + "/unzipped",
-				unzipped.getCanonicalPath());
-		assertTrue(unzipped.isDirectory());
-
-		assertEquals("[svnkit-1.8.13]", Arrays.toString(unzipped.list()));
-		assertEquals(4256381,
-				new File(unzipped, "svnkit-1.8.13/lib/svnkit-1.8.13.jar")
-						.length());
-		assertEquals(378602,
-				new File(unzipped, "svnkit-1.8.13/lib/svnkit-cli-1.8.13.jar")
-						.length());
-	}
-
 	/**
 	 * This way the error message will be seen again on later runs
 	 */

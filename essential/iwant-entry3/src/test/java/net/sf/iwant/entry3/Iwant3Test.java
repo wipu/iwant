@@ -4,11 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
+import net.sf.iwant.api.core.ScriptGenerated;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.apimocks.CachesMock;
@@ -16,6 +18,7 @@ import net.sf.iwant.apimocks.TargetEvaluationContextMock;
 import net.sf.iwant.apimocks.TargetMock;
 import net.sf.iwant.entry.Iwant;
 import net.sf.iwant.entry.Iwant.IwantException;
+import net.sf.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
 import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantEssential;
 import net.sf.iwant.entrymocks.IwantNetworkMock;
 import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
@@ -36,26 +39,40 @@ public class Iwant3Test extends TestCase {
 	private ByteArrayOutputStream out;
 	private ByteArrayOutputStream err;
 	private String originalLineSeparator;
-
-	private File iwantEssential;
-
 	private File combinedIwantSrc;
 
 	@Override
 	public void setUp() throws Exception {
 		testArea = TestArea.forTest(this);
-		testArea.hasFile("wsroot/as-example-developer/with/bash/iwant/help.sh",
+		String asSomeone = "wsroot/as-example-developer";
+		testArea.hasFile(asSomeone + "/with/bash/iwant/help.sh",
 				"#!/bin/bash\njust a mock because this exists in real life\n");
-		testArea.hasFile("wsroot/as-example-developer/i-have/conf/iwant-from",
+		File iwantZip = mockWsRootZip();
+		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
+		testArea.hasFile(asSomeone + "/i-have/conf/iwant-from",
 				"#just a mock because this exists in real life\n"
-						+ "iwant-from=http://localhost/not-needed-here\n");
+						+ "iwant-from=" + iwantFromUrl + "\n");
 		network = new IwantNetworkMock(testArea);
-		combinedIwantSrc = new File(testArea.root(), "combined-iwant-src");
-		iwantEssential = IwantWsRootFinder.mockEssential();
+
+		File cachedIwantZip = network.cachesUrlAt(iwantFromUrl,
+				"cached-iwant.zip");
+		File cachedIwantZipUnzipped = network.cachesZipAt(
+				Iwant.fileToUrl(cachedIwantZip), "iwant.zip.unzipped");
+		File cachedIwantEssential = new File(cachedIwantZipUnzipped,
+				"iwant-mock-wsroot/essential");
 		network.cachesAt(
-				new CombinedSrcFromUnmodifiableIwantEssential(iwantEssential),
-				combinedIwantSrc);
-		iwant3 = Iwant3.using(network, iwantEssential);
+				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
+						cachedIwantEssential),
+				"iwant-bootstrapper-classes");
+		combinedIwantSrc = network.cachesAt(
+				new CombinedSrcFromUnmodifiableIwantEssential(
+						cachedIwantEssential),
+				"combined-iwant-essential-sources");
+
+		Iwant.using(network).iwantSourceOfWishedVersion(
+				new File(testArea.root(), asSomeone));
+
+		iwant3 = Iwant3.using(network, cachedIwantEssential);
 		wsRoot = new File(testArea.root(), "wsroot");
 		asTest = new File(wsRoot, "as-example-developer");
 		originalIn = System.in;
@@ -64,6 +81,21 @@ public class Iwant3Test extends TestCase {
 		originalLineSeparator = System.getProperty(LINE_SEPARATOR_KEY);
 		System.setProperty(LINE_SEPARATOR_KEY, "\n");
 		startOfOutAndErrCapture();
+	}
+
+	/**
+	 * TODO reuse, this is redundant
+	 */
+	private File mockWsRootZip() {
+		try {
+			File wsRoot = IwantWsRootFinder.mockWsRoot();
+			File zip = new File(testArea.root(), "mock-iwant-wsroot.zip");
+			ScriptGenerated.execute(wsRoot.getParentFile(), Arrays.asList("zip",
+					"-0", "-q", "-r", zip.getAbsolutePath(), wsRoot.getName()));
+			return zip;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private void startOfOutAndErrCapture() {

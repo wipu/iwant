@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.function.Function;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -47,6 +48,14 @@ public class Iwant {
 
 	public static final File IWANT_USER_DIR = new File(HOME, ".net.sf.iwant");
 
+	public static final String EXAMPLE_COMMIT = "f68535c89288af153156e7ac00e90936dd773712";
+
+	public static final String EXAMPLE_IWANT_FROM_CONTENT = ""
+			+ "# uncomment and optionally change the commit:\n"
+			+ "# (also note the content of the url is assumed unmodifiable so it's downloaded only once)\n"
+			+ "#iwant-from=https://github.com/wipu/iwant/archive/"
+			+ EXAMPLE_COMMIT + ".zip\n";
+
 	static {
 		mkdirs(IWANT_USER_DIR);
 	}
@@ -63,8 +72,6 @@ public class Iwant {
 	public interface IwantNetwork {
 
 		File cacheLocation(UnmodifiableSource<?> src);
-
-		URL svnkitUrl();
 
 		JavaCompiler systemJavaCompiler();
 
@@ -192,12 +199,6 @@ public class Iwant {
 		}
 
 		@Override
-		public URL svnkitUrl() {
-			return url("https://svnkit.com/"
-					+ "org.tmatesoft.svn_1.8.13.standalone.nojna.zip");
-		}
-
-		@Override
 		public JavaCompiler systemJavaCompiler() {
 			return ToolProvider.getSystemJavaCompiler();
 		}
@@ -251,7 +252,8 @@ public class Iwant {
 			throw new IwantException("AS_SOMEONE_DIRECTORY does not exist: "
 					+ asSomeone.getCanonicalPath());
 		}
-		File iwantEssential = iwantEssentialOfWishedVersion(asSomeone);
+		File iwantSrc = iwantSourceOfWishedVersion(asSomeone);
+		File iwantEssential = new File(iwantSrc, "essential");
 
 		File iwantBootstrapClasses = iwantBootstrapperClasses(iwantEssential);
 
@@ -264,17 +266,27 @@ public class Iwant {
 	}
 
 	public URL wishedIwantRootFromUrl(File asSomeone) {
+		return wishedIwantFromProperty(asSomeone, "iwant-from", Iwant::url);
+	}
+
+	private static <TYPE> TYPE wishedIwantFromProperty(File asSomeone,
+			String propertyName, Function<String, TYPE> parser) {
 		try {
 			Properties iwantFromProps = iwantFromProperties(asSomeone);
-			String iwantFromPropertyName = "iwant-from";
-			String iwantFrom = iwantFromProps
-					.getProperty(iwantFromPropertyName);
-			if (iwantFrom == null) {
-				throw new IwantException(
-						"Please define '" + iwantFromPropertyName + "' in "
-								+ iwantFromFile(asSomeone));
+			String value = iwantFromProps.getProperty(propertyName);
+			if (value == null) {
+				throw new IwantException("Please define '" + propertyName
+						+ "' in " + iwantFromFile(asSomeone) + "\nExample:\n"
+						+ EXAMPLE_IWANT_FROM_CONTENT);
 			}
-			return new URL(iwantFrom);
+			try {
+				return parser.apply(value);
+			} catch (Exception e) {
+				throw new IwantException(e.getMessage()
+						+ "\nPlease define a valid '" + propertyName + "' in "
+						+ iwantFromFile(asSomeone) + "\nExample:\n"
+						+ EXAMPLE_IWANT_FROM_CONTENT);
+			}
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -282,32 +294,27 @@ public class Iwant {
 		}
 	}
 
-	public static URL subUrlOfSvnUrl(URL baseUrl, String subPath) {
-		try {
-			String raw = baseUrl.toExternalForm();
-			int atAt = raw.lastIndexOf("@");
-			if (!isFile(baseUrl) && atAt >= 0) {
-				String rev = raw.substring(atAt, raw.length());
-				return new URL(raw.substring(0, atAt) + "/" + subPath + rev);
-			} else {
-				return new URL(baseUrl + "/" + subPath);
-			}
-		} catch (MalformedURLException e) {
-			throw new IllegalArgumentException(e);
-		}
+	public File iwantSourceOfWishedVersion(File asSomeone) {
+		File zip = iwantSourceZipOfWishedVersion(asSomeone);
+		File zipUnzipped = unmodifiableZipUnzipped(
+				new UnmodifiableZip(fileToUrl(zip)));
+		return theSoleChildOf(zipUnzipped);
 	}
 
-	public File iwantEssentialOfWishedVersion(File asSomeone) {
+	public static File theSoleChildOf(File dir) {
+		File[] children = dir.listFiles();
+		if (children == null || children.length != 1) {
+			throw new IwantException(
+					"The file is not a directory with exactly one child: "
+							+ dir);
+		}
+		return children[0];
+	}
+
+	public File iwantSourceZipOfWishedVersion(File asSomeone) {
 		try {
-			Properties iwantFromProps = iwantFromProperties(asSomeone);
 			URL iwantRootUrl = wishedIwantRootFromUrl(asSomeone);
-			URL iwantEssentialLocation = subUrlOfSvnUrl(iwantRootUrl,
-					"essential");
-			boolean reExportNotNeeded = "false"
-					.equals(iwantFromProps.getProperty("re-export"));
-			File iwantWsEssential = exportedFromSvn(iwantEssentialLocation,
-					!reExportNotNeeded);
-			return iwantWsEssential;
+			return downloaded(iwantRootUrl);
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -327,11 +334,9 @@ public class Iwant {
 			mkdirs(iwantFromParent);
 		}
 		if (!iwantFrom.exists()) {
-			newTextFile(iwantFrom,
-					"# uncomment and optionally change the revision:\n"
-							+ "#iwant-from=https://svn.code.sf.net/p/iwant/code/trunk@721\n");
+			newTextFile(iwantFrom, EXAMPLE_IWANT_FROM_CONTENT);
 			throw new IwantException("I created " + iwantFrom
-					+ "\nPlease edit it and rerun me.");
+					+ "\nPlease edit and uncomment the properties in it and rerun me.");
 		}
 		Properties iwantFromProps = new Properties();
 		try (FileReader fr = new FileReader(iwantFrom)) {
@@ -877,76 +882,6 @@ public class Iwant {
 		if (!src.renameTo(dest)) {
 			throw new IwantException("Failed to rename " + src + " to " + dest);
 		}
-	}
-
-	public File unzippedSvnkit() {
-		try {
-			URL url = network.svnkitUrl();
-			File cached = downloaded(url);
-			File unzipped = unmodifiableZipUnzipped(
-					new UnmodifiableZip(fileToUrl(cached)));
-			return unzipped;
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public URL svnkitUrl() {
-		return network.svnkitUrl();
-	}
-
-	public File exportedFromSvn(URL url, boolean reExportIfFile) {
-		try {
-			File exported = network.cacheLocation(new UnmodifiableUrl(url));
-			if (exported.exists()) {
-				if (isFile(url)) {
-					if (!reExportIfFile) {
-						debugLog("svn-exported",
-								"re-export disabled, skipping even though"
-										+ " remote is a file.");
-						return exported;
-					}
-					debugLog("svn-exported",
-							"re-export needed," + " remote is a file.");
-					del(exported);
-				} else {
-					return exported;
-				}
-			}
-			svnExport(url, exported);
-			return exported;
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public void svnExport(URL from, File to) {
-		// TODO use a log method here:
-		System.err.println("svn exporting (may take a while) " + from);
-		try {
-			String urlString = from.toExternalForm();
-			if (isFile(from)) {
-				urlString = from.getFile();
-			}
-			File svnkit = unzippedSvnkit();
-			File svnkitLib = new File(svnkit, "svnkit-1.8.13/lib");
-			List<File> svnkitJars = Arrays.asList(svnkitLib.listFiles());
-			enableHttpProxy();
-			runJavaMain(true, false, "org.tmatesoft.svn.cli.SVN", svnkitJars,
-					"export", "-q", urlString, to.getCanonicalPath());
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static boolean isFile(URL url) {
-		return "file".equals(url.getProtocol());
 	}
 
 	public static String withoutTrailingSlash(String string) {

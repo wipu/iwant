@@ -7,7 +7,7 @@ public class NullCheck {
 				new Exception().getStackTrace()[1].getMethodName());
 	}
 
-	public static <T> T nonNull(T value, String objectName) {
+	public static <T> T nonNull(T value, Object objectName) {
 		if (value == null) {
 			throw new IllegalStateException(
 					"You forgot to teach " + objectName);

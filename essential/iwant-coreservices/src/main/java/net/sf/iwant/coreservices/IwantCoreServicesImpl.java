@@ -57,11 +57,6 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 	}
 
 	@Override
-	public void svnExported(URL from, File to) {
-		iwant.svnExport(from, to);
-	}
-
-	@Override
 	public void pipe(InputStream in, OutputStream out) {
 		StreamUtil.pipe(in, out);
 	}

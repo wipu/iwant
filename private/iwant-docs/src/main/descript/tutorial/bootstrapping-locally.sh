@@ -3,22 +3,29 @@ doc-content() {
 cmd "mkdir iwant-tutorial"
 cmd "cd iwant-tutorial"
 
-cmd svn export "$LOCAL_IWANT_WSROOT/essential/iwant-entry/as-some-developer" as-iwant-tutorial-developer
+local WSROOTNAME=$(basename "$LOCAL_IWANT_WSROOT")
+local WSROOTPARENT=$(dirname "$LOCAL_IWANT_WSROOT")
+local IWANTZIP=/tmp/iwant-for-local-tutorial.zip
+cmd cd "$WSROOTPARENT"
+cmd "rm '$IWANTZIP'"
+cmd "zip -q -0 -r '$IWANTZIP' $WSROOTNAME"
+cmd "cd - > /dev/null"
+
+p 'First we remove the cached "unmodifiable" iwant sources so the tutorial will use the latest local iwant files.'
+
+cmd "rm -rf $HOME/.net.sf.iwant/cached/UnmodifiableUrl/file%3A$IWANTZIP"
+cmd "rm -rf $HOME/.net.sf.iwant/cached/UnmodifiableZip/file%3A$HOME/.net.sf.iwant/cached/UnmodifiableUrl/file%25253A$IWANTZIP"
+
+cmd "cp -a '$LOCAL_IWANT_WSROOT/essential/iwant-entry/as-some-developer' as-iwant-tutorial-developer"
+
 cmd 'find . -type f'
 
 section "Choosing url for iwant to use as engine"
 
 cmde 1 'as-iwant-tutorial-developer/with/bash/iwant/help.sh'
 edit as-iwant-tutorial-developer/i-have/conf/iwant-from "local-iwant-from" <<EOF
-iwant-from=file://$LOCAL_IWANT_WSROOT
+iwant-from=file://$IWANTZIP
 EOF
 cmde "1" "as-iwant-tutorial-developer/with/bash/iwant/help.sh 2>&1"
 
-p "This is an optimization for this tutorial:"
-
-edit as-iwant-tutorial-developer/i-have/conf/iwant-from "iwant-re-export-optimization" <<EOF
-iwant-from=file://$LOCAL_IWANT_WSROOT
-# an optimization for this tutorial:
-re-export=false
-EOF
 }

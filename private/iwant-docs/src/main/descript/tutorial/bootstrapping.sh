@@ -6,9 +6,9 @@ p "Since a build system is so integral a part of a reproducible build, each proj
 
 html "<p class='text'>The bootstrapper contains two command line interfaces: a bash script and an ant script. They both do the same thing: they compile and run the third part of the bootstrapper, a java class. This java class is the <i>entry</i> to iwant.</p>"
 
-p "The entry class makes (if necessary, of course) an svn checkout of the requested version of iwant code and compiles and runs the next phase of bootstrapping, called entry2."
+p "The entry class fetches (if necessary, of course) the requested version of iwant code and compiles and runs the next phase of bootstrapping, <code>Iwant2.java</code>."
 
-p "The entry2 phase compiles the full iwant system it itself is part of and runs the actual entry to the system, called entry3."
+p "The entry2 phase compiles the full iwant system it itself is part of and runs the actual entry to the system, <code>Iwant3.java</code>."
 
 p "If in any of the bootstrapping phases some configuration is missing, the bootstrapper acts as a wizard that helps the user in creating the configuration."
 

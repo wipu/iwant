@@ -18,7 +18,6 @@ public class IwantNetworkMock implements IwantNetwork {
 
 	private final TestArea testArea;
 	private Map<UnmodifiableSource<?>, File> cachedUnmodifiables = new HashMap<>();
-	private URL svnkitUrl;
 	private boolean shallNotFindSystemJavaCompiler;
 
 	public IwantNetworkMock(TestArea testArea) {
@@ -27,7 +26,7 @@ public class IwantNetworkMock implements IwantNetwork {
 
 	@Override
 	public File cacheLocation(UnmodifiableSource<?> src) {
-		return NullCheck.nonNull(cachedUnmodifiables.get(src));
+		return NullCheck.nonNull(cachedUnmodifiables.get(src), src);
 	}
 
 	public File cachesAt(UnmodifiableSource<?> src, File cached) {
@@ -52,33 +51,6 @@ public class IwantNetworkMock implements IwantNetwork {
 	}
 
 	@Override
-	public URL svnkitUrl() {
-		return NullCheck.nonNull(svnkitUrl);
-	}
-
-	public void hasSvnkitUrl(URL svnkitUrl) {
-		this.svnkitUrl = svnkitUrl;
-	}
-
-	public void hasSvnkitUrl(String svnkitUrl) {
-		hasSvnkitUrl(Iwant.url(svnkitUrl));
-	}
-
-	public void usesRealSvnkitUrlAndCacheAndUnzipped() {
-		// here we assume real download has been tested
-		Iwant iwant = Iwant.usingRealNetwork();
-		URL realUrl = iwant.network().svnkitUrl();
-		hasSvnkitUrl(realUrl);
-
-		UnmodifiableUrl realUrlSrc = new UnmodifiableUrl(realUrl);
-		File downloaded = iwant.network().cacheLocation(realUrlSrc);
-		cachesAt(realUrlSrc, downloaded);
-
-		UnmodifiableZip zip = new UnmodifiableZip(Iwant.fileToUrl(downloaded));
-		cachesAt(zip, iwant.unmodifiableZipUnzipped(zip));
-	}
-
-	@Override
 	public JavaCompiler systemJavaCompiler() {
 		if (shallNotFindSystemJavaCompiler) {
 			return null;
@@ -88,6 +60,11 @@ public class IwantNetworkMock implements IwantNetwork {
 
 	public void shallNotFindSystemJavaCompiler() {
 		this.shallNotFindSystemJavaCompiler = true;
+	}
+
+	public void usesRealCacheFor(URL url) {
+		UnmodifiableUrl src = new UnmodifiableUrl(url);
+		cachesAt(src, Iwant.usingRealNetwork().network().cacheLocation(src));
 	}
 
 }

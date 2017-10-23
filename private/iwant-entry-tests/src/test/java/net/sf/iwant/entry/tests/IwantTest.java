@@ -113,6 +113,21 @@ public class IwantTest extends TestCase {
 		return err.toString();
 	}
 
+	/**
+	 * TODO reuse, this is redundant
+	 */
+	private File mockWsRootZip() {
+		try {
+			File wsRoot = IwantWsRootFinder.mockWsRoot();
+			File zip = new File(testArea.root(), "mock-iwant-wsroot.zip");
+			ScriptGenerated.execute(wsRoot.getParentFile(), Arrays.asList("zip",
+					"-0", "-q", "-r", zip.getAbsolutePath(), wsRoot.getName()));
+			return zip;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public void testMainFailsAndExitsIfGivenZeroArguments() throws Exception {
 		try {
 			Iwant.main(new String[] {});
@@ -149,12 +164,16 @@ public class IwantTest extends TestCase {
 			assertEquals(1, e.status());
 		}
 		assertEquals("", out());
-		assertEquals("I created " + asSomeone + "/i-have/conf/iwant-from\n"
-				+ "Please edit it and rerun me.\n", err());
+		assertEquals(
+				"I created " + asSomeone + "/i-have/conf/iwant-from\n"
+						+ "Please edit and uncomment the properties in it and rerun me.\n",
+				err());
 
 		assertEquals(
-				"# uncomment and optionally change the revision:\n"
-						+ "#iwant-from=https://svn.code.sf.net/p/iwant/code/trunk@721\n",
+				"# uncomment and optionally change the commit:\n"
+						+ "# (also note the content of the url is assumed unmodifiable so it's downloaded only once)\n"
+						+ "#iwant-from=https://github.com/wipu/iwant/archive/"
+						+ Iwant.EXAMPLE_COMMIT + ".zip\n",
 				testArea.contentOf("as-test/i-have/conf/iwant-from"));
 	}
 
@@ -169,12 +188,16 @@ public class IwantTest extends TestCase {
 			assertEquals(1, e.status());
 		}
 		assertEquals("", out());
-		assertEquals("I created " + asSomeone + "/i-have/conf/iwant-from\n"
-				+ "Please edit it and rerun me.\n", err());
+		assertEquals(
+				"I created " + asSomeone + "/i-have/conf/iwant-from\n"
+						+ "Please edit and uncomment the properties in it and rerun me.\n",
+				err());
 
 		assertEquals(
-				"# uncomment and optionally change the revision:\n"
-						+ "#iwant-from=https://svn.code.sf.net/p/iwant/code/trunk@721\n",
+				"# uncomment and optionally change the commit:\n"
+						+ "# (also note the content of the url is assumed unmodifiable so it's downloaded only once)\n"
+						+ "#iwant-from=https://github.com/wipu/iwant/archive/"
+						+ Iwant.EXAMPLE_COMMIT + ".zip\n",
 				testArea.contentOf("as-test/i-have/conf/iwant-from"));
 	}
 
@@ -192,101 +215,112 @@ public class IwantTest extends TestCase {
 		}
 		assertEquals("", out());
 		assertEquals("Please define 'iwant-from' in " + asSomeone
-				+ "/i-have/conf/iwant-from\n", err());
+				+ "/i-have/conf/iwant-from\nExample:\n"
+				+ Iwant.EXAMPLE_IWANT_FROM_CONTENT + "\n", err());
 	}
 
-	public void testIwantEssentialIsSvnExportedWhenNotExported() {
+	public void testUserGetsFriendlyErrorIfIwantFromFileDoesNotSpecifyIwantFrom()
+			throws Exception {
+		testMainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist();
+		startOfOutAndErrCapture();
+
+		File asSomeone = testArea.newDir("as-test");
+		Iwant.newTextFile(new File(asSomeone, "/i-have/conf/iwant-from"),
+				"just-something=else\n");
+		try {
+			Iwant.main(new String[] { asSomeone.getCanonicalPath() });
+			fail();
+		} catch (ExitCalledException e) {
+			assertEquals(1, e.status());
+		}
+		assertEquals("", out());
+		assertEquals("Please define 'iwant-from' in " + asSomeone
+				+ "/i-have/conf/iwant-from\nExample:\n"
+				+ Iwant.EXAMPLE_IWANT_FROM_CONTENT + "\n", err());
+	}
+
+	public void testUserGetsFriendlyErrorIfIwantFromFileContainsInvalidIwantFromUrl()
+			throws Exception {
+		testMainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist();
+		startOfOutAndErrCapture();
+
+		File asSomeone = testArea.newDir("as-test");
+		Iwant.newTextFile(new File(asSomeone, "/i-have/conf/iwant-from"),
+				"iwant-from=crap\n");
+		try {
+			Iwant.main(new String[] { asSomeone.getCanonicalPath() });
+			fail();
+		} catch (ExitCalledException e) {
+			assertEquals(1, e.status());
+		}
+		assertEquals("", out());
+		assertEquals("java.net.MalformedURLException: no protocol: crap\n"
+				+ "Please define a valid 'iwant-from' in " + asSomeone
+				+ "/i-have/conf/iwant-from\nExample:\n"
+				+ Iwant.EXAMPLE_IWANT_FROM_CONTENT + "\n", err());
+	}
+
+	public void testIwantSourceZipIsAcquiredWhenItDoesntExist() {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
-		File iwantFrom = IwantWsRootFinder.mockWsRoot();
-		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
-		URL iwantEssentialFromUrl = Iwant
-				.fileToUrl(new File(iwantFrom, "essential"));
+		File iwantZip = mockWsRootZip();
+		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
 		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
 				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
-		network.usesRealSvnkitUrlAndCacheAndUnzipped();
-		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
-				"exported-iwant-wsroot/essential");
+		File cachedIwantZip = network.cachesUrlAt(iwantFromUrl,
+				"cached-iwant.zip");
 
-		assertEquals(exportedWsEssential,
-				Iwant.using(network).iwantEssentialOfWishedVersion(asSomeone));
-		assertTrue(new File(exportedWsEssential, "iwant-api-model").exists());
+		assertEquals(cachedIwantZip,
+				Iwant.using(network).iwantSourceZipOfWishedVersion(asSomeone));
+		assertEquals(testArea.contentOf(iwantZip),
+				testArea.contentOf(cachedIwantZip));
 	}
 
-	/**
-	 * See the svn export test
-	 */
-	public void testExistingIwantIsSvnReExportedFromFile() {
+	public void testIwantSourceIsAcquiredWhenItDoesntExist() {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
-		File iwantFrom = IwantWsRootFinder.mockWsRoot();
-		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
-		URL iwantEssentialFromUrl = Iwant
-				.fileToUrl(new File(iwantFrom, "essential"));
+		File iwantZip = mockWsRootZip();
+		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
 		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
 				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
-		network.usesRealSvnkitUrlAndCacheAndUnzipped();
-		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
-				"exported-iwant-wsroot/essential");
-		File preExisting = new File(exportedWsEssential, "existing");
-		Iwant.mkdirs(preExisting);
+		File cachedIwantZip = network.cachesUrlAt(iwantFromUrl,
+				"cached-iwant.zip");
+		File cachedIwantZipUnzipped = network.cachesZipAt(
+				Iwant.fileToUrl(cachedIwantZip), "iwant.zip.unzipped");
 
-		assertEquals(exportedWsEssential,
-				Iwant.using(network).iwantEssentialOfWishedVersion(asSomeone));
+		File cachedIwantSrc = Iwant.using(network)
+				.iwantSourceOfWishedVersion(asSomeone);
 
-		assertTrue(new File(exportedWsEssential, "iwant-api-model").exists());
-		assertFalse(preExisting.exists());
+		// the src shall be the sole child of the unzipped source zip:
+		assertEquals(new File(cachedIwantZipUnzipped, "iwant-mock-wsroot"),
+				cachedIwantSrc);
+		assertTrue(
+				new File(cachedIwantSrc, "essential/iwant-api-model").exists());
 	}
 
-	/**
-	 * See the svn export test
-	 */
-	public void testExistingIwantIsNotSvnReExportedFromFileWhenToldNotTo() {
-		File asSomeone = testArea.newDir("as-test");
-		File iHaveConf = testArea.newDir("as-test/i-have/conf");
-		File iwantFrom = IwantWsRootFinder.mockWsRoot();
-		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
-		URL iwantEssentialFromUrl = Iwant
-				.fileToUrl(new File(iwantFrom, "essential"));
-		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
-				"iwant-from=" + iwantFromUrl + "\nre-export=false\n");
-
-		IwantNetworkMock network = new IwantNetworkMock(testArea);
-		network.usesRealSvnkitUrlAndCacheAndUnzipped();
-		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
-				"exported-iwant-wsroot/essential");
-		File preExisting = new File(exportedWsEssential, "existing");
-		Iwant.mkdirs(preExisting);
-
-		assertEquals(exportedWsEssential,
-				Iwant.using(network).iwantEssentialOfWishedVersion(asSomeone));
-
-		assertFalse(new File(exportedWsEssential, "iwant-api-model").exists());
-		assertTrue(preExisting.exists());
-	}
-
-	public void testIwantBootstrapsWhenNothingHasBeenDownloadedAndJustIwantFromIsGiven()
+	public void testIwantBootstrapsWhenNothingHasBeenDownloadedAndJustIwantFromFileIsGiven()
 			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
-		File iwantFrom = IwantWsRootFinder.mockWsRoot();
-		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
-		URL iwantEssentialFromUrl = Iwant
-				.fileToUrl(new File(iwantFrom, "essential"));
+		File iwantZip = mockWsRootZip();
+		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
 		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
 				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
-		network.usesRealSvnkitUrlAndCacheAndUnzipped();
-		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
-				"exported-iwant-wsroot/essential");
+		File cachedIwantZip = network.cachesUrlAt(iwantFromUrl,
+				"cached-iwant.zip");
+		File cachedIwantZipUnzipped = network.cachesZipAt(
+				Iwant.fileToUrl(cachedIwantZip), "iwant.zip.unzipped");
+		File cachedIwantEssential = new File(cachedIwantZipUnzipped,
+				"iwant-mock-wsroot/essential");
 		network.cachesAt(
 				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
-						exportedWsEssential),
+						cachedIwantEssential),
 				"iwant-bootstrapper-classes");
 
 		Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
@@ -294,8 +328,8 @@ public class IwantTest extends TestCase {
 
 		String cwd = System.getProperty("user.dir");
 		assertEquals("Mocked iwant entry2\n" + "CWD: " + cwd + "\n" + "args: ["
-				+ exportedWsEssential + ", " + asSomeone
-				+ ", args, for, entry two]\n"
+				+ cachedIwantZipUnzipped + "/iwant-mock-wsroot/essential, "
+				+ asSomeone + ", args, for, entry two]\n"
 				+ "And hello from mocked entry one.\n", out());
 		assertTrue(err().endsWith("And syserr message from mocked entry2\n"));
 	}
@@ -331,23 +365,24 @@ public class IwantTest extends TestCase {
 			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
-		File iwantFrom = IwantWsRootFinder.mockWsRoot();
-		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
-		URL iwantEssentialFromUrl = Iwant
-				.fileToUrl(new File(iwantFrom, "essential"));
+		File iwantZip = mockWsRootZip();
+		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
 		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
 				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
-		network.usesRealSvnkitUrlAndCacheAndUnzipped();
-		network.shallNotFindSystemJavaCompiler();
-
-		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
-				"exported-iwant-wsroot/essential");
+		File cachedIwantZip = network.cachesUrlAt(iwantFromUrl,
+				"cached-iwant.zip");
+		File cachedIwantZipUnzipped = network.cachesZipAt(
+				Iwant.fileToUrl(cachedIwantZip), "iwant.zip.unzipped");
+		File cachedIwantEssential = new File(cachedIwantZipUnzipped,
+				"iwant-mock-wsroot/essential");
 		network.cachesAt(
 				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
-						exportedWsEssential),
+						cachedIwantEssential),
 				"iwant-bootstrapper-classes");
+
+		network.shallNotFindSystemJavaCompiler();
 
 		try {
 			Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
@@ -363,20 +398,21 @@ public class IwantTest extends TestCase {
 	public void testBootstrapperIsNotCompiledIfNotNecessary() throws Exception {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
-		File iwantFrom = IwantWsRootFinder.mockWsRoot();
-		URL iwantFromUrl = Iwant.fileToUrl(iwantFrom);
-		URL iwantEssentialFromUrl = Iwant
-				.fileToUrl(new File(iwantFrom, "essential"));
+		File iwantZip = mockWsRootZip();
+		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
 		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
 				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
-		network.usesRealSvnkitUrlAndCacheAndUnzipped();
-		File exportedWsEssential = network.cachesUrlAt(iwantEssentialFromUrl,
-				"exported-iwant-wsroot/essential");
+		File cachedIwantZip = network.cachesUrlAt(iwantFromUrl,
+				"cached-iwant.zip");
+		File cachedIwantZipUnzipped = network.cachesZipAt(
+				Iwant.fileToUrl(cachedIwantZip), "iwant.zip.unzipped");
+		File cachedIwantEssential = new File(cachedIwantZipUnzipped,
+				"iwant-mock-wsroot/essential");
 		network.cachesAt(
 				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
-						exportedWsEssential),
+						cachedIwantEssential),
 				"iwant-bootstrapper-classes");
 
 		Iwant.using(network).evaluate(asSomeone.getCanonicalPath(), "args",
@@ -384,8 +420,8 @@ public class IwantTest extends TestCase {
 
 		String cwd = System.getProperty("user.dir");
 		assertEquals("Mocked iwant entry2\n" + "CWD: " + cwd + "\n" + "args: ["
-				+ exportedWsEssential + ", " + asSomeone
-				+ ", args, for, entry two]\n"
+				+ cachedIwantZipUnzipped + "/iwant-mock-wsroot/essential, "
+				+ asSomeone + ", args, for, entry two]\n"
 				+ "And hello from mocked entry one.\n", out());
 
 		File bsClasses = new File(testArea.root(),

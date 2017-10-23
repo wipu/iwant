@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -15,6 +17,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import net.sf.iwant.api.core.ScriptGenerated;
+import net.sf.iwant.core.download.TestedIwantDependencies;
+import net.sf.iwant.entry.Iwant;
+import net.sf.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
+import net.sf.iwant.entry2.Iwant2;
+import net.sf.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantEssential;
 import net.sf.iwant.entry3.Iwant3;
 import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantEssential;
 import net.sf.iwant.entrymocks.IwantNetworkMock;
@@ -36,8 +44,6 @@ public class TargetImplementedInBashIntegrationTest {
 	private ByteArrayOutputStream out;
 	private ByteArrayOutputStream err;
 	private String originalLineSeparator;
-	private File iwantEssential;
-	private File combinedIwantSrc;
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -48,20 +54,44 @@ public class TargetImplementedInBashIntegrationTest {
 	@Before
 	public void before() throws Exception {
 		testArea = TestArea.forTest(this);
-		testArea.hasFile("wsroot/as-test-developer/with/bash/iwant/help.sh",
-				"#!/bin/bash\njust a mock because this exists in real life\n");
-		testArea.hasFile("wsroot/as-test-developer/i-have/conf/iwant-from",
-				"#just a mock because this exists in real life\n"
-						+ "iwant-from=http://localhost/not-needed-here\n");
-		network = new IwantNetworkMock(testArea);
-		combinedIwantSrc = new File(testArea.root(), "combined-iwant-src");
-		iwantEssential = IwantWsRootFinder.mockEssential();
-		network.cachesAt(
-				new CombinedSrcFromUnmodifiableIwantEssential(iwantEssential),
-				combinedIwantSrc);
-		iwant3 = Iwant3.using(network, iwantEssential);
 		wsRoot = new File(testArea.root(), "wsroot");
 		asTest = new File(wsRoot, "as-test-developer");
+		testArea.fileHasContent(new File(asTest, "/with/bash/iwant/help.sh"),
+				"#!/bin/bash\njust a mock because this exists in real life\n");
+		File iwantZip = mockWsRootZip();
+		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
+		testArea.fileHasContent(new File(asTest, "/i-have/conf/iwant-from"),
+				"#just a mock because this exists in real life\n"
+						+ "iwant-from=" + iwantFromUrl + "\n");
+		network = new IwantNetworkMock(testArea);
+
+		File cachedIwantZip = network.cachesUrlAt(iwantFromUrl,
+				"cached-iwant.zip");
+		File cachedIwantZipUnzipped = network.cachesZipAt(
+				Iwant.fileToUrl(cachedIwantZip), "iwant.zip.unzipped");
+		File cachedIwantEssential = new File(cachedIwantZipUnzipped,
+				"iwant-mock-wsroot/essential");
+		network.cachesAt(
+				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
+						cachedIwantEssential),
+				"iwant-bootstrapper-classes");
+		network.cachesAt(
+				new CombinedSrcFromUnmodifiableIwantEssential(
+						cachedIwantEssential),
+				"combined-iwant-essential-sources");
+		network.cachesAt(
+				new ClassesFromUnmodifiableIwantEssential(cachedIwantEssential),
+				"classes-from-iwant-essential");
+
+		network.usesRealCacheFor(
+				TestedIwantDependencies.antJar().artifact().url());
+		network.usesRealCacheFor(
+				TestedIwantDependencies.antLauncherJar().artifact().url());
+
+		Iwant.using(network).iwantSourceOfWishedVersion(asTest);
+		Iwant2.using(network).allIwantClasses(cachedIwantEssential);
+
+		iwant3 = Iwant3.using(network, cachedIwantEssential);
 
 		wsInfoHasContent();
 		iHaveContainsTheJavaFiles();
@@ -73,6 +103,21 @@ public class TargetImplementedInBashIntegrationTest {
 		originalLineSeparator = System.getProperty(LINE_SEPARATOR_KEY);
 		System.setProperty(LINE_SEPARATOR_KEY, "\n");
 		startOfOutAndErrCapture();
+	}
+
+	/**
+	 * TODO reuse, this is redundant
+	 */
+	private File mockWsRootZip() {
+		try {
+			File wsRoot = IwantWsRootFinder.mockWsRoot();
+			File zip = new File(testArea.root(), "mock-iwant-wsroot.zip");
+			ScriptGenerated.execute(wsRoot.getParentFile(), Arrays.asList("zip",
+					"-0", "-q", "-r", zip.getAbsolutePath(), wsRoot.getName()));
+			return zip;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private void startOfOutAndErrCapture() {

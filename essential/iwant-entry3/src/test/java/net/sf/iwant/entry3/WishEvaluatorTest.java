@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -64,7 +63,7 @@ public class WishEvaluatorTest extends TestCase {
 	private PrintStream originalErr;
 	private WorkspaceModuleContext wsdefCtx;
 	private JavaModule wsdefdefModule;
-	private URL iwantFromUrl;
+	private File cachedIwantSrcRoot;
 
 	@Override
 	public void setUp() throws IOException {
@@ -90,9 +89,9 @@ public class WishEvaluatorTest extends TestCase {
 				wsInfo.wsRoot(), network);
 		int workerCount = 1;
 		wsdefdefModule = JavaSrcModule.with().name("wsdefdef").end();
-		iwantFromUrl = new URL("http://localhost/notneededhere");
+		cachedIwantSrcRoot = testArea.newDir("cachedIwantSrcRoot");
 		wsdefCtx = new WorkspaceDefinitionContextImpl(iwantApiModules,
-				iwantFromUrl, wsdefdefModule);
+				cachedIwantSrcRoot, wsdefdefModule);
 		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
 				workerCount, wsdefdefJavaModule, wsdefJavaModule, wsdefCtx);
 	}

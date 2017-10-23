@@ -1,6 +1,7 @@
 package net.sf.iwant.entry3;
 
-import java.net.URL;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
 import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
 import net.sf.iwant.api.javamodules.JavaModule;
+import net.sf.iwant.api.model.ExternalSource;
 import net.sf.iwant.api.model.Path;
 import net.sf.iwant.api.wsdef.IwantPluginWish;
 import net.sf.iwant.api.wsdef.IwantPluginWishes;
@@ -15,21 +17,19 @@ import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
 import net.sf.iwant.core.download.Downloaded;
 import net.sf.iwant.core.download.FromRepository;
 import net.sf.iwant.core.download.GnvArtifact;
-import net.sf.iwant.core.download.SvnExported;
 import net.sf.iwant.core.download.TestedIwantDependencies;
-import net.sf.iwant.entry.Iwant;
 
 public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 
 	private final Set<JavaModule> iwantApiModules;
 	private final JavaModule wsdefdefModule;
-	private final URL iwantRootFromUrl;
+	private final File cachedIwantSrcRoot;
 
 	public WorkspaceDefinitionContextImpl(Set<JavaModule> iwantApiModules,
-			URL iwantRootFromUrl, JavaModule wsdefdefModule) {
+			File cachedIwantSrcRoot, JavaModule wsdefdefModule) {
 		this.iwantApiModules = iwantApiModules;
 		this.wsdefdefModule = wsdefdefModule;
-		this.iwantRootFromUrl = iwantRootFromUrl;
+		this.cachedIwantSrcRoot = cachedIwantSrcRoot;
 	}
 
 	@Override
@@ -48,10 +48,13 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 	}
 
 	private Path pluginMainJava(String pluginName) {
-		URL url = Iwant.subUrlOfSvnUrl(iwantRootFromUrl,
+		File src = new File(cachedIwantSrcRoot,
 				"optional/" + pluginName + "/src/main/java");
-		return SvnExported.with().name(pluginName + "-main-java").url(url)
-				.end();
+		try {
+			return new ExternalSource(src);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private Set<JavaModule> pluginWithDependencies(String pluginName,

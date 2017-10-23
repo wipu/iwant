@@ -124,12 +124,6 @@ public class DownloadedTest extends TestCase {
 			return new IwantNetwork() {
 
 				@Override
-				public URL svnkitUrl() {
-					throw new UnsupportedOperationException(
-							"TODO test and implement");
-				}
-
-				@Override
 				public File cacheLocation(UnmodifiableSource<?> src) {
 					throw new UnsupportedOperationException(
 							"TODO test and implement");

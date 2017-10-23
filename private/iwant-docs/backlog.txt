@@ -1661,18 +1661,38 @@
     * besides, now is the time to simplify: just download it all anyway, it's not big
     * also, drop svn checkout support: *if* we lose github zip, we can replace it with something else
     * this is a big change, but just start doing, if it gets ouf of hand, split to "preparatory" tasks
-    - modify descript tutorial
-    - tdd
-      - Iwant, removing old svn tests and code
-      - Iwant2
-      - take plugin src from the already downloaded src
-      - move svn functionality to SvnExported
-      - update scripts that fetch the bootstrapper
-    - later: remove the plugin concept: they are already downloaded so no further price on just
-      having them unconditionally in the classpath 
+      * yeah, at least UnmodifiableSource/ModifiableSource
+    * also, drop support for re-export (for file urls): when using local uncommited iwant, handle this
+      with external scripts
+    + prototype script for wgetting all 3 bootstrapper files from github (there is no 1 download link)
+    + leftover from considering supporting "has-modifiable-content" for iwant-from:
+      + more friendly error message when iwant-from file is not good: give example content to stderr
+    + modify descript tutorial
+      + text of remote boostrap
+      + local bootstrap
+    + local tutorial must delete cached "unmodifiable" iwant zip and zip.unzipped
+      * another option would have been to put timestamp in the zip file but this would just grow
+        the global cache
+    + tdd
+      + Iwant, removing old svn tests and code
+      + Iwant2
+      + take plugin src from the already downloaded src
+      (- move svn functionality to SvnExported: nah just delete svn functionality)
+    - after push: remote boostrap
+    - for each project take into use
+      - write mutable=false in bootstrap fetch scripts (iwant/iwant.sh)
+    - rename IwantNetwork.cacheLocation to locationOfCachedContentFrom
+      * otherwise one thinks that it returns the cached zip file, not content of it
+    - make Iwant.wishedIwantRootFromUrl static
+    - update scripts that fetch the bootstrapper
+    (- later: remove the plugin concept: they are already downloaded so no further price on just
+      having them unconditionally in the classpath
+      * not quite: their dependencies need some specifying) 
   - update sf.net site
     - make webpage redirect to iwant-build.org
     - mention migration
+  - remove checked exception from ExternalSource constructor
+  - reusable test setup, at least mocked iwant zip
   - update external references (url and license have changed)
     - find out what they are :)
   - make tests pass in a clone that is not an svn workingcopy
