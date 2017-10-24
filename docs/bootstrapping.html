@@ -30,24 +30,24 @@ Then we download our first wish script: the script that downloads us the iwant b
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>cd as-iwant-tutorial-developer/with/bash/iwant</kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial/as-iwant-tutorial-developer/with/bash/iwant $ </kbd><kbd class='shell cmd'>wget https://raw.githubusercontent.com/wipu/iwant/master/essential/iwant-entry/as-some-developer/with/bash/iwant/iwant.sh</kbd><br/>
-<kbd class='shell output'>--2017-10-24 15:45:27--  https://raw.githubusercontent.com/wipu/iwant/master/essential/iwant-entry/as-some-developer/with/bash/iwant/iwant.sh</kbd><br/>
+<kbd class='shell output'>--2017-10-24 17:48:40--  https://raw.githubusercontent.com/wipu/iwant/master/essential/iwant-entry/as-some-developer/with/bash/iwant/iwant.sh</kbd><br/>
 <kbd class='shell output'>Resolving raw.githubusercontent.com... 151.101.84.133</kbd><br/>
 <kbd class='shell output'>Connecting to raw.githubusercontent.com|151.101.84.133|:443... connected.</kbd><br/>
 <kbd class='shell output'>HTTP request sent, awaiting response... 200 OK</kbd><br/>
 <kbd class='shell output'>Length: 669 [text/plain]</kbd><br/>
 <kbd class='shell output'>Saving to: ‘iwant.sh’</kbd><br/>
 <kbd class='shell output'></kbd><br/>
-<kbd class='shell output'>     0K                                                       100% 72.0M=0s</kbd><br/>
+<kbd class='shell output'>     0K                                                       100% 76.9M=0s</kbd><br/>
 <kbd class='shell output'></kbd><br/>
-<kbd class='shell output'>2017-10-24 15:45:27 (72.0 MB/s) - ‘iwant.sh’ saved [669/669]</kbd><br/>
+<kbd class='shell output'>2017-10-24 17:48:40 (76.9 MB/s) - ‘iwant.sh’ saved [669/669]</kbd><br/>
 <kbd class='shell output'></kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial/as-iwant-tutorial-developer/with/bash/iwant $ </kbd><kbd class='shell cmd'>chmod u+x iwant.sh</kbd><br/>
 </samp></div>
 <p class='text'>
-In this tutorial we use commit 6502cd6a29eb388279e19398cdc7aa9455f30f40 of iwant, but if you want to use the latest tested version, you can skip the following command:
+In this tutorial we use commit cd1154f1ab45be6dc182f9e8fd092e7cc87399b6 of iwant, but if you want to use the latest tested version, you can skip the following command:
 </p>
-<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial/as-iwant-tutorial-developer/with/bash/iwant $ </kbd><kbd class='shell cmd'>sed -i "s/COMMIT=.*/COMMIT=6502cd6a29eb388279e19398cdc7aa9455f30f40/" iwant.sh</kbd><br/>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial/as-iwant-tutorial-developer/with/bash/iwant $ </kbd><kbd class='shell cmd'>sed -i "s/COMMIT=.*/COMMIT=cd1154f1ab45be6dc182f9e8fd092e7cc87399b6/" iwant.sh</kbd><br/>
 </samp></div>
 <p class='text'>
 Now we cd back to the workspace root; that's where we normally make our wishes.
@@ -59,40 +59,40 @@ Now we cd back to the workspace root; that's where we normally make our wishes.
 Now we are ready to make our first wish. By using the code completion feature (tab) of bash, we see that the only wish available is 'iwant.sh' that grants us iwant itself:
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/iwant.sh</kbd><br/>
-<kbd class='shell output'>--2017-10-24 15:45:28--  https://raw.githubusercontent.com/wipu/iwant/6502cd6a29eb388279e19398cdc7aa9455f30f40/essential/iwant-entry/as-some-developer/with/ant/iw/build.xml</kbd><br/>
+<kbd class='shell output'>--2017-10-24 17:48:40--  https://raw.githubusercontent.com/wipu/iwant/cd1154f1ab45be6dc182f9e8fd092e7cc87399b6/essential/iwant-entry/as-some-developer/with/ant/iw/build.xml</kbd><br/>
 <kbd class='shell output'>Resolving raw.githubusercontent.com... 151.101.84.133</kbd><br/>
 <kbd class='shell output'>Connecting to raw.githubusercontent.com|151.101.84.133|:443... connected.</kbd><br/>
 <kbd class='shell output'>HTTP request sent, awaiting response... 200 OK</kbd><br/>
 <kbd class='shell output'>Length: 1145 (1.1K) [text/plain]</kbd><br/>
 <kbd class='shell output'>Saving to: ‘build.xml’</kbd><br/>
 <kbd class='shell output'></kbd><br/>
-<kbd class='shell output'>     0K .                                                     100%  122M=0s</kbd><br/>
+<kbd class='shell output'>     0K .                                                     100%  121M=0s</kbd><br/>
 <kbd class='shell output'></kbd><br/>
-<kbd class='shell output'>2017-10-24 15:45:28 (122 MB/s) - ‘build.xml’ saved [1145/1145]</kbd><br/>
+<kbd class='shell output'>2017-10-24 17:48:40 (121 MB/s) - ‘build.xml’ saved [1145/1145]</kbd><br/>
 <kbd class='shell output'></kbd><br/>
 <kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer</kbd><br/>
-<kbd class='shell output'>--2017-10-24 15:45:28--  https://raw.githubusercontent.com/wipu/iwant/6502cd6a29eb388279e19398cdc7aa9455f30f40/essential/iwant-entry/as-some-developer/with/bash/iwant/help.sh</kbd><br/>
+<kbd class='shell output'>--2017-10-24 17:48:40--  https://raw.githubusercontent.com/wipu/iwant/cd1154f1ab45be6dc182f9e8fd092e7cc87399b6/essential/iwant-entry/as-some-developer/with/bash/iwant/help.sh</kbd><br/>
 <kbd class='shell output'>Resolving raw.githubusercontent.com... 151.101.84.133</kbd><br/>
 <kbd class='shell output'>Connecting to raw.githubusercontent.com|151.101.84.133|:443... connected.</kbd><br/>
 <kbd class='shell output'>HTTP request sent, awaiting response... 200 OK</kbd><br/>
 <kbd class='shell output'>Length: 626 [text/plain]</kbd><br/>
 <kbd class='shell output'>Saving to: ‘help.sh’</kbd><br/>
 <kbd class='shell output'></kbd><br/>
-<kbd class='shell output'>     0K                                                       100% 72.7M=0s</kbd><br/>
+<kbd class='shell output'>     0K                                                       100% 77.0M=0s</kbd><br/>
 <kbd class='shell output'></kbd><br/>
-<kbd class='shell output'>2017-10-24 15:45:28 (72.7 MB/s) - ‘help.sh’ saved [626/626]</kbd><br/>
+<kbd class='shell output'>2017-10-24 17:48:41 (77.0 MB/s) - ‘help.sh’ saved [626/626]</kbd><br/>
 <kbd class='shell output'></kbd><br/>
 <kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer</kbd><br/>
-<kbd class='shell output'>--2017-10-24 15:45:28--  https://raw.githubusercontent.com/wipu/iwant/6502cd6a29eb388279e19398cdc7aa9455f30f40/essential/iwant-entry/as-some-developer/with/java/net/sf/iwant/entry/Iwant.java</kbd><br/>
+<kbd class='shell output'>--2017-10-24 17:48:41--  https://raw.githubusercontent.com/wipu/iwant/cd1154f1ab45be6dc182f9e8fd092e7cc87399b6/essential/iwant-entry/as-some-developer/with/java/net/sf/iwant/entry/Iwant.java</kbd><br/>
 <kbd class='shell output'>Resolving raw.githubusercontent.com... 151.101.84.133</kbd><br/>
 <kbd class='shell output'>Connecting to raw.githubusercontent.com|151.101.84.133|:443... connected.</kbd><br/>
 <kbd class='shell output'>HTTP request sent, awaiting response... 200 OK</kbd><br/>
-<kbd class='shell output'>Length: 24534 (24K) [text/plain]</kbd><br/>
+<kbd class='shell output'>Length: 24425 (24K) [text/plain]</kbd><br/>
 <kbd class='shell output'>Saving to: ‘Iwant.java’</kbd><br/>
 <kbd class='shell output'></kbd><br/>
-<kbd class='shell output'>     0K .......... .......... ...                             100%  839K=0.03s</kbd><br/>
+<kbd class='shell output'>     0K .......... .......... ...                             100%  682K=0.03s</kbd><br/>
 <kbd class='shell output'></kbd><br/>
-<kbd class='shell output'>2017-10-24 15:45:29 (839 KB/s) - ‘Iwant.java’ saved [24534/24534]</kbd><br/>
+<kbd class='shell output'>2017-10-24 17:48:41 (682 KB/s) - ‘Iwant.java’ saved [24425/24425]</kbd><br/>
 <kbd class='shell output'></kbd><br/>
 <kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer</kbd><br/>
 </samp></div>
