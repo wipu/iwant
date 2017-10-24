@@ -1,7 +1,6 @@
 package net.sf.iwant.plugin.jacoco;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
@@ -12,8 +11,7 @@ import net.sf.iwant.api.model.Target;
 
 public class JacocoInstrumentationTest extends JacocoTestBase {
 
-	public void testNameIsDerivedFromTheNameOfJavaClassesAndSourcesPair()
-			throws IOException {
+	public void testNameIsDerivedFromTheNameOfJavaClassesAndSourcesPair() {
 		assertEquals("one.jacoco-instr",
 				JacocoInstrumentation.of(Source.underWsroot("one"))
 						.using(jacoco(), antJar(), antLauncherJar()).with(asm())
@@ -24,7 +22,7 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 						.name());
 	}
 
-	public void testIngredients() throws IOException {
+	public void testIngredients() {
 		assertEquals(
 				"[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
 						+ antLauncherJar() + ", classes]",
@@ -33,7 +31,7 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 						.ingredients().toString());
 	}
 
-	public void testContentDescriptor() throws IOException {
+	public void testContentDescriptor() {
 		assertEquals("net.sf.iwant.plugin.jacoco.JacocoInstrumentation\n"
 				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
 				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "

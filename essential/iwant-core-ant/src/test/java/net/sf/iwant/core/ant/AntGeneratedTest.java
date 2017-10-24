@@ -1,7 +1,6 @@
 package net.sf.iwant.core.ant;
 
 import java.io.File;
-import java.io.IOException;
 
 import net.sf.iwant.api.core.Concatenated;
 import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
@@ -29,20 +28,20 @@ public class AntGeneratedTest extends IwantTestCase {
 		}
 	}
 
-	private Path downloaded(Path downloaded) throws IOException {
+	private Path downloaded(Path downloaded) {
 		return new ExternalSource(AsEmbeddedIwantUser.with().workspaceAt(wsRoot)
 				.cacheAt(cached).iwant().target((Target) downloaded).asPath());
 	}
 
-	private Path antJar() throws IOException {
+	private Path antJar() {
 		return downloaded(TestedIwantDependencies.antJar());
 	}
 
-	private Path antLauncherJar() throws IOException {
+	private Path antLauncherJar() {
 		return downloaded(TestedIwantDependencies.antLauncherJar());
 	}
 
-	public void testContentDescriptor() throws IOException {
+	public void testContentDescriptor() {
 		assertEquals(
 				"net.sf.iwant.core.ant.AntGenerated\n" + "i:ant-jars:\n  "
 						+ Iwant.IWANT_USER_DIR
@@ -62,7 +61,7 @@ public class AntGeneratedTest extends IwantTestCase {
 						.contentDescriptor());
 	}
 
-	public void testIngredients() throws IOException {
+	public void testIngredients() {
 		assertEquals("[" + antJar() + ", script]",
 				AntGenerated.with().name("minimal").antJars(antJar())
 						.script(Source.underWsroot("script")).end()

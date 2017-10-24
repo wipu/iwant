@@ -1,7 +1,6 @@
 package net.sf.iwant.plugin.jacoco;
 
 import java.io.File;
-import java.io.IOException;
 
 import net.sf.iwant.api.javamodules.JavaBinModule;
 import net.sf.iwant.api.javamodules.JavaClasses;
@@ -25,7 +24,7 @@ public abstract class JacocoTestBase extends IwantTestCase {
 		jacoco().path(ctx);
 	}
 
-	private Path downloaded(Path downloaded) throws IOException {
+	private Path downloaded(Path downloaded) {
 		return new ExternalSource(AsEmbeddedIwantUser.with().workspaceAt(wsRoot)
 				.cacheAt(cached).iwant().target((Target) downloaded).asPath());
 	}
@@ -38,20 +37,20 @@ public abstract class JacocoTestBase extends IwantTestCase {
 		return Iwant.usingRealNetwork().downloaded(jacoco().zip().url());
 	}
 
-	protected Path asm() throws IOException {
+	protected Path asm() {
 		return downloaded(FromRepository.repo1MavenOrg().group("org/ow2/asm")
 				.name("asm-all").version("5.0.1").jar());
 	}
 
-	protected Path antJar() throws IOException {
+	protected Path antJar() {
 		return downloaded(TestedIwantDependencies.antJar());
 	}
 
-	protected Path antLauncherJar() throws IOException {
+	protected Path antLauncherJar() {
 		return downloaded(TestedIwantDependencies.antLauncherJar());
 	}
 
-	protected JavaModule junit() throws IOException {
+	protected JavaModule junit() {
 		return JavaBinModule
 				.providing(downloaded(TestedIwantDependencies.junit())).end();
 	}

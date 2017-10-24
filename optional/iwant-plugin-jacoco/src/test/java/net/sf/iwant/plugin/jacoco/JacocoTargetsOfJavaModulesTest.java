@@ -1,7 +1,6 @@
 package net.sf.iwant.plugin.jacoco;
 
 import java.io.File;
-import java.io.IOException;
 
 import net.sf.iwant.api.core.ClassNameList;
 import net.sf.iwant.api.javamodules.JavaBinModule;
@@ -14,7 +13,7 @@ import net.sf.iwant.api.model.Target;
 
 public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 
-	public void testTargetsFromOneMinimalTestlessModule() throws IOException {
+	public void testTargetsFromOneMinimalTestlessModule() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
 				.end();
 
@@ -44,7 +43,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				report.contentDescriptor());
 	}
 
-	public void testReportName() throws IOException {
+	public void testReportName() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").end();
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
 				.with().jacocoWithDeps(jacoco(), asm())
@@ -54,7 +53,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertEquals("name2", jacocoTargets.jacocoReport("name2").name());
 	}
 
-	public void testTargetsFromOneMinimalCodelessModule() throws IOException {
+	public void testTargetsFromOneMinimalCodelessModule() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").end();
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
@@ -75,7 +74,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				report.contentDescriptor());
 	}
 
-	public void testTargetsFromOneMinimalTestOnlyModule() throws IOException {
+	public void testTargetsFromOneMinimalTestOnlyModule() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
 				.end();
 
@@ -106,7 +105,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				+ "", report.contentDescriptor());
 	}
 
-	public void testTargetsFromOneBinaryModule() throws IOException {
+	public void testTargetsFromOneBinaryModule() {
 		JavaBinModule mod = JavaBinModule.providing(Source.underWsroot("lib"))
 				.end();
 
@@ -128,8 +127,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				report.contentDescriptor());
 	}
 
-	public void testCoverageArgsForJunitIsClassNameListUnlessOnlyOneTestDefined()
-			throws IOException {
+	public void testCoverageArgsForJunitIsClassNameListUnlessOnlyOneTestDefined() {
 		JavaSrcModule testedByOneClass = JavaSrcModule.with()
 				.name("testedByOneClass").testJava("test")
 				.testedBy("custom.Test").end();
@@ -175,8 +173,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				testNames.contentDescriptor());
 	}
 
-	public void testCoverageOfJavaSrcModuleWithCumulativeDeps()
-			throws IOException {
+	public void testCoverageOfJavaSrcModuleWithCumulativeDeps() {
 		JavaBinModule bin1 = JavaBinModule.providing(Source.underWsroot("bin1"))
 				.end();
 		JavaSrcModule src1 = JavaSrcModule.with().name("src1").mainJava("src")
@@ -260,7 +257,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				contentOf(new File(ctx.cached(report), "report.csv")));
 	}
 
-	public void testJacocoCoverageUsesModulesTestEnv() throws IOException {
+	public void testJacocoCoverageUsesModulesTestEnv() {
 		SystemEnv env = SystemEnv.with().string("a", "a1")
 				.path("b", Source.underWsroot("b")).end();
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
@@ -275,7 +272,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertSame(env, coverage.env());
 	}
 
-	public void testJunitRunnerIsUsedForCoverageByDefault() throws IOException {
+	public void testJunitRunnerIsUsedForCoverageByDefault() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
 				.end();
 
@@ -287,7 +284,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertEquals("org.junit.runner.JUnitCore", coverage.mainClassName());
 	}
 
-	public void testCustomTestRunnerIsUsedForCoverage() throws IOException {
+	public void testCustomTestRunnerIsUsedForCoverage() {
 		class CustomRunner implements TestRunner {
 			@Override
 			public String mainClassName() {

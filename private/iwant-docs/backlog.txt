@@ -1686,6 +1686,11 @@
       + fix the fix: ah, main resources without main java is not supported so add a .keep file
       + fix: touch private/iwant-mock-wsroot/essential/iwant-apimocks/src/main/java/.keep
       * that did it :)
+    + make tests pass in a clone that is not an svn workingcopy
+      * work in a workingcopy that is both a github and sf.net wc
+      + add ignores so both vcses show empty status
+      + remove svn bootstrap and tests that svn export from workspace itself
+      (- SvnExported uses svnkit directly, not via Iwant: deleted the class)
     + after push: remote boostrap
       + manually do in iwant-demo
       + push to iwant repo so it will be available at
@@ -1717,20 +1722,19 @@
     (- later: remove the plugin concept: they are already downloaded so no further price on just
       having them unconditionally in the classpath
       * not quite: their dependencies need some specifying) 
+  + remove checked exception from ExternalSource constructor
+    + do it
+    + unit test for the wrapping
+      * https://stackoverflow.com/questions/4489878/file-getcanonicalpath-failure-examples
+    + remove catches/throws
+      * oh, I should never have added that exception to the signature...
   - update sf.net site
     - make webpage redirect to iwant-build.org
     - mention migration
-  - remove checked exception from ExternalSource constructor
-  - reusable test setup, at least mocked iwant zip
+  - reusable test setup, at least mocked iwant zip (I guess I have an ever ongoing story for this...)
   - update external references (url and license have changed)
     - find out what they are :)
-  - make tests pass in a clone that is not an svn workingcopy
-    * work in a workingcopy that is both a github and sf.net wc
-    + add ignores so both vcses show empty status
-    - remove svn bootstrap and tests that svn export from workspace itself
-    - SvnExported uses svnkit directly, not via Iwant
   - remove unnecessary gitignores from root .gitignore (under # svn...)
-  - update tutorial
   - advertise
     - mention in the reddit thread (if commenting still allowed)
     - elsewhere

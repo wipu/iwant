@@ -1,7 +1,6 @@
 package net.sf.iwant.entry3;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -50,11 +49,7 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 	private Path pluginMainJava(String pluginName) {
 		File src = new File(cachedIwantSrcRoot,
 				"optional/" + pluginName + "/src/main/java");
-		try {
-			return new ExternalSource(src);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		return new ExternalSource(src);
 	}
 
 	private Set<JavaModule> pluginWithDependencies(String pluginName,

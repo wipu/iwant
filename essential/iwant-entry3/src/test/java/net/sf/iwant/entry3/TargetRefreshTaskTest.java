@@ -229,8 +229,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		assertEquals(TaskDirtiness.NOT_DIRTY, task(target).dirtiness());
 	}
 
-	public void testTaskIsDirtyIfFileUnderSourceDirWasModifiedAfterDescriptor()
-			throws IOException {
+	public void testTaskIsDirtyIfFileUnderSourceDirWasModifiedAfterDescriptor() {
 		File srcDir = testArea.newDir("src");
 		File srcFile = testArea.hasFile("src/src-file", "src-content");
 		srcFile.setLastModified(System.currentTimeMillis() + 2000);
@@ -247,8 +246,7 @@ public class TargetRefreshTaskTest extends TestCase {
 				task(target).dirtiness());
 	}
 
-	public void testTaskIsDirtyIfFileUnderSourceDirWasModifiedAtTheSameTimeAsDescriptor()
-			throws IOException {
+	public void testTaskIsDirtyIfFileUnderSourceDirWasModifiedAtTheSameTimeAsDescriptor() {
 		File srcDir = testArea.newDir("src");
 		testArea.hasFile("src/src-file", "src-content");
 
@@ -262,8 +260,7 @@ public class TargetRefreshTaskTest extends TestCase {
 				task(target).dirtiness());
 	}
 
-	public void testTaskIsDirtyIfSourceIngredientIsMissing()
-			throws IOException {
+	public void testTaskIsDirtyIfSourceIngredientIsMissing() {
 		File srcDir = new File(testArea.root(), "non-existent");
 
 		TargetMock target = new TargetMock("target");
@@ -276,7 +273,7 @@ public class TargetRefreshTaskTest extends TestCase {
 				task(target).dirtiness());
 	}
 
-	public void testCleanTaskWithSourceIngredient() throws IOException {
+	public void testCleanTaskWithSourceIngredient() {
 		File srcDir = testArea.newDir("src");
 		File srcFile = testArea.hasFile("src/src-file", "src-content");
 		srcFile.setLastModified(System.currentTimeMillis() - 2000);

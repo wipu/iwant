@@ -1,7 +1,6 @@
 package net.sf.iwant.plugin.jacoco;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -16,8 +15,7 @@ import net.sf.iwant.entry.Iwant.ExitCalledException;
 
 public class JacocoCoverageTest extends JacocoTestBase {
 
-	public void testParallelismIsDisabledUntilProvenByPracticeItDoesNotCauseProblems()
-			throws IOException {
+	public void testParallelismIsDisabledUntilProvenByPracticeItDoesNotCauseProblems() {
 		Path classes = Source.underWsroot("classes");
 		JacocoInstrumentation instr = JacocoInstrumentation.of(classes)
 				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
@@ -334,7 +332,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		assertTrue(new File(cached, "coverage.exec").exists());
 	}
 
-	public void testEnvIsUsedAsIngredientsAndParameters() throws IOException {
+	public void testEnvIsUsedAsIngredientsAndParameters() {
 		Path pathForEnv = Source.underWsroot("aSrc");
 		Path classesToInstrument = Source.underWsroot("classes");
 

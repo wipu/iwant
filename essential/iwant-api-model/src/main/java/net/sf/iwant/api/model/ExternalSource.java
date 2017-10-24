@@ -11,9 +11,14 @@ public class ExternalSource implements Path {
 	private final File file;
 	private String name;
 
-	public ExternalSource(File file) throws IOException {
+	public ExternalSource(File file) {
 		this.file = file;
-		this.name = file.getCanonicalPath();
+		try {
+			this.name = file.getCanonicalPath();
+		} catch (IOException e) {
+			throw new IllegalStateException(
+					"Cannot get canonical path of " + file, e);
+		}
 	}
 
 	@Override

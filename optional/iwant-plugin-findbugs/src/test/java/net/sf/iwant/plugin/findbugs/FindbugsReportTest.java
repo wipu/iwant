@@ -25,16 +25,16 @@ public class FindbugsReportTest extends IwantTestCase {
 		caches.cachesUrlAt(distroToTest().tarGz().url(), cachedFindbugsTarGz());
 	}
 
-	private Path downloaded(Path downloaded) throws IOException {
+	private Path downloaded(Path downloaded) {
 		return new ExternalSource(AsEmbeddedIwantUser.with().workspaceAt(wsRoot)
 				.cacheAt(cached).iwant().target((Target) downloaded).asPath());
 	}
 
-	private Path antJar() throws IOException {
+	private Path antJar() {
 		return downloaded(TestedIwantDependencies.antJar());
 	}
 
-	private Path antLauncherJar() throws IOException {
+	private Path antLauncherJar() {
 		return downloaded(TestedIwantDependencies.antLauncherJar());
 	}
 
@@ -105,7 +105,7 @@ public class FindbugsReportTest extends IwantTestCase {
 		}
 	}
 
-	public void testIngredientsAndContentDescriptor() throws IOException {
+	public void testIngredientsAndContentDescriptor() {
 		Path emptySrc = Source.underWsroot("empty-src");
 		Path emptyClasses = Source.underWsroot("empty-classes");
 		Path bin = Source.underWsroot("bin.jar");
@@ -129,7 +129,7 @@ public class FindbugsReportTest extends IwantTestCase {
 				report.contentDescriptor());
 	}
 
-	public void testExplicitHtmlOutputFormat() throws IOException {
+	public void testExplicitHtmlOutputFormat() {
 		Path emptySrc = Source.underWsroot("empty-src");
 		Path emptyClasses = Source.underWsroot("empty-classes");
 		Target report = FindbugsReport.with().name("fb-empty")
@@ -143,7 +143,7 @@ public class FindbugsReportTest extends IwantTestCase {
 				report.contentDescriptor().contains("output-format:\n  html"));
 	}
 
-	public void testContentDescriptorWithXmlOutputFormat() throws IOException {
+	public void testContentDescriptorWithXmlOutputFormat() {
 		Path emptySrc = Source.underWsroot("empty-src");
 		Path emptyClasses = Source.underWsroot("empty-classes");
 		Target report = FindbugsReport.with().name("fb-empty")
@@ -327,8 +327,7 @@ public class FindbugsReportTest extends IwantTestCase {
 						+ "  Dereferenced at ClassWithFindbugsIssues.java:[line 7]\n"));
 	}
 
-	public void testModulesToAnalyzeMeansSrcsAnalyzedUsingBins()
-			throws IOException {
+	public void testModulesToAnalyzeMeansSrcsAnalyzedUsingBins() {
 		JavaBinModule bin1 = JavaBinModule.providing(Source.underWsroot("bin1"))
 				.end();
 

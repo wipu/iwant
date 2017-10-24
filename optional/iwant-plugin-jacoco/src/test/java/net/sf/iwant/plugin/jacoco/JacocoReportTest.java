@@ -1,7 +1,6 @@
 package net.sf.iwant.plugin.jacoco;
 
 import java.io.File;
-import java.io.IOException;
 
 import net.sf.iwant.api.javamodules.JavaClassesAndSources;
 import net.sf.iwant.api.model.Path;
@@ -9,7 +8,7 @@ import net.sf.iwant.api.model.Source;
 
 public class JacocoReportTest extends JacocoTestBase {
 
-	public void testIngredientsAndContentDescriptor() throws IOException {
+	public void testIngredientsAndContentDescriptor() {
 		Path classes = Source.underWsroot("theclasses");
 		Path sources = Source.underWsroot("thesources");
 		JacocoCoverage coverage = JacocoCoverage.with().name("thecoverage")

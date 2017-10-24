@@ -49,7 +49,7 @@ public class CachesImplTest extends TestCase {
 				caches.contentOf(Source.underWsroot("src/src2")));
 	}
 
-	public void testExternalSourceIsItsOwnCache() throws IOException {
+	public void testExternalSourceIsItsOwnCache() {
 		File file = new File("/absolute/path");
 		assertFile(file, caches.contentOf(new ExternalSource(file)));
 	}
