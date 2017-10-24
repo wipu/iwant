@@ -32,7 +32,7 @@ public class WorkspaceForIwant implements Workspace {
 	private static final Target copyOfLocalIwantWs = new CopyOfLocalIwantWsForTutorial();
 
 	private final Path asm501Jar = FromRepository.repo1MavenOrg()
-			.group("org/ow2/asm").name("asm-all").version("5.0.1");
+			.group("org/ow2/asm").name("asm-all").version("5.0.1").jar();
 
 	private final IwantModules modules = new IwantModules();
 

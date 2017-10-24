@@ -15,7 +15,7 @@ import net.sf.iwant.api.javamodules.ScalaVersion;
 import net.sf.iwant.api.model.Source;
 import net.sf.iwant.api.model.Target;
 import net.sf.iwant.core.download.FromRepository;
-import net.sf.iwant.plugin.javamodules.JavaModules;
+import net.sf.iwant.core.javamodules.JavaModules;
 
 public class IwantModules extends JavaModules {
 
@@ -61,7 +61,7 @@ public class IwantModules extends JavaModules {
 	 */
 	private JavaModule ant = JavaBinModule
 			.providing(FromRepository.repo1MavenOrg().group("org/apache/ant")
-					.name("ant").version("1.9.4"))
+					.name("ant").version("1.9.4").jar())
 			.end();
 
 	/**
@@ -71,43 +71,47 @@ public class IwantModules extends JavaModules {
 	 */
 	private JavaModule antLauncher = JavaBinModule
 			.providing(FromRepository.repo1MavenOrg().group("org/apache/ant")
-					.name("ant-launcher").version("1.9.4"))
+					.name("ant-launcher").version("1.9.4").jar())
 			.end();
 
 	private JavaModule asm = JavaBinModule.providing(FromRepository
-			.repo1MavenOrg().group("asm").name("asm").version("3.2")).end();
+			.repo1MavenOrg().group("asm").name("asm").version("3.2").jar())
+			.end();
 
 	private JavaModule commonsIo = JavaBinModule.providing(
 			FromRepository.repo1MavenOrg().group("org/apache/commons")
-					.name("commons-io").version("1.3.2"))
+					.name("commons-io").version("1.3.2").jar())
 			.end();
 
 	private JavaModule commonsMath = JavaBinModule
 			.providing(FromRepository.repo1MavenOrg().group("commons-math")
-					.name("commons-math").version("1.2"))
+					.name("commons-math").version("1.2").jar())
 			.end();
 
 	private JavaModule guava = JavaBinModule
 			.providing(FromRepository.repo1MavenOrg().group("com/google/guava")
-					.name("guava").version("18.0"))
+					.name("guava").version("18.0").jar())
 			.end();
 
 	private JavaModule guavaTestlib = JavaBinModule
 			.providing(FromRepository.repo1MavenOrg().group("com/google/guava")
-					.name("guava-testlib").version("18.0"))
+					.name("guava-testlib").version("18.0").jar())
 			.runtimeDeps(guava).end();
 
-	private JavaModule jaxen = JavaBinModule.providing(FromRepository
-			.repo1MavenOrg().group("jaxen").name("jaxen").version("1.1.4"))
+	private JavaModule jaxen = JavaBinModule
+			.providing(FromRepository.repo1MavenOrg().group("jaxen")
+					.name("jaxen").version("1.1.4").jar())
 			.end();
 
-	private JavaModule junit = JavaBinModule.providing(FromRepository
-			.repo1MavenOrg().group("junit").name("junit").version("4.8.2"))
+	private JavaModule junit = JavaBinModule
+			.providing(FromRepository.repo1MavenOrg().group("junit")
+					.name("junit").version("4.8.2").jar())
 			.end();
 
 	// TODO document dependency to asm, jaxen
 	private JavaModule pmd = JavaBinModule.providing(FromRepository
-			.repo1MavenOrg().group("pmd").name("pmd").version("4.3")).end();
+			.repo1MavenOrg().group("pmd").name("pmd").version("4.3").jar())
+			.end();
 
 	private final JavaBinModule jcommander = binModule("com.beust",
 			"jcommander", "1.48");
@@ -123,7 +127,7 @@ public class IwantModules extends JavaModules {
 	private final JavaBinModule vertxWeb = binModule("io.vertx", "vertx-web",
 			"3.3.3");
 
-	private JavaBinModule nettyModule(String name) {
+	private static JavaBinModule nettyModule(String name) {
 		return binModule("io.netty", "netty-" + name, "4.1.6.Final");
 	}
 

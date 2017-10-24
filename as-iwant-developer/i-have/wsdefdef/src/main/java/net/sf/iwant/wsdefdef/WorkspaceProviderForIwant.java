@@ -18,7 +18,6 @@ public class WorkspaceProviderForIwant implements WorkspaceModuleProvider {
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
 				.mainDeps(ctx.iwantPlugin().findbugs().withDependencies())
 				.mainDeps(ctx.iwantPlugin().jacoco().withDependencies())
-				.mainDeps(ctx.iwantPlugin().javamodules().withDependencies())
 				.mainDeps(commonsIo()).end();
 	}
 
@@ -29,7 +28,8 @@ public class WorkspaceProviderForIwant implements WorkspaceModuleProvider {
 
 	private static JavaModule commonsIo() {
 		return JavaBinModule.providing(FromRepository.repo1MavenOrg()
-				.group("commons-io").name("commons-io").version("1.4")).end();
+				.group("commons-io").name("commons-io").version("1.4").jar())
+				.end();
 	}
 
 }
