@@ -1728,8 +1728,10 @@
       * https://stackoverflow.com/questions/4489878/file-getcanonicalpath-failure-examples
     + remove catches/throws
       * oh, I should never have added that exception to the signature...
+  + experiment: maybe if I choose iwant.fluentjava.org over iwant-build.org after all...
+    * yes, fluentjava.org site works together with this site so that's going to be the domain
   - update sf.net site
-    - make webpage redirect to iwant-build.org
+    - make webpage redirect to iwant.fluentjava.org
     - mention migration
   - reusable test setup, at least mocked iwant zip (I guess I have an ever ongoing story for this...)
   - update external references (url and license have changed)
