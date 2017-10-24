@@ -10,7 +10,7 @@ html "<p class='text'>The entry class fetches (if necessary, of course) the requ
 
 html "<p class='text'>The entry2 phase compiles the full iwant system it itself is part of and runs the actual entry to the system, <code>Iwant3.java</code>.</p>"
 
-html "<p>If in any of the bootstrapping phases some configuration is missing, the bootstrapper acts as a wizard that helps the user in creating the configuration.</p>"
+html "<p class='text'>If in any of the bootstrapping phases some configuration is missing, the bootstrapper acts as a wizard that helps the user in creating the configuration.</p>"
 
 html "<p class='text'>In this tutorial we'll be mostly using the bash interface. The <a href='ant-cli.html'>Ant cli</a> chapter gives a short introduction to the ant command line interface.</p>"
 

@@ -1686,7 +1686,7 @@
       + fix the fix: ah, main resources without main java is not supported so add a .keep file
       + fix: touch private/iwant-mock-wsroot/essential/iwant-apimocks/src/main/java/.keep
       * that did it :)
-    - after push: remote boostrap
+    + after push: remote boostrap
       + manually do in iwant-demo
       + push to iwant repo so it will be available at
         https://raw.githubusercontent.com/wipu/iwant/master/essential/iwant-entry/
@@ -1698,7 +1698,9 @@
         + run it
         + and continue as before
         + modify text
-      - visually review the result
+      + visually review the result
+        + fix a css class ref
+        + publish
     - rename IwantNetwork.cacheLocation to locationOfCachedContentFrom
       * otherwise one thinks that it returns the cached zip file, not content of it
     - make Iwant.wishedIwantRootFromUrl static
