@@ -23,7 +23,8 @@ public class DownloadingTest extends TestCase {
 	}
 
 	private void cachedFileContains(URL url, String content) {
-		File cached = iwant.network().cacheLocation(new UnmodifiableUrl(url));
+		File cached = iwant.network()
+				.cacheOfContentFrom(new UnmodifiableUrl(url));
 		Iwant.newTextFile(cached, content);
 	}
 

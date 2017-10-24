@@ -23,7 +23,7 @@ public class IwantNetworkMockTest {
 	@Test
 	public void getterGivesFriendlyExceptionIfNotTaught() {
 		try {
-			network.cacheLocation(
+			network.cacheOfContentFrom(
 					new UnmodifiableUrl(Iwant.url("http://localhost")));
 			fail();
 		} catch (IllegalStateException e) {

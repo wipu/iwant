@@ -25,7 +25,7 @@ public class IwantNetworkMock implements IwantNetwork {
 	}
 
 	@Override
-	public File cacheLocation(UnmodifiableSource<?> src) {
+	public File cacheOfContentFrom(UnmodifiableSource<?> src) {
 		return NullCheck.nonNull(cachedUnmodifiables.get(src), src);
 	}
 
@@ -64,7 +64,8 @@ public class IwantNetworkMock implements IwantNetwork {
 
 	public void usesRealCacheFor(URL url) {
 		UnmodifiableUrl src = new UnmodifiableUrl(url);
-		cachesAt(src, Iwant.usingRealNetwork().network().cacheLocation(src));
+		cachesAt(src,
+				Iwant.usingRealNetwork().network().cacheOfContentFrom(src));
 	}
 
 }

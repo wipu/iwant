@@ -71,7 +71,7 @@ public class Iwant {
 	 */
 	public interface IwantNetwork {
 
-		File cacheLocation(UnmodifiableSource<?> src);
+		File cacheOfContentFrom(UnmodifiableSource<?> src);
 
 		JavaCompiler systemJavaCompiler();
 
@@ -190,7 +190,7 @@ public class Iwant {
 	private static class RealIwantNetwork implements IwantNetwork {
 
 		@Override
-		public File cacheLocation(UnmodifiableSource<?> src) {
+		public File cacheOfContentFrom(UnmodifiableSource<?> src) {
 			File cached = new File(IWANT_USER_DIR, "cached");
 			File cachedFromSrc = new File(cached,
 					src.getClass().getSimpleName());
@@ -369,7 +369,7 @@ public class Iwant {
 	}
 
 	private File iwantBootstrapperClasses(File iwantEssential) {
-		File classes = network.cacheLocation(
+		File classes = network.cacheOfContentFrom(
 				new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
 						iwantEssential));
 		List<File> javaSrcs = iwantBootstrappingJavaSources(iwantEssential);
@@ -767,7 +767,7 @@ public class Iwant {
 	}
 
 	public File downloaded(URL from) {
-		File to = network.cacheLocation(new UnmodifiableUrl(from));
+		File to = network.cacheOfContentFrom(new UnmodifiableUrl(from));
 		downloaded(from, to);
 		return to;
 	}
@@ -834,7 +834,7 @@ public class Iwant {
 
 	public File unmodifiableZipUnzipped(UnmodifiableZip src) {
 		try {
-			File dest = network.cacheLocation(src);
+			File dest = network.cacheOfContentFrom(src);
 			if (dest.exists()) {
 				return dest;
 			}

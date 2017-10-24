@@ -124,7 +124,7 @@ public class DownloadedTest extends TestCase {
 			return new IwantNetwork() {
 
 				@Override
-				public File cacheLocation(UnmodifiableSource<?> src) {
+				public File cacheOfContentFrom(UnmodifiableSource<?> src) {
 					throw new UnsupportedOperationException(
 							"TODO test and implement");
 				}

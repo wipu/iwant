@@ -147,7 +147,7 @@ public class Iwant2 {
 
 	public File allIwantClasses(File iwantEssential) {
 		Iwant.fileLog("allIwantClasses, iwantEssential=" + iwantEssential);
-		File allIwantClasses = network.cacheLocation(
+		File allIwantClasses = network.cacheOfContentFrom(
 				new ClassesFromUnmodifiableIwantEssential(iwantEssential));
 		Iwant.fileLog("allIwantClasses, dest=" + allIwantClasses);
 

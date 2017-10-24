@@ -44,7 +44,7 @@ public class CachesImpl implements Caches {
 		@Override
 		public File unmodifiableUrl(URL url) {
 			UnmodifiableUrl src = new UnmodifiableUrl(url);
-			return network.cacheLocation(src);
+			return network.cacheOfContentFrom(src);
 		}
 
 	}

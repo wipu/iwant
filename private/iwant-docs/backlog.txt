@@ -1701,8 +1701,9 @@
       + visually review the result
         + fix a css class ref
         + publish
-    - rename IwantNetwork.cacheLocation to locationOfCachedContentFrom
+    + rename IwantNetwork.cacheLocation to cacheOfContentFrom
       * otherwise one thinks that it returns the cached zip file, not content of it
+      * doing it now because there are other breaking changes anyway
     - make Iwant.wishedIwantRootFromUrl static
     - for each project take into use
       - update scripts that fetch the bootstrapper

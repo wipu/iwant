@@ -188,7 +188,7 @@ public class Iwant3 {
 	}
 
 	private Path combinedIwantSources() throws IOException {
-		File combinedSources = iwant.network().cacheLocation(
+		File combinedSources = iwant.network().cacheOfContentFrom(
 				new CombinedSrcFromUnmodifiableIwantEssential(iwantEssential));
 		Iwant.fileLog("Combining iwant sources from " + iwantEssential + " to "
 				+ combinedSources);

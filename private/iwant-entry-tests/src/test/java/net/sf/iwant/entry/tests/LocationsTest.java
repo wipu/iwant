@@ -29,7 +29,7 @@ public class LocationsTest extends TestCase {
 						+ "http%3A/%2Flocalhost/very%2F..%2Fnasty?url%26"
 						+ "needs%3D%22escaping",
 				Iwant.usingRealNetwork().network()
-						.cacheLocation(new UnmodifiableUrl(nastyUrl))
+						.cacheOfContentFrom(new UnmodifiableUrl(nastyUrl))
 						.getAbsolutePath());
 	}
 
