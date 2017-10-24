@@ -265,7 +265,7 @@ public class Iwant {
 				Arrays.asList(iwantBootstrapClasses), iwant2Args);
 	}
 
-	public URL wishedIwantRootFromUrl(File asSomeone) {
+	public static URL wishedIwantRootFromUrl(File asSomeone) {
 		return wishedIwantFromProperty(asSomeone, "iwant-from", Iwant::url);
 	}
 
