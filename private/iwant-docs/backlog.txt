@@ -1712,7 +1712,7 @@
         + (some) others
         + iwant itself
           * some changes were needed: it has been a while
-    - fix eclipse warning: different name for each mock wsroot .keep file
+    + fix eclipse warning: different name for each mock wsroot .keep file
       (now they are resources hiding each other in the classpath)
     (- later: remove the plugin concept: they are already downloaded so no further price on just
       having them unconditionally in the classpath
