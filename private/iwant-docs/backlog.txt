@@ -1740,15 +1740,17 @@
       + manually fix ExtendedIwantEnums (part of own build)
     + fix tests etc that depend on the old package name
       + manually fix findbugs fodder (they are txt files, not java)
-    - regenerate (and probably fix) tutorials
+    + regenerate (and probably fix) tutorials
       * ah, descript was svn:externals, copying for now, fixing later
       + fix ant cli manually
-      - remote tutorial
+      + remote tutorial
+        + temporarily take iwant.sh from branch
     - migration script for user projects
       - write it
       - document it in github readme
       - link to the readme from webpage
     - merge to master
+    - make remote tutorial take iwant.sh from master again
   - fetch descript with iwant, not relying on svn:externals
   - update sf.net site
     - make webpage redirect to iwant.fluentjava.org
