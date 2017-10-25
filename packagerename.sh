@@ -24,16 +24,18 @@ without-caches-etc() {
 	grep -v '^./private/iwant-testarea/testarea-root' |
 	grep -v '^./as-iwant-developer/.i-cached/' |
 	grep -v '^./as-iwant-developer/i-have' |
+	grep -v '^./as-iwant-developer/with' |
+	grep -v '^./iwant-distillery' |
 	cat
 }
 
 handle-srcdir() {
     local SRCDIR=$1
-    [ -e "$SRCDIR/net/sf/iwant" ] || return 0
+    [ -e "$SRCDIR/org/fluentjava/iwant" ] || return 0
     echo
-    echo "#handling $SRCDIR/net/sf/iwant"
+    echo "#handling $SRCDIR/org/fluentjava/iwant"
     echo "mkdir -p $SRCDIR/org/fluentjava"
-    echo "git mv $SRCDIR/net/sf/iwant $SRCDIR/org/fluentjava/"
+    echo "git mv $SRCDIR/org/fluentjava/iwant $SRCDIR/org/fluentjava/"
 }
 
 
@@ -45,10 +47,10 @@ done
 ## then the file contents:
 
 javafiles-to-fix() {
-    find . -name '*.java' | without-caches-etc
+    find . -name '*.java' -o -name '*.sh' | without-caches-etc
 }
 
 javafiles-to-fix | while read JAVA; do
     echo "sed -i 's/net\.sf\.iwant/org.fluentjava.iwant/g' $JAVA"
-    echo "sed -i 's:net/sf/iwant:org/fluentjava/iwant:g' $JAVA"
+    echo "sed -i 's:org/fluentjava/iwant:org/fluentjava/iwant:g' $JAVA"
 done
