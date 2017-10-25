@@ -1746,7 +1746,8 @@
       + remote tutorial
         + temporarily take iwant.sh from branch
     - migration script for user projects
-      - write it
+      + write it
+      - oh, before I forget: organize imports & format after the package rename
       - document it in github readme
       - link to the readme from webpage
     - merge to master
