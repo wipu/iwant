@@ -1,4 +1,4 @@
-package net.sf.iwant.eclipsesettings;
+package org.fluentjava.iwant.eclipsesettings;
 
 import java.io.File;
 import java.util.Arrays;
@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.SideEffectContext;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.SideEffectContext;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class EclipseSettingsWriter {
 

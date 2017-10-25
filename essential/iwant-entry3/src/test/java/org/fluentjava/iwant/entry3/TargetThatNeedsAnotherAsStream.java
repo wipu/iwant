@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -8,10 +8,10 @@ import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.coreservices.StreamUtil;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.coreservices.StreamUtil;
 
 class TargetThatNeedsAnotherAsStream extends Target {
 

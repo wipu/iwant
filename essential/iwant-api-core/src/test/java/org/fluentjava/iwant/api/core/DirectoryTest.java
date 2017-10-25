@@ -1,19 +1,19 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
 import java.io.File;
 import java.util.Arrays;
 
-import net.sf.iwant.api.core.Directory.DirectoryContentPlease;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.api.core.Directory.DirectoryContentPlease;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
 
 public class DirectoryTest extends IwantTestCase {
 
 	public void testContentDescriptorAndIngredientsOfEmpty() {
 		Directory dir = Directory.named("empty").end();
 
-		assertEquals("net.sf.iwant.api.core.Directory\n"
+		assertEquals("org.fluentjava.iwant.api.core.Directory\n"
 				+ "p:fullRelativePath:\n" + "  \n" + "",
 				dir.contentDescriptor());
 		assertEquals("[]", dir.ingredients().toString());
@@ -27,7 +27,7 @@ public class DirectoryTest extends IwantTestCase {
 				.executable(true).end().end().end();
 
 		assertEquals(
-				"net.sf.iwant.api.core.Directory\n" + "p:fullRelativePath:\n"
+				"org.fluentjava.iwant.api.core.Directory\n" + "p:fullRelativePath:\n"
 						+ "  \n" + "p:fullRelativePath:\n" + "  /empty-sub\n"
 						+ "i:copy-from:\n" + "  src\n" + "p:copy-as:\n"
 						+ "  src\n" + "p:executable:\n" + " null\n"

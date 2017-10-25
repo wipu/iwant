@@ -1,19 +1,19 @@
-package net.sf.iwant.core.ant;
+package org.fluentjava.iwant.core.ant;
 
 import java.io.File;
 
-import net.sf.iwant.api.core.Concatenated;
-import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
-import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.core.download.TestedIwantDependencies;
-import net.sf.iwant.embedded.AsEmbeddedIwantUser;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.ExitCalledException;
+import org.fluentjava.iwant.api.core.Concatenated;
+import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import org.fluentjava.iwant.api.core.HelloTarget;
+import org.fluentjava.iwant.api.model.ExternalSource;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.core.download.TestedIwantDependencies;
+import org.fluentjava.iwant.embedded.AsEmbeddedIwantUser;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.ExitCalledException;
 
 public class AntGeneratedTest extends IwantTestCase {
 
@@ -43,7 +43,7 @@ public class AntGeneratedTest extends IwantTestCase {
 
 	public void testContentDescriptor() {
 		assertEquals(
-				"net.sf.iwant.core.ant.AntGenerated\n" + "i:ant-jars:\n  "
+				"org.fluentjava.iwant.core.ant.AntGenerated\n" + "i:ant-jars:\n  "
 						+ Iwant.IWANT_USER_DIR
 						+ "/cached/UnmodifiableUrl/http%3A/%2Frepo1.maven.org/maven2/org/apache/ant/ant/1.10.1/ant-1.10.1.jar\n"
 						+ "i:script:\n  script\n",
@@ -51,7 +51,7 @@ public class AntGeneratedTest extends IwantTestCase {
 						.script(Source.underWsroot("script")).end()
 						.contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.core.ant.AntGenerated\n" + "i:ant-jars:\n  "
+				"org.fluentjava.iwant.core.ant.AntGenerated\n" + "i:ant-jars:\n  "
 						+ antJar() + "\n" + "  another-ant.jar\n"
 						+ "i:script:\n  another-script\n",
 				AntGenerated.with().name("another")

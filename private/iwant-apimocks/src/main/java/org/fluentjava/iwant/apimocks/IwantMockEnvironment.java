@@ -1,13 +1,13 @@
-package net.sf.iwant.apimocks;
+package org.fluentjava.iwant.apimocks;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entrymocks.IwantNetworkMock;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
+import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class IwantMockEnvironment {
 

@@ -1,9 +1,9 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
 
 class TargetNameChecker {
 

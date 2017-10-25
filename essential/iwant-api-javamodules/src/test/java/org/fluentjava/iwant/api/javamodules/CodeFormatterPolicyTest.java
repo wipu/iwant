@@ -1,10 +1,10 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
 import com.google.common.testing.EqualsTester;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.javamodules.CodeFormatterPolicy.FormatterSettingsListener;
-import net.sf.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
+import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy.FormatterSettingsListener;
+import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
 
 public class CodeFormatterPolicyTest extends TestCase
 		implements FormatterSettingsListener {

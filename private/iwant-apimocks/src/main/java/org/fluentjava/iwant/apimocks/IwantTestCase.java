@@ -1,4 +1,4 @@
-package net.sf.iwant.apimocks;
+package org.fluentjava.iwant.apimocks;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -6,12 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.model.IwantCoreServices;
-import net.sf.iwant.coreservices.IwantCoreServicesImpl;
-import net.sf.iwant.coreservices.StreamUtil;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entrymocks.IwantNetworkMock;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.api.model.IwantCoreServices;
+import org.fluentjava.iwant.coreservices.IwantCoreServicesImpl;
+import org.fluentjava.iwant.coreservices.StreamUtil;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public abstract class IwantTestCase extends TestCase {
 

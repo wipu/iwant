@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 public interface UserPrefs {
 

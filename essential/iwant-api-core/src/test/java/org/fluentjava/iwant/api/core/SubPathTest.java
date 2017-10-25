@@ -1,9 +1,9 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
 
 public class SubPathTest extends IwantTestCase {
 
@@ -25,11 +25,11 @@ public class SubPathTest extends IwantTestCase {
 		assertEquals("[parent2]", s2.ingredients().toString());
 
 		assertEquals(
-				"net.sf.iwant.api.core.SubPath\n" + "i:parent:\n" + "  parent\n"
+				"org.fluentjava.iwant.api.core.SubPath\n" + "i:parent:\n" + "  parent\n"
 						+ "p:relativePath:\n" + "  rel\n" + "",
 				s.contentDescriptor().toString());
 		assertEquals(
-				"net.sf.iwant.api.core.SubPath\n" + "i:parent:\n"
+				"org.fluentjava.iwant.api.core.SubPath\n" + "i:parent:\n"
 						+ "  parent2\n" + "p:relativePath:\n" + "  rel2\n" + "",
 				s2.contentDescriptor().toString());
 	}

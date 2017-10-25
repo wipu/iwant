@@ -1,4 +1,4 @@
-package net.sf.iwant.core;
+package org.fluentjava.iwant.core;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sf.iwant.core.Concatenated.ConcatenatedBuilder;
+import org.fluentjava.iwant.core.Concatenated.ConcatenatedBuilder;
 
 @SuppressWarnings("resource")
 public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
@@ -625,7 +625,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		bx.append("	<macrodef name=\"iwant\">\n");
 		bx.append("		<attribute name=\"target-name\" />\n");
 		bx.append("		<sequential>\n");
-		bx.append("			<java dir=\"${ws-root}\" classname=\"net.sf.iwant.core.WorkspaceBuilder\" fork=\"true\" outputproperty=\"iwant-out\" resultproperty=\"iwant-result\">\n");
+		bx.append("			<java dir=\"${ws-root}\" classname=\"org.fluentjava.iwant.core.WorkspaceBuilder\" fork=\"true\" outputproperty=\"iwant-out\" resultproperty=\"iwant-result\">\n");
 		bx.append("				<arg value=\"${wsdef-classname}\" />\n");
 		bx.append("				<arg value=\"${ws-root}\" />\n");
 		bx.append("				<arg value=\"@{target-name}\" />\n");
@@ -705,12 +705,12 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		StringBuilder b = new StringBuilder();
 		b.append("package com.example.phasetwo;\n");
 		b.append("\n");
-		b.append("import net.sf.iwant.core.Constant;\n");
-		b.append("import net.sf.iwant.core.ContainerPath;\n");
-		b.append("import net.sf.iwant.core.Locations;\n");
-		b.append("import net.sf.iwant.core.RootPath;\n");
-		b.append("import net.sf.iwant.core.Target;\n");
-		b.append("import net.sf.iwant.core.WorkspaceDefinition;\n");
+		b.append("import org.fluentjava.iwant.core.Constant;\n");
+		b.append("import org.fluentjava.iwant.core.ContainerPath;\n");
+		b.append("import org.fluentjava.iwant.core.Locations;\n");
+		b.append("import org.fluentjava.iwant.core.RootPath;\n");
+		b.append("import org.fluentjava.iwant.core.Target;\n");
+		b.append("import org.fluentjava.iwant.core.WorkspaceDefinition;\n");
 		b.append("\n");
 		b.append("public class Phase2 implements WorkspaceDefinition {\n");
 		b.append("		public static class Root extends RootPath {\n");

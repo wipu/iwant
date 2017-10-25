@@ -1,12 +1,12 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.IwantCoreServices;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.model.IwantCoreServices;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class IngredientCheckingTargetEvaluationContext
 		implements TargetEvaluationContext {

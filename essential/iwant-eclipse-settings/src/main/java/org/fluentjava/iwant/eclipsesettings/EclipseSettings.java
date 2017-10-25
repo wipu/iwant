@@ -1,4 +1,4 @@
-package net.sf.iwant.eclipsesettings;
+package org.fluentjava.iwant.eclipsesettings;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -11,15 +11,15 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sf.iwant.api.core.Concatenated;
-import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.SideEffect;
-import net.sf.iwant.api.model.SideEffectContext;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.core.Concatenated;
+import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.SideEffect;
+import org.fluentjava.iwant.api.model.SideEffectContext;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class EclipseSettings implements SideEffect {
 

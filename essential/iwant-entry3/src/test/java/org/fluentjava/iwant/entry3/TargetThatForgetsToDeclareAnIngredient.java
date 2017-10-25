@@ -1,14 +1,14 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class TargetThatForgetsToDeclareAnIngredient extends Target {
 

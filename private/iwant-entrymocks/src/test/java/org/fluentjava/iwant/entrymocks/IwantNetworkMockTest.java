@@ -1,4 +1,4 @@
-package net.sf.iwant.entrymocks;
+package org.fluentjava.iwant.entrymocks;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -6,9 +6,9 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class IwantNetworkMockTest {
 

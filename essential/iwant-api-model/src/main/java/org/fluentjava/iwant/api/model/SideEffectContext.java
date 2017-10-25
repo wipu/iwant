@@ -1,4 +1,4 @@
-package net.sf.iwant.api.model;
+package org.fluentjava.iwant.api.model;
 
 import java.io.File;
 import java.io.OutputStream;

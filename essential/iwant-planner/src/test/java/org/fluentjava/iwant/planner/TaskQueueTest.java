@@ -1,11 +1,11 @@
-package net.sf.iwant.planner;
+package org.fluentjava.iwant.planner;
 
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-import net.sf.iwant.plannerapi.Task;
-import net.sf.iwant.plannermocks.ResourceMock;
-import net.sf.iwant.plannermocks.TaskMock;
+import org.fluentjava.iwant.plannerapi.Task;
+import org.fluentjava.iwant.plannermocks.ResourceMock;
+import org.fluentjava.iwant.plannermocks.TaskMock;
 
 public class TaskQueueTest extends TestCase {
 

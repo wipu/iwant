@@ -1,4 +1,4 @@
-package net.sf.iwant.api;
+package org.fluentjava.iwant.api;
 
 public class ClassToTestDebugInformation {
 

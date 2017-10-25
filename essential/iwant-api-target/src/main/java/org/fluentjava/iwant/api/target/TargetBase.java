@@ -1,4 +1,4 @@
-package net.sf.iwant.api.target;
+package org.fluentjava.iwant.api.target;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -6,11 +6,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.SystemEnv;
-import net.sf.iwant.api.model.SystemEnv.SystemEnvPlease;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.SystemEnv;
+import org.fluentjava.iwant.api.model.SystemEnv.SystemEnvPlease;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
 
 public abstract class TargetBase extends Target {
 

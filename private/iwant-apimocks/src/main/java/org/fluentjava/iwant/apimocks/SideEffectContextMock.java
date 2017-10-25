@@ -1,4 +1,4 @@
-package net.sf.iwant.apimocks;
+package org.fluentjava.iwant.apimocks;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -6,11 +6,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.SideEffectContext;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.entrymocks.NullCheck;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.SideEffectContext;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.entrymocks.NullCheck;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class SideEffectContextMock implements SideEffectContext {
 

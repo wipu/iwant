@@ -1,4 +1,4 @@
-package net.sf.iwant.core;
+package org.fluentjava.iwant.core;
 
 public class AsDeveloper {
 

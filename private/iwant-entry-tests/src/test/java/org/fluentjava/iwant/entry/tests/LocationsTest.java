@@ -1,14 +1,14 @@
-package net.sf.iwant.entry.tests;
+package org.fluentjava.iwant.entry.tests;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import junit.framework.TestCase;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
-import net.sf.iwant.entrymocks.IwantNetworkMock;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
+import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class LocationsTest extends TestCase {
 
@@ -25,7 +25,7 @@ public class LocationsTest extends TestCase {
 				"http://localhost/very/../nasty?url&needs=\"escaping");
 		assertEquals(
 				System.getProperty("user.home")
-						+ "/.net.sf.iwant/cached/UnmodifiableUrl/"
+						+ "/.org.fluentjava.iwant/cached/UnmodifiableUrl/"
 						+ "http%3A/%2Flocalhost/very%2F..%2Fnasty?url%26"
 						+ "needs%3D%22escaping",
 				Iwant.usingRealNetwork().network()

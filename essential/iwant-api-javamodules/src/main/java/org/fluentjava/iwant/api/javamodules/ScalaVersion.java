@@ -1,8 +1,8 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
-import net.sf.iwant.core.download.Downloaded;
-import net.sf.iwant.core.download.FromRepository;
-import net.sf.iwant.core.download.GnvArtifact;
+import org.fluentjava.iwant.core.download.Downloaded;
+import org.fluentjava.iwant.core.download.FromRepository;
+import org.fluentjava.iwant.core.download.GnvArtifact;
 
 public class ScalaVersion {
 

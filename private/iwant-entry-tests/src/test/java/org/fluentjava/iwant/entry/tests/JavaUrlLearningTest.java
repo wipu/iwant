@@ -1,4 +1,4 @@
-package net.sf.iwant.entry.tests;
+package org.fluentjava.iwant.entry.tests;
 
 import java.net.MalformedURLException;
 import java.net.URL;

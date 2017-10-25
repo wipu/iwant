@@ -1,12 +1,12 @@
-package net.sf.iwant.plugin.jacoco;
+package org.fluentjava.iwant.plugin.jacoco;
 
 import java.io.File;
 import java.io.InputStream;
 
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
-import net.sf.iwant.api.zip.Unzipped;
-import net.sf.iwant.core.download.Downloaded;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.api.zip.Unzipped;
+import org.fluentjava.iwant.core.download.Downloaded;
 
 public class JacocoDistribution extends TargetBase {
 

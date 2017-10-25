@@ -1,13 +1,13 @@
-package net.sf.iwant.plugin.pmd;
+package org.fluentjava.iwant.plugin.pmd;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.entry.Iwant;
 
 public abstract class PmdTestBase extends IwantTestCase {
 
@@ -32,7 +32,7 @@ public abstract class PmdTestBase extends IwantTestCase {
 
 	protected void srcDirHasPmdFodder(File srcDir, String lastPartOfPackage,
 			String javaClassName) throws IOException {
-		final String packageDirName = "net/sf/iwant/plugin/pmd/"
+		final String packageDirName = "org/fluentjava/iwant/plugin/pmd/"
 				+ lastPartOfPackage;
 		File packageDir = new File(srcDir, packageDirName);
 		Iwant.mkdirs(packageDir);

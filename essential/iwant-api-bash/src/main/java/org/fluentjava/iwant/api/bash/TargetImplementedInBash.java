@@ -1,4 +1,4 @@
-package net.sf.iwant.api.bash;
+package org.fluentjava.iwant.api.bash;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,17 +10,17 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import net.sf.iwant.api.core.ScriptGenerated;
-import net.sf.iwant.api.model.IngredientDefinitionContext;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
-import net.sf.iwant.api.wsdef.IKnowWhatIAmDoingContext;
-import net.sf.iwant.api.wsdef.TargetDefinitionContext;
-import net.sf.iwant.coreservices.FileUtil;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.core.ScriptGenerated;
+import org.fluentjava.iwant.api.model.IngredientDefinitionContext;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.api.wsdef.IKnowWhatIAmDoingContext;
+import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
+import org.fluentjava.iwant.coreservices.FileUtil;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class TargetImplementedInBash extends TargetBase {
 

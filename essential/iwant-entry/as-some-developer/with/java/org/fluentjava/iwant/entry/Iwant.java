@@ -1,4 +1,4 @@
-package net.sf.iwant.entry;
+package org.fluentjava.iwant.entry;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,7 +46,7 @@ public class Iwant {
 
 	private static final File HOME = new File(System.getProperty("user.home"));
 
-	public static final File IWANT_USER_DIR = new File(HOME, ".net.sf.iwant");
+	public static final File IWANT_USER_DIR = new File(HOME, ".org.fluentjava.iwant");
 
 	public static final String EXAMPLE_COMMIT = "f68535c89288af153156e7ac00e90936dd773712";
 
@@ -261,7 +261,7 @@ public class Iwant {
 		iwant2Args[0] = iwantEssential.getCanonicalPath();
 		System.arraycopy(args, 0, iwant2Args, 1, args.length);
 
-		runJavaMain(false, true, "net.sf.iwant.entry2.Iwant2",
+		runJavaMain(false, true, "org.fluentjava.iwant.entry2.Iwant2",
 				Arrays.asList(iwantBootstrapClasses), iwant2Args);
 	}
 
@@ -521,9 +521,9 @@ public class Iwant {
 	private static List<File> iwantBootstrappingJavaSources(
 			File iwantEssential) {
 		File iwant2 = new File(iwantEssential,
-				"iwant-entry2/src/main/java/net/sf/iwant/entry2/Iwant2.java");
+				"iwant-entry2/src/main/java/org/fluentjava/iwant/entry2/Iwant2.java");
 		File iwant = new File(iwantEssential,
-				"iwant-entry/as-some-developer/with/java/net/sf/iwant/entry/Iwant.java");
+				"iwant-entry/as-some-developer/with/java/org/fluentjava/iwant/entry/Iwant.java");
 		return Arrays.asList(iwant2, iwant);
 	}
 
@@ -646,7 +646,7 @@ public class Iwant {
 		}
 
 		private static boolean isClassnameToHide(String name) {
-			if (name.startsWith("net.sf.iwant")) {
+			if (name.startsWith("org.fluentjava.iwant")) {
 				return isIwantClassnameToHide(name);
 			}
 			return false;

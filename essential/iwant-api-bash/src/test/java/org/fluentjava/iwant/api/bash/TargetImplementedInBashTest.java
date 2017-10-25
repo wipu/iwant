@@ -1,17 +1,17 @@
-package net.sf.iwant.api.bash;
+package org.fluentjava.iwant.api.bash;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.wsdef.TargetDefinitionContext;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.api.core.HelloTarget;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
 
 public class TargetImplementedInBashTest extends IwantTestCase {
 

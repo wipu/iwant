@@ -1,4 +1,4 @@
-package net.sf.iwant.apimocks;
+package org.fluentjava.iwant.apimocks;
 
 import java.net.URL;
 

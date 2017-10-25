@@ -1,14 +1,14 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.core.download.TestedIwantDependencies;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.core.download.TestedIwantDependencies;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class ScalaClassesTest extends IwantTestCase {
 
@@ -111,7 +111,7 @@ public class ScalaClassesTest extends IwantTestCase {
 						Source.underWsroot("src/main/scala"))
 				.classLocations(dep).end();
 
-		assertEquals("net.sf.iwant.api.javamodules.ScalaClasses\n"
+		assertEquals("org.fluentjava.iwant.api.javamodules.ScalaClasses\n"
 				+ "i:srcDirs:\n" + "  src/main/java\n" + "  src/main/scala\n"
 				+ "i:classLocations:\n" + "  dep\n" + "i:scala-compiler:\n"
 				+ "  scala-compiler-2.11.7.jar\n" + "i:scala-library:\n"

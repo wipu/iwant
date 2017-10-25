@@ -1,4 +1,4 @@
-package net.sf.iwant.core.download;
+package org.fluentjava.iwant.core.download;
 
 import java.io.File;
 import java.io.InputStream;
@@ -6,11 +6,11 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import net.sf.iwant.api.model.CacheScopeChoices;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
-import net.sf.iwant.coreservices.FileUtil;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.model.CacheScopeChoices;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.coreservices.FileUtil;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class Downloaded extends TargetBase {
 

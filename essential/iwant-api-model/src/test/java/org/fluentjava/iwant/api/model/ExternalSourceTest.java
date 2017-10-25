@@ -1,4 +1,4 @@
-package net.sf.iwant.api.model;
+package org.fluentjava.iwant.api.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

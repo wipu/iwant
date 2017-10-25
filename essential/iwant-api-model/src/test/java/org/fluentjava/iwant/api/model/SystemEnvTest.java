@@ -1,4 +1,4 @@
-package net.sf.iwant.api.model;
+package org.fluentjava.iwant.api.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -6,7 +6,7 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import net.sf.iwant.api.model.SystemEnv.SystemEnvPlease;
+import org.fluentjava.iwant.api.model.SystemEnv.SystemEnvPlease;
 
 public class SystemEnvTest {
 

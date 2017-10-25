@@ -1,9 +1,9 @@
-package net.sf.iwant.tutorial;
+package org.fluentjava.iwant.tutorial;
 
-import net.sf.iwant.api.javamodules.JavaClasses;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.zip.Jar;
+import org.fluentjava.iwant.api.javamodules.JavaClasses;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.zip.Jar;
 
 public class TutorialInlineSnippets {
 

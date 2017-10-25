@@ -1,11 +1,11 @@
-package net.sf.iwant.api.zip;
+package org.fluentjava.iwant.api.zip;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.api.model.ExternalSource;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
 
 public class UnzippedTest extends IwantTestCase {
 
@@ -16,7 +16,7 @@ public class UnzippedTest extends IwantTestCase {
 	}
 
 	public void testContentDescriptor() {
-		assertEquals("net.sf.iwant.api.zip.Unzipped:[a.zip]",
+		assertEquals("org.fluentjava.iwant.api.zip.Unzipped:[a.zip]",
 				Unzipped.with().name("u").from(Source.underWsroot("a.zip"))
 						.end().contentDescriptor());
 	}

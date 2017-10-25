@@ -1,4 +1,4 @@
-package net.sf.iwant.coreservices;
+package org.fluentjava.iwant.coreservices;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -11,8 +11,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry2.Iwant2;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry2.Iwant2;
 
 /**
  * TODO remove need for this class

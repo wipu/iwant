@@ -1,23 +1,23 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
 import java.nio.charset.Charset;
 import java.util.List;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.core.Concatenated;
-import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
-import net.sf.iwant.api.javamodules.StandardCharacteristics.BuildUtility;
-import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionCode;
-import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionConfiguration;
-import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionRuntimeData;
-import net.sf.iwant.api.javamodules.StandardCharacteristics.TestCode;
-import net.sf.iwant.api.javamodules.StandardCharacteristics.TestRuntimeData;
-import net.sf.iwant.api.javamodules.StandardCharacteristics.TestUtility;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.StringFilter;
-import net.sf.iwant.api.model.Target;
+import org.fluentjava.iwant.api.core.Concatenated;
+import org.fluentjava.iwant.api.core.HelloTarget;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.BuildUtility;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.ProductionCode;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.ProductionConfiguration;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.ProductionRuntimeData;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.TestCode;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.TestRuntimeData;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.TestUtility;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.StringFilter;
+import org.fluentjava.iwant.api.model.Target;
 
 public class JavaSrcModuleTest extends TestCase {
 
@@ -400,8 +400,8 @@ public class JavaSrcModuleTest extends TestCase {
 				.end();
 
 		assertEquals(
-				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$ProductionCode,"
-						+ " interface net.sf.iwant.api.javamodules.StandardCharacteristics$ProductionConfiguration]",
+				"[interface org.fluentjava.iwant.api.javamodules.StandardCharacteristics$ProductionCode,"
+						+ " interface org.fluentjava.iwant.api.javamodules.StandardCharacteristics$ProductionConfiguration]",
 				mod.characteristics().toString());
 	}
 
@@ -433,8 +433,8 @@ public class JavaSrcModuleTest extends TestCase {
 				.has(CustomCharacteristic.class).has(BuildUtility.class).end();
 
 		assertEquals(
-				"[interface net.sf.iwant.api.javamodules.JavaSrcModuleTest$CustomCharacteristic,"
-						+ " interface net.sf.iwant.api.javamodules.StandardCharacteristics$BuildUtility]",
+				"[interface org.fluentjava.iwant.api.javamodules.JavaSrcModuleTest$CustomCharacteristic,"
+						+ " interface org.fluentjava.iwant.api.javamodules.StandardCharacteristics$BuildUtility]",
 				mod.characteristics().toString());
 		assertTrue(mod.doesHave(CustomCharacteristic.class));
 		assertTrue(mod.doesHave(TestRuntimeData.class));
@@ -470,7 +470,7 @@ public class JavaSrcModuleTest extends TestCase {
 		assertSame(m1.codeStylePolicy(), m2.codeStylePolicy());
 		assertSame(m1.encoding(), m2.encoding());
 		assertEquals(
-				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$TestCode]",
+				"[interface org.fluentjava.iwant.api.javamodules.StandardCharacteristics$TestCode]",
 				m2.characteristics().toString());
 		assertEquals(m1.locationUnderWsRoot(), m2.locationUnderWsRoot());
 		assertEquals("[bin.jar]", m2.mainDepsForCompilation().toString());

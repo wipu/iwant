@@ -1,4 +1,4 @@
-package net.sf.iwant.api.zip;
+package org.fluentjava.iwant.api.zip;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -8,9 +8,9 @@ import java.util.List;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
 
 public class Jar extends TargetBase {
 

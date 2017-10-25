@@ -1,4 +1,4 @@
-package net.sf.iwant.entrymocks;
+package org.fluentjava.iwant.entrymocks;
 
 public class NullCheck {
 

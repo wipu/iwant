@@ -1,13 +1,13 @@
-package net.sf.iwant.plugin.pmd;
+package org.fluentjava.iwant.plugin.pmd;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class PmdReportTest extends PmdTestBase {
 
@@ -92,16 +92,16 @@ public class PmdReportTest extends PmdTestBase {
 
 		String txtReportContent = txtReportContent(report);
 		assertTrue(txtReportContent.contains(
-				"net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:5"
+				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:5"
 						+ "	Avoid reassigning parameters such as 'parameter'"));
 		assertTrue(txtReportContent.contains(
-				"net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:9"
+				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:9"
 						+ "	Method names should not start with capital letters"));
 		assertTrue(txtReportContent.contains(
-				"net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:13"
+				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:13"
 						+ "	Avoid unused private methods such as 'deadMethod()'."));
 		assertTrue(txtReportContent.contains(
-				"net/sf/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:17"
+				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:17"
 						+ "	Document empty method"));
 
 		String xmlReportContent = xmlReportContent(report);

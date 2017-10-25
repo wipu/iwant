@@ -1,4 +1,4 @@
-package net.sf.iwant.apimocks;
+package org.fluentjava.iwant.apimocks;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
@@ -7,11 +7,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.coreservices.StreamUtil;
-import net.sf.iwant.entrymocks.NullCheck;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.coreservices.StreamUtil;
+import org.fluentjava.iwant.entrymocks.NullCheck;
 
 public class TargetMock extends Target {
 

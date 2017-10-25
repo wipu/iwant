@@ -1,13 +1,13 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
 
 class PathDefinitionConflictChecker {
 

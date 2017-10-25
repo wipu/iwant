@@ -1,9 +1,9 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 import java.util.Properties;
 
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class UserPrefsImpl implements UserPrefs {
 

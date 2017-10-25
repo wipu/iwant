@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -6,28 +6,28 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
 
-import net.sf.iwant.api.bash.TargetImplementedInBash;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Caches;
-import net.sf.iwant.api.model.IwantCoreServices;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.SideEffect;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.model.WsInfo;
-import net.sf.iwant.api.wsdef.IKnowWhatIAmDoingContext;
-import net.sf.iwant.api.wsdef.IwantPluginWishes;
-import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
-import net.sf.iwant.api.wsdef.TargetDefinitionContext;
-import net.sf.iwant.api.wsdef.Workspace;
-import net.sf.iwant.api.wsdef.WorkspaceContext;
-import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
-import net.sf.iwant.coreservices.IwantCoreServicesImpl;
-import net.sf.iwant.coreservices.StreamUtil;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.planner.Planner;
+import org.fluentjava.iwant.api.bash.TargetImplementedInBash;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Caches;
+import org.fluentjava.iwant.api.model.IwantCoreServices;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.SideEffect;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.model.WsInfo;
+import org.fluentjava.iwant.api.wsdef.IKnowWhatIAmDoingContext;
+import org.fluentjava.iwant.api.wsdef.IwantPluginWishes;
+import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;
+import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
+import org.fluentjava.iwant.api.wsdef.Workspace;
+import org.fluentjava.iwant.api.wsdef.WorkspaceContext;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
+import org.fluentjava.iwant.coreservices.IwantCoreServicesImpl;
+import org.fluentjava.iwant.coreservices.StreamUtil;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.planner.Planner;
 
 public class WishEvaluator {
 

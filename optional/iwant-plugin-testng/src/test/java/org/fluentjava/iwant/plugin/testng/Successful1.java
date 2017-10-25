@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.testng;
+package org.fluentjava.iwant.plugin.testng;
 
 import org.testng.annotations.Test;
 

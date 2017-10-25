@@ -1,6 +1,6 @@
-package net.sf.iwant.entry2;
+package org.fluentjava.iwant.entry2;
 
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class Iwant2 {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.api.zip;
+package org.fluentjava.iwant.api.zip;
 
 import java.io.File;
 import java.io.InputStream;
@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.apache.tools.ant.taskdefs.Expand;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
 
 public class Unzipped extends Target {
 

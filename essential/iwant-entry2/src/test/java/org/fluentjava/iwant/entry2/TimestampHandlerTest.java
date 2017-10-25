@@ -1,4 +1,4 @@
-package net.sf.iwant.entry2;
+package org.fluentjava.iwant.entry2;
 
 import java.io.File;
 import java.util.Arrays;
@@ -6,8 +6,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import junit.framework.TestCase;
-import net.sf.iwant.entry2.Iwant2.TimestampHandler;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.entry2.Iwant2.TimestampHandler;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class TimestampHandlerTest extends TestCase {
 

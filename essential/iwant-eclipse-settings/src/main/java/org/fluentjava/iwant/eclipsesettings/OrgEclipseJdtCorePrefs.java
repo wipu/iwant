@@ -1,10 +1,10 @@
-package net.sf.iwant.eclipsesettings;
+package org.fluentjava.iwant.eclipsesettings;
 
-import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
-import net.sf.iwant.api.javamodules.CodeStyle;
-import net.sf.iwant.api.javamodules.CodeStylePolicy;
-import net.sf.iwant.api.javamodules.CodeStyleValue;
-import net.sf.iwant.api.javamodules.JavaCompliance;
+import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy;
+import org.fluentjava.iwant.api.javamodules.CodeStyle;
+import org.fluentjava.iwant.api.javamodules.CodeStylePolicy;
+import org.fluentjava.iwant.api.javamodules.CodeStyleValue;
+import org.fluentjava.iwant.api.javamodules.JavaCompliance;
 
 public class OrgEclipseJdtCorePrefs {
 

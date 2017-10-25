@@ -1,10 +1,10 @@
-package net.sf.iwant.coreservices;
+package org.fluentjava.iwant.coreservices;
 
 import java.io.File;
 import java.io.IOException;
 
 import junit.framework.TestCase;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class FileUtilTest extends TestCase {
 

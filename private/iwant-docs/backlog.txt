@@ -1735,8 +1735,16 @@
   - rename package to org.fluentjava.iwant
     + do in branch, things will break
     + just move files without changing package declarations => git hopefully can follow history better
-    - then fix package declarations
-    - then fix tests etc that depend on the old package name
+    + fix package declarations for compilation
+      + script handles most
+      + manually fix ExtendedIwantEnums (part of own build)
+    + fix tests etc that depend on the old package name
+      + manually fix findbugs fodder (they are txt files, not java)
+    - regenerate (and probably fix) tutorials
+    - migration script for user projects
+      - write it
+      - document it in github readme
+      - link to the readme from webpage
     - merge to master
   - update sf.net site
     - make webpage redirect to iwant.fluentjava.org

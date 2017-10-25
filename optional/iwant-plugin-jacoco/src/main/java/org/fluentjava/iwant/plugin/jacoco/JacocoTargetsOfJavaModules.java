@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.jacoco;
+package org.fluentjava.iwant.plugin.jacoco;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,13 +11,13 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sf.iwant.api.core.ClassNameList;
-import net.sf.iwant.api.core.StringFilterByEquality;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.StringFilter;
-import net.sf.iwant.plugin.jacoco.JacocoCoverage.JacocoCoverageSpexPlease;
+import org.fluentjava.iwant.api.core.ClassNameList;
+import org.fluentjava.iwant.api.core.StringFilterByEquality;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.StringFilter;
+import org.fluentjava.iwant.plugin.jacoco.JacocoCoverage.JacocoCoverageSpexPlease;
 
 public class JacocoTargetsOfJavaModules {
 

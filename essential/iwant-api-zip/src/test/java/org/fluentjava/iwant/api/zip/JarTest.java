@@ -1,11 +1,11 @@
-package net.sf.iwant.api.zip;
+package org.fluentjava.iwant.api.zip;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.api.model.ExternalSource;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
 
 public class JarTest extends IwantTestCase {
 
@@ -21,7 +21,7 @@ public class JarTest extends IwantTestCase {
 	public void testIngredientsAndDescriptorOfSimpleJarOfClasses() {
 		Jar jar = Jar.with().classes(Source.underWsroot("classes")).end();
 		assertEquals("[classes]", jar.ingredients().toString());
-		assertEquals("net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
+		assertEquals("org.fluentjava.iwant.api.zip.Jar\n" + "i:classDirs:\n"
 				+ "  classes\n" + "", jar.contentDescriptor());
 	}
 
@@ -29,13 +29,13 @@ public class JarTest extends IwantTestCase {
 		Jar jar = Jar.with().classes(Source.underWsroot("classes"))
 				.classes(Source.underWsroot("classes2")).end();
 		assertEquals("[classes, classes2]", jar.ingredients().toString());
-		assertEquals("net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
+		assertEquals("org.fluentjava.iwant.api.zip.Jar\n" + "i:classDirs:\n"
 				+ "  classes\n" + "  classes2\n" + "", jar.contentDescriptor());
 	}
 
 	public void testJarOfDirectory() throws Exception {
 		File classes = new File(getClass()
-				.getResource("/net/sf/iwant/api/zip/dirtojar").toURI());
+				.getResource("/org/fluentjava/iwant/api/zip/dirtojar").toURI());
 
 		Target jar = Jar.with().name("test.jar")
 				.classes(new ExternalSource(classes)).end();

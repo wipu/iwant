@@ -1,4 +1,4 @@
-package net.sf.iwant.planner;
+package org.fluentjava.iwant.planner;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,11 +11,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.plannerapi.Resource;
-import net.sf.iwant.plannerapi.ResourcePool;
-import net.sf.iwant.plannerapi.Task;
-import net.sf.iwant.plannerapi.TaskDirtiness;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.plannerapi.Resource;
+import org.fluentjava.iwant.plannerapi.ResourcePool;
+import org.fluentjava.iwant.plannerapi.Task;
+import org.fluentjava.iwant.plannerapi.TaskDirtiness;
 
 public class TaskQueue {
 

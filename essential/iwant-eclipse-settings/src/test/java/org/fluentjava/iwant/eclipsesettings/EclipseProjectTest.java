@@ -1,19 +1,19 @@
-package net.sf.iwant.eclipsesettings;
+package org.fluentjava.iwant.eclipsesettings;
 
-import net.sf.iwant.api.core.Concatenated;
-import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
-import net.sf.iwant.api.javamodules.CodeStyle;
-import net.sf.iwant.api.javamodules.CodeStylePolicy;
-import net.sf.iwant.api.javamodules.CodeStylePolicy.CodeStylePolicySpex;
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.javamodules.ScalaVersion;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.apimocks.TargetMock;
+import org.fluentjava.iwant.api.core.Concatenated;
+import org.fluentjava.iwant.api.core.HelloTarget;
+import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy;
+import org.fluentjava.iwant.api.javamodules.CodeStyle;
+import org.fluentjava.iwant.api.javamodules.CodeStylePolicy;
+import org.fluentjava.iwant.api.javamodules.CodeStylePolicy.CodeStylePolicySpex;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.javamodules.ScalaVersion;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.apimocks.TargetMock;
 
 public class EclipseProjectTest extends IwantTestCase {
 

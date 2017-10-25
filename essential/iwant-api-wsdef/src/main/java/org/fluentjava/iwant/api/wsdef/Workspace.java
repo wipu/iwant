@@ -1,9 +1,9 @@
-package net.sf.iwant.api.wsdef;
+package org.fluentjava.iwant.api.wsdef;
 
 import java.util.List;
 
-import net.sf.iwant.api.model.SideEffect;
-import net.sf.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.SideEffect;
+import org.fluentjava.iwant.api.model.Target;
 
 public interface Workspace {
 

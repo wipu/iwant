@@ -1,4 +1,4 @@
-package net.sf.iwant.core.javamodules;
+package org.fluentjava.iwant.core.javamodules;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -8,16 +8,16 @@ import java.util.List;
 
 import org.junit.Test;
 
-import net.sf.iwant.api.javamodules.CodeFormatterPolicy;
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaCompliance;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.zip.Jar;
-import net.sf.iwant.core.download.Downloaded;
-import net.sf.iwant.core.download.GnvArtifact;
+import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaCompliance;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.zip.Jar;
+import org.fluentjava.iwant.core.download.Downloaded;
+import org.fluentjava.iwant.core.download.GnvArtifact;
 
 public class JavaModulesTest {
 
@@ -160,10 +160,10 @@ public class JavaModulesTest {
 
 		List<Path> mas = JavaModules.mainArtifactsOf(m.bin, m.src, m.onlyTests);
 		assertEquals(2, mas.size());
-		assertEquals("net.sf.iwant.core.download.Downloaded\n" + "p:url:\n"
+		assertEquals("org.fluentjava.iwant.core.download.Downloaded\n" + "p:url:\n"
 				+ "  http://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar\n"
 				+ "p:md5:\n" + " null\n" + "", descr(mas.get(0)));
-		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
+		assertEquals("org.fluentjava.iwant.api.javamodules.JavaClasses\n"
 				+ "i:srcDirs:\n" + "  mod/src/main/java\n" + "i:resourceDirs:\n"
 				+ "  mod/src/main/resources\n" + "i:classLocations:\n"
 				+ "  commons-io-2.4.jar\n" + "p:javacOptions:\n" + "  -Xlint\n"
@@ -187,7 +187,7 @@ public class JavaModulesTest {
 		assertEquals(2, jars.size());
 		assertEquals(descr(m.bin.mainArtifact()), descr(jars.get(0)));
 		assertEquals("mod.jar", jars.get(1).name());
-		assertEquals("net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
+		assertEquals("org.fluentjava.iwant.api.zip.Jar\n" + "i:classDirs:\n"
 				+ "  mod-main-classes\n" + "", descr(jars.get(1)));
 		// test only module has no main artifact
 	}
@@ -207,7 +207,7 @@ public class JavaModulesTest {
 		assertEquals(2, jars.size());
 		assertEquals(descr(m.bin.mainArtifact()), descr(jars.get(0)));
 		assertEquals("mod-0.9.jar", jars.get(1).name());
-		assertEquals("net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
+		assertEquals("org.fluentjava.iwant.api.zip.Jar\n" + "i:classDirs:\n"
 				+ "  mod-main-classes\n" + "", descr(jars.get(1)));
 		// test only module has no main artifact
 	}
@@ -239,7 +239,7 @@ public class JavaModulesTest {
 				m.onlyTests);
 		assertEquals(2, tas.size());
 		assertEquals(
-				"net.sf.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
+				"org.fluentjava.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
 						+ "  mod/src/test/java\n" + "i:resourceDirs:\n"
 						+ "  mod/src/test/resources\n" + "i:classLocations:\n"
 						+ "  mod-main-classes\n" + "  commons-io-2.4.jar\n"
@@ -248,7 +248,7 @@ public class JavaModulesTest {
 						+ "  -g\n" + "p:encoding:\n" + " null\n" + "",
 				descr(tas.get(0)));
 		assertEquals(
-				"net.sf.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
+				"org.fluentjava.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
 						+ "  only-tests/src/test/java\n" + "i:resourceDirs:\n"
 						+ "  only-tests/src/test/resources\n"
 						+ "i:classLocations:\n" + "  only-main-main-classes\n"
@@ -274,10 +274,10 @@ public class JavaModulesTest {
 		List<Path> jars = JavaModules.testArtifactJarsOf(m.bin, m.src,
 				m.onlyMain, m.onlyTests);
 		assertEquals(2, jars.size());
-		assertEquals("net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
+		assertEquals("org.fluentjava.iwant.api.zip.Jar\n" + "i:classDirs:\n"
 				+ "  mod-test-classes\n" + "", descr(jars.get(0)));
 		assertEquals(
-				"net.sf.iwant.api.zip.Jar\n" + "i:classDirs:\n"
+				"org.fluentjava.iwant.api.zip.Jar\n" + "i:classDirs:\n"
 						+ "  only-tests-test-classes\n" + "",
 				descr(jars.get(1)));
 		// bin and main only have no test artifact

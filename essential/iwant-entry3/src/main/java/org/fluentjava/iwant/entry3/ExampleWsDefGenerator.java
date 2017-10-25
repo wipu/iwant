@@ -1,8 +1,8 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 
-import net.sf.iwant.coreservices.FileUtil;
+import org.fluentjava.iwant.coreservices.FileUtil;
 
 class ExampleWsDefGenerator {
 

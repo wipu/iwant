@@ -1,11 +1,11 @@
-package net.sf.iwant.plugin.findbugs;
+package org.fluentjava.iwant.plugin.findbugs;
 
 import java.io.File;
 import java.io.IOException;
 
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.core.download.Downloaded;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.core.download.Downloaded;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class FindbugsDistributionTest extends IwantTestCase {
 

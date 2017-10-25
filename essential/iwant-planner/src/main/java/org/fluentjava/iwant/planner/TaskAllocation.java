@@ -1,10 +1,10 @@
-package net.sf.iwant.planner;
+package org.fluentjava.iwant.planner;
 
 import java.util.Map;
 
-import net.sf.iwant.plannerapi.Resource;
-import net.sf.iwant.plannerapi.ResourcePool;
-import net.sf.iwant.plannerapi.Task;
+import org.fluentjava.iwant.plannerapi.Resource;
+import org.fluentjava.iwant.plannerapi.ResourcePool;
+import org.fluentjava.iwant.plannerapi.Task;
 
 public interface TaskAllocation {
 

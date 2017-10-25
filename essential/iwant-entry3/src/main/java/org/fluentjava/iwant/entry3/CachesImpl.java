@@ -1,16 +1,16 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 import java.net.URL;
 
-import net.sf.iwant.api.model.CacheScopeChoices;
-import net.sf.iwant.api.model.Caches;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
+import org.fluentjava.iwant.api.model.CacheScopeChoices;
+import org.fluentjava.iwant.api.model.Caches;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
 
 public class CachesImpl implements Caches {
 

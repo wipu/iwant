@@ -1,10 +1,10 @@
-package net.sf.iwant.plugin.jacoco;
+package org.fluentjava.iwant.plugin.jacoco;
 
 import java.io.File;
 
-import net.sf.iwant.api.javamodules.JavaClassesAndSources;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
+import org.fluentjava.iwant.api.javamodules.JavaClassesAndSources;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
 
 public class JacocoReportTest extends JacocoTestBase {
 
@@ -24,7 +24,7 @@ public class JacocoReportTest extends JacocoTestBase {
 				+ antLauncherJar() + ", thecoverage, theclasses, thesources]",
 				report.ingredients().toString());
 		assertEquals(
-				"net.sf.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
+				"org.fluentjava.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
 						+ "  " + jacoco() + "\n" + "i:deps:\n" + "  " + asm()
 						+ "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
 						+ antLauncherJar() + "\n" + "i:coverages:\n"

@@ -1,4 +1,4 @@
-package net.sf.iwant.testarea;
+package org.fluentjava.iwant.testarea;
 
 import java.io.File;
 import java.io.FileReader;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import junit.framework.Assert;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant;
 
 public final class TestArea {
 

@@ -12,10 +12,10 @@ public class ExtendedIwantEnums extends TargetBase {
 
 	private final EnumSrc codeStyleJava = new EnumSrc(
 			"essential/iwant-api-javamodules/src/main/java",
-			"net/sf/iwant/api/javamodules", "CodeStyle.java");
+			"org/fluentjava/iwant/api/javamodules", "CodeStyle.java");
 	private final EnumSrc codeStyleValueJava = new EnumSrc(
 			"essential/iwant-api-javamodules/src/main/java",
-			"net/sf/iwant/api/javamodules", "CodeStyleValue.java");
+			"org/fluentjava/iwant/api/javamodules", "CodeStyleValue.java");
 
 	public ExtendedIwantEnums(String name) {
 		super(name);

@@ -1,16 +1,16 @@
-package net.sf.iwant.apimocks;
+package org.fluentjava.iwant.apimocks;
 
 import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.iwant.api.model.CacheScopeChoices;
-import net.sf.iwant.api.model.Caches;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.entrymocks.NullCheck;
+import org.fluentjava.iwant.api.model.CacheScopeChoices;
+import org.fluentjava.iwant.api.model.Caches;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.entrymocks.NullCheck;
 
 public class CachesMock implements Caches {
 

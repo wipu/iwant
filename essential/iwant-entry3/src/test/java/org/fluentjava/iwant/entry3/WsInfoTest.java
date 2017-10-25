@@ -1,12 +1,12 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.model.WsInfo;
-import net.sf.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.api.model.WsInfo;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
 
 public class WsInfoTest extends TestCase {
 

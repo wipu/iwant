@@ -1,10 +1,10 @@
-package net.sf.iwant.embedded;
+package org.fluentjava.iwant.embedded;
 
 import java.io.File;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.api.core.HelloTarget;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class AsEmbeddedIwantUserTest extends TestCase {
 

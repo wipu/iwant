@@ -1,10 +1,10 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import net.sf.iwant.core.download.Downloaded;
+import org.fluentjava.iwant.core.download.Downloaded;
 
 public class ScalaVersionTest {
 

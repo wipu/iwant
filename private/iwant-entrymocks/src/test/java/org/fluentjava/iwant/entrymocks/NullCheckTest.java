@@ -1,4 +1,4 @@
-package net.sf.iwant.entrymocks;
+package org.fluentjava.iwant.entrymocks;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

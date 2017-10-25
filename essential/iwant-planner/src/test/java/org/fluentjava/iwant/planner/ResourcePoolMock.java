@@ -1,12 +1,12 @@
-package net.sf.iwant.planner;
+package org.fluentjava.iwant.planner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.iwant.plannerapi.Resource;
-import net.sf.iwant.plannerapi.ResourcePool;
-import net.sf.iwant.plannermocks.ResourceMock;
+import org.fluentjava.iwant.plannerapi.Resource;
+import org.fluentjava.iwant.plannerapi.ResourcePool;
+import org.fluentjava.iwant.plannermocks.ResourceMock;
 
 public class ResourcePoolMock implements ResourcePool {
 

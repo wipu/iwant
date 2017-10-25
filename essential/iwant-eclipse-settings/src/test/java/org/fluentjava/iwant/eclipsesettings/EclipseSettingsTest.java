@@ -1,16 +1,16 @@
-package net.sf.iwant.eclipsesettings;
+package org.fluentjava.iwant.eclipsesettings;
 
 import java.io.File;
 import java.util.Arrays;
 
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaCompliance;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.javamodules.ScalaVersion;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.apimocks.TargetMock;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaCompliance;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.javamodules.ScalaVersion;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.apimocks.TargetMock;
 
 public class EclipseSettingsTest extends IwantTestCase {
 
@@ -193,7 +193,7 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		assertEquals(1, seCtx.targetsWantedAsPath().size());
-		assertEquals("net.sf.iwant.api.core.Concatenated\n" + "i:native-path:\n"
+		assertEquals("org.fluentjava.iwant.api.core.Concatenated\n" + "i:native-path:\n"
 				+ "  testUtilWithSources\n" + "p:string:\n" + "  \\n\n"
 				+ "i:native-path:\n" + "  testUtilWithSources-src\n"
 				+ "p:string:\n" + "  \\n\n" + "i:native-path:\n"
@@ -220,7 +220,7 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		assertEquals(1, seCtx.targetsWantedAsPath().size());
-		assertEquals("net.sf.iwant.api.core.Concatenated\n" + "i:native-path:\n"
+		assertEquals("org.fluentjava.iwant.api.core.Concatenated\n" + "i:native-path:\n"
 				+ "  util\n" + "p:string:\n" + "  \\n\n" + "i:native-path:\n"
 				+ "  util-src\n" + "p:string:\n" + "  \\n\n" + "",
 				seCtx.targetsWantedAsPath().get(0).contentDescriptor());

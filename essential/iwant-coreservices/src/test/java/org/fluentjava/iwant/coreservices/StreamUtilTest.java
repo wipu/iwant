@@ -1,4 +1,4 @@
-package net.sf.iwant.coreservices;
+package org.fluentjava.iwant.coreservices;
 
 import java.io.ByteArrayInputStream;
 

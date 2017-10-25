@@ -1,10 +1,10 @@
-package net.sf.iwant.plugin.jacoco;
+package org.fluentjava.iwant.plugin.jacoco;
 
 import java.io.File;
 
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.core.download.Downloaded;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.core.download.Downloaded;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class JacocoDistributionTest extends IwantTestCase {
 

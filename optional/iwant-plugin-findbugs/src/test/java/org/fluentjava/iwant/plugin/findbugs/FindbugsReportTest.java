@@ -1,22 +1,22 @@
-package net.sf.iwant.plugin.findbugs;
+package org.fluentjava.iwant.plugin.findbugs;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaClasses;
-import net.sf.iwant.api.javamodules.JavaClassesAndSources;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.core.download.TestedIwantDependencies;
-import net.sf.iwant.embedded.AsEmbeddedIwantUser;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaClasses;
+import org.fluentjava.iwant.api.javamodules.JavaClassesAndSources;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.ExternalSource;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.core.download.TestedIwantDependencies;
+import org.fluentjava.iwant.embedded.AsEmbeddedIwantUser;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class FindbugsReportTest extends IwantTestCase {
 
@@ -72,7 +72,7 @@ public class FindbugsReportTest extends IwantTestCase {
 
 	protected void srcDirHasFindbugsFodder(File srcDir,
 			String lastPartOfPackage, String javaClassName) throws IOException {
-		final String packageDirName = "net/sf/iwant/plugin/findbugs/"
+		final String packageDirName = "org/fluentjava/iwant/plugin/findbugs/"
 				+ lastPartOfPackage;
 		File packageDir = new File(srcDir, packageDirName);
 		Iwant.mkdirs(packageDir);
@@ -120,7 +120,7 @@ public class FindbugsReportTest extends IwantTestCase {
 				"[findbugs-3.0.0, " + antJar() + ", " + antLauncherJar()
 						+ ", empty-classes, empty-src, bin.jar]",
 				report.ingredients().toString());
-		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport\n"
+		assertEquals("org.fluentjava.iwant.plugin.findbugs.FindbugsReport\n"
 				+ "i:findbugs:\n" + "  findbugs-3.0.0\n" + "i:antJar:\n" + "  "
 				+ antJar() + "\ni:antLauncherJar:\n" + "  " + antLauncherJar()
 				+ "\ni:classes:\n" + "  empty-classes\n" + "i:sources:\n"
@@ -153,7 +153,7 @@ public class FindbugsReportTest extends IwantTestCase {
 						new JavaClassesAndSources(emptyClasses, emptySrc))
 				.end();
 
-		assertEquals("net.sf.iwant.plugin.findbugs.FindbugsReport\n"
+		assertEquals("org.fluentjava.iwant.plugin.findbugs.FindbugsReport\n"
 				+ "i:findbugs:\n" + "  findbugs-3.0.0\n" + "i:antJar:\n" + "  "
 				+ antJar() + "\ni:antLauncherJar:\n" + "  " + antLauncherJar()
 				+ "\ni:classes:\n" + "  empty-classes\n" + "i:sources:\n"
@@ -202,7 +202,7 @@ public class FindbugsReportTest extends IwantTestCase {
 		String htmlReportContent = htmlReportContent(report);
 		assertTrue(htmlReportContent
 				.contains("<td>Null pointer dereference of ? in "
-						+ "net.sf.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues."
+						+ "org.fluentjava.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues."
 						+ "nullReference(Object)</td>"));
 	}
 
@@ -238,8 +238,8 @@ public class FindbugsReportTest extends IwantTestCase {
 
 	private static final String warningAboutBugUsingBinaryDependency() {
 		return "<td>Null pointer dereference of "
-				+ "net.sf.iwant.plugin.findbugs.testfodder2.BinaryDependency.NULL_STRING "
-				+ "in net.sf.iwant.plugin.findbugs.testfodder.ClassWithBugUsingBinaryDependency."
+				+ "org.fluentjava.iwant.plugin.findbugs.testfodder2.BinaryDependency.NULL_STRING "
+				+ "in org.fluentjava.iwant.plugin.findbugs.testfodder.ClassWithBugUsingBinaryDependency."
 				+ "nullReferenceOfValueFromBinaryDependency()</td>";
 	}
 
@@ -295,7 +295,7 @@ public class FindbugsReportTest extends IwantTestCase {
 
 		String xmlReportContent = xmlReportContent(report);
 		assertTrue(xmlReportContent.contains("<Method classname="
-				+ "\"net.sf.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues\""
+				+ "\"org.fluentjava.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues\""
 				+ " name=\"nullReference\""));
 	}
 
@@ -323,7 +323,7 @@ public class FindbugsReportTest extends IwantTestCase {
 		System.err.println(textReportContent);
 		assertTrue(textReportContent
 				.contains("H C NP: Null pointer dereference of ? in "
-						+ "net.sf.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues.nullReference(Object)"
+						+ "org.fluentjava.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues.nullReference(Object)"
 						+ "  Dereferenced at ClassWithFindbugsIssues.java:[line 7]\n"));
 	}
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -7,11 +7,11 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import net.sf.iwant.api.core.Concatenated;
-import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
+import org.fluentjava.iwant.api.core.Concatenated;
+import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
 
 public class TargetNameCheckerTest {
 

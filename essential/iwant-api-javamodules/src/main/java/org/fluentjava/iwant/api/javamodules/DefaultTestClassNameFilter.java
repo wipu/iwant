@@ -1,6 +1,6 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
-import net.sf.iwant.api.model.StringFilter;
+import org.fluentjava.iwant.api.model.StringFilter;
 
 public class DefaultTestClassNameFilter implements StringFilter {
 

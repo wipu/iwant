@@ -1,13 +1,13 @@
-package net.sf.iwant.plugin.jacoco;
+package org.fluentjava.iwant.plugin.jacoco;
 
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
 
-import net.sf.iwant.api.javamodules.JavaClasses;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
+import org.fluentjava.iwant.api.javamodules.JavaClasses;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
 
 public class JacocoInstrumentationTest extends JacocoTestBase {
 
@@ -32,7 +32,7 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 	}
 
 	public void testContentDescriptor() {
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoInstrumentation\n"
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoInstrumentation\n"
 				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
 				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
 				+ antLauncherJar() + "\ni:classes:\n" + "  classes\n" + "",

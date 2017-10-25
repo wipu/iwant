@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -13,33 +13,33 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.core.Concatenated;
-import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
-import net.sf.iwant.api.core.HelloSideEffect;
-import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.core.ScriptGenerated;
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaClasses;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Caches;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.SideEffect;
-import net.sf.iwant.api.model.SideEffectContext;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
-import net.sf.iwant.api.wsdef.TargetDefinitionContext;
-import net.sf.iwant.api.wsdef.Workspace;
-import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
-import net.sf.iwant.apimocks.TargetMock;
-import net.sf.iwant.apimocks.WsInfoMock;
-import net.sf.iwant.coreservices.FileUtil;
-import net.sf.iwant.eclipsesettings.EclipseSettings;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantException;
-import net.sf.iwant.entrymocks.IwantNetworkMock;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.api.core.Concatenated;
+import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import org.fluentjava.iwant.api.core.HelloSideEffect;
+import org.fluentjava.iwant.api.core.HelloTarget;
+import org.fluentjava.iwant.api.core.ScriptGenerated;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaClasses;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Caches;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.SideEffect;
+import org.fluentjava.iwant.api.model.SideEffectContext;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;
+import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
+import org.fluentjava.iwant.api.wsdef.Workspace;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
+import org.fluentjava.iwant.apimocks.TargetMock;
+import org.fluentjava.iwant.apimocks.WsInfoMock;
+import org.fluentjava.iwant.coreservices.FileUtil;
+import org.fluentjava.iwant.eclipsesettings.EclipseSettings;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class WishEvaluatorTest extends TestCase {
 
@@ -653,9 +653,9 @@ public class WishEvaluatorTest extends TestCase {
 			assertEquals(
 					"Two conflicting definitions for Path name b:\n"
 							+ "One is of\n"
-							+ " class net.sf.iwant.api.core.HelloTarget\n"
+							+ " class org.fluentjava.iwant.api.core.HelloTarget\n"
 							+ "and another is of\n"
-							+ " class net.sf.iwant.api.model.Source",
+							+ " class org.fluentjava.iwant.api.model.Source",
 					e.getMessage());
 		}
 
@@ -845,9 +845,9 @@ public class WishEvaluatorTest extends TestCase {
 		StringBuilder expectedErr = new StringBuilder();
 		expectedErr.append("Wanting target2\n");
 		expectedErr
-				.append("(0/1 D! net.sf.iwant.api.core.HelloTarget target1)\n");
+				.append("(0/1 D! org.fluentjava.iwant.api.core.HelloTarget target1)\n");
 		expectedErr.append(
-				"(0/1 D! net.sf.iwant.api.core.Concatenated target2)\n");
+				"(0/1 D! org.fluentjava.iwant.api.core.Concatenated target2)\n");
 		expectedErr.append("Content:\n");
 		expectedErr.append("target2 using target1 content\n");
 		expectedErr.append("Wanting target1\n");

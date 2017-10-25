@@ -1,8 +1,8 @@
-package net.sf.iwant.tests.targetimplementedinbash;
+package org.fluentjava.iwant.tests.targetimplementedinbash;
 
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
-import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleProvider;
 
 public class TargetImplementedInBashWsdefdef
 		implements WorkspaceModuleProvider {

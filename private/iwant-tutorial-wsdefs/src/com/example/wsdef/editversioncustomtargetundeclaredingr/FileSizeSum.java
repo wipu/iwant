@@ -3,10 +3,10 @@ package com.example.wsdef.editversioncustomtargetundeclaredingr;
 import java.io.File;
 import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
-import net.sf.iwant.coreservices.FileUtil;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.coreservices.FileUtil;
 
 class FileSizeSum extends TargetBase {
 

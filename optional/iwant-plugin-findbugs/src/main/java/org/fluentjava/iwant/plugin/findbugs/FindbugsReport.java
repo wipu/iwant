@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.findbugs;
+package org.fluentjava.iwant.plugin.findbugs;
 
 import java.io.File;
 import java.io.InputStream;
@@ -9,15 +9,15 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import net.sf.iwant.api.antrunner.AntRunner;
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaClassesAndSources;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.antrunner.AntRunner;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaClassesAndSources;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class FindbugsReport extends TargetBase {
 

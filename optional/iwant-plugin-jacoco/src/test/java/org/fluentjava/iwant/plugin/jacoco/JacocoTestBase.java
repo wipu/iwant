@@ -1,20 +1,20 @@
-package net.sf.iwant.plugin.jacoco;
+package org.fluentjava.iwant.plugin.jacoco;
 
 import java.io.File;
 
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaClasses;
-import net.sf.iwant.api.javamodules.JavaClassesAndSources;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.core.download.FromRepository;
-import net.sf.iwant.core.download.TestedIwantDependencies;
-import net.sf.iwant.embedded.AsEmbeddedIwantUser;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaClasses;
+import org.fluentjava.iwant.api.javamodules.JavaClassesAndSources;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.model.ExternalSource;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.core.download.FromRepository;
+import org.fluentjava.iwant.core.download.TestedIwantDependencies;
+import org.fluentjava.iwant.embedded.AsEmbeddedIwantUser;
+import org.fluentjava.iwant.entry.Iwant;
 
 public abstract class JacocoTestBase extends IwantTestCase {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.core;
+package org.fluentjava.iwant.core;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -201,14 +201,14 @@ public class Iwant {
 		StringBuilder b = new StringBuilder();
 		b.append("package " + pack + ";\n");
 		b.append("\n");
-		b.append("import net.sf.iwant.core.Constant;\n");
-		b.append("import net.sf.iwant.core.ContainerPath;\n");
-		b.append("import net.sf.iwant.core.EclipseProject;\n");
-		b.append("import net.sf.iwant.core.EclipseProjects;\n");
-		b.append("import net.sf.iwant.core.Locations;\n");
-		b.append("import net.sf.iwant.core.RootPath;\n");
-		b.append("import net.sf.iwant.core.Target;\n");
-		b.append("import net.sf.iwant.core.WorkspaceDefinition;\n");
+		b.append("import org.fluentjava.iwant.core.Constant;\n");
+		b.append("import org.fluentjava.iwant.core.ContainerPath;\n");
+		b.append("import org.fluentjava.iwant.core.EclipseProject;\n");
+		b.append("import org.fluentjava.iwant.core.EclipseProjects;\n");
+		b.append("import org.fluentjava.iwant.core.Locations;\n");
+		b.append("import org.fluentjava.iwant.core.RootPath;\n");
+		b.append("import org.fluentjava.iwant.core.Target;\n");
+		b.append("import org.fluentjava.iwant.core.WorkspaceDefinition;\n");
 		b.append("\n");
 		b.append("public class " + className
 				+ " implements WorkspaceDefinition {\n");

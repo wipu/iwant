@@ -1,6 +1,6 @@
-package net.sf.iwant.core.download;
+package org.fluentjava.iwant.core.download;
 
-import net.sf.iwant.entry2.Iwant2;
+import org.fluentjava.iwant.entry2.Iwant2;
 
 public class TestedIwantDependencies {
 

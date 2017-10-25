@@ -1,4 +1,4 @@
-package net.sf.iwant.plannermocks;
+package org.fluentjava.iwant.plannermocks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
-import net.sf.iwant.plannerapi.Resource;
-import net.sf.iwant.plannerapi.ResourcePool;
-import net.sf.iwant.plannerapi.Task;
-import net.sf.iwant.plannerapi.TaskDirtiness;
+import org.fluentjava.iwant.plannerapi.Resource;
+import org.fluentjava.iwant.plannerapi.ResourcePool;
+import org.fluentjava.iwant.plannerapi.Task;
+import org.fluentjava.iwant.plannerapi.TaskDirtiness;
 
 public class TaskMock implements Task {
 

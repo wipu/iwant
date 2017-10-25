@@ -1,11 +1,11 @@
-package net.sf.iwant.plugin.findbugs;
+package org.fluentjava.iwant.plugin.findbugs;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
-import net.sf.iwant.core.download.Downloaded;
-import net.sf.iwant.plugin.ant.Untarred;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.core.download.Downloaded;
+import org.fluentjava.iwant.plugin.ant.Untarred;
 
 public class FindbugsDistribution extends TargetBase {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.plannerapi;
+package org.fluentjava.iwant.plannerapi;
 
 public enum TaskDirtiness {
 

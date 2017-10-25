@@ -1,4 +1,4 @@
-package net.sf.iwant.api.model;
+package org.fluentjava.iwant.api.model;
 
 public interface SideEffect {
 

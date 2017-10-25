@@ -1,13 +1,13 @@
-package net.sf.iwant.core.download;
+package org.fluentjava.iwant.core.download;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
-import net.sf.iwant.api.model.CacheScopeChoices;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.model.CacheScopeChoices;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
 
 /**
  * Be careful not to use the artifact directly since this wrapper "hijacks" its

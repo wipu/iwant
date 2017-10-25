@@ -1,4 +1,4 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,12 +7,12 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
-import net.sf.iwant.apimocks.TargetMock;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.apimocks.TargetMock;
 
 public class IngredientsAndParametersTest {
 
@@ -57,7 +57,7 @@ public class IngredientsAndParametersTest {
 
 		assertEquals("[]", t.ingredients().toString());
 		assertEquals(
-				"net.sf.iwant.api.core.IngredientsAndParametersTest.NoIngredientsOrParameters\n"
+				"org.fluentjava.iwant.api.core.IngredientsAndParametersTest.NoIngredientsOrParameters\n"
 						+ "",
 				t.contentDescriptor());
 	}
@@ -78,7 +78,7 @@ public class IngredientsAndParametersTest {
 
 		assertEquals("[i1, i2, i3, i4]", t.ingredients().toString());
 		assertEquals(
-				"net.sf.iwant.api.core.IngredientsAndParametersTest.SomeIngredientsAndParameters\n"
+				"org.fluentjava.iwant.api.core.IngredientsAndParametersTest.SomeIngredientsAndParameters\n"
 						+ "p:flags:\n" + "  --int\n" + "  1\n" + "i:c-files:\n"
 						+ "  i1\n" + "  i2\n" + "p:-W:\n" + "  all\n"
 						+ "i:h-files:\n" + "  i3\n" + "  i4\n" + "",
@@ -112,7 +112,7 @@ public class IngredientsAndParametersTest {
 		assertEquals("[multiline\n" + "ivalue, escchar\\ivalue]",
 				t.ingredients().toString());
 		assertEquals(
-				"net.sf.iwant.api.core.IngredientsAndParametersTest.EscapeTest\n"
+				"org.fluentjava.iwant.api.core.IngredientsAndParametersTest.EscapeTest\n"
 						+ "p:multiline\\npname:\n" + "  multiline\\npvalue\n"
 						+ "p:escchar\\\\pname:\n" + "  escchar\\\\pvalue\n"
 						+ "i:multiline\\niname:\n" + "  multiline\\nivalue\n"
@@ -146,7 +146,7 @@ public class IngredientsAndParametersTest {
 
 		assertEquals("[null]", t.ingredients().toString());
 		assertEquals(
-				"net.sf.iwant.api.core.IngredientsAndParametersTest.Nulls\n"
+				"org.fluentjava.iwant.api.core.IngredientsAndParametersTest.Nulls\n"
 						+ "p:nullp:\n" + " null\n" + "p:nullps:\n"
 						+ " null-collection\n" + "i:nulli:\n" + " null\n"
 						+ "i:nullis:\n" + " null-collection\n" + "i:nullois:\n"
@@ -170,7 +170,7 @@ public class IngredientsAndParametersTest {
 
 		assertEquals("[i1, i2]", t.ingredients().toString());
 		assertEquals(
-				"net.sf.iwant.api.core.IngredientsAndParametersTest.OptionalIngredients\n"
+				"org.fluentjava.iwant.api.core.IngredientsAndParametersTest.OptionalIngredients\n"
 						+ "i:o1:\n" + " null\n" + "  i1\n" + "i:o2:\n"
 						+ "  i2\n" + " null\n" + "",
 				t.contentDescriptor());

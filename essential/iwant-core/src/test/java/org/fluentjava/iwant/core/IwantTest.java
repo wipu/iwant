@@ -1,4 +1,4 @@
-package net.sf.iwant.core;
+package org.fluentjava.iwant.core;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -111,7 +111,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		line("WSNAME=test");
 		line("WSROOT=../..");
 		line("WSDEF_SRC=wsdef");
-		line("WSDEF_CLASS=net.sf.iwant.test.wsdef.TestWorkspace");
+		line("WSDEF_CLASS=org.fluentjava.iwant.test.wsdef.TestWorkspace");
 		exists();
 		try {
 			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "",
@@ -124,13 +124,13 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		assertEquals(
 				"perr:I created "
 						+ wsRoot()
-						+ "/as-x-developer/i-have/wsdef/net/sf/iwant/test/wsdef/TestWorkspace.java"
+						+ "/as-x-developer/i-have/wsdef/org/fluentjava/iwant/test/wsdef/TestWorkspace.java"
 						+ " for you. Please edit it and rerun me.\n", err());
 
 		String content = contentOf(wsRoot()
-				+ "/as-x-developer/i-have/wsdef/net/sf/iwant/test/wsdef/TestWorkspace.java");
+				+ "/as-x-developer/i-have/wsdef/org/fluentjava/iwant/test/wsdef/TestWorkspace.java");
 		// full content is tested in descript docs and by functionality
-		assertTrue(content.contains("package net.sf.iwant.test.wsdef;"));
+		assertTrue(content.contains("package org.fluentjava.iwant.test.wsdef;"));
 		assertTrue(content
 				.contains("class TestWorkspace implements WorkspaceDefinition {"));
 	}
@@ -172,14 +172,14 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 			throws Exception {
 		testEmptyWishAlsoGeneratesWishScripts();
 		file(
-				"as-x-developer/i-have/wsdef/net/sf/iwant/test/wsdef/TestWorkspace.java")
+				"as-x-developer/i-have/wsdef/org/fluentjava/iwant/test/wsdef/TestWorkspace.java")
 				.withContent();
-		line("package net.sf.iwant.iwant;\n");
+		line("package org.fluentjava.iwant.iwant;\n");
 		line("\n");
-		line("import net.sf.iwant.core.ContainerPath;\n");
-		line("import net.sf.iwant.core.Locations;\n");
-		line("import net.sf.iwant.core.RootPath;\n");
-		line("import net.sf.iwant.core.WorkspaceDefinition;\n");
+		line("import org.fluentjava.iwant.core.ContainerPath;\n");
+		line("import org.fluentjava.iwant.core.Locations;\n");
+		line("import org.fluentjava.iwant.core.RootPath;\n");
+		line("import org.fluentjava.iwant.core.WorkspaceDefinition;\n");
 		line("\n");
 		line("public class IwantWorkspace implements WorkspaceDefinition {\n");
 		line("\n");
@@ -206,7 +206,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		sleep();
 
 		String wsDefJava = wsRoot()
-				+ "/as-x-developer/i-have/wsdef/net/sf/iwant/test/wsdef/TestWorkspace.java";
+				+ "/as-x-developer/i-have/wsdef/org/fluentjava/iwant/test/wsdef/TestWorkspace.java";
 		String wsDefJavaContent = contentOf(wsDefJava);
 		new FileWriter(wsDefJava, false).append(
 				wsDefJavaContent.replaceAll("aConstant",

@@ -1,9 +1,9 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.StringFilter;
-import net.sf.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.StringFilter;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
 
 public class ClassNameListTest extends IwantTestCase {
 
@@ -23,7 +23,7 @@ public class ClassNameListTest extends IwantTestCase {
 				.end();
 
 		assertEquals(
-				"net.sf.iwant.api.core.ClassNameList\n" + "i:classes:\n"
+				"org.fluentjava.iwant.api.core.ClassNameList\n" + "i:classes:\n"
 						+ "  classes\n" + "p:filter:\n" + " null\n" + "",
 				list.contentDescriptor());
 	}
@@ -49,7 +49,7 @@ public class ClassNameListTest extends IwantTestCase {
 				.matching(new TestFilter()).end();
 
 		assertEquals(
-				"net.sf.iwant.api.core.ClassNameList\n" + "i:classes:\n"
+				"org.fluentjava.iwant.api.core.ClassNameList\n" + "i:classes:\n"
 						+ "  classes2\n" + "p:filter:\n"
 						+ "  TestFilter to test descriptor\n" + "",
 				list.contentDescriptor());

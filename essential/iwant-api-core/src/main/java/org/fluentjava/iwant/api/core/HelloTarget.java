@@ -1,12 +1,12 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
 
 public class HelloTarget extends TargetBase {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.testng;
+package org.fluentjava.iwant.plugin.testng;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.ExitCalledException;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.ExitCalledException;
 
 public class TestngRunnerTest {
 
@@ -39,7 +39,7 @@ public class TestngRunnerTest {
 
 	@Test
 	public void mainClassIsSelf() {
-		assertEquals("net.sf.iwant.plugin.testng.TestngRunner",
+		assertEquals("org.fluentjava.iwant.plugin.testng.TestngRunner",
 				new TestngRunner().mainClassName());
 	}
 

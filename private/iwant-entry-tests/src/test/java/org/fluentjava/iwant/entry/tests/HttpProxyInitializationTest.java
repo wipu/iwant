@@ -1,7 +1,7 @@
-package net.sf.iwant.entry.tests;
+package org.fluentjava.iwant.entry.tests;
 
 import junit.framework.TestCase;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class HttpProxyInitializationTest extends TestCase {
 

@@ -1,9 +1,9 @@
-package net.sf.iwant.api.wsdef;
+package org.fluentjava.iwant.api.wsdef;
 
-import net.sf.iwant.api.model.IngredientDefinitionContext;
-import net.sf.iwant.api.model.SideEffectContext;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.model.WsRootProvider;
+import org.fluentjava.iwant.api.model.IngredientDefinitionContext;
+import org.fluentjava.iwant.api.model.SideEffectContext;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.model.WsRootProvider;
 
 /**
  * If you cast a context to that, you need to be careful with the information

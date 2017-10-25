@@ -1,4 +1,4 @@
-package net.sf.iwant.api.bash;
+package org.fluentjava.iwant.api.bash;
 
 import static org.junit.Assert.assertEquals;
 

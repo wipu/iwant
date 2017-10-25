@@ -1,4 +1,4 @@
-package net.sf.iwant.api.bash;
+package org.fluentjava.iwant.api.bash;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import net.sf.iwant.api.core.ScriptGenerated;
+import org.fluentjava.iwant.api.core.ScriptGenerated;
 
 public class BashScriptTest {
 

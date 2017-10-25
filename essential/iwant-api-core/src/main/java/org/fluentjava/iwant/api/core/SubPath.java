@@ -1,12 +1,12 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
 import java.io.File;
 import java.io.InputStream;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
-import net.sf.iwant.coreservices.FileUtil;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.coreservices.FileUtil;
 
 public class SubPath extends TargetBase {
 

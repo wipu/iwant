@@ -1,11 +1,11 @@
-package net.sf.iwant.coreservices;
+package org.fluentjava.iwant.coreservices;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import net.sf.iwant.entry2.Iwant2;
+import org.fluentjava.iwant.entry2.Iwant2;
 
 public class StreamUtil {
 

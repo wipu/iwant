@@ -1,4 +1,4 @@
-package net.sf.iwant.api.antrunner;
+package org.fluentjava.iwant.api.antrunner;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.ExitCalledException;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.ExitCalledException;
 
 public class AntRunner {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.findbugs.testfodder;
+package org.fluentjava.iwant.plugin.findbugs.testfodder;
 
 public class ClassWithFindbugsIssues {
 

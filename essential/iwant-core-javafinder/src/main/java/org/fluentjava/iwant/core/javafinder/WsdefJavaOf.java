@@ -1,9 +1,9 @@
-package net.sf.iwant.core.javafinder;
+package org.fluentjava.iwant.core.javafinder;
 
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.wsdef.WishDefinitionContext;
-import net.sf.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.wsdef.WishDefinitionContext;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
 
 public class WsdefJavaOf {
 

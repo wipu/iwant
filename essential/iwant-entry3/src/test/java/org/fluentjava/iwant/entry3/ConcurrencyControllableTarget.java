@@ -1,17 +1,17 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.plannerapi.Resource;
-import net.sf.iwant.plannerapi.ResourcePool;
-import net.sf.iwant.plannerapi.TaskDirtiness;
-import net.sf.iwant.plannermocks.TaskMock;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.plannerapi.Resource;
+import org.fluentjava.iwant.plannerapi.ResourcePool;
+import org.fluentjava.iwant.plannerapi.TaskDirtiness;
+import org.fluentjava.iwant.plannermocks.TaskMock;
 
 public class ConcurrencyControllableTarget extends TargetBase {
 

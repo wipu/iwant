@@ -1,13 +1,13 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
-import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionCode;
-import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionConfiguration;
-import net.sf.iwant.api.javamodules.StandardCharacteristics.ProductionRuntimeData;
-import net.sf.iwant.api.javamodules.StandardCharacteristics.TestUtility;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.api.core.HelloTarget;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.ProductionCode;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.ProductionConfiguration;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.ProductionRuntimeData;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.TestUtility;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
 
 public class JavaBinModuleTest extends IwantTestCase {
 
@@ -86,7 +86,7 @@ public class JavaBinModuleTest extends IwantTestCase {
 				.has(ProductionCode.class).inside(libsModule).end();
 
 		assertEquals(
-				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$ProductionCode]",
+				"[interface org.fluentjava.iwant.api.javamodules.StandardCharacteristics$ProductionCode]",
 				bin.characteristics().toString());
 		assertTrue(bin.doesHave(ProductionRuntimeData.class));
 	}
@@ -126,7 +126,7 @@ public class JavaBinModuleTest extends IwantTestCase {
 
 		assertEquals("bin.jar", m2.name());
 		assertEquals(
-				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$TestUtility]",
+				"[interface org.fluentjava.iwant.api.javamodules.StandardCharacteristics$TestUtility]",
 				m2.characteristics().toString());
 		assertEquals("libs/bin.jar", m2.mainArtifact().toString());
 		assertEquals("[runtime.jar]", m2.mainDepsForRunOnly().toString());
@@ -218,7 +218,7 @@ public class JavaBinModuleTest extends IwantTestCase {
 				.has(ProductionConfiguration.class).end();
 
 		assertEquals(
-				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$ProductionConfiguration]",
+				"[interface org.fluentjava.iwant.api.javamodules.StandardCharacteristics$ProductionConfiguration]",
 				mod.characteristics().toString());
 		assertTrue(mod.doesHave(ProductionRuntimeData.class));
 	}
@@ -260,7 +260,7 @@ public class JavaBinModuleTest extends IwantTestCase {
 
 		assertEquals("lib.jar", m2.name());
 		assertEquals(
-				"[interface net.sf.iwant.api.javamodules.StandardCharacteristics$TestUtility]",
+				"[interface org.fluentjava.iwant.api.javamodules.StandardCharacteristics$TestUtility]",
 				m2.characteristics().toString());
 		assertEquals("lib.jar", m2.mainArtifact().toString());
 		assertEquals("[runtime.jar]", m2.mainDepsForRunOnly().toString());

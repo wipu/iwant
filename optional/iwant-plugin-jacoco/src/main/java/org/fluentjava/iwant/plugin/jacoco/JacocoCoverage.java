@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.jacoco;
+package org.fluentjava.iwant.plugin.jacoco;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,12 +10,12 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import net.sf.iwant.api.antrunner.AntRunner;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.SystemEnv;
-import net.sf.iwant.api.model.SystemEnv.SystemEnvPlease;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.api.antrunner.AntRunner;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.SystemEnv;
+import org.fluentjava.iwant.api.model.SystemEnv.SystemEnvPlease;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
 
 public class JacocoCoverage extends TargetBase {
 

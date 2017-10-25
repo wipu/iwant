@@ -1,8 +1,8 @@
-package net.sf.iwant.tests.targetimplementedinbash;
+package org.fluentjava.iwant.tests.targetimplementedinbash;
 
-import net.sf.iwant.api.wsdef.Workspace;
-import net.sf.iwant.api.wsdef.WorkspaceContext;
-import net.sf.iwant.api.wsdef.WorkspaceFactory;
+import org.fluentjava.iwant.api.wsdef.Workspace;
+import org.fluentjava.iwant.api.wsdef.WorkspaceContext;
+import org.fluentjava.iwant.api.wsdef.WorkspaceFactory;
 
 public class TargetImplementedInBashWsFactory implements WorkspaceFactory {
 

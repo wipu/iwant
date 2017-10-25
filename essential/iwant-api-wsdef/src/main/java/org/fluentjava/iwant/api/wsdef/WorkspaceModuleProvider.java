@@ -1,6 +1,6 @@
-package net.sf.iwant.api.wsdef;
+package org.fluentjava.iwant.api.wsdef;
 
-import net.sf.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
 
 public interface WorkspaceModuleProvider {
 

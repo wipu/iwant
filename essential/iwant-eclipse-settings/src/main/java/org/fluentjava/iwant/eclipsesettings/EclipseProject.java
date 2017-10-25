@@ -1,13 +1,13 @@
-package net.sf.iwant.eclipsesettings;
+package org.fluentjava.iwant.eclipsesettings;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.eclipsesettings.DotClasspath.DotClasspathSpex;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.eclipsesettings.DotClasspath.DotClasspathSpex;
 
 public class EclipseProject {
 

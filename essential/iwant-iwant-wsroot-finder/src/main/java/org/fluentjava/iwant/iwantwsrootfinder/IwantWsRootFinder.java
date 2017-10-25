@@ -1,4 +1,4 @@
-package net.sf.iwant.iwantwsrootfinder;
+package org.fluentjava.iwant.iwantwsrootfinder;
 
 import java.io.File;
 

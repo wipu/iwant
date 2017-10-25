@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.war;
+package org.fluentjava.iwant.plugin.war;
 
 import java.io.File;
 import java.io.InputStream;
@@ -12,9 +12,9 @@ import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.PatternSet.NameEntry;
 import org.apache.tools.ant.types.ZipFileSet;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
 
 public class War extends Target {
 

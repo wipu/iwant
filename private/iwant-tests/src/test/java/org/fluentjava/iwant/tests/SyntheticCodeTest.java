@@ -1,19 +1,19 @@
-package net.sf.iwant.tests;
+package org.fluentjava.iwant.tests;
 
 import org.junit.Test;
 
-import net.sf.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
-import net.sf.iwant.api.javamodules.CodeStyle;
-import net.sf.iwant.api.javamodules.CodeStyleValue;
-import net.sf.iwant.api.javamodules.JavaCompliance;
-import net.sf.iwant.api.javamodules.StandardCharacteristics;
-import net.sf.iwant.core.download.FromRepository;
-import net.sf.iwant.core.download.TestedIwantDependencies;
-import net.sf.iwant.embedded.AsEmbeddedIwantUser;
-import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
-import net.sf.iwant.plannerapi.TaskDirtiness;
-import net.sf.iwant.plugin.findbugs.FindbugsOutputFormat;
-import net.sf.iwant.plugin.github.FromGithub;
+import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
+import org.fluentjava.iwant.api.javamodules.CodeStyle;
+import org.fluentjava.iwant.api.javamodules.CodeStyleValue;
+import org.fluentjava.iwant.api.javamodules.JavaCompliance;
+import org.fluentjava.iwant.api.javamodules.StandardCharacteristics;
+import org.fluentjava.iwant.core.download.FromRepository;
+import org.fluentjava.iwant.core.download.TestedIwantDependencies;
+import org.fluentjava.iwant.embedded.AsEmbeddedIwantUser;
+import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
+import org.fluentjava.iwant.plannerapi.TaskDirtiness;
+import org.fluentjava.iwant.plugin.findbugs.FindbugsOutputFormat;
+import org.fluentjava.iwant.plugin.github.FromGithub;
 
 public class SyntheticCodeTest {
 

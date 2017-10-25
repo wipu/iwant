@@ -1,4 +1,4 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -10,13 +10,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.sf.iwant.api.core.StringFilterByEquality;
-import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.StringFilter;
-import net.sf.iwant.api.model.SystemEnv;
-import net.sf.iwant.api.model.Target;
+import org.fluentjava.iwant.api.core.StringFilterByEquality;
+import org.fluentjava.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.StringFilter;
+import org.fluentjava.iwant.api.model.SystemEnv;
+import org.fluentjava.iwant.api.model.Target;
 
 public class JavaSrcModule extends JavaModule {
 

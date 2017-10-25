@@ -1,4 +1,4 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
 @SuppressWarnings("all")
 public class StandardCharacteristics {

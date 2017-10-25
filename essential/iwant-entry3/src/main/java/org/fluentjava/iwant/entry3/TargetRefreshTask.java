@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,16 +6,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import net.sf.iwant.api.model.Caches;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.coreservices.FileUtil;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.plannerapi.Resource;
-import net.sf.iwant.plannerapi.ResourcePool;
-import net.sf.iwant.plannerapi.Task;
-import net.sf.iwant.plannerapi.TaskDirtiness;
+import org.fluentjava.iwant.api.model.Caches;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.coreservices.FileUtil;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.plannerapi.Resource;
+import org.fluentjava.iwant.plannerapi.ResourcePool;
+import org.fluentjava.iwant.plannerapi.Task;
+import org.fluentjava.iwant.plannerapi.TaskDirtiness;
 
 public class TargetRefreshTask implements Task {
 

@@ -1,8 +1,8 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.coreservices.StreamUtil;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.coreservices.StreamUtil;
 
 public class HelloTargetTest extends IwantTestCase {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.entry.tests;
+package org.fluentjava.iwant.entry.tests;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -6,9 +6,9 @@ import java.net.URL;
 import com.google.common.testing.EqualsTester;
 
 import junit.framework.TestCase;
-import net.sf.iwant.entry.Iwant.UnmodifiableSource;
-import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
-import net.sf.iwant.entry.Iwant.UnmodifiableZip;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableSource;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableZip;
 
 public class UnmodifiableSourceTest extends TestCase {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.core.download;
+package org.fluentjava.iwant.core.download;
 
 import java.io.File;
 import java.net.URL;
@@ -8,11 +8,11 @@ import java.util.Map;
 import javax.tools.JavaCompiler;
 
 import junit.framework.TestCase;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
-import net.sf.iwant.apimocks.UrlString;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.apimocks.CachesMock;
+import org.fluentjava.iwant.apimocks.TargetEvaluationContextMock;
+import org.fluentjava.iwant.apimocks.UrlString;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class DownloadedTest extends TestCase {
 
@@ -39,12 +39,12 @@ public class DownloadedTest extends TestCase {
 	}
 
 	public void testContentDescriptor() {
-		assertEquals("net.sf.iwant.core.download.Downloaded\n" + "p:url:\n"
+		assertEquals("org.fluentjava.iwant.core.download.Downloaded\n" + "p:url:\n"
 				+ "  http://localhost/url1\n" + "p:md5:\n" + "  any\n" + "",
 				Downloaded.withName("any").url("http://localhost/url1")
 						.md5("any").contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.core.download.Downloaded\n" + "p:url:\n"
+				"org.fluentjava.iwant.core.download.Downloaded\n" + "p:url:\n"
 						+ "  http://localhost/url2\n" + "p:md5:\n"
 						+ "  anyother\n" + "",
 				Downloaded.withName("any").url("http://localhost/url2")

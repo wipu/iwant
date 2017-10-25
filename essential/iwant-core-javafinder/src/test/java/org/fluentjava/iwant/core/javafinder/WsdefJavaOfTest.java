@@ -1,4 +1,4 @@
-package net.sf.iwant.core.javafinder;
+package org.fluentjava.iwant.core.javafinder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -8,13 +8,13 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.wsdef.IwantPluginWishes;
-import net.sf.iwant.api.wsdef.WishDefinitionContext;
-import net.sf.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.wsdef.IwantPluginWishes;
+import org.fluentjava.iwant.api.wsdef.WishDefinitionContext;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
 
 public class WsdefJavaOfTest {
 
@@ -64,7 +64,7 @@ public class WsdefJavaOfTest {
 
 		assertEquals(
 				"wsdef-location/src/main/java/"
-						+ "net/sf/iwant/core/javafinder/WsdefJavaOfTest.java",
+						+ "org/fluentjava/iwant/core/javafinder/WsdefJavaOfTest.java",
 				src.name());
 	}
 
@@ -79,7 +79,7 @@ public class WsdefJavaOfTest {
 
 		assertEquals(
 				"different-wsdef-location/mainjava/"
-						+ "net/sf/iwant/api/javamodules/JavaModule.java",
+						+ "org/fluentjava/iwant/api/javamodules/JavaModule.java",
 				src.name());
 	}
 

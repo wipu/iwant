@@ -1,11 +1,11 @@
-package net.sf.iwant.plugin.ant;
+package org.fluentjava.iwant.plugin.ant;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.api.model.ExternalSource;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
 
 public class UntarredTest extends IwantTestCase {
 
@@ -20,12 +20,12 @@ public class UntarredTest extends IwantTestCase {
 
 	public void testContentDescriptor() {
 		assertEquals(
-				"net.sf.iwant.plugin.ant.Untarred:"
+				"org.fluentjava.iwant.plugin.ant.Untarred:"
 						+ "compression=null:[a.tar]",
 				Untarred.with().name("u").from(Source.underWsroot("a.tar"))
 						.end().contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.plugin.ant.Untarred:"
+				"org.fluentjava.iwant.plugin.ant.Untarred:"
 						+ "compression=gzip:[b.tar.gz]",
 				Untarred.with().name("u").from(Source.underWsroot("b.tar.gz"))
 						.gzCompression().end().contentDescriptor());
@@ -34,7 +34,7 @@ public class UntarredTest extends IwantTestCase {
 	public void testSuccessfullyUntarringDirAndFileTar() throws Exception {
 		File tarFile = new File(getClass()
 				.getResource(
-						"/net/sf/iwant/testresources/untarred/dir-and-file.tar")
+						"/org/fluentjava/iwant/testresources/untarred/dir-and-file.tar")
 				.toURI());
 
 		Target untarred = Untarred.with().name("untarred")
@@ -48,7 +48,7 @@ public class UntarredTest extends IwantTestCase {
 	public void testSuccessfullyUntarringDirAndFileTarGz() throws Exception {
 		File tarFile = new File(getClass()
 				.getResource(
-						"/net/sf/iwant/testresources/untarred/dir-and-file.tar.gz")
+						"/org/fluentjava/iwant/testresources/untarred/dir-and-file.tar.gz")
 				.toURI());
 
 		Target untarred = Untarred.with().name("untarred")

@@ -1,4 +1,4 @@
-package net.sf.iwant.entry2;
+package org.fluentjava.iwant.entry2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,11 +7,11 @@ import java.io.PrintStream;
 import java.security.Permission;
 
 import junit.framework.TestCase;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantEssential;
-import net.sf.iwant.entrymocks.IwantNetworkMock;
-import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantEssential;
+import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
+import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class Iwant2Test extends TestCase {
 
@@ -132,7 +132,7 @@ public class Iwant2Test extends TestCase {
 		iwant2.evaluate(iwantEssential, "args", "to be", "passed");
 
 		assertEquals(":        compiled -> all-iwant-classes\n", err());
-		assertEquals("Mocked net.sf.iwant.entry3.Iwant3\n" + "args: ["
+		assertEquals("Mocked org.fluentjava.iwant.entry3.Iwant3\n" + "args: ["
 				+ iwantEssential + ", args, to be, passed]\n", out());
 	}
 
@@ -144,7 +144,7 @@ public class Iwant2Test extends TestCase {
 
 		iwant2.evaluate(iwantEssential, "--printClassLoaderUrls");
 		assertEquals(":        compiled -> all-iwant-classes\n", err());
-		assertEquals("Mocked net.sf.iwant.entry3.Iwant3\n" + "args: ["
+		assertEquals("Mocked org.fluentjava.iwant.entry3.Iwant3\n" + "args: ["
 				+ iwantEssential + ", --printClassLoaderUrls]\n"
 				+ "classloader urls: [file:" + iwantEssential
 				+ "/iwant-wsroot-marker/, file:" + testArea.root()
@@ -162,7 +162,7 @@ public class Iwant2Test extends TestCase {
 
 		File iwantClasses = new File(testArea.root(), "all-iwant-classes");
 		File classWithVars = new File(iwantClasses,
-				"net/sf/iwant/api/ClassToTestDebugInformation.class");
+				"org/fluentjava/iwant/api/ClassToTestDebugInformation.class");
 
 		// TODO reuse code with JavaClassesTest to read as bytes. This is not
 		// robust because we parse binary as String
@@ -195,7 +195,7 @@ public class Iwant2Test extends TestCase {
 		iwant2.evaluate(iwantEssential);
 
 		assertEquals("represents api bash resources\n", testArea.contentOf(
-				"all-iwant-classes/net/sf/iwant/api/bash/mock-resource.txt"));
+				"all-iwant-classes/org/fluentjava/iwant/api/bash/mock-resource.txt"));
 	}
 
 }

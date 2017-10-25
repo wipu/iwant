@@ -1,17 +1,17 @@
-package net.sf.iwant.embedded;
+package org.fluentjava.iwant.embedded;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Caches;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.WsInfo;
-import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry3.CachesImpl;
-import net.sf.iwant.entry3.WishEvaluator;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Caches;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.WsInfo;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry3.CachesImpl;
+import org.fluentjava.iwant.entry3.WishEvaluator;
 
 /**
  * TODO this belongs out of API because it depends on implementations, a

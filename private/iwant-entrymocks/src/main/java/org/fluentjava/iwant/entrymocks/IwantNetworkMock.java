@@ -1,4 +1,4 @@
-package net.sf.iwant.entrymocks;
+package org.fluentjava.iwant.entrymocks;
 
 import java.io.File;
 import java.net.URL;
@@ -7,12 +7,12 @@ import java.util.Map;
 
 import javax.tools.JavaCompiler;
 
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entry.Iwant.UnmodifiableSource;
-import net.sf.iwant.entry.Iwant.UnmodifiableUrl;
-import net.sf.iwant.entry.Iwant.UnmodifiableZip;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableSource;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableZip;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class IwantNetworkMock implements IwantNetwork {
 

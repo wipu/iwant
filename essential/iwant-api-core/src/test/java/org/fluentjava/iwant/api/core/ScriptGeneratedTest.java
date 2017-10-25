@@ -1,25 +1,25 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
 import java.io.File;
 import java.util.Arrays;
 
-import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
-import net.sf.iwant.api.core.ScriptGenerated.ExecutionEnvironment;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import org.fluentjava.iwant.api.core.ScriptGenerated.ExecutionEnvironment;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class ScriptGeneratedTest extends IwantTestCase {
 
 	public void testContentDescriptor() {
 		assertEquals(
-				"net.sf.iwant.api.core.ScriptGenerated\n" + "i:script:\n"
+				"org.fluentjava.iwant.api.core.ScriptGenerated\n" + "i:script:\n"
 						+ "  src1.sh\n" + "",
 				ScriptGenerated.named("s1")
 						.byScript(Source.underWsroot("src1.sh"))
 						.contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.core.ScriptGenerated\n" + "i:script:\n"
+				"org.fluentjava.iwant.api.core.ScriptGenerated\n" + "i:script:\n"
 						+ "  src2.sh\n" + "",
 				ScriptGenerated.named("s2")
 						.byScript(Source.underWsroot("src2.sh"))

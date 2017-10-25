@@ -1,4 +1,4 @@
-package net.sf.iwant.entry;
+package org.fluentjava.iwant.entry;
 
 public class Iwant {
 

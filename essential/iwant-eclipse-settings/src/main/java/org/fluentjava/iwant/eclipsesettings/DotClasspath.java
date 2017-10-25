@@ -1,4 +1,4 @@
-package net.sf.iwant.eclipsesettings;
+package org.fluentjava.iwant.eclipsesettings;
 
 import java.util.ArrayList;
 import java.util.Collections;

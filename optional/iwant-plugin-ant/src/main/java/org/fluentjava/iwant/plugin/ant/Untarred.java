@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.ant;
+package org.fluentjava.iwant.plugin.ant;
 
 import java.io.File;
 import java.io.InputStream;
@@ -8,9 +8,9 @@ import java.util.List;
 import org.apache.tools.ant.taskdefs.Untar;
 import org.apache.tools.ant.taskdefs.Untar.UntarCompressionMethod;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
 
 public class Untarred extends Target {
 

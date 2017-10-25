@@ -1,9 +1,9 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.net.URLClassLoader;
 import java.util.Arrays;
 
-import net.sf.iwant.api.wsdef.IwantWorkspace;
+import org.fluentjava.iwant.api.wsdef.IwantWorkspace;
 
 /**
  * Mock

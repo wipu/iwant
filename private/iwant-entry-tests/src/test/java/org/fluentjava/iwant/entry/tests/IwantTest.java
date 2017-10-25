@@ -1,4 +1,4 @@
-package net.sf.iwant.entry.tests;
+package org.fluentjava.iwant.entry.tests;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -10,13 +10,13 @@ import java.security.Permission;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.core.ScriptGenerated;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantException;
-import net.sf.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
-import net.sf.iwant.entrymocks.IwantNetworkMock;
-import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.api.core.ScriptGenerated;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
+import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
+import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class IwantTest extends TestCase {
 
@@ -137,7 +137,7 @@ public class IwantTest extends TestCase {
 		}
 		assertEquals("", out());
 		assertEquals(
-				"Usage: net.sf.iwant.entry.Iwant AS_SOMEONE_DIRECTORY [args...]\n",
+				"Usage: org.fluentjava.iwant.entry.Iwant AS_SOMEONE_DIRECTORY [args...]\n",
 				err());
 	}
 

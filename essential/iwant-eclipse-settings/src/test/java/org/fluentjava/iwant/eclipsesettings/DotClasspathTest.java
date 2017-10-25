@@ -1,4 +1,4 @@
-package net.sf.iwant.eclipsesettings;
+package org.fluentjava.iwant.eclipsesettings;
 
 import junit.framework.TestCase;
 

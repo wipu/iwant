@@ -46,7 +46,6 @@ done
 
 javafiles-to-fix() {
     find . -name '*.java' | without-caches-etc
-    echo as-iwant-developer/i-have/wsdef/src/main/java/net/sf/iwant/wsdef/ExtendedIwantEnums.java
 }
 
 javafiles-to-fix | while read JAVA; do

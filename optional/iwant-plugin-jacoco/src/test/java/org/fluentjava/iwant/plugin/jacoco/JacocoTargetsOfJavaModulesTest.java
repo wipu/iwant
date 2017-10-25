@@ -1,15 +1,15 @@
-package net.sf.iwant.plugin.jacoco;
+package org.fluentjava.iwant.plugin.jacoco;
 
 import java.io.File;
 
-import net.sf.iwant.api.core.ClassNameList;
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.javamodules.TestRunner;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.StringFilter;
-import net.sf.iwant.api.model.SystemEnv;
-import net.sf.iwant.api.model.Target;
+import org.fluentjava.iwant.api.core.ClassNameList;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.javamodules.TestRunner;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.StringFilter;
+import org.fluentjava.iwant.api.model.SystemEnv;
+import org.fluentjava.iwant.api.model.Target;
 
 public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 
@@ -25,7 +25,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.jacocoInstrumentationOf(mod);
 		assertEquals("mod-main-classes.jacoco-instr", instr.name());
 		assertEquals(
-				"net.sf.iwant.plugin.jacoco.JacocoInstrumentation\n"
+				"org.fluentjava.iwant.plugin.jacoco.JacocoInstrumentation\n"
 						+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n"
 						+ "i:deps:\n" + "  " + asm() + "\ni:antJars:\n" + "  "
 						+ antJar() + "\n  " + antLauncherJar()
@@ -35,7 +35,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertNull(jacocoTargets.jacocoCoverageOf(mod));
 
 		JacocoReport report = jacocoTargets.jacocoReport("coverage-report");
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
 				+ "  " + jacoco() + "\n" + "i:deps:\n" + "  " + asm() + "\n"
 				+ "i:antJars:\n" + "  " + antJar() + "\n" + "  "
 				+ antLauncherJar() + "\n" + "i:coverages:\n" + "i:classes:\n"
@@ -66,7 +66,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
 		assertEquals(
-				"net.sf.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
+				"org.fluentjava.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
 						+ "  " + jacoco() + "\n" + "i:deps:\n" + "  " + asm()
 						+ "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
 						+ antLauncherJar() + "\n" + "i:coverages:\n"
@@ -86,7 +86,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 
 		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
 		assertEquals("mod.jacococoverage", coverage.name());
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoCoverage\n"
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
 				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
 				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
 				+ antLauncherJar() + "\ni:classLocations:\n"
@@ -97,7 +97,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				coverage.contentDescriptor());
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
 				+ "  " + jacoco() + "\n" + "i:deps:\n" + "  " + asm() + "\n"
 				+ "i:antJars:\n" + "  " + antJar() + "\n" + "  "
 				+ antLauncherJar() + "\n" + "i:coverages:\n"
@@ -119,7 +119,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
 		assertEquals(
-				"net.sf.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
+				"org.fluentjava.iwant.plugin.jacoco.JacocoReport\n" + "i:jacoco:\n"
 						+ "  jacoco-0.7.2.201409121644\n" + "i:deps:\n" + "  "
 						+ asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
 						+ antLauncherJar() + "\ni:coverages:\n" + "i:classes:\n"
@@ -167,7 +167,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		ClassNameList testNames = (ClassNameList) coverageOfManyClasses
 				.mainClassArgsFile();
 		assertEquals(
-				"net.sf.iwant.api.core.ClassNameList\n" + "i:classes:\n"
+				"org.fluentjava.iwant.api.core.ClassNameList\n" + "i:classes:\n"
 						+ "  testedByClassnameFilter-test-classes\n"
 						+ "p:filter:\n" + "  just-a-filter\n" + "",
 				testNames.contentDescriptor());

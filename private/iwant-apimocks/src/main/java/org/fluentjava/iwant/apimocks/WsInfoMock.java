@@ -1,9 +1,9 @@
-package net.sf.iwant.apimocks;
+package org.fluentjava.iwant.apimocks;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.WsInfo;
-import net.sf.iwant.entrymocks.NullCheck;
+import org.fluentjava.iwant.api.model.WsInfo;
+import org.fluentjava.iwant.entrymocks.NullCheck;
 
 public class WsInfoMock implements WsInfo {
 

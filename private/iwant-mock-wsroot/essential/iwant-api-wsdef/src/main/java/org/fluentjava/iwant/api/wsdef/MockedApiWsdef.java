@@ -1,4 +1,4 @@
-package net.sf.iwant.api.wsdef;
+package org.fluentjava.iwant.api.wsdef;
 
 public class MockedApiWsdef {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
 import junit.framework.TestCase;
 

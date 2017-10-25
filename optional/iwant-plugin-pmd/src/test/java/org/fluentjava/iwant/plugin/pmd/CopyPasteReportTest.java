@@ -1,11 +1,11 @@
-package net.sf.iwant.plugin.pmd;
+package org.fluentjava.iwant.plugin.pmd;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
 
 public class CopyPasteReportTest extends PmdTestBase {
 

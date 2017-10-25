@@ -1,4 +1,4 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
 import java.util.Comparator;
 import java.util.LinkedHashSet;
@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sf.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Path;
 
 public abstract class JavaModule implements Comparable<JavaModule> {
 

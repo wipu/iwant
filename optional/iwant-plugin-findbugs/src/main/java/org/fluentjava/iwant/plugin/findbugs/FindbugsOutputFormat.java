@@ -1,4 +1,4 @@
-package net.sf.iwant.plugin.findbugs;
+package org.fluentjava.iwant.plugin.findbugs;
 
 public enum FindbugsOutputFormat {
 

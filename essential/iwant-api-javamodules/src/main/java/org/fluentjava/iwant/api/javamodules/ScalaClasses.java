@@ -1,4 +1,4 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,13 +6,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import net.sf.iwant.api.antrunner.AntRunner;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
-import net.sf.iwant.core.download.TestedIwantDependencies;
-import net.sf.iwant.coreservices.FileUtil;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.antrunner.AntRunner;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.core.download.TestedIwantDependencies;
+import org.fluentjava.iwant.coreservices.FileUtil;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class ScalaClasses extends TargetBase {
 

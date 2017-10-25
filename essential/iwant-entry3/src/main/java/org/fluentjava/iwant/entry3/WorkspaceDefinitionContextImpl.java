@@ -1,22 +1,22 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaClasses;
-import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.wsdef.IwantPluginWish;
-import net.sf.iwant.api.wsdef.IwantPluginWishes;
-import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
-import net.sf.iwant.core.download.Downloaded;
-import net.sf.iwant.core.download.FromRepository;
-import net.sf.iwant.core.download.GnvArtifact;
-import net.sf.iwant.core.download.TestedIwantDependencies;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaClasses;
+import org.fluentjava.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.model.ExternalSource;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.wsdef.IwantPluginWish;
+import org.fluentjava.iwant.api.wsdef.IwantPluginWishes;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
+import org.fluentjava.iwant.core.download.Downloaded;
+import org.fluentjava.iwant.core.download.FromRepository;
+import org.fluentjava.iwant.core.download.GnvArtifact;
+import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 
 public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 

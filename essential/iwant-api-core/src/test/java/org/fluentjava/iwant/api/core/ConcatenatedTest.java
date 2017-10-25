@@ -1,9 +1,9 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
 
 public class ConcatenatedTest extends IwantTestCase {
 
@@ -19,12 +19,12 @@ public class ConcatenatedTest extends IwantTestCase {
 
 	public void testContentDescriptor() {
 		assertEquals(
-				"net.sf.iwant.api.core.Concatenated\n" + "p:bytes:\n"
+				"org.fluentjava.iwant.api.core.Concatenated\n" + "p:bytes:\n"
 						+ "  [1, 2]\n" + "p:string:\n" + "  s\n" + "",
 				Concatenated.named("all-but-paths").bytes(1, 2).string("s")
 						.end().contentDescriptor());
 		assertEquals(
-				"net.sf.iwant.api.core.Concatenated\n" + "i:content-of:\n"
+				"org.fluentjava.iwant.api.core.Concatenated\n" + "i:content-of:\n"
 						+ "  src\n" + "i:native-path:\n" + "  target\n"
 						+ "i:unix-path:\n" + "  target2\n" + "",
 				Concatenated.named("only-paths")

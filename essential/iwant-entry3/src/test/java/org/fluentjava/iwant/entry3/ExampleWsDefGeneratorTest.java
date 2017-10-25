@@ -1,7 +1,7 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import junit.framework.TestCase;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class ExampleWsDefGeneratorTest extends TestCase {
 

@@ -1,17 +1,17 @@
-package net.sf.iwant.plugin.jacoco;
+package org.fluentjava.iwant.plugin.jacoco;
 
 import java.io.File;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.javamodules.JavaClassesAndSources;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.SystemEnv;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.entry.Iwant.ExitCalledException;
+import org.fluentjava.iwant.api.core.HelloTarget;
+import org.fluentjava.iwant.api.javamodules.JavaClassesAndSources;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.SystemEnv;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.entry.Iwant.ExitCalledException;
 
 public class JacocoCoverageTest extends JacocoTestBase {
 
@@ -45,7 +45,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				+ antLauncherJar() + ", instrtest-classes.jacoco-instr]",
 				coverage.ingredients().toString());
 		assertEquals(
-				"net.sf.iwant.plugin.jacoco.JacocoCoverage\n" + "i:jacoco:\n"
+				"org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n" + "i:jacoco:\n"
 						+ "  jacoco-0.7.2.201409121644\n" + "i:deps:\n" + "  "
 						+ asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
 						+ antLauncherJar() + "\ni:classLocations:\n"
@@ -76,7 +76,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 						+ antLauncherJar()
 						+ ", instrtest-classes.jacoco-instr, args-file]",
 				coverage.ingredients().toString());
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoCoverage\n"
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
 				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
 				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
 				+ antLauncherJar() + "\ni:classLocations:\n"
@@ -102,7 +102,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
 				+ antLauncherJar() + ", instrtest-classes.jacoco-instr]",
 				coverage.ingredients().toString());
-		assertEquals("net.sf.iwant.plugin.jacoco.JacocoCoverage\n"
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
 				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
 				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
 				+ antLauncherJar() + "\ni:classLocations:\n"

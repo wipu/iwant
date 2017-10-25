@@ -1,9 +1,9 @@
-package net.sf.iwant.core.javafinder;
+package org.fluentjava.iwant.core.javafinder;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.ExternalSource;
+import org.fluentjava.iwant.api.model.Path;
 
 public class PathToClasspathLocationOf {
 

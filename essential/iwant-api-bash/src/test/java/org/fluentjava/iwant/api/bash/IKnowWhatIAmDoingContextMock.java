@@ -1,17 +1,17 @@
-package net.sf.iwant.api.bash;
+package org.fluentjava.iwant.api.bash;
 
 import java.io.File;
 import java.io.OutputStream;
 import java.util.Set;
 
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.model.WsInfo;
-import net.sf.iwant.api.wsdef.IKnowWhatIAmDoingContext;
-import net.sf.iwant.api.wsdef.IwantPluginWishes;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.model.WsInfo;
+import org.fluentjava.iwant.api.wsdef.IKnowWhatIAmDoingContext;
+import org.fluentjava.iwant.api.wsdef.IwantPluginWishes;
+import org.fluentjava.iwant.apimocks.TargetEvaluationContextMock;
 
 public class IKnowWhatIAmDoingContextMock extends TargetEvaluationContextMock
 		implements IKnowWhatIAmDoingContext {

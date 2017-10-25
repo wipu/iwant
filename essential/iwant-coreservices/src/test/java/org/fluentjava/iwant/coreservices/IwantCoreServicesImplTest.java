@@ -1,12 +1,12 @@
-package net.sf.iwant.coreservices;
+package org.fluentjava.iwant.coreservices;
 
 import java.io.File;
 import java.util.Properties;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.model.IwantCoreServices;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.api.model.IwantCoreServices;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class IwantCoreServicesImplTest extends TestCase {
 

@@ -1,4 +1,4 @@
-package net.sf.iwant.entry2;
+package org.fluentjava.iwant.entry2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantException;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entry.Iwant.UnmodifiableSource;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableSource;
 
 public class Iwant2 {
 
@@ -74,7 +74,7 @@ public class Iwant2 {
 		String[] iwant3Args = new String[args.length + 1];
 		iwant3Args[0] = iwantEssential.getCanonicalPath();
 		System.arraycopy(args, 0, iwant3Args, 1, args.length);
-		Iwant.runJavaMain(false, false, "net.sf.iwant.entry3.Iwant3",
+		Iwant.runJavaMain(false, false, "org.fluentjava.iwant.entry3.Iwant3",
 				classLocations, iwant3Args);
 	}
 
@@ -176,7 +176,7 @@ public class Iwant2 {
 		iwant.compiledClasses(allIwantClasses, javaFileList, iwantBinDeps(),
 				Iwant.bootstrappingJavacOptions(), null);
 
-		String pak = "net/sf/iwant/api/bash";
+		String pak = "org/fluentjava/iwant/api/bash";
 		File resources = new File(iwantEssential,
 				"iwant-api-bash/src/main/resources/" + pak);
 		File resourcesDest = new File(allIwantClasses, pak);

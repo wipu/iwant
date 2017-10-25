@@ -1,9 +1,9 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
 import java.io.PrintWriter;
 
-import net.sf.iwant.api.model.SideEffect;
-import net.sf.iwant.api.model.SideEffectContext;
+import org.fluentjava.iwant.api.model.SideEffect;
+import org.fluentjava.iwant.api.model.SideEffectContext;
 
 public class HelloSideEffect implements SideEffect {
 

@@ -1,11 +1,11 @@
-package net.sf.iwant.plugin.war;
+package org.fluentjava.iwant.plugin.war;
 
 import java.io.File;
 
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.zip.Unzipped;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.zip.Unzipped;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class WarTest extends IwantTestCase {
 
@@ -32,7 +32,7 @@ public class WarTest extends IwantTestCase {
 				.webXml(Source.underWsroot("web.xml")).end();
 
 		assertEquals(
-				"net.sf.iwant.plugin.war.War {\n" + "  basedir:empty-basedir\n"
+				"org.fluentjava.iwant.plugin.war.War {\n" + "  basedir:empty-basedir\n"
 						+ "  webxml:web.xml\n" + "  excludes {\n" + "  }\n"
 						+ "  libs {\n" + "  }\n" + "  classes {\n" + "  }\n"
 						+ "  resources {\n" + "  }\n" + "}\n" + "",
@@ -54,7 +54,7 @@ public class WarTest extends IwantTestCase {
 				.end();
 
 		assertEquals(
-				"net.sf.iwant.plugin.war.War {\n" + "  basedir:empty-basedir\n"
+				"org.fluentjava.iwant.plugin.war.War {\n" + "  basedir:empty-basedir\n"
 						+ "  webxml:confs/web.xml\n" + "  excludes {\n"
 						+ "    exclude1\n" + "    exclude2\n" + "  }\n"
 						+ "  libs {\n" + "    lib/a.jar\n" + "    lib/b.jar\n"

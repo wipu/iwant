@@ -1,6 +1,6 @@
-package net.sf.iwant.plannermocks;
+package org.fluentjava.iwant.plannermocks;
 
-import net.sf.iwant.plannerapi.Resource;
+import org.fluentjava.iwant.plannerapi.Resource;
 
 public class ResourceMock implements Resource {
 

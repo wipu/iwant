@@ -1,4 +1,4 @@
-package net.sf.iwant.iwantwsrootfinder;
+package org.fluentjava.iwant.iwantwsrootfinder;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class IwantWsRootFinderTest extends TestCase {
 	public void testKnownFileIsFoundUnderMockEssential() throws IOException {
 		File mockedApiWsdef = new File(IwantWsRootFinder.mockEssential(),
 				"iwant-api-wsdef/src/main/java/"
-						+ "net/sf/iwant/api/wsdef/MockedApiWsdef.java");
+						+ "org/fluentjava/iwant/api/wsdef/MockedApiWsdef.java");
 
 		assertTrue(mockedApiWsdef.exists());
 		assertTrue(FileUtils.readFileToString(mockedApiWsdef)

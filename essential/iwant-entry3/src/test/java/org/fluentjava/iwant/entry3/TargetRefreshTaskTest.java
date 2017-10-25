@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,23 +10,23 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
-import net.sf.iwant.apimocks.TargetMock;
-import net.sf.iwant.core.download.Downloaded;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entrymocks.IwantNetworkMock;
-import net.sf.iwant.plannerapi.Resource;
-import net.sf.iwant.plannerapi.ResourcePool;
-import net.sf.iwant.plannerapi.TaskDirtiness;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.api.core.HelloTarget;
+import org.fluentjava.iwant.api.model.ExternalSource;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.apimocks.CachesMock;
+import org.fluentjava.iwant.apimocks.TargetEvaluationContextMock;
+import org.fluentjava.iwant.apimocks.TargetMock;
+import org.fluentjava.iwant.core.download.Downloaded;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
+import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
+import org.fluentjava.iwant.plannerapi.Resource;
+import org.fluentjava.iwant.plannerapi.ResourcePool;
+import org.fluentjava.iwant.plannerapi.TaskDirtiness;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class TargetRefreshTaskTest extends TestCase {
 
@@ -90,11 +90,11 @@ public class TargetRefreshTaskTest extends TestCase {
 		t2.hasNoIngredients();
 		HelloTarget hello = new HelloTarget("hello", "whatever");
 
-		assertEquals("net.sf.iwant.apimocks.TargetMock t1",
+		assertEquals("org.fluentjava.iwant.apimocks.TargetMock t1",
 				task(t1).toString());
-		assertEquals("net.sf.iwant.apimocks.TargetMock t2",
+		assertEquals("org.fluentjava.iwant.apimocks.TargetMock t2",
 				task(t2).toString());
-		assertEquals("net.sf.iwant.api.core.HelloTarget hello",
+		assertEquals("org.fluentjava.iwant.api.core.HelloTarget hello",
 				task(hello).toString());
 	}
 

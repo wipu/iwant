@@ -1,4 +1,4 @@
-package net.sf.iwant.api.core;
+package org.fluentjava.iwant.api.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,12 +6,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.target.TargetBase;
-import net.sf.iwant.coreservices.FileUtil;
-import net.sf.iwant.coreservices.StreamUtil;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.target.TargetBase;
+import org.fluentjava.iwant.coreservices.FileUtil;
+import org.fluentjava.iwant.coreservices.StreamUtil;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class ScriptGenerated extends TargetBase {
 

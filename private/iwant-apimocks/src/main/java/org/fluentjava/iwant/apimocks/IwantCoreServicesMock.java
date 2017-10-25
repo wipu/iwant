@@ -1,4 +1,4 @@
-package net.sf.iwant.apimocks;
+package org.fluentjava.iwant.apimocks;
 
 import java.io.File;
 import java.io.InputStream;
@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.iwant.api.model.IwantCoreServices;
+import org.fluentjava.iwant.api.model.IwantCoreServices;
 
 public class IwantCoreServicesMock implements IwantCoreServices {
 

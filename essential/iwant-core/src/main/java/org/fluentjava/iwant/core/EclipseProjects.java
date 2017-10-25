@@ -1,4 +1,4 @@
-package net.sf.iwant.core;
+package org.fluentjava.iwant.core;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -128,7 +128,7 @@ public class EclipseProjects implements Content {
 		b.append("	<macrodef name=\"iwant\">\n");
 		b.append("		<attribute name=\"target-name\" />\n");
 		b.append("		<sequential>\n");
-		b.append("			<java dir=\"${ws-root}\" classname=\"net.sf.iwant.core.WorkspaceBuilder\" fork=\"true\" outputproperty=\"iwant-out\" resultproperty=\"iwant-result\">\n");
+		b.append("			<java dir=\"${ws-root}\" classname=\"org.fluentjava.iwant.core.WorkspaceBuilder\" fork=\"true\" outputproperty=\"iwant-out\" resultproperty=\"iwant-result\">\n");
 		b.append("				<arg value=\"${wsdef-classname}\" />\n");
 		b.append("				<arg value=\"${ws-root}\" />\n");
 		b.append("				<arg value=\"@{target-name}\" />\n");

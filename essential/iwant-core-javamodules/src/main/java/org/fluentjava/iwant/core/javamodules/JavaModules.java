@@ -1,4 +1,4 @@
-package net.sf.iwant.core.javamodules;
+package org.fluentjava.iwant.core.javamodules;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,15 +9,15 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaCompliance;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.zip.Jar;
-import net.sf.iwant.api.zip.Jar.JarSpex;
-import net.sf.iwant.core.download.FromRepository;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaCompliance;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.zip.Jar;
+import org.fluentjava.iwant.api.zip.Jar.JarSpex;
+import org.fluentjava.iwant.core.download.FromRepository;
 
 public abstract class JavaModules {
 

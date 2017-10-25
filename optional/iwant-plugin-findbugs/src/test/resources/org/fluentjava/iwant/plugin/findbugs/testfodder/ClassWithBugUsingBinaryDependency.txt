@@ -1,6 +1,6 @@
-package net.sf.iwant.plugin.findbugs.testfodder;
+package org.fluentjava.iwant.plugin.findbugs.testfodder;
 
-import net.sf.iwant.plugin.findbugs.testfodder2.BinaryDependency;
+import org.fluentjava.iwant.plugin.findbugs.testfodder2.BinaryDependency;
 
 public class ClassWithBugUsingBinaryDependency {
 

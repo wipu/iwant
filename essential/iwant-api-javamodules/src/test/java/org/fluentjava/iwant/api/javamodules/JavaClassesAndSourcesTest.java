@@ -1,7 +1,7 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Source;
 
 public class JavaClassesAndSourcesTest extends TestCase {
 

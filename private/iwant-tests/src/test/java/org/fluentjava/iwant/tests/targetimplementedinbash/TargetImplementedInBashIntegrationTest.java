@@ -1,4 +1,4 @@
-package net.sf.iwant.tests.targetimplementedinbash;
+package org.fluentjava.iwant.tests.targetimplementedinbash;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,17 +17,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import net.sf.iwant.api.core.ScriptGenerated;
-import net.sf.iwant.core.download.TestedIwantDependencies;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
-import net.sf.iwant.entry2.Iwant2;
-import net.sf.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantEssential;
-import net.sf.iwant.entry3.Iwant3;
-import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantEssential;
-import net.sf.iwant.entrymocks.IwantNetworkMock;
-import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.api.core.ScriptGenerated;
+import org.fluentjava.iwant.core.download.TestedIwantDependencies;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
+import org.fluentjava.iwant.entry2.Iwant2;
+import org.fluentjava.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantEssential;
+import org.fluentjava.iwant.entry3.Iwant3;
+import org.fluentjava.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantEssential;
+import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
+import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class TargetImplementedInBashIntegrationTest {
 

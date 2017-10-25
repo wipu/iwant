@@ -1,4 +1,4 @@
-package net.sf.iwant.coreservices;
+package org.fluentjava.iwant.coreservices;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +9,8 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Properties;
 
-import net.sf.iwant.api.model.IwantCoreServices;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.model.IwantCoreServices;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class IwantCoreServicesImpl implements IwantCoreServices {
 

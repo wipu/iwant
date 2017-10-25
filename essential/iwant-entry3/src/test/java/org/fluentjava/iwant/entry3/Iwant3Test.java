@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -10,19 +10,19 @@ import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
-import net.sf.iwant.api.core.ScriptGenerated;
-import net.sf.iwant.api.javamodules.JavaClasses;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.apimocks.CachesMock;
-import net.sf.iwant.apimocks.TargetEvaluationContextMock;
-import net.sf.iwant.apimocks.TargetMock;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantException;
-import net.sf.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
-import net.sf.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantEssential;
-import net.sf.iwant.entrymocks.IwantNetworkMock;
-import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.api.core.ScriptGenerated;
+import org.fluentjava.iwant.api.javamodules.JavaClasses;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.apimocks.CachesMock;
+import org.fluentjava.iwant.apimocks.TargetEvaluationContextMock;
+import org.fluentjava.iwant.apimocks.TargetMock;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFromIwantWsRoot;
+import org.fluentjava.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantEssential;
+import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
+import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class Iwant3Test extends TestCase {
 
@@ -376,10 +376,10 @@ public class Iwant3Test extends TestCase {
 		testListOfSideEffectsOfExampleWsDef();
 
 		assertTrue(combinedIwantSrc.exists());
-		assertTrue(new File(combinedIwantSrc, "net/sf/iwant/entry2/Iwant2.java")
+		assertTrue(new File(combinedIwantSrc, "org/fluentjava/iwant/entry2/Iwant2.java")
 				.exists());
 		assertTrue(new File(combinedIwantSrc,
-				"net/sf/iwant/api/wsdef/MockedApiWsdef.java").exists());
+				"org/fluentjava/iwant/api/wsdef/MockedApiWsdef.java").exists());
 	}
 
 	private static String modifiedExampleWs() {
@@ -388,15 +388,15 @@ public class Iwant3Test extends TestCase {
 		wsdef.append("\n");
 		wsdef.append("import java.util.Arrays;\n");
 		wsdef.append("import java.util.List;\n");
-		wsdef.append("import net.sf.iwant.api.core.HelloTarget;\n");
-		wsdef.append("import net.sf.iwant.api.model.SideEffect;\n");
-		wsdef.append("import net.sf.iwant.api.model.Target;\n");
+		wsdef.append("import org.fluentjava.iwant.api.core.HelloTarget;\n");
+		wsdef.append("import org.fluentjava.iwant.api.model.SideEffect;\n");
+		wsdef.append("import org.fluentjava.iwant.api.model.Target;\n");
 		wsdef.append(
-				"import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;\n");
+				"import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;\n");
 		wsdef.append(
-				"import net.sf.iwant.api.wsdef.TargetDefinitionContext;\n");
-		wsdef.append("import net.sf.iwant.api.wsdef.Workspace;\n");
-		wsdef.append("import net.sf.iwant.eclipsesettings.EclipseSettings;\n");
+				"import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;\n");
+		wsdef.append("import org.fluentjava.iwant.api.wsdef.Workspace;\n");
+		wsdef.append("import org.fluentjava.iwant.eclipsesettings.EclipseSettings;\n");
 		wsdef.append("\n");
 		wsdef.append("public class ExampleWs implements Workspace {\n");
 		wsdef.append("\n");
@@ -432,12 +432,12 @@ public class Iwant3Test extends TestCase {
 		b.append("\n");
 		b.append("import java.util.Arrays;\n");
 		b.append("\n");
-		b.append("import net.sf.iwant.api.javamodules.JavaModule;\n");
-		b.append("import net.sf.iwant.api.javamodules.JavaSrcModule;\n");
-		b.append("import net.sf.iwant.api.model.Path;\n");
-		b.append("import net.sf.iwant.api.model.Source;\n");
-		b.append("import net.sf.iwant.api.wsdef.WorkspaceModuleContext;\n");
-		b.append("import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;\n");
+		b.append("import org.fluentjava.iwant.api.javamodules.JavaModule;\n");
+		b.append("import org.fluentjava.iwant.api.javamodules.JavaSrcModule;\n");
+		b.append("import org.fluentjava.iwant.api.model.Path;\n");
+		b.append("import org.fluentjava.iwant.api.model.Source;\n");
+		b.append("import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;\n");
+		b.append("import org.fluentjava.iwant.api.wsdef.WorkspaceModuleProvider;\n");
 		b.append("\n");
 		b.append(
 				"public class ExampleWsProvider implements WorkspaceModuleProvider {\n");
@@ -467,9 +467,9 @@ public class Iwant3Test extends TestCase {
 		StringBuilder b = new StringBuilder();
 		b.append("package com.example.wsdef;\n");
 		b.append("\n");
-		b.append("import net.sf.iwant.api.wsdef.Workspace;\n");
-		b.append("import net.sf.iwant.api.wsdef.WorkspaceContext;\n");
-		b.append("import net.sf.iwant.api.wsdef.WorkspaceFactory;\n");
+		b.append("import org.fluentjava.iwant.api.wsdef.Workspace;\n");
+		b.append("import org.fluentjava.iwant.api.wsdef.WorkspaceContext;\n");
+		b.append("import org.fluentjava.iwant.api.wsdef.WorkspaceFactory;\n");
 		b.append("\n");
 		b.append(
 				"public class ExampleWsFactory implements WorkspaceFactory {\n");
@@ -701,7 +701,7 @@ public class Iwant3Test extends TestCase {
 			throws Exception {
 		Class<?> exampleClass = Iwant3.class;
 		File classes = new File(exampleClass
-				.getResource("/net/sf/iwant/entry3/Iwant3.class").toURI())
+				.getResource("/org/fluentjava/iwant/entry3/Iwant3.class").toURI())
 						.getParentFile().getParentFile().getParentFile()
 						.getParentFile().getParentFile();
 

@@ -1,8 +1,8 @@
-package net.sf.iwant.api.wsdef;
+package org.fluentjava.iwant.api.wsdef;
 
 import java.util.Set;
 
-import net.sf.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
 
 public interface IwantPluginWish {
 

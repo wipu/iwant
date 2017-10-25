@@ -1,20 +1,20 @@
-package net.sf.iwant.api.javamodules;
+package org.fluentjava.iwant.api.javamodules;
 
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-import net.sf.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
-import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.apimocks.IwantTestCase;
-import net.sf.iwant.apimocks.TargetMock;
-import net.sf.iwant.coreservices.FileUtil;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantException;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
+import org.fluentjava.iwant.api.model.ExternalSource;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.fluentjava.iwant.apimocks.TargetMock;
+import org.fluentjava.iwant.coreservices.FileUtil;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class JavaClassesTest extends IwantTestCase {
 
@@ -66,7 +66,7 @@ public class JavaClassesTest extends IwantTestCase {
 	}
 
 	public void testRelevantSettingsAreMentionedInContentDescriptor() {
-		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
+		assertEquals("org.fluentjava.iwant.api.javamodules.JavaClasses\n"
 				+ "i:srcDirs:\n" + "  src\n" + "i:resourceDirs:\n"
 				+ "i:classLocations:\n" + "p:javacOptions:\n" + "  -Xlint\n"
 				+ "  -Xlint:-serial\n" + "p:encoding:\n" + "  UTF-8\n" + "",
@@ -74,7 +74,7 @@ public class JavaClassesTest extends IwantTestCase {
 						.srcDirs(Source.underWsroot("src")).classLocations()
 						.debug(false).encoding(Charset.forName("UTF-8")).end()
 						.contentDescriptor());
-		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
+		assertEquals("org.fluentjava.iwant.api.javamodules.JavaClasses\n"
 				+ "i:srcDirs:\n" + "  src2\n" + "  src3\n" + "i:resourceDirs:\n"
 				+ "  res\n" + "i:classLocations:\n" + "p:javacOptions:\n"
 				+ "  -Xlint\n" + "  -Xlint:-serial\n" + "  -g\n"
@@ -215,7 +215,7 @@ public class JavaClassesTest extends IwantTestCase {
 				.srcDirs(Source.underWsroot("src")).classLocations(dep1, dep2)
 				.end();
 
-		assertEquals("net.sf.iwant.api.javamodules.JavaClasses\n"
+		assertEquals("org.fluentjava.iwant.api.javamodules.JavaClasses\n"
 				+ "i:srcDirs:\n" + "  src\n" + "i:resourceDirs:\n"
 				+ "i:classLocations:\n" + "  dep1\n" + "  dep2\n"
 				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"

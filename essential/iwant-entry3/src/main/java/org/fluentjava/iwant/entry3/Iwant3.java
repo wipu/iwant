@@ -1,4 +1,4 @@
-package net.sf.iwant.entry3;
+package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 import java.io.FileReader;
@@ -14,32 +14,32 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sf.iwant.api.core.HelloSideEffect;
-import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaClasses;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.ExternalSource;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.SideEffect;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.api.model.WsInfo;
-import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
-import net.sf.iwant.api.wsdef.TargetDefinitionContext;
-import net.sf.iwant.api.wsdef.Workspace;
-import net.sf.iwant.api.wsdef.WorkspaceFactory;
-import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
-import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;
-import net.sf.iwant.coreservices.FileUtil;
-import net.sf.iwant.coreservices.StreamUtil;
-import net.sf.iwant.entry.Iwant;
-import net.sf.iwant.entry.Iwant.IwantException;
-import net.sf.iwant.entry.Iwant.IwantNetwork;
-import net.sf.iwant.entry.Iwant.UnmodifiableSource;
-import net.sf.iwant.entry2.Iwant2;
-import net.sf.iwant.iwantwsrootfinder.IwantWsRootFinder;
+import org.fluentjava.iwant.api.core.HelloSideEffect;
+import org.fluentjava.iwant.api.core.HelloTarget;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaClasses;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.ExternalSource;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.SideEffect;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.model.WsInfo;
+import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;
+import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
+import org.fluentjava.iwant.api.wsdef.Workspace;
+import org.fluentjava.iwant.api.wsdef.WorkspaceFactory;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleProvider;
+import org.fluentjava.iwant.coreservices.FileUtil;
+import org.fluentjava.iwant.coreservices.StreamUtil;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
+import org.fluentjava.iwant.entry.Iwant.UnmodifiableSource;
+import org.fluentjava.iwant.entry2.Iwant2;
+import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
 
 public class Iwant3 {
 
@@ -295,24 +295,24 @@ public class Iwant3 {
 			throws URISyntaxException {
 		SortedSet<File> apiClassLocations = new TreeSet<>();
 		apiClassLocations.add(classesDirOf(
-				"/net/sf/iwant/" + "api/antrunner/AntRunner.class"));
+				"/org/fluentjava/iwant/" + "api/antrunner/AntRunner.class"));
 		apiClassLocations.add(classesDirOf(
-				"/net/sf/iwant/" + "api/bash/TargetImplementedInBash.class"));
+				"/org/fluentjava/iwant/" + "api/bash/TargetImplementedInBash.class"));
 		apiClassLocations.add(
-				classesDirOf("/net/sf/iwant/" + "api/core/HelloTarget.class"));
+				classesDirOf("/org/fluentjava/iwant/" + "api/core/HelloTarget.class"));
 		apiClassLocations.add(classesDirOf(
-				"/net/sf/iwant/" + "api/javamodules/JavaModule.class"));
+				"/org/fluentjava/iwant/" + "api/javamodules/JavaModule.class"));
 		apiClassLocations
-				.add(classesDirOf("/net/sf/iwant/" + "api/model/Path.class"));
+				.add(classesDirOf("/org/fluentjava/iwant/" + "api/model/Path.class"));
 		apiClassLocations.add(
-				classesDirOf("/net/sf/iwant/" + "api/wsdef/Workspace.class"));
+				classesDirOf("/org/fluentjava/iwant/" + "api/wsdef/Workspace.class"));
 		// TODO maybe make eclipse-settings an optional plugin
 		apiClassLocations.add(classesDirOf(
-				"/net/sf/iwant/" + "eclipsesettings/EclipseSettings.class"));
+				"/org/fluentjava/iwant/" + "eclipsesettings/EclipseSettings.class"));
 		apiClassLocations.add(
-				classesDirOf("/net/sf/iwant/" + "api/target/TargetBase.class"));
+				classesDirOf("/org/fluentjava/iwant/" + "api/target/TargetBase.class"));
 		apiClassLocations.add(classesDirOf(
-				"/net/sf/iwant/" + "core/javafinder/WsdefJavaOf.class"));
+				"/org/fluentjava/iwant/" + "core/javafinder/WsdefJavaOf.class"));
 		return new ArrayList<>(apiClassLocations);
 	}
 

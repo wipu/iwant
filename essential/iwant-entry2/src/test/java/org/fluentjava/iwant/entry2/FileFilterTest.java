@@ -1,11 +1,11 @@
-package net.sf.iwant.entry2;
+package org.fluentjava.iwant.entry2;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
 import junit.framework.TestCase;
-import net.sf.iwant.testarea.TestArea;
+import org.fluentjava.iwant.testarea.TestArea;
 
 public class FileFilterTest extends TestCase {
 
