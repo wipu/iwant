@@ -4,15 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.model.TargetEvaluationContext;
 import org.fluentjava.iwant.api.target.TargetBase;
 import org.fluentjava.iwant.apimocks.TargetMock;
+import org.junit.Before;
+import org.junit.Test;
 
 public class IngredientsAndParametersTest {
 

@@ -1,7 +1,8 @@
 package org.fluentjava.iwant.entry3;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class ExampleWsDefGeneratorTest extends TestCase {
 

@@ -29,6 +29,8 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.io.FileUtils;
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.testarea.TestArea;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -39,8 +41,6 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.net.PfxOptions;
-import org.fluentjava.iwant.entry.Iwant;
-import org.fluentjava.iwant.testarea.TestArea;
 
 public class HttpDownloadTest {
 

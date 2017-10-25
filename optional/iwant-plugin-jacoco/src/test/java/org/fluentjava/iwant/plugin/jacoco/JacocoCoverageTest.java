@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.javamodules.JavaClassesAndSources;
 import org.fluentjava.iwant.api.model.Path;
@@ -44,16 +43,14 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
 				+ antLauncherJar() + ", instrtest-classes.jacoco-instr]",
 				coverage.ingredients().toString());
-		assertEquals(
-				"org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n" + "i:jacoco:\n"
-						+ "  jacoco-0.7.2.201409121644\n" + "i:deps:\n" + "  "
-						+ asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
-						+ antLauncherJar() + "\ni:classLocations:\n"
-						+ "  instrtest-classes.jacoco-instr\n"
-						+ "p:mainClassName:\n" + "  instrtest.Main\n"
-						+ "p:mainClassArgs:\n" + "  arg0\n" + "  arg1\n"
-						+ "i:mainClassArgsFile:\n" + " null\n" + "p:jvmargs:\n",
-				coverage.contentDescriptor());
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
+				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
+				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+				+ antLauncherJar() + "\ni:classLocations:\n"
+				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
+				+ "  instrtest.Main\n" + "p:mainClassArgs:\n" + "  arg0\n"
+				+ "  arg1\n" + "i:mainClassArgsFile:\n" + " null\n"
+				+ "p:jvmargs:\n", coverage.contentDescriptor());
 	}
 
 	public void testIngredientsAndDescriptorWithMainClassArgsGivenAsPath()

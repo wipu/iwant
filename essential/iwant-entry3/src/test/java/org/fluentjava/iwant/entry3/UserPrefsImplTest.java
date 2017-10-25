@@ -3,8 +3,9 @@ package org.fluentjava.iwant.entry3;
 import java.io.File;
 import java.util.Properties;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
+
+import junit.framework.TestCase;
 
 public class UserPrefsImplTest extends TestCase {
 

@@ -5,9 +5,10 @@ import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.entry2.Iwant2.TimestampHandler;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class TimestampHandlerTest extends TestCase {
 

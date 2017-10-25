@@ -1,7 +1,8 @@
 package org.fluentjava.iwant.entry.tests;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.entry.Iwant;
+
+import junit.framework.TestCase;
 
 public class FilenameEscapingTest extends TestCase {
 

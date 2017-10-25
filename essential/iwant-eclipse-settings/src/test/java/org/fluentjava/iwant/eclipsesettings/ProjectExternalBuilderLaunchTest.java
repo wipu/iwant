@@ -2,12 +2,13 @@ package org.fluentjava.iwant.eclipsesettings;
 
 import java.util.Arrays;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.core.Concatenated;
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
+
+import junit.framework.TestCase;
 
 public class ProjectExternalBuilderLaunchTest extends TestCase {
 

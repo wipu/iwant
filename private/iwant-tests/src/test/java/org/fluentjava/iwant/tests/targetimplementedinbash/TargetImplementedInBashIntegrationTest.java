@@ -12,11 +12,6 @@ import java.net.URL;
 import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import org.fluentjava.iwant.api.core.ScriptGenerated;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.entry.Iwant;
@@ -28,6 +23,10 @@ import org.fluentjava.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantEssent
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class TargetImplementedInBashIntegrationTest {
 

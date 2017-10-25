@@ -11,7 +11,6 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.PatternSet.NameEntry;
 import org.apache.tools.ant.types.ZipFileSet;
-
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.model.TargetEvaluationContext;

@@ -6,8 +6,6 @@ import static org.junit.Assert.assertNull;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Test;
-
 import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy;
 import org.fluentjava.iwant.api.javamodules.JavaBinModule;
 import org.fluentjava.iwant.api.javamodules.JavaCompliance;
@@ -18,6 +16,7 @@ import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.zip.Jar;
 import org.fluentjava.iwant.core.download.Downloaded;
 import org.fluentjava.iwant.core.download.GnvArtifact;
+import org.junit.Test;
 
 public class JavaModulesTest {
 
@@ -160,9 +159,11 @@ public class JavaModulesTest {
 
 		List<Path> mas = JavaModules.mainArtifactsOf(m.bin, m.src, m.onlyTests);
 		assertEquals(2, mas.size());
-		assertEquals("org.fluentjava.iwant.core.download.Downloaded\n" + "p:url:\n"
-				+ "  http://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar\n"
-				+ "p:md5:\n" + " null\n" + "", descr(mas.get(0)));
+		assertEquals(
+				"org.fluentjava.iwant.core.download.Downloaded\n" + "p:url:\n"
+						+ "  http://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar\n"
+						+ "p:md5:\n" + " null\n" + "",
+				descr(mas.get(0)));
 		assertEquals("org.fluentjava.iwant.api.javamodules.JavaClasses\n"
 				+ "i:srcDirs:\n" + "  mod/src/main/java\n" + "i:resourceDirs:\n"
 				+ "  mod/src/main/resources\n" + "i:classLocations:\n"
@@ -238,24 +239,20 @@ public class JavaModulesTest {
 		List<Path> tas = JavaModules.testArtifactsOf(m.bin, m.src, m.onlyMain,
 				m.onlyTests);
 		assertEquals(2, tas.size());
-		assertEquals(
-				"org.fluentjava.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
-						+ "  mod/src/test/java\n" + "i:resourceDirs:\n"
-						+ "  mod/src/test/resources\n" + "i:classLocations:\n"
-						+ "  mod-main-classes\n" + "  commons-io-2.4.jar\n"
-						+ "p:javacOptions:\n" + "  -Xlint\n"
-						+ "  -Xlint:-serial\n" + "  -source\n" + "  1.8\n"
-						+ "  -g\n" + "p:encoding:\n" + " null\n" + "",
-				descr(tas.get(0)));
-		assertEquals(
-				"org.fluentjava.iwant.api.javamodules.JavaClasses\n" + "i:srcDirs:\n"
-						+ "  only-tests/src/test/java\n" + "i:resourceDirs:\n"
-						+ "  only-tests/src/test/resources\n"
-						+ "i:classLocations:\n" + "  only-main-main-classes\n"
-						+ "p:javacOptions:\n" + "  -Xlint\n"
-						+ "  -Xlint:-serial\n" + "  -source\n" + "  1.8\n"
-						+ "  -g\n" + "p:encoding:\n" + " null\n" + "",
-				descr(tas.get(1)));
+		assertEquals("org.fluentjava.iwant.api.javamodules.JavaClasses\n"
+				+ "i:srcDirs:\n" + "  mod/src/test/java\n" + "i:resourceDirs:\n"
+				+ "  mod/src/test/resources\n" + "i:classLocations:\n"
+				+ "  mod-main-classes\n" + "  commons-io-2.4.jar\n"
+				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
+				+ "  -source\n" + "  1.8\n" + "  -g\n" + "p:encoding:\n"
+				+ " null\n" + "", descr(tas.get(0)));
+		assertEquals("org.fluentjava.iwant.api.javamodules.JavaClasses\n"
+				+ "i:srcDirs:\n" + "  only-tests/src/test/java\n"
+				+ "i:resourceDirs:\n" + "  only-tests/src/test/resources\n"
+				+ "i:classLocations:\n" + "  only-main-main-classes\n"
+				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
+				+ "  -source\n" + "  1.8\n" + "  -g\n" + "p:encoding:\n"
+				+ " null\n" + "", descr(tas.get(1)));
 		// bin and main only have no test artifact
 	}
 

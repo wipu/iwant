@@ -1,7 +1,8 @@
 package org.fluentjava.iwant.api.javamodules;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.model.StringFilter;
+
+import junit.framework.TestCase;
 
 public class DefaultTestClassNameFilterTest extends TestCase {
 
@@ -26,7 +27,8 @@ public class DefaultTestClassNameFilterTest extends TestCase {
 	}
 
 	public void testToStringIsConstantSoItCanBeUsedInTargetContentDefinition() {
-		assertEquals("org.fluentjava.iwant.api.javamodules.DefaultTestClassNameFilter",
+		assertEquals(
+				"org.fluentjava.iwant.api.javamodules.DefaultTestClassNameFilter",
 				filter.toString());
 	}
 

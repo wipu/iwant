@@ -5,9 +5,6 @@ import static org.junit.Assert.fail;
 
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import org.fluentjava.iwant.api.javamodules.JavaModule;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
 import org.fluentjava.iwant.api.model.Path;
@@ -15,6 +12,8 @@ import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.wsdef.IwantPluginWishes;
 import org.fluentjava.iwant.api.wsdef.WishDefinitionContext;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.junit.Before;
+import org.junit.Test;
 
 public class WsdefJavaOfTest {
 

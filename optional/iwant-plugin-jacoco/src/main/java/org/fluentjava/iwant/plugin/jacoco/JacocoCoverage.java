@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-
 import org.fluentjava.iwant.api.antrunner.AntRunner;
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.SystemEnv;

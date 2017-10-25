@@ -6,11 +6,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
 import org.fluentjava.iwant.plannerapi.Resource;
 import org.fluentjava.iwant.plannerapi.ResourcePool;
 import org.fluentjava.iwant.plannerapi.Task;
 import org.fluentjava.iwant.plannerapi.TaskDirtiness;
+
+import junit.framework.Assert;
 
 public class TaskMock implements Task {
 

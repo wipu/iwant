@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.core.Concatenated;
 import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
 import org.fluentjava.iwant.api.core.HelloSideEffect;
@@ -40,6 +39,8 @@ import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class WishEvaluatorTest extends TestCase {
 
@@ -844,8 +845,8 @@ public class WishEvaluatorTest extends TestCase {
 
 		StringBuilder expectedErr = new StringBuilder();
 		expectedErr.append("Wanting target2\n");
-		expectedErr
-				.append("(0/1 D! org.fluentjava.iwant.api.core.HelloTarget target1)\n");
+		expectedErr.append(
+				"(0/1 D! org.fluentjava.iwant.api.core.HelloTarget target1)\n");
 		expectedErr.append(
 				"(0/1 D! org.fluentjava.iwant.api.core.Concatenated target2)\n");
 		expectedErr.append("Content:\n");

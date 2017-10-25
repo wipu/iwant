@@ -29,8 +29,10 @@ public class JarTest extends IwantTestCase {
 		Jar jar = Jar.with().classes(Source.underWsroot("classes"))
 				.classes(Source.underWsroot("classes2")).end();
 		assertEquals("[classes, classes2]", jar.ingredients().toString());
-		assertEquals("org.fluentjava.iwant.api.zip.Jar\n" + "i:classDirs:\n"
-				+ "  classes\n" + "  classes2\n" + "", jar.contentDescriptor());
+		assertEquals(
+				"org.fluentjava.iwant.api.zip.Jar\n" + "i:classDirs:\n"
+						+ "  classes\n" + "  classes2\n" + "",
+				jar.contentDescriptor());
 	}
 
 	public void testJarOfDirectory() throws Exception {

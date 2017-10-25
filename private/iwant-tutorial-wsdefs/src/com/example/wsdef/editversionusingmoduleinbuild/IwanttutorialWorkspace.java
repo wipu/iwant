@@ -3,9 +3,6 @@ package com.example.wsdef.editversionusingmoduleinbuild;
 import java.util.Arrays;
 import java.util.List;
 
-import com.example.util.editversionusingmoduleinbuild.ExampleUtil;
-import com.example.wsdefdef.editversionusingmoduleinbuild.IwantTutorialWorkspaceProvider;
-
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.model.SideEffect;
 import org.fluentjava.iwant.api.model.Target;
@@ -13,6 +10,9 @@ import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;
 import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
 import org.fluentjava.iwant.api.wsdef.Workspace;
 import org.fluentjava.iwant.eclipsesettings.EclipseSettings;
+
+import com.example.util.editversionusingmoduleinbuild.ExampleUtil;
+import com.example.wsdefdef.editversionusingmoduleinbuild.IwantTutorialWorkspaceProvider;
 
 public class IwanttutorialWorkspace implements Workspace {
 

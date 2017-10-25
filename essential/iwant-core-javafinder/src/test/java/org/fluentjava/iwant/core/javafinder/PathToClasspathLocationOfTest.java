@@ -5,12 +5,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import org.fluentjava.iwant.api.javamodules.JavaModule;
 import org.fluentjava.iwant.api.model.ExternalSource;
 import org.fluentjava.iwant.api.model.Path;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class PathToClasspathLocationOfTest {
 

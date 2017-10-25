@@ -2,13 +2,14 @@ package org.fluentjava.iwant.entry3;
 
 import java.util.Arrays;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.core.Concatenated;
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.apimocks.TargetMock;
 import org.fluentjava.iwant.entry.Iwant;
+
+import junit.framework.TestCase;
 
 public class PathDefinitionConflictCheckerTest extends TestCase {
 
@@ -57,10 +58,12 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 		Path sourceB = Source.underWsroot("b");
 		Path a = Concatenated.named("a").nativePathTo(sourceB).end();
 
-		assertError("Two conflicting definitions for Path name b:\n"
-				+ "One is of\n" + " class org.fluentjava.iwant.api.core.HelloTarget\n"
-				+ "and another is of\n"
-				+ " class org.fluentjava.iwant.api.model.Source", a, targetB);
+		assertError(
+				"Two conflicting definitions for Path name b:\n" + "One is of\n"
+						+ " class org.fluentjava.iwant.api.core.HelloTarget\n"
+						+ "and another is of\n"
+						+ " class org.fluentjava.iwant.api.model.Source",
+				a, targetB);
 	}
 
 	public void testTwoConcatenatedsHaveIngredientsOfDifferentName() {
@@ -71,10 +74,10 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 
 		assertError("Two conflicting definitions for Path name a:\n"
 				+ "One has content descriptor:\n"
-				+ "org.fluentjava.iwant.api.core.Concatenated\n" + "i:native-path:\n"
-				+ "  ingr2\n" + "\n" + "and another:\n"
-				+ "org.fluentjava.iwant.api.core.Concatenated\n" + "i:native-path:\n"
-				+ "  ingr1\n" + "", p1, p2);
+				+ "org.fluentjava.iwant.api.core.Concatenated\n"
+				+ "i:native-path:\n" + "  ingr2\n" + "\n" + "and another:\n"
+				+ "org.fluentjava.iwant.api.core.Concatenated\n"
+				+ "i:native-path:\n" + "  ingr1\n" + "", p1, p2);
 	}
 
 	public void testOneConcatenatedHasNullIngredientInsteadOfNotNull() {
@@ -85,10 +88,10 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 		// check both ways so no NPE here
 		String errorMessage = "Two conflicting definitions for Path name a:\n"
 				+ "One has content descriptor:\n"
-				+ "org.fluentjava.iwant.api.core.Concatenated\n" + "i:native-path:\n"
-				+ " null\n" + "\n" + "and another:\n"
-				+ "org.fluentjava.iwant.api.core.Concatenated\n" + "i:native-path:\n"
-				+ "  ingr1\n" + "";
+				+ "org.fluentjava.iwant.api.core.Concatenated\n"
+				+ "i:native-path:\n" + " null\n" + "\n" + "and another:\n"
+				+ "org.fluentjava.iwant.api.core.Concatenated\n"
+				+ "i:native-path:\n" + "  ingr1\n" + "";
 		assertError(errorMessage, p1, p2);
 		assertError("Null Path", p2, p1);
 	}
@@ -102,9 +105,10 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 
 		assertError("Two conflicting definitions for Path name a:\n"
 				+ "One has content descriptor:\n"
-				+ "org.fluentjava.iwant.api.core.Concatenated\n" + "i:native-path:\n"
-				+ "  common\n" + "i:native-path:\n" + "  p2-only\n" + "\n"
-				+ "and another:\n" + "org.fluentjava.iwant.api.core.Concatenated\n"
+				+ "org.fluentjava.iwant.api.core.Concatenated\n"
+				+ "i:native-path:\n" + "  common\n" + "i:native-path:\n"
+				+ "  p2-only\n" + "\n" + "and another:\n"
+				+ "org.fluentjava.iwant.api.core.Concatenated\n"
 				+ "i:native-path:\n" + "  common\n" + "", p1, p2);
 	}
 

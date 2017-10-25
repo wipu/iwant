@@ -5,9 +5,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 
-import org.junit.Test;
-
 import org.fluentjava.iwant.api.core.ScriptGenerated;
+import org.junit.Test;
 
 public class BashScriptTest {
 

@@ -6,8 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import junit.framework.Assert;
 import org.fluentjava.iwant.entry.Iwant;
+
+import junit.framework.Assert;
 
 public final class TestArea {
 

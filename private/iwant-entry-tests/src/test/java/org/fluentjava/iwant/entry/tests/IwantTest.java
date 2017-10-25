@@ -9,7 +9,6 @@ import java.net.URL;
 import java.security.Permission;
 import java.util.Arrays;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.core.ScriptGenerated;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
@@ -17,6 +16,8 @@ import org.fluentjava.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFrom
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class IwantTest extends TestCase {
 

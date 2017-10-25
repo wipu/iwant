@@ -13,14 +13,14 @@ public class ScriptGeneratedTest extends IwantTestCase {
 
 	public void testContentDescriptor() {
 		assertEquals(
-				"org.fluentjava.iwant.api.core.ScriptGenerated\n" + "i:script:\n"
-						+ "  src1.sh\n" + "",
+				"org.fluentjava.iwant.api.core.ScriptGenerated\n"
+						+ "i:script:\n" + "  src1.sh\n" + "",
 				ScriptGenerated.named("s1")
 						.byScript(Source.underWsroot("src1.sh"))
 						.contentDescriptor());
 		assertEquals(
-				"org.fluentjava.iwant.api.core.ScriptGenerated\n" + "i:script:\n"
-						+ "  src2.sh\n" + "",
+				"org.fluentjava.iwant.api.core.ScriptGenerated\n"
+						+ "i:script:\n" + "  src2.sh\n" + "",
 				ScriptGenerated.named("s2")
 						.byScript(Source.underWsroot("src2.sh"))
 						.contentDescriptor());

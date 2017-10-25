@@ -2,9 +2,8 @@ package org.fluentjava.iwant.api.javamodules;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import org.fluentjava.iwant.core.download.Downloaded;
+import org.junit.Test;
 
 public class ScalaVersionTest {
 

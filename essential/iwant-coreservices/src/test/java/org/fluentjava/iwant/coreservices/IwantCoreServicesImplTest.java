@@ -3,10 +3,11 @@ package org.fluentjava.iwant.coreservices;
 import java.io.File;
 import java.util.Properties;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.model.IwantCoreServices;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class IwantCoreServicesImplTest extends TestCase {
 

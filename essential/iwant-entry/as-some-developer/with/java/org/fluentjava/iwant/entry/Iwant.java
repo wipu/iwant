@@ -46,7 +46,8 @@ public class Iwant {
 
 	private static final File HOME = new File(System.getProperty("user.home"));
 
-	public static final File IWANT_USER_DIR = new File(HOME, ".org.fluentjava.iwant");
+	public static final File IWANT_USER_DIR = new File(HOME,
+			".org.fluentjava.iwant");
 
 	public static final String EXAMPLE_COMMIT = "f68535c89288af153156e7ac00e90936dd773712";
 

@@ -3,7 +3,6 @@ package org.fluentjava.iwant.api.javamodules;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.core.Concatenated;
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
@@ -18,6 +17,8 @@ import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.StringFilter;
 import org.fluentjava.iwant.api.model.Target;
+
+import junit.framework.TestCase;
 
 public class JavaSrcModuleTest extends TestCase {
 

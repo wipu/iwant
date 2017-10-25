@@ -3,8 +3,9 @@ package org.fluentjava.iwant.coreservices;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class FileUtilTest extends TestCase {
 

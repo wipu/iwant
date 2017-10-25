@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.model.ExternalSource;
 import org.fluentjava.iwant.api.model.Path;
@@ -27,6 +26,8 @@ import org.fluentjava.iwant.plannerapi.Resource;
 import org.fluentjava.iwant.plannerapi.ResourcePool;
 import org.fluentjava.iwant.plannerapi.TaskDirtiness;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class TargetRefreshTaskTest extends TestCase {
 

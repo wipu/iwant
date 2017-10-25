@@ -24,9 +24,9 @@ public class ConcatenatedTest extends IwantTestCase {
 				Concatenated.named("all-but-paths").bytes(1, 2).string("s")
 						.end().contentDescriptor());
 		assertEquals(
-				"org.fluentjava.iwant.api.core.Concatenated\n" + "i:content-of:\n"
-						+ "  src\n" + "i:native-path:\n" + "  target\n"
-						+ "i:unix-path:\n" + "  target2\n" + "",
+				"org.fluentjava.iwant.api.core.Concatenated\n"
+						+ "i:content-of:\n" + "  src\n" + "i:native-path:\n"
+						+ "  target\n" + "i:unix-path:\n" + "  target2\n" + "",
 				Concatenated.named("only-paths")
 						.contentOf(Source.underWsroot("src"))
 						.nativePathTo(new HelloTarget("target", ""))

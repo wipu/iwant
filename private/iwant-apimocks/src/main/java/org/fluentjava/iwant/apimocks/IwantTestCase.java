@@ -5,13 +5,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.model.IwantCoreServices;
 import org.fluentjava.iwant.coreservices.IwantCoreServicesImpl;
 import org.fluentjava.iwant.coreservices.StreamUtil;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public abstract class IwantTestCase extends TestCase {
 

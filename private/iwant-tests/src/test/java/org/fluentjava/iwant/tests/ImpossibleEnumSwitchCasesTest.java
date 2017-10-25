@@ -3,14 +3,13 @@ package org.fluentjava.iwant.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import org.junit.Test;
-
 import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy;
 import org.fluentjava.iwant.api.javamodules.CodeStyle;
 import org.fluentjava.iwant.api.javamodules.CodeStylePolicy;
 import org.fluentjava.iwant.api.javamodules.CodeStyleValue;
 import org.fluentjava.iwant.api.javamodules.JavaCompliance;
 import org.fluentjava.iwant.eclipsesettings.OrgEclipseJdtCorePrefs;
+import org.junit.Test;
 
 public class ImpossibleEnumSwitchCasesTest {
 

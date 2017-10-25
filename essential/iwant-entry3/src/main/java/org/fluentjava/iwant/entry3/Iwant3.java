@@ -296,23 +296,23 @@ public class Iwant3 {
 		SortedSet<File> apiClassLocations = new TreeSet<>();
 		apiClassLocations.add(classesDirOf(
 				"/org/fluentjava/iwant/" + "api/antrunner/AntRunner.class"));
+		apiClassLocations.add(classesDirOf("/org/fluentjava/iwant/"
+				+ "api/bash/TargetImplementedInBash.class"));
 		apiClassLocations.add(classesDirOf(
-				"/org/fluentjava/iwant/" + "api/bash/TargetImplementedInBash.class"));
-		apiClassLocations.add(
-				classesDirOf("/org/fluentjava/iwant/" + "api/core/HelloTarget.class"));
+				"/org/fluentjava/iwant/" + "api/core/HelloTarget.class"));
 		apiClassLocations.add(classesDirOf(
 				"/org/fluentjava/iwant/" + "api/javamodules/JavaModule.class"));
-		apiClassLocations
-				.add(classesDirOf("/org/fluentjava/iwant/" + "api/model/Path.class"));
-		apiClassLocations.add(
-				classesDirOf("/org/fluentjava/iwant/" + "api/wsdef/Workspace.class"));
+		apiClassLocations.add(classesDirOf(
+				"/org/fluentjava/iwant/" + "api/model/Path.class"));
+		apiClassLocations.add(classesDirOf(
+				"/org/fluentjava/iwant/" + "api/wsdef/Workspace.class"));
 		// TODO maybe make eclipse-settings an optional plugin
+		apiClassLocations.add(classesDirOf("/org/fluentjava/iwant/"
+				+ "eclipsesettings/EclipseSettings.class"));
 		apiClassLocations.add(classesDirOf(
-				"/org/fluentjava/iwant/" + "eclipsesettings/EclipseSettings.class"));
-		apiClassLocations.add(
-				classesDirOf("/org/fluentjava/iwant/" + "api/target/TargetBase.class"));
-		apiClassLocations.add(classesDirOf(
-				"/org/fluentjava/iwant/" + "core/javafinder/WsdefJavaOf.class"));
+				"/org/fluentjava/iwant/" + "api/target/TargetBase.class"));
+		apiClassLocations.add(classesDirOf("/org/fluentjava/iwant/"
+				+ "core/javafinder/WsdefJavaOf.class"));
 		return new ArrayList<>(apiClassLocations);
 	}
 

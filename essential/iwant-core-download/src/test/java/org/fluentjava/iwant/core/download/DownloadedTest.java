@@ -7,12 +7,13 @@ import java.util.Map;
 
 import javax.tools.JavaCompiler;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.apimocks.CachesMock;
 import org.fluentjava.iwant.apimocks.TargetEvaluationContextMock;
 import org.fluentjava.iwant.apimocks.UrlString;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class DownloadedTest extends TestCase {
 
@@ -39,8 +40,10 @@ public class DownloadedTest extends TestCase {
 	}
 
 	public void testContentDescriptor() {
-		assertEquals("org.fluentjava.iwant.core.download.Downloaded\n" + "p:url:\n"
-				+ "  http://localhost/url1\n" + "p:md5:\n" + "  any\n" + "",
+		assertEquals(
+				"org.fluentjava.iwant.core.download.Downloaded\n" + "p:url:\n"
+						+ "  http://localhost/url1\n" + "p:md5:\n" + "  any\n"
+						+ "",
 				Downloaded.withName("any").url("http://localhost/url1")
 						.md5("any").contentDescriptor());
 		assertEquals(

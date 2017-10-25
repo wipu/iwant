@@ -2,10 +2,11 @@ package org.fluentjava.iwant.entry.tests;
 
 import java.io.File;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class TheSoleChildOfTest extends TestCase {
 

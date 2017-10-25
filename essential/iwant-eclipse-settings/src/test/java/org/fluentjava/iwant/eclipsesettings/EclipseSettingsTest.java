@@ -193,9 +193,9 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		assertEquals(1, seCtx.targetsWantedAsPath().size());
-		assertEquals("org.fluentjava.iwant.api.core.Concatenated\n" + "i:native-path:\n"
-				+ "  testUtilWithSources\n" + "p:string:\n" + "  \\n\n"
-				+ "i:native-path:\n" + "  testUtilWithSources-src\n"
+		assertEquals("org.fluentjava.iwant.api.core.Concatenated\n"
+				+ "i:native-path:\n" + "  testUtilWithSources\n" + "p:string:\n"
+				+ "  \\n\n" + "i:native-path:\n" + "  testUtilWithSources-src\n"
 				+ "p:string:\n" + "  \\n\n" + "i:native-path:\n"
 				+ "  binWithoutSources\n" + "p:string:\n" + "  \\n\n"
 				+ "i:native-path:\n" + "  binWithSources\n" + "p:string:\n"
@@ -220,9 +220,11 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		assertEquals(1, seCtx.targetsWantedAsPath().size());
-		assertEquals("org.fluentjava.iwant.api.core.Concatenated\n" + "i:native-path:\n"
-				+ "  util\n" + "p:string:\n" + "  \\n\n" + "i:native-path:\n"
-				+ "  util-src\n" + "p:string:\n" + "  \\n\n" + "",
+		assertEquals(
+				"org.fluentjava.iwant.api.core.Concatenated\n"
+						+ "i:native-path:\n" + "  util\n" + "p:string:\n"
+						+ "  \\n\n" + "i:native-path:\n" + "  util-src\n"
+						+ "p:string:\n" + "  \\n\n" + "",
 				seCtx.targetsWantedAsPath().get(0).contentDescriptor());
 
 		assertDotClasspathContains("mod",

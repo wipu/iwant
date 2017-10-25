@@ -4,8 +4,9 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class FileFilterTest extends TestCase {
 

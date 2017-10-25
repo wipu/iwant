@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.model.Caches;
 import org.fluentjava.iwant.api.model.ExternalSource;
@@ -14,6 +13,8 @@ import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class CachesImplTest extends TestCase {
 

@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.javamodules.JavaBinModule;
 import org.fluentjava.iwant.api.javamodules.JavaClasses;
 import org.fluentjava.iwant.api.javamodules.JavaModule;
@@ -14,6 +13,8 @@ import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class WorkspaceDefinitionContextImplTest extends TestCase {
 

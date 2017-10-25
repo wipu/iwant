@@ -3,9 +3,8 @@ package org.fluentjava.iwant.plugin.testng;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.testng.TestNG;
-
 import org.fluentjava.iwant.api.javamodules.TestRunner;
+import org.testng.TestNG;
 
 public class TestngRunner implements TestRunner {
 

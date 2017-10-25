@@ -2,7 +2,6 @@ package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
@@ -14,6 +13,8 @@ import org.fluentjava.iwant.entry.Iwant.IwantException;
 import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 

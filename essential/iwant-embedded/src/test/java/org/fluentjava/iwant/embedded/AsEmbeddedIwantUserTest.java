@@ -2,9 +2,10 @@ package org.fluentjava.iwant.embedded;
 
 import java.io.File;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class AsEmbeddedIwantUserTest extends TestCase {
 

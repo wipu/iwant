@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.tools.ant.taskdefs.Expand;
-
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.model.TargetEvaluationContext;

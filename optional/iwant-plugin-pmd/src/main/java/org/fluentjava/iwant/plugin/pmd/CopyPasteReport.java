@@ -9,12 +9,12 @@ import java.util.List;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
-
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.TargetEvaluationContext;
 import org.fluentjava.iwant.api.target.TargetBase;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
+
 import net.sourceforge.pmd.cpd.CPDTask;
 
 public class CopyPasteReport extends TargetBase {

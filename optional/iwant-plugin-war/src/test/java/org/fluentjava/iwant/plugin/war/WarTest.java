@@ -31,12 +31,11 @@ public class WarTest extends IwantTestCase {
 				.basedir(Source.underWsroot("empty-basedir"))
 				.webXml(Source.underWsroot("web.xml")).end();
 
-		assertEquals(
-				"org.fluentjava.iwant.plugin.war.War {\n" + "  basedir:empty-basedir\n"
-						+ "  webxml:web.xml\n" + "  excludes {\n" + "  }\n"
-						+ "  libs {\n" + "  }\n" + "  classes {\n" + "  }\n"
-						+ "  resources {\n" + "  }\n" + "}\n" + "",
-				war.contentDescriptor());
+		assertEquals("org.fluentjava.iwant.plugin.war.War {\n"
+				+ "  basedir:empty-basedir\n" + "  webxml:web.xml\n"
+				+ "  excludes {\n" + "  }\n" + "  libs {\n" + "  }\n"
+				+ "  classes {\n" + "  }\n" + "  resources {\n" + "  }\n"
+				+ "}\n" + "", war.contentDescriptor());
 		assertEquals("[empty-basedir, web.xml]", war.ingredients().toString());
 	}
 
@@ -53,15 +52,13 @@ public class WarTest extends IwantTestCase {
 						Source.underWsroot("lib/b.jar"))
 				.end();
 
-		assertEquals(
-				"org.fluentjava.iwant.plugin.war.War {\n" + "  basedir:empty-basedir\n"
-						+ "  webxml:confs/web.xml\n" + "  excludes {\n"
-						+ "    exclude1\n" + "    exclude2\n" + "  }\n"
-						+ "  libs {\n" + "    lib/a.jar\n" + "    lib/b.jar\n"
-						+ "  }\n" + "  classes {\n" + "    classes1\n"
-						+ "    classes2\n" + "  }\n" + "  resources {\n"
-						+ "    res1\n" + "    res2\n" + "  }\n" + "}\n" + "",
-				war.contentDescriptor());
+		assertEquals("org.fluentjava.iwant.plugin.war.War {\n"
+				+ "  basedir:empty-basedir\n" + "  webxml:confs/web.xml\n"
+				+ "  excludes {\n" + "    exclude1\n" + "    exclude2\n"
+				+ "  }\n" + "  libs {\n" + "    lib/a.jar\n" + "    lib/b.jar\n"
+				+ "  }\n" + "  classes {\n" + "    classes1\n"
+				+ "    classes2\n" + "  }\n" + "  resources {\n" + "    res1\n"
+				+ "    res2\n" + "  }\n" + "}\n" + "", war.contentDescriptor());
 		assertEquals(
 				"[empty-basedir, confs, lib/a.jar, lib/b.jar, classes1, classes2, res1, res2]",
 				war.ingredients().toString());

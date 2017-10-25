@@ -3,11 +3,12 @@ package org.fluentjava.iwant.entry.tests;
 import java.io.File;
 import java.net.URL;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class DownloadingTest extends TestCase {
 

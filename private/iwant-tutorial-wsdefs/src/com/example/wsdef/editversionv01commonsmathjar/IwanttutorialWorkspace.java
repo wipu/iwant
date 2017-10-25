@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.math.fraction.Fraction;
-
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.model.SideEffect;
 import org.fluentjava.iwant.api.model.Target;

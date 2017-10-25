@@ -25,8 +25,8 @@ public class SubPathTest extends IwantTestCase {
 		assertEquals("[parent2]", s2.ingredients().toString());
 
 		assertEquals(
-				"org.fluentjava.iwant.api.core.SubPath\n" + "i:parent:\n" + "  parent\n"
-						+ "p:relativePath:\n" + "  rel\n" + "",
+				"org.fluentjava.iwant.api.core.SubPath\n" + "i:parent:\n"
+						+ "  parent\n" + "p:relativePath:\n" + "  rel\n" + "",
 				s.contentDescriptor().toString());
 		assertEquals(
 				"org.fluentjava.iwant.api.core.SubPath\n" + "i:parent:\n"

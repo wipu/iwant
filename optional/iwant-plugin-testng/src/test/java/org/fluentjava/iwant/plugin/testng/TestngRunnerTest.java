@@ -4,13 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry.Iwant.ExitCalledException;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import org.fluentjava.iwant.entry.Iwant;
-import org.fluentjava.iwant.entry.Iwant.ExitCalledException;
 
 public class TestngRunnerTest {
 

@@ -6,12 +6,13 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.security.Permission;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantEssential;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import org.fluentjava.iwant.testarea.TestArea;
+
+import junit.framework.TestCase;
 
 public class Iwant2Test extends TestCase {
 

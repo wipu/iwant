@@ -3,12 +3,11 @@ package org.fluentjava.iwant.entrymocks;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.Before;
+import org.junit.Test;
 
 public class IwantNetworkMockTest {
 

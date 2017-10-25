@@ -3,12 +3,13 @@ package org.fluentjava.iwant.entry.tests;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.google.common.testing.EqualsTester;
-
-import junit.framework.TestCase;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableSource;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableZip;
+
+import com.google.common.testing.EqualsTester;
+
+import junit.framework.TestCase;
 
 public class UnmodifiableSourceTest extends TestCase {
 

@@ -1,10 +1,11 @@
 package org.fluentjava.iwant.plugin.github;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.core.SubPath;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.zip.Unzipped;
 import org.fluentjava.iwant.core.download.Downloaded;
+
+import junit.framework.TestCase;
 
 public class FromGithubTest extends TestCase {
 

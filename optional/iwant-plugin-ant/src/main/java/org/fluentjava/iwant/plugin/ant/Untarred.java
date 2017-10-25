@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.tools.ant.taskdefs.Untar;
 import org.apache.tools.ant.taskdefs.Untar.UntarCompressionMethod;
-
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.model.TargetEvaluationContext;

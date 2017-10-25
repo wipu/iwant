@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
-import junit.framework.TestCase;
 import org.fluentjava.iwant.api.model.WsInfo;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
+
+import junit.framework.TestCase;
 
 public class WsInfoTest extends TestCase {
 
