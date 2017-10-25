@@ -23,8 +23,8 @@ cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
 cmde "0 0 0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/demo.war/as-path | xargs -r unzip -l | tail -n +4 | cut -b 30-"
 
 out-was <<EOF
-(0/1 D! net.sf.iwant.api.core.Concatenated web.xml)
-(0/1 D! net.sf.iwant.plugin.war.War demo.war)
+(0/1 D! org.fluentjava.iwant.api.core.Concatenated web.xml)
+(0/1 D! org.fluentjava.iwant.plugin.war.War demo.war)
  META-INF/
  META-INF/MANIFEST.MF
  WEB-INF/

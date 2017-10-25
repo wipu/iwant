@@ -56,8 +56,8 @@ section "Finishing with the wizard"
 p "Let's end the wizard by wishing for help one more time."
 cmde "1" "as-iwant-tutorial-developer/with/bash/iwant/help.sh"
 out-was <<EOF
-(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)
-(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
+(0/1 D! org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)
+(0/1 D! org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
 (Using user preferences from file $PWD/as-iwant-tutorial-developer/i-have/conf/user-preferences:
 [workerCount=1])
 Try $PWD/as-iwant-tutorial-developer/with/bash/iwant/list-of/side-effects

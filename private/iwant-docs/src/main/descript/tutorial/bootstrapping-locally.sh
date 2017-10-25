@@ -13,8 +13,8 @@ cmd "cd - > /dev/null"
 
 p 'First we remove the cached "unmodifiable" iwant sources so the tutorial will use the latest local iwant files.'
 
-cmd "rm -rf $HOME/.net.sf.iwant/cached/UnmodifiableUrl/file%3A$IWANTZIP"
-cmd "rm -rf $HOME/.net.sf.iwant/cached/UnmodifiableZip/file%3A$HOME/.net.sf.iwant/cached/UnmodifiableUrl/file%25253A$IWANTZIP"
+cmd "rm -rf $HOME/.org.fluentjava.iwant/cached/UnmodifiableUrl/file%3A$IWANTZIP"
+cmd "rm -rf $HOME/.org.fluentjava.iwant/cached/UnmodifiableZip/file%3A$HOME/.org.fluentjava.iwant/cached/UnmodifiableUrl/file%25253A$IWANTZIP"
 
 cmd "cp -a '$LOCAL_IWANT_WSROOT/essential/iwant-entry/as-some-developer' as-iwant-tutorial-developer"
 

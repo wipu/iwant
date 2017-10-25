@@ -58,7 +58,7 @@ def-edit() {
 }
 
 tutorial-inline-snippets() {
-  cat "$IWANT_TUTORIAL_WSDEF_SRC/net/sf/iwant/tutorial/TutorialInlineSnippets.java"
+  cat "$IWANT_TUTORIAL_WSDEF_SRC/org/fluentjava/iwant/tutorial/TutorialInlineSnippets.java"
 }
 
 # this depends a lot on eclipse formatting

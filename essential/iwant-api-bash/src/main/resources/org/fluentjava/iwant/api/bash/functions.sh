@@ -7,7 +7,7 @@ iwant-log() {
 }
 
 iwant-filelog() {
-    echo "$@" >> ~/.net.sf.iwant/shell-log
+    echo "$@" >> ~/.org.fluentjava.iwant/shell-log
 }
 
 die() {

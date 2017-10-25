@@ -26,9 +26,9 @@ p "We can fix this by declaring the ingredients:"
 def-edit wsdef customtargetdeclaredingr FileSizeSum
 cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat"
 out-was <<EOF
-(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
-(0/1 D! net.sf.iwant.api.core.HelloTarget ingredient1)
-(0/1 D! net.sf.iwant.api.core.HelloTarget ingredient2)
+(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
+(0/1 D! org.fluentjava.iwant.api.core.HelloTarget ingredient1)
+(0/1 D! org.fluentjava.iwant.api.core.HelloTarget ingredient2)
 (0/1 D! com.example.wsdef.FileSizeSum file-size-sum)
 Refreshing $PWD/as-iwant-tutorial-developer/.i-cached/target/file-size-sum
 5
@@ -58,7 +58,7 @@ wsdef-edit customtargetundeclaredparam
 def-edit wsdef customtargetundeclaredparam FileSizeSum
 cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat"
 out-was <<EOF
-(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
+(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
 5
 EOF
 
@@ -69,7 +69,7 @@ p "We can fix this by declaring the header line a parameter:"
 def-edit wsdef customtargetdeclaredparam FileSizeSum
 cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat"
 out-was <<EOF
-(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
+(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
 (0/1 D~ com.example.wsdef.FileSizeSum file-size-sum)
 Refreshing $PWD/as-iwant-tutorial-developer/.i-cached/target/file-size-sum
 The sum
@@ -88,7 +88,7 @@ p "But if we change the value of the parameter, the target will become dirty and
 wsdef-edit customtargetdeclaredparam
 cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat"
 out-was <<EOF
-(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
+(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
 (0/1 D~ com.example.wsdef.FileSizeSum file-size-sum)
 Refreshing $PWD/as-iwant-tutorial-developer/.i-cached/target/file-size-sum
 The sum of file sizes
@@ -118,7 +118,7 @@ wsdef-edit customtargetselfingr
 def-edit wsdef customtargetselfingr IwanttutorialWorkspaceFactory
 cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat"
 out-was <<EOF
-(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
+(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
 (0/1 D~ com.example.wsdef.FileSizeSum file-size-sum)
 Refreshing $PWD/as-iwant-tutorial-developer/.i-cached/target/file-size-sum
 The sum of file sizes
@@ -135,7 +135,7 @@ EOF
 cmd "touch as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/FileSizeSum.java"
 cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat"
 out-was <<EOF
-(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
+(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
 (0/1 S~ com.example.wsdef.FileSizeSum file-size-sum)
 Refreshing $PWD/as-iwant-tutorial-developer/.i-cached/target/file-size-sum
 The sum of file sizes

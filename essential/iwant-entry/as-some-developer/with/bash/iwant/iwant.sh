@@ -21,7 +21,7 @@ fetch() {
 fetch with/ant/iw/build.xml
 fetch with/bash/iwant/help.sh
 chmod u+x with/bash/iwant/help.sh
-fetch with/java/net/sf/iwant/entry/Iwant.java
+fetch with/java/org/fluentjava/iwant/entry/Iwant.java
 
 CONF=i-have/conf
 mkdir -p "$CONF"

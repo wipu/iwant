@@ -1742,6 +1742,7 @@
       + manually fix findbugs fodder (they are txt files, not java)
     - regenerate (and probably fix) tutorials
       * ah, descript was svn:externals, copying for now, fixing later
+      + fix ant cli manually
       - fetch descript with iwant, not relying on svn:externals
     - migration script for user projects
       - write it

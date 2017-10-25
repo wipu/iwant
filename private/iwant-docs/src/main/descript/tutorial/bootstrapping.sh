@@ -48,7 +48,7 @@ out-was <<EOF
 as-iwant-tutorial-developer/with/ant/iw/build.xml
 as-iwant-tutorial-developer/with/bash/iwant/help.sh
 as-iwant-tutorial-developer/with/bash/iwant/iwant.sh
-as-iwant-tutorial-developer/with/java/net/sf/iwant/entry/Iwant.java
+as-iwant-tutorial-developer/with/java/org/fluentjava/iwant/entry/Iwant.java
 EOF
 
 section "Starting using iwant"
