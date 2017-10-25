@@ -42,10 +42,14 @@ all-srcdirs | without-caches-etc | while read SRCDIR; do
     handle-srcdir "$SRCDIR"
 done
 
-exit
-
 ## then the file contents:
 
-find . -name '*.java' | without-caches-etc | while read JAVA; do
-    echo "sed -i 's/net.sf.iwant/org.fluentjava.iwant/g' $JAVA"
+javafiles-to-fix() {
+    find . -name '*.java' | without-caches-etc
+    echo as-iwant-developer/i-have/wsdef/src/main/java/net/sf/iwant/wsdef/ExtendedIwantEnums.java
+}
+
+javafiles-to-fix | while read JAVA; do
+    echo "sed -i 's/net\.sf\.iwant/org.fluentjava.iwant/g' $JAVA"
+    echo "sed -i 's:net/sf/iwant:org/fluentjava/iwant:g' $JAVA"
 done
