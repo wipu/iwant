@@ -1743,12 +1743,13 @@
     - regenerate (and probably fix) tutorials
       * ah, descript was svn:externals, copying for now, fixing later
       + fix ant cli manually
-      - fetch descript with iwant, not relying on svn:externals
+      - remote tutorial
     - migration script for user projects
       - write it
       - document it in github readme
       - link to the readme from webpage
     - merge to master
+  - fetch descript with iwant, not relying on svn:externals
   - update sf.net site
     - make webpage redirect to iwant.fluentjava.org
     - mention migration
