@@ -1750,8 +1750,8 @@
       + oh, before I forget: organize imports & format after the package rename
       - document it in github readme
       - link to the readme from webpage
-    - merge to master
     - make remote tutorial take iwant.sh from master again
+    - merge to master
   - fetch descript with iwant, not relying on svn:externals
   - update sf.net site
     - make webpage redirect to iwant.fluentjava.org
