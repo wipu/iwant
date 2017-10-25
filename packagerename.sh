@@ -41,3 +41,11 @@ handle-srcdir() {
 all-srcdirs | without-caches-etc | while read SRCDIR; do
     handle-srcdir "$SRCDIR"
 done
+
+exit
+
+## then the file contents:
+
+find . -name '*.java' | without-caches-etc | while read JAVA; do
+    echo "sed -i 's/net.sf.iwant/org.fluentjava.iwant/g' $JAVA"
+done

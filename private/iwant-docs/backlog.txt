@@ -1712,7 +1712,7 @@
     + make Iwant.wishedIwantRootFromUrl static
     + remove commented out code from Iwant
     + for each project take into use
-      - update scripts that fetch the bootstrapper
+      + update scripts that fetch the bootstrapper
         + iwant-demo: done as spike for the new bootstrapping
         + (some) others
         + iwant itself
@@ -1730,11 +1730,11 @@
       * oh, I should never have added that exception to the signature...
   + experiment: maybe if I choose iwant.fluentjava.org over iwant-build.org after all...
     * yes, fluentjava.org site works together with this site so that's going to be the domain
-  - import non-svn clone to eclipse and see things work
+  + import non-svn clone to eclipse and see things work
     * sf.net svn repo is now archive and won't get changes from github
   - rename package to org.fluentjava.iwant
-    - do in branch, things will break
-    - just move files without changing package declarations => git hopefully can follow history better
+    + do in branch, things will break
+    + just move files without changing package declarations => git hopefully can follow history better
     - then fix package declarations
     - then fix tests etc that depend on the old package name
     - merge to master
