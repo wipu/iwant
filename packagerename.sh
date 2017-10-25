@@ -26,6 +26,7 @@ without-caches-etc() {
 	grep -v '^./as-iwant-developer/i-have' |
 	grep -v '^./as-iwant-developer/with' |
 	grep -v '^./iwant-distillery' |
+	grep -v '^./packagerename.sh' |
 	cat
 }
 
@@ -52,5 +53,5 @@ javafiles-to-fix() {
 
 javafiles-to-fix | while read JAVA; do
     echo "sed -i 's/net\.sf\.iwant/org.fluentjava.iwant/g' $JAVA"
-    echo "sed -i 's:org/fluentjava/iwant:org/fluentjava/iwant:g' $JAVA"
+    echo "sed -i 's:net/fluentjava/iwant:org/fluentjava/iwant:g' $JAVA"
 done
