@@ -9,6 +9,8 @@ Try to remember this before each commit.
 
 Oh, and zero warnings by eclipse. (In the future other static analysis will probably also have this rule.)
 
+Whenever possible and feasible, please accompany the feature/fix with tests that pass if and only if the feature/fix works. (Maybe even let the tests drive your design.)
+
 Don't hesitate to ask for help.
 
 More instructions will be added here later, as seen necessary.
