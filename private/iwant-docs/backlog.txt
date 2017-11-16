@@ -1753,6 +1753,7 @@
         + point homepage to new domain
       + after verifying changes, commit to sf.net
       + bring back svn:externals bootstrapping tutorial and use the refactored revision
+      + upgrade and fix build for git: fix packages in iwant imports
       - fix build for svn: use commited revision which is able to use iwant from github
       - on old homepage mention new one
       - see if more explanation is needed for svn:externals tutorial:

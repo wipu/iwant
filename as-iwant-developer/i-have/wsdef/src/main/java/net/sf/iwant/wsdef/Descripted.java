@@ -5,12 +5,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.iwant.api.core.ScriptGenerated;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.model.TargetEvaluationContext;
-import net.sf.iwant.entry.Iwant;
+import org.fluentjava.iwant.api.core.ScriptGenerated;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.entry.Iwant;
 
 public class Descripted extends Target {
 

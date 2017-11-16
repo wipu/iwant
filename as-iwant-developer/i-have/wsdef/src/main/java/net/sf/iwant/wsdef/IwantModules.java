@@ -5,17 +5,17 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaClasses;
-import net.sf.iwant.api.javamodules.JavaCompliance;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
-import net.sf.iwant.api.javamodules.ScalaVersion;
-import net.sf.iwant.api.model.Source;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.core.download.FromRepository;
-import net.sf.iwant.core.javamodules.JavaModules;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaClasses;
+import org.fluentjava.iwant.api.javamodules.JavaCompliance;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import org.fluentjava.iwant.api.javamodules.ScalaVersion;
+import org.fluentjava.iwant.api.model.Source;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.core.download.FromRepository;
+import org.fluentjava.iwant.core.javamodules.JavaModules;
 
 public class IwantModules extends JavaModules {
 

@@ -1,12 +1,12 @@
 package net.sf.iwant.wsdefdef;
 
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaCompliance;
-import net.sf.iwant.api.javamodules.JavaModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
-import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;
-import net.sf.iwant.core.download.FromRepository;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaCompliance;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleProvider;
+import org.fluentjava.iwant.core.download.FromRepository;
 
 public class WorkspaceProviderForIwant implements WorkspaceModuleProvider {
 
