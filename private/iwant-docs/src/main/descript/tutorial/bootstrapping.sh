@@ -29,9 +29,9 @@ cmd "cd as-iwant-tutorial-developer/with/bash/iwant"
 cmd wget https://raw.githubusercontent.com/wipu/iwant/feature/package-rename-to-org.fluentjava/essential/iwant-entry/as-some-developer/with/bash/iwant/iwant.sh
 cmd "chmod u+x iwant.sh"
 
-p "In this tutorial we use commit $REV_TO_TEST of iwant, but if you want to use the latest tested version, you can skip the following command:"
+p "In this tutorial we use commit $GITCOMMIT_TO_TEST of iwant, but if you want to use the latest tested version, you can skip the following command:"
 
-cmd "sed -i \"s/COMMIT=.*/COMMIT=$REV_TO_TEST/\" iwant.sh"
+cmd "sed -i \"s/COMMIT=.*/COMMIT=$GITCOMMIT_TO_TEST/\" iwant.sh"
 
 p "Now we cd back to the workspace root; that's where we normally make our wishes."
 

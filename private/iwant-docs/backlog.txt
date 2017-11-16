@@ -1731,7 +1731,7 @@
   + experiment: maybe if I choose iwant.fluentjava.org over iwant-build.org after all...
     * yes, fluentjava.org site works together with this site so that's going to be the domain
   + import non-svn clone to eclipse and see things work
-    * sf.net svn repo is now archive and won't get changes from github
+    (* sf.net svn repo is now archive and won't get changes from github: no, changed my mind below)
   - rename package to org.fluentjava.iwant
     + do in branch, things will break
     + just move files without changing package declarations => git hopefully can follow history better
@@ -1745,6 +1745,19 @@
       + fix ant cli manually
       + remote tutorial
         + temporarily take iwant.sh from branch
+    - bring refactor to sf.net so we can keep on using svn:externals bootstrapping in svn projects
+      + git pull
+      + generate+handtune svn mv commands, adds, rms
+      + warn about migration in sf.net project
+        + mention clone from github in description
+        + point homepage to new domain
+      + after verifying changes, commit to sf.net
+      + bring back svn:externals bootstrapping tutorial and use the refactored revision
+      - fix build for svn: use commited revision which is able to use iwant from github
+      - on old homepage mention new one
+      - see if more explanation is needed for svn:externals tutorial:
+        "if your project uses svn, you can also..." or something
+    - rename package of own build classes
     - migration script for user projects
       + write it
       + oh, before I forget: organize imports & format after the package rename
@@ -1761,7 +1774,7 @@
     - find out what they are :)
   - remove unnecessary gitignores from root .gitignore (under # svn...)
   - advertise
-    - mention in the reddit thread (if commenting still allowed)
+    - mention in the reddit thread (if commenting still allowed; otherwise: new thread)
     - elsewhere
 
 - As @developer I want mkdirs return value findbugs issued fixed so I can concentrate on less trivial issues
