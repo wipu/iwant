@@ -1764,11 +1764,11 @@
       print "Downloading to <CACHED>" etc
       * now nobody thinks the task was already done but Iwant is doing it
       (whoops, not really part of this feature, forgot we are in a branch)
-    - migration script for user projects
+    + migration script for user projects
       + write it
       + oh, before I forget: organize imports & format after the package rename
-      - document it in github readme, a news section
-      - link to the readme from webpage (mention news are there)
+      + document it in github readme, a news section
+      + link to the readme from webpage (mention news are there)
     - make remote tutorial take iwant.sh from master again
     - merge to master
   - fetch descript with iwant, not relying on svn:externals
