@@ -1763,6 +1763,7 @@
     + now that we change things: better debug messages for entry: instead of "downloaded name"
       print "Downloading to <CACHED>" etc
       * now nobody thinks the task was already done but Iwant is doing it
+      (whoops, not really part of this feature, forgot we are in a branch)
     - migration script for user projects
       + write it
       + oh, before I forget: organize imports & format after the package rename
