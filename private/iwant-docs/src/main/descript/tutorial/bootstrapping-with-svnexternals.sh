@@ -1,6 +1,6 @@
 doc-content() {
 
-p "A handy way of avoiding having to commit the iwant bootstrapper to the user's svn repository is to link it using svn:externals."
+p "If your project uses svn as version control, a handy way of avoiding having to commit the iwant bootstrapper to the user's svn repository is to link it using svn:externals."
 
 p "Let's create a local svn repository and check it out."
 
