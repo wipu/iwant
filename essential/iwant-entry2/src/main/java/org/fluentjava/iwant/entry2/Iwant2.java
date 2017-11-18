@@ -165,7 +165,7 @@ public class Iwant2 {
 			return allIwantClasses;
 		}
 
-		Iwant.log("compiled", allIwantClasses);
+		Iwant.log("Compiling", allIwantClasses);
 		if (allIwantClasses.exists()) {
 			Iwant.del(allIwantClasses);
 		}

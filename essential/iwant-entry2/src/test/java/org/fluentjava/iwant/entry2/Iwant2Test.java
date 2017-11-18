@@ -132,7 +132,8 @@ public class Iwant2Test extends TestCase {
 
 		iwant2.evaluate(iwantEssential, "args", "to be", "passed");
 
-		assertEquals(":        compiled -> all-iwant-classes\n", err());
+		assertEquals(":       Compiling -> " + testArea.root()
+				+ "/all-iwant-classes\n", err());
 		assertEquals("Mocked org.fluentjava.iwant.entry3.Iwant3\n" + "args: ["
 				+ iwantEssential + ", args, to be, passed]\n", out());
 	}
@@ -144,7 +145,8 @@ public class Iwant2Test extends TestCase {
 				"all-iwant-classes");
 
 		iwant2.evaluate(iwantEssential, "--printClassLoaderUrls");
-		assertEquals(":        compiled -> all-iwant-classes\n", err());
+		assertEquals(":       Compiling -> " + testArea.root()
+				+ "/all-iwant-classes\n", err());
 		assertEquals("Mocked org.fluentjava.iwant.entry3.Iwant3\n" + "args: ["
 				+ iwantEssential + ", --printClassLoaderUrls]\n"
 				+ "classloader urls: [file:" + iwantEssential

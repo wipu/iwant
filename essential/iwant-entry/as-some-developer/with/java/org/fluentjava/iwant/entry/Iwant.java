@@ -514,7 +514,7 @@ public class Iwant {
 	public static void log(String task, File target) {
 		StringBuilder b = new StringBuilder();
 		b.append(String.format(":%16s -> ", task));
-		b.append(target.getName());
+		b.append(target);
 		System.err.println(b);
 		fileLog(b.toString());
 	}
@@ -750,8 +750,8 @@ public class Iwant {
 				return;
 			}
 			mkdirs(to.getParentFile());
-			debugLog("downloaded", "from " + from);
-			log("downloaded", to);
+			debugLog("Downloading", "from " + from);
+			log("Downloading", to);
 			byte[] bytes = downloadBytes(from);
 			FileOutputStream cachedOut = new FileOutputStream(to);
 			cachedOut.write(bytes);
@@ -835,7 +835,7 @@ public class Iwant {
 			if (dest.exists()) {
 				return dest;
 			}
-			log("unzipped", dest);
+			log("Unzipping", dest);
 			File tmp = new File(dest + ".tmp");
 			del(tmp);
 			mkdirs(tmp);
