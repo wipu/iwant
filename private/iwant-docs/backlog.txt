@@ -1772,10 +1772,9 @@
     + merge to master
     + make remote tutorial take iwant.sh from master again
     + publish webpage
+  + update sf.net site
+    + make webpage redirect to iwant.fluentjava.org
   - fetch descript with iwant, not relying on svn:externals
-  - update sf.net site
-    - make webpage redirect to iwant.fluentjava.org
-    - mention migration
   - reusable test setup, at least mocked iwant zip (I guess I have an ever ongoing story for this...)
   - update external references (url and license have changed)
     - find out what they are :)
