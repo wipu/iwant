@@ -1,4 +1,4 @@
-package net.sf.iwant.wsdefdef;
+package org.fluentjava.iwant.wsdefdef;
 
 import org.fluentjava.iwant.api.javamodules.JavaBinModule;
 import org.fluentjava.iwant.api.javamodules.JavaCompliance;
@@ -23,7 +23,7 @@ public class WorkspaceProviderForIwant implements WorkspaceModuleProvider {
 
 	@Override
 	public String workspaceFactoryClassname() {
-		return "net.sf.iwant.wsdef.WorkspaceFactoryForIwant";
+		return "org.fluentjava.iwant.wsdef.WorkspaceFactoryForIwant";
 	}
 
 	private static JavaModule commonsIo() {

@@ -1,4 +1,4 @@
-package net.sf.iwant.wsdef;
+package org.fluentjava.iwant.wsdef;
 
 import org.fluentjava.iwant.api.wsdef.Workspace;
 import org.fluentjava.iwant.api.wsdef.WorkspaceContext;

@@ -1,4 +1,4 @@
-package net.sf.iwant.wsdef;
+package org.fluentjava.iwant.wsdef;
 
 import java.io.File;
 import java.io.InputStream;
