@@ -17,9 +17,9 @@ First we add the iwant pmd plugin to the project.
 <div class='editor'>
 <div class='keep line'>package com.example.wsdefdef;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.WorkspaceModuleProvider;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {</div>
 <div class='keep line'></div>
@@ -44,15 +44,15 @@ First we add the iwant pmd plugin to the project.
 We refresh eclipse settings so we can use the plugin in our workspace definition.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact asm-3.2.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact commons-io-1.3.2.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact jaxen-1.1.4.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact pmd-4.3.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-plugin-pmd)</kbd><br/>
-<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact asm-3.2.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact commons-io-1.3.2.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact jaxen-1.1.4.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact pmd-4.3.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.javamodules.JavaClasses iwant-plugin-pmd)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
 <kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
 <kbd class='shell output'>(  .project)</kbd><br/>
 <kbd class='shell output'>(  .classpath)</kbd><br/>
@@ -75,15 +75,15 @@ After refreshing eclipse we define a module to test PMD on, and define a PMD rep
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='add line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
-<div class='add line'>import net.sf.iwant.plugin.pmd.PmdReport;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='add line'>import org.fluentjava.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='add line'>import org.fluentjava.iwant.plugin.pmd.PmdReport;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -119,7 +119,7 @@ After refreshing eclipse we define a module to test PMD on, and define a PMD rep
 Another eclipse settings refresh to create the new eclipse project.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>(example-pmdfodder)</kbd><br/>
 <kbd class='shell output'>(  .project)</kbd><br/>
 <kbd class='shell output'>(  .classpath)</kbd><br/>
@@ -163,7 +163,7 @@ Now we can analyze the code.
 </samp></div>
 <div><span class='output-asserted'><i>Output asserted</i></span></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/example-pmdfodder-main-java-pmd-report/as-path | xargs -r ls</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.pmd.PmdReport example-pmdfodder-main-java-pmd-report)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.plugin.pmd.PmdReport example-pmdfodder-main-java-pmd-report)</kbd><br/>
 <kbd class='shell output'>Running PMD on [example-pmdfodder/src]</kbd><br/>
 <kbd class='shell output'>example-pmdfodder-main-java-pmd-report.html</kbd><br/>
 <kbd class='shell output'>example-pmdfodder-main-java-pmd-report.txt</kbd><br/>

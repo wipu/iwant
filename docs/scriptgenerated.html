@@ -20,16 +20,16 @@ In case java-based tools are not enough, you can use a script to define content 
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='add line'>import net.sf.iwant.api.core.Concatenated;</div>
-<div class='add line'>import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='add line'>import net.sf.iwant.api.core.ScriptGenerated;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='add line'>import org.fluentjava.iwant.api.core.Concatenated;</div>
+<div class='add line'>import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='add line'>import org.fluentjava.iwant.api.core.ScriptGenerated;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -68,13 +68,13 @@ In case java-based tools are not enough, you can use a script to define content 
 <div class='keep line'>}</div>
 </div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>hello</kbd><br/>
 <kbd class='shell output'>scriptGenerated</kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/scriptGenerated/as-path | xargs -r cat </kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated shellScript)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.ScriptGenerated scriptGenerated)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.Concatenated shellScript)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.ScriptGenerated scriptGenerated)</kbd><br/>
 <kbd class='shell output'>Running /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/temp/w-0/script</kbd><br/>
 <kbd class='shell output'>We have a dedicated temporary dir:</kbd><br/>
 <kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/temp/w-0</kbd><br/>

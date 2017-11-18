@@ -17,12 +17,12 @@ Next we add downloaded classes to be used in the workspace definition.
 <div class='editor'>
 <div class='keep line'>package com.example.wsdefdef;</div>
 <div class='keep line'></div>
-<div class='add line'>import net.sf.iwant.api.javamodules.JavaBinModule;</div>
-<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
-<div class='add line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;</div>
-<div class='add line'>import net.sf.iwant.core.download.Downloaded;</div>
+<div class='add line'>import org.fluentjava.iwant.api.javamodules.JavaBinModule;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='add line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.WorkspaceModuleProvider;</div>
+<div class='add line'>import org.fluentjava.iwant.core.download.Downloaded;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {</div>
 <div class='keep line'></div>
@@ -56,10 +56,10 @@ Next we add downloaded classes to be used in the workspace definition.
 Eclipse settings need to be regenerated, because we have a new dependency.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.Downloaded commonsMathJar)</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.Downloaded commonsMathJar)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
 <kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
 <kbd class='shell output'>(  .project)</kbd><br/>
 <kbd class='shell output'>(  .classpath)</kbd><br/>
@@ -83,14 +83,13 @@ Now we can use commons-math in the workspace definition.
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
 <div class='add line'>import org.apache.commons.math.fraction.Fraction;</div>
-<div class='add line'></div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -117,12 +116,12 @@ Now we can use commons-math in the workspace definition.
 <div class='keep line'>}</div>
 </div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>hello</kbd><br/>
 <kbd class='shell output'>arithmeticWithExtLib</kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/arithmeticWithExtLib/as-path | xargs -r cat </kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.HelloTarget arithmeticWithExtLib)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.HelloTarget arithmeticWithExtLib)</kbd><br/>
 <kbd class='shell output'>1/2 + 2/4 = 1</kbd><br/>
 </samp></div>
 <div><span class='output-asserted'><i>Output asserted</i></span></div>

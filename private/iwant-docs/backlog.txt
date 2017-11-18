@@ -1732,7 +1732,7 @@
     * yes, fluentjava.org site works together with this site so that's going to be the domain
   + import non-svn clone to eclipse and see things work
     (* sf.net svn repo is now archive and won't get changes from github: no, changed my mind below)
-  - rename package to org.fluentjava.iwant
+  + rename package to org.fluentjava.iwant
     + do in branch, things will break
     + just move files without changing package declarations => git hopefully can follow history better
     + fix package declarations for compilation
@@ -1771,7 +1771,7 @@
       + link to the readme from webpage (mention news are there)
     + merge to master
     + make remote tutorial take iwant.sh from master again
-    - publish webpage
+    + publish webpage
   - fetch descript with iwant, not relying on svn:externals
   - update sf.net site
     - make webpage redirect to iwant.fluentjava.org

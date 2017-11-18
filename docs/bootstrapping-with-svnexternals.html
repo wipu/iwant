@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>Alternative: acquiring iwant bootstrapper by using svn:externals</title>
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class='navipanel'><a href='bootstrapping.html'><< The command line interface and bootstrapping</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='creating-wsdef.html'>Creating the workspace definition >></a></div>
+
+<h2>Alternative: acquiring iwant bootstrapper by using svn:externals</h2>
+<p class='text'>
+If your project uses svn as version control, a handy way of avoiding having to commit the iwant bootstrapper to the user's svn repository is to link it using svn:externals.
+</p>
+<p class='text'>
+Let's create a local svn repository and check it out.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~ $ </kbd><kbd class='shell cmd'>svnadmin create svn-repo</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~ $ </kbd><kbd class='shell cmd'>svn co "file://$(readlink -f svn-repo)" iwant-tutorial</kbd><br/>
+<kbd class='shell output'>Checked out revision 0.</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~ $ </kbd><kbd class='shell cmd'>cd iwant-tutorial</kbd><br/>
+</samp></div>
+<p class='text'>
+Here we use a shell oneliner to define the svn:externals url. You may want to use the interactive svn pe command.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>mkdir as-iwant-tutorial-developer</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>svn add as-iwant-tutorial-developer</kbd><br/>
+<kbd class='shell output'>A         as-iwant-tutorial-developer</kbd><br/>
+</samp></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>echo '-r 905 https://svn.code.sf.net/p/iwant/code/trunk/essential/iwant-entry/as-some-developer/with with' | svn ps svn:externals --file - as-iwant-tutorial-developer</kbd><br/>
+<kbd class='shell output'>property 'svn:externals' set on 'as-iwant-tutorial-developer'</kbd><br/>
+</samp></div>
+<p class='text'>
+A commit and update is needed for svn to fetch the external bootstrapper.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>svn commit -m 'external iwant bootstrapper'</kbd><br/>
+<kbd class='shell output'>Adding         as-iwant-tutorial-developer</kbd><br/>
+<kbd class='shell output'>Committing transaction...</kbd><br/>
+<kbd class='shell output'>Committed revision 1.</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>svn up</kbd><br/>
+<kbd class='shell output'>Updating '.':</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>Fetching external item into 'as-iwant-tutorial-developer/with':</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/ant</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/ant/iw</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/bash</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/bash/iwant</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/net</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/net/sf</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/org</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/org/fluentjava</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/org/fluentjava/iwant</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/org/fluentjava/iwant/entry</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/ant/iw/build.xml</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/bash/iwant/help.sh</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/bash/iwant/iwant.sh</kbd><br/>
+<kbd class='shell output'>A    as-iwant-tutorial-developer/with/java/org/fluentjava/iwant/entry/Iwant.java</kbd><br/>
+<kbd class='shell output'>Updated external to revision 905.</kbd><br/>
+<kbd class='shell output'></kbd><br/>
+<kbd class='shell output'>At revision 1.</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<p class='text'>
+Now we can start using the bootstrapper normally.
+</p>
+<div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/help.sh</kbd><br/>
+<kbd class='shell output'>I created /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/conf/iwant-from</kbd><br/>
+<kbd class='shell output'>Please edit and uncomment the properties in it and rerun me.</kbd><br/>
+</samp></div>
+<div><span class='output-asserted'><i>Output asserted</i></span></div>
+<div class='navipanel'><a href='bootstrapping.html'><< The command line interface and bootstrapping</a> | <a href='index.html'>^ Site index ^</a> | <a href='tutorial.html'>^ Tutorial index ^</a> | <a href='creating-wsdef.html'>Creating the workspace definition >></a></div>
+
+</body></html>

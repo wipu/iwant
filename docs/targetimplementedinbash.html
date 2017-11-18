@@ -31,14 +31,14 @@ bash targets
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='del line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='add line'>import net.sf.iwant.api.bash.TargetImplementedInBash;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='del line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='add line'>import org.fluentjava.iwant.api.bash.TargetImplementedInBash;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -64,7 +64,7 @@ bash targets
 Let's see where we need to define the index.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>Please define targets in /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/_index.sh</kbd><br/>
 </samp></div>
 <p class='text'>
@@ -96,7 +96,7 @@ Now we can evaluate our first target defined in bash.
 <kbd class='shell output'>hello-from-bash</kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/hello-from-bash/as-path | xargs -r cat</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.bash.TargetImplementedInBash hello-from-bash)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.bash.TargetImplementedInBash hello-from-bash)</kbd><br/>
 <kbd class='shell output'>--- Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/hello-from-bash.sh </kbd><br/>
 <kbd class='shell output'>Hello from bash</kbd><br/>
 </samp></div>
@@ -135,7 +135,7 @@ target with ingredients
 <kbd class='shell output'>target-with-ingredients</kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/target-with-ingredients/as-path | xargs -r cat</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.bash.TargetImplementedInBash target-with-ingredients)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.bash.TargetImplementedInBash target-with-ingredients)</kbd><br/>
 <kbd class='shell output'>--- Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/target-with-ingredients.sh </kbd><br/>
 <kbd class='shell output'>Target derived from ingredients:</kbd><br/>
 <kbd class='shell output'>--- /home/hacker/iwant-tutorial/source-ingredient:</kbd><br/>
@@ -181,14 +181,14 @@ name, script name, then arguments for ingredients
 <kbd class='shell output'>target-with-parameters-v2</kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/target-with-parameters-v1/as-path | xargs -r cat</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.bash.TargetImplementedInBash target-with-parameters-v1)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.bash.TargetImplementedInBash target-with-parameters-v1)</kbd><br/>
 <kbd class='shell output'>--- Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/target-with-parameters.sh 1 one</kbd><br/>
 <kbd class='shell output'>Target derived from parameters:</kbd><br/>
 <kbd class='shell output'>--- PARAM1: 1</kbd><br/>
 <kbd class='shell output'>--- PARAM2: one</kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/target-with-parameters-v2/as-path | xargs -r cat</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.bash.TargetImplementedInBash target-with-parameters-v2)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.bash.TargetImplementedInBash target-with-parameters-v2)</kbd><br/>
 <kbd class='shell output'>--- Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/i-have/wsdef/src/main/bash/target-with-parameters.sh 2 two</kbd><br/>
 <kbd class='shell output'>Target derived from parameters:</kbd><br/>
 <kbd class='shell output'>--- PARAM1: 2</kbd><br/>
