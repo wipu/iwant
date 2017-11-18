@@ -1780,6 +1780,7 @@
     - find out what they are :)
   - remove unnecessary gitignores from root .gitignore (under # svn...)
   - advertise
+    + facebook
     - mention in the reddit thread (if commenting still allowed; otherwise: new thread)
     - elsewhere
 
