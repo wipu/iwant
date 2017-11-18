@@ -10,18 +10,20 @@ import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.model.TargetEvaluationContext;
+import org.fluentjava.iwant.api.zip.Unzipped;
+import org.fluentjava.iwant.core.download.Downloaded;
 import org.fluentjava.iwant.entry.Iwant;
 
 public class Descripted extends Target {
 
 	private final Source doc;
-	private final Source descript;
 	private final Path maybeIwantWsroot;
 	private final Source abstractArticle;
 	private final Descripted maybeInitialState;
 	private final Path tutorialWsdefSrc;
 	private final String titleText;
 	private final String docName;
+	private final Path descriptSnapshot;
 
 	public Descripted(String namePrefix, String docName, String titleText,
 			Path tutorialWsdefSrc, Path maybeIwantWsroot,
@@ -32,12 +34,25 @@ public class Descripted extends Target {
 		this.tutorialWsdefSrc = tutorialWsdefSrc;
 		this.maybeIwantWsroot = maybeIwantWsroot;
 		this.maybeInitialState = maybeInitialState;
+		this.descriptSnapshot = descriptSnapshotPrepared();
 		this.doc = Source
 				.underWsroot("private/iwant-docs/src/main/descript/tutorial/"
 						+ docName + ".sh");
 		this.abstractArticle = Source.underWsroot(
 				"private/iwant-docs/src/main/descript/tutorial/abstract-article.sh");
-		this.descript = Source.underWsroot("iwant-lib-descript/descript.sh");
+	}
+
+	private static Target descriptZip() {
+		String rev = "22";
+		String url = "https://sourceforge.net/code-snapshots/svn/d/de/descript/code/descript-code-"
+				+ rev + "-trunk.zip";
+		return Downloaded.withName("descript.zip").url(url)
+				.md5("6c25d5a59f9830c19ace4894ee56d8d7");
+	}
+
+	private static Target descriptSnapshotPrepared() {
+		Target zip = descriptZip();
+		return Unzipped.with().name(zip + ".unzipped").from(zip).end();
 	}
 
 	public String titleText() {
@@ -64,7 +79,7 @@ public class Descripted extends Target {
 		List<Path> ingredients = new ArrayList<>();
 		ingredients.add(doc);
 		ingredients.add(abstractArticle);
-		ingredients.add(descript);
+		ingredients.add(descriptSnapshot);
 		ingredients.add(tutorialWsdefSrc);
 		if (maybeIwantWsroot != null) {
 			ingredients.add(maybeIwantWsroot);
@@ -82,6 +97,10 @@ public class Descripted extends Target {
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File dest = ctx.cached(this);
 		dest.mkdirs();
+
+		File descriptRoot = Iwant.theSoleChildOf(ctx.cached(descriptSnapshot));
+		File descriptSh = new File(descriptRoot,
+				"descript/src/main/bash/descript.sh");
 
 		File htmlHeader = newHtmlHeaderFile(dest);
 		File htmlFooter = newHtmlFooterFile(dest);
@@ -117,7 +136,7 @@ public class Descripted extends Target {
 				+ " > \"$DOC\"\n");
 		sh.append(
 				"echo \"export PAGETITLE='" + titleText + "'\" >> \"$DOC\"\n");
-		sh.append("'" + ctx.cached(descript) + "' \"$DOC\" '" + htmlBodyContent
+		sh.append("bash '" + descriptSh + "' \"$DOC\" '" + htmlBodyContent
 				+ "' false\n");
 		sh.append("cat '" + htmlHeader + "' '" + htmlBodyContent + "' '"
 				+ htmlFooter + "' > '" + fullHtml + "'\n");

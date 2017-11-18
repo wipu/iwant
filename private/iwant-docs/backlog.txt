@@ -1774,7 +1774,7 @@
     + publish webpage
   + update sf.net site
     + make webpage redirect to iwant.fluentjava.org
-  - fetch descript with iwant, not relying on svn:externals
+  + fetch descript with iwant, not relying on svn:externals
   - reusable test setup, at least mocked iwant zip (I guess I have an ever ongoing story for this...)
   - update external references (url and license have changed)
     - find out what they are :)
