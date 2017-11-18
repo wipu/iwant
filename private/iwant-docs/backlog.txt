@@ -1757,14 +1757,14 @@
       + fix build for svn: use commited revision which is able to use iwant from github
     + see if more explanation is needed for svn:externals tutorial:
       "if your project uses svn, you can also..." or something
+    + make sure iwant bootstrapper is versioned for iwant: otherwise there is no guarantee
+      a user has called iwant/iwant.sh
     - rename package of own build classes
     - migration script for user projects
       + write it
       + oh, before I forget: organize imports & format after the package rename
       - document it in github readme, a news section
       - link to the readme from webpage (mention news are there)
-    - make sure iwant bootstrapper is versioned for iwant: otherwise there is no guarantee
-      a user has called iwant/iwant.sh
     - make remote tutorial take iwant.sh from master again
     - merge to master
   - fetch descript with iwant, not relying on svn:externals
