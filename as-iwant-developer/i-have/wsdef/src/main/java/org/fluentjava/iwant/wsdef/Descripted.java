@@ -100,7 +100,7 @@ public class Descripted extends Target {
 			sh.append("export LOCAL_IWANT_WSROOT=" + iwantWsRoot + "\n");
 		} else {
 			sh.append("export GITCOMMIT_TO_TEST="
-					+ "ced9725919f250f531b6d3b7b27ab338e2134d8b\n");
+					+ "1bb5cc63b9495e396740f1e60e598da9f8e3609e\n");
 			sh.append("export SVNREV_TO_TEST=905\n");
 		}
 		if (maybeInitialState != null) {
