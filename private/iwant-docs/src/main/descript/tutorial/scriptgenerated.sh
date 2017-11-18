@@ -8,8 +8,8 @@ wsdef-edit v03scriptgeneratedtarget
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
 cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/scriptGenerated/as-path | xargs -r cat "
 out-was <<EOF
-(0/1 D! net.sf.iwant.api.core.Concatenated shellScript)
-(0/1 D! net.sf.iwant.api.core.ScriptGenerated scriptGenerated)
+(0/1 D! org.fluentjava.iwant.api.core.Concatenated shellScript)
+(0/1 D! org.fluentjava.iwant.api.core.ScriptGenerated scriptGenerated)
 Running $PWD/as-iwant-tutorial-developer/.i-cached/temp/w-0/script
 We have a dedicated temporary dir:
 $PWD/as-iwant-tutorial-developer/.i-cached/temp/w-0

@@ -1,8 +1,8 @@
 package com.example.wsdefdef;
 
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
-import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleProvider;
 
 public class WorkspaceProvider implements WorkspaceModuleProvider {
 

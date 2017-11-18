@@ -10,8 +10,8 @@ cmde "0 0" "find as-iwant-tutorial-developer -name '*.java' | xargs -r touch"
 
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
 out-was <<EOF
-(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)
-(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
+(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)
+(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)
 hello
 EOF
 
@@ -26,7 +26,7 @@ EOF
 
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/target/hello/as-path"
 out-was <<EOF
-(0/1 D! net.sf.iwant.api.core.HelloTarget hello)
+(0/1 D! org.fluentjava.iwant.api.core.HelloTarget hello)
 $CACHED_HELLO
 EOF
 

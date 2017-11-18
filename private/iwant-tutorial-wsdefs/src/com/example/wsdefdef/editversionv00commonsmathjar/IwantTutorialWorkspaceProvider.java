@@ -1,11 +1,11 @@
 package com.example.wsdefdef.editversionv00commonsmathjar;
 
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.wsdef.WorkspaceModuleContext;
-import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;
-import net.sf.iwant.core.download.Downloaded;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
+import org.fluentjava.iwant.api.wsdef.WorkspaceModuleProvider;
+import org.fluentjava.iwant.core.download.Downloaded;
 
 public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {
 
