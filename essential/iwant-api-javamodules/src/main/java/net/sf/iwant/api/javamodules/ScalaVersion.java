@@ -22,7 +22,11 @@ public class ScalaVersion {
 	}
 
 	public static ScalaVersion _2_11_7() {
-		return new ScalaVersion("2.11.7");
+		return of("2.11.7");
+	}
+
+	public static ScalaVersion of(String value) {
+		return new ScalaVersion(value);
 	}
 
 	private GnvArtifact<Downloaded> jar(String name) {

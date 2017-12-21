@@ -1619,6 +1619,9 @@
   * File.exists returns false for a broken link
   + try to delete anyway, ignoring (logging) failure 
 
++ as @buildscriptauthor I want to define scala version freely, not just a predefined factory method, so I don't need to wait for an iwant upgrade when upgrading scala
+  + factory method ScalaVersion.of
+
 #################################################################
 = In progress
 #################################################################
