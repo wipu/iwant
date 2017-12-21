@@ -18,21 +18,21 @@
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.core.Concatenated;</div>
-<div class='keep line'>import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='keep line'>import net.sf.iwant.api.javamodules.JavaBinModule;</div>
-<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
-<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;</div>
-<div class='add line'>import net.sf.iwant.api.javamodules.ScalaVersion;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='keep line'>import net.sf.iwant.core.javamodules.JavaModules;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.Concatenated;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.javamodules.JavaBinModule;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;</div>
+<div class='add line'>import org.fluentjava.iwant.api.javamodules.ScalaVersion;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import org.fluentjava.iwant.core.javamodules.JavaModules;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -99,7 +99,7 @@
 Then we generate Eclipse settings for it so we can use Eclipse for writing the code.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>(example-hello)</kbd><br/>
 <kbd class='shell output'>(  .project)</kbd><br/>
 <kbd class='shell output'>(  .classpath)</kbd><br/>
@@ -179,12 +179,12 @@ TODO remove:
 Finally, we can build and run some classes.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/example-mixedscala-classpath/as-path</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact scala-compiler-2.11.7.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact scala-library-2.11.7.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact scala-reflect-2.11.7.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-launcher-1.10.1.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.ScalaClasses example-mixedscala-main-classes-from-scala)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact scala-compiler-2.11.7.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact scala-library-2.11.7.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact scala-reflect-2.11.7.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact ant-launcher-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.javamodules.ScalaClasses example-mixedscala-main-classes-from-scala)</kbd><br/>
 <kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/temp/w-0/build.xml</kbd><br/>
 <kbd class='shell output'></kbd><br/>
 <kbd class='shell output'>scalac-taskdef:</kbd><br/>
@@ -197,10 +197,10 @@ Finally, we can build and run some classes.
 <kbd class='shell output'></kbd><br/>
 <kbd class='shell output'>BUILD SUCCESSFUL</kbd><br/>
 <kbd class='shell output'>Total time: 5 seconds</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses example-mixedscala-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.javamodules.JavaClasses example-mixedscala-main-classes)</kbd><br/>
 <kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-mixedscala-main-classes-from-scala/com/example/mixedscala/ScalaThatDependsOnJava.class: warning: Cannot find annotation method 'bytes()' in type 'ScalaSignature': class file for scala.reflect.ScalaSignature not found</kbd><br/>
 <kbd class='shell output'>1 warning</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated example-mixedscala-classpath)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.Concatenated example-mixedscala-classpath)</kbd><br/>
 <kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-mixedscala-classpath</kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/example-mixedscala-classpath/as-path | xargs -r cat</kbd><br/>

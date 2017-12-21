@@ -1689,7 +1689,12 @@
       + fix the fix: ah, main resources without main java is not supported so add a .keep file
       + fix: touch private/iwant-mock-wsroot/essential/iwant-apimocks/src/main/java/.keep
       * that did it :)
-    - after push: remote boostrap
+    + make tests pass in a clone that is not an svn workingcopy
+      * work in a workingcopy that is both a github and sf.net wc
+      + add ignores so both vcses show empty status
+      + remove svn bootstrap and tests that svn export from workspace itself
+      (- SvnExported uses svnkit directly, not via Iwant: deleted the class)
+    + after push: remote boostrap
       + manually do in iwant-demo
       + push to iwant repo so it will be available at
         https://raw.githubusercontent.com/wipu/iwant/master/essential/iwant-entry/
@@ -1701,33 +1706,85 @@
         + run it
         + and continue as before
         + modify text
-      - visually review the result
-    - rename IwantNetwork.cacheLocation to locationOfCachedContentFrom
+      + visually review the result
+        + fix a css class ref
+        + publish
+    + rename IwantNetwork.cacheLocation to cacheOfContentFrom
       * otherwise one thinks that it returns the cached zip file, not content of it
-    - make Iwant.wishedIwantRootFromUrl static
-    - for each project take into use
-      - update scripts that fetch the bootstrapper
+      * doing it now because there are other breaking changes anyway
+    + make Iwant.wishedIwantRootFromUrl static
+    + remove commented out code from Iwant
+    + for each project take into use
+      + update scripts that fetch the bootstrapper
         + iwant-demo: done as spike for the new bootstrapping
-        - others
+        + (some) others
+        + iwant itself
+          * some changes were needed: it has been a while
+    + fix eclipse warning: different name for each mock wsroot .keep file
+      (now they are resources hiding each other in the classpath)
     (- later: remove the plugin concept: they are already downloaded so no further price on just
       having them unconditionally in the classpath
       * not quite: their dependencies need some specifying) 
-  - update sf.net site
-    - make webpage redirect to iwant-build.org
-    - mention migration
-  - remove checked exception from ExternalSource constructor
-  - reusable test setup, at least mocked iwant zip
+  + remove checked exception from ExternalSource constructor
+    + do it
+    + unit test for the wrapping
+      * https://stackoverflow.com/questions/4489878/file-getcanonicalpath-failure-examples
+    + remove catches/throws
+      * oh, I should never have added that exception to the signature...
+  + experiment: maybe if I choose iwant.fluentjava.org over iwant-build.org after all...
+    * yes, fluentjava.org site works together with this site so that's going to be the domain
+  + import non-svn clone to eclipse and see things work
+    (* sf.net svn repo is now archive and won't get changes from github: no, changed my mind below)
+  + rename package to org.fluentjava.iwant
+    + do in branch, things will break
+    + just move files without changing package declarations => git hopefully can follow history better
+    + fix package declarations for compilation
+      + script handles most
+      + manually fix ExtendedIwantEnums (part of own build)
+    + fix tests etc that depend on the old package name
+      + manually fix findbugs fodder (they are txt files, not java)
+    + regenerate (and probably fix) tutorials
+      * ah, descript was svn:externals, copying for now, fixing later
+      + fix ant cli manually
+      + remote tutorial
+        + temporarily take iwant.sh from branch
+    + bring refactor to sf.net so we can keep on using svn:externals bootstrapping in svn projects
+      + git pull
+      + generate+handtune svn mv commands, adds, rms
+      + warn about migration in sf.net project
+        + mention clone from github in description
+        + point homepage to new domain
+      + after verifying changes, commit to sf.net
+      + bring back svn:externals bootstrapping tutorial and use the refactored revision
+      + upgrade and fix build for git: fix packages in iwant imports
+      + fix build for svn: use commited revision which is able to use iwant from github
+    + see if more explanation is needed for svn:externals tutorial:
+      "if your project uses svn, you can also..." or something
+    + make sure iwant bootstrapper is versioned for iwant: otherwise there is no guarantee
+      a user has called iwant/iwant.sh
+    + rename package of own build classes
+    + now that we change things: better debug messages for entry: instead of "downloaded name"
+      print "Downloading to <CACHED>" etc
+      * now nobody thinks the task was already done but Iwant is doing it
+      (whoops, not really part of this feature, forgot we are in a branch)
+    + migration script for user projects
+      + write it
+      + oh, before I forget: organize imports & format after the package rename
+      + document it in github readme, a news section
+      + link to the readme from webpage (mention news are there)
+    + merge to master
+    + make remote tutorial take iwant.sh from master again
+    + publish webpage
+  + update sf.net site
+    + make webpage redirect to iwant.fluentjava.org
+  + fetch descript with iwant, not relying on svn:externals
+  - reusable test setup, at least mocked iwant zip (I guess I have an ever ongoing story for this...)
   - update external references (url and license have changed)
     - find out what they are :)
-  - make tests pass in a clone that is not an svn workingcopy
-    * work in a workingcopy that is both a github and sf.net wc
-    + add ignores so both vcses show empty status
-    - remove svn bootstrap and tests that svn export from workspace itself
-    - SvnExported uses svnkit directly, not via Iwant
   - remove unnecessary gitignores from root .gitignore (under # svn...)
-  - update tutorial
   - advertise
-    - mention in the reddit thread (if commenting still allowed)
+    + facebook
+    - mention in the reddit thread (if commenting still allowed; otherwise: new thread)
     - elsewhere
 
 - As @developer I want mkdirs return value findbugs issued fixed so I can concentrate on less trivial issues

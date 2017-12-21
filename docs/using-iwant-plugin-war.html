@@ -14,9 +14,9 @@
 <div class='editor'>
 <div class='keep line'>package com.example.wsdefdef;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.WorkspaceModuleProvider;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {</div>
 <div class='keep line'></div>
@@ -41,13 +41,11 @@
 We have to generate Eclipse settings before editing the workspace definition.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.SvnExported iwant-plugin-war-main-java)</kbd><br/>
-<kbd class='shell output'>svn exporting (may take a while) https://svn.code.sf.net/p/iwant/code/trunk/optional/iwant-plugin-war/src/main/java@899</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-plugin-war)</kbd><br/>
-<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.javamodules.JavaClasses iwant-plugin-war)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
 <kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
 <kbd class='shell output'>(  .project)</kbd><br/>
 <kbd class='shell output'>(  .classpath)</kbd><br/>
@@ -70,18 +68,18 @@ Now we define a war target using iwant-plugin-war.
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='add line'>import net.sf.iwant.api.core.Concatenated;</div>
-<div class='add line'>import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='add line'>import net.sf.iwant.api.model.Path;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='add line'>import net.sf.iwant.api.model.Source;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
-<div class='add line'>import net.sf.iwant.plugin.war.War;</div>
+<div class='add line'>import org.fluentjava.iwant.api.core.Concatenated;</div>
+<div class='add line'>import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='add line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='add line'>import org.fluentjava.iwant.api.model.Source;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='add line'>import org.fluentjava.iwant.plugin.war.War;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -129,13 +127,13 @@ We create the base directory to be warred.
 Finally we list the content of the war file.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>hello</kbd><br/>
 <kbd class='shell output'>demo.war</kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/demo.war/as-path | xargs -r unzip -l | tail -n +4 | cut -b 30-</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated web.xml)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.war.War demo.war)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.Concatenated web.xml)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.plugin.war.War demo.war)</kbd><br/>
 <kbd class='shell output'> META-INF/</kbd><br/>
 <kbd class='shell output'> META-INF/MANIFEST.MF</kbd><br/>
 <kbd class='shell output'> WEB-INF/</kbd><br/>

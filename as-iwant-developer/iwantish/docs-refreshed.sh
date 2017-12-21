@@ -15,4 +15,4 @@ rm -rf "$DOCS"
 mkdir "$DOCS"
 
 cp -av "$WEBSITE"/* "$DOCS"/
-echo -n iwant-build.org > "$DOCS/CNAME"
+echo -n iwant.fluentjava.org > "$DOCS/CNAME"

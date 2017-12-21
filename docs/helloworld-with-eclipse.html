@@ -10,7 +10,7 @@
 
 <p><i>This chapter continues from where <a href='creating-wsdef.html'>Creating the workspace definition</a> left us.</i></p><h2>Hello world with Eclipse</h2>
 <p class='text'>Next, as the wizard advised after <a href='creating-wsdef.html'>defining the workspace</a>, we'll generate eclipse settings. This is a mutation to the workspace, and iwant does not have full control over the files (eclipse is also able to modify them), so this wish needs to be a side-effect.</p><div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
 <kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
 <kbd class='shell output'>(  .project)</kbd><br/>
 <kbd class='shell output'>(  .classpath)</kbd><br/>
@@ -34,13 +34,13 @@ Now we can import the projects to eclipse (without copying them to the workspace
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -69,7 +69,7 @@ Now we can import the projects to eclipse (without copying them to the workspace
 We can see our new target in the list of targets.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>hello</kbd><br/>
 <kbd class='shell output'>hello2</kbd><br/>
 </samp></div>
@@ -78,12 +78,12 @@ We can see our new target in the list of targets.
 Building a target means wishing for a path to a file that contains the fresh content of the target. Let's try that for the two targets we have.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/hello/as-path</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.HelloTarget hello)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.HelloTarget hello)</kbd><br/>
 <kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/hello</kbd><br/>
 </samp></div>
 <div><span class='output-asserted'><i>Output asserted</i></span></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/hello2/as-path</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.HelloTarget hello2)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.HelloTarget hello2)</kbd><br/>
 <kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/hello2</kbd><br/>
 </samp></div>
 <div><span class='output-asserted'><i>Output asserted</i></span></div>

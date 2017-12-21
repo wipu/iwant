@@ -27,8 +27,8 @@ cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/Untarred-test/as-
 # TODO enable assertion when ws classes compilation line is always there or always not:
 
 #out-was <<EOF
-#(0/1 T~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-workspace-main-classes)
-#(0/1 D! net.sf.iwant.plugin.ant.Untarred Untarred-test)
+#(0/1 T~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-workspace-main-classes)
+#(0/1 D! org.fluentjava.iwant.plugin.ant.Untarred Untarred-test)
 #Expanding: $PWD/Untarred-test.tar.gz into $PWD/as-iwant-tutorial-developer/.i-cached/target/Untarred-test
 #$PWD/as-iwant-tutorial-developer/.i-cached/target/Untarred-test
 #$PWD/as-iwant-tutorial-developer/.i-cached/target/Untarred-test/Untarred-test

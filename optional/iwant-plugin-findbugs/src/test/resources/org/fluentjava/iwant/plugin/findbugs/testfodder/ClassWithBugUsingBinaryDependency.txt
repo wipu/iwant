@@ -1,0 +1,11 @@
+package org.fluentjava.iwant.plugin.findbugs.testfodder;
+
+import org.fluentjava.iwant.plugin.findbugs.testfodder2.BinaryDependency;
+
+public class ClassWithBugUsingBinaryDependency {
+
+	public static void nullReferenceOfValueFromBinaryDependency() {
+		System.out.println(BinaryDependency.NULL_STRING.toString());
+	}
+
+}

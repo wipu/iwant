@@ -4,21 +4,21 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sf.iwant.api.core.Concatenated;
-import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;
-import net.sf.iwant.api.core.HelloTarget;
-import net.sf.iwant.api.javamodules.JavaBinModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule;
-import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
-import net.sf.iwant.api.javamodules.ScalaVersion;
-import net.sf.iwant.api.model.Path;
-import net.sf.iwant.api.model.SideEffect;
-import net.sf.iwant.api.model.Target;
-import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;
-import net.sf.iwant.api.wsdef.TargetDefinitionContext;
-import net.sf.iwant.api.wsdef.Workspace;
-import net.sf.iwant.core.javamodules.JavaModules;
-import net.sf.iwant.eclipsesettings.EclipseSettings;
+import org.fluentjava.iwant.api.core.Concatenated;
+import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import org.fluentjava.iwant.api.core.HelloTarget;
+import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
+import org.fluentjava.iwant.api.javamodules.ScalaVersion;
+import org.fluentjava.iwant.api.model.Path;
+import org.fluentjava.iwant.api.model.SideEffect;
+import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;
+import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
+import org.fluentjava.iwant.api.wsdef.Workspace;
+import org.fluentjava.iwant.core.javamodules.JavaModules;
+import org.fluentjava.iwant.eclipsesettings.EclipseSettings;
 
 public class IwanttutorialWorkspace implements Workspace {
 

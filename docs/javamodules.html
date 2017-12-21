@@ -23,18 +23,18 @@ We also add the module to the eclipse-settings side-effect, and also define a ta
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='add line'>import net.sf.iwant.api.core.Concatenated;</div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='add line'>import net.sf.iwant.api.javamodules.JavaBinModule;</div>
-<div class='add line'>import net.sf.iwant.api.javamodules.JavaModule;</div>
-<div class='add line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='add line'>import net.sf.iwant.core.download.TestedIwantDependencies;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='add line'>import org.fluentjava.iwant.api.core.Concatenated;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='add line'>import org.fluentjava.iwant.api.javamodules.JavaBinModule;</div>
+<div class='add line'>import org.fluentjava.iwant.api.javamodules.JavaModule;</div>
+<div class='add line'>import org.fluentjava.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='add line'>import org.fluentjava.iwant.core.download.TestedIwantDependencies;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -73,9 +73,9 @@ We also add the module to the eclipse-settings side-effect, and also define a ta
 Then we generate Eclipse settings for it so we can use Eclipse for writing the code.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact junit-4.8.2.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact junit-4.8.2.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
 <kbd class='shell output'>(example-hello)</kbd><br/>
 <kbd class='shell output'>(  .project)</kbd><br/>
 <kbd class='shell output'>(  .classpath)</kbd><br/>
@@ -135,9 +135,9 @@ Now we can import the project to Eclipse and write some code.
 Finally, we can build and run some classes.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/hello-classes/as-path</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses example-hello-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses example-hello-test-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated hello-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.javamodules.JavaClasses example-hello-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.javamodules.JavaClasses example-hello-test-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.Concatenated hello-classes)</kbd><br/>
 <kbd class='shell output'>/home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/hello-classes</kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/hello-classes/as-path | xargs -r cat</kbd><br/>
@@ -159,8 +159,8 @@ First we'll enable the needed plugin and refresh eclipse settings.
 <div class='editor'>
 </div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1    net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1    org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>(example-hello)</kbd><br/>
 <kbd class='shell output'>(  .project)</kbd><br/>
 <kbd class='shell output'>(  .classpath)</kbd><br/>
@@ -189,22 +189,22 @@ Now we will use the class JavaModule to define more modules and utilize some con
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.core.Concatenated;</div>
-<div class='add line'>import net.sf.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='keep line'>import net.sf.iwant.api.javamodules.JavaBinModule;</div>
-<div class='del line'>import net.sf.iwant.api.javamodules.JavaModule;</div>
-<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
-<div class='add line'>import net.sf.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;</div>
-<div class='add line'>import net.sf.iwant.api.model.Path;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='del line'>import net.sf.iwant.core.download.TestedIwantDependencies;</div>
-<div class='add line'>import net.sf.iwant.core.javamodules.JavaModules;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.Concatenated;</div>
+<div class='add line'>import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.javamodules.JavaBinModule;</div>
+<div class='del line'>import org.fluentjava.iwant.api.javamodules.JavaModule;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='add line'>import org.fluentjava.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;</div>
+<div class='add line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='del line'>import org.fluentjava.iwant.core.download.TestedIwantDependencies;</div>
+<div class='add line'>import org.fluentjava.iwant.core.javamodules.JavaModules;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -271,12 +271,12 @@ Now we will use the class JavaModule to define more modules and utilize some con
 We write some code to the new module
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact junit-4.11.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact junit-4.11-sources.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact hamcrest-core-1.3.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact hamcrest-core-1.3-sources.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact junit-4.11.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact junit-4.11-sources.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact hamcrest-core-1.3.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact hamcrest-core-1.3-sources.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ org.fluentjava.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
 <kbd class='shell output'>(example-hello)</kbd><br/>
 <kbd class='shell output'>(  .project)</kbd><br/>
 <kbd class='shell output'>(  .classpath)</kbd><br/>
@@ -355,11 +355,11 @@ We write some code to the new module
 Now we can get all our classes as a classpath string.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/all-as-cp/as-path | xargs -r cat</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses example-helloutil-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses example-hello-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.zip.Jar example-hello.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.zip.Jar example-helloutil.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated all-as-cp)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.javamodules.JavaClasses example-helloutil-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ org.fluentjava.iwant.api.javamodules.JavaClasses example-hello-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.zip.Jar example-hello.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.zip.Jar example-helloutil.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.Concatenated all-as-cp)</kbd><br/>
 </samp></div>
 <p class='text'>
 Let's use the classpath to run the application again.

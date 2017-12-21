@@ -17,9 +17,9 @@ First we add the iwant findbugs plugin to the project.
 <div class='editor'>
 <div class='keep line'>package com.example.wsdefdef;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceModuleProvider;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.WorkspaceModuleProvider;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwantTutorialWorkspaceProvider implements WorkspaceModuleProvider {</div>
 <div class='keep line'></div>
@@ -45,18 +45,14 @@ First we add the iwant findbugs plugin to the project.
 We refresh eclipse settings so we can use the plugin in our workspace definition.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.SvnExported iwant-plugin-findbugs-main-java)</kbd><br/>
-<kbd class='shell output'>svn exporting (may take a while) https://svn.code.sf.net/p/iwant/code/trunk/optional/iwant-plugin-findbugs/src/main/java@899</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact commons-io-1.3.2.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.SvnExported iwant-plugin-ant-main-java)</kbd><br/>
-<kbd class='shell output'>svn exporting (may take a while) https://svn.code.sf.net/p/iwant/code/trunk/optional/iwant-plugin-ant/src/main/java@899</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.GnvArtifact ant-launcher-1.10.1.jar)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-plugin-ant)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses iwant-plugin-findbugs)</kbd><br/>
-<kbd class='shell output'>(0/1 D~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdefdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact commons-io-1.3.2.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact ant-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.GnvArtifact ant-launcher-1.10.1.jar)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.javamodules.JavaClasses iwant-plugin-ant)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.javamodules.JavaClasses iwant-plugin-findbugs)</kbd><br/>
+<kbd class='shell output'>(0/1 D~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.Concatenated eclipse-settings.bin-refs)</kbd><br/>
 <kbd class='shell output'>(as-iwant-tutorial-developer/i-have/wsdef)</kbd><br/>
 <kbd class='shell output'>(  .project)</kbd><br/>
 <kbd class='shell output'>(  .classpath)</kbd><br/>
@@ -79,18 +75,18 @@ After refreshing eclipse we define a module to test findbugs on, and define a fi
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='add line'>import net.sf.iwant.api.javamodules.JavaClassesAndSources;</div>
-<div class='add line'>import net.sf.iwant.api.javamodules.JavaSrcModule;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='add line'>import net.sf.iwant.core.download.TestedIwantDependencies;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
-<div class='add line'>import net.sf.iwant.plugin.findbugs.FindbugsDistribution;</div>
-<div class='add line'>import net.sf.iwant.plugin.findbugs.FindbugsReport;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='add line'>import org.fluentjava.iwant.api.javamodules.JavaClassesAndSources;</div>
+<div class='add line'>import org.fluentjava.iwant.api.javamodules.JavaSrcModule;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='add line'>import org.fluentjava.iwant.core.download.TestedIwantDependencies;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='add line'>import org.fluentjava.iwant.plugin.findbugs.FindbugsDistribution;</div>
+<div class='add line'>import org.fluentjava.iwant.plugin.findbugs.FindbugsReport;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -132,7 +128,7 @@ After refreshing eclipse we define a module to test findbugs on, and define a fi
 Another eclipse settings refresh to create the new eclipse project.
 </p>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settings/effective</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>(example-findbugsfodder)</kbd><br/>
 <kbd class='shell output'>(  .project)</kbd><br/>
 <kbd class='shell output'>(  .classpath)</kbd><br/>
@@ -179,11 +175,11 @@ Now we can analyze the code.
 </samp></div>
 <div><span class='output-asserted'><i>Output asserted</i></span></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/example-findbugsfodder-main-java-findbugs-report/as-path | xargs -r -I x find x -type f</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.core.download.Downloaded findbugs-3.0.0.tar.gz)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.findbugs.FindbugsDistribution findbugs-3.0.0)</kbd><br/>
-<kbd class='shell output'>Expanding: /home/hacker/.net.sf.iwant/cached/UnmodifiableUrl/http%3A/%2Fdownloads.sourceforge.net/project/findbugs/findbugs/3.0.0/findbugs-3.0.0.tar.gz into /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/findbugs-3.0.0</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.javamodules.JavaClasses example-findbugsfodder-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.plugin.findbugs.FindbugsReport example-findbugsfodder-main-java-findbugs-report)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.core.download.Downloaded findbugs-3.0.0.tar.gz)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.plugin.findbugs.FindbugsDistribution findbugs-3.0.0)</kbd><br/>
+<kbd class='shell output'>Expanding: /home/hacker/.org.fluentjava.iwant/cached/UnmodifiableUrl/http%3A/%2Fdownloads.sourceforge.net/project/findbugs/findbugs/3.0.0/findbugs-3.0.0.tar.gz into /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/findbugs-3.0.0</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.javamodules.JavaClasses example-findbugsfodder-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.plugin.findbugs.FindbugsReport example-findbugsfodder-main-java-findbugs-report)</kbd><br/>
 <kbd class='shell output'>Buildfile: /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/example-findbugsfodder-main-java-findbugs-report/build.xml</kbd><br/>
 <kbd class='shell output'></kbd><br/>
 <kbd class='shell output'>findbugs-home:</kbd><br/>

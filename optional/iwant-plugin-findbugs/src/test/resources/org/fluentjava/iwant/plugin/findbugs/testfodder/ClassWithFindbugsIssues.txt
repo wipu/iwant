@@ -1,0 +1,11 @@
+package org.fluentjava.iwant.plugin.findbugs.testfodder;
+
+public class ClassWithFindbugsIssues {
+
+	public void nullReference(Object o) {
+		if (o == null) {
+			System.out.println(o.toString());
+		}
+	}
+
+}

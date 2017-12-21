@@ -24,14 +24,14 @@ Let's define a custom target that sums the sizes of (the cached contents of) giv
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='add line'>import net.sf.iwant.api.model.Path;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='add line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -65,10 +65,10 @@ Let's define a custom target that sums the sizes of (the cached contents of) giv
 <div class='add line'>import java.io.File;</div>
 <div class='add line'>import java.util.List;</div>
 <div class='add line'></div>
-<div class='add line'>import net.sf.iwant.api.model.Path;</div>
-<div class='add line'>import net.sf.iwant.api.model.TargetEvaluationContext;</div>
-<div class='add line'>import net.sf.iwant.api.target.TargetBase;</div>
-<div class='add line'>import net.sf.iwant.coreservices.FileUtil;</div>
+<div class='add line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='add line'>import org.fluentjava.iwant.api.model.TargetEvaluationContext;</div>
+<div class='add line'>import org.fluentjava.iwant.api.target.TargetBase;</div>
+<div class='add line'>import org.fluentjava.iwant.coreservices.FileUtil;</div>
 <div class='add line'></div>
 <div class='add line'>class FileSizeSum extends TargetBase {</div>
 <div class='add line'></div>
@@ -102,7 +102,7 @@ Let's define a custom target that sums the sizes of (the cached contents of) giv
 <div class='add line'>}</div>
 </div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/list-of/targets</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>hello</kbd><br/>
 <kbd class='shell output'>file-size-sum</kbd><br/>
 </samp></div>
@@ -127,10 +127,10 @@ We can fix this by declaring the ingredients:
 <div class='keep line'>import java.io.File;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
-<div class='keep line'>import net.sf.iwant.api.model.TargetEvaluationContext;</div>
-<div class='keep line'>import net.sf.iwant.api.target.TargetBase;</div>
-<div class='keep line'>import net.sf.iwant.coreservices.FileUtil;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.TargetEvaluationContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.target.TargetBase;</div>
+<div class='keep line'>import org.fluentjava.iwant.coreservices.FileUtil;</div>
 <div class='keep line'></div>
 <div class='keep line'>class FileSizeSum extends TargetBase {</div>
 <div class='keep line'></div>
@@ -165,9 +165,9 @@ We can fix this by declaring the ingredients:
 <div class='keep line'>}</div>
 </div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.HelloTarget ingredient1)</kbd><br/>
-<kbd class='shell output'>(0/1 D! net.sf.iwant.api.core.HelloTarget ingredient2)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.HelloTarget ingredient1)</kbd><br/>
+<kbd class='shell output'>(0/1 D! org.fluentjava.iwant.api.core.HelloTarget ingredient2)</kbd><br/>
 <kbd class='shell output'>(0/1 D! com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
 <kbd class='shell output'>Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/file-size-sum</kbd><br/>
 <kbd class='shell output'>5</kbd><br/>
@@ -204,14 +204,14 @@ Next we will make our target accept static input, a parameter. We will add a hea
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -245,10 +245,10 @@ Next we will make our target accept static input, a parameter. We will add a hea
 <div class='keep line'>import java.io.File;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
-<div class='keep line'>import net.sf.iwant.api.model.TargetEvaluationContext;</div>
-<div class='keep line'>import net.sf.iwant.api.target.TargetBase;</div>
-<div class='keep line'>import net.sf.iwant.coreservices.FileUtil;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.TargetEvaluationContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.target.TargetBase;</div>
+<div class='keep line'>import org.fluentjava.iwant.coreservices.FileUtil;</div>
 <div class='keep line'></div>
 <div class='keep line'>class FileSizeSum extends TargetBase {</div>
 <div class='keep line'></div>
@@ -288,7 +288,7 @@ Next we will make our target accept static input, a parameter. We will add a hea
 <div class='keep line'>}</div>
 </div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>5</kbd><br/>
 </samp></div>
 <div><span class='output-asserted'><i>Output asserted</i></span></div>
@@ -303,10 +303,10 @@ We can fix this by declaring the header line a parameter:
 <div class='keep line'>import java.io.File;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
-<div class='keep line'>import net.sf.iwant.api.model.TargetEvaluationContext;</div>
-<div class='keep line'>import net.sf.iwant.api.target.TargetBase;</div>
-<div class='keep line'>import net.sf.iwant.coreservices.FileUtil;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.TargetEvaluationContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.target.TargetBase;</div>
+<div class='keep line'>import org.fluentjava.iwant.coreservices.FileUtil;</div>
 <div class='keep line'></div>
 <div class='keep line'>class FileSizeSum extends TargetBase {</div>
 <div class='keep line'></div>
@@ -347,7 +347,7 @@ We can fix this by declaring the header line a parameter:
 <div class='keep line'>}</div>
 </div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>(0/1 D~ com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
 <kbd class='shell output'>Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/file-size-sum</kbd><br/>
 <kbd class='shell output'>The sum</kbd><br/>
@@ -373,14 +373,14 @@ But if we change the value of the parameter, the target will become dirty and be
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -407,7 +407,7 @@ But if we change the value of the parameter, the target will become dirty and be
 <div class='keep line'>}</div>
 </div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>(0/1 D~ com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
 <kbd class='shell output'>Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/file-size-sum</kbd><br/>
 <kbd class='shell output'>The sum of file sizes</kbd><br/>
@@ -441,12 +441,12 @@ Let's try it for our target.
 <div class='keep line'>import java.io.File;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
-<div class='add line'>import net.sf.iwant.api.model.Source;</div>
-<div class='keep line'>import net.sf.iwant.api.model.TargetEvaluationContext;</div>
-<div class='keep line'>import net.sf.iwant.api.target.TargetBase;</div>
-<div class='add line'>import net.sf.iwant.core.javafinder.WsdefJavaOf;</div>
-<div class='keep line'>import net.sf.iwant.coreservices.FileUtil;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='add line'>import org.fluentjava.iwant.api.model.Source;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.TargetEvaluationContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.target.TargetBase;</div>
+<div class='add line'>import org.fluentjava.iwant.core.javafinder.WsdefJavaOf;</div>
+<div class='keep line'>import org.fluentjava.iwant.coreservices.FileUtil;</div>
 <div class='keep line'></div>
 <div class='keep line'>class FileSizeSum extends TargetBase {</div>
 <div class='keep line'></div>
@@ -497,16 +497,16 @@ Let's try it for our target.
 <div class='keep line'>import java.util.Arrays;</div>
 <div class='keep line'>import java.util.List;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.core.HelloTarget;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Path;</div>
-<div class='keep line'>import net.sf.iwant.api.model.SideEffect;</div>
-<div class='keep line'>import net.sf.iwant.api.model.Target;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.SideEffectDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.TargetDefinitionContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='add line'>import net.sf.iwant.api.wsdef.WorkspaceContext;</div>
-<div class='add line'>import net.sf.iwant.core.javafinder.WsdefJavaOf;</div>
-<div class='keep line'>import net.sf.iwant.eclipsesettings.EclipseSettings;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.core.HelloTarget;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Path;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.SideEffect;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.model.Target;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='add line'>import org.fluentjava.iwant.api.wsdef.WorkspaceContext;</div>
+<div class='add line'>import org.fluentjava.iwant.core.javafinder.WsdefJavaOf;</div>
+<div class='keep line'>import org.fluentjava.iwant.eclipsesettings.EclipseSettings;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspace implements Workspace {</div>
 <div class='keep line'></div>
@@ -543,9 +543,9 @@ Let's try it for our target.
 <div class='editor'>
 <div class='keep line'>package com.example.wsdef;</div>
 <div class='keep line'></div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.Workspace;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceContext;</div>
-<div class='keep line'>import net.sf.iwant.api.wsdef.WorkspaceFactory;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.Workspace;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.WorkspaceContext;</div>
+<div class='keep line'>import org.fluentjava.iwant.api.wsdef.WorkspaceFactory;</div>
 <div class='keep line'></div>
 <div class='keep line'>public class IwanttutorialWorkspaceFactory implements WorkspaceFactory {</div>
 <div class='keep line'></div>
@@ -558,7 +558,7 @@ Let's try it for our target.
 <div class='keep line'>}</div>
 </div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>(0/1 D~ com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
 <kbd class='shell output'>Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/file-size-sum</kbd><br/>
 <kbd class='shell output'>The sum of file sizes</kbd><br/>
@@ -576,7 +576,7 @@ Our target is now up-to-date, but if we touch its source, it will be refreshed.
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>touch as-iwant-tutorial-developer/i-have/wsdef/src/main/java/com/example/wsdef/FileSizeSum.java</kbd><br/>
 </samp></div>
 <div class='console'><samp><kbd class='shell prompt'>~/iwant-tutorial $ </kbd><kbd class='shell cmd'>as-iwant-tutorial-developer/with/bash/iwant/target/file-size-sum/as-path | xargs -r cat</kbd><br/>
-<kbd class='shell output'>(0/1 S~ net.sf.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
+<kbd class='shell output'>(0/1 S~ org.fluentjava.iwant.api.javamodules.JavaClasses iwant-tutorial-wsdef-main-classes)</kbd><br/>
 <kbd class='shell output'>(0/1 S~ com.example.wsdef.FileSizeSum file-size-sum)</kbd><br/>
 <kbd class='shell output'>Refreshing /home/hacker/iwant-tutorial/as-iwant-tutorial-developer/.i-cached/target/file-size-sum</kbd><br/>
 <kbd class='shell output'>The sum of file sizes</kbd><br/>

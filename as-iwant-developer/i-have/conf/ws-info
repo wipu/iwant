@@ -2,4 +2,4 @@
 WSNAME=iwant
 WSROOT=../../..
 WSDEFDEF_MODULE=../wsdefdef
-WSDEFDEF_CLASS=net.sf.iwant.wsdefdef.WorkspaceProviderForIwant
+WSDEFDEF_CLASS=org.fluentjava.iwant.wsdefdef.WorkspaceProviderForIwant
