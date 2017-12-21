@@ -7,9 +7,15 @@ import org.fluentjava.iwant.core.download.GnvArtifact;
 public class ScalaVersion {
 
 	private final String value;
+	private final GnvArtifact<Downloaded> compilerJar;
+	private final GnvArtifact<Downloaded> libraryJar;
+	private final GnvArtifact<Downloaded> reflectJar;
 
-	private ScalaVersion(String value) {
+	public ScalaVersion(String value) {
 		this.value = value;
+		this.compilerJar = jar("scala-compiler", value);
+		this.libraryJar = jar("scala-library", value);
+		this.reflectJar = jar("scala-reflect", value);
 	}
 
 	public String value() {
@@ -29,21 +35,21 @@ public class ScalaVersion {
 		return new ScalaVersion(value);
 	}
 
-	private GnvArtifact<Downloaded> jar(String name) {
+	private static GnvArtifact<Downloaded> jar(String name, String version) {
 		return FromRepository.repo1MavenOrg().group("org.scala-lang").name(name)
-				.version(value).jar();
+				.version(version).jar();
 	}
 
 	public GnvArtifact<Downloaded> compilerJar() {
-		return jar("scala-compiler");
+		return compilerJar;
 	}
 
 	public GnvArtifact<Downloaded> libraryJar() {
-		return jar("scala-library");
+		return libraryJar;
 	}
 
 	public GnvArtifact<Downloaded> reflectJar() {
-		return jar("scala-reflect");
+		return reflectJar;
 	}
 
 }

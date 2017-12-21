@@ -1622,6 +1622,10 @@
 + as @buildscriptauthor I want to define scala version freely, not just a predefined factory method, so I don't need to wait for an iwant upgrade when upgrading scala
   + factory method ScalaVersion.of
 
++ potential @bugfix instantiate jars of ScalaVersion only once for less heap usage
+  * a project started getting OutOfMemoryError: GC overhead limit exceeded after upgrading scala
+  + also make the constructor public, just in case user wants to customize things
+
 #################################################################
 = In progress
 #################################################################
