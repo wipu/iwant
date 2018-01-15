@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import org.fluentjava.iwant.api.model.IwantCoreServices;
+import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.coreservices.IwantCoreServicesImpl;
 import org.fluentjava.iwant.coreservices.StreamUtil;
 import org.fluentjava.iwant.entry.Iwant;
@@ -111,12 +112,12 @@ public abstract class IwantTestCase extends TestCase {
 		return testArea.contentOf(file);
 	}
 
-	protected String contentOfCached(String targetName) {
-		return testArea.contentOf(cachedTarget(targetName));
+	protected String contentOfCached(Path path) {
+		return contentOf(ctx.cached(path));
 	}
 
-	protected File cachedTarget(String targetName) {
-		return new File(cached, targetName);
+	protected String contentOfCached(Path path, String relpath) {
+		return contentOf(new File(ctx.cached(path), relpath));
 	}
 
 	protected String contentOfFileUnderWsRoot(String relativePath) {

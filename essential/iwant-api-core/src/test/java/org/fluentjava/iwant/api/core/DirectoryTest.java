@@ -61,12 +61,12 @@ public class DirectoryTest extends IwantTestCase {
 				.copyOf(hello2).named("hello2-renamed").end().end().end();
 		nonempty.path(ctx);
 
-		assertEquals("src content", contentOfCached("nonempty/src"));
+		assertEquals("src content", contentOfCached(nonempty, "src"));
 		assertTrue(new File(cached, "nonempty/empty-sub").exists());
 		assertEquals("hello1 content",
-				contentOfCached("nonempty/nonempty-sub/hello1"));
+				contentOfCached(nonempty, "nonempty-sub/hello1"));
 		assertEquals("hello2 content",
-				contentOfCached("nonempty/nonempty-sub/hello2-renamed"));
+				contentOfCached(nonempty, "nonempty-sub/hello2-renamed"));
 	}
 
 	public void testCopyOfNormalFileIsExecutableOnlyIfDeclaredSo()

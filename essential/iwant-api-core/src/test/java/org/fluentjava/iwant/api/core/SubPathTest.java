@@ -41,7 +41,7 @@ public class SubPathTest extends IwantTestCase {
 		Target target = new SubPath("s", parent, "file");
 		target.path(ctx);
 
-		assertEquals("file content", contentOfCached("s"));
+		assertEquals("file content", contentOfCached(target));
 	}
 
 	public void testDirectorySubPathAsPath() throws Exception {
@@ -52,8 +52,29 @@ public class SubPathTest extends IwantTestCase {
 		Target target = new SubPath("s", parent, "subdir");
 		target.path(ctx);
 
-		assertEquals("subfile1 content", contentOfCached("s/subfile1"));
-		assertEquals("subfile2 content", contentOfCached("s/subfile2"));
+		assertEquals("subfile1 content", contentOfCached(target, "subfile1"));
+		assertEquals("subfile2 content", contentOfCached(target, "subfile2"));
+	}
+
+	/**
+	 * SubPath used to copy but it was unnecessary. This tests no copying
+	 * happens.
+	 */
+	public void testCachedPathPointsDirectlyUnderOriginal() {
+		Source source = Source.underWsroot("source");
+		assertEquals(wsRoot + "/source", ctx.cached(source).getAbsolutePath());
+		assertEquals(wsRoot + "/source/subdir",
+				ctx.cached(new SubPath("sourcesub", source, "subdir"))
+						.getAbsolutePath());
+	}
+
+	/**
+	 * This is important since no copying happens: the parent must not be
+	 * deleted when refreshing a subpath of it.
+	 */
+	public void testDeletionOfCachedFileIsNotRequested() {
+		assertFalse(new SubPath("s", Source.underWsroot("parent"), "sub")
+				.expectsCachedTargetMissingBeforeRefresh());
 	}
 
 }

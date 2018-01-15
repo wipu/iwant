@@ -52,7 +52,7 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		assertEquals("", out());
 		assertEquals("", err());
 
-		assertEquals("hello from script\n", contentOfCached("sg"));
+		assertEquals("hello from script\n", contentOfCached(sg));
 	}
 
 	public void testScriptThatDemonstratesItsEnvironment() throws Exception {
@@ -77,7 +77,7 @@ public class ScriptGeneratedTest extends IwantTestCase {
 				+ unixPathOf(cached) + "/sg\ncwd=" + unixPathOf(tmpDir) + "\n"
 				+ "stderr\n", err());
 
-		assertEquals("hello from env demo\n", contentOfCached("sg"));
+		assertEquals("hello from env demo\n", contentOfCached(sg));
 	}
 
 	public void testFailingScript() throws Exception {
@@ -104,7 +104,7 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		assertEquals("", out());
 		assertEquals("First generating some content\nThen failing\n", err());
 
-		assertEquals("hello from failing script\n", contentOfCached("sg"));
+		assertEquals("hello from failing script\n", contentOfCached(sg));
 	}
 
 	public void testExecutionEnvUsesProperWrapperWhenCygwinBashExeExists()

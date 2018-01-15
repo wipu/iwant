@@ -335,7 +335,7 @@ public class JavaClassesTest extends IwantTestCase {
 		classes.path(ctx);
 
 		assertTrue(new File(cached, "classes/Foo.class").exists());
-		assertEquals("res.txt content", contentOfCached("classes/res.txt"));
+		assertEquals("res.txt content", contentOfCached(classes, "res.txt"));
 	}
 
 	public void testMissingResourceDirectoryIsIgnoredWithWarningAndWithoutThrowing()
@@ -352,7 +352,7 @@ public class JavaClassesTest extends IwantTestCase {
 		classes.path(ctx);
 
 		assertTrue(new File(cached, "classes/Foo.class").exists());
-		assertEquals("res2.txt content", contentOfCached("classes/res2.txt"));
+		assertEquals("res2.txt content", contentOfCached(classes, "res2.txt"));
 
 		assertEquals(
 				"WARNING: Missing resource dir: " + wsRoot + "/res1\n" + "",
@@ -370,9 +370,9 @@ public class JavaClassesTest extends IwantTestCase {
 		classes.path(ctx);
 
 		assertEquals("res1.txt content",
-				contentOfCached("classes/pak1/res1.txt"));
+				contentOfCached(classes, "pak1/res1.txt"));
 		assertEquals("res2.txt content",
-				contentOfCached("classes/pak2/res2.txt"));
+				contentOfCached(classes, "pak2/res2.txt"));
 	}
 
 	public void testOverridingChracterEncoding() throws Exception {

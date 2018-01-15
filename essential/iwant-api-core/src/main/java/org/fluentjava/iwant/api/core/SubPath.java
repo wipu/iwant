@@ -3,10 +3,10 @@ package org.fluentjava.iwant.api.core;
 import java.io.File;
 import java.io.InputStream;
 
+import org.fluentjava.iwant.api.model.CacheScopeChoices;
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.TargetEvaluationContext;
 import org.fluentjava.iwant.api.target.TargetBase;
-import org.fluentjava.iwant.coreservices.FileUtil;
 
 public class SubPath extends TargetBase {
 
@@ -33,8 +33,17 @@ public class SubPath extends TargetBase {
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
-		File from = new File(ctx.cached(parent), relativePath);
-		FileUtil.copyRecursively(from, ctx.cached(this));
+		// nothing to do
+	}
+
+	@Override
+	public File cachedAt(CacheScopeChoices cachedAt) {
+		return new File(parent.cachedAt(cachedAt), relativePath);
+	}
+
+	@Override
+	public boolean expectsCachedTargetMissingBeforeRefresh() {
+		return false;
 	}
 
 	public Path parent() {

@@ -14,9 +14,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.fluentjava.iwant.api.core.Concatenated;
 import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
+import org.fluentjava.iwant.api.core.Directory;
 import org.fluentjava.iwant.api.core.HelloSideEffect;
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.core.ScriptGenerated;
+import org.fluentjava.iwant.api.core.SubPath;
 import org.fluentjava.iwant.api.javamodules.JavaBinModule;
 import org.fluentjava.iwant.api.javamodules.JavaClasses;
 import org.fluentjava.iwant.api.javamodules.JavaModule;
@@ -924,6 +926,28 @@ public class WishEvaluatorTest extends TestCase {
 					"Name contains double colon (breaks TargetImplementedInBash): a::b",
 					e.getMessage());
 		}
+	}
+
+	/**
+	 * SubPath used to copy but it was unnecessary. This tests no copying
+	 * happens. It also tests the already cached parent is not deleted before
+	 * refreshing the SubPath.
+	 */
+	public void testSubPathPointsToUnderParentAndItHasCorrectCachedContent()
+			throws Exception {
+		Target hello = new HelloTarget("hello", "hello content");
+		Directory parent = Directory.named("parent").dir("sub").copyOf(hello)
+				.named("hello2").end().end().end();
+		SubPath sub = new SubPath("sub", parent, "sub");
+
+		WorkspaceWithTarget ws = new WorkspaceWithTarget(sub);
+
+		evaluator.iwant("target/sub/as-path", ws);
+
+		assertEquals(caches.contentOf(parent) + "/sub\n", out());
+		File cachedSub = caches.contentOf(sub);
+		assertEquals("hello content",
+				testArea.contentOf(new File(cachedSub, "hello2")));
 	}
 
 }

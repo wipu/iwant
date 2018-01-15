@@ -15,7 +15,7 @@ p "After refreshing eclipse we define a java classes target compiled from source
 wsdef-edit fromgithub
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/list-of/targets"
 cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/target/joulu-code/as-path"
-cmd "ls as-iwant-tutorial-developer/.i-cached/target/joulu-code"
+cmde "0 0" "as-iwant-tutorial-developer/with/bash/iwant/target/joulu-code/as-path | xargs -r ls"
 out-was <<EOF
 LICENSE
 README.md

@@ -1626,6 +1626,8 @@
   * a project started getting OutOfMemoryError: GC overhead limit exceeded after upgrading scala
   + also make the constructor public, just in case user wants to customize things
 
++ As @buildscriptuser I want SubPath to point directly under the original path without copying so I don't have to waste disk space
+
 #################################################################
 = In progress
 #################################################################

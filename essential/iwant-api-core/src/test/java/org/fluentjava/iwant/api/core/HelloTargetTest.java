@@ -36,7 +36,7 @@ public class HelloTargetTest extends IwantTestCase {
 
 		target.path(ctx);
 
-		assertEquals("hello content", contentOfCached("non-null"));
+		assertEquals("hello content", contentOfCached(target));
 	}
 
 }

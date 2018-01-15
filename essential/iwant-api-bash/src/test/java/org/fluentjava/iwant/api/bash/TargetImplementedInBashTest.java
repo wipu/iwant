@@ -60,7 +60,7 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		prepareContext(target);
 		target.path(ctx);
 
-		assertEquals("hello\n", contentOfCached("t"));
+		assertEquals("hello\n", contentOfCached(target));
 	}
 
 	public void testTargetWithTargetIngredient() throws Exception {
@@ -79,7 +79,7 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		target.path(ctx);
 
 		assertEquals("using " + cached + "/ingr\n" + "ingr content",
-				contentOfCached("t"));
+				contentOfCached(target));
 	}
 
 	public void testTargetWithSourceIngredient() throws Exception {
@@ -97,7 +97,7 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		target.path(ctx);
 
 		assertEquals("using " + wsRoot + "/ingr\n" + "ingr content",
-				contentOfCached("t"));
+				contentOfCached(target));
 	}
 
 	public void testIndexWithNoTargetsDefined() {
@@ -189,7 +189,7 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		target.path(ctx);
 
 		assertEquals("using " + cached + "/ingr\n" + "ingr content",
-				contentOfCached("user-of-ingr-target"));
+				contentOfCached(target));
 	}
 
 	public void testNonexistentIndexShCausesFriendlyWarning() {

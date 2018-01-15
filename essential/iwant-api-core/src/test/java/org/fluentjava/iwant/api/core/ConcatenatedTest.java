@@ -74,7 +74,7 @@ public class ConcatenatedTest extends IwantTestCase {
 
 		assertEquals("native:only-slashes:" + slashed(wsRoot)
 				+ "/src\nunix:mock-unix-path:" + slashed(wsRoot) + "/src\n",
-				contentOfCached("paths"));
+				contentOfCached(c));
 	}
 
 }
