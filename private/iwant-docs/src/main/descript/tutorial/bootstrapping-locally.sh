@@ -7,7 +7,7 @@ local WSROOTNAME=$(basename "$LOCAL_IWANT_WSROOT")
 local WSROOTPARENT=$(dirname "$LOCAL_IWANT_WSROOT")
 local IWANTZIP=/tmp/iwant-for-local-tutorial.zip
 cmd cd "$WSROOTPARENT"
-cmd "rm '$IWANTZIP'"
+cmd "rm -f '$IWANTZIP'"
 cmd "zip -q -0 -r '$IWANTZIP' $WSROOTNAME"
 cmd "cd - > /dev/null"
 
