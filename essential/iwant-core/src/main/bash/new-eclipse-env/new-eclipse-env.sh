@@ -97,7 +97,7 @@ log "OPT_SUBCLIPSE=$OPT_SUBCLIPSE"
 log "OPT_EGIT=$OPT_EGIT"
 
 
-ECL_CODENAME=neon
+ECL_CODENAME=oxygen
 ECL_REL=2
 ECL_DISTBASE=eclipse-java-$ECL_CODENAME-$ECL_REL
 ECL_URLBASE='http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/'$ECL_CODENAME/$ECL_REL
@@ -105,25 +105,25 @@ ECL_URLBASE='http://www.eclipse.org/downloads/download.php?file=/technology/epp/
 eclipse-url-linux32() {
   DISTNAME=$ECL_DISTBASE-linux-gtk.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='dd48d0ef40d663137221e4f28c883f85'
+  DISTMD5='dfa2817fd679ab12608971d36e59f18e'
 }
 
 eclipse-url-linux64() {
   DISTNAME=$ECL_DISTBASE-linux-gtk-x86_64.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='02b495a3b696b45ee84d2c69e599c305'
+  DISTMD5='2979aa536b8d2fffc062758175a67489'
 }
 
 eclipse-url-win32() {
   DISTNAME=$ECL_DISTBASE-win32.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='2c33b32865a69d1b601ee16f9a28cc71'
+  DISTMD5='e7661f45ebd097d4b6b7ad18d5f08799'
 }
 
 eclipse-url-win64() {
   DISTNAME=$ECL_DISTBASE-win32-x86_64.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='5a5b57084315b8d803e4699ba001082f'
+  DISTMD5='eec7d1ade835ad18c1aec53be4697646'
 }
 
 eclipse-dist() {
