@@ -1628,17 +1628,7 @@
 
 + As @buildscriptuser I want SubPath to point directly under the original path without copying so I don't have to waste disk space
 
-+ As @buildscriptuser I want to define checksum for findbugs so that I don't get mysterious failures when the server returns crap
-  * sometimes sourceforge returns an html error page instead of a proper error code
-  * the proper fix for this is to migrate to spotbugs (hosted by github)
-  + require the md5sum
-    + constants for the used versions
-
-#################################################################
-= In progress
-#################################################################
-
-- As @developer I want to migrate from sourceforge to github so that:
++ As @developer I want to migrate from sourceforge to github so that:
   * I can bootstrap from github because svnkit makes it (currently) hard to do
     in a reliable way https://issues.tmatesoft.com/issue/SVNKIT-710
     (checkout failure is swallowed => can't make iwant keep its global cache
@@ -1669,7 +1659,7 @@
       developer I want my tool to be used even by the most paranoid companies; also: as a FOSS believer
       I belive real freedom doesn't force freedom upon anybody.)
   + remove svn keywords from bootstrap files, to avoid unnecessary git diffs
-  - bootstrap from github
+  + bootstrap from github
     + @bugfix retry if unzip fails so bootstrap failure will be seen on every retry
     (- iwant-from ends with "zip" => download and unzip instead of svn co)
     * nah, github only supports downloading the whole repo
@@ -1790,6 +1780,18 @@
   + update sf.net site
     + make webpage redirect to iwant.fluentjava.org
   + fetch descript with iwant, not relying on svn:externals
+
++ As @buildscriptuser I want to define checksum for findbugs so that I don't get mysterious failures when the server returns crap
+  * sometimes sourceforge returns an html error page instead of a proper error code
+  * the proper fix for this is to migrate to spotbugs (hosted by github)
+  + require the md5sum
+    + constants for the used versions
+
+#################################################################
+= In progress
+#################################################################
+
+- fine-tuning after sf.net -> github migration
   - reusable test setup, at least mocked iwant zip (I guess I have an ever ongoing story for this...)
   - update external references (url and license have changed)
     - find out what they are :)
