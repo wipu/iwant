@@ -14,30 +14,30 @@ public class FindbugsDistributionTest extends IwantTestCase {
 		caches.cachesUrlAt(distroToTest().tarGz().url(), cachedFindbugsTarGz());
 	}
 
-	public void testTarGzIsADownloadedTargetWithCorrectUrlAndName() {
-		FindbugsDistribution distro139 = FindbugsDistribution
-				.ofVersion("1.3.9");
-		Downloaded tarGz139 = distro139.tarGz();
+	public void testTarGzIsADownloadedTargetWithCorrectUrlAndNameAndSum() {
+		FindbugsDistribution distro300 = FindbugsDistribution._3_0_0;
+		Downloaded tarGz300 = distro300.tarGz();
 
-		assertEquals("findbugs-1.3.9.tar.gz", tarGz139.name());
+		assertEquals("findbugs-3.0.0.tar.gz", tarGz300.name());
 		assertEquals(
 				"http://downloads.sourceforge.net/project/findbugs/findbugs/"
-						+ "1.3.9/findbugs-1.3.9.tar.gz",
-				tarGz139.url().toExternalForm());
+						+ "3.0.0/findbugs-3.0.0.tar.gz",
+				tarGz300.url().toExternalForm());
+		assertEquals("f0915a0800a926961296da28b6ada7cc", tarGz300.md5());
 
-		FindbugsDistribution distro202 = FindbugsDistribution
-				.ofVersion("2.0.2");
-		Downloaded tarGz202 = distro202.tarGz();
+		FindbugsDistribution distro301 = FindbugsDistribution._3_0_1;
+		Downloaded tarGz301 = distro301.tarGz();
 
-		assertEquals("findbugs-2.0.2.tar.gz", tarGz202.name());
+		assertEquals("findbugs-3.0.1.tar.gz", tarGz301.name());
 		assertEquals(
 				"http://downloads.sourceforge.net/project/findbugs/findbugs/"
-						+ "2.0.2/findbugs-2.0.2.tar.gz",
-				tarGz202.url().toExternalForm());
+						+ "3.0.1/findbugs-3.0.1.tar.gz",
+				tarGz301.url().toExternalForm());
+		assertEquals("dec8828de8657910fcb258ce5383c168", tarGz301.md5());
 	}
 
 	private static FindbugsDistribution distroToTest() {
-		return FindbugsDistribution.ofVersion("3.0.0");
+		return FindbugsDistribution._3_0_1;
 	}
 
 	private static File cachedFindbugsTarGz() {
@@ -45,15 +45,15 @@ public class FindbugsDistributionTest extends IwantTestCase {
 				.downloaded(distroToTest().tarGz().url());
 	}
 
-	public void testRealCachedFindbugs202TarGzExistsAndHasCorrectSize() {
+	public void testRealCachedFindbugs301TarGzExistsAndHasCorrectSize() {
 		File cachedFindbugsJar = cachedFindbugsTarGz();
 
 		assertTrue(cachedFindbugsJar.exists());
-		assertEquals(8893609, cachedFindbugsJar.length());
+		assertEquals(9120840, cachedFindbugsJar.length());
 	}
 
 	public void testTarGzIsAnIngredientAndMentionedInDescriptor() {
-		FindbugsDistribution distro = FindbugsDistribution.ofVersion("2.0.1");
+		FindbugsDistribution distro = FindbugsDistribution._3_0_1;
 
 		assertTrue(distro.ingredients().contains(distro.tarGz()));
 		assertTrue(distro.contentDescriptor().contains(distro.tarGz().name()));
@@ -61,18 +61,16 @@ public class FindbugsDistributionTest extends IwantTestCase {
 
 	public void testFindbugsHomeDirectoryUnderCachedUntarredDistro()
 			throws IOException {
-		FindbugsDistribution distro201 = FindbugsDistribution
-				.ofVersion("2.0.1");
-		FindbugsDistribution distro202 = FindbugsDistribution
-				.ofVersion("2.0.2");
+		FindbugsDistribution distro300 = FindbugsDistribution._3_0_0;
+		FindbugsDistribution distro301 = FindbugsDistribution._3_0_1;
 
-		File distroHome201 = new File(ctx.cached(distro201), "findbugs-2.0.1");
-		File distroHome202 = new File(ctx.cached(distro202), "findbugs-2.0.2");
+		File distroHome201 = new File(ctx.cached(distro300), "findbugs-3.0.0");
+		File distroHome202 = new File(ctx.cached(distro301), "findbugs-3.0.1");
 
 		assertEquals(distroHome201.getCanonicalPath(),
-				distro201.homeDirectory(ctx).getCanonicalPath());
+				distro300.homeDirectory(ctx).getCanonicalPath());
 		assertEquals(distroHome202.getCanonicalPath(),
-				distro202.homeDirectory(ctx).getCanonicalPath());
+				distro301.homeDirectory(ctx).getCanonicalPath());
 	}
 
 	public void testFilesWithCorrectNameAreFoundInsideTheRealDistroHomeDir()

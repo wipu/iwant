@@ -35,7 +35,7 @@ public class IwanttutorialWorkspace implements Workspace {
 	private static Target mainJavaFindbugsReportOf(JavaSrcModule mod) {
 		return FindbugsReport.with()
 				.name(mod.name() + "-main-java-findbugs-report")
-				.using(FindbugsDistribution.ofVersion("3.0.0"),
+				.using(FindbugsDistribution._3_0_0,
 						TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar())
 				.classesToAnalyze(new JavaClassesAndSources(mod.mainArtifact(),

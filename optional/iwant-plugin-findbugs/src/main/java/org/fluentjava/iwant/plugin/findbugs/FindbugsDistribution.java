@@ -12,22 +12,28 @@ public class FindbugsDistribution extends TargetBase {
 	private final String version;
 	private final Downloaded tarGz;
 
-	public FindbugsDistribution(String version) {
+	public static FindbugsDistribution _3_0_0 = new FindbugsDistribution(
+			"3.0.0", "f0915a0800a926961296da28b6ada7cc");
+	public static FindbugsDistribution _3_0_1 = new FindbugsDistribution(
+			"3.0.1", "dec8828de8657910fcb258ce5383c168");
+
+	public FindbugsDistribution(String version, String md5sum) {
 		super("findbugs-" + version);
 		this.version = version;
-		this.tarGz = tarGz(version);
+		this.tarGz = tarGz(version, md5sum);
 	}
 
-	public static FindbugsDistribution ofVersion(String version) {
-		return new FindbugsDistribution(version);
+	public static FindbugsDistribution ofVersion(String version,
+			String md5sum) {
+		return new FindbugsDistribution(version, md5sum);
 	}
 
-	private static Downloaded tarGz(String version) {
+	private static Downloaded tarGz(String version, String md5sum) {
 		String tarGzName = "findbugs-" + version + ".tar.gz";
 		return Downloaded.withName(tarGzName)
 				.url("http://downloads.sourceforge.net/project/findbugs/findbugs/"
 						+ version + "/" + tarGzName)
-				.noCheck();
+				.md5(md5sum);
 	}
 
 	public Downloaded tarGz() {

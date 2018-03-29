@@ -1628,6 +1628,12 @@
 
 + As @buildscriptuser I want SubPath to point directly under the original path without copying so I don't have to waste disk space
 
++ As @buildscriptuser I want to define checksum for findbugs so that I don't get mysterious failures when the server returns crap
+  * sometimes sourceforge returns an html error page instead of a proper error code
+  * the proper fix for this is to migrate to spotbugs (hosted by github)
+  + require the md5sum
+    + constants for the used versions
+
 #################################################################
 = In progress
 #################################################################
