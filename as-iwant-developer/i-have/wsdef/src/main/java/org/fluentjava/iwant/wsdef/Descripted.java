@@ -43,11 +43,10 @@ public class Descripted extends Target {
 	}
 
 	private static Target descriptZip() {
-		String rev = "22";
-		String url = "https://sourceforge.net/code-snapshots/svn/d/de/descript/code/descript-code-"
-				+ rev + "-trunk.zip";
+		String rev = "6da75f6cb51a6c350b218989e6dfe902f21e8a96";
+		String url = "https://github.com/wipu/descript/archive/" + rev + ".zip";
 		return Downloaded.withName("descript.zip").url(url)
-				.md5("6c25d5a59f9830c19ace4894ee56d8d7");
+				.md5("fa90bb48999dbd3b5ed0a46c5dd19ac0");
 	}
 
 	private static Target descriptSnapshotPrepared() {
@@ -119,7 +118,7 @@ public class Descripted extends Target {
 			sh.append("export LOCAL_IWANT_WSROOT=" + iwantWsRoot + "\n");
 		} else {
 			sh.append("export GITCOMMIT_TO_TEST="
-					+ "1bb5cc63b9495e396740f1e60e598da9f8e3609e\n");
+					+ "a184d3c3dde3436ae1015d38a5da57498ce14dca\n");
 			sh.append("export SVNREV_TO_TEST=905\n");
 		}
 		if (maybeInitialState != null) {

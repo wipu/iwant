@@ -109,7 +109,7 @@ After refreshing eclipse we define a module to test findbugs on, and define a fi
 <div class='add line'>	private static Target mainJavaFindbugsReportOf(JavaSrcModule mod) {</div>
 <div class='add line'>		return FindbugsReport.with()</div>
 <div class='add line'>				.name(mod.name() + "-main-java-findbugs-report")</div>
-<div class='add line'>				.using(FindbugsDistribution.ofVersion("3.0.0"),</div>
+<div class='add line'>				.using(FindbugsDistribution._3_0_0,</div>
 <div class='add line'>						TestedIwantDependencies.antJar(),</div>
 <div class='add line'>						TestedIwantDependencies.antLauncherJar())</div>
 <div class='add line'>				.classesToAnalyze(new JavaClassesAndSources(mod.mainArtifact(),</div>

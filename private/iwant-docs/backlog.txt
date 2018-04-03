@@ -1794,6 +1794,13 @@
   + fix some trivial warnings like "could be static/final"
   + commit, upgrade iwant and fix for own build
 
++ use descript from github (sf.net link is broken)
+  + migrage the descript project to github
+  + fix download url
+  + update iwant to test in tutorial
+  + fix descript link on webpage
+  + update webpage
+
 #################################################################
 = In progress
 #################################################################
