@@ -1801,21 +1801,28 @@
   + fix descript link on webpage
   + update webpage
 
-#################################################################
-= In progress
-#################################################################
+# below: stories implemented earlier but closed a lot later
 
-- fine-tuning after sf.net -> github migration
-  - reusable test setup, at least mocked iwant zip (I guess I have an ever ongoing story for this...)
-  - update external references (url and license have changed)
-    - find out what they are :)
-  - remove unnecessary gitignores from root .gitignore (under # svn...)
-  - advertise
-    + facebook
-    - mention in the reddit thread (if commenting still allowed; otherwise: new thread)
-    - elsewhere
++ As @buildscriptauthor I want to pass environment variables to a module's tests so I can use a (native) tool that needs them
+  * manipulating envs from java is 1) a dirty hack and 2) not helpful, since it's just a copy, not the real env observable by a launched child process so tests cannot do this at runtime
+  + pass them to the ant script running junit for JacocoCoverage
+    + string value
+    + path value
+  + define for JavaSrcModule, too (no dependency to jacoco)
+    + dedicated class for env, after all
+    + JacocoTargetsOfJavaModules uses when creating JacocoCoverage
+  + dep tracking
+    + test env is a parameter
+    + path value is an ingredient
+  (- real test with the tool that drives this story: file a bug if this doesn't work: the usecase is not valid anymore)
 
-- As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
++ As @developer I want tests for impossible enum switch cases so I can get 100% test coverage
+  * generate extended enums, use in test
+  + OrgEclipseJdtCorePrefs.asPropertyLine
+  + OrgEclipseJdtCorePrefs.valueToEclipseValue
+  (- others?: just add them if you find them)
+
++ As @buildscriptauthor I want to use bash by defining targets as scripts so I can use iwant with shell and editors only, without having to launch a java IDE (or having to even know java)
   * difference to ScriptGenerated: here the script defines ingredients and name,
     not just the recipe; also script is a separate source file, not dynamically
     generated
@@ -1914,78 +1921,9 @@
   (- clean junit tests: take file from wsRootHasFile(...index.sh...) and use in assertions
      * not valid anymore: index.sh is a Path now)
   + utilize friendly error of "_index.sh not found" in descript
-  - make descript examples less abstract, do something at least semi-useful
-    at least add such an example after the artificial examples
-  - explanative text to the descript chapter
-  - naming: functions in target.sh: input and output?
-  - is needed: use ScriptGenerated in a way we get cygwin support
-  - corner case tests needed
-    - escape cases for ingredients-and-parameters output
-      - especially parameters that can contain anything
-  - source target script before defining nonoverridable functions, for robustness
-  - further stories
-    + java target impls accessable via script language libraries?
-      * yes, this follows naturally
-    - side-effects, or are they easy enough with "iwantish" scripts?
-    - python library
-    - script that creates ws that supports writing targets only using
-      bash&editor (downloadable so no installation needed)
-    - split to dedicated modules?
-    - prefix all bash functions so no accidental name clashes with user code
-    - test incorrect usage of target function in _index.sh
-    - target that finds ingredients from list of targets
-      * if this is needed!
-      - simple case
-      - prevent cycle
+  * more tasks later
 
-- As @buildscriptauthor I want ws def ctx stuff in wsdef constructor, not
-  separately for functions targets and sideEffects so I can instantiate
-  my JavaModules there
-  * currently targets and sideEffects need to save the ctx, then JavaModules
-    needs to be created lazily, blindly trusting the ctx has been created
-  * current IwantWorkspace will just be the factory so it has a default
-    constructor and a factory method
-  - so better to rename stuff
-    + IwantWorkspaceProvider -> WorkspaceModuleProvider
-    + WorkspaceDefinitionContext -> WorkspaceModuleContext
-    + IwantWorkspace -> Workspace
-    + Workspace -> ExampleWorkspace
-    + new: WorkspaceFactory and WorkspaceContext
-  + use the factory
-    + cast wsdef to factory, use it to create ws
-    + the ctx implements also wscontext impl
-    + fix tests
-      + assume factory exists
-    + example factory creation
-    + fix example wsinfo creation
-    + fix descript
-  - remove redundant stuff from wishdefcontexts: if given at ws creation,
-    not needed there (maybe other contexts can be removed)
-  - fix implementations according to new naming
-    + method workspaceClassname -> workspaceFactoryClassname
-  - fix variables according to new naming
-  - fix documentation according to new naming
-  
-- As @developer I want tests for impossible enum switch cases so I can get 100% test coverage
-  * generate extended enums, use in test
-  + OrgEclipseJdtCorePrefs.asPropertyLine
-  + OrgEclipseJdtCorePrefs.valueToEclipseValue
-  - others?
-
-- As @buildscriptauthor I want to pass environment variables to a module's tests so I can use a (native) tool that needs them
-  * manipulating envs from java is 1) a dirty hack and 2) not helpful, since it's just a copy, not the real env observable by a launched child process so tests cannot do this at runtime
-  + pass them to the ant script running junit for JacocoCoverage
-    + string value
-    + path value
-  + define for JavaSrcModule, too (no dependency to jacoco)
-    + dedicated class for env, after all
-    + JacocoTargetsOfJavaModules uses when creating JacocoCoverage
-  + dep tracking
-    + test env is a parameter
-    + path value is an ingredient
-  - real test with the tool that drives this story
-
-- As @buildscriptauthor and @buildscriptauthor I want the core concepts explained in the tutorial so I'll be able to write and use build programs
++ As @buildscriptauthor and @buildscriptauthor I want the core concepts explained in the tutorial so I'll be able to write and use build programs
   + explain declarative dep graph of Paths
     + derive idea from some objects explained in English
       + page
@@ -2052,6 +1990,81 @@
     + declared ingredients
     + target's own src as ingredient
     + fix English grammar: declare x "an ingredient", not "as an ingredient"
+
+# above: stories implemented earlier but closed a lot later
+
+#################################################################
+= In progress
+#################################################################
+
+#################################################################
+= Planned
+#################################################################
+
+- fine-tuning after sf.net -> github migration
+  - reusable test setup, at least mocked iwant zip (I guess I have an ever ongoing story for this...)
+  - update external references (url and license have changed)
+    - find out what they are :)
+  - remove unnecessary gitignores from root .gitignore (under # svn...)
+  - advertise
+    + facebook
+    - mention in the reddit thread (if commenting still allowed; otherwise: new thread)
+    - elsewhere
+
+- improvements for target written in bash
+  - make descript examples less abstract, do something at least semi-useful
+    at least add such an example after the artificial examples
+  - explanative text to the descript chapter
+  - naming: functions in target.sh: input and output?
+  - is needed: use ScriptGenerated in a way we get cygwin support
+  - corner case tests needed
+    - escape cases for ingredients-and-parameters output
+      - especially parameters that can contain anything
+  - source target script before defining nonoverridable functions, for robustness
+  - further stories
+    + java target impls accessable via script language libraries?
+      * yes, this follows naturally
+    - side-effects, or are they easy enough with "iwantish" scripts?
+    - python library
+    - script that creates ws that supports writing targets only using
+      bash&editor (downloadable so no installation needed)
+    - split to dedicated modules?
+    - prefix all bash functions so no accidental name clashes with user code
+    - test incorrect usage of target function in _index.sh
+    - target that finds ingredients from list of targets
+      * if this is needed!
+      - simple case
+      - prevent cycle
+
+- As @buildscriptauthor I want ws def ctx stuff in wsdef constructor, not
+  separately for functions targets and sideEffects so I can instantiate
+  my JavaModules there
+  * currently targets and sideEffects need to save the ctx, then JavaModules
+    needs to be created lazily, blindly trusting the ctx has been created
+  * current IwantWorkspace will just be the factory so it has a default
+    constructor and a factory method
+  + so better to rename stuff
+    + IwantWorkspaceProvider -> WorkspaceModuleProvider
+    + WorkspaceDefinitionContext -> WorkspaceModuleContext
+    + IwantWorkspace -> Workspace
+    + Workspace -> ExampleWorkspace
+    + new: WorkspaceFactory and WorkspaceContext
+  + use the factory
+    + cast wsdef to factory, use it to create ws
+    + the ctx implements also wscontext impl
+    + fix tests
+      + assume factory exists
+    + example factory creation
+    + fix example wsinfo creation
+    + fix descript
+  - remove redundant stuff from wishdefcontexts: if given at ws creation,
+    not needed there (maybe other contexts can be removed)
+  - fix implementations according to new naming
+    + method workspaceClassname -> workspaceFactoryClassname
+  - fix variables according to new naming
+  - fix documentation according to new naming
+  
+- tutorial improvements
   - writing own side-effects
     - want some target
   - concatenated before its first use
@@ -2074,10 +2087,6 @@
       - tutorial: create iwant-from, svn co and use the script
       - explain the idea: minimal amount of iwant text to commit to
         project's own repo
-
-#################################################################
-= Planned
-#################################################################
 
 - @bugfix @antstderrbug
   * AntGeneratedTest started failing: if >2 tests methods are run, assertions of stderr fail
