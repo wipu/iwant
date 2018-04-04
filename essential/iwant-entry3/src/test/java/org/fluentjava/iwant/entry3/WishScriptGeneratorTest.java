@@ -12,9 +12,8 @@ public class WishScriptGeneratorTest extends TestCase {
 	}
 
 	public void testTargetHelloAsPath() {
-		assertEquals(
-				"#!/bin/bash\n" + "HERE=$(dirname \"$0\")\n"
-						+ "exec \"$HERE/../../help.sh\" \"target/hello/as-path\"\n",
+		assertEquals("#!/bin/bash\n" + "HERE=$(dirname \"$0\")\n"
+				+ "exec \"$HERE/../../help.sh\" \"target/hello/as-path\"\n",
 				WishScriptGenerator.wishScriptContent("target/hello/as-path"));
 	}
 

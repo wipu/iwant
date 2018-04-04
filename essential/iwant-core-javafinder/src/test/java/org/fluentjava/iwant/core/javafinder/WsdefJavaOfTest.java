@@ -61,9 +61,8 @@ public class WsdefJavaOfTest {
 
 		Path src = new WsdefJavaOf(ctx).classUnderSrcMainJava(getClass());
 
-		assertEquals(
-				"wsdef-location/src/main/java/"
-						+ "org/fluentjava/iwant/core/javafinder/WsdefJavaOfTest.java",
+		assertEquals("wsdef-location/src/main/java/"
+				+ "org/fluentjava/iwant/core/javafinder/WsdefJavaOfTest.java",
 				src.name());
 	}
 
@@ -76,9 +75,8 @@ public class WsdefJavaOfTest {
 		Source src = new WsdefJavaOf(ctx).classUnder(JavaModule.class,
 				"mainjava");
 
-		assertEquals(
-				"different-wsdef-location/mainjava/"
-						+ "org/fluentjava/iwant/api/javamodules/JavaModule.java",
+		assertEquals("different-wsdef-location/mainjava/"
+				+ "org/fluentjava/iwant/api/javamodules/JavaModule.java",
 				src.name());
 	}
 

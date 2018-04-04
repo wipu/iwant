@@ -252,13 +252,13 @@ public class Iwant3 {
 		refreshWishScripts(asSomeone,
 				Arrays.asList(new HelloTarget("hello", "not needed")),
 				Arrays.asList(stubEclipseSettingsSe));
-		IwantException e = new IwantException(
-				"I created\n" + wsInfo.wsdefdefJava() + "\nand\n" + wsDefJava
-						+ "\nand\n" + wsJava
-						+ "\nPlease edit them and rerun me.\nIf you want to use Eclipse for editing, run "
-						+ new File(withBashIwantFile(asSomeone),
-								toWish(stubEclipseSettingsSe))
-						+ " first.");
+		IwantException e = new IwantException("I created\n"
+				+ wsInfo.wsdefdefJava() + "\nand\n" + wsDefJava + "\nand\n"
+				+ wsJava
+				+ "\nPlease edit them and rerun me.\nIf you want to use Eclipse for editing, run "
+				+ new File(withBashIwantFile(asSomeone),
+						toWish(stubEclipseSettingsSe))
+				+ " first.");
 		return e;
 	}
 

@@ -142,11 +142,10 @@ public class Iwant3Test extends TestCase {
 			assertEquals("I created " + asTest + "/i-have/conf/ws-info\n"
 					+ "Please edit it and rerun me.", e.getMessage());
 		}
-		assertEquals(
-				"# paths are relative to this file's directory\n"
-						+ "WSNAME=example\n" + "WSROOT=../../..\n"
-						+ "WSDEFDEF_MODULE=../wsdefdef\n"
-						+ "WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n",
+		assertEquals("# paths are relative to this file's directory\n"
+				+ "WSNAME=example\n" + "WSROOT=../../..\n"
+				+ "WSDEFDEF_MODULE=../wsdefdef\n"
+				+ "WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWorkspaceProvider\n",
 				testArea.contentOf(
 						"wsroot/as-example-developer/i-have/conf/ws-info"));
 	}
@@ -231,22 +230,18 @@ public class Iwant3Test extends TestCase {
 			throws Exception {
 		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		// targets:
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
 				.startsWith("#!/bin/bash\n"));
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/target/hello/as-path")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/target/hello/as-path")
 				.startsWith("#!/bin/bash\n"));
 		// side-effects:
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/list-of/side-effects")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/list-of/side-effects")
 				.startsWith("#!/bin/bash\n"));
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/side-effect/eclipse-settings/effective")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/side-effect/eclipse-settings/effective")
 				.startsWith("#!/bin/bash\n"));
 	}
 
@@ -274,21 +269,18 @@ public class Iwant3Test extends TestCase {
 		}
 
 		// the target wish script has been renamed:
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
 				.startsWith("#!/bin/bash\n"));
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/target/renamed-hello/as-path")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/target/renamed-hello/as-path")
 				.startsWith("#!/bin/bash\n"));
 		assertFalse(new File(wsRoot,
 				"as-example-developer/with/bash/iwant/target/hello").exists());
 
 		// no side-effects so the whole side-effect directory has disappeared:
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/list-of/side-effects")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/list-of/side-effects")
 				.startsWith("#!/bin/bash\n"));
 		assertFalse(new File(wsRoot,
 				"as-example-developer/with/bash/iwant/side-effect").exists());
@@ -325,22 +317,19 @@ public class Iwant3Test extends TestCase {
 		}
 
 		// no targets so the whole target directory has disappeared:
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
 				.startsWith("#!/bin/bash\n"));
 		assertFalse(
 				new File(wsRoot, "as-example-developer/with/bash/iwant/target")
 						.exists());
 
 		// the side-effect wish script has been renamed:
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/list-of/side-effects")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/list-of/side-effects")
 				.startsWith("#!/bin/bash\n"));
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/side-effect/renamed-eclipse-settings/effective")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/side-effect/renamed-eclipse-settings/effective")
 				.startsWith("#!/bin/bash\n"));
 		assertFalse(new File(wsRoot,
 				"as-example-developer/with/bash/iwant/side-effect/eclipse-settings")
@@ -566,17 +555,14 @@ public class Iwant3Test extends TestCase {
 			throws Exception {
 		testListOfTargetsOfModifiedWsDef();
 
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
 				.startsWith("#!/bin/bash\n"));
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/target/modified-hello/as-path")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/target/modified-hello/as-path")
 				.startsWith("#!/bin/bash\n"));
-		assertTrue(testArea
-				.contentOf(
-						"wsroot/as-example-developer/with/bash/iwant/target/hello2/as-path")
+		assertTrue(testArea.contentOf(
+				"wsroot/as-example-developer/with/bash/iwant/target/hello2/as-path")
 				.startsWith("#!/bin/bash\n"));
 
 		assertFalse(new File(wsRoot,
@@ -691,11 +677,10 @@ public class Iwant3Test extends TestCase {
 			assertEquals("Compilation failed.", e.getMessage());
 		}
 		assertEquals("", out());
-		assertEquals(
-				wsRoot + "/as-example-developer/i-have/wsdefdef/src/main/java/com/example/wsdef/ExampleWs.java"
-						+ ":1: error: reached end of file while parsing\n"
-						+ "crap\n" + "^\n" + "1 error\n",
-				errIgnoringDebugLog());
+		assertEquals(wsRoot
+				+ "/as-example-developer/i-have/wsdefdef/src/main/java/com/example/wsdef/ExampleWs.java"
+				+ ":1: error: reached end of file while parsing\n" + "crap\n"
+				+ "^\n" + "1 error\n", errIgnoringDebugLog());
 	}
 
 	/**

@@ -169,9 +169,8 @@ public class WsInfoTest extends TestCase {
 				wsInfo.wsdefdefSrc().toString());
 		assertEquals("com.example2.wsdefdef.Example2WorkspaceProvider",
 				wsInfo.wsdefdefClass());
-		assertEquals(
-				"/project/wsroot/wsdefinition/src/main/java/"
-						+ "com/example2/wsdefdef/Example2WorkspaceProvider.java",
+		assertEquals("/project/wsroot/wsdefinition/src/main/java/"
+				+ "com/example2/wsdefdef/Example2WorkspaceProvider.java",
 				wsInfo.wsdefdefJava().toString());
 		assertEquals("com.example2.wsdefdef", wsInfo.wsdefdefPackage());
 		assertEquals("Example2WorkspaceProvider",

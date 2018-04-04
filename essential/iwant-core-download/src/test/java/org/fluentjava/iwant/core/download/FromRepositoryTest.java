@@ -33,9 +33,8 @@ public class FromRepositoryTest extends TestCase {
 		assertEquals("findbugs", t.shortName());
 		assertEquals("1.3.9", t.version());
 
-		assertEquals(
-				"http://repo1.maven.org/maven2/"
-						+ "com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9.jar",
+		assertEquals("http://repo1.maven.org/maven2/"
+				+ "com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9.jar",
 				t.artifact().url().toExternalForm());
 		// TODO refer to correct checksum url
 		assertNull(t.artifact().md5());
@@ -52,9 +51,8 @@ public class FromRepositoryTest extends TestCase {
 		assertEquals("findbugs", t.shortName());
 		assertEquals("1.3.9", t.version());
 
-		assertEquals(
-				"http://repo1.maven.org/maven2/"
-						+ "com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9-sources.jar",
+		assertEquals("http://repo1.maven.org/maven2/"
+				+ "com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9-sources.jar",
 				t.artifact().url().toExternalForm());
 		// TODO refer to correct checksum url
 		assertNull(t.artifact().md5());

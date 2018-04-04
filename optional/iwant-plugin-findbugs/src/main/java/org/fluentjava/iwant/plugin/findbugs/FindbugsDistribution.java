@@ -30,8 +30,8 @@ public class FindbugsDistribution extends TargetBase {
 
 	private static Downloaded tarGz(String version, String md5sum) {
 		String tarGzName = "findbugs-" + version + ".tar.gz";
-		return Downloaded.withName(tarGzName)
-				.url("http://downloads.sourceforge.net/project/findbugs/findbugs/"
+		return Downloaded.withName(tarGzName).url(
+				"http://downloads.sourceforge.net/project/findbugs/findbugs/"
 						+ version + "/" + tarGzName)
 				.md5(md5sum);
 	}

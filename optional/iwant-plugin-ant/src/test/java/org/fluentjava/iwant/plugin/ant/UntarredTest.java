@@ -32,9 +32,8 @@ public class UntarredTest extends IwantTestCase {
 	}
 
 	public void testSuccessfullyUntarringDirAndFileTar() throws Exception {
-		File tarFile = new File(getClass()
-				.getResource(
-						"/org/fluentjava/iwant/testresources/untarred/dir-and-file.tar")
+		File tarFile = new File(getClass().getResource(
+				"/org/fluentjava/iwant/testresources/untarred/dir-and-file.tar")
 				.toURI());
 
 		Target untarred = Untarred.with().name("untarred")
@@ -46,9 +45,8 @@ public class UntarredTest extends IwantTestCase {
 	}
 
 	public void testSuccessfullyUntarringDirAndFileTarGz() throws Exception {
-		File tarFile = new File(getClass()
-				.getResource(
-						"/org/fluentjava/iwant/testresources/untarred/dir-and-file.tar.gz")
+		File tarFile = new File(getClass().getResource(
+				"/org/fluentjava/iwant/testresources/untarred/dir-and-file.tar.gz")
 				.toURI());
 
 		Target untarred = Untarred.with().name("untarred")

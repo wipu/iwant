@@ -58,23 +58,20 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 	public void testAStyleThatIsOnlyDisabledOrEnabled() {
 		CodeStyle style = CodeStyle.MISSING_OVERRIDE_ANNOTATION_FOR_INTERFACE_METHOD_IMPLEMENTATION;
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
-		assertEquals(
-				"org.eclipse.jdt.core.compiler.problem."
-						+ "missingOverrideAnnotationForInterfaceMethodImplementation=disabled\n",
+		assertEquals("org.eclipse.jdt.core.compiler.problem."
+				+ "missingOverrideAnnotationForInterfaceMethodImplementation=disabled\n",
 				new OrgEclipseJdtCorePrefs(
 						CodeStylePolicy.defaultsExcept().ignore(style).end(),
 						formatter, JavaCompliance.JAVA_1_6)
 								.asPropertyLine(style));
-		assertEquals(
-				"org.eclipse.jdt.core.compiler.problem."
-						+ "missingOverrideAnnotationForInterfaceMethodImplementation=enabled\n",
+		assertEquals("org.eclipse.jdt.core.compiler.problem."
+				+ "missingOverrideAnnotationForInterfaceMethodImplementation=enabled\n",
 				new OrgEclipseJdtCorePrefs(
 						CodeStylePolicy.defaultsExcept().warn(style).end(),
 						formatter, JavaCompliance.JAVA_1_6)
 								.asPropertyLine(style));
-		assertEquals(
-				"org.eclipse.jdt.core.compiler.problem."
-						+ "missingOverrideAnnotationForInterfaceMethodImplementation=enabled\n",
+		assertEquals("org.eclipse.jdt.core.compiler.problem."
+				+ "missingOverrideAnnotationForInterfaceMethodImplementation=enabled\n",
 				new OrgEclipseJdtCorePrefs(
 						CodeStylePolicy.defaultsExcept().fail(style).end(),
 						formatter, JavaCompliance.JAVA_1_6)

@@ -156,9 +156,8 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 	public void testNullName() {
 		Path path = new HelloTarget(null, "");
 
-		assertError(
-				"A Path of class "
-						+ "org.fluentjava.iwant.api.core.HelloTarget has null name.",
+		assertError("A Path of class "
+				+ "org.fluentjava.iwant.api.core.HelloTarget has null name.",
 				path);
 	}
 

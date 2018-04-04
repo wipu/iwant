@@ -653,12 +653,11 @@ public class WishEvaluatorTest extends TestCase {
 			evaluator.iwant("list-of/targets", ws);
 			fail();
 		} catch (Iwant.IwantException e) {
-			assertEquals(
-					"Two conflicting definitions for Path name b:\n"
-							+ "One is of\n"
-							+ " class org.fluentjava.iwant.api.core.HelloTarget\n"
-							+ "and another is of\n"
-							+ " class org.fluentjava.iwant.api.model.Source",
+			assertEquals("Two conflicting definitions for Path name b:\n"
+					+ "One is of\n"
+					+ " class org.fluentjava.iwant.api.core.HelloTarget\n"
+					+ "and another is of\n"
+					+ " class org.fluentjava.iwant.api.model.Source",
 					e.getMessage());
 		}
 

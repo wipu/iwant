@@ -165,16 +165,14 @@ public class IwantTest extends TestCase {
 			assertEquals(1, e.status());
 		}
 		assertEquals("", out());
-		assertEquals(
-				"I created " + asSomeone + "/i-have/conf/iwant-from\n"
-						+ "Please edit and uncomment the properties in it and rerun me.\n",
+		assertEquals("I created " + asSomeone + "/i-have/conf/iwant-from\n"
+				+ "Please edit and uncomment the properties in it and rerun me.\n",
 				err());
 
-		assertEquals(
-				"# uncomment and optionally change the commit:\n"
-						+ "# (also note the content of the url is assumed unmodifiable so it's downloaded only once)\n"
-						+ "#iwant-from=https://github.com/wipu/iwant/archive/"
-						+ Iwant.EXAMPLE_COMMIT + ".zip\n",
+		assertEquals("# uncomment and optionally change the commit:\n"
+				+ "# (also note the content of the url is assumed unmodifiable so it's downloaded only once)\n"
+				+ "#iwant-from=https://github.com/wipu/iwant/archive/"
+				+ Iwant.EXAMPLE_COMMIT + ".zip\n",
 				testArea.contentOf("as-test/i-have/conf/iwant-from"));
 	}
 
@@ -189,16 +187,14 @@ public class IwantTest extends TestCase {
 			assertEquals(1, e.status());
 		}
 		assertEquals("", out());
-		assertEquals(
-				"I created " + asSomeone + "/i-have/conf/iwant-from\n"
-						+ "Please edit and uncomment the properties in it and rerun me.\n",
+		assertEquals("I created " + asSomeone + "/i-have/conf/iwant-from\n"
+				+ "Please edit and uncomment the properties in it and rerun me.\n",
 				err());
 
-		assertEquals(
-				"# uncomment and optionally change the commit:\n"
-						+ "# (also note the content of the url is assumed unmodifiable so it's downloaded only once)\n"
-						+ "#iwant-from=https://github.com/wipu/iwant/archive/"
-						+ Iwant.EXAMPLE_COMMIT + ".zip\n",
+		assertEquals("# uncomment and optionally change the commit:\n"
+				+ "# (also note the content of the url is assumed unmodifiable so it's downloaded only once)\n"
+				+ "#iwant-from=https://github.com/wipu/iwant/archive/"
+				+ Iwant.EXAMPLE_COMMIT + ".zip\n",
 				testArea.contentOf("as-test/i-have/conf/iwant-from"));
 	}
 

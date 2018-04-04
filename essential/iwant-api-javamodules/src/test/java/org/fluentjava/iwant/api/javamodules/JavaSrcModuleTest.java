@@ -451,8 +451,8 @@ public class JavaSrcModuleTest extends TestCase {
 						.fail(CodeStyle.DEAD_CODE).end())
 				.encoding(Charset.forName("ISO-8859-15")).has(TestCode.class)
 				.locationUnderWsRoot("mods/mod")
-				.mainDeps(JavaBinModule.providing(Source.underWsroot("bin.jar"))
-						.end())
+				.mainDeps(JavaBinModule
+						.providing(Source.underWsroot("bin.jar")).end())
 				.mainJava("src").mainResources("res")
 				.mainRuntimeDeps(JavaBinModule
 						.providing(Source.underWsroot("runbin.jar")).end())

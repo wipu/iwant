@@ -165,8 +165,8 @@ public class JavaClassesTest extends IwantTestCase {
 		Iwant.newTextFile(new File(srcDir3, "pak2/Callee2.java"),
 				"package pak2;\npublic class Callee2 {}");
 
-		Target target = JavaClasses.with()
-				.name("multiple").srcDirs(Source.underWsroot("src1"),
+		Target target = JavaClasses
+				.with().name("multiple").srcDirs(Source.underWsroot("src1"),
 						Source.underWsroot("src2"), Source.underWsroot("src3"))
 				.classLocations().end();
 
