@@ -30,7 +30,7 @@ humanquote '"And what are the java files?"'
 humanquote '"They are text files written and maintained by the developers."'
 inline-snippet "coolAppMainJava"
 
-html "<p class='text'>The answers here are examples of declarative definitions. They answer to questions that start with <i>what</i> by describing file content. The focus is in in <i>nouns</i>.</p>"
+html "<p class='text'>The answers here are examples of declarative definitions. They answer to questions that start with <i>what</i> by describing file content. The focus is in <i>nouns</i>.</p>"
 
 html "<p class='text'>One of the main principles of iwant is that <u>build script authors and users declare <i>what</i> they want</u>. The question of <i>how</i>, the imperative part, or the <i>verbs</i>, belongs to developers of iwant and its plugins.</p>"
 
