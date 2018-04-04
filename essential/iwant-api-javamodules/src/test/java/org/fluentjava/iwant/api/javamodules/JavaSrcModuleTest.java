@@ -27,6 +27,7 @@ public class JavaSrcModuleTest extends TestCase {
 		assertEquals("m2", JavaSrcModule.with().name("m2").end().toString());
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public void testEqualsUsesNameAndClass() {
 		assertTrue(JavaSrcModule.with().name("a").end()
 				.equals(JavaSrcModule.with().name("a").end()));

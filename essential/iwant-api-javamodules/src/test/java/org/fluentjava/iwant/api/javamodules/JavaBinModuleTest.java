@@ -21,6 +21,7 @@ public class JavaBinModuleTest extends IwantTestCase {
 		assertEquals("lib.jar", lib.toString());
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public void testEqualsUsesNameAndClass() {
 		assertTrue(JavaBinModule.providing(Source.underWsroot("a")).end()
 				.equals(JavaBinModule.providing(Source.underWsroot("a"))
