@@ -1991,6 +1991,48 @@
     + target's own src as ingredient
     + fix English grammar: declare x "an ingredient", not "as an ingredient"
 
++ As @buildscriptauthor I want ws def ctx stuff in wsdef constructor, not
+  separately for functions targets and sideEffects so I can instantiate
+  my JavaModules there
+  * currently targets and sideEffects need to save the ctx, then JavaModules
+    needs to be created lazily, blindly trusting the ctx has been created
+  * current IwantWorkspace will just be the factory so it has a default
+    constructor and a factory method
+  + so better to rename stuff
+    + IwantWorkspaceProvider -> WorkspaceModuleProvider
+    + WorkspaceDefinitionContext -> WorkspaceModuleContext
+    + IwantWorkspace -> Workspace
+    + Workspace -> ExampleWorkspace
+    + new: WorkspaceFactory and WorkspaceContext
+  + use the factory
+    + cast wsdef to factory, use it to create ws
+    + the ctx implements also wscontext impl
+    + fix tests
+      + assume factory exists
+    + example factory creation
+    + fix example wsinfo creation
+    + fix descript
+
++ As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
+  + use Windows to develop the wrapper
+  + fix ScriptGenerated test to tolerate Windows paths in output
+  + abstract path mangling so it can be mocked
+  + abstract os detection so it can be mocked
+  + tdd finding cygwin bash.exe
+  + test correct wrapping is used if and only if on Windows
+  + test tests are still green on linux
+  + real testing
+  + fix: ScriptGenerated.execute used by other targets must prepare
+    execution env like SG itself does
+  + again testing => usable
+
++ As @buildscriptauthor I want a Target of a downloaded and unzipped github commit so I can use the code in it
+  + a convenience class around downloaded, unzipped...
+  + and also a new concept: SubPath, because the github zip has a directory in it
+  + descript to verify the actual effect
+  (- descript the real "so that": classes compiled from code from github
+    * nah, examples are enough)
+
 # above: stories implemented earlier but closed a lot later
 
 #################################################################
@@ -2036,27 +2078,7 @@
       - simple case
       - prevent cycle
 
-- As @buildscriptauthor I want ws def ctx stuff in wsdef constructor, not
-  separately for functions targets and sideEffects so I can instantiate
-  my JavaModules there
-  * currently targets and sideEffects need to save the ctx, then JavaModules
-    needs to be created lazily, blindly trusting the ctx has been created
-  * current IwantWorkspace will just be the factory so it has a default
-    constructor and a factory method
-  + so better to rename stuff
-    + IwantWorkspaceProvider -> WorkspaceModuleProvider
-    + WorkspaceDefinitionContext -> WorkspaceModuleContext
-    + IwantWorkspace -> Workspace
-    + Workspace -> ExampleWorkspace
-    + new: WorkspaceFactory and WorkspaceContext
-  + use the factory
-    + cast wsdef to factory, use it to create ws
-    + the ctx implements also wscontext impl
-    + fix tests
-      + assume factory exists
-    + example factory creation
-    + fix example wsinfo creation
-    + fix descript
+- improvements to workspace api related code
   - remove redundant stuff from wishdefcontexts: if given at ws creation,
     not needed there (maybe other contexts can be removed)
   - fix implementations according to new naming
@@ -2113,18 +2135,7 @@
   - pass in ctx via constr/factory for wsdef
     big change to api!
 
-- As @buildscriptuser I want ScriptGenerated to detect cygwin env and wrap the script with a cygwin bash call so the script works on Windows -- even if the shebang is something else than bash
-  + use Windows to develop the wrapper
-  + fix ScriptGenerated test to tolerate Windows paths in output
-  + abstract path mangling so it can be mocked
-  + abstract os detection so it can be mocked
-  + tdd finding cygwin bash.exe
-  + test correct wrapping is used if and only if on Windows
-  + test tests are still green on linux
-  + real testing
-  + fix: ScriptGenerated.execute used by other targets must prepare
-    execution env like SG itself does
-  + again testing => usable
+- improvements to ScriptGenerated
   - tell story about making it easier to run unix commands in path, now
     caller of execute needs to prepare a script for it
     + concatenated takes native and unix paths
@@ -2143,12 +2154,6 @@
   + hide fields temporarily and replace some direct refs with method calls
   + hide testArea, fix refs
   - hide wsRoot permanently and fix all refs
-
-- As @buildscriptauthor I want a Target of a downloaded and unzipped github commit so I can use the code in it
-  + a convenience class around downloaded, unzipped...
-  + and also a new concept: SubPath, because the github zip has a directory in it
-  + descript to verify the actual effect
-  - descript the real "so that": classes compiled from code from github
 
 - more TestNG tasks
   - stories about more helpful and cleaner output at test failure
