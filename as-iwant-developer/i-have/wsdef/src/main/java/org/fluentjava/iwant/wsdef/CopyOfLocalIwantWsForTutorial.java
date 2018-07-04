@@ -126,6 +126,12 @@ public class CopyOfLocalIwantWsForTutorial extends Target {
 		if (fileName.endsWith("/classes")) {
 			return false;
 		}
+		if (fileName.contains("/cache/")) {
+			return false;
+		}
+		if (fileName.contains("/.i-cached/")) {
+			return false;
+		}
 		return true;
 	}
 
