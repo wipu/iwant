@@ -19,15 +19,13 @@ public class JacocoInstrumentation extends TargetBase {
 	private final Path classes;
 	private final JacocoDistribution jacoco;
 	private final List<Path> antJars;
-	private final List<Path> deps;
 
 	public JacocoInstrumentation(Path classes, JacocoDistribution jacoco,
-			List<Path> antJars, List<Path> deps) {
+			List<Path> antJars) {
 		super(classes + ".jacoco-instr");
 		this.classes = classes;
 		this.jacoco = jacoco;
 		this.antJars = antJars;
-		this.deps = deps;
 	}
 
 	public static JacocoAndAntPlease of(Path classes) {
@@ -35,50 +33,31 @@ public class JacocoInstrumentation extends TargetBase {
 	}
 
 	public interface JacocoAndAntPlease {
-		DepsPlease using(JacocoDistribution jacoco, Path... antJars);
+		JacocoInstrumentation using(JacocoDistribution jacoco, Path... antJars);
 
-		DepsPlease using(JacocoDistribution jacoco,
+		JacocoInstrumentation using(JacocoDistribution jacoco,
 				Collection<? extends Path> antJars);
 	}
 
-	public interface DepsPlease {
-		JacocoInstrumentation with(Path... deps);
-
-		JacocoInstrumentation with(Collection<? extends Path> deps);
-	}
-
-	private static class Builder implements JacocoAndAntPlease, DepsPlease {
+	private static class Builder implements JacocoAndAntPlease {
 
 		private final Path classes;
-		private JacocoDistribution jacoco;
-		private final List<Path> antJars = new ArrayList<>();
 
 		public Builder(Path classes) {
 			this.classes = classes;
 		}
 
 		@Override
-		public DepsPlease using(JacocoDistribution jacoco, Path... antJars) {
+		public JacocoInstrumentation using(JacocoDistribution jacoco,
+				Path... antJars) {
 			return using(jacoco, Arrays.asList(antJars));
 		}
 
 		@Override
-		public DepsPlease using(JacocoDistribution jacoco,
+		public JacocoInstrumentation using(JacocoDistribution jacoco,
 				Collection<? extends Path> antJars) {
-			this.jacoco = jacoco;
-			this.antJars.addAll(antJars);
-			return this;
-		}
-
-		@Override
-		public JacocoInstrumentation with(Path... deps) {
-			return with(Arrays.asList(deps));
-		}
-
-		@Override
-		public JacocoInstrumentation with(Collection<? extends Path> deps) {
-			return new JacocoInstrumentation(classes, jacoco, antJars,
-					new ArrayList<>(deps));
+			return new JacocoInstrumentation(classes, jacoco,
+					new ArrayList<>(antJars));
 		}
 
 	}
@@ -91,7 +70,7 @@ public class JacocoInstrumentation extends TargetBase {
 	@Override
 	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
-		return iUse.ingredients("jacoco", jacoco).ingredients("deps", deps)
+		return iUse.ingredients("jacoco", jacoco)
 				.ingredients("antJars", antJars).ingredients("classes", classes)
 				.nothingElse();
 	}
@@ -124,10 +103,6 @@ public class JacocoInstrumentation extends TargetBase {
 		b.append("\n");
 		b.append(
 				"      <taskdef uri=\"antlib:org.jacoco.ant\" resource=\"org/jacoco/ant/antlib.xml\">\n");
-		for (Path dep : deps) {
-			b.append("              <classpath location=\"" + ctx.cached(dep)
-					+ "\" />\n");
-		}
 		b.append("              <classpath location=\""
 				+ jacoco.jacocoantJar(ctx) + "\" />\n");
 		b.append("      </taskdef>\n");

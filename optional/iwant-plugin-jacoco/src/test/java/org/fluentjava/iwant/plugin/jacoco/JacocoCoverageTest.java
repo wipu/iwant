@@ -17,12 +17,11 @@ public class JacocoCoverageTest extends JacocoTestBase {
 	public void testParallelismIsDisabledUntilProvenByPracticeItDoesNotCauseProblems() {
 		Path classes = Source.underWsroot("classes");
 		JacocoInstrumentation instr = JacocoInstrumentation.of(classes)
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("any")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm()).mainClassAndArguments("Any")
-				.end();
+				.jacoco(jacoco()).mainClassAndArguments("Any").end();
 
 		assertFalse(coverage.supportsParallelism());
 	}
@@ -33,26 +32,24 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				"instrtest", "Main");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
+				.jacoco(jacoco())
 				.mainClassAndArguments("instrtest.Main", "arg0", "arg1").end();
 
-		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
-				+ antLauncherJar() + ", instrtest-classes.jacoco-instr]",
-				coverage.ingredients().toString());
 		assertEquals(
-				"org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
-						+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:deps:\n"
-						+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar()
-						+ "\n  " + antLauncherJar() + "\ni:classLocations:\n"
-						+ "  instrtest-classes.jacoco-instr\n"
-						+ "p:mainClassName:\n" + "  instrtest.Main\n"
-						+ "p:mainClassArgs:\n" + "  arg0\n" + "  arg1\n"
-						+ "i:mainClassArgsFile:\n" + " null\n" + "p:jvmargs:\n",
-				coverage.contentDescriptor());
+				"[" + jacoco() + ", " + antJar() + ", " + antLauncherJar()
+						+ ", instrtest-classes.jacoco-instr]",
+				coverage.ingredients().toString());
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
+				+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:antJars:\n" + "  "
+				+ antJar() + "\n  " + antLauncherJar() + "\ni:classLocations:\n"
+				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
+				+ "  instrtest.Main\n" + "p:mainClassArgs:\n" + "  arg0\n"
+				+ "  arg1\n" + "i:mainClassArgsFile:\n" + " null\n"
+				+ "p:jvmargs:\n", coverage.contentDescriptor());
 	}
 
 	public void testIngredientsAndDescriptorWithMainClassArgsGivenAsPath()
@@ -61,24 +58,22 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				"instrtest", "Main");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 
 		Path args = Source.underWsroot("args-file");
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("instrtest.Main", args).end();
+				.jacoco(jacoco()).mainClassAndArguments("instrtest.Main", args)
+				.end();
 
 		assertEquals(
-				"[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
-						+ antLauncherJar()
+				"[" + jacoco() + ", " + antJar() + ", " + antLauncherJar()
 						+ ", instrtest-classes.jacoco-instr, args-file]",
 				coverage.ingredients().toString());
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:deps:\n" + "  "
-				+ asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
-				+ antLauncherJar() + "\ni:classLocations:\n"
+				+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:antJars:\n" + "  "
+				+ antJar() + "\n  " + antLauncherJar() + "\ni:classLocations:\n"
 				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
 				+ "  instrtest.Main\n" + "p:mainClassArgs:\n"
 				+ " null-collection\n" + "i:mainClassArgsFile:\n"
@@ -91,20 +86,20 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				"instrtest", "Main");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm()).jvmArgs("-Xmx1G")
+				.jacoco(jacoco()).jvmArgs("-Xmx1G")
 				.mainClassAndArguments("instrtest.Main", "arg0", "arg1").end();
 
-		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
-				+ antLauncherJar() + ", instrtest-classes.jacoco-instr]",
+		assertEquals(
+				"[" + jacoco() + ", " + antJar() + ", " + antLauncherJar()
+						+ ", instrtest-classes.jacoco-instr]",
 				coverage.ingredients().toString());
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:deps:\n" + "  "
-				+ asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
-				+ antLauncherJar() + "\ni:classLocations:\n"
+				+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:antJars:\n" + "  "
+				+ antJar() + "\n  " + antLauncherJar() + "\ni:classLocations:\n"
 				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
 				+ "  instrtest.Main\n" + "p:mainClassArgs:\n" + "  arg0\n"
 				+ "  arg1\n" + "i:mainClassArgsFile:\n" + " null\n"
@@ -116,13 +111,13 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				"instrtest", "Hello");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr.path(ctx);
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("instrtest.Hello").end();
+				.jacoco(jacoco()).mainClassAndArguments("instrtest.Hello")
+				.end();
 		coverage.path(ctx);
 
 		File cachedExec = new File(cached, "coverage.exec");
@@ -139,12 +134,12 @@ public class JacocoCoverageTest extends JacocoTestBase {
 						+ "java.util.Arrays.toString(args))) System.exit(1);");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr.path(ctx);
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
+				.jacoco(jacoco())
 				.mainClassAndArguments("instrtest.ArgChecker", "a0", "a1")
 				.end();
 		coverage.path(ctx);
@@ -161,7 +156,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 						+ "java.util.Arrays.toString(args))) System.exit(1);");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr.path(ctx);
 
 		Target args = new HelloTarget("args", "fa0\nfa1\n");
@@ -169,7 +164,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
+				.jacoco(jacoco())
 				.mainClassAndArguments("instrtest.ArgChecker", args).end();
 		coverage.path(ctx);
 
@@ -181,13 +176,13 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				"instrtest", "Failer", "System.exit(1);");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr.path(ctx);
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("instrtest.Failer").end();
+				.jacoco(jacoco()).mainClassAndArguments("instrtest.Failer")
+				.end();
 
 		try {
 			coverage.path(ctx);
@@ -204,19 +199,18 @@ public class JacocoCoverageTest extends JacocoTestBase {
 
 		JavaClassesAndSources cs1 = newJavaClassesAndSources("one", "One");
 		JacocoInstrumentation instr1 = JacocoInstrumentation.of(cs1.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr1.path(ctx);
 
 		Path classes2 = Source.underWsroot("classes2");
 
 		JavaClassesAndSources cs2 = newJavaClassesAndSources("two", "Two");
 		JacocoInstrumentation instr2 = JacocoInstrumentation.of(cs2.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr2.path(ctx);
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("cov")
-				.antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
+				.antJars(antJar(), antLauncherJar()).jacoco(jacoco())
 				.mainClassAndArguments("JunitReferrer").classLocations(classes1)
 				.classLocations(instr1).classLocations(classes2)
 				.classLocations(instr2).end();
@@ -233,13 +227,13 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				"instrtest", "Hello");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr.path(ctx);
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("instrtest.Hello").end();
+				.jacoco(jacoco()).mainClassAndArguments("instrtest.Hello")
+				.end();
 
 		assertEquals("[]", coverage.jvmargs().toString());
 	}
@@ -249,13 +243,13 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				"instrtest", "Hello");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr.path(ctx);
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("instrtest.Hello").noJvmArgs().end();
+				.jacoco(jacoco()).mainClassAndArguments("instrtest.Hello")
+				.noJvmArgs().end();
 
 		assertEquals("[]", coverage.jvmargs().toString());
 	}
@@ -265,14 +259,13 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				"instrtest", "Hello");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr.path(ctx);
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("instrtest.Hello").noJvmArgs()
-				.jvmArgs("jvmarg0", "jvmarg1").end();
+				.jacoco(jacoco()).mainClassAndArguments("instrtest.Hello")
+				.noJvmArgs().jvmArgs("jvmarg0", "jvmarg1").end();
 
 		assertEquals("[jvmarg0, jvmarg1]", coverage.jvmargs().toString());
 	}
@@ -282,13 +275,12 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				"instrtest", "Hello");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr.path(ctx);
 
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("instrtest.Hello")
+				.jacoco(jacoco()).mainClassAndArguments("instrtest.Hello")
 				.jvmArgs("-Xillegal-jvm-arg").end();
 		try {
 			coverage.path(ctx);
@@ -317,15 +309,15 @@ public class JacocoCoverageTest extends JacocoTestBase {
 						+ ").toString())) System.exit(1);");
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesAndSources.classes())
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr.path(ctx);
 
 		SystemEnv env = SystemEnv.with().string("string", "aString")
 				.path("source", src).end();
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("instrtest.EnvChecker").env(env).end();
+				.jacoco(jacoco()).mainClassAndArguments("instrtest.EnvChecker")
+				.env(env).end();
 		coverage.path(ctx);
 
 		assertTrue(new File(cached, "coverage.exec").exists());
@@ -337,14 +329,14 @@ public class JacocoCoverageTest extends JacocoTestBase {
 
 		JacocoInstrumentation instr = JacocoInstrumentation
 				.of(classesToInstrument)
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 
 		SystemEnv env = SystemEnv.with().string("string", "aString")
 				.path("source", pathForEnv).end();
 		JacocoCoverage coverage = JacocoCoverage.with().name("coverage.exec")
 				.classLocations(instr).antJars(antJar(), antLauncherJar())
-				.jacocoWithDeps(jacoco(), asm())
-				.mainClassAndArguments("instrtest.EnvChecker").env(env).end();
+				.jacoco(jacoco()).mainClassAndArguments("instrtest.EnvChecker")
+				.env(env).end();
 
 		assertTrue(coverage.contentDescriptor().contains("p:env:string:\n"
 				+ "  aString\n" + "i:env:source:\n" + "  aSrc"));

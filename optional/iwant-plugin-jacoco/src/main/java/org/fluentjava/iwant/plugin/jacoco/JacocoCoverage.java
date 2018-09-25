@@ -21,7 +21,6 @@ public class JacocoCoverage extends TargetBase {
 	private final List<Path> classLocations;
 	private final List<Path> antJars;
 	private final JacocoDistribution jacoco;
-	private final Collection<? extends Path> deps;
 	private final String mainClassName;
 	private final List<String> mainClassArgs;
 	private final Path mainClassArgsFile;
@@ -29,15 +28,13 @@ public class JacocoCoverage extends TargetBase {
 	private final SystemEnv env;
 
 	public JacocoCoverage(String name, List<Path> classLocations,
-			List<Path> antJars, JacocoDistribution jacoco,
-			Collection<? extends Path> deps, String mainClassName,
+			List<Path> antJars, JacocoDistribution jacoco, String mainClassName,
 			List<String> mainClassArgs, Path mainClassArgsFile,
 			List<String> jvmargs, SystemEnv env) {
 		super(name);
 		this.classLocations = classLocations;
 		this.antJars = antJars;
 		this.jacoco = jacoco;
-		this.deps = deps;
 		this.mainClassName = mainClassName;
 		this.mainClassArgs = mainClassArgs;
 		this.mainClassArgsFile = mainClassArgsFile;
@@ -58,7 +55,6 @@ public class JacocoCoverage extends TargetBase {
 		private String mainClassName;
 		private List<String> mainClassArgs;
 		private Path mainClassArgsFile;
-		private Collection<? extends Path> deps;
 		private final List<String> jvmargs = new ArrayList<>();
 		private SystemEnv env;
 
@@ -69,8 +65,8 @@ public class JacocoCoverage extends TargetBase {
 
 		public JacocoCoverage end() {
 			return new JacocoCoverage(name, classLocations, antJars, jacoco,
-					deps, mainClassName, mainClassArgs, mainClassArgsFile,
-					jvmargs, env);
+					mainClassName, mainClassArgs, mainClassArgsFile, jvmargs,
+					env);
 		}
 
 		public JacocoCoverageSpexPlease classLocations(Path... classLocations) {
@@ -93,15 +89,8 @@ public class JacocoCoverage extends TargetBase {
 			return this;
 		}
 
-		public JacocoCoverageSpexPlease jacocoWithDeps(
-				JacocoDistribution jacoco, Path... deps) {
-			return jacocoWithDeps(jacoco, Arrays.asList(deps));
-		}
-
-		public JacocoCoverageSpexPlease jacocoWithDeps(
-				JacocoDistribution jacoco, Collection<? extends Path> deps) {
+		public JacocoCoverageSpexPlease jacoco(JacocoDistribution jacoco) {
 			this.jacoco = jacoco;
-			this.deps = deps;
 			return this;
 		}
 
@@ -150,7 +139,6 @@ public class JacocoCoverage extends TargetBase {
 	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
 		iUse.ingredients("jacoco", jacoco);
-		iUse.ingredients("deps", deps);
 		iUse.ingredients("antJars", antJars);
 		iUse.ingredients("classLocations", classLocations);
 		iUse.parameter("mainClassName", mainClassName);

@@ -13,32 +13,29 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 	public void testNameIsDerivedFromTheNameOfJavaClassesAndSourcesPair() {
 		assertEquals("one.jacoco-instr",
 				JacocoInstrumentation.of(Source.underWsroot("one"))
-						.using(jacoco(), antJar(), antLauncherJar()).with(asm())
-						.name());
+						.using(jacoco(), antJar(), antLauncherJar()).name());
 		assertEquals("two.jacoco-instr",
 				JacocoInstrumentation.of(Source.underWsroot("two"))
-						.using(jacoco(), antJar(), antLauncherJar()).with(asm())
-						.name());
+						.using(jacoco(), antJar(), antLauncherJar()).name());
 	}
 
 	public void testIngredients() {
 		assertEquals(
-				"[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
-						+ antLauncherJar() + ", classes]",
+				"[" + jacoco() + ", " + antJar() + ", " + antLauncherJar()
+						+ ", classes]",
 				JacocoInstrumentation.of(Source.underWsroot("classes"))
-						.using(jacoco(), antJar(), antLauncherJar()).with(asm())
+						.using(jacoco(), antJar(), antLauncherJar())
 						.ingredients().toString());
 	}
 
 	public void testContentDescriptor() {
 		assertEquals(
 				"org.fluentjava.iwant.plugin.jacoco.JacocoInstrumentation\n"
-						+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:deps:\n"
-						+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar()
-						+ "\n  " + antLauncherJar() + "\ni:classes:\n"
-						+ "  classes\n" + "",
+						+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:antJars:\n"
+						+ "  " + antJar() + "\n  " + antLauncherJar()
+						+ "\ni:classes:\n" + "  classes\n" + "",
 				JacocoInstrumentation.of(Source.underWsroot("classes"))
-						.using(jacoco(), antJar(), antLauncherJar()).with(asm())
+						.using(jacoco(), antJar(), antLauncherJar())
 						.contentDescriptor());
 	}
 
@@ -52,7 +49,7 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 		assertTrue(originalClass.exists());
 
 		JacocoInstrumentation instr = JacocoInstrumentation.of(classes)
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr.path(ctx);
 
 		File instrClass = new File(ctx.cached(instr), "pak/Foo.class");
@@ -76,7 +73,7 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 		assertTrue(originalResource.exists());
 
 		JacocoInstrumentation instr = JacocoInstrumentation.of(classes)
-				.using(jacoco(), antJar(), antLauncherJar()).with(asm());
+				.using(jacoco(), antJar(), antLauncherJar());
 		instr.path(ctx);
 
 		File instrClass = new File(ctx.cached(instr), "pak/Foo.class");

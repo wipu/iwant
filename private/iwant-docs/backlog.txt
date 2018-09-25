@@ -2044,7 +2044,9 @@
   * the jar names inside zip have wrong version number in the filename
   * but turns out they are not needed:
   + use jacocoant.jar and jacocoagent.jar
-  - take into use in projects
+  + take into use in projects
+  + remove unnecessary "deps" (asm)
+  - use in iwant-demo
   - update website
 
 #################################################################

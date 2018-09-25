@@ -22,17 +22,14 @@ import org.fluentjava.iwant.plugin.jacoco.JacocoCoverage.JacocoCoverageSpexPleas
 public class JacocoTargetsOfJavaModules {
 
 	private final JacocoDistribution jacoco;
-	private final List<Path> deps;
 	private final List<Path> antJars;
 	private final Collection<? extends JavaModule> modules;
 	private final Map<String, JacocoInstrumentation> instrsByName = new HashMap<>();
 	private final Map<String, JacocoCoverage> coveragesByName = new HashMap<>();
 
 	public JacocoTargetsOfJavaModules(JacocoDistribution jacoco,
-			List<Path> deps, List<Path> antJars,
-			Collection<? extends JavaModule> modules) {
+			List<Path> antJars, Collection<? extends JavaModule> modules) {
 		this.jacoco = jacoco;
-		this.deps = deps;
 		this.antJars = antJars;
 		this.modules = modules;
 	}
@@ -44,19 +41,16 @@ public class JacocoTargetsOfJavaModules {
 	public static class JacocoTargetsOfJavaModulesSpexPlease {
 
 		private JacocoDistribution jacoco;
-		private List<Path> deps;
 		private final List<Path> antJars = new ArrayList<>();
 		private final SortedSet<JavaModule> modules = new TreeSet<>();
 
 		public JacocoTargetsOfJavaModules end() {
-			return new JacocoTargetsOfJavaModules(jacoco, deps, antJars,
-					modules);
+			return new JacocoTargetsOfJavaModules(jacoco, antJars, modules);
 		}
 
-		public JacocoTargetsOfJavaModulesSpexPlease jacocoWithDeps(
-				JacocoDistribution jacoco, Path... deps) {
+		public JacocoTargetsOfJavaModulesSpexPlease jacoco(
+				JacocoDistribution jacoco) {
 			this.jacoco = jacoco;
-			this.deps = Arrays.asList(deps);
 			return this;
 		}
 
@@ -93,8 +87,8 @@ public class JacocoTargetsOfJavaModules {
 			if (mainArtifact == null) {
 				return null;
 			}
-			instr = JacocoInstrumentation.of(mainArtifact)
-					.using(jacoco, antJars).with(deps);
+			instr = JacocoInstrumentation.of(mainArtifact).using(jacoco,
+					antJars);
 			instrsByName.put(mod.name(), instr);
 		}
 		return instr;
@@ -117,9 +111,8 @@ public class JacocoTargetsOfJavaModules {
 			return null;
 		}
 		JacocoCoverageSpexPlease coverage = JacocoCoverage.with()
-				.name(mod.name() + ".jacococoverage")
-				.jacocoWithDeps(jacoco, deps).antJars(antJars)
-				.env(mod.testEnv());
+				.name(mod.name() + ".jacococoverage").jacoco(jacoco)
+				.antJars(antJars).env(mod.testEnv());
 		String mainClass = testRunnerClassNameFor(mod);
 
 		StringFilter classNameDef = mod.testClassNameDefinition();
@@ -177,9 +170,8 @@ public class JacocoTargetsOfJavaModules {
 				sources.addAll(modMainJavas);
 			}
 		}
-		return JacocoReport.with().name(name).jacocoWithDeps(jacoco, deps)
-				.antJars(antJars).coverages(coverages).classes(classes)
-				.sources(sources).end();
+		return JacocoReport.with().name(name).jacoco(jacoco).antJars(antJars)
+				.coverages(coverages).classes(classes).sources(sources).end();
 	}
 
 }

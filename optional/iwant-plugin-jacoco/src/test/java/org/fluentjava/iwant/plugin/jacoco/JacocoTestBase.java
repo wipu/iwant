@@ -11,7 +11,6 @@ import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
-import org.fluentjava.iwant.core.download.FromRepository;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.embedded.AsEmbeddedIwantUser;
 import org.fluentjava.iwant.entry.Iwant;
@@ -35,11 +34,6 @@ public abstract class JacocoTestBase extends IwantTestCase {
 
 	private static File cachedJacocoZip() {
 		return Iwant.usingRealNetwork().downloaded(jacoco().zip().url());
-	}
-
-	protected Path asm() {
-		return downloaded(FromRepository.repo1MavenOrg().group("org/ow2/asm")
-				.name("asm").version("6.2.1").jar());
 	}
 
 	protected Path antJar() {

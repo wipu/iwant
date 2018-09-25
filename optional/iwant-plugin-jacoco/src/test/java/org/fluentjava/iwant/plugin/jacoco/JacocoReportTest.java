@@ -12,23 +12,22 @@ public class JacocoReportTest extends JacocoTestBase {
 		Path classes = Source.underWsroot("theclasses");
 		Path sources = Source.underWsroot("thesources");
 		JacocoCoverage coverage = JacocoCoverage.with().name("thecoverage")
-				.jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar())
+				.jacoco(jacoco()).antJars(antJar(), antLauncherJar())
 				.mainClassAndArguments("a.Test").classLocations(classes).end();
 		JacocoReport report = JacocoReport.with().name("thereport")
-				.jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar()).coverages(coverage)
-				.classes(classes).sources(sources).end();
+				.jacoco(jacoco()).antJars(antJar(), antLauncherJar())
+				.coverages(coverage).classes(classes).sources(sources).end();
 
-		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
-				+ antLauncherJar() + ", thecoverage, theclasses, thesources]",
+		assertEquals(
+				"[" + jacoco() + ", " + antJar() + ", " + antLauncherJar()
+						+ ", thecoverage, theclasses, thesources]",
 				report.ingredients().toString());
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoReport\n"
-				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n" + "  "
-				+ asm() + "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
-				+ antLauncherJar() + "\n" + "i:coverages:\n" + "  thecoverage\n"
-				+ "i:classes:\n" + "  theclasses\n" + "i:sources:\n"
-				+ "  thesources\n" + "", report.contentDescriptor());
+				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:antJars:\n" + "  "
+				+ antJar() + "\n" + "  " + antLauncherJar() + "\n"
+				+ "i:coverages:\n" + "  thecoverage\n" + "i:classes:\n"
+				+ "  theclasses\n" + "i:sources:\n" + "  thesources\n" + "",
+				report.contentDescriptor());
 	}
 
 	public void testReportWithNoncoveredAndPartlyCoveredModule()
@@ -46,29 +45,27 @@ public class JacocoReportTest extends JacocoTestBase {
 				"GoodMain",
 				"System.err.println(\"This class is covered (some)\");");
 		JacocoInstrumentation badInstr = JacocoInstrumentation
-				.of(badMain.classes()).using(jacoco()).with(asm());
+				.of(badMain.classes()).using(jacoco());
 		badInstr.path(ctx);
 		JacocoInstrumentation goodInstr = JacocoInstrumentation
-				.of(goodMain.classes()).using(jacoco()).with(asm());
+				.of(goodMain.classes()).using(jacoco());
 		goodInstr.path(ctx);
 
 		JacocoCoverage badCoverage = JacocoCoverage.with().name("bad-coverage")
-				.jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar())
+				.jacoco(jacoco()).antJars(antJar(), antLauncherJar())
 				.mainClassAndArguments("badtest.BadTest")
 				.classLocations(badTest.classes(), badInstr).end();
 		badCoverage.path(ctx);
 
 		JacocoCoverage goodCoverage = JacocoCoverage.with()
-				.name("util-coverage").jacocoWithDeps(jacoco(), asm())
+				.name("util-coverage").jacoco(jacoco())
 				.antJars(antJar(), antLauncherJar())
 				.mainClassAndArguments("goodtest.GoodTest")
 				.classLocations(goodTest.classes(), goodInstr).end();
 		goodCoverage.path(ctx);
 
 		JacocoReport report = JacocoReport.with().name("report")
-				.jacocoWithDeps(jacoco(), asm())
-				.coverages(badCoverage, goodCoverage)
+				.jacoco(jacoco()).coverages(badCoverage, goodCoverage)
 				.classes(badMain.classes(), goodMain.classes())
 				.sources(badMain.sources()).sources(goodMain.sources()).end();
 		report.path(ctx);

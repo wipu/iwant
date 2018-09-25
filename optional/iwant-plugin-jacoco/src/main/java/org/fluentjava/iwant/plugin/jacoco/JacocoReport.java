@@ -17,19 +17,17 @@ import org.fluentjava.iwant.entry.Iwant;
 public class JacocoReport extends TargetBase {
 
 	private final JacocoDistribution jacoco;
-	private final List<Path> deps;
 	private final List<Path> antJars;
 	private final Collection<? extends JacocoCoverage> coverages;
 	private final Collection<? extends Path> classes;
 	private final Collection<? extends Path> sources;
 
-	public JacocoReport(String name, JacocoDistribution jacoco, List<Path> deps,
+	public JacocoReport(String name, JacocoDistribution jacoco,
 			List<Path> antJars, Collection<? extends JacocoCoverage> coverages,
 			Collection<? extends Path> classes,
 			Collection<? extends Path> sources) {
 		super(name);
 		this.jacoco = jacoco;
-		this.deps = deps;
 		this.antJars = antJars;
 		this.coverages = coverages;
 		this.classes = classes;
@@ -44,15 +42,14 @@ public class JacocoReport extends TargetBase {
 
 		private String name;
 		private JacocoDistribution jacoco;
-		private List<Path> deps;
 		private final List<Path> antJars = new ArrayList<>();
 		private Collection<? extends JacocoCoverage> coverages;
 		private final Collection<Path> classes = new ArrayList<>();
 		private final Collection<Path> sources = new ArrayList<>();
 
 		public JacocoReport end() {
-			return new JacocoReport(name, jacoco, deps, antJars, coverages,
-					classes, sources);
+			return new JacocoReport(name, jacoco, antJars, coverages, classes,
+					sources);
 		}
 
 		public JacocoReportSpexPlease name(String name) {
@@ -60,15 +57,8 @@ public class JacocoReport extends TargetBase {
 			return this;
 		}
 
-		public JacocoReportSpexPlease jacocoWithDeps(JacocoDistribution jacoco,
-				Path... deps) {
-			return jacocoWithDeps(jacoco, Arrays.asList(deps));
-		}
-
-		public JacocoReportSpexPlease jacocoWithDeps(JacocoDistribution jacoco,
-				Collection<? extends Path> deps) {
+		public JacocoReportSpexPlease jacoco(JacocoDistribution jacoco) {
 			this.jacoco = jacoco;
-			this.deps = new ArrayList<>(deps);
 			return this;
 		}
 
@@ -123,7 +113,6 @@ public class JacocoReport extends TargetBase {
 	protected IngredientsAndParametersDefined ingredientsAndParameters(
 			IngredientsAndParametersPlease iUse) {
 		iUse.ingredients("jacoco", jacoco);
-		iUse.ingredients("deps", deps);
 		iUse.ingredients("antJars", antJars);
 		iUse.ingredients("coverages", coverages);
 		iUse.ingredients("classes", classes);
@@ -155,10 +144,6 @@ public class JacocoReport extends TargetBase {
 		b.append("\n");
 		b.append(
 				"      <taskdef uri=\"antlib:org.jacoco.ant\" resource=\"org/jacoco/ant/antlib.xml\">\n");
-		for (Path dep : deps) {
-			b.append("              <classpath location=\"" + ctx.cached(dep)
-					+ "\" />\n");
-		}
 		b.append(" <classpath location=\"" + jacoco.jacocoantJar(ctx)
 				+ "\" />\n");
 		b.append("      </taskdef>\n");

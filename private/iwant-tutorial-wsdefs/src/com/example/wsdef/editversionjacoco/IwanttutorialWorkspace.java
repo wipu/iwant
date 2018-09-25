@@ -31,8 +31,6 @@ public class IwanttutorialWorkspace implements Workspace {
 			return super.commonSettings(m).testDeps(junit);
 		}
 
-		final JavaBinModule asmAll = binModule("org/ow2/asm", "asm-all",
-				"5.0.1");
 		final JavaBinModule hamcrestCore = binModule("org/hamcrest",
 				"hamcrest-core", "1.3");
 		final JavaBinModule junit = binModule("junit", "junit", "4.11",
@@ -53,8 +51,7 @@ public class IwanttutorialWorkspace implements Workspace {
 	}
 
 	private Target jacocoReport() {
-		return JacocoTargetsOfJavaModules.with()
-				.jacocoWithDeps(jacoco(), modules.asmAll.mainArtifact())
+		return JacocoTargetsOfJavaModules.with().jacoco(jacoco())
 				.antJars(TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar())
 				.modules(modules.allSrcModules()).end()

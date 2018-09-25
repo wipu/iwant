@@ -18,36 +18,35 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.end();
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
-				.with().jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
+				.modules(mod).end();
 
 		JacocoInstrumentation instr = jacocoTargets
 				.jacocoInstrumentationOf(mod);
 		assertEquals("mod-main-classes.jacoco-instr", instr.name());
 		assertEquals(
 				"org.fluentjava.iwant.plugin.jacoco.JacocoInstrumentation\n"
-						+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:deps:\n"
-						+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar()
-						+ "\n  " + antLauncherJar() + "\ni:classes:\n"
-						+ "  mod-main-classes\n" + "",
+						+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:antJars:\n"
+						+ "  " + antJar() + "\n  " + antLauncherJar()
+						+ "\ni:classes:\n" + "  mod-main-classes\n" + "",
 				instr.contentDescriptor());
 
 		assertNull(jacocoTargets.jacocoCoverageOf(mod));
 
 		JacocoReport report = jacocoTargets.jacocoReport("coverage-report");
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoReport\n"
-				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n" + "  "
-				+ asm() + "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
-				+ antLauncherJar() + "\n" + "i:coverages:\n" + "i:classes:\n"
-				+ "  mod-main-classes\n" + "i:sources:\n" + "  mod/src\n" + "",
+				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:antJars:\n" + "  "
+				+ antJar() + "\n" + "  " + antLauncherJar() + "\n"
+				+ "i:coverages:\n" + "i:classes:\n" + "  mod-main-classes\n"
+				+ "i:sources:\n" + "  mod/src\n" + "",
 				report.contentDescriptor());
 	}
 
 	public void testReportName() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").end();
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
-				.with().jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
+				.modules(mod).end();
 
 		assertEquals("name1", jacocoTargets.jacocoReport("name1").name());
 		assertEquals("name2", jacocoTargets.jacocoReport("name2").name());
@@ -57,8 +56,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").end();
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
-				.with().jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
+				.modules(mod).end();
 
 		assertNull(jacocoTargets.jacocoInstrumentationOf(mod));
 
@@ -66,10 +65,10 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoReport\n"
-				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n" + "  "
-				+ asm() + "\n" + "i:antJars:\n" + "  " + antJar() + "\n" + "  "
-				+ antLauncherJar() + "\n" + "i:coverages:\n" + "i:classes:\n"
-				+ "i:sources:\n" + "", report.contentDescriptor());
+				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:antJars:\n" + "  "
+				+ antJar() + "\n" + "  " + antLauncherJar() + "\n"
+				+ "i:coverages:\n" + "i:classes:\n" + "i:sources:\n" + "",
+				report.contentDescriptor());
 	}
 
 	public void testTargetsFromOneMinimalTestOnlyModule() {
@@ -77,17 +76,16 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.end();
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
-				.with().jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
+				.modules(mod).end();
 
 		assertNull(jacocoTargets.jacocoInstrumentationOf(mod));
 
 		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
 		assertEquals("mod.jacococoverage", coverage.name());
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:deps:\n" + "  "
-				+ asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
-				+ antLauncherJar() + "\ni:classLocations:\n"
+				+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:antJars:\n" + "  "
+				+ antJar() + "\n  " + antLauncherJar() + "\ni:classLocations:\n"
 				+ "  mod-test-classes\n" + "p:mainClassName:\n"
 				+ "  org.junit.runner.JUnitCore\n" + "p:mainClassArgs:\n"
 				+ " null-collection\n" + "i:mainClassArgsFile:\n"
@@ -95,14 +93,11 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				coverage.contentDescriptor());
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
-		assertEquals(
-				"org.fluentjava.iwant.plugin.jacoco.JacocoReport\n"
-						+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:deps:\n"
-						+ "  " + asm() + "\n" + "i:antJars:\n" + "  " + antJar()
-						+ "\n" + "  " + antLauncherJar() + "\n"
-						+ "i:coverages:\n" + "  mod.jacococoverage\n"
-						+ "i:classes:\n" + "i:sources:\n" + "",
-				report.contentDescriptor());
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoReport\n"
+				+ "i:jacoco:\n" + "  " + jacoco() + "\n" + "i:antJars:\n" + "  "
+				+ antJar() + "\n" + "  " + antLauncherJar() + "\n"
+				+ "i:coverages:\n" + "  mod.jacococoverage\n" + "i:classes:\n"
+				+ "i:sources:\n" + "", report.contentDescriptor());
 	}
 
 	public void testTargetsFromOneBinaryModule() {
@@ -110,20 +105,18 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.end();
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
-				.with().jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
+				.modules(mod).end();
 
 		assertNull(jacocoTargets.jacocoInstrumentationOf(mod));
 
 		assertNull(jacocoTargets.jacocoCoverageOf(mod));
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
-		assertEquals(
-				"org.fluentjava.iwant.plugin.jacoco.JacocoReport\n"
-						+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:deps:\n"
-						+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar()
-						+ "\n  " + antLauncherJar() + "\ni:coverages:\n"
-						+ "i:classes:\n" + "  lib\n" + "i:sources:\n" + "",
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoReport\n"
+				+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:antJars:\n" + "  "
+				+ antJar() + "\n  " + antLauncherJar() + "\ni:coverages:\n"
+				+ "i:classes:\n" + "  lib\n" + "i:sources:\n" + "",
 				report.contentDescriptor());
 	}
 
@@ -147,8 +140,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.end();
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
-				.with().jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar())
+				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
 				.modules(testedByOneClass, testedByClassnameFilter).end();
 
 		JacocoCoverage coverageOfOneClass = jacocoTargets
@@ -190,8 +182,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.end();
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
-				.with().jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
+				.modules(mod).end();
 
 		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
 
@@ -241,8 +233,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		((Target) interesting2.testArtifact()).path(ctx);
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
-				.with().jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar())
+				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
 				.modules(interesting1, interesting2).end();
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
@@ -264,8 +255,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.testEnv(env).end();
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
-				.with().jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
+				.modules(mod).end();
 
 		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
 
@@ -277,8 +268,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.end();
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
-				.with().jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
+				.modules(mod).end();
 
 		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
 		assertEquals("org.junit.runner.JUnitCore", coverage.mainClassName());
@@ -295,8 +286,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.testRunner(new CustomRunner()).end();
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
-				.with().jacocoWithDeps(jacoco(), asm())
-				.antJars(antJar(), antLauncherJar()).modules(mod).end();
+				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
+				.modules(mod).end();
 
 		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
 		assertEquals("custom.TestRunner", coverage.mainClassName());
