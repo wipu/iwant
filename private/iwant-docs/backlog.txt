@@ -2039,6 +2039,14 @@
 = In progress
 #################################################################
 
+- @bugfix upgrade jacoco to 0.8.2 and make it work
+  + update version
+  * the jar names inside zip have wrong version number in the filename
+  * but turns out they are not needed:
+  + use jacocoant.jar and jacocoagent.jar
+  - take into use in projects
+  - update website
+
 #################################################################
 = Planned
 #################################################################

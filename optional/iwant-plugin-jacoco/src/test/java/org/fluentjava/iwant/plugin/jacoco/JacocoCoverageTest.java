@@ -43,14 +43,16 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		assertEquals("[" + jacoco() + ", " + asm() + ", " + antJar() + ", "
 				+ antLauncherJar() + ", instrtest-classes.jacoco-instr]",
 				coverage.ingredients().toString());
-		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
-				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
-				+ antLauncherJar() + "\ni:classLocations:\n"
-				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
-				+ "  instrtest.Main\n" + "p:mainClassArgs:\n" + "  arg0\n"
-				+ "  arg1\n" + "i:mainClassArgsFile:\n" + " null\n"
-				+ "p:jvmargs:\n", coverage.contentDescriptor());
+		assertEquals(
+				"org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
+						+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:deps:\n"
+						+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar()
+						+ "\n  " + antLauncherJar() + "\ni:classLocations:\n"
+						+ "  instrtest-classes.jacoco-instr\n"
+						+ "p:mainClassName:\n" + "  instrtest.Main\n"
+						+ "p:mainClassArgs:\n" + "  arg0\n" + "  arg1\n"
+						+ "i:mainClassArgsFile:\n" + " null\n" + "p:jvmargs:\n",
+				coverage.contentDescriptor());
 	}
 
 	public void testIngredientsAndDescriptorWithMainClassArgsGivenAsPath()
@@ -74,8 +76,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 						+ ", instrtest-classes.jacoco-instr, args-file]",
 				coverage.ingredients().toString());
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
-				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+				+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:deps:\n" + "  "
+				+ asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
 				+ antLauncherJar() + "\ni:classLocations:\n"
 				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
 				+ "  instrtest.Main\n" + "p:mainClassArgs:\n"
@@ -100,8 +102,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				+ antLauncherJar() + ", instrtest-classes.jacoco-instr]",
 				coverage.ingredients().toString());
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n" + "i:deps:\n"
-				+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
+				+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:deps:\n" + "  "
+				+ asm() + "\ni:antJars:\n" + "  " + antJar() + "\n  "
 				+ antLauncherJar() + "\ni:classLocations:\n"
 				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
 				+ "  instrtest.Main\n" + "p:mainClassArgs:\n" + "  arg0\n"

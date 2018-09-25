@@ -159,12 +159,8 @@ public class JacocoReport extends TargetBase {
 			b.append("              <classpath location=\"" + ctx.cached(dep)
 					+ "\" />\n");
 		}
-		b.append("              <classpath location=\""
-				+ jacoco.orgJacocoAntJar(ctx) + "\" />\n");
-		b.append("              <classpath location=\""
-				+ jacoco.orgJacocoCoreJar(ctx) + "\" />\n");
-		b.append("              <classpath location=\""
-				+ jacoco.orgJacocoReportJar(ctx) + "\" />\n");
+		b.append(" <classpath location=\"" + jacoco.jacocoantJar(ctx)
+				+ "\" />\n");
 		b.append("      </taskdef>\n");
 		b.append("\n");
 

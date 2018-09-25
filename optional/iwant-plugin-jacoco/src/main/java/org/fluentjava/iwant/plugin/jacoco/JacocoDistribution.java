@@ -10,12 +10,10 @@ import org.fluentjava.iwant.core.download.Downloaded;
 
 public class JacocoDistribution extends TargetBase {
 
-	private final String version;
 	private final Downloaded zip;
 
 	private JacocoDistribution(String version) {
 		super("jacoco-" + version);
-		this.version = version;
 		this.zip = zip(version);
 	}
 
@@ -24,7 +22,7 @@ public class JacocoDistribution extends TargetBase {
 	}
 
 	public static JacocoDistribution newestTestedVersion() {
-		return ofVersion("0.7.2.201409121644");
+		return ofVersion("0.8.2");
 	}
 
 	private static Downloaded zip(String version) {
@@ -59,19 +57,8 @@ public class JacocoDistribution extends TargetBase {
 		return new File(ctx.cached(this), "lib/jacocoagent.jar");
 	}
 
-	public File orgJacocoAntJar(TargetEvaluationContext ctx) {
-		return new File(ctx.cached(this),
-				"lib/org.jacoco.ant-" + version + ".jar");
-	}
-
-	public File orgJacocoCoreJar(TargetEvaluationContext ctx) {
-		return new File(ctx.cached(this),
-				"lib/org.jacoco.core-" + version + ".jar");
-	}
-
-	public File orgJacocoReportJar(TargetEvaluationContext ctx) {
-		return new File(ctx.cached(this),
-				"lib/org.jacoco.report-" + version + ".jar");
+	public File jacocoantJar(TargetEvaluationContext ctx) {
+		return new File(ctx.cached(this), "lib/jacocoant.jar");
 	}
 
 }

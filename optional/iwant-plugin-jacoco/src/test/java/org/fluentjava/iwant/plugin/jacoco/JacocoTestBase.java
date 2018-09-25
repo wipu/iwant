@@ -39,7 +39,7 @@ public abstract class JacocoTestBase extends IwantTestCase {
 
 	protected Path asm() {
 		return downloaded(FromRepository.repo1MavenOrg().group("org/ow2/asm")
-				.name("asm-all").version("5.0.1").jar());
+				.name("asm").version("6.2.1").jar());
 	}
 
 	protected Path antJar() {

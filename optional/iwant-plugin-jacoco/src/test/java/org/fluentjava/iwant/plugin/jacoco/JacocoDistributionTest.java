@@ -70,12 +70,7 @@ public class JacocoDistributionTest extends IwantTestCase {
 
 		assertJarNameAndExistence("jacocoagent.jar",
 				distro.jacocoagentJar(ctx));
-		assertJarNameAndExistence("org.jacoco.ant-0.7.2.201409121644.jar",
-				distro.orgJacocoAntJar(ctx));
-		assertJarNameAndExistence("org.jacoco.core-0.7.2.201409121644.jar",
-				distro.orgJacocoCoreJar(ctx));
-		assertJarNameAndExistence("org.jacoco.report-0.7.2.201409121644.jar",
-				distro.orgJacocoReportJar(ctx));
+		assertJarNameAndExistence("jacocoant.jar", distro.jacocoantJar(ctx));
 	}
 
 }

@@ -111,6 +111,10 @@ public class JacocoInstrumentation extends TargetBase {
 		AntRunner.runAnt(cachedAntJars, antScript);
 	}
 
+	/**
+	 * Adapted from
+	 * https://www.jacoco.org/jacoco/trunk/doc/examples/build/build.xml
+	 */
 	private String antScript(TargetEvaluationContext ctx) {
 		StringBuilder b = new StringBuilder();
 		b.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -125,11 +129,7 @@ public class JacocoInstrumentation extends TargetBase {
 					+ "\" />\n");
 		}
 		b.append("              <classpath location=\""
-				+ jacoco.orgJacocoAntJar(ctx) + "\" />\n");
-		b.append("              <classpath location=\""
-				+ jacoco.orgJacocoCoreJar(ctx) + "\" />\n");
-		b.append("              <classpath location=\""
-				+ jacoco.orgJacocoReportJar(ctx) + "\" />\n");
+				+ jacoco.jacocoantJar(ctx) + "\" />\n");
 		b.append("      </taskdef>\n");
 		b.append("\n");
 		b.append("      <target name=\"" + name() + "\">\n");

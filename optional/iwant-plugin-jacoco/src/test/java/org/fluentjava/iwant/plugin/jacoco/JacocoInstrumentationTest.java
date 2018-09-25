@@ -33,10 +33,10 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 	public void testContentDescriptor() {
 		assertEquals(
 				"org.fluentjava.iwant.plugin.jacoco.JacocoInstrumentation\n"
-						+ "i:jacoco:\n" + "  jacoco-0.7.2.201409121644\n"
-						+ "i:deps:\n" + "  " + asm() + "\ni:antJars:\n" + "  "
-						+ antJar() + "\n  " + antLauncherJar()
-						+ "\ni:classes:\n" + "  classes\n" + "",
+						+ "i:jacoco:\n" + "  jacoco-0.8.2\n" + "i:deps:\n"
+						+ "  " + asm() + "\ni:antJars:\n" + "  " + antJar()
+						+ "\n  " + antLauncherJar() + "\ni:classes:\n"
+						+ "  classes\n" + "",
 				JacocoInstrumentation.of(Source.underWsroot("classes"))
 						.using(jacoco(), antJar(), antLauncherJar()).with(asm())
 						.contentDescriptor());
