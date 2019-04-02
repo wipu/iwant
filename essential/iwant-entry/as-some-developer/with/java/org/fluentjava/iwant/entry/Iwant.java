@@ -700,35 +700,34 @@ public class Iwant {
 		}
 	}
 
+	private static final String encSlash = urlEncode("/");
 	private static final String encQuestion = urlEncode("?");
 
 	public static String toSafeFilename(String from) {
-		String to = urlEncode(from);
-		to = to.replaceAll(encSlash(), slashRegex());
+		// first make sure we talk unix separators here
+		String to = from.replaceAll(fileSeparatorRegex(), "/");
+
+		// then the mangling
+		to = urlEncode(to);
+		to = to.replaceAll(encSlash, "/");
 		// starting slash
-		to = to.replaceAll("^" + slashRegex(), encSlash());
+		to = to.replaceAll("^/", encSlash);
 		// parent dir refs
-		to = to.replaceAll("/\\.\\.", encSlash() + "..");
-		to = to.replaceAll("\\.\\./", ".." + encSlash());
+		to = to.replaceAll("/\\.\\.", encSlash + "..");
+		to = to.replaceAll("\\.\\./", ".." + encSlash);
 		// repeating slashes
-		to = to.replaceAll(slashRegex() + slashRegex(),
-				slashRegex() + encSlash());
+		to = to.replaceAll("//", "/" + encSlash);
 		// url query
 		to = to.replaceAll(encQuestion, "?");
+
+		// finally convert back to Windows, if that's the case
+		to = to.replaceAll("/", fileSeparatorRegex());
 		return to;
 	}
 
-	private static String slash() {
-		return System.getProperty("file.separator");
-	}
-
-	private static String slashRegex() {
-		String slash = slash();
-		return "\\".equals(slash) ? "\\\\" : slash;
-	}
-
-	private static String encSlash() {
-		return urlEncode(slash());
+	private static String fileSeparatorRegex() {
+		String sep = System.getProperty("file.separator");
+		return "\\".equals(sep) ? "\\\\" : sep;
 	}
 
 	private static String urlEncode(String s) {

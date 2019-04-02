@@ -55,11 +55,13 @@ public class FilenameEscapingTest extends TestCase {
 		escapeCase("a\"b", "a%22b");
 	}
 
-	public void testLoneSlashWithoutParentDirRefIsNotEscapedExceptOnTheOtherSystem() {
-		escapeCase("a/b", "a/b", "a%2Fb");
-		escapeCase("a\\b", "a%5Cb", "a\\b");
+	public void testLoneSlashWithoutParentDirRefIsNotEscaped() {
+		escapeCase("a/b", "a/b", "a\\b");
+		escapeCase("abc/def/gef", "abc/def/gef", "abc\\def\\gef");
+	}
 
-		escapeCase("abc/def/gef", "abc/def/gef", "abc%2Fdef%2Fgef");
+	public void testLoneBackslashWithoutParentDirRefIsNotEscaped() {
+		escapeCase("a\\b", "a%5Cb", "a\\b");
 		escapeCase("abc\\def\\gef", "abc%5Cdef%5Cgef", "abc\\def\\gef");
 	}
 
@@ -75,21 +77,23 @@ public class FilenameEscapingTest extends TestCase {
 
 	public void testStartingSlashIsEscaped() {
 		escapeCase("/a", "%2Fa");
-		escapeCase("\\a", "%5Ca");
+		escapeCase("//a", "%2F/a", "%2F\\a");
+	}
 
-		escapeCase("//a", "%2F/a", "%2F%2Fa");
-		escapeCase("\\\\a", "%5C%5Ca", "%5C\\a");
+	public void testStartingBackslashIsEscapedButDifferentlyOnWindows() {
+		escapeCase("\\a", "%5Ca", "%2Fa");
+		escapeCase("\\\\a", "%5C%5Ca", "%2F\\a");
 	}
 
 	public void testTwoOrMoreSlashesAreEscaped() {
-		escapeCase("a//b", "a/%2Fb", "a%2F%2Fb");
-		escapeCase("a\\\\b", "a%5C%5Cb", "a\\%5Cb");
+		escapeCase("a//b", "a/%2Fb", "a\\%2Fb");
+		escapeCase("a\\\\b", "a%5C%5Cb", "a\\%2Fb");
 
-		escapeCase("a///b", "a/%2F/b", "a%2F%2F%2Fb");
-		escapeCase("a\\\\\\b", "a%5C%5C%5Cb", "a\\%5C\\b");
+		escapeCase("a///b", "a/%2F/b", "a\\%2F\\b");
+		escapeCase("a\\\\\\b", "a%5C%5C%5Cb", "a\\%2F\\b");
 
-		escapeCase("a////b", "a/%2F/%2Fb", "a%2F%2F%2F%2Fb");
-		escapeCase("a\\\\\\\\b", "a%5C%5C%5C%5Cb", "a\\%5C\\%5Cb");
+		escapeCase("a////b", "a/%2F/%2Fb", "a\\%2F\\%2Fb");
+		escapeCase("a\\\\\\\\b", "a%5C%5C%5C%5Cb", "a\\%2F\\%2Fb");
 	}
 
 	public void testNontrivialCharsThatAreSafeAndMoreReadableToLeaveUnescaped() {
@@ -101,6 +105,12 @@ public class FilenameEscapingTest extends TestCase {
 		escapeCase("c:\\Documents and Settings\\slave",
 				"c%3A%5CDocuments+and+Settings%5Cslave",
 				"c%3A\\Documents+and+Settings\\slave");
+	}
+
+	public void testARealisticWindowsMingwPathExampleWithMixedSeparators() {
+		escapeCase("c:\\Documents and Settings\\and/forward/slashes",
+				"c%3A%5CDocuments+and+Settings%5Cand/forward/slashes",
+				"c%3A\\Documents+and+Settings\\and\\forward\\slashes");
 	}
 
 }
