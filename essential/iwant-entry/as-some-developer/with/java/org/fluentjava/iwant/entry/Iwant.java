@@ -700,22 +700,35 @@ public class Iwant {
 		}
 	}
 
-	private static final String encSlash = urlEncode("/");
 	private static final String encQuestion = urlEncode("?");
 
 	public static String toSafeFilename(String from) {
 		String to = urlEncode(from);
-		to = to.replaceAll(encSlash, "/");
+		to = to.replaceAll(encSlash(), slashRegex());
 		// starting slash
-		to = to.replaceAll("^/", encSlash);
+		to = to.replaceAll("^" + slashRegex(), encSlash());
 		// parent dir refs
-		to = to.replaceAll("/\\.\\.", encSlash + "..");
-		to = to.replaceAll("\\.\\./", ".." + encSlash);
+		to = to.replaceAll("/\\.\\.", encSlash() + "..");
+		to = to.replaceAll("\\.\\./", ".." + encSlash());
 		// repeating slashes
-		to = to.replaceAll("//", "/" + encSlash);
+		to = to.replaceAll(slashRegex() + slashRegex(),
+				slashRegex() + encSlash());
 		// url query
 		to = to.replaceAll(encQuestion, "?");
 		return to;
+	}
+
+	private static String slash() {
+		return System.getProperty("file.separator");
+	}
+
+	private static String slashRegex() {
+		String slash = slash();
+		return "\\".equals(slash) ? "\\\\" : slash;
+	}
+
+	private static String encSlash() {
+		return urlEncode(slash());
 	}
 
 	private static String urlEncode(String s) {

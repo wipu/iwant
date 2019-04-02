@@ -2039,6 +2039,10 @@
 = In progress
 #################################################################
 
+- Don't urlencode backslashes on Windows, when escaping paths to cache, so the name components don't become so long that Windows doesn't support them
+  + implement: replace hardcoded slashes with real file separators
+  - real test
+
 - @bugfix upgrade jacoco to 0.8.2 and make it work
   + update version
   * the jar names inside zip have wrong version number in the filename
