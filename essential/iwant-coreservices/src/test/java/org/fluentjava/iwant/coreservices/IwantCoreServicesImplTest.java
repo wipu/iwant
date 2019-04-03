@@ -3,7 +3,6 @@ package org.fluentjava.iwant.coreservices;
 import java.io.File;
 import java.util.Properties;
 
-import org.fluentjava.iwant.api.model.IwantCoreServices;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.testarea.TestArea;
 
@@ -14,7 +13,7 @@ public class IwantCoreServicesImplTest extends TestCase {
 	private TestArea testArea;
 	private Properties sysprops;
 	private Iwant iwant;
-	private IwantCoreServices services;
+	private IwantCoreServicesImpl services;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -109,6 +108,45 @@ public class IwantCoreServicesImplTest extends TestCase {
 			assertEquals("Cannot find cygwin (or git) bash.exe",
 					e.getMessage());
 		}
+	}
+
+	public void testNativeBashFormatIsTheOriginalOnNonWindows() {
+		sysprops.put("os.name", "Anything but Windows");
+
+		assertEquals("C:\\this\\is\\fine",
+				services.toNativeBashFormat("C:\\this\\is\\fine"));
+		assertEquals("C:/also/fine",
+				services.toNativeBashFormat("C:/also/fine"));
+	}
+
+	public void testNativeBashFormatIsCygdriveFormatOnWindowsWithCygwin64() {
+		sysprops.put("os.name", "Windows 7");
+		existingCygwin64Bash();
+
+		assertEquals("/cygdrive/c/some/path",
+				services.toNativeBashFormat("C:\\some\\path"));
+		assertEquals("/cygdrive/c/some/path",
+				services.toNativeBashFormat("C:/some/path"));
+	}
+
+	public void testNativeBashFormatIsCygdriveFormatOnWindowsWithCygwin() {
+		sysprops.put("os.name", "Windows 7");
+		existingCygwinBash();
+
+		assertEquals("/cygdrive/c/some/path",
+				services.toNativeBashFormat("C:\\some\\path"));
+		assertEquals("/cygdrive/c/some/path",
+				services.toNativeBashFormat("C:/some/path"));
+	}
+
+	public void testNativeBashFormatIsSlashCFormatOnWindowsWithGitBash() {
+		sysprops.put("os.name", "Windows 7");
+		existingGitBash();
+
+		assertEquals("/c/some/path",
+				services.toNativeBashFormat("C:\\some\\path"));
+		assertEquals("/c/some/path",
+				services.toNativeBashFormat("C:/some/path"));
 	}
 
 }

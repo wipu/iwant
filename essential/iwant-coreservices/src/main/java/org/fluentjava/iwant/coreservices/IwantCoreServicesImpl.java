@@ -68,7 +68,7 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 
 	@Override
 	public File cygwinBashExe() {
-		if (!systemProperties.getProperty("os.name").startsWith("Windows")) {
+		if (!runningWindows()) {
 			return null;
 		}
 		File bash = new File(cRoot, "cygwin64/bin/bash.exe");
@@ -79,26 +79,57 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 		if (bash.exists()) {
 			return bash;
 		}
-		File home = new File(systemProperties.getProperty("user.home"));
-		bash = new File(home, "AppData/Local/Programs/Git/bin/bash.exe");
+		bash = gitBash();
 		if (bash.exists()) {
 			return bash;
 		}
 		throw new IllegalStateException("Cannot find cygwin (or git) bash.exe");
 	}
 
+	private File gitBash() {
+		File home = new File(systemProperties.getProperty("user.home"));
+		return new File(home, "AppData/Local/Programs/Git/bin/bash.exe");
+	}
+
+	private boolean runningWindows() {
+		return systemProperties.getProperty("os.name").startsWith("Windows");
+	}
+
 	@Override
 	public String pathWithoutBackslashes(File file) {
 		try {
-			return file.getCanonicalPath().replaceAll("\\\\", "/");
+			return absolutePathWithoutBackslashes(file.getCanonicalPath());
 		} catch (IOException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
 
+	private static String absolutePathWithoutBackslashes(String absolutePath) {
+		return absolutePath.replaceAll("\\\\", "/");
+	}
+
 	@Override
 	public String unixPathOf(File file) {
-		return pathWithoutBackslashes(file).replaceFirst("^C:", "/cygdrive/c");
+		try {
+			return toNativeBashFormat(file.getCanonicalPath());
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	String toNativeBashFormat(String absolutePath) {
+		if (!runningWindows()) {
+			return absolutePath;
+		}
+		String normalized = absolutePathWithoutBackslashes(absolutePath);
+		// TODO don't assume cygwin is the only alternative to git-bash
+		// TODO also don't assume the path starts with C:, it could as well be
+		// D: ...
+		String prefix = "/cygdrive/c";
+		if (gitBash().exists()) {
+			prefix = "/c";
+		}
+		return normalized.replaceFirst("^C:", prefix);
 	}
 
 }
