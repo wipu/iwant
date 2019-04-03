@@ -22,10 +22,33 @@ public class IwantCoreServicesImplTest extends TestCase {
 		testArea = TestArea.forTest(this);
 		sysprops = new Properties();
 		services = new IwantCoreServicesImpl(iwant, testArea.root(), sysprops);
+		File home = testArea.newDir("home");
+		sysprops.put("user.home", home.getAbsolutePath());
+	}
+
+	private File existingCygwin64Bash() {
+		return testArea.hasFile("cygwin64/bin/bash.exe", "ignored");
+	}
+
+	private File existingCygwinBash() {
+		return testArea.hasFile("cygwin/bin/bash.exe", "ignored");
+	}
+
+	private File existingGitBash() {
+		return testArea.hasFile("home/AppData/Local/Programs/Git/bin/bash.exe",
+				"ignored");
+	}
+
+	private void allWindowsBashesExist() {
+		existingCygwin64Bash();
+		existingCygwinBash();
+		existingGitBash();
 	}
 
 	public void testCygwinBashExeIsNullOnLinux() {
 		sysprops.put("os.name", "Linux");
+
+		allWindowsBashesExist();
 
 		assertNull(services.cygwinBashExe());
 	}
@@ -33,46 +56,58 @@ public class IwantCoreServicesImplTest extends TestCase {
 	public void testCygwinBashExeIsNullOnUnknownOs() {
 		sysprops.put("os.name", "SomethingExotic");
 
+		allWindowsBashesExist();
+
 		assertNull(services.cygwinBashExe());
 	}
 
 	public void testCygwin64ExeIsFoundOnWindows7() {
 		sysprops.put("os.name", "Windows 7");
-		File bashExe = testArea.hasFile("cygwin64/bin/bash.exe", "ignored");
+		File bashExe = existingCygwin64Bash();
 
 		assertEquals(bashExe, services.cygwinBashExe());
 	}
 
-	public void testCygwin64IsPreferredOverCygwin() {
+	public void testCygwinExeIsFoundOnWindows7() {
 		sysprops.put("os.name", "Windows 7");
-		File bash64Exe = testArea.hasFile("cygwin64/bin/bash.exe", "ignored");
-		testArea.hasFile("cygwin/bin/bash.exe", "ignored");
+		File bashExe = existingCygwinBash();
+
+		assertEquals(bashExe, services.cygwinBashExe());
+	}
+
+	public void testGitBashExeIsFoundOnWindows7() {
+		sysprops.put("os.name", "Windows 7");
+
+		File bashExe = existingGitBash();
+
+		assertEquals(bashExe, services.cygwinBashExe());
+	}
+
+	public void testCygwin64IsPreferredOverCygwinAndGitBash() {
+		sysprops.put("os.name", "Windows 7");
+		File bash64Exe = existingCygwin64Bash();
+		existingCygwinBash();
+		existingGitBash();
 
 		assertEquals(bash64Exe, services.cygwinBashExe());
 	}
 
-	public void testCygwinExeIsFoundOnWindows7IfCygwin64DoesNotExist() {
-		sysprops.put("os.name", "Windows 7");
-		File bashExe = testArea.hasFile("cygwin/bin/bash.exe", "ignored");
-
-		assertEquals(bashExe, services.cygwinBashExe());
-	}
-
 	public void testCygwin64ExeIsFoundOnSomeUnknownFlavourOfWindows() {
 		sysprops.put("os.name", "Windows the last one");
-		File bashExe = testArea.hasFile("cygwin64/bin/bash.exe", "ignored");
+		File bashExe = existingCygwin64Bash();
 
 		assertEquals(bashExe, services.cygwinBashExe());
 	}
 
-	public void testMissingCygwinIsAnErrorOnWindows7() {
+	public void testMissingBashIsAnErrorOnWindows7() {
 		sysprops.put("os.name", "Windows 7");
 
 		try {
 			services.cygwinBashExe();
 			fail();
 		} catch (IllegalStateException e) {
-			assertEquals("Cannot find cygwin bash.exe", e.getMessage());
+			assertEquals("Cannot find cygwin (or git) bash.exe",
+					e.getMessage());
 		}
 	}
 

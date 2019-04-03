@@ -79,7 +79,12 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 		if (bash.exists()) {
 			return bash;
 		}
-		throw new IllegalStateException("Cannot find cygwin bash.exe");
+		File home = new File(systemProperties.getProperty("user.home"));
+		bash = new File(home, "AppData/Local/Programs/Git/bin/bash.exe");
+		if (bash.exists()) {
+			return bash;
+		}
+		throw new IllegalStateException("Cannot find cygwin (or git) bash.exe");
 	}
 
 	@Override
