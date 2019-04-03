@@ -97,11 +97,12 @@ log "OPT_SUBCLIPSE=$OPT_SUBCLIPSE"
 log "OPT_EGIT=$OPT_EGIT"
 
 
-ECL_CODENAME=oxygen
-ECL_REL=2
+ECL_CODENAME=2019-03
+ECL_REL=R
 ECL_DISTBASE=eclipse-java-$ECL_CODENAME-$ECL_REL
 ECL_URLBASE='http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/'$ECL_CODENAME/$ECL_REL
 
+# TODO find the latest existing version:
 eclipse-url-linux32() {
   DISTNAME=$ECL_DISTBASE-linux-gtk.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
@@ -111,9 +112,10 @@ eclipse-url-linux32() {
 eclipse-url-linux64() {
   DISTNAME=$ECL_DISTBASE-linux-gtk-x86_64.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='2979aa536b8d2fffc062758175a67489'
+  DISTMD5='8f80fb9a63f65242a937bbdec3bb5a65'
 }
 
+# TODO find the latest existing version:
 eclipse-url-win32() {
   DISTNAME=$ECL_DISTBASE-win32.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
@@ -123,7 +125,7 @@ eclipse-url-win32() {
 eclipse-url-win64() {
   DISTNAME=$ECL_DISTBASE-win32-x86_64.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='eec7d1ade835ad18c1aec53be4697646'
+  DISTMD5='8578613c415f428e42dbcf55aad3a667'
 }
 
 eclipse-dist() {
