@@ -168,7 +168,7 @@ public class JavaModulesTest {
 				+ "  mod/src/main/resources\n" + "i:classLocations:\n"
 				+ "  commons-io-2.4.jar\n" + "p:javacOptions:\n" + "  -Xlint\n"
 				+ "  -Xlint:-serial\n" + "  -source\n" + "  1.8\n" + "  -g\n"
-				+ "p:encoding:\n" + " null\n" + "", descr(mas.get(1)));
+				+ "p:encoding:\n" + "  UTF-8\n" + "", descr(mas.get(1)));
 		// test only module has no main artifact
 	}
 
@@ -244,14 +244,14 @@ public class JavaModulesTest {
 				+ "  mod-main-classes\n" + "  commons-io-2.4.jar\n"
 				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
 				+ "  -source\n" + "  1.8\n" + "  -g\n" + "p:encoding:\n"
-				+ " null\n" + "", descr(tas.get(0)));
+				+ "  UTF-8\n" + "", descr(tas.get(0)));
 		assertEquals("org.fluentjava.iwant.api.javamodules.JavaClasses\n"
 				+ "i:srcDirs:\n" + "  only-tests/src/test/java\n"
 				+ "i:resourceDirs:\n" + "  only-tests/src/test/resources\n"
 				+ "i:classLocations:\n" + "  only-main-main-classes\n"
 				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
 				+ "  -source\n" + "  1.8\n" + "  -g\n" + "p:encoding:\n"
-				+ " null\n" + "", descr(tas.get(1)));
+				+ "  UTF-8\n" + "", descr(tas.get(1)));
 		// bin and main only have no test artifact
 	}
 

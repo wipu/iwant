@@ -2061,6 +2061,13 @@
 = In progress
 #################################################################
 
+- @bugfix: On Windows compilation fails with UTF-8 sources that contain scandinavian letters
+  + add -encoding argument to compiler in Iwant.java
+  + now that it must not be null, use UTF-8 as default everywhere
+    * in theory it would be better to use system default but the default
+      is ok with bootstrapping, because Iwant's code is ascii
+  - real test
+
 - @bugfix upgrade jacoco to 0.8.2 and make it work
   + update version
   * the jar names inside zip have wrong version number in the filename

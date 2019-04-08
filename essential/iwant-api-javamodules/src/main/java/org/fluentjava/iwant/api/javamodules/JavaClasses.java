@@ -3,6 +3,7 @@ package org.fluentjava.iwant.api.javamodules;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -48,7 +49,7 @@ public class JavaClasses extends TargetBase {
 		private final List<Path> resourceDirs = new ArrayList<>();
 		private final List<Path> classLocations = new ArrayList<>();
 		private boolean debug;
-		private Charset encoding;
+		private Charset encoding = StandardCharsets.UTF_8;
 		private JavaCompliance sourceVersion;
 		private final List<String> rawArgs = new ArrayList<>();
 

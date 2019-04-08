@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -174,7 +175,7 @@ public class Iwant2 {
 		List<File> javaFileList = new ArrayList<>(javaFiles);
 
 		iwant.compiledClasses(allIwantClasses, javaFileList, iwantBinDeps(),
-				Iwant.bootstrappingJavacOptions(), null);
+				Iwant.bootstrappingJavacOptions(), StandardCharsets.UTF_8);
 
 		String pak = "org/fluentjava/iwant/api/bash";
 		File resources = new File(iwantEssential,

@@ -1,6 +1,7 @@
 package org.fluentjava.iwant.api.javamodules;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -147,7 +148,7 @@ public class JavaSrcModule extends JavaModule {
 		private JavaCompliance javaCompliance = JavaCompliance.JAVA_1_8;
 		private String locationUnderWsRoot;
 		private StringFilter testClassNameFilter = new DefaultTestClassNameFilter();
-		private Charset encoding;
+		private Charset encoding = StandardCharsets.UTF_8;
 		private final Set<Class<? extends JavaModuleCharacteristic>> characteristics = new HashSet<>();
 		private final List<String> rawCompilerArgs = new ArrayList<>();
 		private TestRunner testRunner;

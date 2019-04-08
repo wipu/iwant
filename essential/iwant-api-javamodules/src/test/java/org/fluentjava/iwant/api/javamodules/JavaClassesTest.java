@@ -2,6 +2,7 @@ package org.fluentjava.iwant.api.javamodules;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import org.fluentjava.iwant.api.javamodules.JavaClasses.JavaClassesSpex;
@@ -219,7 +220,8 @@ public class JavaClassesTest extends IwantTestCase {
 				+ "i:srcDirs:\n" + "  src\n" + "i:resourceDirs:\n"
 				+ "i:classLocations:\n" + "  dep1\n" + "  dep2\n"
 				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
-				+ "p:encoding:\n" + " null\n" + "", target.contentDescriptor());
+				+ "p:encoding:\n" + "  UTF-8\n" + "",
+				target.contentDescriptor());
 	}
 
 	public void testEmptySourceDirectoryProducesEmptyClasses()
@@ -373,6 +375,11 @@ public class JavaClassesTest extends IwantTestCase {
 				contentOfCached(classes, "pak1/res1.txt"));
 		assertEquals("res2.txt content",
 				contentOfCached(classes, "pak2/res2.txt"));
+	}
+
+	public void testDefaultCharsetIsUtf8() {
+		assertEquals(StandardCharsets.UTF_8,
+				JavaClasses.with().end().encoding());
 	}
 
 	public void testOverridingChracterEncoding() throws Exception {

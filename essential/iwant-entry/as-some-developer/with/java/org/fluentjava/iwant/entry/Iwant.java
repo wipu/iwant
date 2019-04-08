@@ -20,6 +20,7 @@ import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -378,7 +379,7 @@ public class Iwant {
 			compiledClasses(classes,
 					iwantBootstrappingJavaSources(iwantEssential),
 					Collections.<File> emptyList(), bootstrappingJavacOptions(),
-					null);
+					StandardCharsets.UTF_8);
 		}
 		return classes;
 	}
@@ -474,6 +475,8 @@ public class Iwant {
 			options.add(dest.getCanonicalPath());
 			options.add("-classpath");
 			options.add(classpath);
+			options.add("-encoding");
+			options.add(encoding.toString());
 
 			CompilationTask compilerTask = compiler.getTask(compilerTaskOut,
 					fileManager, diagnosticListener, options, classes,

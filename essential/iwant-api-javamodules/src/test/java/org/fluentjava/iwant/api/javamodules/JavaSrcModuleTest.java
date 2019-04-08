@@ -1,6 +1,7 @@
 package org.fluentjava.iwant.api.javamodules;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.fluentjava.iwant.api.core.Concatenated;
@@ -363,6 +364,11 @@ public class JavaSrcModuleTest extends TestCase {
 
 		assertTrue(testNames.matches("a"));
 		assertFalse(testNames.matches("b"));
+	}
+
+	public void testDefaultEncodingIsUtf() {
+		assertEquals(StandardCharsets.UTF_8,
+				JavaSrcModule.with().end().encoding());
 	}
 
 	public void testEncodingIsUsedToCompileMainAndTestClasses() {

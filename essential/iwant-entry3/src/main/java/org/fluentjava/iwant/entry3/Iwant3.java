@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -110,7 +111,7 @@ public class Iwant3 {
 		if (ingredientsChanged(wsDefdefClasses, srcFiles, apiClassLocations)) {
 			iwant.compiledClasses(wsDefdefClasses, srcFiles,
 					new ArrayList<>(apiClassLocations),
-					Iwant.bootstrappingJavacOptions(), null);
+					Iwant.bootstrappingJavacOptions(), StandardCharsets.UTF_8);
 		}
 
 		List<File> runtimeClasses = Arrays.asList(wsDefdefClasses);
