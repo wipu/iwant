@@ -67,7 +67,7 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 	}
 
 	@Override
-	public File cygwinBashExe() {
+	public File windowsBashExe() {
 		if (!runningWindows()) {
 			return null;
 		}

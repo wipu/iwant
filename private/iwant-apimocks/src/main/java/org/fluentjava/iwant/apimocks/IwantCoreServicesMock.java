@@ -61,11 +61,11 @@ public class IwantCoreServicesMock implements IwantCoreServices {
 	}
 
 	@Override
-	public File cygwinBashExe() {
+	public File windowsBashExe() {
 		if (cygwinBashExeWasTaught) {
 			return taughtCygwinBashExe;
 		}
-		return delegate.cygwinBashExe();
+		return delegate.windowsBashExe();
 	}
 
 	public void shallFindCygwinBashExeAt(File cygwinBashExe) {

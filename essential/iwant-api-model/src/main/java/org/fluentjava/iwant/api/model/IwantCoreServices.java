@@ -22,7 +22,7 @@ public interface IwantCoreServices {
 
 	void pipeAndClose(InputStream in, OutputStream out);
 
-	File cygwinBashExe();
+	File windowsBashExe();
 
 	String pathWithoutBackslashes(File file);
 

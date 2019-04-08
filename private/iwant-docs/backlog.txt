@@ -2052,6 +2052,12 @@
 = In progress
 #################################################################
 
+- On Windows, try to find git bash from program files
+  - first refactor, there are now many options
+    + rename cygwinBashExe() -> windowsBashExe()
+    - in impl, find from candidate list
+  - add this new candidate
+
 - @bugfix upgrade jacoco to 0.8.2 and make it work
   + update version
   * the jar names inside zip have wrong version number in the filename

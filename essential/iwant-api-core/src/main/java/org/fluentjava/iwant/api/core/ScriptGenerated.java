@@ -70,7 +70,7 @@ public class ScriptGenerated extends TargetBase {
 			TargetEvaluationContext ctx, File dir, File userExecutable,
 			String[] userArgs) throws IOException {
 		List<String> args = new ArrayList<>();
-		File cygwinBashExe = ctx.iwant().cygwinBashExe();
+		File cygwinBashExe = ctx.iwant().windowsBashExe();
 		File executable;
 		if (cygwinBashExe != null) {
 			Iwant.debugLog("ScriptGenerated",

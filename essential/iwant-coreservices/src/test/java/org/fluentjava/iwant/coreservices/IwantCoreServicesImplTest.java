@@ -44,34 +44,34 @@ public class IwantCoreServicesImplTest extends TestCase {
 		existingGitBash();
 	}
 
-	public void testCygwinBashExeIsNullOnLinux() {
+	public void testWindowsBashExeIsNullOnLinux() {
 		sysprops.put("os.name", "Linux");
 
 		allWindowsBashesExist();
 
-		assertNull(services.cygwinBashExe());
+		assertNull(services.windowsBashExe());
 	}
 
-	public void testCygwinBashExeIsNullOnUnknownOs() {
+	public void testWindosBashExeIsNullOnUnknownOs() {
 		sysprops.put("os.name", "SomethingExotic");
 
 		allWindowsBashesExist();
 
-		assertNull(services.cygwinBashExe());
+		assertNull(services.windowsBashExe());
 	}
 
 	public void testCygwin64ExeIsFoundOnWindows7() {
 		sysprops.put("os.name", "Windows 7");
 		File bashExe = existingCygwin64Bash();
 
-		assertEquals(bashExe, services.cygwinBashExe());
+		assertEquals(bashExe, services.windowsBashExe());
 	}
 
 	public void testCygwinExeIsFoundOnWindows7() {
 		sysprops.put("os.name", "Windows 7");
 		File bashExe = existingCygwinBash();
 
-		assertEquals(bashExe, services.cygwinBashExe());
+		assertEquals(bashExe, services.windowsBashExe());
 	}
 
 	public void testGitBashExeIsFoundOnWindows7() {
@@ -79,7 +79,7 @@ public class IwantCoreServicesImplTest extends TestCase {
 
 		File bashExe = existingGitBash();
 
-		assertEquals(bashExe, services.cygwinBashExe());
+		assertEquals(bashExe, services.windowsBashExe());
 	}
 
 	public void testCygwin64IsPreferredOverCygwinAndGitBash() {
@@ -88,21 +88,21 @@ public class IwantCoreServicesImplTest extends TestCase {
 		existingCygwinBash();
 		existingGitBash();
 
-		assertEquals(bash64Exe, services.cygwinBashExe());
+		assertEquals(bash64Exe, services.windowsBashExe());
 	}
 
 	public void testCygwin64ExeIsFoundOnSomeUnknownFlavourOfWindows() {
 		sysprops.put("os.name", "Windows the last one");
 		File bashExe = existingCygwin64Bash();
 
-		assertEquals(bashExe, services.cygwinBashExe());
+		assertEquals(bashExe, services.windowsBashExe());
 	}
 
 	public void testMissingBashIsAnErrorOnWindows7() {
 		sysprops.put("os.name", "Windows 7");
 
 		try {
-			services.cygwinBashExe();
+			services.windowsBashExe();
 			fail();
 		} catch (IllegalStateException e) {
 			assertEquals("Cannot find cygwin (or git) bash.exe",
