@@ -8,6 +8,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.function.Supplier;
 
@@ -19,16 +20,18 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 	private final Iwant iwant;
 	private final File cRoot;
 	private final Properties systemProperties;
+	private final Map<String, String> env;
 
 	public IwantCoreServicesImpl(Iwant iwant, File cRoot,
-			Properties systemProperties) {
+			Properties systemProperties, Map<String, String> env) {
 		this.iwant = iwant;
 		this.cRoot = cRoot;
 		this.systemProperties = systemProperties;
+		this.env = env;
 	}
 
 	public IwantCoreServicesImpl(Iwant iwant) {
-		this(iwant, new File("C:"), System.getProperties());
+		this(iwant, new File("C:"), System.getProperties(), System.getenv());
 	}
 
 	@Override
@@ -77,6 +80,11 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 	}
 
 	private WindowsBash windowsBash() {
+		String shell = env.get("SHELL");
+		String mingwPrefix = env.get("MINGW_PREFIX");
+		if (mingwPrefix != null && shell != null) {
+			return new GitBash(new File(shell));
+		}
 		// we use supplier here so we don't unnecessarily evaluate stuff that is
 		// not needed
 		for (Supplier<WindowsBash> candidateSupplier : windowsBashCandidates()) {

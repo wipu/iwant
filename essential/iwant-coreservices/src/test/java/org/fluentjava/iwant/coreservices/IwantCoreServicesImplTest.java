@@ -1,6 +1,8 @@
 package org.fluentjava.iwant.coreservices;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.fluentjava.iwant.entry.Iwant;
@@ -12,6 +14,7 @@ public class IwantCoreServicesImplTest extends TestCase {
 
 	private TestArea testArea;
 	private Properties sysprops;
+	private Map<String, String> env;
 	private Iwant iwant;
 	private IwantCoreServicesImpl services;
 
@@ -20,7 +23,9 @@ public class IwantCoreServicesImplTest extends TestCase {
 		iwant = null;
 		testArea = TestArea.forTest(this);
 		sysprops = new Properties();
-		services = new IwantCoreServicesImpl(iwant, testArea.root(), sysprops);
+		env = new HashMap<>();
+		services = new IwantCoreServicesImpl(iwant, testArea.root(), sysprops,
+				env);
 		File home = testArea.newDir("home");
 		sysprops.put("user.home", home.getAbsolutePath());
 	}
@@ -93,6 +98,39 @@ public class IwantCoreServicesImplTest extends TestCase {
 		File bashExe = existingProgramFilesGitBash();
 
 		assertEquals(bashExe, services.windowsBashExe());
+	}
+
+	public void testGitBashDeducedFromEnvIsPreferredOverExistingBashes() {
+		File customBash = testArea.hasFile("custom/gitbash/bin/bash.exe",
+				"ignored");
+		File customMingw = testArea.newDir("custom/gitbash/mingw");
+		sysprops.put("os.name", "Windows 7");
+		env.put("SHELL", customBash.getAbsolutePath());
+		env.put("MINGW_PREFIX", customMingw.getAbsolutePath());
+
+		allWindowsBashesExist();
+
+		assertEquals(customBash, services.windowsBashExe());
+		// path conversion is git bash -style:
+		assertEquals("/c/a/path", services.toNativeBashFormat("C:/a/path"));
+	}
+
+	public void testEnvVariableShellIsIgnoredIfWeCannotDeduceItsNature() {
+		File customBash = testArea.hasFile("custom/gitbash/bin/bash.exe",
+				"ignored");
+		sysprops.put("os.name", "Windows 7");
+		env.put("SHELL", customBash.getAbsolutePath());
+		// nothing else in env to help in deduction
+
+		File bash64Exe = existingCygwin64Bash();
+		existingCygwinBash();
+		existingHomeGitBash();
+		existingProgramFilesGitBash();
+
+		assertEquals(bash64Exe, services.windowsBashExe());
+		// path conversion is cygwin-style:
+		assertEquals("/cygdrive/c/a/path",
+				services.toNativeBashFormat("C:/a/path"));
 	}
 
 	public void testCygwin64IsPreferredOverCygwinAndGitBash() {

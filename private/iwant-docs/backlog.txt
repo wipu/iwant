@@ -2057,15 +2057,19 @@
   (- now is also a good time to TDD that C: is not the only supported drive
      * nah, it's not: we don't have candidates elsewhere yet)
 
-#################################################################
-= In progress
-#################################################################
-
-- @bugfix: On Windows compilation fails with UTF-8 sources that contain scandinavian letters
++ @bugfix: On Windows compilation fails with UTF-8 sources that contain scandinavian letters
   + add -encoding argument to compiler in Iwant.java
   + now that it must not be null, use UTF-8 as default everywhere
     * in theory it would be better to use system default but the default
       is ok with bootstrapping, because Iwant's code is ascii
+  + real test
+
+#################################################################
+= In progress
+#################################################################
+
+- On Windows support git bash in custom location, via env variable
+  + impl: actually, if MINGW_PREFIX set, use SHELL directly!
   - real test
 
 - @bugfix upgrade jacoco to 0.8.2 and make it work
@@ -2081,6 +2085,9 @@
 #################################################################
 = Planned
 #################################################################
+
+- Clean up Windows bash detection: if possible, use env to detect
+  cygwin bash, too, so no hardcoded paths will be needed
 
 - @bugfix: flaky test
   * expected:<1554702261000> but was:<1554702262000>
