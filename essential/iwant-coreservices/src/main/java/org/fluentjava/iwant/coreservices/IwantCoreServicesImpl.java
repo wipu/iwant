@@ -6,8 +6,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.function.Supplier;
 
 import org.fluentjava.iwant.api.model.IwantCoreServices;
 import org.fluentjava.iwant.entry.Iwant;
@@ -71,24 +73,75 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 		if (!runningWindows()) {
 			return null;
 		}
-		File bash = new File(cRoot, "cygwin64/bin/bash.exe");
-		if (bash.exists()) {
-			return bash;
-		}
-		bash = new File(cRoot, "cygwin/bin/bash.exe");
-		if (bash.exists()) {
-			return bash;
-		}
-		bash = gitBash();
-		if (bash.exists()) {
-			return bash;
+		return windowsBash().file;
+	}
+
+	private WindowsBash windowsBash() {
+		// we use supplier here so we don't unnecessarily evaluate stuff that is
+		// not needed
+		for (Supplier<WindowsBash> candidateSupplier : windowsBashCandidates()) {
+			WindowsBash candidate = candidateSupplier.get();
+			if (candidate.file.exists()) {
+				return candidate;
+			}
 		}
 		throw new IllegalStateException("Cannot find cygwin (or git) bash.exe");
 	}
 
-	private File gitBash() {
-		File home = new File(systemProperties.getProperty("user.home"));
-		return new File(home, "AppData/Local/Programs/Git/bin/bash.exe");
+	private static abstract class WindowsBash {
+		private final File file;
+
+		WindowsBash(File file) {
+			this.file = file;
+		}
+
+		abstract String windowsDriveAsUnixPrefix(String drive);
+	}
+
+	private static class CygwinBash extends WindowsBash {
+
+		CygwinBash(File file) {
+			super(file);
+		}
+
+		@Override
+		String windowsDriveAsUnixPrefix(String drive) {
+			return "/cygdrive/" + drive.toLowerCase();
+		}
+
+	}
+
+	private static class GitBash extends WindowsBash {
+
+		GitBash(File file) {
+			super(file);
+		}
+
+		@Override
+		String windowsDriveAsUnixPrefix(String drive) {
+			return "/" + drive.toLowerCase();
+		}
+
+	}
+
+	private List<Supplier<WindowsBash>> windowsBashCandidates() {
+		return Arrays.asList(cygwin64Bash(), cygwinBash(), gitBash());
+	}
+
+	private Supplier<WindowsBash> cygwin64Bash() {
+		return () -> new CygwinBash(new File(cRoot, "cygwin64/bin/bash.exe"));
+	}
+
+	private Supplier<WindowsBash> cygwinBash() {
+		return () -> new CygwinBash(new File(cRoot, "cygwin/bin/bash.exe"));
+	}
+
+	private Supplier<WindowsBash> gitBash() {
+		return () -> {
+			File home = new File(systemProperties.getProperty("user.home"));
+			return new GitBash(
+					new File(home, "AppData/Local/Programs/Git/bin/bash.exe"));
+		};
 	}
 
 	private boolean runningWindows() {
@@ -121,14 +174,11 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 		if (!runningWindows()) {
 			return absolutePath;
 		}
+		WindowsBash windowsBash = windowsBash();
 		String normalized = absolutePathWithoutBackslashes(absolutePath);
-		// TODO don't assume cygwin is the only alternative to git-bash
-		// TODO also don't assume the path starts with C:, it could as well be
+		// TODO don't assume the path starts with C:, it could as well be
 		// D: ...
-		String prefix = "/cygdrive/c";
-		if (gitBash().exists()) {
-			prefix = "/c";
-		}
+		String prefix = windowsBash.windowsDriveAsUnixPrefix("C");
 		return normalized.replaceFirst("^C:", prefix);
 	}
 
