@@ -125,7 +125,8 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 	}
 
 	private List<Supplier<WindowsBash>> windowsBashCandidates() {
-		return Arrays.asList(cygwin64Bash(), cygwinBash(), gitBash());
+		return Arrays.asList(cygwin64Bash(), cygwinBash(), homeGitBash(),
+				programFilesGitBash());
 	}
 
 	private Supplier<WindowsBash> cygwin64Bash() {
@@ -136,12 +137,17 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 		return () -> new CygwinBash(new File(cRoot, "cygwin/bin/bash.exe"));
 	}
 
-	private Supplier<WindowsBash> gitBash() {
+	private Supplier<WindowsBash> homeGitBash() {
 		return () -> {
 			File home = new File(systemProperties.getProperty("user.home"));
 			return new GitBash(
 					new File(home, "AppData/Local/Programs/Git/bin/bash.exe"));
 		};
+	}
+
+	private Supplier<WindowsBash> programFilesGitBash() {
+		return () -> new GitBash(
+				new File(cRoot, "Program Files/Git/bin/bash.exe"));
 	}
 
 	private boolean runningWindows() {

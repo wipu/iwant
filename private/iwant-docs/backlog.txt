@@ -2048,17 +2048,18 @@
   + ok, but also use the "/c/" format instead of "/cygdrive/c/" in unixPathOf
   + real test
 
-#################################################################
-= In progress
-#################################################################
-
-- On Windows, try to find git bash from program files
-  - first refactor, there are now many options
++ On Windows, try to find git bash from program files
+  + first refactor, there are now many options
     + rename cygwinBashExe() -> windowsBashExe()
     + in impl, find from candidate list
     + also use OOP for path format logic
-  - add this new candidate
-  - now is also a good time to TDD that C: is not the only supported drive
+  + add this new candidate
+  (- now is also a good time to TDD that C: is not the only supported drive
+     * nah, it's not: we don't have candidates elsewhere yet)
+
+#################################################################
+= In progress
+#################################################################
 
 - @bugfix upgrade jacoco to 0.8.2 and make it work
   + update version
