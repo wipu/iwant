@@ -2064,13 +2064,13 @@
       is ok with bootstrapping, because Iwant's code is ascii
   + real test
 
++ On Windows support git bash in custom location, via env variable
+  + impl: actually, if MINGW_PREFIX set, use SHELL directly!
+  + real test
+
 #################################################################
 = In progress
 #################################################################
-
-- On Windows support git bash in custom location, via env variable
-  + impl: actually, if MINGW_PREFIX set, use SHELL directly!
-  - real test
 
 - @bugfix upgrade jacoco to 0.8.2 and make it work
   + update version
