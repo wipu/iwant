@@ -19,7 +19,7 @@ import org.fluentjava.iwant.core.javamodules.JavaModules;
 
 public class IwantModules extends JavaModules {
 
-	private static final ScalaVersion SCALA_VER = ScalaVersion._2_11_7();
+	private static final ScalaVersion SCALA_VER = ScalaVersion.of("2.12.3");
 
 	@Override
 	protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {

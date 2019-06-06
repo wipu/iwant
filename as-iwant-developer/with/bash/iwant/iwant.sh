@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-COMMIT=d68249a69e3dfee439983795e31d33ef934d8398
+COMMIT=7bf0bf2dadd29660bf70e36be8c9a497e8a01206
 GITHUBUSER=wipu
 URL=https://raw.githubusercontent.com/$GITHUBUSER/iwant/$COMMIT
 

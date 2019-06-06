@@ -8,14 +8,12 @@ import org.fluentjava.iwant.api.core.Concatenated;
 import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
 import org.fluentjava.iwant.api.core.ScriptGenerated;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
-import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.SideEffect;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;
 import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
 import org.fluentjava.iwant.api.wsdef.Workspace;
-import org.fluentjava.iwant.core.download.FromRepository;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.eclipsesettings.EclipseSettings;
 import org.fluentjava.iwant.plugin.findbugs.FindbugsDistribution;
@@ -26,13 +24,9 @@ import org.fluentjava.iwant.plugin.jacoco.JacocoTargetsOfJavaModules;
 
 public class WorkspaceForIwant implements Workspace {
 
-	private final FindbugsDistribution findbugs = FindbugsDistribution
-			.ofVersion("3.0.0");
+	private final FindbugsDistribution findbugs = FindbugsDistribution._3_0_1;
 
 	private static final Target copyOfLocalIwantWs = new CopyOfLocalIwantWsForTutorial();
-
-	private final Path asm501Jar = FromRepository.repo1MavenOrg()
-			.group("org/ow2/asm").name("asm-all").version("5.0.1").jar();
 
 	private final IwantModules modules = new IwantModules();
 
@@ -57,8 +51,7 @@ public class WorkspaceForIwant implements Workspace {
 	}
 
 	private Target jacocoReport() {
-		return JacocoTargetsOfJavaModules.with()
-				.jacocoWithDeps(jacoco(), asm501Jar)
+		return JacocoTargetsOfJavaModules.with().jacoco(jacoco())
 				.antJars(TestedIwantDependencies.antJar(),
 						TestedIwantDependencies.antLauncherJar())
 				.modules(modules.modulesForCoverage()).end()
