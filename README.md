@@ -4,7 +4,7 @@ Can use ant tasks and ant and shell scripts as backend.
 
 Plese see [iwant.fluentjava.org](http://iwant.fluentjava.org) for more information.
 
-**NOTE** This is a clone from [sourceforge](http://iwant.sourceforge.net). Things don't yet work in this git clone (there are still dependencies to svn), but migration is in progress.
+**NOTE** This is a clone from [sourceforge](http://iwant.sourceforge.net), and development happens here only. The original svn repository exists only for historical purposes.
 
 ## News
 
