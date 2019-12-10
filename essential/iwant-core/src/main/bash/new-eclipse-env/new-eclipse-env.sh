@@ -305,6 +305,8 @@ cat <<EOF
 eclipse.preferences.version=1
 lineNumberRuler=true
 overviewRuler_migration=migrated_3.1
+AbstractTextEditor.Color.Background=252,252,231
+AbstractTextEditor.Color.Background.SystemDefault=false
 EOF
 }
 
