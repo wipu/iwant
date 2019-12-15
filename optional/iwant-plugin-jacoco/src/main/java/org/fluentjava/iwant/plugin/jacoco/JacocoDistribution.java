@@ -22,13 +22,13 @@ public class JacocoDistribution extends TargetBase {
 	}
 
 	public static JacocoDistribution newestTestedVersion() {
-		return ofVersion("0.8.2");
+		return ofVersion("0.8.4");
 	}
 
 	private static Downloaded zip(String version) {
 		String zipName = "jacoco-" + version + ".zip";
 		return Downloaded.withName(zipName)
-				.url("http://repo1.maven.org/maven2/org/jacoco/jacoco/"
+				.url("https://github.com/jacoco/jacoco/releases/download/v"
 						+ version + "/" + zipName)
 				.noCheck();
 	}

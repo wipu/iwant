@@ -14,29 +14,27 @@ public class JacocoDistributionTest extends IwantTestCase {
 	}
 
 	public void testZipIsADownloadedTargetWithCorrectUrlAndName() {
-		JacocoDistribution distro072 = JacocoDistribution
-				.ofVersion("0.7.2.201409121644");
-		Downloaded zip072 = distro072.zip();
+		JacocoDistribution distroNewest = distroToTest();
+		Downloaded zipNewest = distroNewest.zip();
 
-		assertEquals("jacoco-0.7.2.201409121644.zip", zip072.name());
+		assertEquals("jacoco-0.8.4.zip", zipNewest.name());
 		assertEquals(
-				"http://repo1.maven.org/maven2/org/jacoco/jacoco/"
-						+ "0.7.2.201409121644/jacoco-0.7.2.201409121644.zip",
-				zip072.url().toExternalForm());
+				"https://github.com/jacoco/jacoco/releases/download/"
+						+ "v0.8.4/jacoco-0.8.4.zip",
+				zipNewest.url().toExternalForm());
 
-		JacocoDistribution distroOther = JacocoDistribution
-				.ofVersion("other.version");
-		Downloaded zipOther = distroOther.zip();
+		JacocoDistribution distroOlder = JacocoDistribution.ofVersion("0.8.3");
+		Downloaded zipOlder = distroOlder.zip();
 
-		assertEquals("jacoco-other.version.zip", zipOther.name());
+		assertEquals("jacoco-0.8.3.zip", zipOlder.name());
 		assertEquals(
-				"http://repo1.maven.org/maven2/org/jacoco/jacoco/"
-						+ "other.version/jacoco-other.version.zip",
-				zipOther.url().toExternalForm());
+				"https://github.com/jacoco/jacoco/releases/download/"
+						+ "v0.8.3/jacoco-0.8.3.zip",
+				zipOlder.url().toExternalForm());
 	}
 
 	private static JacocoDistribution distroToTest() {
-		return JacocoDistribution.ofVersion("0.7.2.201409121644");
+		return JacocoDistribution.newestTestedVersion();
 	}
 
 	private static File cachedJacocoZip() {
@@ -47,11 +45,11 @@ public class JacocoDistributionTest extends IwantTestCase {
 		File cachedZip = cachedJacocoZip();
 
 		assertTrue(cachedZip.exists());
-		assertEquals(3030210, cachedZip.length());
+		assertEquals(3860930, cachedZip.length());
 	}
 
 	public void testZipIsAnIngredientAndMentionedInDescriptor() {
-		JacocoDistribution distro = JacocoDistribution.ofVersion("2.0.1");
+		JacocoDistribution distro = JacocoDistribution.ofVersion("something");
 
 		assertTrue(distro.ingredients().contains(distro.zip()));
 		assertTrue(distro.contentDescriptor().contains(distro.zip().name()));
