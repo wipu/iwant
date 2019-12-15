@@ -2068,6 +2068,8 @@
   + impl: actually, if MINGW_PREFIX set, use SHELL directly!
   + real test
 
++ Compile and use older imagemagick instead of an installed one, since the current one is broken (refuses to trust even our own EPS)
+
 #################################################################
 = In progress
 #################################################################

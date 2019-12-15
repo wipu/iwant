@@ -14,6 +14,7 @@ import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;
 import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
 import org.fluentjava.iwant.api.wsdef.Workspace;
+import org.fluentjava.iwant.core.download.Downloaded;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.eclipsesettings.EclipseSettings;
 import org.fluentjava.iwant.plugin.findbugs.FindbugsDistribution;
@@ -107,11 +108,43 @@ public class WorkspaceForIwant implements Workspace {
 		return sh.end();
 	}
 
+	private static String imagemagickCommit() {
+		return "977fe08bf69549506243226a2c8f2488a690b28b";
+	}
+
+	private static Target imagemagickZip() {
+		String commit = imagemagickCommit();
+		String url = "https://github.com/ImageMagick/ImageMagick/archive/"
+				+ commit + ".zip";
+		return Downloaded.withName("imagemagick-" + commit + ".zip").url(url)
+				.noCheck();
+	}
+
+	/**
+	 * This is needed because newer versions refuse to convert EPS for security
+	 * reasons. Here we trust the EPS since we create it ourselves.
+	 */
+	private static Target imagemagick() {
+		Target zip = imagemagickZip();
+		String name = zip + ".installed";
+		ConcatenatedBuilder sh = Concatenated.named(name + ".sh");
+
+		sh.string("#!/bin/bash -eux\n");
+		sh.string("DEST=$1\n");
+		sh.string("unzip -q '").unixPathTo(zip).string("'\n");
+		sh.string("cd ImageMagick-" + imagemagickCommit() + "\n");
+		sh.string("./configure --prefix=\"$DEST\"\n");
+		sh.string("make -j$(nproc)\n");
+		sh.string("make install\n");
+
+		return ScriptGenerated.named(name).byScript(sh.end());
+	}
+
 	private static Target logoGifSh() {
 		ConcatenatedBuilder sh = Concatenated.named("iwant-logo.gif.sh");
 		sh.string("#!/bin/bash -eux\n");
 		sh.string("DEST=$1\n");
-		sh.string("convert '");
+		sh.unixPathTo(imagemagick()).string("/bin/convert '");
 		sh.unixPathTo(logoEps());
 		sh.string("' -resize '50%' \"$DEST\"\n");
 		return sh.end();
@@ -124,7 +157,8 @@ public class WorkspaceForIwant implements Workspace {
 		sh.string("cat '").unixPathTo(logoAsy())
 				.string("' | sed 's/^drawFull();/drawStar();/' > temp.asy\n");
 		sh.string("asy -o temp.eps temp.asy\n");
-		sh.string("convert temp.eps -resize 32x32 temp.png\n");
+		sh.unixPathTo(imagemagick())
+				.string("/bin/convert temp.eps -resize 32x32 temp.png\n");
 		sh.string("icotool -c -o \"$DEST\" temp.png\n");
 		return sh.end();
 	}
