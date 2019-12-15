@@ -97,10 +97,10 @@ log "OPT_SUBCLIPSE=$OPT_SUBCLIPSE"
 log "OPT_EGIT=$OPT_EGIT"
 
 
-ECL_CODENAME=2019-03
+ECL_CODENAME=2019-06
 ECL_REL=R
 ECL_DISTBASE=eclipse-java-$ECL_CODENAME-$ECL_REL
-ECL_URLBASE='http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/'$ECL_CODENAME/$ECL_REL
+ECL_URLBASE='https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/'$ECL_CODENAME/$ECL_REL
 
 # TODO find the latest existing version:
 eclipse-url-linux32() {
@@ -112,7 +112,7 @@ eclipse-url-linux32() {
 eclipse-url-linux64() {
   DISTNAME=$ECL_DISTBASE-linux-gtk-x86_64.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='8f80fb9a63f65242a937bbdec3bb5a65'
+  DISTMD5='cdda169e002664dd1206c0d9e5380a82'
 }
 
 # TODO find the latest existing version:
