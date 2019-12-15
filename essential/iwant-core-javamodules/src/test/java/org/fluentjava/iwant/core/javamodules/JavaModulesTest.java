@@ -148,6 +148,55 @@ public class JavaModulesTest {
 	}
 
 	@Test
+	public void binModuleTestHasCorrectUrls() {
+		class Mods extends JavaModules {
+			JavaBinModule bin = binModuleTest("org.apache.kafka", "kafka_2.11",
+					"2.0.1");
+		}
+
+		Mods m = new Mods();
+
+		@SuppressWarnings("unchecked")
+		GnvArtifact<Downloaded> binArtifact = (GnvArtifact<Downloaded>) m.bin
+				.mainArtifact();
+		assertEquals(
+				"http://repo1.maven.org/maven2/"
+						+ "org/apache/kafka/kafka_2.11/2.0.1/"
+						+ "kafka_2.11-2.0.1-test.jar",
+				binArtifact.artifact().url().toString());
+
+		@SuppressWarnings("unchecked")
+		GnvArtifact<Downloaded> binArtifactSrc = (GnvArtifact<Downloaded>) m.bin
+				.source();
+		assertEquals(
+				"http://repo1.maven.org/maven2/"
+						+ "org/apache/kafka/kafka_2.11/2.0.1/"
+						+ "kafka_2.11-2.0.1-sources.jar",
+				binArtifactSrc.artifact().url().toString());
+	}
+
+	@Test
+	public void srclessBinModuleTestHasCorrectUrls() {
+		class Mods extends JavaModules {
+			JavaBinModule bin = srclessBinModuleTest("org.apache.kafka",
+					"kafka_2.11", "2.0.1");
+		}
+
+		Mods m = new Mods();
+
+		@SuppressWarnings("unchecked")
+		GnvArtifact<Downloaded> binArtifact = (GnvArtifact<Downloaded>) m.bin
+				.mainArtifact();
+		assertEquals(
+				"http://repo1.maven.org/maven2/"
+						+ "org/apache/kafka/kafka_2.11/2.0.1/"
+						+ "kafka_2.11-2.0.1-test.jar",
+				binArtifact.artifact().url().toString());
+
+		assertNull(m.bin.source());
+	}
+
+	@Test
 	public void mainArtifactsOfModules() {
 		class Mods extends JavaModules {
 			JavaBinModule bin = binModule("commons-io", "commons-io", "2.4");

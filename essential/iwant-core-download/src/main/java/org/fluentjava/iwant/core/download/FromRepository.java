@@ -7,7 +7,11 @@ import org.fluentjava.iwant.entry2.Iwant2;
 public class FromRepository {
 
 	public static ArtifactGroup repo1MavenOrg() {
-		return new ArtifactGroup(Iwant2.REPO_MAVEN_ORG);
+		return at(Iwant2.REPO_MAVEN_ORG);
+	}
+
+	public static ArtifactGroup at(String urlPrefix) {
+		return new ArtifactGroup(urlPrefix);
 	}
 
 	public static class ArtifactGroup {
@@ -50,16 +54,20 @@ public class FromRepository {
 				return artifact("");
 			}
 
+			public GnvArtifact<Downloaded> testJar() {
+				return artifact("-test");
+			}
+
 			public GnvArtifact<Downloaded> sourcesJar() {
 				return artifact("-sources");
 			}
 
-			private GnvArtifact<Downloaded> artifact(String typeExt) {
-				URL url = url(version, typeExt);
+			public GnvArtifact<Downloaded> artifact(String classifier) {
+				URL url = url(version, classifier);
 				// TODO specify checksum urls when supported
 				Downloaded artifact = Downloaded
-						.withName(jarName(version, typeExt)).url(url.toString())
-						.noCheck();
+						.withName(jarName(version, classifier))
+						.url(url.toString()).noCheck();
 
 				return new GnvArtifact<>(artifact, urlPrefix, group, name,
 						version);
@@ -69,9 +77,9 @@ public class FromRepository {
 				return Iwant2.jarName(name, version, typeExt);
 			}
 
-			private URL url(String version, String typeExt) {
+			private URL url(String version, String classifier) {
 				return Iwant2.urlForGnv(urlPrefix, group, name, version,
-						typeExt);
+						classifier);
 			}
 
 		}

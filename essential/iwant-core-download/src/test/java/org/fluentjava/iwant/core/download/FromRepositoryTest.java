@@ -58,4 +58,40 @@ public class FromRepositoryTest extends TestCase {
 		assertNull(t.artifact().md5());
 	}
 
+	public void testFactsOfTestArtifact() {
+		GnvArtifact<Downloaded> t = FromRepository.repo1MavenOrg()
+				.group("org.apache.kafka").name("kafka_2.11").version("2.0.1")
+				.testJar();
+
+		assertEquals("kafka_2.11-2.0.1-test.jar", t.name());
+		assertEquals("http://repo1.maven.org/maven2/", t.urlPrefix());
+		assertEquals("org.apache.kafka", t.group());
+		assertEquals("kafka_2.11", t.shortName());
+		assertEquals("2.0.1", t.version());
+
+		assertEquals("http://repo1.maven.org/maven2/"
+				+ "org/apache/kafka/kafka_2.11/2.0.1/kafka_2.11-2.0.1-test.jar",
+				t.artifact().url().toExternalForm());
+		// TODO refer to correct checksum url
+		assertNull(t.artifact().md5());
+	}
+
+	public void testFactsWithCustomUrlPrefix() {
+		GnvArtifact<Downloaded> t = FromRepository
+				.at("https://maven.google.com/").group("androidx.annotation")
+				.name("annotation").version("1.1.0").jar();
+
+		assertEquals("annotation-1.1.0.jar", t.name());
+		assertEquals("https://maven.google.com/", t.urlPrefix());
+		assertEquals("androidx.annotation", t.group());
+		assertEquals("annotation", t.shortName());
+		assertEquals("1.1.0", t.version());
+
+		assertEquals("https://maven.google.com/"
+				+ "androidx/annotation/annotation/1.1.0/annotation-1.1.0.jar",
+				t.artifact().url().toExternalForm());
+		// TODO refer to correct checksum url
+		assertNull(t.artifact().md5());
+	}
+
 }

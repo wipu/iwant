@@ -129,13 +129,14 @@ public class Iwant2 {
 	}
 
 	public static URL urlForGnv(String repoPrefix, String group, String name,
-			String version, String typeExt) {
+			String version, String classifier) {
 		return Iwant.url(repoPrefix + group.replace(".", "/") + "/" + name + "/"
-				+ version + "/" + jarName(name, version, typeExt));
+				+ version + "/" + jarName(name, version, classifier));
 	}
 
-	public static String jarName(String name, String version, String typeExt) {
-		return name + "-" + version + typeExt + ".jar";
+	public static String jarName(String name, String version,
+			String classifier) {
+		return name + "-" + version + classifier + ".jar";
 	}
 
 	public static SortedSet<File> srcDirsOfIwantWs(File iwantEssential) {
