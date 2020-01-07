@@ -7,6 +7,7 @@ import org.fluentjava.iwant.api.javamodules.JavaBinModule;
 import org.fluentjava.iwant.api.javamodules.JavaCompliance;
 import org.fluentjava.iwant.api.javamodules.JavaModule;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
+import org.fluentjava.iwant.api.javamodules.KotlinVersion;
 import org.fluentjava.iwant.api.javamodules.ScalaVersion;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
@@ -353,6 +354,55 @@ public class EclipseSettingsTest extends IwantTestCase {
 				"<name>org.scala-ide.sdt.core.scalabuilder</name>");
 		assertDotProjectContains("mixed",
 				"<nature>org.scala-ide.sdt.core.scalanature</nature>");
+	}
+
+	public void testDotProjectHasKotlinSupportIfEnabledByTheModule() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod")
+				.kotlinVersion(KotlinVersion._1_3_60())
+				.mainJava("src/main/java").end();
+
+		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
+				.end();
+
+		es.mutate(seCtx);
+
+		assertDotProjectContains("mod",
+				"<name>org.jetbrains.kotlin.ui.kotlinBuilder</name>");
+		assertDotProjectContains("mod",
+				"<nature>org.jetbrains.kotlin.core.kotlinNature</nature>");
+	}
+
+	public void testDotClasspathHasKotlinContainerIfEnabledByTheModule() {
+		JavaSrcModule mod = JavaSrcModule.with().name("mod")
+				.kotlinVersion(KotlinVersion._1_3_60())
+				.mainJava("src/main/java").end();
+
+		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
+				.end();
+
+		es.mutate(seCtx);
+
+		assertDotClasspathContains("mod",
+				"<classpathentry kind=\"con\" path=\"org.jetbrains.kotlin.core.KOTLIN_CONTAINER\"/>");
+	}
+
+	public void testKotlinPreferencesExistIfAndOnlyIfModuleHasKotlinSupport() {
+		JavaModule withKotlin = JavaSrcModule.with().name("with-kotlin")
+				.kotlinVersion(KotlinVersion._1_3_60()).mainJava("src").end();
+		JavaModule withoutKotlin = JavaSrcModule.with().name("without-kotlin")
+				.mainJava("src").end();
+
+		EclipseSettings es = EclipseSettings.with()
+				.modules(withKotlin, withoutKotlin).name("es").end();
+		es.mutate(seCtx);
+
+		String kotlinPrefs = "with-kotlin/.settings/org.jetbrains.kotlin.core.prefs";
+		assertFileContains(kotlinPrefs,
+				"codeStyle/codeStyleId=KOTLIN_OFFICIAL");
+
+		assertFalse(new File(wsRoot,
+				"without-kotlin/.settings/org.jetbrains.kotlin.core.prefs")
+						.exists());
 	}
 
 }

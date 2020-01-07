@@ -842,4 +842,42 @@ public class JavaSrcModuleTest extends TestCase {
 		assertSame(scala, scalaClasses.scala());
 	}
 
+	public void testMainClassesHasCorrectKindOfClassesWhenKotlinInUse() {
+		KotlinVersion kotlin = KotlinVersion._1_3_60();
+
+		JavaModule dep = JavaBinModule.providing(Source.underWsroot("dep"))
+				.end();
+		JavaSrcModule mod = JavaSrcModule.with().name("mod")
+				.kotlinVersion(kotlin).mainJava("src/main/java")
+				.mainResources("src/main/resources").mainDeps(dep).end();
+
+		KotlinAndJavaClasses mainClasses = (KotlinAndJavaClasses) mod
+				.mainArtifact();
+
+		assertEquals("[mod/src/main/java]", mainClasses.srcDirs().toString());
+		assertEquals("[mod/src/main/resources]",
+				mainClasses.resourceDirs().toString());
+		assertEquals("[dep]", mainClasses.classLocations().toString());
+	}
+
+	public void testTestClassesHasCorrectKindOfClassesWhenKotlinInUse() {
+		KotlinVersion kotlin = KotlinVersion._1_3_60();
+
+		JavaModule dep = JavaBinModule.providing(Source.underWsroot("dep"))
+				.end();
+		JavaSrcModule mod = JavaSrcModule.with().name("mod")
+				.kotlinVersion(kotlin).mainJava("src/main/java")
+				.testJava("src/test/java").testResources("src/test/resources")
+				.mainDeps(dep).end();
+
+		KotlinAndJavaClasses testClasses = (KotlinAndJavaClasses) mod
+				.testArtifact();
+
+		assertEquals("[mod/src/test/java]", testClasses.srcDirs().toString());
+		assertEquals("[mod/src/test/resources]",
+				testClasses.resourceDirs().toString());
+		assertEquals("[mod-main-classes, dep]",
+				testClasses.classLocations().toString());
+	}
+
 }

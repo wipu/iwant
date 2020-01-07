@@ -7,10 +7,13 @@ import java.util.List;
 public class DotClasspath {
 
 	private final List<String> srcs;
+	private final List<String> containers;
 	private final List<String> deps;
 
-	public DotClasspath(List<String> srcs, List<String> deps) {
+	public DotClasspath(List<String> srcs, List<String> containers,
+			List<String> deps) {
 		this.srcs = srcs;
+		this.containers = containers;
 		this.deps = deps;
 	}
 
@@ -23,7 +26,8 @@ public class DotClasspath {
 	}
 
 	public static DotClasspathSpex with() {
-		return new DotClasspathSpex();
+		return new DotClasspathSpex()
+				.container("org.eclipse.jdt.launching.JRE_CONTAINER");
 	}
 
 	public String asFileContent() {
@@ -33,8 +37,10 @@ public class DotClasspath {
 		for (String src : srcs) {
 			b.append(src);
 		}
-		b.append(
-				"        <classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
+		for (String container : containers) {
+			b.append("        <classpathentry kind=\"con\" path=\"" + container
+					+ "\"/>\n");
+		}
 		for (String dep : deps) {
 			b.append(dep);
 		}
@@ -46,11 +52,21 @@ public class DotClasspath {
 
 	public static class DotClasspathSpex {
 
+		private final List<String> containers = new ArrayList<>();
 		private final List<String> srcs = new ArrayList<>();
 		private final List<String> deps = new ArrayList<>();
 
 		public DotClasspath end() {
-			return new DotClasspath(srcs, deps);
+			return new DotClasspath(srcs, containers, deps);
+		}
+
+		public DotClasspathSpex container(String container) {
+			containers.add(container);
+			return this;
+		}
+
+		public DotClasspathSpex kotlinContainer() {
+			return container("org.jetbrains.kotlin.core.KOTLIN_CONTAINER");
 		}
 
 		public DotClasspathSpex src(String src) {

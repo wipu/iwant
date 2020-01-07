@@ -18,6 +18,10 @@ import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.StringFilter;
 import org.fluentjava.iwant.api.model.SystemEnv;
 import org.fluentjava.iwant.api.model.Target;
+import org.fluentjava.iwant.core.download.TestedIwantDependencies;
+
+// TODO this class needs refactoring. A new concept of compiler is needed
+// so no more conditional logic like "do we use scala, do we use kotlin"
 
 public class JavaSrcModule extends JavaModule {
 
@@ -42,6 +46,7 @@ public class JavaSrcModule extends JavaModule {
 	private final Charset encoding;
 	private final List<String> rawCompilerArgs;
 	private final ScalaVersion scalaVersion;
+	private final KotlinVersion kotlinVersion;
 	private Path mainArtifact;
 	private Path testArtifact;
 	private TestRunner testRunner;
@@ -61,7 +66,7 @@ public class JavaSrcModule extends JavaModule {
 			Charset encoding,
 			Set<Class<? extends JavaModuleCharacteristic>> characteristics,
 			List<String> rawCompilerArgs, TestRunner testRunner,
-			ScalaVersion scalaVersion) {
+			ScalaVersion scalaVersion, KotlinVersion kotlinVersion) {
 		super(characteristics);
 		this.name = name;
 		this.generatorSourcesToFollow = generatorSourcesToFollow;
@@ -79,6 +84,7 @@ public class JavaSrcModule extends JavaModule {
 		this.rawCompilerArgs = rawCompilerArgs;
 		this.testRunner = testRunner;
 		this.scalaVersion = scalaVersion;
+		this.kotlinVersion = kotlinVersion;
 		this.mainDepsForCompilation = Collections
 				.unmodifiableSet(mainDepsForCompilation);
 		this.mainDepsForRunOnly = Collections
@@ -153,6 +159,7 @@ public class JavaSrcModule extends JavaModule {
 		private final List<String> rawCompilerArgs = new ArrayList<>();
 		private TestRunner testRunner;
 		private ScalaVersion scalaVersion;
+		private KotlinVersion kotlinVersion;
 
 		public JavaSrcModule end() {
 			if (locationUnderWsRoot != null && relativeParentDir != null) {
@@ -174,7 +181,7 @@ public class JavaSrcModule extends JavaModule {
 					generatedSrc, generatorSourcesToFollow, codeStylePolicy,
 					codeFormatterPolicy, javaCompliance, testClassNameFilter,
 					encoding, characteristics, rawCompilerArgs, testRunner,
-					scalaVersion);
+					scalaVersion, kotlinVersion);
 		}
 
 		private static String normalizedRelativeParentDir(String value) {
@@ -393,6 +400,11 @@ public class JavaSrcModule extends JavaModule {
 			return this;
 		}
 
+		public IwantSrcModuleSpex kotlinVersion(KotlinVersion kotlinVersion) {
+			this.kotlinVersion = kotlinVersion;
+			return this;
+		}
+
 	}
 
 	@Override
@@ -527,6 +539,13 @@ public class JavaSrcModule extends JavaModule {
 				classpath.add(depArtifact);
 			}
 		}
+		String artifactName = name() + "-main-classes";
+		if (kotlinVersion != null) {
+			return new KotlinAndJavaClasses(artifactName, kotlinVersion,
+					TestedIwantDependencies.antJar(),
+					TestedIwantDependencies.antLauncherJar(),
+					mainJavasAsPaths(), mainResourcesAsPaths(), classpath);
+		}
 		Path scalaClasses = null;
 		if (scalaVersion != null) {
 			scalaClasses = ScalaClasses.with()
@@ -535,9 +554,9 @@ public class JavaSrcModule extends JavaModule {
 					.classLocations(classpath).end();
 			classpath.add(0, scalaClasses);
 		}
-		JavaClassesSpex javaClasses = JavaClasses.with()
-				.name(name() + "-main-classes").srcDirs(mainJavasAsPaths())
-				.encoding(encoding).sourceVersion(javaCompliance)
+		JavaClassesSpex javaClasses = JavaClasses.with().name(artifactName)
+				.srcDirs(mainJavasAsPaths()).encoding(encoding)
+				.sourceVersion(javaCompliance)
 				.resourceDirs(mainResourcesAsPaths()).classLocations(classpath)
 				.debug(true).rawArgs(rawCompilerArgs);
 		if (scalaClasses != null) {
@@ -574,6 +593,13 @@ public class JavaSrcModule extends JavaModule {
 				classpath.add(depArtifact);
 			}
 		}
+		String artifactName = name() + "-test-classes";
+		if (kotlinVersion != null) {
+			return new KotlinAndJavaClasses(artifactName, kotlinVersion,
+					TestedIwantDependencies.antJar(),
+					TestedIwantDependencies.antLauncherJar(),
+					testJavasAsPaths(), testResourcesAsPaths(), classpath);
+		}
 		Path scalaClasses = null;
 		if (scalaVersion != null) {
 			scalaClasses = ScalaClasses.with()
@@ -582,9 +608,9 @@ public class JavaSrcModule extends JavaModule {
 					.classLocations(classpath).end();
 			classpath.add(0, scalaClasses);
 		}
-		JavaClassesSpex javaClasses = JavaClasses.with()
-				.name(name() + "-test-classes").srcDirs(testJavasAsPaths())
-				.encoding(encoding).sourceVersion(javaCompliance)
+		JavaClassesSpex javaClasses = JavaClasses.with().name(artifactName)
+				.srcDirs(testJavasAsPaths()).encoding(encoding)
+				.sourceVersion(javaCompliance)
 				.resourceDirs(testResourcesAsPaths()).classLocations(classpath)
 				.debug(true).rawArgs(rawCompilerArgs);
 		if (scalaClasses != null) {
@@ -624,6 +650,10 @@ public class JavaSrcModule extends JavaModule {
 
 	public ScalaVersion scalaVersion() {
 		return scalaVersion;
+	}
+
+	public KotlinVersion kotlinVersion() {
+		return kotlinVersion;
 	}
 
 }

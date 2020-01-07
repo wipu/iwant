@@ -129,4 +129,46 @@ public class DotProjectTest extends TestCase {
 		assertEquals(expected.toString(), dp.asFileContent());
 	}
 
+	public void testKotlinSupport() {
+		DotProject dp = DotProject.named("kotlin-project")
+				.hasKotlinSupport(true).end();
+		expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		expected.append("<projectDescription>\n");
+		expected.append("        <name>kotlin-project</name>\n");
+		expected.append("        <comment></comment>\n");
+		expected.append("        <projects>\n");
+		expected.append("        </projects>\n");
+		expected.append("        <buildSpec>\n");
+		expected.append("                <buildCommand>\n");
+		expected.append(
+				"                        <name>org.jetbrains.kotlin.ui.kotlinBuilder</name>\n");
+		expected.append("                        <arguments>\n");
+		expected.append("                        </arguments>\n");
+		expected.append("                </buildCommand>\n");
+		expected.append("                <buildCommand>\n");
+		expected.append(
+				"                        <name>org.eclipse.jdt.core.javabuilder</name>\n");
+		expected.append("                        <arguments>\n");
+		expected.append("                        </arguments>\n");
+		expected.append("                </buildCommand>\n");
+		expected.append("        </buildSpec>\n");
+		expected.append("        <natures>\n");
+		expected.append(
+				"                <nature>org.jetbrains.kotlin.core.kotlinNature</nature>\n");
+		expected.append(
+				"                <nature>org.eclipse.jdt.core.javanature</nature>\n");
+		expected.append("        </natures>\n");
+		expected.append("        <linkedResources>\n");
+		expected.append("                <link>\n");
+		expected.append("                        <name>kotlin_bin</name>\n");
+		expected.append("                        <type>2</type>\n");
+		expected.append(
+				"                        <locationURI>/kotlin-project</locationURI>\n");
+		expected.append("                </link>\n");
+		expected.append("        </linkedResources>\n");
+		expected.append("</projectDescription>\n");
+
+		assertEquals(expected.toString(), dp.asFileContent());
+	}
+
 }

@@ -1,5 +1,6 @@
 package org.fluentjava.iwant.wsdef;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
@@ -12,6 +13,7 @@ import org.fluentjava.iwant.api.javamodules.JavaModule;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 import org.fluentjava.iwant.api.javamodules.ScalaVersion;
+import org.fluentjava.iwant.api.model.ExternalSource;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.core.download.FromRepository;
@@ -59,20 +61,15 @@ public class IwantModules extends JavaModules {
 	 * 
 	 * @return
 	 */
-	private JavaModule ant = JavaBinModule
-			.providing(FromRepository.repo1MavenOrg().group("org/apache/ant")
-					.name("ant").version("1.9.4").jar())
-			.end();
+	private JavaModule ant = binModule("org.apache.ant", "ant", "1.10.7");
 
 	/**
 	 * TODO reuse with TestedIwantDependencies
 	 * 
 	 * @return
 	 */
-	private JavaModule antLauncher = JavaBinModule
-			.providing(FromRepository.repo1MavenOrg().group("org/apache/ant")
-					.name("ant-launcher").version("1.9.4").jar())
-			.end();
+	private JavaModule antLauncher = binModule("org.apache.ant", "ant-launcher",
+			"1.10.7");
 
 	private JavaModule asm = JavaBinModule.providing(FromRepository
 			.repo1MavenOrg().group("asm").name("asm").version("3.2").jar())
@@ -196,22 +193,30 @@ public class IwantModules extends JavaModules {
 					iwantCoreservices, iwantEntry, iwantEntry2)
 			.testDeps(iwantApimocks, iwantTestarea, junit).end();
 
-	private JavaSrcModule iwantApiJavamodules = essentialModule(
-			"api-javamodules")
-					.mainDeps(iwantApiAntrunner, iwantApiCore, iwantApiModel,
-							iwantApiTarget, iwantCoreDownload,
-							iwantCoreservices, iwantEntry)
-					.testDeps(iwantApimocks, iwantTestarea, guava, guavaTestlib,
-							junit)
-					.end();
-
-	private JavaSrcModule iwantApiWsdef = essentialModule("api-wsdef")
-			.noTestJava().mainDeps(iwantApiModel, iwantApiJavamodules).end();
-
 	private JavaSrcModule iwantApiZip = essentialModule("api-zip")
 			.testResources("src/test/resources").mainDeps(ant, antLauncher,
 					iwantApiCore, iwantApiModel, iwantApiTarget)
 			.testDeps(iwantApimocks, junit).end();
+
+	/**
+	 * TODO reuse
+	 */
+	private JavaBinModule toolsJar = JavaBinModule
+			.providing(new ExternalSource(
+					new File(System.getenv("JAVA_HOME"), "lib/tools.jar")))
+			.end();
+
+	private JavaSrcModule iwantApiJavamodules = essentialModule(
+			"api-javamodules")
+					.mainDeps(iwantApiAntrunner, iwantApiCore, iwantApiModel,
+							iwantApiTarget, iwantApiZip, iwantCoreDownload,
+							iwantCoreservices, iwantEntry)
+					.testDeps(iwantApimocks, iwantTestarea, guava, guavaTestlib,
+							junit)
+					.testRuntimeDeps(toolsJar).end();
+
+	private JavaSrcModule iwantApiWsdef = essentialModule("api-wsdef")
+			.noTestJava().mainDeps(iwantApiModel, iwantApiJavamodules).end();
 
 	private JavaSrcModule iwantCoreJavamodules = essentialModule(
 			"core-javamodules")

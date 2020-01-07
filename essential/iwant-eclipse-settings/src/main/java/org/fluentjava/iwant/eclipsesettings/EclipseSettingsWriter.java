@@ -81,6 +81,13 @@ public class EclipseSettingsWriter {
 		writeFile(modDir, ".settings/org.eclipse.jdt.ui.prefs",
 				uiPrefs.asFileContent());
 
+		OrgJetbrainsKotlinCorePrefs kotlinPrefs = project
+				.orgJetbrainsKotlinCorePrefs();
+		if (kotlinPrefs != null) {
+			writeFile(modDir, ".settings/org.jetbrains.kotlin.core.prefs",
+					kotlinPrefs.asFileContent());
+		}
+
 		ProjectExternalBuilderLaunch extBuild = project.externalBuilderLaunch();
 		if (extBuild != null) {
 			writeFile(modDir,

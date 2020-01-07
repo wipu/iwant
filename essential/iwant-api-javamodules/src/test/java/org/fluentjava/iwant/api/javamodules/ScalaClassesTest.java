@@ -1,7 +1,6 @@
 package org.fluentjava.iwant.api.javamodules;
 
 import java.io.File;
-import java.net.URL;
 import java.util.Arrays;
 
 import org.fluentjava.iwant.api.model.Path;
@@ -23,10 +22,6 @@ public class ScalaClassesTest extends IwantTestCase {
 				TestedIwantDependencies.antJar().artifact().url());
 		cacheProvidesRealDownloaded(
 				TestedIwantDependencies.antLauncherJar().artifact().url());
-	}
-
-	private void cacheProvidesRealDownloaded(URL url) {
-		caches.cachesUrlAt(url, Iwant.usingRealNetwork().downloaded(url));
 	}
 
 	public void testScalaAndJavaCompileAndRunWhenThereIsACrossDependencyBetweenTheLanguages()
@@ -117,14 +112,14 @@ public class ScalaClassesTest extends IwantTestCase {
 				+ "  scala-compiler-2.11.7.jar\n" + "i:scala-library:\n"
 				+ "  scala-library-2.11.7.jar\n" + "i:scala-reflect:\n"
 				+ "  scala-reflect-2.11.7.jar\n" + "i:antJar:\n"
-				+ "  ant-1.10.1.jar\n" + "i:antLauncherJar:\n"
-				+ "  ant-launcher-1.10.1.jar\n" + "",
+				+ "  ant-1.10.7.jar\n" + "i:antLauncherJar:\n"
+				+ "  ant-launcher-1.10.7.jar\n" + "",
 				scalaClasses.contentDescriptor());
 
 		assertEquals(
 				"[src/main/java, src/main/scala, dep, scala-compiler-2.11.7.jar,"
 						+ " scala-library-2.11.7.jar, scala-reflect-2.11.7.jar,"
-						+ " ant-1.10.1.jar, ant-launcher-1.10.1.jar]",
+						+ " ant-1.10.7.jar, ant-launcher-1.10.7.jar]",
 				scalaClasses.ingredients().toString());
 	}
 

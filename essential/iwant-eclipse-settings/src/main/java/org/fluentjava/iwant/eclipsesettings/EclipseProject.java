@@ -22,11 +22,16 @@ public class EclipseProject {
 	public DotProject eclipseDotProject() {
 		return DotProject.named(module.name())
 				.hasExternalBuilder(hasExternalBuilder())
-				.hasScalaSupport(hasScalaSupport()).end();
+				.hasScalaSupport(hasScalaSupport())
+				.hasKotlinSupport(hasKotlinSupport()).end();
 	}
 
 	private boolean hasScalaSupport() {
 		return module.scalaVersion() != null;
+	}
+
+	private boolean hasKotlinSupport() {
+		return module.kotlinVersion() != null;
 	}
 
 	public DotClasspath eclipseDotClasspath() {
@@ -42,6 +47,10 @@ public class EclipseProject {
 		}
 		for (String res : module.mainResources()) {
 			dcp = optionalSrc(dcp, res);
+		}
+
+		if (hasKotlinSupport()) {
+			dcp = dcp.kotlinContainer();
 		}
 
 		for (JavaModule dep : dependenciesOf(module)) {
@@ -116,6 +125,10 @@ public class EclipseProject {
 
 	public OrgEclipseJdtUiPrefs orgEclipseJdtUiPrefs() {
 		return new OrgEclipseJdtUiPrefs();
+	}
+
+	public OrgJetbrainsKotlinCorePrefs orgJetbrainsKotlinCorePrefs() {
+		return hasKotlinSupport() ? new OrgJetbrainsKotlinCorePrefs() : null;
 	}
 
 }

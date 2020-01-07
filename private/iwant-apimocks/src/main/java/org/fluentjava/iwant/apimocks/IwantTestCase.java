@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.net.URL;
 
 import org.fluentjava.iwant.api.model.IwantCoreServices;
 import org.fluentjava.iwant.api.model.Path;
@@ -137,6 +138,10 @@ public abstract class IwantTestCase extends TestCase {
 	 */
 	protected String slashed(File file) {
 		return realCoreServices.pathWithoutBackslashes(file);
+	}
+
+	protected void cacheProvidesRealDownloaded(URL url) {
+		caches.cachesUrlAt(url, Iwant.usingRealNetwork().downloaded(url));
 	}
 
 }
