@@ -31,16 +31,16 @@ public class EclipseProject {
 
 	public DotClasspath eclipseDotClasspath() {
 		DotClasspathSpex dcp = DotClasspath.with();
-		for (String mainJava : module.mainJavas()) {
-			dcp = optionalSrc(dcp, mainJava);
-		}
-		for (String res : module.mainResources()) {
-			dcp = optionalSrc(dcp, res);
-		}
 		for (String testJava : module.testJavas()) {
 			dcp = optionalSrc(dcp, testJava);
 		}
 		for (String res : module.testResources()) {
+			dcp = optionalSrc(dcp, res);
+		}
+		for (String mainJava : module.mainJavas()) {
+			dcp = optionalSrc(dcp, mainJava);
+		}
+		for (String res : module.mainResources()) {
 			dcp = optionalSrc(dcp, res);
 		}
 

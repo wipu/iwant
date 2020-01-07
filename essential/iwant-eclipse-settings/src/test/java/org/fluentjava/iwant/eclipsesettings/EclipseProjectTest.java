@@ -56,10 +56,10 @@ public class EclipseProjectTest extends IwantTestCase {
 
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
-		assertEquals("[        <classpathentry kind=\"src\" path=\"src\"/>\n"
-				+ ",         <classpathentry kind=\"src\" path=\"res\"/>\n"
-				+ ",         <classpathentry kind=\"src\" path=\"test\"/>\n"
+		assertEquals("[        <classpathentry kind=\"src\" path=\"test\"/>\n"
 				+ ",         <classpathentry kind=\"src\" path=\"testRes\"/>\n"
+				+ ",         <classpathentry kind=\"src\" path=\"src\"/>\n"
+				+ ",         <classpathentry kind=\"src\" path=\"res\"/>\n"
 				+ "]", dotClasspath.srcs().toString());
 		assertEquals("[]", dotClasspath.deps().toString());
 	}
@@ -72,10 +72,10 @@ public class EclipseProjectTest extends IwantTestCase {
 		DotClasspath dotClasspath = project.eclipseDotClasspath();
 
 		assertEquals(
-				"[        <classpathentry kind=\"src\" path=\"src/main/java\"/>\n"
-						+ ",         <classpathentry kind=\"src\" path=\"src/main/resources\"/>\n"
-						+ ",         <classpathentry kind=\"src\" path=\"src/test/java\"/>\n"
+				"[        <classpathentry kind=\"src\" path=\"src/test/java\"/>\n"
 						+ ",         <classpathentry kind=\"src\" path=\"src/test/resources\"/>\n"
+						+ ",         <classpathentry kind=\"src\" path=\"src/main/java\"/>\n"
+						+ ",         <classpathentry kind=\"src\" path=\"src/main/resources\"/>\n"
 						+ "]",
 				dotClasspath.srcs().toString());
 		assertEquals("[]", dotClasspath.deps().toString());
