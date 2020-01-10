@@ -134,8 +134,14 @@ public class IwantMockEnvironment {
 	public void restoreSystemOutAndErr() {
 		System.setErr(originalErr);
 		System.setOut(originalOut);
-		System.err.print("== out:\n" + out());
-		System.err.print("== err:\n" + err());
+		String outStr = out();
+		if (!outStr.isEmpty()) {
+			System.err.print("== out:\n" + outStr);
+		}
+		String errStr = err();
+		if (!errStr.isEmpty()) {
+			System.err.print("== err:\n" + errStr);
+		}
 	}
 
 }
