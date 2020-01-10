@@ -56,8 +56,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		JavaBinModule lib = JavaBinModule.named("lib.jar").inside(libsModule)
 				.end();
 
-		assertEquals("/libs/lib.jar", lib.eclipseBinaryReference(evCtx));
-		assertEquals(null, lib.eclipseSourceReference(evCtx));
+		assertEquals("/libs/lib.jar", lib.eclipseBinaryReference(ctx));
+		assertEquals(null, lib.eclipseSourceReference(ctx));
 	}
 
 	public void testEclipsePathsOfBinInsideLibProjectAndWithSources() {
@@ -65,8 +65,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		JavaBinModule lib = JavaBinModule.named("lib2.jar")
 				.source("lib2-src.zip").inside(libsModule).end();
 
-		assertEquals("/libs/lib2.jar", lib.eclipseBinaryReference(evCtx));
-		assertEquals("/libs/lib2-src.zip", lib.eclipseSourceReference(evCtx));
+		assertEquals("/libs/lib2.jar", lib.eclipseBinaryReference(ctx));
+		assertEquals("/libs/lib2-src.zip", lib.eclipseSourceReference(ctx));
 	}
 
 	public void testSourceOfBinInsideProjectWhenGivenAndWhenNot() {
@@ -158,8 +158,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		JavaBinModule libJarModule = JavaBinModule.providing(libJar).end();
 
 		assertEquals(slashed(cached) + "/lib.jar",
-				libJarModule.eclipseBinaryReference(evCtx));
-		assertEquals(null, libJarModule.eclipseSourceReference(evCtx));
+				libJarModule.eclipseBinaryReference(ctx));
+		assertEquals(null, libJarModule.eclipseSourceReference(ctx));
 	}
 
 	public void testEclipsePathsOfModuleThatProvidesAMainArtifactTargetWithSources() {
@@ -169,9 +169,9 @@ public class JavaBinModuleTest extends IwantTestCase {
 				.end();
 
 		assertEquals(slashed(cached) + "/lib.jar",
-				libJarModule.eclipseBinaryReference(evCtx));
+				libJarModule.eclipseBinaryReference(ctx));
 		assertEquals(slashed(cached) + "/lib-src.zip",
-				libJarModule.eclipseSourceReference(evCtx));
+				libJarModule.eclipseSourceReference(ctx));
 	}
 
 	public void testBinaryModulesDontHaveMainDepsForCompilation() {

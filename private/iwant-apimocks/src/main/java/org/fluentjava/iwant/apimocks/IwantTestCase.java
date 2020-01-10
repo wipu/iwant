@@ -23,10 +23,6 @@ public abstract class IwantTestCase extends TestCase {
 	protected File wsRoot;
 	protected File cached;
 	protected TargetEvaluationContextMock ctx;
-	/**
-	 * TODO only one name
-	 */
-	protected TargetEvaluationContextMock evCtx;
 	protected CachesMock caches;
 	protected File tmpDir;
 	private boolean captureOn = false;
@@ -42,7 +38,6 @@ public abstract class IwantTestCase extends TestCase {
 		wsRoot = e.wsRoot();
 		cached = e.cacheDir();
 		ctx = e.ctx();
-		evCtx = ctx;
 		caches = e.caches();
 		tmpDir = e.tmpDir();
 		network = new IwantNetworkMock(testArea);
