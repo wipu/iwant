@@ -9,6 +9,9 @@
   - fix
   - remove filelog from the mentioned tests
 
+- document parameters for target implementor
+  * JavaClasses, up-to-date, change debug flag => dirty
+
 - fine-tuning after sf.net -> github migration
   - reusable test setup, at least mocked iwant zip (I guess I have an ever ongoing story for this...)
   - update external references (url and license have changed)
