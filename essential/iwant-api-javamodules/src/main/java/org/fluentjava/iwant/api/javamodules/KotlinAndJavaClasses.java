@@ -78,7 +78,6 @@ public class KotlinAndJavaClasses extends TargetBase {
 			throw new Iwant.IwantException("JAVA_HOME not set.");
 		}
 		File toolsJar = new File(javaHome + "/lib/tools.jar");
-		Iwant.fileLog("jeppe toolsJar=" + toolsJar);
 		return toolsJar;
 	}
 
@@ -93,11 +92,6 @@ public class KotlinAndJavaClasses extends TargetBase {
 						+ "\"/>\n");
 		b.append("\n");
 		b.append("  <target name=\"kotlin-and-java-classes\">\n");
-
-		b.append("<property environment=\"env\"/>\n");
-		b.append("<echo message=\"jeppe java home: ${env.JAVA_HOME}\"/>\n");
-		b.append("<echo message=\"jeppe path: ${env.PATH}\"/>\n");
-		b.append("<echoproperties/>\n");
 
 		b.append("    <mkdir dir=\"" + ctx.cached(this) + "\"/>\n");
 		b.append("    <javac destdir=\"" + ctx.cached(this)
