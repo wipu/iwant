@@ -822,6 +822,8 @@ public class Iwant3Test extends TestCase {
 
 	public void testUsersWsClassesAreNotRecompiledIfNoIngredientHasChanged()
 			throws Exception {
+		Iwant.fileLog(
+				"Starting testUsersWsClassesAreNotRecompiledIfNoIngredientHasChanged");
 		testEmptyWishAfterCreationOfExampleWsDef();
 
 		File wsdefdefClasses = new File(asTest, ".i-cached/wsdefdef-classes");

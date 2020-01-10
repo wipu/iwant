@@ -4,6 +4,10 @@
 - @bugfix: flaky test
   * expected:<1554702261000> but was:<1554702262000>
   * at org.fluentjava.iwant.entry.tests.IwantTest.testBootstrapperIsNotCompiledIfNotNecessary(IwantTest.java:433)
+  * also Iwant3Test.testUsersWsClassesAreNotRecompiledIfNoIngredientHasChanged(Iwant3Test.java:834)
+  + filelog start of mentioned tests, to find correct details from log when this happens
+  - fix
+  - remove filelog from the mentioned tests
 
 - fine-tuning after sf.net -> github migration
   - reusable test setup, at least mocked iwant zip (I guess I have an ever ongoing story for this...)

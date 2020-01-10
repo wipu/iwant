@@ -395,6 +395,7 @@ public class IwantTest extends TestCase {
 	}
 
 	public void testBootstrapperIsNotCompiledIfNotNecessary() throws Exception {
+		Iwant.fileLog("Starting testBootstrapperIsNotCompiledIfNotNecessary");
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantZip = mockWsRootZip();
