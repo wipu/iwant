@@ -50,12 +50,12 @@ public class ConcatenatedTest extends IwantTestCase {
 		Concatenated c = Concatenated.named("all").bytes('A').bytes('B', '\n')
 				.nativePathTo(src).string(":").contentOf(src).string("\n")
 				.nativePathTo(target).string(":").contentOf(target).string("\n")
-				.end();
+				.line("line").end();
 		c.path(ctx);
 
 		assertEquals(
 				"AB\n" + slashed(wsRoot) + "/src:src-content\n"
-						+ slashed(cached) + "/target:target-content\n",
+						+ slashed(cached) + "/target:target-content\nline\n",
 				contentOf(new File(cached, "all")));
 	}
 

@@ -41,6 +41,10 @@ public class Concatenated extends TargetBase {
 			return this;
 		}
 
+		public ConcatenatedBuilder line(String line) {
+			return string(line).string("\n");
+		}
+
 		public ConcatenatedBuilder bytes(int... bytes) {
 			byte[] value = new byte[bytes.length];
 			for (int i = 0; i < bytes.length; i++) {
