@@ -52,7 +52,7 @@ public class CachesImplTest extends TestCase {
 
 	public void testExternalSourceIsItsOwnCache() {
 		File file = new File("/absolute/path");
-		assertFile(file, caches.contentOf(new ExternalSource(file)));
+		assertFile(file, caches.contentOf(ExternalSource.at(file)));
 	}
 
 	public void testHelloTargetIsCachedAtWorkspaceCache() {

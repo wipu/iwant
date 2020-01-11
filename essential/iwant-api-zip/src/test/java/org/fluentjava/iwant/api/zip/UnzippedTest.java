@@ -26,7 +26,7 @@ public class UnzippedTest extends IwantTestCase {
 				getClass().getResource("unzipped-test.zip").toURI());
 
 		Target unzipped = Unzipped.with().name("unzipped")
-				.from(new ExternalSource(zipFile)).end();
+				.from(ExternalSource.at(zipFile)).end();
 		unzipped.path(ctx);
 
 		assertTrue(new File(cached, "unzipped/file").exists());

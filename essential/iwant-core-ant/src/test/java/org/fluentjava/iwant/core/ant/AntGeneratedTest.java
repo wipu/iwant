@@ -29,7 +29,7 @@ public class AntGeneratedTest extends IwantTestCase {
 	}
 
 	private Path downloaded(Path downloaded) {
-		return new ExternalSource(AsEmbeddedIwantUser.with().workspaceAt(wsRoot)
+		return ExternalSource.at(AsEmbeddedIwantUser.with().workspaceAt(wsRoot)
 				.cacheAt(cached).iwant().target((Target) downloaded).asPath());
 	}
 

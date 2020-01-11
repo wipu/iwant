@@ -238,7 +238,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		srcDir.setLastModified(System.currentTimeMillis() - 2000);
 
 		TargetMock target = new TargetMock("target");
-		target.hasIngredients(new ExternalSource(srcDir));
+		target.hasIngredients(ExternalSource.at(srcDir));
 		target.hasContentDescriptor("current");
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
@@ -252,7 +252,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		testArea.hasFile("src/src-file", "src-content");
 
 		TargetMock target = new TargetMock("target");
-		target.hasIngredients(new ExternalSource(srcDir));
+		target.hasIngredients(ExternalSource.at(srcDir));
 		target.hasContentDescriptor("current");
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
@@ -265,7 +265,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		File srcDir = new File(testArea.root(), "non-existent");
 
 		TargetMock target = new TargetMock("target");
-		target.hasIngredients(new ExternalSource(srcDir));
+		target.hasIngredients(ExternalSource.at(srcDir));
 		target.hasContentDescriptor("current");
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");
@@ -281,7 +281,7 @@ public class TargetRefreshTaskTest extends TestCase {
 		srcDir.setLastModified(System.currentTimeMillis() - 2000);
 
 		TargetMock target = new TargetMock("target");
-		target.hasIngredients(new ExternalSource(srcDir));
+		target.hasIngredients(ExternalSource.at(srcDir));
 		target.hasContentDescriptor("current");
 		cacheContainsContentOf(target);
 		cacheContainsDescriptor(target, "current");

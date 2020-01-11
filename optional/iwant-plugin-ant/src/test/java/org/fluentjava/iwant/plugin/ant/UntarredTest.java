@@ -37,7 +37,7 @@ public class UntarredTest extends IwantTestCase {
 				.toURI());
 
 		Target untarred = Untarred.with().name("untarred")
-				.from(new ExternalSource(tarFile)).end();
+				.from(ExternalSource.at(tarFile)).end();
 		untarred.path(ctx);
 
 		assertTrue(new File(cached, "untarred/dir").exists());
@@ -50,7 +50,7 @@ public class UntarredTest extends IwantTestCase {
 				.toURI());
 
 		Target untarred = Untarred.with().name("untarred")
-				.from(new ExternalSource(tarFile)).gzCompression().end();
+				.from(ExternalSource.at(tarFile)).gzCompression().end();
 		untarred.path(ctx);
 
 		assertTrue(new File(cached, "untarred/dir").exists());

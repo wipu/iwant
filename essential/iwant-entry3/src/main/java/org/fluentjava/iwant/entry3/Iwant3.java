@@ -78,7 +78,7 @@ public class Iwant3 {
 		SortedSet<JavaModule> iwantApiModules = new TreeSet<>();
 		for (File apiClasses : apiClassLocations) {
 			iwantApiModules
-					.add(JavaBinModule.providing(new ExternalSource(apiClasses),
+					.add(JavaBinModule.providing(ExternalSource.at(apiClasses),
 							combinedIwantSources).end());
 		}
 		return iwantApiModules;
@@ -198,7 +198,7 @@ public class Iwant3 {
 		for (File srcDir : srcDirs) {
 			FileUtil.copyMissingFiles(srcDir, combinedSources);
 		}
-		return new ExternalSource(combinedSources);
+		return ExternalSource.at(combinedSources);
 	}
 
 	public static class CombinedSrcFromUnmodifiableIwantEssential

@@ -40,7 +40,7 @@ public class JarTest extends IwantTestCase {
 				.getResource("/org/fluentjava/iwant/api/zip/dirtojar").toURI());
 
 		Target jar = Jar.with().name("test.jar")
-				.classes(new ExternalSource(classes)).end();
+				.classes(ExternalSource.at(classes)).end();
 		jar.path(ctx);
 
 		File cachedJar = new File(cached, "test.jar");

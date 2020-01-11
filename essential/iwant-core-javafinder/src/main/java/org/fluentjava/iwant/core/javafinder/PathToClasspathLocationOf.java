@@ -11,7 +11,7 @@ public class PathToClasspathLocationOf {
 		try {
 			File loc = new File(class_.getProtectionDomain().getCodeSource()
 					.getLocation().toURI());
-			return new ExternalSource(loc);
+			return ExternalSource.at(loc);
 		} catch (Exception e) {
 			throw new IllegalStateException("Failed to find class location", e);
 		}

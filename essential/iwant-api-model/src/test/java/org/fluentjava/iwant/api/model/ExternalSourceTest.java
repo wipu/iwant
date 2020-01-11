@@ -1,6 +1,7 @@
 package org.fluentjava.iwant.api.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -14,7 +15,20 @@ public class ExternalSourceTest {
 	@Test
 	public void absolutePathToString() {
 		assertEquals("/an/absolute/path",
-				new ExternalSource(new File("/an/absolute/path")).toString());
+				ExternalSource.at("/an/absolute/path").toString());
+	}
+
+	@Test
+	public void locationReturnsFileGivenToFileFactory() {
+		File location = new File("/location");
+		assertSame(location, ExternalSource.at(location).location());
+	}
+
+	@Test
+	public void locationReturnsGivenPathWhenUsingStringFactory() {
+		String location = "/location";
+		assertEquals(location,
+				ExternalSource.at(location).location().getAbsolutePath());
 	}
 
 	/**
@@ -24,20 +38,19 @@ public class ExternalSourceTest {
 	public void relativePathToString() {
 		String cwd = System.getProperty("user.dir");
 		assertEquals(cwd + "/relative/path",
-				new ExternalSource(new File("relative/path")).toString());
+				ExternalSource.at("relative/path").toString());
 	}
 
 	@Test
 	public void itHasNoIngredients() {
-		assertTrue(new ExternalSource(new File("/whatever")).ingredients()
-				.isEmpty());
+		assertTrue(ExternalSource.at("/whatever").ingredients().isEmpty());
 	}
 
 	@Test
 	public void canonicalPathFailureIsWrappedAsIllegalStateException() {
 		try {
 			@SuppressWarnings("unused")
-			ExternalSource s = new ExternalSource(new File("\u0000"));
+			ExternalSource s = ExternalSource.at("\u0000");
 			fail();
 		} catch (IllegalStateException e) {
 			assertEquals("Cannot get canonical path of \u0000", e.getMessage());

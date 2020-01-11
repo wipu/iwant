@@ -49,7 +49,7 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 	private Path pluginMainJava(String pluginName) {
 		File src = new File(cachedIwantSrcRoot,
 				"optional/" + pluginName + "/src/main/java");
-		return new ExternalSource(src);
+		return ExternalSource.at(src);
 	}
 
 	private Set<JavaModule> pluginWithDependencies(String pluginName,

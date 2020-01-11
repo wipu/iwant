@@ -11,6 +11,10 @@ public class ExternalSource implements Path {
 	private final File file;
 	private String name;
 
+	/**
+	 * @deprecated It's more readable to use a factory method
+	 */
+	@Deprecated
 	public ExternalSource(File file) {
 		this.file = file;
 		try {
@@ -19,6 +23,18 @@ public class ExternalSource implements Path {
 			throw new IllegalStateException(
 					"Cannot get canonical path of " + file, e);
 		}
+	}
+
+	public static ExternalSource at(File file) {
+		return new ExternalSource(file);
+	}
+
+	public static ExternalSource at(String file) {
+		return at(new File(file));
+	}
+
+	public File location() {
+		return file;
 	}
 
 	@Override

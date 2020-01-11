@@ -191,7 +191,7 @@ public class JavaClassesTest extends IwantTestCase {
 				.getParentFile().getParentFile().getParentFile().getParentFile()
 				.getAbsoluteFile();
 		Target target = JavaClasses.with().name("valid").srcDirs(src)
-				.classLocations(new ExternalSource(superClassClasses)).end();
+				.classLocations(ExternalSource.at(superClassClasses)).end();
 
 		target.path(ctx);
 
