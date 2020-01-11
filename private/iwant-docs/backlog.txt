@@ -95,15 +95,6 @@
 
 - define default java compliance in JavaClasses, not the caller of it
 
-- jdk1.7 location from user-preferences
-  - missing prefs file fails only if needed
-  - missing pref in file fails only if needed
-  (- fail if jre/lib/rt.jar not found
-     and other finetuning by real usage, this is only
-     a temporarily needed functionality)
-  - pass in ctx via constr/factory for wsdef
-    big change to api!
-
 - improvements to ScriptGenerated
   - tell story about making it easier to run unix commands in path, now
     caller of execute needs to prepare a script for it
