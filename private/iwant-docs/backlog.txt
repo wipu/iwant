@@ -329,9 +329,6 @@
 
 - As @buildscriptuser I want to declare worker count once for my OS user so I don't need to create and maintain ws-specific files
 
-- As a @buildscriptauthor I want to declare some targets single-threaded so targets depending on it get never refreshed in parallel
-  * e.g. for tests that need the display, a certain shared sql table area or some other shared resource
-
 - @bugfix: delete cached file (or content descriptor) if refresh fails, otherwise partially created file will make next run think it's uptodate
 
 - @bugfix: as @buildscriptuser with @wintoys I want a target refreshed when a source has been DELETED
