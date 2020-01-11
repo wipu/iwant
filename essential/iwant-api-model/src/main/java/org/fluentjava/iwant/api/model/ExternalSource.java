@@ -9,7 +9,7 @@ import java.util.List;
 public class ExternalSource implements Path {
 
 	private final File file;
-	private String name;
+	private final String name;
 
 	/**
 	 * @deprecated It's more readable to use a factory method
