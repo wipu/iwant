@@ -148,7 +148,9 @@ public class CodeStylePolicy {
 		d.warn(UNCHECKED_TYPE_OPERATION);
 		d.warn(UNCLOSED_CLOSEABLE);
 		d.warn(UNDOCUMENTED_EMPTY_BLOCK);
-		d.warn(UNHANDLED_WARNING_TOKEN);
+		// there may be other static analyzers in use and they may need
+		// annotations not supported by Eclipse:
+		d.ignore(UNHANDLED_WARNING_TOKEN);
 		d.ignore(UNNECESSARY_ELSE);
 		d.warn(UNNECESSARY_TYPE_CHECK);
 		d.ignore(UNQUALIFIED_FIELD_ACCESS);

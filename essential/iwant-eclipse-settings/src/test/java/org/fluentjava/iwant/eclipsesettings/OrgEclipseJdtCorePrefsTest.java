@@ -207,7 +207,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		b.append(
 				"org.eclipse.jdt.core.compiler.problem.undocumentedEmptyBlock=warning\n");
 		b.append(
-				"org.eclipse.jdt.core.compiler.problem.unhandledWarningToken=warning\n");
+				"org.eclipse.jdt.core.compiler.problem.unhandledWarningToken=ignore\n");
 		b.append(
 				"org.eclipse.jdt.core.compiler.problem.unnecessaryElse=ignore\n");
 		b.append(
