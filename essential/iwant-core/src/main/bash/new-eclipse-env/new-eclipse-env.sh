@@ -15,7 +15,7 @@ downloaded-tool() {
   local VARNAME=$1
   local URL=$2
   local NAME=$3
-  local MD5=$4
+  local SUM=$4
   local CACHEDIR=$5
   local CACHED=$CACHEDIR/$NAME
   [ -e "$CACHED" ] || {
@@ -28,7 +28,7 @@ downloaded-tool() {
       }
   }
   log "Cached download is at $CACHED"
-  echo "$MD5  $CACHED" | md5sum -c - || die "Broken file: $CACHED"
+  echo "$SUM  $CACHED" | sha512sum -c - || die "Broken file: $CACHED"
   # return by setting a var instead of echoing to stdout
   # this way the die above exits our caller
   # (command substitution creates a subshell
@@ -62,8 +62,8 @@ CACHE=$NEEHOME/cache
 OPT_SUBCLIPSE=false
 OPT_EGIT=false
 
-if [ $# -lt 2 ]; then
-  log "Usage: $0 TARGETDIR linux32|linux64|win32|win64 [OPTS...]"
+if [ $# -lt 3 ]; then
+  log "Usage: $0 TARGETDIR linux64|win64 2019-12|2019-09|2019-06 [OPTS...]"
   log "Supported OPTS:"
   log "  --egit      : enable git plugin (disabled by default)"
   log "  --subclipse : enable svn plugin (disabled by default)"
@@ -73,8 +73,10 @@ TARGETDIR=$1
 shift
 ARCH=$1
 shift
+VERSION=$1
+shift
 
-log "Arguments: TARGETDIR=$TARGETDIR, ARCH=$ARCH"
+log "Arguments: TARGETDIR=$TARGETDIR, ARCH=$ARCH, VERSION=$VERSION"
 
 while [ $# -gt 0 ]; do
   OPT=$1
@@ -97,40 +99,48 @@ log "OPT_SUBCLIPSE=$OPT_SUBCLIPSE"
 log "OPT_EGIT=$OPT_EGIT"
 
 
-ECL_CODENAME=2019-06
 ECL_REL=R
-ECL_DISTBASE=eclipse-java-$ECL_CODENAME-$ECL_REL
-ECL_URLBASE='https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/'$ECL_CODENAME/$ECL_REL
-
-# TODO find the latest existing version:
-eclipse-url-linux32() {
-  DISTNAME=$ECL_DISTBASE-linux-gtk.tar.gz
-  DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='dfa2817fd679ab12608971d36e59f18e'
-}
+ECL_DISTBASE=eclipse-java-$VERSION-$ECL_REL
+ECL_URLBASE='https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/'$VERSION/$ECL_REL
 
 eclipse-url-linux64() {
   DISTNAME=$ECL_DISTBASE-linux-gtk-x86_64.tar.gz
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='cdda169e002664dd1206c0d9e5380a82'
 }
 
-# TODO find the latest existing version:
-eclipse-url-win32() {
-  DISTNAME=$ECL_DISTBASE-win32.zip
-  DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='e7661f45ebd097d4b6b7ad18d5f08799'
+eclipse-sum-linux64-2019-12() {
+  DISTSUM='358d1c6c6900d3cfcf9d89a32228695206902297a7f74c440981660c7e4db810fae22e721e78b4d7df84b3bf951f91b1ba87dcd1fe9c7b00235b87f8633f4883'
+}
+
+eclipse-sum-linux64-2019-09() {
+  DISTSUM='eb408902f079d6666863bc318a0586589be9a86e4cd57125ef1f97eb4f4a9d6b70aa52ea23129f5f95eb513c3ce1889683516d91e85a484fcae7328fa8e1eeff'
+}
+
+eclipse-sum-linux64-2019-06() {
+  DISTSUM='2d3cfbd888b32d5022780932ea6c0999878bb5828cbbb952ef6d911e0c544977365af8631fb71c5e1dee71c3f364d02f04f15f903eb2daccebdc087c4a058d81'
 }
 
 eclipse-url-win64() {
   DISTNAME=$ECL_DISTBASE-win32-x86_64.zip
   DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
-  DISTMD5='8578613c415f428e42dbcf55aad3a667'
+}
+
+eclipse-sum-win64-2019-12() {
+  DISTSUM='bbd6e53a8bf4f732f4eb1d0da608b88a0508772d5b4da14376dd4e0e92dcdbe5c0dee65e4c744b89dbe4e9793fe334dd1572c0f2f400b2ad5c48090c9a9cd0ba'
+}
+
+eclipse-sum-win64-2019-09() {
+  DISTSUM='3c96f0fc1e9f3f0a4468753242d38360347a709ba42f6ed836cce8c90ba33c9641bb3d1fb9eee6e936e49d53107c74d1b9dc71b1aa623f11c793e3bc5dd3a4bc'
+}
+
+eclipse-sum-win64-2019-06() {
+  DISTSUM='de3b75dd62241b76b0dd6db2c4beb4def77881331f9d5ef91cd8285c1a8512071a2d55c38e393640c199af7efc0bd9f4c414fc64cc3091ad2c2d39120ba2c651'
 }
 
 eclipse-dist() {
   eclipse-url-$ARCH
-  downloaded-tool ECLIPSEDIST "$DISTURL" "$DISTNAME" "$DISTMD5" "$CACHE"
+  eclipse-sum-$ARCH-$VERSION
+  downloaded-tool ECLIPSEDIST "$DISTURL" "$DISTNAME" "$DISTSUM" "$CACHE"
 }
 
 "$OPT_SUBCLIPSE" && downloaded-tool SUBCLIPSEDIST 'http://subclipse.tigris.org/files/documents/906/49336/site-1.10.2.zip' subclipse-site-1.10.2.zip "690f45551c1d5f9827c3080221dbb294" "$CACHE"
@@ -149,23 +159,15 @@ uncompress-linux() {
   tar xzf "$ECLIPSEDIST"
 }
 
-uncompress-linux32() {
-  uncompress-linux
-}
-
 uncompress-linux64() {
   uncompress-linux
 }
 
-uncompress-win32() {
+uncompress-win64() {
   log "Unzipping eclipse"
   unzip -q "$ECLIPSEDIST"
   log "Fixing file permissions"
   find eclipse -type f -exec chmod u+x '{}' ';'
-}
-
-uncompress-win64() {
-  uncompress-win32
 }
 
 pristine-eclipse() {
