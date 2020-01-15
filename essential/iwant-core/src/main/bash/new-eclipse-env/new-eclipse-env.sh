@@ -3,50 +3,50 @@
 set -eu
 
 log() {
-  echo "$@" >>/dev/stderr
+    echo "$@" >>/dev/stderr
 }
 
 die() {
-  log $@
-  exit 1
+    log $@
+    exit 1
 }
 
 downloaded-tool() {
-  local VARNAME=$1
-  local URL=$2
-  local NAME=$3
-  local SUM=$4
-  local CACHEDIR=$5
-  local CACHED=$CACHEDIR/$NAME
-  [ -e "$CACHED" ] || {
-    log "Downloading from $URL"
-    wget --no-check-certificate \
-      "$URL" \
-      -O "$CACHED" || {
-        echo "Download failed, removing $CACHED"
-        rm "$CACHED"
-      }
-  }
-  log "Cached download is at $CACHED"
-  echo "$SUM  $CACHED" | sha512sum -c - || die "Broken file: $CACHED"
-  # return by setting a var instead of echoing to stdout
-  # this way the die above exits our caller
-  # (command substitution creates a subshell
-  # and exit only exits it, not the calling shell):
-  eval "$VARNAME='$CACHED'"
+    local VARNAME=$1
+    local URL=$2
+    local NAME=$3
+    local SUM=$4
+    local CACHEDIR=$5
+    local CACHED=$CACHEDIR/$NAME
+    [ -e "$CACHED" ] || {
+	log "Downloading from $URL"
+	wget --no-check-certificate \
+	     "$URL" \
+	     -O "$CACHED" || {
+            echo "Download failed, removing $CACHED"
+            rm "$CACHED"
+	}
+    }
+    log "Cached download is at $CACHED"
+    echo "$SUM  $CACHED" | sha512sum -c - || die "Broken file: $CACHED"
+    # return by setting a var instead of echoing to stdout
+    # this way the die above exits our caller
+    # (command substitution creates a subshell
+    # and exit only exits it, not the calling shell):
+    eval "$VARNAME='$CACHED'"
 }
 
 native-path-ascii() {
-  local IN=$1
-  native-path "$1" | native2ascii
+    local IN=$1
+    native-path "$1" | native2ascii
 }
 
 native-path() {
-  local IN=$1
-  case "$(uname)" in
-    CYGWIN*) cygpath -a -m "$IN" ;;
-    *) echo "$IN" ;;
-  esac
+    local IN=$1
+    case "$(uname)" in
+	CYGWIN*) cygpath -a -m "$IN" ;;
+	*) echo "$IN" ;;
+    esac
 }
 
 NEESCRIPT=$(readlink -f "$0")
@@ -55,19 +55,19 @@ NEEHOME=$(readlink -f "$NEEHOME")
 log "NEEHOME=$NEEHOME"
 CACHE=$NEEHOME/cache
 [ -e "$CACHE" ] || {
-  log "Creating cache at $CACHE"
-  mkdir -p "$CACHE"
+    log "Creating cache at $CACHE"
+    mkdir -p "$CACHE"
 }
 
 OPT_SUBCLIPSE=false
 OPT_EGIT=false
 
 if [ $# -lt 3 ]; then
-  log "Usage: $0 TARGETDIR linux64|win64 2019-12|2019-09|2019-06 [OPTS...]"
-  log "Supported OPTS:"
-  log "  --egit      : enable git plugin (disabled by default)"
-  log "  --subclipse : enable svn plugin (disabled by default)"
-  die ""
+    log "Usage: $0 TARGETDIR linux64|win64 2019-12|2019-09|2019-06 [OPTS...]"
+    log "Supported OPTS:"
+    log "  --egit      : enable git plugin (disabled by default)"
+    log "  --subclipse : enable svn plugin (disabled by default)"
+    die ""
 fi
 TARGETDIR=$1
 shift
@@ -79,19 +79,19 @@ shift
 log "Arguments: TARGETDIR=$TARGETDIR, ARCH=$ARCH, VERSION=$VERSION"
 
 while [ $# -gt 0 ]; do
-  OPT=$1
-  shift
-  case "$OPT" in
-  "--egit")
-    log "OPT --egit requested"
-    OPT_EGIT=true
-    ;;
-  "--subclipse")
-    log "OPT --subclipse requested"
-    OPT_SUBCLIPSE=true
-    ;;
-  *) die "Unsupported OPT: $OPT"
-  esac
+    OPT=$1
+    shift
+    case "$OPT" in
+	"--egit")
+	    log "OPT --egit requested"
+	    OPT_EGIT=true
+	    ;;
+	"--subclipse")
+	    log "OPT --subclipse requested"
+	    OPT_SUBCLIPSE=true
+	    ;;
+	*) die "Unsupported OPT: $OPT"
+    esac
 done
 
 log "Requested options:"
@@ -104,89 +104,89 @@ ECL_DISTBASE=eclipse-java-$VERSION-$ECL_REL
 ECL_URLBASE='https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/'$VERSION/$ECL_REL
 
 eclipse-url-linux64() {
-  DISTNAME=$ECL_DISTBASE-linux-gtk-x86_64.tar.gz
-  DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
+    DISTNAME=$ECL_DISTBASE-linux-gtk-x86_64.tar.gz
+    DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
 }
 
 eclipse-sum-linux64-2019-12() {
-  DISTSUM='358d1c6c6900d3cfcf9d89a32228695206902297a7f74c440981660c7e4db810fae22e721e78b4d7df84b3bf951f91b1ba87dcd1fe9c7b00235b87f8633f4883'
+    DISTSUM='358d1c6c6900d3cfcf9d89a32228695206902297a7f74c440981660c7e4db810fae22e721e78b4d7df84b3bf951f91b1ba87dcd1fe9c7b00235b87f8633f4883'
 }
 
 eclipse-sum-linux64-2019-09() {
-  DISTSUM='eb408902f079d6666863bc318a0586589be9a86e4cd57125ef1f97eb4f4a9d6b70aa52ea23129f5f95eb513c3ce1889683516d91e85a484fcae7328fa8e1eeff'
+    DISTSUM='eb408902f079d6666863bc318a0586589be9a86e4cd57125ef1f97eb4f4a9d6b70aa52ea23129f5f95eb513c3ce1889683516d91e85a484fcae7328fa8e1eeff'
 }
 
 eclipse-sum-linux64-2019-06() {
-  DISTSUM='2d3cfbd888b32d5022780932ea6c0999878bb5828cbbb952ef6d911e0c544977365af8631fb71c5e1dee71c3f364d02f04f15f903eb2daccebdc087c4a058d81'
+    DISTSUM='2d3cfbd888b32d5022780932ea6c0999878bb5828cbbb952ef6d911e0c544977365af8631fb71c5e1dee71c3f364d02f04f15f903eb2daccebdc087c4a058d81'
 }
 
 eclipse-url-win64() {
-  DISTNAME=$ECL_DISTBASE-win32-x86_64.zip
-  DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
+    DISTNAME=$ECL_DISTBASE-win32-x86_64.zip
+    DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
 }
 
 eclipse-sum-win64-2019-12() {
-  DISTSUM='bbd6e53a8bf4f732f4eb1d0da608b88a0508772d5b4da14376dd4e0e92dcdbe5c0dee65e4c744b89dbe4e9793fe334dd1572c0f2f400b2ad5c48090c9a9cd0ba'
+    DISTSUM='bbd6e53a8bf4f732f4eb1d0da608b88a0508772d5b4da14376dd4e0e92dcdbe5c0dee65e4c744b89dbe4e9793fe334dd1572c0f2f400b2ad5c48090c9a9cd0ba'
 }
 
 eclipse-sum-win64-2019-09() {
-  DISTSUM='3c96f0fc1e9f3f0a4468753242d38360347a709ba42f6ed836cce8c90ba33c9641bb3d1fb9eee6e936e49d53107c74d1b9dc71b1aa623f11c793e3bc5dd3a4bc'
+    DISTSUM='3c96f0fc1e9f3f0a4468753242d38360347a709ba42f6ed836cce8c90ba33c9641bb3d1fb9eee6e936e49d53107c74d1b9dc71b1aa623f11c793e3bc5dd3a4bc'
 }
 
 eclipse-sum-win64-2019-06() {
-  DISTSUM='de3b75dd62241b76b0dd6db2c4beb4def77881331f9d5ef91cd8285c1a8512071a2d55c38e393640c199af7efc0bd9f4c414fc64cc3091ad2c2d39120ba2c651'
+    DISTSUM='de3b75dd62241b76b0dd6db2c4beb4def77881331f9d5ef91cd8285c1a8512071a2d55c38e393640c199af7efc0bd9f4c414fc64cc3091ad2c2d39120ba2c651'
 }
 
 eclipse-dist() {
-  eclipse-url-$ARCH
-  eclipse-sum-$ARCH-$VERSION
-  downloaded-tool ECLIPSEDIST "$DISTURL" "$DISTNAME" "$DISTSUM" "$CACHE"
+    eclipse-url-$ARCH
+    eclipse-sum-$ARCH-$VERSION
+    downloaded-tool ECLIPSEDIST "$DISTURL" "$DISTNAME" "$DISTSUM" "$CACHE"
 }
 
 "$OPT_SUBCLIPSE" && downloaded-tool SUBCLIPSEDIST 'http://subclipse.tigris.org/files/documents/906/49336/site-1.10.2.zip' subclipse-site-1.10.2.zip "690f45551c1d5f9827c3080221dbb294" "$CACHE"
 
 targetdir() {
-  [ -e "$TARGETDIR" ] && die "Refusing to touch the existing TARGETDIR: $TARGETDIR"
-  log "Creating TARGETDIR:"
-  mkdir -p "$TARGETDIR"
-  # we cannot get canonical path until it exists:
-  TARGETDIR=$(readlink -f "$TARGETDIR")
-  log "$TARGETDIR"
+    [ -e "$TARGETDIR" ] && die "Refusing to touch the existing TARGETDIR: $TARGETDIR"
+    log "Creating TARGETDIR:"
+    mkdir -p "$TARGETDIR"
+    # we cannot get canonical path until it exists:
+    TARGETDIR=$(readlink -f "$TARGETDIR")
+    log "$TARGETDIR"
 }
 
 uncompress-linux() {
-  log "Untarring eclipse"
-  tar xzf "$ECLIPSEDIST"
+    log "Untarring eclipse"
+    tar xzf "$ECLIPSEDIST"
 }
 
 uncompress-linux64() {
-  uncompress-linux
+    uncompress-linux
 }
 
 uncompress-win64() {
-  log "Unzipping eclipse"
-  unzip -q "$ECLIPSEDIST"
-  log "Fixing file permissions"
-  find eclipse -type f -exec chmod u+x '{}' ';'
+    log "Unzipping eclipse"
+    unzip -q "$ECLIPSEDIST"
+    log "Fixing file permissions"
+    find eclipse -type f -exec chmod u+x '{}' ';'
 }
 
 pristine-eclipse() {
-  eclipse-dist
-  ECLIPSE=$TARGETDIR/eclipse
-  cd "$TARGETDIR"
-  uncompress-$ARCH
-  cd - >/dev/null
+    eclipse-dist
+    ECLIPSE=$TARGETDIR/eclipse
+    cd "$TARGETDIR"
+    uncompress-$ARCH
+    cd - >/dev/null
 }
 
 select-workspace() {
-  log "Selecting workspace"
-  local ECL_CONFS="$ECLIPSE/configuration/.settings"
-  mkdir -p "$ECL_CONFS"
-  org.eclipse.ui.ide.prefs > "$ECL_CONFS/org.eclipse.ui.ide.prefs"
+    log "Selecting workspace"
+    local ECL_CONFS="$ECLIPSE/configuration/.settings"
+    mkdir -p "$ECL_CONFS"
+    org.eclipse.ui.ide.prefs > "$ECL_CONFS/org.eclipse.ui.ide.prefs"
 }
 
 org.eclipse.ui.ide.prefs() {
-cat <<EOF
+    cat <<EOF
 #Wed Jul 28 10:43:46 EEST 2010
 RECENT_WORKSPACES_PROTOCOL=3
 MAX_RECENT_WORKSPACES=5
@@ -197,66 +197,66 @@ EOF
 }
 
 subclipse() {
-  log "Unzipping subclipse"
-  unzip -q "$SUBCLIPSEDIST" \
-    "features/*.jar" \
-    "plugins/*.jar" \
-  -d "$ECLIPSE/"
+    log "Unzipping subclipse"
+    unzip -q "$SUBCLIPSEDIST" \
+	  "features/*.jar" \
+	  "plugins/*.jar" \
+	  -d "$ECLIPSE/"
 }
 
 # currently egit works incorrectly with submodules so:
 disable-egit() {
-  log "Disabling egit plugin"
-  local DIR=$ECLIPSE/plugins
-  rm -v "$DIR"/org.eclipse.egit*
-  rm -v "$DIR"/org.eclipse.mylyn.git*
+    log "Disabling egit plugin"
+    local DIR=$ECLIPSE/plugins
+    rm -v "$DIR"/org.eclipse.egit*
+    rm -v "$DIR"/org.eclipse.mylyn.git*
 }
 
 custom-formatting() {
-  log "Configuring formatter"
-  cd "$TARGETDIR"
-  patch -p0 < "$NEEHOME/patches/custom-formatting.diff"
+    log "Configuring formatter"
+    cd "$TARGETDIR"
+    patch -p0 < "$NEEHOME/patches/custom-formatting.diff"
 }
 
 # eclipse already does this automatically
 addvar-m2-repo() {
-  local M2_REPO=$(readlink -f ~/.m2/repository)
-  add-classpath-var M2_REPO "$M2_REPO"
+    local M2_REPO=$(readlink -f ~/.m2/repository)
+    add-classpath-var M2_REPO "$M2_REPO"
 }
 
 addvar-user-home() {
-  add-classpath-var USER_HOME "$HOME"
+    add-classpath-var USER_HOME "$HOME"
 }
 
 add-classpath-var() {
-  local KEY=$1
-  local VALUE=$2
-  log "Adding classpath variable $KEY=$VALUE"
-  echo "org.eclipse.jdt.core.classpathVariable.$KEY=$VALUE" >> "$WORKSPACE/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs"
+    local KEY=$1
+    local VALUE=$2
+    log "Adding classpath variable $KEY=$VALUE"
+    echo "org.eclipse.jdt.core.classpathVariable.$KEY=$VALUE" >> "$WORKSPACE/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs"
 }
 
 workspace() {
-  log "Configuring workspace"
-  WORKSPACE=$TARGETDIR/workspace
-  mkdir "$WORKSPACE"
-  runtime-settings-file org.eclipse.core.resources.prefs
-  runtime-settings-file org.eclipse.debug.ui.prefs
-  runtime-settings-file org.eclipse.jdt.core.prefs
-  runtime-settings-file org.eclipse.jdt.ui.prefs
-  runtime-settings-file org.eclipse.ui.editors.prefs
-  runtime-settings-file org.eclipse.e4.ui.css.swt.theme.prefs
+    log "Configuring workspace"
+    WORKSPACE=$TARGETDIR/workspace
+    mkdir "$WORKSPACE"
+    runtime-settings-file org.eclipse.core.resources.prefs
+    runtime-settings-file org.eclipse.debug.ui.prefs
+    runtime-settings-file org.eclipse.jdt.core.prefs
+    runtime-settings-file org.eclipse.jdt.ui.prefs
+    runtime-settings-file org.eclipse.ui.editors.prefs
+    runtime-settings-file org.eclipse.e4.ui.css.swt.theme.prefs
 }
 
 runtime-settings-file() {
-  local FILE=$1
-  local DESTDIR=$WORKSPACE/.metadata/.plugins/org.eclipse.core.runtime/.settings
-  mkdir -p "$DESTDIR"
-  log "Generating $FILE"
-  "conf_$FILE" > "$DESTDIR/$FILE"
+    local FILE=$1
+    local DESTDIR=$WORKSPACE/.metadata/.plugins/org.eclipse.core.runtime/.settings
+    mkdir -p "$DESTDIR"
+    log "Generating $FILE"
+    "conf_$FILE" > "$DESTDIR/$FILE"
 }
 
 conf_org.eclipse.jdt.ui.prefs() {
-cat <<\EOF
+    cat <<\EOF
 content_assist_proposals_background=255,255,255
 content_assist_proposals_foreground=0,0,0
 eclipse.preferences.version=1
@@ -303,7 +303,7 @@ EOF
 }
 
 conf_org.eclipse.ui.editors.prefs() {
-cat <<EOF
+    cat <<EOF
 eclipse.preferences.version=1
 lineNumberRuler=true
 overviewRuler_migration=migrated_3.1
@@ -313,7 +313,7 @@ EOF
 }
 
 conf_org.eclipse.jdt.core.prefs() {
-cat <<EOF
+    cat <<EOF
 eclipse.preferences.version=1
 org.eclipse.jdt.core.compiler.problem.emptyStatement=warning
 org.eclipse.jdt.core.compiler.problem.fallthroughCase=warning
@@ -345,7 +345,7 @@ EOF
 }
 
 conf_org.eclipse.core.resources.prefs() {
-cat <<EOF
+    cat <<EOF
 eclipse.preferences.version=1
 encoding=UTF-8
 version=1
@@ -355,7 +355,7 @@ EOF
 # the Console settings increase the output buffer size
 # the launch-related settings select "Launch previously launched" instead of the open one
 conf_org.eclipse.debug.ui.prefs() {
-cat <<EOF
+    cat <<EOF
 eclipse.preferences.version=1
 Console.highWaterMark=1008000
 Console.lowWaterMark=1000000
@@ -366,7 +366,7 @@ EOF
 
 # shamelessly opinionated: the new default theme is horrible
 conf_org.eclipse.e4.ui.css.swt.theme.prefs() {
-cat <<EOF
+    cat <<EOF
 eclipse.preferences.version=1
 themeid=org.eclipse.e4.ui.css.theme.e4_classic
 EOF
