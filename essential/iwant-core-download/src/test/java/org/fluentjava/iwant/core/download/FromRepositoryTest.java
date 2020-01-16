@@ -9,13 +9,13 @@ public class FromRepositoryTest extends TestCase {
 				.group("org/apache/ant").name("ant").version("1.7.1").jar();
 
 		assertEquals("ant-1.7.1.jar", t.name());
-		assertEquals("http://repo1.maven.org/maven2/", t.urlPrefix());
+		assertEquals("https://repo1.maven.org/maven2/", t.urlPrefix());
 		assertEquals("org.apache.ant", t.group());
 		assertEquals("ant", t.shortName());
 		assertEquals("1.7.1", t.version());
 
 		assertEquals(
-				"http://repo1.maven.org/maven2/"
+				"https://repo1.maven.org/maven2/"
 						+ "org/apache/ant/ant/1.7.1/ant-1.7.1.jar",
 				t.artifact().url().toString());
 		// TODO refer to correct checksum url
@@ -28,12 +28,12 @@ public class FromRepositoryTest extends TestCase {
 				.version("1.3.9").jar();
 
 		assertEquals("findbugs-1.3.9.jar", t.name());
-		assertEquals("http://repo1.maven.org/maven2/", t.urlPrefix());
+		assertEquals("https://repo1.maven.org/maven2/", t.urlPrefix());
 		assertEquals("com.google.code.findbugs", t.group());
 		assertEquals("findbugs", t.shortName());
 		assertEquals("1.3.9", t.version());
 
-		assertEquals("http://repo1.maven.org/maven2/"
+		assertEquals("https://repo1.maven.org/maven2/"
 				+ "com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9.jar",
 				t.artifact().url().toExternalForm());
 		// TODO refer to correct checksum url
@@ -46,12 +46,12 @@ public class FromRepositoryTest extends TestCase {
 				.version("1.3.9").sourcesJar();
 
 		assertEquals("findbugs-1.3.9-sources.jar", t.name());
-		assertEquals("http://repo1.maven.org/maven2/", t.urlPrefix());
+		assertEquals("https://repo1.maven.org/maven2/", t.urlPrefix());
 		assertEquals("com.google.code.findbugs", t.group());
 		assertEquals("findbugs", t.shortName());
 		assertEquals("1.3.9", t.version());
 
-		assertEquals("http://repo1.maven.org/maven2/"
+		assertEquals("https://repo1.maven.org/maven2/"
 				+ "com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9-sources.jar",
 				t.artifact().url().toExternalForm());
 		// TODO refer to correct checksum url
@@ -64,12 +64,12 @@ public class FromRepositoryTest extends TestCase {
 				.testJar();
 
 		assertEquals("kafka_2.11-2.0.1-test.jar", t.name());
-		assertEquals("http://repo1.maven.org/maven2/", t.urlPrefix());
+		assertEquals("https://repo1.maven.org/maven2/", t.urlPrefix());
 		assertEquals("org.apache.kafka", t.group());
 		assertEquals("kafka_2.11", t.shortName());
 		assertEquals("2.0.1", t.version());
 
-		assertEquals("http://repo1.maven.org/maven2/"
+		assertEquals("https://repo1.maven.org/maven2/"
 				+ "org/apache/kafka/kafka_2.11/2.0.1/kafka_2.11-2.0.1-test.jar",
 				t.artifact().url().toExternalForm());
 		// TODO refer to correct checksum url

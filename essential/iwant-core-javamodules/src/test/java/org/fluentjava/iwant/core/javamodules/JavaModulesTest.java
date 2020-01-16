@@ -119,7 +119,7 @@ public class JavaModulesTest {
 		GnvArtifact<Downloaded> binArtifact = (GnvArtifact<Downloaded>) m.bin
 				.mainArtifact();
 		assertEquals(
-				"http://repo1.maven.org/maven2/commons-io/"
+				"https://repo1.maven.org/maven2/commons-io/"
 						+ "commons-io/2.4/commons-io-2.4.jar",
 				binArtifact.artifact().url().toString());
 
@@ -127,7 +127,7 @@ public class JavaModulesTest {
 		GnvArtifact<Downloaded> binArtifactSrc = (GnvArtifact<Downloaded>) m.bin
 				.source();
 		assertEquals(
-				"http://repo1.maven.org/maven2/commons-io/"
+				"https://repo1.maven.org/maven2/commons-io/"
 						+ "commons-io/2.4/commons-io-2.4-sources.jar",
 				binArtifactSrc.artifact().url().toString());
 	}
@@ -160,7 +160,7 @@ public class JavaModulesTest {
 		GnvArtifact<Downloaded> binArtifact = (GnvArtifact<Downloaded>) m.bin
 				.mainArtifact();
 		assertEquals(
-				"http://repo1.maven.org/maven2/"
+				"https://repo1.maven.org/maven2/"
 						+ "org/apache/kafka/kafka_2.11/2.0.1/"
 						+ "kafka_2.11-2.0.1-test.jar",
 				binArtifact.artifact().url().toString());
@@ -169,7 +169,7 @@ public class JavaModulesTest {
 		GnvArtifact<Downloaded> binArtifactSrc = (GnvArtifact<Downloaded>) m.bin
 				.source();
 		assertEquals(
-				"http://repo1.maven.org/maven2/"
+				"https://repo1.maven.org/maven2/"
 						+ "org/apache/kafka/kafka_2.11/2.0.1/"
 						+ "kafka_2.11-2.0.1-sources.jar",
 				binArtifactSrc.artifact().url().toString());
@@ -188,7 +188,7 @@ public class JavaModulesTest {
 		GnvArtifact<Downloaded> binArtifact = (GnvArtifact<Downloaded>) m.bin
 				.mainArtifact();
 		assertEquals(
-				"http://repo1.maven.org/maven2/"
+				"https://repo1.maven.org/maven2/"
 						+ "org/apache/kafka/kafka_2.11/2.0.1/"
 						+ "kafka_2.11-2.0.1-test.jar",
 				binArtifact.artifact().url().toString());
@@ -210,7 +210,7 @@ public class JavaModulesTest {
 		assertEquals(2, mas.size());
 		assertEquals("org.fluentjava.iwant.core.download.Downloaded\n"
 				+ "p:url:\n"
-				+ "  http://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar\n"
+				+ "  https://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar\n"
 				+ "p:md5:\n" + " null\n" + "", descr(mas.get(0)));
 		assertEquals("org.fluentjava.iwant.api.javamodules.JavaClasses\n"
 				+ "i:srcDirs:\n" + "  mod/src/main/java\n" + "i:resourceDirs:\n"
