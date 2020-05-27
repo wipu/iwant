@@ -185,8 +185,8 @@ public class IwantModules extends JavaModules {
 			.testDeps(iwantApimocks, junit).end();
 
 	private JavaSrcModule iwantApiAntrunner = essentialModule("api-antrunner")
-			.noMainResources().noTestJava().noTestResources()
-			.mainDeps(ant, iwantEntry).end();
+			.noMainResources().noTestResources().mainDeps(ant, iwantEntry)
+			.testDeps(junit).end();
 
 	private JavaSrcModule iwantCoreDownload = essentialModule("core-download")
 			.mainDeps(iwantApiCore, iwantApiModel, iwantApiTarget,

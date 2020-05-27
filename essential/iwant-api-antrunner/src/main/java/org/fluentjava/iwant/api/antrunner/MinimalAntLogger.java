@@ -36,12 +36,12 @@ public class MinimalAntLogger implements BuildLogger {
 		}
 	}
 
-	private static boolean reportPossibleFailure(BuildEvent event) {
+	private boolean reportPossibleFailure(BuildEvent event) {
 		Throwable failure = event.getException();
 		if (failure == null) {
 			return false;
 		}
-		failure.printStackTrace();
+		failure.printStackTrace(err);
 		return true;
 	}
 
@@ -67,8 +67,15 @@ public class MinimalAntLogger implements BuildLogger {
 
 	@Override
 	public void messageLogged(BuildEvent event) {
-		log("  ", event.getMessage());
+		String msg = event.getMessage();
+		if (hasInterestingMessage(msg)) {
+			log("  ", event.getMessage());
+		}
 		reportPossibleFailure(event);
+	}
+
+	private static boolean hasInterestingMessage(String msg) {
+		return msg != null && !msg.trim().isEmpty();
 	}
 
 	@Override
