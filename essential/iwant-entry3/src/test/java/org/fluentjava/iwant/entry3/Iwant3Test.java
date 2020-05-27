@@ -829,6 +829,12 @@ public class Iwant3Test extends TestCase {
 		File wsdefdefClasses = new File(asTest, ".i-cached/wsdefdef-classes");
 		long t1 = wsdefdefClasses.lastModified();
 
+		// make sure the clock advances (if not, iwant plays safe and considers
+		// ingredient newer than cache)
+		while (System.currentTimeMillis() <= t1) {
+			Thread.sleep(100L);
+		}
+		// then re-evaluate
 		iwant3.evaluate(asTest, "list-of/targets");
 
 		long t2 = wsdefdefClasses.lastModified();
