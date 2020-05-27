@@ -202,8 +202,8 @@ public class IwantModules extends JavaModules {
 	 * TODO reuse
 	 */
 	private JavaBinModule toolsJar = JavaBinModule
-			.providing(new ExternalSource(
-					new File(System.getenv("JAVA_HOME"), "lib/tools.jar")))
+			.providing(ExternalSource
+					.at(new File(System.getenv("JAVA_HOME"), "lib/tools.jar")))
 			.end();
 
 	private JavaSrcModule iwantApiJavamodules = essentialModule(
