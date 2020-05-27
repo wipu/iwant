@@ -186,9 +186,7 @@ public class Iwant3Test extends TestCase {
 						+ "WSDEFDEF_MODULE=../wsdefdef\n"
 						+ "WSDEFDEF_CLASS=com.example.wsdefdef.ExampleWsProvider\n");
 
-		// act slowly like a normal user so the ingredients will be strictly
-		// older than files derived from them:
-		Thread.sleep(1000L);
+		spendSomeTimeLikeARealUser();
 
 		try {
 			iwant3.evaluate(asTest);
@@ -224,6 +222,17 @@ public class Iwant3Test extends TestCase {
 		assertTrue(wsContent
 				.contains(" class ExampleWorkspace implements Workspace"));
 		// full content will be asserted by functionality
+	}
+
+	/**
+	 * Act slowly like a normal user so the ingredients will be strictly older
+	 * than files derived from them.
+	 */
+	private static void spendSomeTimeLikeARealUser()
+			throws InterruptedException {
+		// act slowly like a normal user so the ingredients will be strictly
+		// older than files derived from them:
+		Thread.sleep(1000L);
 	}
 
 	public void testIwant3AlsoCreatesWishScriptsForExampleWsDef()
@@ -713,6 +722,8 @@ public class Iwant3Test extends TestCase {
 		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
+		spendSomeTimeLikeARealUser();
+
 		try {
 			iwant3.evaluate(asTest);
 			fail();
@@ -829,12 +840,6 @@ public class Iwant3Test extends TestCase {
 		File wsdefdefClasses = new File(asTest, ".i-cached/wsdefdef-classes");
 		long t1 = wsdefdefClasses.lastModified();
 
-		// make sure the clock advances (if not, iwant plays safe and considers
-		// ingredient newer than cache)
-		while (System.currentTimeMillis() <= t1) {
-			Thread.sleep(100L);
-		}
-		// then re-evaluate
 		iwant3.evaluate(asTest, "list-of/targets");
 
 		long t2 = wsdefdefClasses.lastModified();
