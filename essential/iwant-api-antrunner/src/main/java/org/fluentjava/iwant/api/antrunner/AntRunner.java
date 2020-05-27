@@ -17,6 +17,8 @@ public class AntRunner {
 		List<String> allArgs = new ArrayList<>();
 		allArgs.add("-f");
 		allArgs.add(cachedScript.getAbsolutePath());
+		allArgs.add("-logger");
+		allArgs.add(MinimalAntLogger.class.getCanonicalName());
 		allArgs.addAll(Arrays.asList(antArgs));
 		try {
 			Iwant.runJavaMain(true, false, className, antJars,
