@@ -20,8 +20,15 @@ public class AntRunner {
 		allArgs.add("-logger");
 		allArgs.add(MinimalAntLogger.class.getCanonicalName());
 		allArgs.addAll(Arrays.asList(antArgs));
+
+		List<File> allJars = new ArrayList<>();
+		File loggerLocation = new File(MinimalAntLogger.class
+				.getProtectionDomain().getCodeSource().getLocation().toURI());
+		allJars.addAll(antJars);
+		allJars.add(loggerLocation);
+
 		try {
-			Iwant.runJavaMain(true, false, className, antJars,
+			Iwant.runJavaMain(true, false, className, allJars,
 					allArgs.toArray(new String[0]));
 		} catch (InvocationTargetException e) {
 			if (e.getCause() instanceof ExitCalledException) {
