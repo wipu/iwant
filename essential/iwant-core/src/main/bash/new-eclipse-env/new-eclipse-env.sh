@@ -63,7 +63,7 @@ OPT_SUBCLIPSE=false
 OPT_EGIT=false
 
 if [ $# -lt 3 ]; then
-    log "Usage: $0 TARGETDIR linux64|win64 2019-12|2019-09|2019-06 [OPTS...]"
+    log "Usage: $0 TARGETDIR linux64|win64 2020-06|2019-12|2019-09|2019-06 [OPTS...]"
     log "Supported OPTS:"
     log "  --egit      : enable git plugin (disabled by default)"
     log "  --subclipse : enable svn plugin (disabled by default)"
@@ -108,6 +108,10 @@ eclipse-url-linux64() {
     DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
 }
 
+eclipse-sum-linux64-2020-06() {
+    DISTSUM='2b471ba974f0632e2e8198c77a4a85cd126bbc1c2e9313e388997820181b39124cb4443c8aac8af0bbb7973bcb2e55303b566f91f58f35e1bf9eb3ea8f5289ec'
+}
+
 eclipse-sum-linux64-2019-12() {
     DISTSUM='358d1c6c6900d3cfcf9d89a32228695206902297a7f74c440981660c7e4db810fae22e721e78b4d7df84b3bf951f91b1ba87dcd1fe9c7b00235b87f8633f4883'
 }
@@ -123,6 +127,10 @@ eclipse-sum-linux64-2019-06() {
 eclipse-url-win64() {
     DISTNAME=$ECL_DISTBASE-win32-x86_64.zip
     DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
+}
+
+eclipse-sum-win64-2020-06() {
+    DISTSUM='6dbb1f4472dc720ddb17363635970dccd446fba7a104a8dcbcd5c632108b52c1026b61ccbc945f855f06e6668e6267b09b524730ee4536db20c12b2e376bcd6b'
 }
 
 eclipse-sum-win64-2019-12() {
@@ -208,8 +216,8 @@ subclipse() {
 disable-egit() {
     log "Disabling egit plugin"
     local DIR=$ECLIPSE/plugins
-    rm -v "$DIR"/org.eclipse.egit*
-    rm -v "$DIR"/org.eclipse.mylyn.git*
+    rm -vf "$DIR"/org.eclipse.egit*
+    rm -vf "$DIR"/org.eclipse.mylyn.git*
 }
 
 custom-formatting() {
