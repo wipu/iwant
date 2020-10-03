@@ -37,12 +37,6 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 		antLauncherJar.path(ctx);
 	}
 
-	public void testJh() {
-		String jh = System.getenv("JAVA_HOME");
-		assertEquals("/etc/java-config-2/current-system-vm", jh);
-
-	}
-
 	public void testSrcDirsAreIgredients() {
 		Path src1 = Source.underWsroot("src1");
 		Path src2 = Source.underWsroot("src1");

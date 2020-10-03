@@ -6,8 +6,8 @@ public class TestedIwantDependenciesTest extends TestCase {
 
 	public void testNamesOfDownloadedTargets() {
 		// this documents the names, change when upgrading:
-		assertEquals("ant-1.10.7.jar", TestedIwantDependencies.antJar().name());
-		assertEquals("ant-launcher-1.10.7.jar",
+		assertEquals("ant-1.10.9.jar", TestedIwantDependencies.antJar().name());
+		assertEquals("ant-launcher-1.10.9.jar",
 				TestedIwantDependencies.antLauncherJar().name());
 		assertEquals("jcommander-1.48.jar",
 				TestedIwantDependencies.jcommander().name());

@@ -257,7 +257,7 @@ public class EclipseSettingsTest extends IwantTestCase {
 		assertEquals("es2.bin-refs", seCtx.targetsWantedAsPath().get(1).name());
 	}
 
-	public void testDefaultJavaComplianceIs18() {
+	public void testDefaultJavaComplianceIs11() {
 		JavaModule mod = JavaSrcModule.with().name("mod")
 				.locationUnderWsRoot("mod").mainJava("src").end();
 
@@ -266,9 +266,9 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		String corePrefs = "mod/.settings/org.eclipse.jdt.core.prefs";
-		assertFileContains(corePrefs, "targetPlatform=1.8");
-		assertFileContains(corePrefs, "compiler.compliance=1.8");
-		assertFileContains(corePrefs, "compiler.source=1.8");
+		assertFileContains(corePrefs, "targetPlatform=11");
+		assertFileContains(corePrefs, "compiler.compliance=11");
+		assertFileContains(corePrefs, "compiler.source=11");
 	}
 
 	public void testJavaComplianceCanBeDefinedAs17() {

@@ -1,6 +1,5 @@
 package org.fluentjava.iwant.wsdef;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
@@ -13,7 +12,6 @@ import org.fluentjava.iwant.api.javamodules.JavaModule;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 import org.fluentjava.iwant.api.javamodules.ScalaVersion;
-import org.fluentjava.iwant.api.model.ExternalSource;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.core.download.FromRepository;
@@ -198,14 +196,6 @@ public class IwantModules extends JavaModules {
 					iwantApiCore, iwantApiModel, iwantApiTarget)
 			.testDeps(iwantApimocks, junit).end();
 
-	/**
-	 * TODO reuse
-	 */
-	private JavaBinModule toolsJar = JavaBinModule
-			.providing(ExternalSource
-					.at(new File(System.getenv("JAVA_HOME"), "lib/tools.jar")))
-			.end();
-
 	private JavaSrcModule iwantApiJavamodules = essentialModule(
 			"api-javamodules")
 					.mainDeps(iwantApiAntrunner, iwantApiCore, iwantApiModel,
@@ -213,7 +203,7 @@ public class IwantModules extends JavaModules {
 							iwantCoreservices, iwantEntry)
 					.testDeps(iwantApimocks, iwantTestarea, guava, guavaTestlib,
 							junit)
-					.testRuntimeDeps(toolsJar).end();
+					.end();
 
 	private JavaSrcModule iwantApiWsdef = essentialModule("api-wsdef")
 			.noTestJava().mainDeps(iwantApiModel, iwantApiJavamodules).end();

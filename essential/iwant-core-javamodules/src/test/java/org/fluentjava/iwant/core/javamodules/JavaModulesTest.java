@@ -80,7 +80,7 @@ public class JavaModulesTest {
 		assertEquals("[]", m.mod.characteristics().toString());
 		assertEquals(CodeFormatterPolicy.defaults(),
 				m.mod.codeFormatterPolicy());
-		assertEquals(JavaCompliance.JAVA_1_8, m.mod.javaCompliance());
+		assertEquals(JavaCompliance.JAVA_11, m.mod.javaCompliance());
 		assertEquals("[src/main/java]", m.mod.mainJavas().toString());
 		assertEquals("[src/test/java]", m.mod.testJavas().toString());
 	}
@@ -216,7 +216,7 @@ public class JavaModulesTest {
 				+ "i:srcDirs:\n" + "  mod/src/main/java\n" + "i:resourceDirs:\n"
 				+ "  mod/src/main/resources\n" + "i:classLocations:\n"
 				+ "  commons-io-2.4.jar\n" + "p:javacOptions:\n" + "  -Xlint\n"
-				+ "  -Xlint:-serial\n" + "  -source\n" + "  1.8\n" + "  -g\n"
+				+ "  -Xlint:-serial\n" + "  -source\n" + "  11\n" + "  -g\n"
 				+ "p:encoding:\n" + "  UTF-8\n" + "", descr(mas.get(1)));
 		// test only module has no main artifact
 	}
@@ -292,14 +292,14 @@ public class JavaModulesTest {
 				+ "  mod/src/test/resources\n" + "i:classLocations:\n"
 				+ "  mod-main-classes\n" + "  commons-io-2.4.jar\n"
 				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
-				+ "  -source\n" + "  1.8\n" + "  -g\n" + "p:encoding:\n"
+				+ "  -source\n" + "  11\n" + "  -g\n" + "p:encoding:\n"
 				+ "  UTF-8\n" + "", descr(tas.get(0)));
 		assertEquals("org.fluentjava.iwant.api.javamodules.JavaClasses\n"
 				+ "i:srcDirs:\n" + "  only-tests/src/test/java\n"
 				+ "i:resourceDirs:\n" + "  only-tests/src/test/resources\n"
 				+ "i:classLocations:\n" + "  only-main-main-classes\n"
 				+ "p:javacOptions:\n" + "  -Xlint\n" + "  -Xlint:-serial\n"
-				+ "  -source\n" + "  1.8\n" + "  -g\n" + "p:encoding:\n"
+				+ "  -source\n" + "  11\n" + "  -g\n" + "p:encoding:\n"
 				+ "  UTF-8\n" + "", descr(tas.get(1)));
 		// bin and main only have no test artifact
 	}

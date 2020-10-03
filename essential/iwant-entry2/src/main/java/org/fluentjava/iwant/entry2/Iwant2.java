@@ -24,7 +24,7 @@ import org.fluentjava.iwant.entry.Iwant.UnmodifiableSource;
 public class Iwant2 {
 
 	public static final String REPO_MAVEN_ORG = "https://repo1.maven.org/maven2/";
-	public static final String ANT_VER = "1.10.7";
+	public static final String ANT_VER = "1.10.9";
 	private final IwantNetwork network;
 	private final Iwant iwant;
 

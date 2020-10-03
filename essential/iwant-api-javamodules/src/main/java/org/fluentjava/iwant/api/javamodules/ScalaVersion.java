@@ -31,6 +31,10 @@ public class ScalaVersion {
 		return of("2.11.7");
 	}
 
+	public static ScalaVersion _2_12_3() {
+		return of("2.12.3");
+	}
+
 	public static ScalaVersion of(String value) {
 		return new ScalaVersion(value);
 	}

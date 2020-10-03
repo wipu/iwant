@@ -114,26 +114,8 @@ public class JavaClassesTest extends IwantTestCase {
 
 		assertTrue(new File(cached, "valid/Valid.class").exists());
 		assertEquals("warning: [options] bootstrap class path not set"
-				+ " in conjunction with -source 1.7\n" + "1 warning\n" + "",
+				+ " in conjunction with -source 7\n" + "1 warning\n" + "",
 				err());
-	}
-
-	public void testSourceCompliance17WithCorrectBootclasspathCompilesWithoutWarnings()
-			throws Exception {
-		// in reality this would be a jdk1.7:
-		File jdk = new File(System.getProperty("java.home"));
-		File mockedRtJar17 = new File(jdk, "lib/rt.jar");
-		wsRootHasFile("src/Valid.java", "class Valid {}");
-		Source src = Source.underWsroot("src");
-		Target target = JavaClasses.with().name("valid").srcDirs(src)
-				.sourceVersion(JavaCompliance.JAVA_1_7)
-				.rawArgs("-bootclasspath", mockedRtJar17.getCanonicalPath())
-				.classLocations().end();
-
-		target.path(ctx);
-
-		assertTrue(new File(cached, "valid/Valid.class").exists());
-		assertEquals("", err());
 	}
 
 	public void testToPathCompilesFromMultiplePackages() throws Exception {
@@ -458,9 +440,14 @@ public class JavaClassesTest extends IwantTestCase {
 				.srcDirs(Source.underWsroot("src")).debug(true)
 				.sourceVersion(JavaCompliance.JAVA_1_8).end()
 				.contentDescriptor().contains("  -source\n  1.8\n  -g"));
+		assertTrue(JavaClasses.with().name("classes")
+				.srcDirs(Source.underWsroot("src")).debug(true)
+				.sourceVersion(JavaCompliance.JAVA_11).end().contentDescriptor()
+				.contains("  -source\n  11\n  -g"));
 	}
 
-	public void testJava8CompilesWithoutWarnings() throws Exception {
+	public void testJava8CompilesWithWarningsAboutBootclasspath()
+			throws Exception {
 		wsRootHasFile("src/UsingJ8.java", "class UsingJ8 {" + "	static {\n"
 				+ "		java.util.Arrays.asList(\"1\")."
 				+ "forEach(s -> System.out.println(s));\n" + "	}\n" + "}");
@@ -471,6 +458,22 @@ public class JavaClassesTest extends IwantTestCase {
 		target.path(ctx);
 
 		assertTrue(new File(cached, "valid/UsingJ8.class").exists());
+		assertEquals(
+				"warning: [options] bootstrap class path not set in conjunction with -source 8\n"
+						+ "1 warning\n" + "",
+				err());
+	}
+
+	public void testJava11CompilesWithoutWarnings() throws Exception {
+		wsRootHasFile("src/UsingJ11.java",
+				"class UsingJ11 {void s() {var s = \"\";System.out.println(s);}}");
+		Source src = Source.underWsroot("src");
+		Target target = JavaClasses.with().name("valid").srcDirs(src)
+				.sourceVersion(JavaCompliance.JAVA_11).classLocations().end();
+
+		target.path(ctx);
+
+		assertTrue(new File(cached, "valid/UsingJ11.class").exists());
 		assertEquals("", err());
 	}
 

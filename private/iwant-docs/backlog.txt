@@ -1,3 +1,9 @@
+- migrate to java 11
+  * eclipse forced this :/
+  + use it, fix things (upgrade libs, don't use deprecated apis etc)
+  - upgrade iwant for iwant
+  - use spotbugs: findbugs is now finally broken
+
 - Clean up Windows bash detection: if possible, use env to detect
   cygwin bash, too, so no hardcoded paths will be needed
 

@@ -11,7 +11,7 @@ import org.fluentjava.iwant.entry.Iwant;
 
 public class ScalaClassesTest extends IwantTestCase {
 
-	private static final ScalaVersion SCALA = ScalaVersion._2_11_7();
+	private static final ScalaVersion SCALA = ScalaVersion._2_12_3();
 
 	@Override
 	protected void moreSetUp() throws Exception {
@@ -109,17 +109,17 @@ public class ScalaClassesTest extends IwantTestCase {
 		assertEquals("org.fluentjava.iwant.api.javamodules.ScalaClasses\n"
 				+ "i:srcDirs:\n" + "  src/main/java\n" + "  src/main/scala\n"
 				+ "i:classLocations:\n" + "  dep\n" + "i:scala-compiler:\n"
-				+ "  scala-compiler-2.11.7.jar\n" + "i:scala-library:\n"
-				+ "  scala-library-2.11.7.jar\n" + "i:scala-reflect:\n"
-				+ "  scala-reflect-2.11.7.jar\n" + "i:antJar:\n"
-				+ "  ant-1.10.7.jar\n" + "i:antLauncherJar:\n"
-				+ "  ant-launcher-1.10.7.jar\n" + "",
+				+ "  scala-compiler-2.12.3.jar\n" + "i:scala-library:\n"
+				+ "  scala-library-2.12.3.jar\n" + "i:scala-reflect:\n"
+				+ "  scala-reflect-2.12.3.jar\n" + "i:antJar:\n"
+				+ "  ant-1.10.9.jar\n" + "i:antLauncherJar:\n"
+				+ "  ant-launcher-1.10.9.jar\n" + "",
 				scalaClasses.contentDescriptor());
 
 		assertEquals(
-				"[src/main/java, src/main/scala, dep, scala-compiler-2.11.7.jar,"
-						+ " scala-library-2.11.7.jar, scala-reflect-2.11.7.jar,"
-						+ " ant-1.10.7.jar, ant-launcher-1.10.7.jar]",
+				"[src/main/java, src/main/scala, dep, scala-compiler-2.12.3.jar,"
+						+ " scala-library-2.12.3.jar, scala-reflect-2.12.3.jar,"
+						+ " ant-1.10.9.jar, ant-launcher-1.10.9.jar]",
 				scalaClasses.ingredients().toString());
 	}
 

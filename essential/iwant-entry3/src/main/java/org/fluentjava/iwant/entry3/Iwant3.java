@@ -121,7 +121,7 @@ public class Iwant3 {
 		try {
 			Iwant.fileLog("Calling wsdefdef");
 			WorkspaceModuleProvider wsDefdef = (WorkspaceModuleProvider) wsDefdefClass
-					.newInstance();
+					.getDeclaredConstructor().newInstance();
 
 			Iwant.fileLog("Refreshing wsdef classes");
 			String wsdefdefRelativeToWsRoot = FileUtil
@@ -156,7 +156,7 @@ public class Iwant3 {
 							wsDefClassesTarget, wsDefdefClasses, wsDefClasses));
 			Iwant.fileLog("Instantiating " + wsDefClass);
 			WorkspaceFactory wsDef = (WorkspaceFactory) wsDefClass
-					.newInstance();
+					.getDeclaredConstructor().newInstance();
 			Workspace ws = wsDef.workspace(wishEvaluator.workspaceContext());
 			refreshWishScripts(asSomeone, ws,
 					wishEvaluator.targetDefinitionContext(),
