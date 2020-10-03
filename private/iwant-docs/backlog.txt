@@ -2,8 +2,9 @@
   * eclipse forced this :/
   + use it, fix things (upgrade libs, don't use deprecated apis etc)
   + increase heap size in bash bootstrapper (java 11 may consume more, at least in one project)
-  + use 11 in ant bootstrapper (fails when building website?!)
-  - upgrade iwant for iwant
+  + use 11 in ant bootstrapper
+  + upgrade iwant for iwant
+  - fix website build: ant javac doesn't like 11 ?!
   - use spotbugs: findbugs is now finally broken
 
 - Clean up Windows bash detection: if possible, use env to detect
