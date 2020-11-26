@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.Method;
@@ -19,6 +20,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.Permission;
@@ -49,6 +52,12 @@ public class Iwant {
 
 	public static final File IWANT_USER_DIR = new File(HOME,
 			".org.fluentjava.iwant");
+
+	private static final File IWANT_USER_LOCK = new File(HOME,
+			".org.fluentjava.iwant-lock");
+
+	// TODO configurable
+	private static final int SECONDS_TO_WAIT_FOR_USER_LOCK = 600;
 
 	public static final String EXAMPLE_COMMIT = "f68535c89288af153156e7ac00e90936dd773712";
 
@@ -228,7 +237,7 @@ public class Iwant {
 	}
 
 	public static void main(String[] args) throws Exception {
-		try {
+		try (UserLock lock = new UserLock(SECONDS_TO_WAIT_FOR_USER_LOCK)) {
 			usingRealNetwork().evaluate(args);
 		} catch (IwantException e) {
 			System.err.println(e.getMessage());
@@ -236,7 +245,69 @@ public class Iwant {
 		}
 	}
 
+	private static class UserLock implements AutoCloseable {
+
+		private final RandomAccessFile file;
+		private final FileChannel channel;
+		private final FileLock lock;
+
+		UserLock(int secondsToWait) {
+			try {
+				this.file = new RandomAccessFile(IWANT_USER_LOCK, "rw");
+				this.channel = file.getChannel();
+				this.lock = getLockOrTimeOut(channel, secondsToWait);
+			} catch (Exception e) {
+				close();
+				throw new IwantException(e);
+			}
+		}
+
+		private static FileLock getLockOrTimeOut(FileChannel ch,
+				int secondsToWait) throws IOException, InterruptedException {
+			for (int i = 0; i < secondsToWait; i++) {
+				FileLock lock = ch.tryLock();
+				if (lock != null) {
+					return lock;
+				}
+				if (i == 0) {
+					log("Waiting for", IWANT_USER_LOCK);
+				}
+				Thread.sleep(1000L);
+			}
+			throw new IwantException(
+					"Failed to acquire user lock, another iwant instance is running.");
+		}
+
+		@Override
+		public void close() throws IwantException {
+			try {
+				close(lock);
+			} finally {
+				try {
+					close(channel);
+				} finally {
+					close(file);
+				}
+			}
+		}
+
+		private static void close(AutoCloseable c) throws IwantException {
+			if (c != null) {
+				try {
+					c.close();
+				} catch (Exception e) {
+					throw new IwantException(e);
+				}
+			}
+		}
+
+	}
+
 	public static class IwantException extends RuntimeException {
+
+		public IwantException(Exception cause) {
+			super(cause);
+		}
 
 		public IwantException(String message) {
 			super(message);

@@ -7,6 +7,14 @@
   - fix website build: ant javac doesn't like 11 ?!
   - use spotbugs: findbugs is now finally broken
 
+- user-level locking
+  * when iwant is used from maven and maven uses parallel building, multiple iwant instances are run
+  * this causes race conditions with caches
+  + simply try user-level locking in Iwant main
+  - test in production
+  - write stories about finer-grained locking
+  - document on webpage (now it says no locking at all)
+
 - Clean up Windows bash detection: if possible, use env to detect
   cygwin bash, too, so no hardcoded paths will be needed
 
