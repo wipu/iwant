@@ -8,6 +8,7 @@ import org.apache.tools.ant.BuildLogger;
 public class MinimalAntLogger implements BuildLogger {
 
 	private PrintStream err;
+	private int level;
 
 	@Override
 	public void setErrorPrintStream(PrintStream err) {
@@ -67,6 +68,9 @@ public class MinimalAntLogger implements BuildLogger {
 
 	@Override
 	public void messageLogged(BuildEvent event) {
+		if (event.getPriority() > level) {
+			return;
+		}
 		String msg = event.getMessage();
 		if (hasInterestingMessage(msg)) {
 			log("  ", event.getMessage());
@@ -80,7 +84,7 @@ public class MinimalAntLogger implements BuildLogger {
 
 	@Override
 	public void setMessageOutputLevel(int level) {
-		// not interesting
+		this.level = level;
 	}
 
 	@Override

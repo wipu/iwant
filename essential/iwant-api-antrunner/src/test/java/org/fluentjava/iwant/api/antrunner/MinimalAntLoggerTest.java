@@ -33,17 +33,17 @@ public class MinimalAntLoggerTest {
 		err.close();
 	}
 
-	private BuildEvent eventWithMessage(String message) {
+	private BuildEvent event(int priority, String message) {
 		BuildEvent ev = new BuildEvent(project);
-		ev.setMessage(message, 0);
+		ev.setMessage(message, priority);
 		return ev;
 	}
 
 	@Test
 	public void nothingIsPrintedForBuildEventWithoutMessage() {
-		logger.messageLogged(eventWithMessage(null));
-		logger.messageLogged(eventWithMessage(""));
-		logger.messageLogged(eventWithMessage("   "));
+		logger.messageLogged(event(0, null));
+		logger.messageLogged(event(0, ""));
+		logger.messageLogged(event(0, "   "));
 
 		err.flush();
 
@@ -52,7 +52,7 @@ public class MinimalAntLoggerTest {
 
 	@Test
 	public void nonEmptyEventMessageIsPrinted() {
-		logger.messageLogged(eventWithMessage("hello from ant"));
+		logger.messageLogged(event(0, "hello from ant"));
 
 		err.flush();
 
@@ -61,7 +61,7 @@ public class MinimalAntLoggerTest {
 
 	@Test
 	public void failureIsPrintedEvenIfEventHasNoMessage() {
-		BuildEvent msg = eventWithMessage(null);
+		BuildEvent msg = event(0, null);
 		msg.setException(new Exception("failure from ant"));
 		logger.messageLogged(msg);
 
@@ -69,6 +69,30 @@ public class MinimalAntLoggerTest {
 
 		assertTrue(errBytes.toString()
 				.startsWith("java.lang.Exception: failure from ant\n" + "	"));
+	}
+
+	@Test
+	public void messageIsPrintedIffPriorityNotMoreThanSetLevel() {
+		logger.setMessageOutputLevel(1);
+
+		logger.messageLogged(event(0, "1:0"));
+		logger.messageLogged(event(1, "1:1"));
+		logger.messageLogged(event(2, "1 shall NOT print 2"));
+		logger.messageLogged(event(3, "1 shall NOT print 3"));
+
+		logger.setMessageOutputLevel(2);
+
+		logger.messageLogged(event(0, "2:0"));
+		logger.messageLogged(event(1, "2:1"));
+		logger.messageLogged(event(2, "2:2"));
+		logger.messageLogged(event(3, "2 shall NOT print 3"));
+
+		err.flush();
+
+		assertEquals(
+				"[ant]   1:0\n" + "[ant]   1:1\n" + "[ant]   2:0\n"
+						+ "[ant]   2:1\n" + "[ant]   2:2\n" + "",
+				errBytes.toString());
 	}
 
 }
