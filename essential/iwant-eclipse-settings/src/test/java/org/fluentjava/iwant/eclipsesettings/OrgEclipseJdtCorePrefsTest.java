@@ -16,7 +16,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
-				formatter, JavaCompliance.JAVA_1_6);
+				formatter, JavaCompliance.JAVA_1_6, false);
 
 		assertEquals("org.eclipse.jdt.core.compiler.problem.deadCode=warning\n",
 				prefs.asPropertyLine(CodeStyle.DEAD_CODE));
@@ -39,7 +39,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
-				formatter, JavaCompliance.JAVA_1_6);
+				formatter, JavaCompliance.JAVA_1_6, false);
 
 		assertEquals("org.eclipse.jdt.core.compiler.problem.deadCode=ignore\n",
 				prefs.asPropertyLine(CodeStyle.DEAD_CODE));
@@ -62,19 +62,19 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 				+ "missingOverrideAnnotationForInterfaceMethodImplementation=disabled\n",
 				new OrgEclipseJdtCorePrefs(
 						CodeStylePolicy.defaultsExcept().ignore(style).end(),
-						formatter, JavaCompliance.JAVA_1_6)
+						formatter, JavaCompliance.JAVA_1_6, false)
 								.asPropertyLine(style));
 		assertEquals("org.eclipse.jdt.core.compiler.problem."
 				+ "missingOverrideAnnotationForInterfaceMethodImplementation=enabled\n",
 				new OrgEclipseJdtCorePrefs(
 						CodeStylePolicy.defaultsExcept().warn(style).end(),
-						formatter, JavaCompliance.JAVA_1_6)
+						formatter, JavaCompliance.JAVA_1_6, false)
 								.asPropertyLine(style));
 		assertEquals("org.eclipse.jdt.core.compiler.problem."
 				+ "missingOverrideAnnotationForInterfaceMethodImplementation=enabled\n",
 				new OrgEclipseJdtCorePrefs(
 						CodeStylePolicy.defaultsExcept().fail(style).end(),
-						formatter, JavaCompliance.JAVA_1_6)
+						formatter, JavaCompliance.JAVA_1_6, false)
 								.asPropertyLine(style));
 	}
 
@@ -83,7 +83,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
-				formatter, JavaCompliance.JAVA_1_6);
+				formatter, JavaCompliance.JAVA_1_6, false);
 
 		StringBuilder b = new StringBuilder();
 		b.append("#Fri Jan 13 10:19:42 EET 2012\n");
@@ -803,7 +803,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
-				formatter, JavaCompliance.JAVA_1_6);
+				formatter, JavaCompliance.JAVA_1_6, false);
 
 		String fileContent = prefs.asFileContent();
 
@@ -824,7 +824,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		formatter.lineSplit = 120;
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
-				formatter, JavaCompliance.JAVA_1_6);
+				formatter, JavaCompliance.JAVA_1_6, false);
 
 		String fileContent = prefs.asFileContent();
 
@@ -846,7 +846,7 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(policy.end(),
-				formatter, JavaCompliance.JAVA_1_7);
+				formatter, JavaCompliance.JAVA_1_7, false);
 
 		String content = prefs.asFileContent();
 
@@ -863,6 +863,21 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 				.contains("org.eclipse.jdt.core.compiler.compliance=1.7\n"));
 		assertTrue(
 				content.contains("org.eclipse.jdt.core.compiler.source=1.7\n"));
+	}
+
+	public void testKotlinSupport() {
+		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
+		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
+
+		OrgEclipseJdtCorePrefs withKotlin = new OrgEclipseJdtCorePrefs(
+				policy.end(), formatter, JavaCompliance.JAVA_11, true);
+		OrgEclipseJdtCorePrefs noKotlin = new OrgEclipseJdtCorePrefs(
+				policy.end(), formatter, JavaCompliance.JAVA_11, false);
+
+		String exclusionFilterLine = "org.eclipse.jdt.core.builder.resourceCopyExclusionFilter=*.kt\n";
+
+		assertTrue(withKotlin.asFileContent().contains(exclusionFilterLine));
+		assertFalse(noKotlin.asFileContent().contains(exclusionFilterLine));
 	}
 
 }

@@ -40,4 +40,16 @@ public class KotlinVersionTest {
 		assertEquals(kotlin.compilerDistroUrl(), distro.url().toString());
 	}
 
+	@Test
+	public void stdlibIsABinModuleReferringToJarAndSourcesUnderUnzippedDistro() {
+		KotlinVersion kotlin = KotlinVersion._1_3_60();
+
+		JavaBinModule lib = kotlin.kotlinStdlib();
+
+		assertEquals("kotlin-1.3.60-kotlinc_lib_kotlin-stdlib.jar",
+				lib.mainArtifact().name());
+		assertEquals("kotlin-1.3.60-kotlinc_lib_kotlin-stdlib-sources.jar",
+				lib.source().name());
+	}
+
 }

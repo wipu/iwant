@@ -12,7 +12,6 @@ public class OrgJetbrainsKotlinCorePrefs {
 		b.append("codeStyle/globalsOverridden=true\n");
 		b.append("eclipse.preferences.version=1\n");
 		b.append("globalsOverridden=true\n");
-		b.append("jvmTarget=JVM_1_8\n");
 		return b.toString();
 	}
 

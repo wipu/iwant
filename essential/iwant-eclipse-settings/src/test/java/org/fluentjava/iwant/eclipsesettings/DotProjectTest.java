@@ -163,7 +163,7 @@ public class DotProjectTest extends TestCase {
 		expected.append("                        <name>kotlin_bin</name>\n");
 		expected.append("                        <type>2</type>\n");
 		expected.append(
-				"                        <locationURI>/kotlin-project</locationURI>\n");
+				"                        <locationURI>org.jetbrains.kotlin.core.filesystem:/kotlin-project/kotlin_bin</locationURI>\n");
 		expected.append("                </link>\n");
 		expected.append("        </linkedResources>\n");
 		expected.append("</projectDescription>\n");

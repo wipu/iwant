@@ -33,6 +33,20 @@ public class KotlinVersion {
 				"kotlinc/lib/kotlin-ant.jar");
 	}
 
+	public JavaBinModule kotlinStdlib() {
+		Target jar = distroFileWithVersionInName(
+				"kotlinc/lib/kotlin-stdlib.jar");
+		Target src = distroFileWithVersionInName(
+				"kotlinc/lib/kotlin-stdlib-sources.jar");
+		return JavaBinModule.providing(jar, src).end();
+	}
+
+	private Target distroFileWithVersionInName(String relpath) {
+		String versionedName = "kotlin-" + version + "-"
+				+ relpath.replace("/", "_");
+		return new SubPath(versionedName, kotlinCompilerDistro(), relpath);
+	}
+
 	public Downloaded kotlinCompilerDistroZip() {
 		String name = "kotlin-compiler-" + version;
 		return Downloaded.withName(name + ".zip").url(compilerDistroUrl())

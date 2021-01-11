@@ -88,8 +88,9 @@ public class DotProject {
 			b.append("                <link>\n");
 			b.append("                        <name>kotlin_bin</name>\n");
 			b.append("                        <type>2</type>\n");
-			b.append("                        <locationURI>/" + name
-					+ "</locationURI>\n");
+			b.append(
+					"                        <locationURI>org.jetbrains.kotlin.core.filesystem:/"
+							+ name + "/kotlin_bin</locationURI>\n");
 			b.append("                </link>\n");
 			b.append("        </linkedResources>\n");
 		}

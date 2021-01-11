@@ -11,13 +11,15 @@ public class OrgEclipseJdtCorePrefs {
 	private final CodeStylePolicy codeStylePolicy;
 	private final CodeFormatterPolicy formatterPolicy;
 	private final JavaCompliance javaCompliance;
+	private final boolean hasKotlinSupport;
 
 	public OrgEclipseJdtCorePrefs(CodeStylePolicy codeStylePolicy,
-			CodeFormatterPolicy formatterPolicy,
-			JavaCompliance javaCompliance) {
+			CodeFormatterPolicy formatterPolicy, JavaCompliance javaCompliance,
+			boolean hasKotlinSupport) {
 		this.codeStylePolicy = codeStylePolicy;
 		this.formatterPolicy = formatterPolicy;
 		this.javaCompliance = javaCompliance;
+		this.hasKotlinSupport = hasKotlinSupport;
 	}
 
 	private static String asPropertyLine(CodeStyle style,
@@ -228,6 +230,10 @@ public class OrgEclipseJdtCorePrefs {
 		StringBuilder b = new StringBuilder();
 		b.append("#Fri Jan 13 10:19:42 EET 2012\n");
 		b.append("eclipse.preferences.version=1\n");
+		if (hasKotlinSupport) {
+			b.append(
+					"org.eclipse.jdt.core.builder.resourceCopyExclusionFilter=*.kt\n");
+		}
 		b.append(
 				"org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled\n");
 		b.append("org.eclipse.jdt.core.compiler.codegen.targetPlatform="

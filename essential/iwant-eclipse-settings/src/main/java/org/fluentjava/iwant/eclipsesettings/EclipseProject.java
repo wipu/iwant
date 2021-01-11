@@ -91,7 +91,8 @@ public class EclipseProject {
 
 	public OrgEclipseJdtCorePrefs orgEclipseJdtCorePrefs() {
 		return new OrgEclipseJdtCorePrefs(module.codeStylePolicy(),
-				module.codeFormatterPolicy(), module.javaCompliance());
+				module.codeFormatterPolicy(), module.javaCompliance(),
+				hasKotlinSupport());
 	}
 
 	private boolean hasExternalBuilder() {

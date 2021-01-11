@@ -17,7 +17,7 @@ public class ImpossibleEnumSwitchCasesTest {
 	public void illegalCodeStyleAsPropertyLine() {
 		OrgEclipseJdtCorePrefs prefs = new OrgEclipseJdtCorePrefs(
 				CodeStylePolicy.defaultsExcept().end(),
-				CodeFormatterPolicy.defaults(), JavaCompliance.JAVA_1_8);
+				CodeFormatterPolicy.defaults(), JavaCompliance.JAVA_1_8, false);
 
 		try {
 			prefs.asPropertyLine(CodeStyle._ILLEGAL_);
