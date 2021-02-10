@@ -18,7 +18,6 @@ import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.StringFilter;
 import org.fluentjava.iwant.api.model.SystemEnv;
 import org.fluentjava.iwant.api.model.Target;
-import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 
 // TODO this class needs refactoring. A new concept of compiler is needed
 // so no more conditional logic like "do we use scala, do we use kotlin"
@@ -542,8 +541,6 @@ public class JavaSrcModule extends JavaModule {
 		String artifactName = name() + "-main-classes";
 		if (kotlinVersion != null) {
 			return new KotlinAndJavaClasses(artifactName, kotlinVersion,
-					TestedIwantDependencies.antJar(),
-					TestedIwantDependencies.antLauncherJar(),
 					mainJavasAsPaths(), mainResourcesAsPaths(), classpath);
 		}
 		Path scalaClasses = null;
@@ -596,8 +593,6 @@ public class JavaSrcModule extends JavaModule {
 		String artifactName = name() + "-test-classes";
 		if (kotlinVersion != null) {
 			return new KotlinAndJavaClasses(artifactName, kotlinVersion,
-					TestedIwantDependencies.antJar(),
-					TestedIwantDependencies.antLauncherJar(),
 					testJavasAsPaths(), testResourcesAsPaths(), classpath);
 		}
 		Path scalaClasses = null;

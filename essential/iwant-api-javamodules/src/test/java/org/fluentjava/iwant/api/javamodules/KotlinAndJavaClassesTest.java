@@ -7,18 +7,11 @@ import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
-import org.fluentjava.iwant.core.download.Downloaded;
-import org.fluentjava.iwant.core.download.GnvArtifact;
-import org.fluentjava.iwant.core.download.TestedIwantDependencies;
-import org.fluentjava.iwant.entry.Iwant.ExitCalledException;
+import org.fluentjava.iwant.entry.Iwant.IwantException;
 
 public class KotlinAndJavaClassesTest extends IwantTestCase {
 
 	private static final KotlinVersion KOTLIN = KotlinVersion._1_3_60();
-	private final GnvArtifact<Downloaded> antJar = TestedIwantDependencies
-			.antJar();
-	private final GnvArtifact<Downloaded> antLauncherJar = TestedIwantDependencies
-			.antLauncherJar();
 
 	@Override
 	protected boolean mustCaptureSystemOutAndErr() {
@@ -30,19 +23,13 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 		cacheProvidesRealDownloaded(KOTLIN.kotlinCompilerDistroZip().url());
 		KOTLIN.kotlinCompilerDistro().path(ctx);
 		KOTLIN.kotlinAntJar().path(ctx);
-
-		cacheProvidesRealDownloaded(antJar.artifact().url());
-		antJar.path(ctx);
-		cacheProvidesRealDownloaded(antLauncherJar.artifact().url());
-		antLauncherJar.path(ctx);
 	}
 
 	public void testSrcDirsAreIgredients() {
 		Path src1 = Source.underWsroot("src1");
 		Path src2 = Source.underWsroot("src1");
-		Target target = new KotlinAndJavaClasses("classes", KOTLIN, antJar,
-				antLauncherJar, Arrays.asList(src1, src2), Arrays.asList(),
-				Arrays.asList());
+		Target target = new KotlinAndJavaClasses("classes", KOTLIN,
+				Arrays.asList(src1, src2), Arrays.asList(), Arrays.asList());
 
 		assertTrue(target.ingredients().contains(src1));
 		assertTrue(target.ingredients().contains(src2));
@@ -51,9 +38,8 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 	public void testResourceDirsAreIgredients() {
 		Path res1 = Source.underWsroot("res1");
 		Path res2 = Source.underWsroot("res1");
-		Target target = new KotlinAndJavaClasses("classes", KOTLIN, antJar,
-				antLauncherJar, Arrays.asList(), Arrays.asList(res1, res2),
-				Arrays.asList());
+		Target target = new KotlinAndJavaClasses("classes", KOTLIN,
+				Arrays.asList(), Arrays.asList(res1, res2), Arrays.asList());
 
 		assertTrue(target.ingredients().contains(res1));
 		assertTrue(target.ingredients().contains(res2));
@@ -62,15 +48,15 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 	public void testCrapJavaToPathFails() throws Exception {
 		wsRootHasFile("src/Crap.java", "crap");
 		Source src = Source.underWsroot("src");
-		Target target = new KotlinAndJavaClasses("classes", KOTLIN, antJar,
-				antLauncherJar, Arrays.asList(src), Arrays.asList(),
-				Arrays.asList());
+		Target target = new KotlinAndJavaClasses("classes", KOTLIN,
+				Arrays.asList(src), Arrays.asList(), Arrays.asList());
 
 		try {
 			target.path(ctx);
 			fail();
-		} catch (ExitCalledException e) {
-			assertEquals(null, e.getMessage());
+		} catch (IwantException e) {
+			assertEquals("Script exited with non-zero status 1",
+					e.getMessage());
 		}
 		assertTrue(err().contains("crap"));
 	}
@@ -78,9 +64,8 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 	public void testJavaOnlyCompiles() throws Exception {
 		wsRootHasFile("src/Minimal.java", "class Minimal {}");
 		Source src = Source.underWsroot("src");
-		Target target = new KotlinAndJavaClasses("classes", KOTLIN, antJar,
-				antLauncherJar, Arrays.asList(src), Arrays.asList(),
-				Arrays.asList());
+		Target target = new KotlinAndJavaClasses("classes", KOTLIN,
+				Arrays.asList(src), Arrays.asList(), Arrays.asList());
 
 		target.path(ctx);
 
@@ -91,14 +76,46 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 		wsRootHasFile("src/MinimalJava.java", "class MinimalJava {}");
 		wsRootHasFile("src/MinimalKotlin.kt", "class MinimalKotlin {}");
 		Source src = Source.underWsroot("src");
-		Target target = new KotlinAndJavaClasses("classes", KOTLIN, antJar,
-				antLauncherJar, Arrays.asList(src), Arrays.asList(),
-				Arrays.asList());
+		Target target = new KotlinAndJavaClasses("classes", KOTLIN,
+				Arrays.asList(src), Arrays.asList(), Arrays.asList());
 
 		target.path(ctx);
 
 		assertTrue(new File(cached, "classes/MinimalJava.class").exists());
 		assertTrue(new File(cached, "classes/MinimalKotlin.class").exists());
+	}
+
+	/**
+	 * Using AntRunner leaked memory. It is either kotlinc itself or its ant
+	 * adapter. Now we fork a new process via a shell script.
+	 */
+	public void testTargetDoesRunOutOfMemoryWhenRepeated() throws Exception {
+		if (true) {
+			System.err
+					.println("Not running the slow testTargetDoesNotLeakMemory"
+							+ " unless temporarily enabled.");
+			return;
+		}
+		@SuppressWarnings("unused")
+		Source src = Source.underWsroot("src");
+		int iterationCount = 100;
+		for (int i = 0; i < iterationCount; i++) {
+			wsRootHasFile("src/MinimalJava.java", "class MinimalJava {}");
+			wsRootHasFile("src/MinimalKotlin.kt", "class MinimalKotlin {}");
+			Target target = new KotlinAndJavaClasses("classes", KOTLIN,
+					Arrays.asList(src), Arrays.asList(), Arrays.asList());
+			target.path(ctx);
+
+			assertTrue(new File(cached, "classes/MinimalJava.class").exists());
+			assertTrue(
+					new File(cached, "classes/MinimalKotlin.class").exists());
+
+			Runtime rt = Runtime.getRuntime();
+			rt.gc();
+			long fm = rt.freeMemory();
+			System.out.println(fm);
+		}
+
 	}
 
 }

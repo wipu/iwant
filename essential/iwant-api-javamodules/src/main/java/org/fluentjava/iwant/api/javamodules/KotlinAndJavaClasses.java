@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.fluentjava.iwant.api.antrunner.AntRunner;
+import org.fluentjava.iwant.api.core.ScriptGenerated;
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.TargetEvaluationContext;
 import org.fluentjava.iwant.api.target.TargetBase;
@@ -16,20 +16,16 @@ import org.fluentjava.iwant.entry.Iwant;
 public class KotlinAndJavaClasses extends TargetBase {
 
 	private final Path kotlinAntJar;
-	private final Path antJar;
-	private final Path antLauncherJar;
 	private final List<Path> srcDirs;
 	private final List<Path> resourceDirs;
 	private final List<Path> classLocations;
 
-	public KotlinAndJavaClasses(String name, KotlinVersion kotlin, Path antJar,
-			Path antLauncherJar, Collection<? extends Path> srcDirs,
+	public KotlinAndJavaClasses(String name, KotlinVersion kotlin,
+			Collection<? extends Path> srcDirs,
 			Collection<? extends Path> resourceDirs,
 			Collection<? extends Path> classLocations) {
 		super(name);
 		this.kotlinAntJar = kotlin.kotlinAntJar();
-		this.antJar = antJar;
-		this.antLauncherJar = antLauncherJar;
 		this.srcDirs = new ArrayList<>(srcDirs);
 		this.resourceDirs = new ArrayList<>(resourceDirs);
 		this.classLocations = new ArrayList<>(classLocations);
@@ -53,9 +49,7 @@ public class KotlinAndJavaClasses extends TargetBase {
 		return iUse.ingredients("srcDirs", srcDirs)
 				.ingredients("resourceDirs", resourceDirs)
 				.ingredients("classLocations", classLocations)
-				.ingredients("kotlin-ant.jar", kotlinAntJar)
-				.ingredients("antJar", antJar)
-				.ingredients("antLauncherJar", antLauncherJar).nothingElse();
+				.ingredients("kotlin-ant.jar", kotlinAntJar).nothingElse();
 	}
 
 	@Override
@@ -63,9 +57,11 @@ public class KotlinAndJavaClasses extends TargetBase {
 		File tmp = ctx.freshTemporaryDirectory();
 		File buildXml = new File(tmp, "build.xml");
 		FileUtil.newTextFile(buildXml, buildXml(ctx));
+		File buildSh = new File(tmp, "build.sh");
+		FileUtil.newTextFile(buildSh, buildSh());
+		buildSh.setExecutable(true);
 
-		AntRunner.runAnt(Arrays.asList(toolsJar(), ctx.cached(antJar),
-				ctx.cached(antLauncherJar)), buildXml, "-v");
+		ScriptGenerated.execute(tmp, Arrays.asList("./build.sh"));
 	}
 
 	/**
@@ -79,6 +75,14 @@ public class KotlinAndJavaClasses extends TargetBase {
 		}
 		File toolsJar = new File(javaHome + "/lib/tools.jar");
 		return toolsJar;
+	}
+
+	private static String buildSh() {
+		StringBuilder b = new StringBuilder();
+		b.append("#!/bin/bash\n");
+		b.append("set -euo pipefail\n");
+		b.append("ant\n");
+		return b.toString();
 	}
 
 	// TODO configurable java compliance, encoding, debug
