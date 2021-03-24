@@ -36,7 +36,7 @@ cmd "cat as-iwant-tutorial-developer/.i-cached/target/jacoco-report/report.csv"
 out-was <<EOF
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 jacoco-report,com.example.hello,HelloMain,10,4,0,0,3,1,2,1,2,1
-jacoco-report,com.example.helloutil,HelloUtil,3,11,0,0,1,1,1,1,1,1
+jacoco-report,com.example.helloutil,HelloUtil,3,4,0,0,1,1,1,1,1,1
 EOF
 
 }

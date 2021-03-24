@@ -22,7 +22,7 @@ import org.fluentjava.iwant.eclipsesettings.EclipseSettings;
 
 public class IwanttutorialWorkspace implements Workspace {
 
-	private final ScalaVersion scala = ScalaVersion._2_11_7();
+	private final ScalaVersion scala = ScalaVersion.latestTested();
 
 	class ExampleModules extends JavaModules {
 

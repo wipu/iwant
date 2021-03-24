@@ -35,6 +35,17 @@ public class ScalaVersion {
 		return of("2.12.3");
 	}
 
+	public static ScalaVersion _2_12_13() {
+		return of("2.12.13");
+	}
+
+	/**
+	 * Unfortunately 2.13.* no more supports ant for compilation...
+	 */
+	public static ScalaVersion latestTested() {
+		return _2_12_13();
+	}
+
 	public static ScalaVersion of(String value) {
 		return new ScalaVersion(value);
 	}
