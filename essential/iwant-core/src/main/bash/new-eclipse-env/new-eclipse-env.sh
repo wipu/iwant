@@ -63,7 +63,7 @@ OPT_SUBCLIPSE=false
 OPT_EGIT=false
 
 if [ $# -lt 3 ]; then
-    log "Usage: $0 TARGETDIR linux64|win64 2020-06|2019-12|2019-09|2019-06 [OPTS...]"
+    log "Usage: $0 TARGETDIR linux64|win64 2020-12|2020-06|2019-12|2019-09|2019-06 [OPTS...]"
     log "Supported OPTS:"
     log "  --egit      : enable git plugin (disabled by default)"
     log "  --subclipse : enable svn plugin (disabled by default)"
@@ -106,6 +106,10 @@ ECL_URLBASE='https://www.eclipse.org/downloads/download.php?file=/technology/epp
 eclipse-url-linux64() {
     DISTNAME=$ECL_DISTBASE-linux-gtk-x86_64.tar.gz
     DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
+}
+
+eclipse-sum-linux64-2020-12() {
+    DISTSUM='1d5aac59454d35175c6b388674d23de91f45d953141389d82b5557d46de92beb2b14396427bfab8f6b198ed58bed67094755d26d3d379c92733f2a74d51b02bd'
 }
 
 eclipse-sum-linux64-2020-06() {
