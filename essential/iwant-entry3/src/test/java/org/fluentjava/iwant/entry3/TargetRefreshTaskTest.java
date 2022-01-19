@@ -7,6 +7,7 @@ import java.net.ConnectException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.fluentjava.iwant.api.core.HelloTarget;
@@ -71,7 +72,10 @@ public class TargetRefreshTaskTest extends TestCase {
 	}
 
 	private TargetRefreshTask task(Target target) {
-		return new TargetRefreshTask(target, ctx, caches);
+		// here instance caching is not important so we simply create a
+		// new cache every time
+		HashMap<String, TargetRefreshTask> instanceCache = new HashMap<>();
+		return TargetRefreshTask.instance(target, ctx, caches, instanceCache);
 	}
 
 	public void testTaskNameIsTargetsName() {

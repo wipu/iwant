@@ -91,7 +91,7 @@ public class TaskMock implements Task {
 	public void shallEventuallyStartRefresh(
 			ResourceMock... expectedAllocatedResource) {
 		log(this, "shall eventually start refresh  with ",
-				expectedAllocatedResource);
+				Arrays.toString(expectedAllocatedResource));
 		synchronized (refreshStartLock) {
 			while (!hasStartedRefresh) {
 				try {
@@ -104,7 +104,7 @@ public class TaskMock implements Task {
 					allocatedResources.values().toString());
 		}
 		log(this, "did eventually start refresh with ",
-				expectedAllocatedResource);
+				Arrays.toString(expectedAllocatedResource));
 	}
 
 	public void shallNotStartRefresh() {

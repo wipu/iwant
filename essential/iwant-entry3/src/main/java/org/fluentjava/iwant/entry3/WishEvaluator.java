@@ -3,7 +3,9 @@ package org.fluentjava.iwant.entry3;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.fluentjava.iwant.api.bash.TargetImplementedInBash;
@@ -136,9 +138,9 @@ public class WishEvaluator {
 		if (path instanceof Target) {
 			Target target = (Target) path;
 			try {
-				Planner planner = new Planner(
-						new TargetRefreshTask(target, ctx, caches),
-						workerCount);
+				Map<String, TargetRefreshTask> taskInstanceCache = new HashMap<>();
+				Planner planner = new Planner(TargetRefreshTask.instance(target,
+						ctx, caches, taskInstanceCache), workerCount);
 				planner.start();
 				planner.join();
 			} catch (RuntimeException e) {

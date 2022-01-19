@@ -24,8 +24,8 @@ public class TargetRefreshTask implements Task {
 	private final Collection<Task> deps = new ArrayList<>();
 	private final Caches caches;
 
-	public TargetRefreshTask(Target target, TargetEvaluationContext ctx,
-			Caches caches) {
+	private TargetRefreshTask(Target target, TargetEvaluationContext ctx,
+			Caches caches, Map<String, TargetRefreshTask> instanceCache) {
 		this.target = target;
 		this.ctx = ctx;
 		this.caches = caches;
@@ -33,8 +33,20 @@ public class TargetRefreshTask implements Task {
 			if (!(ingredient instanceof Target)) {
 				continue;
 			}
-			deps.add(new TargetRefreshTask((Target) ingredient, ctx, caches));
+			deps.add(TargetRefreshTask.instance((Target) ingredient, ctx,
+					caches, instanceCache));
 		}
+	}
+
+	public static TargetRefreshTask instance(Target target,
+			TargetEvaluationContext ctx, Caches caches,
+			Map<String, TargetRefreshTask> instanceCache) {
+		TargetRefreshTask inst = instanceCache.get(target.name());
+		if (inst == null) {
+			inst = new TargetRefreshTask(target, ctx, caches, instanceCache);
+			instanceCache.put(target.name(), inst);
+		}
+		return inst;
 	}
 
 	@Override

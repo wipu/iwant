@@ -1,15 +1,13 @@
 package org.fluentjava.iwant.planner;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.plannerapi.Resource;
@@ -19,79 +17,104 @@ import org.fluentjava.iwant.plannerapi.TaskDirtiness;
 
 public class TaskQueue {
 
+	private final SortedSet<QueuedTask> queuedTasks = new TreeSet<>();
+	private final SortedSet<QueuedTask> stillDirty = new TreeSet<>();
+	private final SortedSet<QueuedTask> refreshing = new TreeSet<>();
+	private final QueuedTask root;
 	private final Map<Task, TaskDirtiness> dirtinessByTask = new HashMap<>();
-	private final Set<Task> stillDirty = new HashSet<>();
-	private final Set<Task> refreshable = new HashSet<>();
-	private final Set<Task> refreshing = new HashSet<>();
-	private final Task rootTask;
 	private boolean isNonParallelRefreshing = false;
 
 	public TaskQueue(Task rootTask) {
 		Iwant.debugLog("TaskQueue", "building queue");
 		long t1 = System.currentTimeMillis();
-		this.rootTask = rootTask;
-		evaluateDirtinesses(rootTask, dirtinessByTask);
-		stillDirty.addAll(findDirties(rootTask, dirtinessByTask));
-		refreshable.addAll(refreshable(rootTask, stillDirty));
+
+		this.root = queuedTask(rootTask, new HashMap<>());
+
+		for (QueuedTask qt : queuedTasks) {
+			qt.tellDependantsIfDirty();
+		}
+		for (QueuedTask qt : queuedTasks) {
+			if (qt.isInitiallyDirectlyOrIndirectlyDirty) {
+				stillDirty.add(qt);
+			}
+		}
+		for (QueuedTask qt : queuedTasks) {
+			dirtinessByTask.put(qt.task, qt.task.dirtiness());
+		}
+
 		long t2 = System.currentTimeMillis();
 		Iwant.debugLog("TaskQueue", "queue ready in " + (t2 - t1) + "ms.");
 	}
 
-	private static Set<Task> refreshable(Task root, Set<Task> dirty) {
-		Set<Task> retval = new HashSet<>();
-		boolean hasDirtyDeps = false;
-		for (Task dep : root.dependencies()) {
-			retval.addAll(refreshable(dep, dirty));
-			if (dirty.contains(dep)) {
-				hasDirtyDeps = true;
+	private QueuedTask queuedTask(Task task, Map<Task, QueuedTask> cache) {
+		QueuedTask queued = cache.get(task);
+		if (queued == null) {
+			queued = new QueuedTask(task);
+			cache.put(task, queued);
+			for (Task dep : task.dependencies()) {
+				QueuedTask queuedDep = queuedTask(dep, cache);
+				queued.addDep(queuedDep);
 			}
 		}
-		if (!hasDirtyDeps && dirty.contains(root)) {
-			retval.add(root);
+		return queued;
+	}
+
+	private class QueuedTask implements Comparable<QueuedTask> {
+		private final Task task;
+		private final SortedSet<QueuedTask> dependants = new TreeSet<>();
+		private Boolean isInitiallyDirectlyOrIndirectlyDirty;
+		private final SortedSet<QueuedTask> stillDirtyDependencies = new TreeSet<>();
+
+		QueuedTask(Task task) {
+			this.task = task;
+			queuedTasks.add(this);
 		}
-		return retval;
+
+		@Override
+		public String toString() {
+			return getClass().getSimpleName() + ":" + task;
+		}
+
+		@Override
+		public int compareTo(QueuedTask o) {
+			return task.name().compareTo(o.task.name());
+		}
+
+		void tellDependantsIfDirty() {
+			if (isInitiallyDirectlyOrIndirectlyDirty != null) {
+				// already evaluated our dirtiness
+				return;
+			}
+			isInitiallyDirectlyOrIndirectlyDirty = task.dirtiness().isDirty();
+			if (isInitiallyDirectlyOrIndirectlyDirty) {
+				for (QueuedTask dependant : dependants) {
+					dependant.addDirtyDependency(this);
+				}
+			}
+		}
+
+		void addDirtyDependency(QueuedTask dirtyDep) {
+			// it makes us dirty
+			isInitiallyDirectlyOrIndirectlyDirty = true;
+			stillDirtyDependencies.add(dirtyDep);
+			// and it makes our dependants dirty:
+			for (QueuedTask dependant : dependants) {
+				dependant.addDirtyDependency(this);
+			}
+		}
+
+		void addDep(QueuedTask dep) {
+			dep.dependants.add(this);
+		}
+
+		boolean hasStillDirtyDependencies() {
+			return !stillDirtyDependencies.isEmpty();
+		}
+
 	}
 
 	public TaskDirtiness dirtiness(Task task) {
 		return dirtinessByTask.get(task);
-	}
-
-	private static void evaluateDirtinesses(Task task,
-			Map<Task, TaskDirtiness> dirtinessByTask) {
-		if (dirtinessByTask.containsKey(task)) {
-			// already evaluated
-			return;
-		}
-		TaskDirtiness dirtiness = task.dirtiness();
-		dirtinessByTask.put(task, dirtiness);
-		for (Task dep : task.dependencies()) {
-			evaluateDirtinesses(dep, dirtinessByTask);
-		}
-	}
-
-	private static List<Task> findDirties(Task root,
-			Map<Task, TaskDirtiness> dirtinessByTask) {
-		List<Task> retval = new ArrayList<>();
-		List<Task> dirtyDeps = new ArrayList<>();
-		for (Task dep : root.dependencies()) {
-			dirtyDeps.addAll(findDirties(dep, dirtinessByTask));
-		}
-		retval.addAll(dirtyDeps);
-		if (!dirtyDeps.isEmpty() || dirtinessByTask.get(root).isDirty()) {
-			retval.add(root);
-		}
-		return retval;
-	}
-
-	private void remove(Task finishedTask) {
-		boolean wasDirty = stillDirty.remove(finishedTask);
-		boolean wasRefreshing = refreshing.remove(finishedTask);
-		if (!wasDirty || !wasRefreshing) {
-			throw new IllegalStateException(
-					"Unexpected removal: " + finishedTask.name());
-		}
-		refreshable.clear();
-		refreshable.addAll(refreshable(rootTask, stillDirty));
 	}
 
 	public void markDone(TaskAllocation allocation) {
@@ -104,100 +127,118 @@ public class TaskQueue {
 	}
 
 	public TaskAllocation next() {
-		TaskAllocation next = topmostRefreshable(rootTask, refreshable);
+		TaskAllocationImpl next = topmostRefreshable(root);
 		if (next == null) {
 			return null;
 		}
 		// don't give to other workers:
-		refreshing.add(next.task());
+		refreshing.add(next.queuedTask);
 		return next;
 	}
 
-	private TaskAllocation topmostRefreshable(Task task,
-			Set<Task> refreshable) {
-		if (refreshable.contains(task)) {
-			if (refreshing.contains(task)) {
-				// the task is already refreshing
-				return null;
-			}
-			if (!task.supportsParallelism() && !refreshing.isEmpty()) {
-				// the task cannot run with others:
-				return null;
-			}
-			if (isNonParallelRefreshing) {
-				// a non-parallel task does not want disturbances:
-				return null;
-			}
-			Collection<ResourcePool> resourcePools = task.requiredResources();
-			for (ResourcePool resourcePool : resourcePools) {
-				if (!resourcePool.hasFreeResources()) {
-					// the task can't have all required resources:
-					return null;
+	private TaskAllocationImpl topmostRefreshable(QueuedTask qt) {
+		Task task = qt.task;
+		if (refreshing.contains(qt)) {
+			// the task is already refreshing
+			return null;
+		}
+		if (!task.supportsParallelism() && !refreshing.isEmpty()) {
+			// the task cannot run with others:
+			return null;
+		}
+		if (isNonParallelRefreshing) {
+			// a non-parallel task does not want disturbances:
+			return null;
+		}
+		if (qt.hasStillDirtyDependencies()) {
+			for (QueuedTask dep : qt.stillDirtyDependencies) {
+				TaskAllocationImpl depAllocation = topmostRefreshable(dep);
+				if (depAllocation != null) {
+					return depAllocation;
 				}
 			}
-			return new TaskAllocationImpl(task, resourcePools);
+			// the whole subree is still nonrefreshable
+			return null;
 		}
-		for (Task dep : task.dependencies()) {
-			TaskAllocation sub = topmostRefreshable(dep, refreshable);
-			if (sub != null) {
-				return sub;
+		Collection<ResourcePool> resourcePools = task.requiredResources();
+		for (ResourcePool resourcePool : resourcePools) {
+			if (!resourcePool.hasFreeResources()) {
+				// the task can't have all required resources:
+				return null;
 			}
 		}
+		if (stillDirty.contains(qt)) {
+			return new TaskAllocationImpl(qt, resourcePools);
+		}
+		// nothing to allocate here
 		return null;
 	}
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + ":" + rootTask;
+		return getClass().getSimpleName() + ":" + root.task;
 	}
 
 	private class TaskAllocationImpl implements TaskAllocation {
 
-		private final Task task;
-		private final Map<ResourcePool, Resource> allocations = new LinkedHashMap<>();
+		private final QueuedTask queuedTask;
+		private final Map<ResourcePool, Resource> resourceAllocations = new LinkedHashMap<>();
 
-		TaskAllocationImpl(Task task, Collection<ResourcePool> resourcePools) {
-			this.task = task;
+		TaskAllocationImpl(QueuedTask queuedTask,
+				Collection<ResourcePool> resourcePools) {
+			this.queuedTask = queuedTask;
 			for (ResourcePool resourcePool : resourcePools) {
 				Resource resource = resourcePool.acquire();
 				// TODO what if a task declares the same pool many times?
-				allocations.put(resourcePool, resource);
+				resourceAllocations.put(resourcePool, resource);
 			}
-			if (!task.supportsParallelism()) {
+			if (!queuedTask.task.supportsParallelism()) {
 				isNonParallelRefreshing = true;
 			}
 		}
 
 		@Override
 		public Task task() {
-			return task;
+			return queuedTask.task;
 		}
 
 		@Override
 		public Map<ResourcePool, Resource> allocatedResources() {
-			return Collections.unmodifiableMap(allocations);
+			return Collections.unmodifiableMap(resourceAllocations);
 		}
 
 		@Override
 		public String toString() {
 			StringBuilder b = new StringBuilder();
 			b.append(getClass().getSimpleName());
-			b.append("(").append(task);
-			b.append(" ").append(allocations);
+			b.append("(").append(queuedTask.task);
+			b.append(" ").append(resourceAllocations);
 			b.append(")");
 			return b.toString();
 		}
 
 		void releaseResources() {
-			remove(task);
-			for (Entry<ResourcePool, Resource> allocation : allocations
+			boolean wasRefreshing = refreshing.remove(queuedTask);
+			if (!wasRefreshing) {
+				throw new IllegalStateException(
+						"Was not refreshing: " + queuedTask.task);
+			}
+			boolean wasDirty = stillDirty.remove(queuedTask);
+			if (!wasDirty) {
+				throw new IllegalStateException(
+						"Was not dirty: " + queuedTask.task);
+			}
+			for (Entry<ResourcePool, Resource> allocation : resourceAllocations
 					.entrySet()) {
 				ResourcePool resourcePool = allocation.getKey();
 				Resource resource = allocation.getValue();
 				resourcePool.release(resource);
 			}
-			if (!task.supportsParallelism()) {
+			if (!queuedTask.task.supportsParallelism()) {
 				isNonParallelRefreshing = false;
+			}
+			for (QueuedTask dependant : queuedTask.dependants) {
+				dependant.stillDirtyDependencies.remove(queuedTask);
 			}
 		}
 
