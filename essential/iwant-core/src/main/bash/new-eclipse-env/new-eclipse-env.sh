@@ -63,7 +63,7 @@ OPT_SUBCLIPSE=false
 OPT_EGIT=false
 
 if [ $# -lt 3 ]; then
-    log "Usage: $0 TARGETDIR linux64|win64 2020-12|2020-06|2019-12|2019-09|2019-06 [OPTS...]"
+    log "Usage: $0 TARGETDIR linux64|win64 2022-03|2020-12|2020-06|2019-12|2019-09|2019-06 [OPTS...]"
     log "Supported OPTS:"
     log "  --egit      : enable git plugin (disabled by default)"
     log "  --subclipse : enable svn plugin (disabled by default)"
@@ -108,6 +108,10 @@ eclipse-url-linux64() {
     DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
 }
 
+eclipse-sum-linux64-2022-03() {
+    DISTSUM='e903ad34560246175289c944c228c1729d843839e5a7caad3b9e8d24bb91760c2911efb7039ebb2ffbec65efc4ef661319938587dc89efe5de848123a277d423'
+}
+
 eclipse-sum-linux64-2020-12() {
     DISTSUM='1d5aac59454d35175c6b388674d23de91f45d953141389d82b5557d46de92beb2b14396427bfab8f6b198ed58bed67094755d26d3d379c92733f2a74d51b02bd'
 }
@@ -131,6 +135,10 @@ eclipse-sum-linux64-2019-06() {
 eclipse-url-win64() {
     DISTNAME=$ECL_DISTBASE-win32-x86_64.zip
     DISTURL=$ECL_URLBASE/$DISTNAME'&r=1'
+}
+
+eclipse-sum-win64-2022-03() {
+    DISTSUM='607b6f92973ff25cdbd136636687c3ca2958bc6b382bdf138373cf693e577dca0db85f92788515e71249a957dec28d8118b208d16d563332473e21b63869c669'
 }
 
 eclipse-sum-win64-2020-06() {
