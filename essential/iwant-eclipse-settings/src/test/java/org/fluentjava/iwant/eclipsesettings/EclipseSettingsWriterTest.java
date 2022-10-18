@@ -30,6 +30,9 @@ public class EclipseSettingsWriterTest extends IwantTestCase {
 		assertTrue(contentOfFileUnderWsRoot(
 				"minimal/.settings/org.eclipse.jdt.ui.prefs")
 						.contains("formatter_settings_version=12\n"));
+		assertTrue(contentOfFileUnderWsRoot(
+				"minimal/.settings/org.eclipse.core.resources.prefs")
+						.contains("=UTF-8"));
 	}
 
 	public void testMinimalWithLocationThatDiffersFromName() {
@@ -50,6 +53,9 @@ public class EclipseSettingsWriterTest extends IwantTestCase {
 		assertTrue(contentOfFileUnderWsRoot(
 				"parent/dir-name/.settings/org.eclipse.jdt.ui.prefs")
 						.contains("formatter_settings_version=12\n"));
+		assertTrue(contentOfFileUnderWsRoot(
+				"parent/dir-name/.settings/org.eclipse.core.resources.prefs")
+						.contains("=UTF-8"));
 	}
 
 	public void testCodeGeneration() {

@@ -405,4 +405,16 @@ public class EclipseSettingsTest extends IwantTestCase {
 						.exists());
 	}
 
+	public void testEncodingIsUtf8() {
+		JavaModule mod = JavaSrcModule.with().name("mod")
+				.locationUnderWsRoot("mod").mainJava("src").end();
+
+		EclipseSettings es = EclipseSettings.with().modules(mod).name("es")
+				.end();
+		es.mutate(seCtx);
+
+		String resourcesPrefs = "mod/.settings/org.eclipse.core.resources.prefs";
+		assertFileContains(resourcesPrefs, "=UTF-8");
+	}
+
 }

@@ -128,6 +128,10 @@ public class EclipseProject {
 		return new OrgEclipseJdtUiPrefs();
 	}
 
+	public OrgEclipseCoreResourcesPrefs orgEclipseCoreResourcesPrefs() {
+		return OrgEclipseCoreResourcesPrefs.withDefaultValues();
+	}
+
 	public OrgJetbrainsKotlinCorePrefs orgJetbrainsKotlinCorePrefs() {
 		return hasKotlinSupport() ? new OrgJetbrainsKotlinCorePrefs() : null;
 	}
