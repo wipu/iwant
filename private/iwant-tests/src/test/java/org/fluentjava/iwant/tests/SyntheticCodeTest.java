@@ -3,7 +3,6 @@ package org.fluentjava.iwant.tests;
 import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
 import org.fluentjava.iwant.api.javamodules.CodeStyle;
 import org.fluentjava.iwant.api.javamodules.CodeStyleValue;
-import org.fluentjava.iwant.api.javamodules.JavaCompliance;
 import org.fluentjava.iwant.api.javamodules.StandardCharacteristics;
 import org.fluentjava.iwant.core.download.FromRepository;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
@@ -37,9 +36,6 @@ public class SyntheticCodeTest {
 
 		FindbugsOutputFormat.valueOf("HTML");
 		FindbugsOutputFormat.values();
-
-		JavaCompliance.valueOf("JAVA_1_8");
-		JavaCompliance.values();
 
 		TabulationCharValue.valueOf("SPACE");
 		TabulationCharValue.values();
