@@ -21,7 +21,7 @@ CLASSES=$CACHED/.internal/entry-classes
 CYG_CLASSES=$(cyg "$CLASSES")
 mkdir -p "$CLASSES"
 CYG_SRC=$(cyg "$AS_SOMEONE/with/java/org/fluentjava/iwant/entry/Iwant.java")
-javac -source 11 -g -d "$CYG_CLASSES" "$CYG_SRC"
+javac --release 11 -g -d "$CYG_CLASSES" "$CYG_SRC"
 
 java \
   -Xmx3G \

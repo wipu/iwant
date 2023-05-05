@@ -22,7 +22,7 @@ public class JacocoDistribution extends TargetBase {
 	}
 
 	public static JacocoDistribution newestTestedVersion() {
-		return ofVersion("0.8.4");
+		return ofVersion("0.8.10");
 	}
 
 	private static Downloaded zip(String version) {

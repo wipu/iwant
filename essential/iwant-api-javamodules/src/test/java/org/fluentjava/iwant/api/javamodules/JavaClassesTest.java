@@ -103,7 +103,7 @@ public class JavaClassesTest extends IwantTestCase {
 		}
 	}
 
-	public void testSourceCompliance17WarnsAboutMissingBootclasspath()
+	public void testSourceCompliance1_7WarnsAboutMissingBootclasspath()
 			throws Exception {
 		wsRootHasFile("src/Valid.java", "class Valid {}");
 		Source src = Source.underWsroot("src");
@@ -113,9 +113,35 @@ public class JavaClassesTest extends IwantTestCase {
 		target.path(ctx);
 
 		assertTrue(new File(cached, "valid/Valid.class").exists());
-		assertEquals("warning: [options] bootstrap class path not set"
-				+ " in conjunction with -source 7\n" + "1 warning\n" + "",
+		assertEquals(
+				"warning: [options] bootstrap class path not set in conjunction with -source 7\n"
+						+ "warning: [options] source value 7 is obsolete and will be removed in a future release\n"
+						+ "warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.\n"
+						+ "3 warnings\n" + "",
 				err());
+	}
+
+	/**
+	 * Without this we get warning: [options] system modules path not set in
+	 * conjunction with -source 11
+	 */
+	public void testJavacOptionsSourceAndTargetAreReplacedWithReleaseFromJava11On() {
+		Source src = Source.underWsroot("src");
+
+		assertEquals("[-Xlint, -Xlint:-serial, -source, 1.8]",
+				JavaClasses.with().name("classes").srcDirs(src)
+						.sourceVersion(JavaCompliance.JAVA_1_8).classLocations()
+						.end().javacOptions().toString());
+
+		assertEquals("[-Xlint, -Xlint:-serial, --release, 11]",
+				JavaClasses.with().name("classes").srcDirs(src)
+						.sourceVersion(JavaCompliance.JAVA_11).classLocations()
+						.end().javacOptions().toString());
+
+		assertEquals("[-Xlint, -Xlint:-serial, --release, 17]",
+				JavaClasses.with().name("classes").srcDirs(src)
+						.sourceVersion(JavaCompliance.JAVA_17).classLocations()
+						.end().javacOptions().toString());
 	}
 
 	public void testToPathCompilesFromMultiplePackages() throws Exception {
@@ -443,7 +469,7 @@ public class JavaClassesTest extends IwantTestCase {
 		assertTrue(JavaClasses.with().name("classes")
 				.srcDirs(Source.underWsroot("src")).debug(true)
 				.sourceVersion(JavaCompliance.JAVA_11).end().contentDescriptor()
-				.contains("  -source\n  11\n  -g"));
+				.contains("  --release\n  11\n  -g"));
 	}
 
 	public void testJava8CompilesWithWarningsAboutBootclasspath()
@@ -474,6 +500,19 @@ public class JavaClassesTest extends IwantTestCase {
 		target.path(ctx);
 
 		assertTrue(new File(cached, "valid/UsingJ11.class").exists());
+		assertEquals("", err());
+	}
+
+	public void testJava17CompilesWithoutWarnings() throws Exception {
+		wsRootHasFile("src/UsingJ17.java",
+				"public record UsingJ17(String a, int b) {}");
+		Source src = Source.underWsroot("src");
+		Target target = JavaClasses.with().name("valid").srcDirs(src)
+				.sourceVersion(JavaCompliance.JAVA_17).classLocations().end();
+
+		target.path(ctx);
+
+		assertTrue(new File(cached, "valid/UsingJ17.class").exists());
 		assertEquals("", err());
 	}
 

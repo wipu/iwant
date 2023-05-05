@@ -17,10 +17,10 @@ public class JacocoDistributionTest extends IwantTestCase {
 		JacocoDistribution distroNewest = distroToTest();
 		Downloaded zipNewest = distroNewest.zip();
 
-		assertEquals("jacoco-0.8.4.zip", zipNewest.name());
+		assertEquals("jacoco-0.8.10.zip", zipNewest.name());
 		assertEquals(
 				"https://github.com/jacoco/jacoco/releases/download/"
-						+ "v0.8.4/jacoco-0.8.4.zip",
+						+ "v0.8.10/jacoco-0.8.10.zip",
 				zipNewest.url().toExternalForm());
 
 		JacocoDistribution distroOlder = JacocoDistribution.ofVersion("0.8.3");
@@ -45,7 +45,7 @@ public class JacocoDistributionTest extends IwantTestCase {
 		File cachedZip = cachedJacocoZip();
 
 		assertTrue(cachedZip.exists());
-		assertEquals(3860930, cachedZip.length());
+		assertEquals(4007987, cachedZip.length());
 	}
 
 	public void testZipIsAnIngredientAndMentionedInDescriptor() {

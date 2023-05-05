@@ -161,7 +161,11 @@ public class JavaClasses extends TargetBase {
 		List<String> javacOptions = new ArrayList<>();
 		javacOptions.addAll(Iwant.recommendedJavacWarningOptions());
 		if (sourceVersion != null) {
-			javacOptions.add("-source");
+			if (isComplianceNewEnoughToSupportJavacOptionRelease()) {
+				javacOptions.add("--release");
+			} else {
+				javacOptions.add("-source");
+			}
 			javacOptions.add(sourceVersion.prettyName());
 		}
 		if (debug) {
@@ -171,6 +175,19 @@ public class JavaClasses extends TargetBase {
 			javacOptions.add(rawArg);
 		}
 		return javacOptions;
+	}
+
+	private boolean isComplianceNewEnoughToSupportJavacOptionRelease() {
+		String str = sourceVersion.toString();
+		// old versions use dot:
+		if (str.contains(".")) {
+			return false;
+		}
+		// new versions are just ints:
+		int value = Integer.parseInt(str);
+		// probably unnecessary comparison, 11 was the first one of this
+		// convention, but anyway:
+		return value >= 11;
 	}
 
 	@Override

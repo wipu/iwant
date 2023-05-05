@@ -44,7 +44,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 						+ ", instrtest-classes.jacoco-instr]",
 				coverage.ingredients().toString());
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "i:jacoco:\n" + "  jacoco-0.8.4\n" + "i:antJars:\n" + "  "
+				+ "i:jacoco:\n" + "  jacoco-0.8.10\n" + "i:antJars:\n" + "  "
 				+ antJar() + "\n  " + antLauncherJar() + "\ni:classLocations:\n"
 				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
 				+ "  instrtest.Main\n" + "p:mainClassArgs:\n" + "  arg0\n"
@@ -72,7 +72,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 						+ ", instrtest-classes.jacoco-instr, args-file]",
 				coverage.ingredients().toString());
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "i:jacoco:\n" + "  jacoco-0.8.4\n" + "i:antJars:\n" + "  "
+				+ "i:jacoco:\n" + "  jacoco-0.8.10\n" + "i:antJars:\n" + "  "
 				+ antJar() + "\n  " + antLauncherJar() + "\ni:classLocations:\n"
 				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
 				+ "  instrtest.Main\n" + "p:mainClassArgs:\n"
@@ -98,7 +98,7 @@ public class JacocoCoverageTest extends JacocoTestBase {
 						+ ", instrtest-classes.jacoco-instr]",
 				coverage.ingredients().toString());
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoCoverage\n"
-				+ "i:jacoco:\n" + "  jacoco-0.8.4\n" + "i:antJars:\n" + "  "
+				+ "i:jacoco:\n" + "  jacoco-0.8.10\n" + "i:antJars:\n" + "  "
 				+ antJar() + "\n  " + antLauncherJar() + "\ni:classLocations:\n"
 				+ "  instrtest-classes.jacoco-instr\n" + "p:mainClassName:\n"
 				+ "  instrtest.Main\n" + "p:mainClassArgs:\n" + "  arg0\n"
