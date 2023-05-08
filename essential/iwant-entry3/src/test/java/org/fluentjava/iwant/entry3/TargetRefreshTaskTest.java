@@ -256,13 +256,14 @@ public class TargetRefreshTaskTest extends TestCase {
 
 	public void testTaskIsDirtyIfFileUnderSourceDirWasModifiedAtTheSameTimeAsDescriptor() {
 		File srcDir = testArea.newDir("src");
-		testArea.hasFile("src/src-file", "src-content");
+		File srcFile = testArea.hasFile("src/src-file", "src-content");
 
 		TargetMock target = new TargetMock("target");
 		target.hasIngredients(ExternalSource.at(srcDir));
 		target.hasContentDescriptor("current");
 		cacheContainsContentOf(target);
-		cacheContainsDescriptor(target, "current");
+		File descriptor = cacheContainsDescriptor(target, "current");
+		descriptor.setLastModified(srcFile.lastModified());
 
 		assertEquals(TaskDirtiness.DIRTY_SRC_INGREDIENT_MODIFIED,
 				task(target).dirtiness());
