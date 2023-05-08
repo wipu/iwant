@@ -19,6 +19,7 @@ import org.fluentjava.iwant.apimocks.TargetEvaluationContextMock;
 import org.fluentjava.iwant.core.javamodules.JavaModules;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
+import org.fluentjava.iwant.entry3.IngredientCheckingTargetEvaluationContext.ReferenceLegalityCheckCache;
 import org.fluentjava.iwant.entry3.TargetRefreshTask;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.planner.TaskAllocation;
@@ -77,11 +78,12 @@ public class TaskQueueWithJavaModulesMicrobencmarkTest {
 				.mainDeps(union(level3, level0)).testDeps(level2).end();
 
 		Map<String, TargetRefreshTask> taskInstanceCache = new HashMap<>();
+		ReferenceLegalityCheckCache refLegalityCheckCache = new ReferenceLegalityCheckCache();
 
 		long t1 = System.currentTimeMillis();
 		Task rootTask = TargetRefreshTask.instance(
-				(Target) rootMod.mainArtifact(), ctx, caches,
-				taskInstanceCache);
+				(Target) rootMod.mainArtifact(), ctx, caches, taskInstanceCache,
+				refLegalityCheckCache);
 		logTime("rootTask creation", t1);
 		t1 = System.currentTimeMillis();
 		TaskQueue queue = new TaskQueue(rootTask);

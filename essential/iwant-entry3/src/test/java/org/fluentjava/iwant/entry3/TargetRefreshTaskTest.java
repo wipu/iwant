@@ -22,6 +22,7 @@ import org.fluentjava.iwant.apimocks.TargetMock;
 import org.fluentjava.iwant.core.download.Downloaded;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
+import org.fluentjava.iwant.entry3.IngredientCheckingTargetEvaluationContext.ReferenceLegalityCheckCache;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.plannerapi.Resource;
 import org.fluentjava.iwant.plannerapi.ResourcePool;
@@ -75,7 +76,9 @@ public class TargetRefreshTaskTest extends TestCase {
 		// here instance caching is not important so we simply create a
 		// new cache every time
 		HashMap<String, TargetRefreshTask> instanceCache = new HashMap<>();
-		return TargetRefreshTask.instance(target, ctx, caches, instanceCache);
+		ReferenceLegalityCheckCache refLegalityCheckCache = new ReferenceLegalityCheckCache();
+		return TargetRefreshTask.instance(target, ctx, caches, instanceCache,
+				refLegalityCheckCache);
 	}
 
 	public void testTaskNameIsTargetsName() {

@@ -11,6 +11,7 @@ import org.fluentjava.iwant.apimocks.TargetMock;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
 import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
+import org.fluentjava.iwant.entry3.IngredientCheckingTargetEvaluationContext.ReferenceLegalityCheckCache;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
 
@@ -38,7 +39,9 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 		delegate = new TargetEvaluationContextMock(iwant, caches);
 		delegate.hasWsRoot(wsRoot);
 		target = new TargetMock("target");
-		ctx = new IngredientCheckingTargetEvaluationContext(target, delegate);
+		ReferenceLegalityCheckCache refLegalityCheckCache = new ReferenceLegalityCheckCache();
+		ctx = new IngredientCheckingTargetEvaluationContext(target, delegate,
+				refLegalityCheckCache);
 	}
 
 	public void testReferenceToCachedSelfIsDelegated() {

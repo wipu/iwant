@@ -29,6 +29,7 @@ import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
 import org.fluentjava.iwant.coreservices.IwantCoreServicesImpl;
 import org.fluentjava.iwant.coreservices.StreamUtil;
 import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry3.IngredientCheckingTargetEvaluationContext.ReferenceLegalityCheckCache;
 import org.fluentjava.iwant.planner.Planner;
 
 public class WishEvaluator {
@@ -139,8 +140,12 @@ public class WishEvaluator {
 			Target target = (Target) path;
 			try {
 				Map<String, TargetRefreshTask> taskInstanceCache = new HashMap<>();
-				Planner planner = new Planner(TargetRefreshTask.instance(target,
-						ctx, caches, taskInstanceCache), workerCount);
+				ReferenceLegalityCheckCache refLegalityCheckCache = new ReferenceLegalityCheckCache();
+
+				Planner planner = new Planner(
+						TargetRefreshTask.instance(target, ctx, caches,
+								taskInstanceCache, refLegalityCheckCache),
+						workerCount);
 				planner.start();
 				planner.join();
 			} catch (RuntimeException e) {

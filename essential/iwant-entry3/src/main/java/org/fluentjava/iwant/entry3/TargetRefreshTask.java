@@ -12,6 +12,7 @@ import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.model.TargetEvaluationContext;
 import org.fluentjava.iwant.coreservices.FileUtil;
 import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.entry3.IngredientCheckingTargetEvaluationContext.ReferenceLegalityCheckCache;
 import org.fluentjava.iwant.plannerapi.Resource;
 import org.fluentjava.iwant.plannerapi.ResourcePool;
 import org.fluentjava.iwant.plannerapi.Task;
@@ -23,27 +24,32 @@ public class TargetRefreshTask implements Task {
 	private final TargetEvaluationContext ctx;
 	private final Collection<Task> deps = new ArrayList<>();
 	private final Caches caches;
+	private final ReferenceLegalityCheckCache refLegalityCheckCache;
 
 	private TargetRefreshTask(Target target, TargetEvaluationContext ctx,
-			Caches caches, Map<String, TargetRefreshTask> instanceCache) {
+			Caches caches, Map<String, TargetRefreshTask> instanceCache,
+			ReferenceLegalityCheckCache refLegalityCheckCache) {
 		this.target = target;
 		this.ctx = ctx;
 		this.caches = caches;
+		this.refLegalityCheckCache = refLegalityCheckCache;
 		for (Path ingredient : target.ingredients()) {
 			if (!(ingredient instanceof Target)) {
 				continue;
 			}
 			deps.add(TargetRefreshTask.instance((Target) ingredient, ctx,
-					caches, instanceCache));
+					caches, instanceCache, refLegalityCheckCache));
 		}
 	}
 
 	public static TargetRefreshTask instance(Target target,
 			TargetEvaluationContext ctx, Caches caches,
-			Map<String, TargetRefreshTask> instanceCache) {
+			Map<String, TargetRefreshTask> instanceCache,
+			ReferenceLegalityCheckCache refLegalityCheckCache) {
 		TargetRefreshTask inst = instanceCache.get(target.name());
 		if (inst == null) {
-			inst = new TargetRefreshTask(target, ctx, caches, instanceCache);
+			inst = new TargetRefreshTask(target, ctx, caches, instanceCache,
+					refLegalityCheckCache);
 			instanceCache.put(target.name(), inst);
 		}
 		return inst;
@@ -62,8 +68,8 @@ public class TargetRefreshTask implements Task {
 			Iwant.del(cachedTarget);
 		}
 		try {
-			target.path(
-					new IngredientCheckingTargetEvaluationContext(target, ctx));
+			target.path(new IngredientCheckingTargetEvaluationContext(target,
+					ctx, refLegalityCheckCache));
 			Iwant.newTextFile(cachedDescriptor, target.contentDescriptor());
 		} catch (RuntimeException e) {
 			throw e;
