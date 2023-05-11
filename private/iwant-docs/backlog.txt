@@ -1,11 +1,17 @@
-- migrate to java 11
-  * eclipse forced this :/
+- migrate to java 11 (EDIT: 17)
+  * eclipse forced this (11) :/
   + use it, fix things (upgrade libs, don't use deprecated apis etc)
   + increase heap size in bash bootstrapper (java 11 may consume more, at least in one project)
   + use 11 in ant bootstrapper
   + upgrade iwant for iwant
   - fix website build: ant javac doesn't like 11 ?!
-  - use spotbugs: findbugs is now finally broken
+  + use spotbugs: findbugs is now finally broken
+    * wow, really a drop-in replacement: FindbugsReportTest was ignored 2.5 years, and getting
+      it to work was just a matter of pointing the url to github spotbugs instead of sourceforge findbugs
+      and updating some strings here and there to match the change. But no other parts of production
+      code needed changes! The old findbugs ant target works as such. Thank you, spotbugs team!
+  - cleanup
+    - use name spotbugs instead of findbugs everywhere
 
 - Clean up Windows bash detection: if possible, use env to detect
   cygwin bash, too, so no hardcoded paths will be needed

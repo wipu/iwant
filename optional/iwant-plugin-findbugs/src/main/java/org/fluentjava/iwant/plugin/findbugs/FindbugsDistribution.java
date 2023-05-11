@@ -12,13 +12,11 @@ public class FindbugsDistribution extends TargetBase {
 	private final String version;
 	private final Downloaded tarGz;
 
-	public static FindbugsDistribution _3_0_0 = new FindbugsDistribution(
-			"3.0.0", "f0915a0800a926961296da28b6ada7cc");
-	public static FindbugsDistribution _3_0_1 = new FindbugsDistribution(
-			"3.0.1", "dec8828de8657910fcb258ce5383c168");
+	public static FindbugsDistribution _4_7_3 = new FindbugsDistribution(
+			"4.7.3", "9739f70965c4b89a365419af9c688934");
 
 	public FindbugsDistribution(String version, String md5sum) {
-		super("findbugs-" + version);
+		super("spotbugs-" + version);
 		this.version = version;
 		this.tarGz = tarGz(version, md5sum);
 	}
@@ -29,9 +27,9 @@ public class FindbugsDistribution extends TargetBase {
 	}
 
 	private static Downloaded tarGz(String version, String md5sum) {
-		String tarGzName = "findbugs-" + version + ".tar.gz";
-		return Downloaded.withName(tarGzName).url(
-				"http://downloads.sourceforge.net/project/findbugs/findbugs/"
+		String tarGzName = "spotbugs-" + version + ".tgz";
+		return Downloaded.withName(tarGzName)
+				.url("https://github.com/spotbugs/spotbugs/releases/download/"
 						+ version + "/" + tarGzName)
 				.md5(md5sum);
 	}
@@ -56,7 +54,7 @@ public class FindbugsDistribution extends TargetBase {
 	}
 
 	public File homeDirectory(TargetEvaluationContext ctx) {
-		return new File(ctx.cached(this), "findbugs-" + version);
+		return new File(ctx.cached(this), "spotbugs-" + version);
 	}
 
 }

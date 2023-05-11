@@ -16,12 +16,7 @@ import org.fluentjava.iwant.apimocks.IwantTestCase;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.embedded.AsEmbeddedIwantUser;
 import org.fluentjava.iwant.entry.Iwant;
-import org.junit.Ignore;
 
-/**
- * TODO use spotbugs, findbus is finally broken with java 11
- */
-@Ignore
 public class FindbugsReportTest extends IwantTestCase {
 
 	@Override
@@ -43,7 +38,7 @@ public class FindbugsReportTest extends IwantTestCase {
 	}
 
 	private static FindbugsDistribution distroToTest() {
-		return FindbugsDistribution._3_0_1;
+		return FindbugsDistribution._4_7_3;
 	}
 
 	private static File cachedFindbugsTarGz() {
@@ -121,11 +116,11 @@ public class FindbugsReportTest extends IwantTestCase {
 				.auxClasses(bin).end();
 
 		assertEquals(
-				"[findbugs-3.0.1, " + antJar() + ", " + antLauncherJar()
+				"[spotbugs-4.7.3, " + antJar() + ", " + antLauncherJar()
 						+ ", empty-classes, empty-src, bin.jar]",
 				report.ingredients().toString());
 		assertEquals("org.fluentjava.iwant.plugin.findbugs.FindbugsReport\n"
-				+ "i:findbugs:\n" + "  findbugs-3.0.1\n" + "i:antJar:\n" + "  "
+				+ "i:findbugs:\n" + "  spotbugs-4.7.3\n" + "i:antJar:\n" + "  "
 				+ antJar() + "\ni:antLauncherJar:\n" + "  " + antLauncherJar()
 				+ "\ni:classes:\n" + "  empty-classes\n" + "i:sources:\n"
 				+ "  empty-src\n" + "i:auxClasses:\n" + "  bin.jar\n"
@@ -158,7 +153,7 @@ public class FindbugsReportTest extends IwantTestCase {
 				.end();
 
 		assertEquals("org.fluentjava.iwant.plugin.findbugs.FindbugsReport\n"
-				+ "i:findbugs:\n" + "  findbugs-3.0.1\n" + "i:antJar:\n" + "  "
+				+ "i:findbugs:\n" + "  spotbugs-4.7.3\n" + "i:antJar:\n" + "  "
 				+ antJar() + "\ni:antLauncherJar:\n" + "  " + antLauncherJar()
 				+ "\ni:classes:\n" + "  empty-classes\n" + "i:sources:\n"
 				+ "  empty-src\n" + "i:auxClasses:\n" + "p:output-format:\n"
