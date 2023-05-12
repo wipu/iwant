@@ -12,11 +12,13 @@ out-was <<EOF
 (  .classpath)
 (  .settings/org.eclipse.jdt.core.prefs)
 (  .settings/org.eclipse.jdt.ui.prefs)
+(  .settings/org.eclipse.core.resources.prefs)
 (as-iwant-tutorial-developer/i-have/wsdefdef)
 (  .project)
 (  .classpath)
 (  .settings/org.eclipse.jdt.core.prefs)
 (  .settings/org.eclipse.jdt.ui.prefs)
+(  .settings/org.eclipse.core.resources.prefs)
 EOF
 
 p "Now we can import the projects to eclipse (without copying them to the workspace!) and study what we have. In fact, let's even make the first edit: another hello target alongside with the existing one."
