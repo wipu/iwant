@@ -25,7 +25,7 @@ import org.fluentjava.iwant.plugin.jacoco.JacocoTargetsOfJavaModules;
 
 public class WorkspaceForIwant implements Workspace {
 
-	private final FindbugsDistribution findbugs = FindbugsDistribution._3_0_1;
+	private final FindbugsDistribution findbugs = FindbugsDistribution._4_7_3;
 
 	private static final Target copyOfLocalIwantWs = new CopyOfLocalIwantWsForTutorial();
 
