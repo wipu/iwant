@@ -112,14 +112,14 @@ public class ScalaClassesTest extends IwantTestCase {
 				+ "  scala-compiler-2.12.13.jar\n" + "i:scala-library:\n"
 				+ "  scala-library-2.12.13.jar\n" + "i:scala-reflect:\n"
 				+ "  scala-reflect-2.12.13.jar\n" + "i:antJar:\n"
-				+ "  ant-1.10.9.jar\n" + "i:antLauncherJar:\n"
-				+ "  ant-launcher-1.10.9.jar\n" + "",
+				+ "  ant-1.10.13.jar\n" + "i:antLauncherJar:\n"
+				+ "  ant-launcher-1.10.13.jar\n" + "",
 				scalaClasses.contentDescriptor());
 
 		assertEquals(
 				"[src/main/java, src/main/scala, dep, scala-compiler-2.12.13.jar,"
 						+ " scala-library-2.12.13.jar, scala-reflect-2.12.13.jar,"
-						+ " ant-1.10.9.jar, ant-launcher-1.10.9.jar]",
+						+ " ant-1.10.13.jar, ant-launcher-1.10.13.jar]",
 				scalaClasses.ingredients().toString());
 	}
 

@@ -117,13 +117,14 @@ public class IwantModules extends JavaModules {
 	final JavaBinModule scalaLibrary = binModule("org/scala-lang",
 			"scala-library", SCALA_VER.value());
 
+	private static final String VERTX_VER = "3.4.2";
 	private final JavaBinModule vertxCore = binModule("io.vertx", "vertx-core",
-			"3.3.3");
+			VERTX_VER);
 	private final JavaBinModule vertxWeb = binModule("io.vertx", "vertx-web",
-			"3.3.3");
+			VERTX_VER);
 
 	private static JavaBinModule nettyModule(String name) {
-		return binModule("io.netty", "netty-" + name, "4.1.6.Final");
+		return binModule("io.netty", "netty-" + name, "4.1.75.Final");
 	}
 
 	private final JavaBinModule nettyBuffer = nettyModule("buffer");

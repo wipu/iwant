@@ -4,7 +4,9 @@
   + increase heap size in bash bootstrapper (java 11 may consume more, at least in one project)
   + use 11 in ant bootstrapper
   + upgrade iwant for iwant
-  - fix website build: ant javac doesn't like 11 ?!
+  + fix website build: ant javac doesn't like 11 ?!
+    + upgrade ant deps, not helping
+    + upgrade ant in host OS, that does it
   + use spotbugs: findbugs is now finally broken
     * wow, really a drop-in replacement: FindbugsReportTest was ignored 2.5 years, and getting
       it to work was just a matter of pointing the url to github spotbugs instead of sourceforge findbugs
