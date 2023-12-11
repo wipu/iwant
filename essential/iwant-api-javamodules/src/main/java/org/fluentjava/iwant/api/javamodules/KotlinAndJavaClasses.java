@@ -101,7 +101,7 @@ public class KotlinAndJavaClasses extends TargetBase {
 		b.append("    <javac destdir=\"" + ctx.cached(this)
 				+ "\" includeAntRuntime=\"true\" includeJavaRuntime=\"true\" bootclasspath=\""
 				+ toolsJar()
-				+ "\" source=\"1.8\" target=\"1.8\" encoding=\"UTF-8\" debug=\"true\">\n");
+				+ "\" release=\"17\" encoding=\"UTF-8\" debug=\"true\">\n");
 
 		b.append("      <withKotlin/>\n");
 		b.append("      <compilerclasspath>\n");
