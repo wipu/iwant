@@ -11,6 +11,7 @@ import static org.fluentjava.iwant.api.javamodules.CodeStyle.DEPRECATION_WHEN_OV
 import static org.fluentjava.iwant.api.javamodules.CodeStyle.DISCOURAGED_REFERENCE;
 import static org.fluentjava.iwant.api.javamodules.CodeStyle.EMPTY_STATEMENT;
 import static org.fluentjava.iwant.api.javamodules.CodeStyle.ENUM_IDENTIFIER;
+import static org.fluentjava.iwant.api.javamodules.CodeStyle.EXPLICITLY_CLOSED_AUTO_CLOSEABLE;
 import static org.fluentjava.iwant.api.javamodules.CodeStyle.FALLTHROUGH_CASE;
 import static org.fluentjava.iwant.api.javamodules.CodeStyle.FATAL_OPTIONAL_ERROR;
 import static org.fluentjava.iwant.api.javamodules.CodeStyle.FIELD_HIDING;
@@ -103,6 +104,7 @@ public class CodeStylePolicy {
 		d.warn(DISCOURAGED_REFERENCE);
 		d.warn(EMPTY_STATEMENT);
 		d.fail(ENUM_IDENTIFIER);
+		d.warn(EXPLICITLY_CLOSED_AUTO_CLOSEABLE);
 		d.warn(FALLTHROUGH_CASE);
 		d.ignore(FATAL_OPTIONAL_ERROR);
 		d.warn(FIELD_HIDING);

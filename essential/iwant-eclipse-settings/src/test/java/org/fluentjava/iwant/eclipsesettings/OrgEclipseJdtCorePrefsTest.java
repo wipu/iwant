@@ -118,6 +118,8 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		b.append(
 				"org.eclipse.jdt.core.compiler.problem.enumIdentifier=error\n");
 		b.append(
+				"org.eclipse.jdt.core.compiler.problem.explicitlyClosedAutoCloseable=warning\n");
+		b.append(
 				"org.eclipse.jdt.core.compiler.problem.fallthroughCase=warning\n");
 		b.append(
 				"org.eclipse.jdt.core.compiler.problem.fatalOptionalError=disabled\n");

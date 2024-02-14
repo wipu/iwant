@@ -48,6 +48,8 @@ public class OrgEclipseJdtCorePrefs {
 			return ignoreable("emptyStatement", value);
 		case ENUM_IDENTIFIER:
 			return ignoreable("enumIdentifier", value);
+		case EXPLICITLY_CLOSED_AUTO_CLOSEABLE:
+			return ignoreable("explicitlyClosedAutoCloseable", value);
 		case FALLTHROUGH_CASE:
 			return ignoreable("fallthroughCase", value);
 		case FATAL_OPTIONAL_ERROR:
