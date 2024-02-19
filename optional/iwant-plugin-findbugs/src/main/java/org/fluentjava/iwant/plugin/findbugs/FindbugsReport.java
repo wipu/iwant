@@ -26,11 +26,12 @@ public class FindbugsReport extends TargetBase {
 	private final Path antJar;
 	private final Path antLauncherJar;
 	private final FindbugsOutputFormat outputFormat;
+	private final Path excludeFile;
 
 	public FindbugsReport(String name,
 			List<JavaClassesAndSources> classesToAnalyze, List<Path> auxClasses,
 			FindbugsDistribution findbugs, Path antJar, Path antLauncherJar,
-			FindbugsOutputFormat outputFormat) {
+			FindbugsOutputFormat outputFormat, Path excludeFile) {
 		super(name);
 		this.classesToAnalyze = classesToAnalyze;
 		this.auxClasses = auxClasses;
@@ -42,6 +43,7 @@ public class FindbugsReport extends TargetBase {
 		this.findbugs = findbugs;
 		this.antJar = antJar;
 		this.antLauncherJar = antLauncherJar;
+		this.excludeFile = excludeFile;
 	}
 
 	public static FindbugsReportSpex with() {
@@ -57,10 +59,12 @@ public class FindbugsReport extends TargetBase {
 		private Path antJar;
 		private Path antLauncherJar;
 		private FindbugsOutputFormat outputFormat = FindbugsOutputFormat.HTML;
+		private Path excludeFile;
 
 		public FindbugsReport end() {
 			return new FindbugsReport(name, classesToAnalyze, auxClasses,
-					findbugs, antJar, antLauncherJar, outputFormat);
+					findbugs, antJar, antLauncherJar, outputFormat,
+					excludeFile);
 		}
 
 		public FindbugsReportSpex name(String name) {
@@ -129,6 +133,11 @@ public class FindbugsReport extends TargetBase {
 			return this;
 		}
 
+		public FindbugsReportSpex exclude(Path excludeFile) {
+			this.excludeFile = excludeFile;
+			return this;
+		}
+
 	}
 
 	@Override
@@ -148,6 +157,9 @@ public class FindbugsReport extends TargetBase {
 		}
 
 		iUse.ingredients("auxClasses", auxClasses);
+		if (excludeFile != null) {
+			iUse.ingredients("excludeFile", excludeFile);
+		}
 		iUse.parameter("output-format", outputFormat);
 		return iUse.nothingElse();
 	}
@@ -172,6 +184,11 @@ public class FindbugsReport extends TargetBase {
 				.pathWithoutBackslashes(findbugs.homeDirectory(ctx));
 		String destString = ctx.iwant()
 				.pathWithoutBackslashes(ctx.cached(this));
+		String excludeFilePath = null;
+		if (excludeFile != null) {
+			excludeFilePath = ctx.iwant()
+					.pathWithoutBackslashes(ctx.cached(excludeFile));
+		}
 
 		StringBuilder xml = new StringBuilder();
 		xml.append(
@@ -203,8 +220,12 @@ public class FindbugsReport extends TargetBase {
 		xml.append("        <mkdir dir=\"${findbugs-report}\" />\n");
 		xml.append("        <findbugs home=\"${findbugs-home}\" output=\""
 				+ outputFormat + "\" outputfile=\"${findbugs-report}/" + name()
-				+ "." + outputFormat + "\">\n");
-		xml.append("\n");
+				+ "." + outputFormat + "\"\n");
+		if (excludeFilePath != null) {
+			xml.append(" excludeFilter=\"").append(excludeFilePath)
+					.append("\"");
+		}
+		xml.append(">\n");
 
 		for (JavaClassesAndSources cs : classesToAnalyze) {
 			xml.append("            <class location=\"")

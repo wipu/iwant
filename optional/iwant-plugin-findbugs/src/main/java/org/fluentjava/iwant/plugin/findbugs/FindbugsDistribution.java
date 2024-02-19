@@ -15,6 +15,9 @@ public class FindbugsDistribution extends TargetBase {
 	public static FindbugsDistribution _4_7_3 = new FindbugsDistribution(
 			"4.7.3", "9739f70965c4b89a365419af9c688934");
 
+	public static FindbugsDistribution _4_8_3 = new FindbugsDistribution(
+			"4.8.3", "dae83e21c1c3014ea177c882bb72c1e9");
+
 	public FindbugsDistribution(String version, String md5sum) {
 		super("spotbugs-" + version);
 		this.version = version;

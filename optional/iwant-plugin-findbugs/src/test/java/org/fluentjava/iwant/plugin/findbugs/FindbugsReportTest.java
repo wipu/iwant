@@ -16,6 +16,7 @@ import org.fluentjava.iwant.apimocks.IwantTestCase;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.embedded.AsEmbeddedIwantUser;
 import org.fluentjava.iwant.entry.Iwant;
+import org.fluentjava.iwant.plugin.findbugs.FindbugsReport.FindbugsReportSpex;
 
 public class FindbugsReportTest extends IwantTestCase {
 
@@ -38,7 +39,7 @@ public class FindbugsReportTest extends IwantTestCase {
 	}
 
 	private static FindbugsDistribution distroToTest() {
-		return FindbugsDistribution._4_7_3;
+		return FindbugsDistribution._4_8_3;
 	}
 
 	private static File cachedFindbugsTarGz() {
@@ -109,23 +110,30 @@ public class FindbugsReportTest extends IwantTestCase {
 		Path emptyClasses = Source.underWsroot("empty-classes");
 		Path bin = Source.underWsroot("bin.jar");
 
-		Target report = FindbugsReport.with().name("fb-empty")
+		FindbugsReportSpex report = FindbugsReport.with().name("fb-empty")
 				.using(distroToTest(), antJar(), antLauncherJar())
 				.classesToAnalyze(
 						new JavaClassesAndSources(emptyClasses, emptySrc))
-				.auxClasses(bin).end();
+				.auxClasses(bin);
 
 		assertEquals(
-				"[spotbugs-4.7.3, " + antJar() + ", " + antLauncherJar()
+				"[spotbugs-4.8.3, " + antJar() + ", " + antLauncherJar()
 						+ ", empty-classes, empty-src, bin.jar]",
-				report.ingredients().toString());
+				report.end().ingredients().toString());
 		assertEquals("org.fluentjava.iwant.plugin.findbugs.FindbugsReport\n"
-				+ "i:findbugs:\n" + "  spotbugs-4.7.3\n" + "i:antJar:\n" + "  "
+				+ "i:findbugs:\n" + "  spotbugs-4.8.3\n" + "i:antJar:\n" + "  "
 				+ antJar() + "\ni:antLauncherJar:\n" + "  " + antLauncherJar()
 				+ "\ni:classes:\n" + "  empty-classes\n" + "i:sources:\n"
 				+ "  empty-src\n" + "i:auxClasses:\n" + "  bin.jar\n"
 				+ "p:output-format:\n" + "  html\n" + "",
-				report.contentDescriptor());
+				report.end().contentDescriptor());
+
+		// optional ingredient:
+		Path excludeXml = Source.underWsroot("exclude.xml");
+		report.exclude(excludeXml);
+		assertTrue(report.end().ingredients().contains(excludeXml));
+		assertTrue(report.end().contentDescriptor()
+				.contains("i:excludeFile:\n" + "  exclude.xml\n"));
 	}
 
 	public void testExplicitHtmlOutputFormat() {
@@ -153,7 +161,7 @@ public class FindbugsReportTest extends IwantTestCase {
 				.end();
 
 		assertEquals("org.fluentjava.iwant.plugin.findbugs.FindbugsReport\n"
-				+ "i:findbugs:\n" + "  spotbugs-4.7.3\n" + "i:antJar:\n" + "  "
+				+ "i:findbugs:\n" + "  spotbugs-4.8.3\n" + "i:antJar:\n" + "  "
 				+ antJar() + "\ni:antLauncherJar:\n" + "  " + antLauncherJar()
 				+ "\ni:classes:\n" + "  empty-classes\n" + "i:sources:\n"
 				+ "  empty-src\n" + "i:auxClasses:\n" + "p:output-format:\n"
@@ -180,7 +188,8 @@ public class FindbugsReportTest extends IwantTestCase {
 		assertEquals("", htmlReportContent);
 	}
 
-	public void testReportMentionsIssuesFromTheGivenClass() throws Exception {
+	public void testReportMentionsIssuesFromTheGivenClassButOnlyIfNotFiltered()
+			throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDirHasFindbugsFodder(srcDir, "testfodder",
 				"ClassWithFindbugsIssues");
@@ -192,17 +201,33 @@ public class FindbugsReportTest extends IwantTestCase {
 
 		distroToTest().path(ctx);
 
-		FindbugsReport report = FindbugsReport.with().name("oneclass-report")
+		String npeWarningSnippet = "<td>Null pointer dereference of ? in "
+				+ "org.fluentjava.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues."
+				+ "nullReference(Object)</td>";
+
+		// all rules in use:
+
+		FindbugsReport fullReport = FindbugsReport.with()
+				.name("oneclass-report")
 				.using(distroToTest(), antJar(), antLauncherJar())
 				.classesToAnalyze(new JavaClassesAndSources(classes, src))
 				.end();
-		report.path(ctx);
+		fullReport.path(ctx);
+		assertTrue(htmlReportContent(fullReport).contains(npeWarningSnippet));
 
-		String htmlReportContent = htmlReportContent(report);
-		assertTrue(htmlReportContent
-				.contains("<td>Null pointer dereference of ? in "
-						+ "org.fluentjava.iwant.plugin.findbugs.testfodder.ClassWithFindbugsIssues."
-						+ "nullReference(Object)</td>"));
+		// report with excluded NPE rule:
+
+		wsRootHasFile("exclude.xml", "<FindBugsFilter><Match><Bug pattern=\""
+				+ "NP_ALWAYS_NULL\"/></Match></FindBugsFilter>");
+
+		FindbugsReport filteredReport = FindbugsReport.with()
+				.name("filtered-oneclass-report")
+				.using(distroToTest(), antJar(), antLauncherJar())
+				.classesToAnalyze(new JavaClassesAndSources(classes, src))
+				.exclude(Source.underWsroot("exclude.xml")).end();
+		filteredReport.path(ctx);
+		assertFalse(
+				htmlReportContent(filteredReport).contains(npeWarningSnippet));
 	}
 
 	public void testReportDoesNotDetectProblemIfDependencyNotInAuxclasses()
