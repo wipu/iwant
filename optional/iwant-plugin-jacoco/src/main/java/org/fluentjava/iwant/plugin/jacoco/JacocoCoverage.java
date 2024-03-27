@@ -184,6 +184,8 @@ public class JacocoCoverage extends TargetBase {
 		b.append("			</classpath>\n");
 		b.append("			<sysproperty key=\"jacoco-agent.destfile\" file=\""
 				+ ctx.cached(this) + "\" />\n");
+		b.append(
+				"			<jvmarg value=\"-Djava.security.manager=allow\"/>\n");
 		for (String jvmarg : jvmargs) {
 			b.append("			<jvmarg value=\"" + jvmarg + "\"/>\n");
 		}

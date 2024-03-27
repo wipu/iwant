@@ -559,7 +559,18 @@ public class Iwant {
 		originalStreamsAndSecurityManager = new StreamsAndSecurityManager(
 				System.out, System.err, System.getSecurityManager());
 		System.setOut(System.err);
-		System.setSecurityManager(new ExitCatcher());
+		setSecurityManager(new ExitCatcher());
+	}
+
+	private static void setSecurityManager(SecurityManager securityManager) {
+		try {
+			System.setSecurityManager(securityManager);
+		} catch (UnsupportedOperationException e) {
+			// Come on, please keep even deprecated things working properly
+			// until there is a replacement! How to turn System.exit into an
+			// exception without using SecurityManager?!
+			System.err.println("Ignoring JAVA21 problem:" + e);
+		}
 	}
 
 	private static synchronized void restoreOriginalStreamsAndSecurityManager() {
@@ -568,7 +579,7 @@ public class Iwant {
 				&& catchStreamsAndSystemExitsRequestCount <= 0) {
 			System.setOut(originalStreamsAndSecurityManager.out);
 			System.setErr(originalStreamsAndSecurityManager.err);
-			System.setSecurityManager(
+			setSecurityManager(
 					originalStreamsAndSecurityManager.securityManager);
 			originalStreamsAndSecurityManager = null;
 		}

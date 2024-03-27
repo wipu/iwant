@@ -23,7 +23,7 @@ public class IwantModules extends JavaModules {
 
 	@Override
 	protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {
-		return m.javaCompliance(JavaCompliance.of("17"))
+		return m.javaCompliance(JavaCompliance.of("21"))
 				.mainJava("src/main/java").testJava("src/test/java");
 	}
 

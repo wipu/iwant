@@ -25,4 +25,5 @@ javac --release 11 -g -d "$CYG_CLASSES" "$CYG_SRC"
 
 java \
     -Xmx3G \
+    -Djava.security.manager=allow \
     -cp "$CYG_CLASSES" org.fluentjava.iwant.entry.Iwant "$CYG_AS_SOMEONE" "$@"
