@@ -13,6 +13,13 @@ public class ScalaClassesTest extends IwantTestCase {
 
 	private static final ScalaVersion SCALA = ScalaVersion.latestTested();
 
+	private static final boolean CAPTURE = true;
+
+	@Override
+	protected boolean mustCaptureSystemOutAndErr() {
+		return CAPTURE;
+	}
+
 	@Override
 	protected void moreSetUp() throws Exception {
 		cacheProvidesRealDownloaded(SCALA.compilerJar().artifact().url());
@@ -109,16 +116,16 @@ public class ScalaClassesTest extends IwantTestCase {
 		assertEquals("org.fluentjava.iwant.api.javamodules.ScalaClasses\n"
 				+ "i:srcDirs:\n" + "  src/main/java\n" + "  src/main/scala\n"
 				+ "i:classLocations:\n" + "  dep\n" + "i:scala-compiler:\n"
-				+ "  scala-compiler-2.12.13.jar\n" + "i:scala-library:\n"
-				+ "  scala-library-2.12.13.jar\n" + "i:scala-reflect:\n"
-				+ "  scala-reflect-2.12.13.jar\n" + "i:antJar:\n"
+				+ "  scala-compiler-2.12.19.jar\n" + "i:scala-library:\n"
+				+ "  scala-library-2.12.19.jar\n" + "i:scala-reflect:\n"
+				+ "  scala-reflect-2.12.19.jar\n" + "i:antJar:\n"
 				+ "  ant-1.10.14.jar\n" + "i:antLauncherJar:\n"
 				+ "  ant-launcher-1.10.14.jar\n" + "",
 				scalaClasses.contentDescriptor());
 
 		assertEquals(
-				"[src/main/java, src/main/scala, dep, scala-compiler-2.12.13.jar,"
-						+ " scala-library-2.12.13.jar, scala-reflect-2.12.13.jar,"
+				"[src/main/java, src/main/scala, dep, scala-compiler-2.12.19.jar,"
+						+ " scala-library-2.12.19.jar, scala-reflect-2.12.19.jar,"
 						+ " ant-1.10.14.jar, ant-launcher-1.10.14.jar]",
 				scalaClasses.ingredients().toString());
 	}

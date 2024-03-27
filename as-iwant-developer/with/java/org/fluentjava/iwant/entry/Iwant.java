@@ -567,7 +567,8 @@ public class Iwant {
 			System.setSecurityManager(securityManager);
 		} catch (UnsupportedOperationException e) {
 			// Come on, please keep even deprecated things working properly
-			// until there is a replacement! How to catch System.exit?!
+			// until there is a replacement! How to turn System.exit into an
+			// exception without using SecurityManager?!
 			System.err.println("Ignoring JAVA21 problem:" + e);
 		}
 	}
