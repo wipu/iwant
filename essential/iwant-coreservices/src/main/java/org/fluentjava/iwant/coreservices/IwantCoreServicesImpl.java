@@ -31,7 +31,11 @@ public class IwantCoreServicesImpl implements IwantCoreServices {
 	}
 
 	public IwantCoreServicesImpl(Iwant iwant) {
-		this(iwant, new File("C:"), System.getProperties(), System.getenv());
+		// The trailing slash is mandatory, see
+		// https://bugs.java.com/bugdatabase/view_bug?bug_id=8189862
+		// (It really is a bug and should be fixed, but since they won't we work
+		// around like this)
+		this(iwant, new File("C:/"), System.getProperties(), System.getenv());
 	}
 
 	@Override
