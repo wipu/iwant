@@ -38,7 +38,23 @@ downloaded-tool() {
 
 native-path-ascii() {
     local IN=$1
-    native-path "$1" | native2ascii
+    local N=$(native-path "$IN")
+    to-ascii "$N"
+}
+
+# JDK dropped native2ascii so we have to use jq for
+# converting special chars (like scandinavian letters) to
+# the \uXXXX format
+to-ascii() {
+    local IN=$1
+    to-json-array "$IN" |
+	jq -ac |
+	sed 's/^\["//' | sed 's/"]$//'
+}
+
+to-json-array() {
+    local IN=$1
+    echo '["'$IN'"]'
 }
 
 native-path() {
