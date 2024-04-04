@@ -47,14 +47,9 @@ native-path-ascii() {
 # the \uXXXX format
 to-ascii() {
     local IN=$1
-    to-json-array "$IN" |
+    echo "\"$IN\"" |
 	jq -ac |
-	sed 's/^\["//' | sed 's/"]$//'
-}
-
-to-json-array() {
-    local IN=$1
-    echo '["'$IN'"]'
+	sed 's/^"//' | sed 's/"$//'
 }
 
 native-path() {
