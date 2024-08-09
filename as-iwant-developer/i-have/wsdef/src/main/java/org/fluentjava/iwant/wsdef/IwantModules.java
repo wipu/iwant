@@ -67,7 +67,7 @@ public class IwantModules extends JavaModules {
 	 * @return
 	 */
 	private JavaModule antLauncher = binModule("org.apache.ant", "ant-launcher",
-			"1.10.7");
+			"1.10.14");
 
 	private JavaModule asm = JavaBinModule.providing(FromRepository
 			.repo1MavenOrg().group("asm").name("asm").version("3.2").jar())
@@ -98,10 +98,10 @@ public class IwantModules extends JavaModules {
 					.name("jaxen").version("1.1.4").jar())
 			.end();
 
-	private JavaModule junit = JavaBinModule
-			.providing(FromRepository.repo1MavenOrg().group("junit")
-					.name("junit").version("4.8.2").jar())
-			.end();
+	private final JavaBinModule hamcrestCore = binModule("org/hamcrest",
+			"hamcrest-core", "1.3");
+	private final JavaModule junit = binModule("junit", "junit", "4.13.2",
+			hamcrestCore);
 
 	// TODO document dependency to asm, jaxen
 	private JavaModule pmd = JavaBinModule.providing(FromRepository

@@ -21,7 +21,7 @@ public class TestedIwantDependencies {
 
 	public static GnvArtifact<Downloaded> junit() {
 		return FromRepository.repo1MavenOrg().group("junit").name("junit")
-				.version("4.8.2").jar();
+				.version("4.13.2").jar();
 	}
 
 	public static GnvArtifact<Downloaded> testng() {

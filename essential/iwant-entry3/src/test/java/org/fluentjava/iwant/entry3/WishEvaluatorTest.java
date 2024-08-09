@@ -886,8 +886,8 @@ public class WishEvaluatorTest extends TestCase {
 
 		assertEquals("ant-plugin-print mutating.\n"
 				+ "ant-plugin modules: [iwant-plugin-ant,"
-				+ " mock-iwant-classes, ant-1.10.13.jar,"
-				+ " ant-launcher-1.10.13.jar]", err.toString());
+				+ " mock-iwant-classes, ant-1.10.14.jar,"
+				+ " ant-launcher-1.10.14.jar]", err.toString());
 	}
 
 	private static class WorkspaceWithTarget implements Workspace {
