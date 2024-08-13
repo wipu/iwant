@@ -73,9 +73,9 @@ public class IwantModules extends JavaModules {
 			.repo1MavenOrg().group("asm").name("asm").version("3.2").jar())
 			.end();
 
-	private JavaModule commonsIo = JavaBinModule.providing(
-			FromRepository.repo1MavenOrg().group("org/apache/commons")
-					.name("commons-io").version("1.3.2").jar())
+	private JavaModule commonsIo = JavaBinModule
+			.providing(FromRepository.repo1MavenOrg().group("commons-io")
+					.name("commons-io").version("2.16.1").jar())
 			.end();
 
 	private JavaModule commonsMath = JavaBinModule
