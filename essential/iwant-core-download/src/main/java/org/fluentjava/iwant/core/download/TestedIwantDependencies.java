@@ -16,7 +16,7 @@ public class TestedIwantDependencies {
 
 	public static GnvArtifact<Downloaded> jcommander() {
 		return FromRepository.repo1MavenOrg().group("com/beust")
-				.name("jcommander").version("1.48").jar();
+				.name("jcommander").version("1.82").jar();
 	}
 
 	public static GnvArtifact<Downloaded> junit() {

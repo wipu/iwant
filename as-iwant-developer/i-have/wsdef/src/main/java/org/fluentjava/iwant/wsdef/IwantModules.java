@@ -109,7 +109,7 @@ public class IwantModules extends JavaModules {
 			.end();
 
 	private final JavaBinModule jcommander = binModule("com.beust",
-			"jcommander", "1.48");
+			"jcommander", "1.82");
 
 	private final JavaBinModule testng = binModule("org.testng", "testng",
 			"6.9.4", jcommander);

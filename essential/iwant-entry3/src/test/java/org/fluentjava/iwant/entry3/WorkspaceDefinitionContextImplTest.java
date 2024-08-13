@@ -139,7 +139,7 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 
 		assertEquals(
 				"[iwant-plugin-testng, iwant-api-1, iwant-api-2,"
-						+ " jcommander-1.48.jar, testng-6.9.4.jar]",
+						+ " jcommander-1.82.jar, testng-6.9.4.jar]",
 				mods.toString());
 	}
 
