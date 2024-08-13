@@ -97,7 +97,7 @@ public class IwantModules extends JavaModules {
 
 	private JavaModule jaxen = JavaBinModule
 			.providing(FromRepository.repo1MavenOrg().group("jaxen")
-					.name("jaxen").version("1.1.4").jar())
+					.name("jaxen").version("2.0.0").jar())
 			.end();
 
 	private final JavaBinModule hamcrestCore = binModule("org/hamcrest",
