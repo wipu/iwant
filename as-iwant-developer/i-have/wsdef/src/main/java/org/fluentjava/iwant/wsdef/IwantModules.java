@@ -83,14 +83,16 @@ public class IwantModules extends JavaModules {
 					.name("commons-math").version("1.2").jar())
 			.end();
 
+	private static final String GUAVA_VER = "33.2.1-jre";
+
 	private JavaModule guava = JavaBinModule
 			.providing(FromRepository.repo1MavenOrg().group("com/google/guava")
-					.name("guava").version("18.0").jar())
+					.name("guava").version(GUAVA_VER).jar())
 			.end();
 
 	private JavaModule guavaTestlib = JavaBinModule
 			.providing(FromRepository.repo1MavenOrg().group("com/google/guava")
-					.name("guava-testlib").version("18.0").jar())
+					.name("guava-testlib").version(GUAVA_VER).jar())
 			.runtimeDeps(guava).end();
 
 	private JavaModule jaxen = JavaBinModule
