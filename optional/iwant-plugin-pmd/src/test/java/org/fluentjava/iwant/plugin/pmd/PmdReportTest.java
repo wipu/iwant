@@ -60,7 +60,7 @@ public class PmdReportTest extends PmdTestBase {
 		report.path(ctx);
 
 		assertTrue(htmlReportContent(report).length() > 0);
-		assertTrue(txtReportContent(report).length() > 0);
+		assertTrue(txtReportContent(report).length() == 0);
 	}
 
 	public void testReportOfEmptySrcDirectoryProducesReportFiles()
@@ -73,7 +73,7 @@ public class PmdReportTest extends PmdTestBase {
 		report.path(ctx);
 
 		assertTrue(htmlReportContent(report).length() > 0);
-		assertTrue(txtReportContent(report).length() > 0);
+		assertTrue(txtReportContent(report).length() == 0);
 	}
 
 	public void testAllReportFormatsOfOneClassesDirWithOneClassWithIssues()
@@ -86,28 +86,30 @@ public class PmdReportTest extends PmdTestBase {
 		report.path(ctx);
 
 		String htmlReportContent = htmlReportContent(report);
-		assertTrue(htmlReportContent
-				.contains("Avoid reassigning parameters such as 'parameter'"));
+		assertTrue(htmlReportContent.contains(
+				"The initial value of parameter 'parameter' is never used"));
 
 		String txtReportContent = txtReportContent(report);
 		assertTrue(txtReportContent.contains(
-				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:5"
-						+ "	Avoid reassigning parameters such as 'parameter'"));
+				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:6:"
+						+ "	AvoidReassigningParameters:	Avoid reassigning parameters such as 'parameter'"));
 		assertTrue(txtReportContent.contains(
-				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:9"
-						+ "	Method names should not start with capital letters"));
+				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:9:"
+						+ "	MethodNamingConventions:	The instance method name 'MethodWithDiscouragedName'"
+						+ " doesn't match '[a-z][a-zA-Z0-9]*"));
 		assertTrue(txtReportContent.contains(
-				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:13"
-						+ "	Avoid unused private methods such as 'deadMethod()'."));
+				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:13:"
+						+ "	UnusedPrivateMethod:	Avoid unused private methods such as 'deadMethod()"));
 		assertTrue(txtReportContent.contains(
-				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:17"
-						+ "	Document empty method"));
+				"org/fluentjava/iwant/plugin/pmd/testfodder/ClassWithPmdIssues.java:17:"
+						+ "	UncommentedEmptyMethodBody:	Document empty method body"));
 
 		String xmlReportContent = xmlReportContent(report);
-		assertTrue(xmlReportContent.contains("ClassWithPmdIssues.java\">\n"
-				+ "<violation beginline=\"5\" endline=\"5\""
-				+ " begincolumn=\"54\" endcolumn=\"62\""
-				+ " rule=\"AvoidReassigningParameters\""));
+		assertTrue(xmlReportContent.contains(
+				"<violation beginline=\"6\" endline=\"6\" begincolumn=\"3\""
+						+ " endcolumn=\"12\" rule=\"AvoidReassigningParameters\" ruleset=\"Best Practices\""
+						+ " package=\"net.sf.iwant.plugin.pmd.testfodder\" class=\"ClassWithPmdIssues\""
+						+ " method=\"methodThatWritesParameter\""));
 	}
 
 	public void testReportOnlyContainsIssuesDefinedInGivenRulesPath()
@@ -129,7 +131,7 @@ public class PmdReportTest extends PmdTestBase {
 		assertFalse(txtReportContent
 				.contains("Avoid reassigning parameters such as 'parameter'"));
 		assertTrue(txtReportContent.contains(
-				"Method names should not start with capital letters"));
+				"The instance method name 'MethodWithDiscouragedName'"));
 		assertFalse(txtReportContent.contains(
 				"Avoid unused private methods such as 'deadMethod()'."));
 		assertFalse(txtReportContent.contains("Document empty method"));

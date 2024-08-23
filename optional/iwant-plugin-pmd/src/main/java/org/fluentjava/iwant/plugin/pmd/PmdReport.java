@@ -87,14 +87,13 @@ public class PmdReport extends TargetBase {
 
 		PMDTask task = new PMDTask();
 		task.setProject(new Project());
-		task.setShortFilenames(true);
 
 		RuleSetWrapper rulesetWrapper = new RuleSetWrapper();
 		rulesetWrapper.addText(rulesetXml.getCanonicalPath());
 		task.addRuleset(rulesetWrapper);
 
 		Formatter htmlFormatter = new Formatter();
-		htmlFormatter.setType("betterhtml");
+		htmlFormatter.setType("html");
 		File htmlReport = new File(dest, name() + ".html");
 		htmlFormatter.setToFile(htmlReport);
 		task.addFormatter(htmlFormatter);
@@ -150,10 +149,7 @@ public class PmdReport extends TargetBase {
 		b.append("\n");
 		b.append("	<description>PMD rules for " + name() + "</description>\n");
 		b.append("\n");
-		b.append("	<rule ref=\"rulesets/basic.xml\" />\n");
-		b.append("	<rule ref=\"rulesets/design.xml\" />\n");
-		b.append("	<rule ref=\"rulesets/unusedcode.xml\" />\n");
-		b.append("	<rule ref=\"rulesets/naming.xml\" />\n");
+		b.append("	<rule ref=\"rulesets/internal/all-java.xml\" />\n");
 		b.append("\n");
 		b.append("</ruleset>\n");
 		return b.toString();

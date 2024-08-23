@@ -69,14 +69,18 @@ public class IwantModules extends JavaModules {
 	private JavaModule antLauncher = binModule("org.apache.ant", "ant-launcher",
 			"1.10.14");
 
-	private JavaModule asm = JavaBinModule.providing(FromRepository
-			.repo1MavenOrg().group("asm").name("asm").version("3.2").jar())
+	private JavaModule asm = JavaBinModule
+			.providing(FromRepository.repo1MavenOrg().group("org.ow2.asm")
+					.name("asm").version("9.7").jar())
 			.end();
 
 	private JavaModule commonsIo = JavaBinModule
 			.providing(FromRepository.repo1MavenOrg().group("commons-io")
 					.name("commons-io").version("2.16.1").jar())
 			.end();
+
+	private JavaModule commonsLang3 = binModule("org.apache.commons",
+			"commons-lang3", "3.16.0");
 
 	private JavaModule commonsMath = JavaBinModule
 			.providing(FromRepository.repo1MavenOrg().group("commons-math")
@@ -105,13 +109,41 @@ public class IwantModules extends JavaModules {
 	private final JavaModule junit = binModule("junit", "junit", "4.13.2",
 			hamcrestCore);
 
-	// TODO document dependency to asm, jaxen
-	private JavaModule pmd = JavaBinModule.providing(FromRepository
-			.repo1MavenOrg().group("pmd").name("pmd").version("4.3").jar())
-			.end();
+	private final JavaBinModule ooxmlNiceXmlMessages = binModule(
+			"com.github.oowekyala.ooxml", "nice-xml-messages", "3.1");
+
+	private final JavaBinModule pcollections = binModule("org.pcollections",
+			"pcollections", "4.0.2");
+
+	private static final String PMD_VER = "7.4.0";
+	private final JavaModule pmdAnt = binModule("net.sourceforge.pmd",
+			"pmd-ant", PMD_VER);
+	private final JavaModule pmdCore = binModule("net.sourceforge.pmd",
+			"pmd-core", PMD_VER);
+	private final JavaModule pmdJava = binModule("net.sourceforge.pmd",
+			"pmd-java", PMD_VER);
+	private final JavaModule pmdLangTest = binModule("net.sourceforge.pmd",
+			"pmd-lang-test", PMD_VER);
+	private final JavaModule pmdTest = binModule("net.sourceforge.pmd",
+			"pmd-test", PMD_VER);
+	private final JavaModule pmdTestSchema = binModule("net.sourceforge.pmd",
+			"pmd-test-schema", PMD_VER);
+	private final List<JavaModule> pmdModules = List.of(pmdAnt, pmdCore,
+			pmdJava, pmdLangTest, pmdTest, pmdTestSchema);
 
 	private final JavaBinModule jcommander = binModule("com.beust",
 			"jcommander", "1.82");
+
+	private final JavaBinModule saxonHe = binModule("net.sf.saxon", "Saxon-HE",
+			"12.5");
+
+	private static final String SLF4J_VER = "2.0.16";
+	private final JavaBinModule slf4jApi = binModule("org.slf4j", "slf4j-api",
+			SLF4J_VER);
+	private final JavaBinModule slf4jJulToSlf4j = binModule("org.slf4j",
+			"jul-to-slf4j", SLF4J_VER);
+	private final JavaBinModule slf4jSimple = binModule("org.slf4j",
+			"slf4j-simple", SLF4J_VER);
 
 	private final JavaBinModule testng = binModule("org.testng", "testng",
 			"6.9.4", jcommander);
@@ -141,6 +173,9 @@ public class IwantModules extends JavaModules {
 	private final JavaBinModule nettyHandler = nettyModule("handler");
 	private final JavaBinModule nettyHandlerProxy = nettyModule(
 			"handler-proxy");
+
+	private final JavaBinModule xmlresolver = binModule("org.xmlresolver",
+			"xmlresolver", "6.0.8");
 
 	private JavaSrcModule iwantApiModel = essentialModule("api-model")
 			.mainDeps().testDeps(junit).end();
@@ -330,11 +365,13 @@ public class IwantModules extends JavaModules {
 					iwantPluginAnt)
 			.testDeps(junit, iwantApimocks, iwantEmbedded, iwantTestarea).end();
 
-	// TODO don't depend directly on asm, jaxen: pmd depends on them
+	// TODO don't depend directly on asm, jaxen, ...: pmd depends on them
 	private JavaSrcModule iwantPluginPmd = optionalModule("plugin-pmd")
-			.testResources("src/test/resources")
-			.mainDeps(ant, asm, commonsIo, iwantApiCore, iwantApiModel,
-					iwantApiTarget, iwantEntry, jaxen, pmd)
+			.testResources("src/test/resources").mainDeps(pmdModules)
+			.mainDeps(ant, asm, commonsIo, commonsLang3, iwantApiCore,
+					iwantApiModel, iwantApiTarget, iwantEntry,
+					ooxmlNiceXmlMessages, pcollections, jaxen, saxonHe,
+					slf4jApi, slf4jJulToSlf4j, slf4jSimple, xmlresolver)
 			.testDeps(junit, iwantApimocks, iwantTestarea, iwantTestresources)
 			.end();
 

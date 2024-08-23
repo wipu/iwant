@@ -15,7 +15,7 @@ import org.fluentjava.iwant.api.target.TargetBase;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
 
-import net.sourceforge.pmd.cpd.CPDTask;
+import net.sourceforge.pmd.ant.CPDTask;
 
 public class CopyPasteReport extends TargetBase {
 

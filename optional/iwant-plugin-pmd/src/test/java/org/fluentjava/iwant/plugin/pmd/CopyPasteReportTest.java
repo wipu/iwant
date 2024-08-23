@@ -101,7 +101,7 @@ public class CopyPasteReportTest extends PmdTestBase {
 
 		String txtReportContent = txtReportContent(report);
 		assertTrue(txtReportContent
-				.contains("Found a 9 line (20 tokens) duplication"));
+				.contains("Found a 9 line (14 tokens) duplication"));
 	}
 
 	public void testReportOfTwoSrcDirectoriesIsEmptyWhenMinimumTokenCountIsHigh()

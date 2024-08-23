@@ -6,6 +6,6 @@
 
 	<description>PMD rules with naming only</description>
 
-	<rule ref="rulesets/naming.xml" />
+	<rule ref="category/java/codestyle.xml/MethodNamingConventions" />
 
 </ruleset>
