@@ -2,7 +2,7 @@ package org.fluentjava.iwant.entry3;
 
 import java.io.File;
 
-class DefaultUserPrefs implements UserPrefs {
+public class DefaultUserPrefs implements UserPrefs {
 
 	private final File userPrefsFile;
 

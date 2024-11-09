@@ -11,6 +11,8 @@ import org.fluentjava.iwant.api.model.WsInfo;
 import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry3.CachesImpl;
+import org.fluentjava.iwant.entry3.DefaultUserPrefs;
+import org.fluentjava.iwant.entry3.UserPrefs;
 import org.fluentjava.iwant.entry3.WishEvaluator;
 
 /**
@@ -29,6 +31,7 @@ public class AsEmbeddedIwantUser {
 
 		private File wsRoot;
 		private File wsCache;
+		private UserPrefs userPrefs = new DefaultUserPrefs(null);
 
 		public IHavePlease workspaceAt(File wsRoot) {
 			this.wsRoot = wsRoot;
@@ -37,6 +40,11 @@ public class AsEmbeddedIwantUser {
 
 		public IHavePlease cacheAt(File wsCache) {
 			this.wsCache = wsCache;
+			return this;
+		}
+
+		public IHavePlease userPrefs(UserPrefs userPrefs) {
+			this.userPrefs = userPrefs;
 			return this;
 		}
 
@@ -67,7 +75,7 @@ public class AsEmbeddedIwantUser {
 						WsInfo wsInfo = null;
 						Caches caches = new CachesImpl(wsCache, iwantApiClasses,
 								iwant.network());
-						int workerCount = 1;
+						int workerCount = userPrefs.workerCount();
 						JavaSrcModule wsdefdefJavaModule = null;
 						JavaSrcModule wsdefJavaModule = null;
 						WorkspaceModuleContext wsdefCtx = null;
