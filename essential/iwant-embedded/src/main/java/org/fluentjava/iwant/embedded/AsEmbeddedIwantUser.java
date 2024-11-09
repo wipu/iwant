@@ -15,12 +15,6 @@ import org.fluentjava.iwant.entry3.DefaultUserPrefs;
 import org.fluentjava.iwant.entry3.UserPrefs;
 import org.fluentjava.iwant.entry3.WishEvaluator;
 
-/**
- * TODO this belongs out of API because it depends on implementations, a
- * dedicated module later for this.
- * 
- * (what API are we even talking about, API for embedded user or target author?)
- */
 public class AsEmbeddedIwantUser {
 
 	public static IHavePlease with() {
