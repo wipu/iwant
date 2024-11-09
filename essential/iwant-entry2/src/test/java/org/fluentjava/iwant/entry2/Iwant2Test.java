@@ -153,6 +153,13 @@ public class Iwant2Test extends TestCase {
 				+ "/iwant-wsroot-marker/, file:" + testArea.root()
 				+ "/all-iwant-classes/, " + antJar.toURI() + ", "
 				+ antLauncherJar.toURI() + "]\n", out());
+
+		// all essential module main sources can be found in the combined
+		// essentials:
+		// TODO assert some more, perhaps
+		testArea.shallContainFragmentIn("all-iwant-classes/"
+				+ "org/fluentjava/iwant/embedded/MockedAsEmbeddedIwantUser.class",
+				"MockedAsEmbeddedIwantUser");
 	}
 
 	public void testIwant2CompilesIwantWithDebugInformation() throws Exception {

@@ -326,6 +326,7 @@ public class IwantModules extends JavaModules {
 		mod.mainJava("essential/iwant-api-model/src/main/java");
 		mod.mainJava("essential/iwant-api-wsdef/src/main/java");
 		mod.mainJava("essential/iwant-coreservices/src/main/java");
+		mod.mainJava("essential/iwant-embedded/src/main/java");
 		mod.mainJava("essential/iwant-entry/as-some-developer/with/java");
 		mod.mainJava("essential/iwant-entry2/src/main/java");
 		mod.mainJava("essential/iwant-entry3/src/main/java");

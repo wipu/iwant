@@ -96,6 +96,7 @@ public class Iwant2 {
 		srcDirs.add("iwant-coreservices/" + "src/main/java");
 		srcDirs.add("iwant-entry/" + "as-some-developer/with/java");
 		srcDirs.add("iwant-eclipse-settings/" + "src/main/java");
+		srcDirs.add("iwant-embedded/" + "src/main/java");
 		srcDirs.add("iwant-entry2/" + "src/main/java");
 		srcDirs.add("iwant-entry3/" + "src/main/java");
 		srcDirs.add("iwant-iwant-wsroot-finder/" + "src/main/java");
