@@ -44,12 +44,10 @@ import io.vertx.core.net.PfxOptions;
 
 public class HttpDownloadTest {
 
-	private static final int HTTP_PORT = 8888;
-	private static final int HTTPS_PORT = HTTP_PORT + 1;
 	private static Vertx vertx;
 	private TestArea testArea;
-	private HttpServer httpServer;
-	private HttpServer httpsServer;
+	private volatile HttpServer httpServer;
+	private volatile HttpServer httpsServer;
 	private KeyManager[] defaultKeyManagers;
 	private HostnameVerifier defaultHostnameVerifier;
 	private SSLSocketFactory defaultSocketFactory;
@@ -162,17 +160,18 @@ public class HttpDownloadTest {
 		httpServer.requestHandler(req -> {
 			System.err.println(httpServer + " serving " + req.absoluteURI());
 			if ("/http-to-http".equals(req.path())) {
-				redirect(req, "http://localhost:" + HTTP_PORT + "/final-http");
+				redirect(req, "http://localhost:" + httpServer.actualPort()
+						+ "/final-http");
 			} else if ("/http-to-https".equals(req.path())) {
-				redirect(req,
-						"https://localhost:" + HTTPS_PORT + "/final-https");
+				redirect(req, "https://localhost:" + httpsServer.actualPort()
+						+ "/final-https");
 			} else if ("/final-http".equals(req.path())) {
 				string200Ok(req, "final-http-body");
 			} else {
 				req.response().setStatusCode(404).end();
 			}
 		});
-		this.httpServer = started(httpServer, HTTP_PORT);
+		this.httpServer = started(httpServer);
 
 		HttpServerOptions opts = new HttpServerOptions();
 		opts.setSsl(true);
@@ -189,7 +188,7 @@ public class HttpDownloadTest {
 				req.response().setStatusCode(404).end();
 			}
 		});
-		this.httpsServer = started(httpsServer, HTTPS_PORT);
+		this.httpsServer = started(httpsServer);
 	}
 
 	private static void string200Ok(HttpServerRequest req, String body) {
@@ -206,11 +205,11 @@ public class HttpDownloadTest {
 		req.response().write(body).end();
 	}
 
-	private static HttpServer started(HttpServer httpServer, int port)
+	private static HttpServer started(HttpServer httpServer)
 			throws InterruptedException {
 		CountDownLatch started = new CountDownLatch(1);
 		System.err.println("Starting " + httpServer);
-		httpServer.listen(port, (v) -> started.countDown());
+		httpServer.listen(0, (v) -> started.countDown());
 		started.await();
 		System.err.println("Started " + httpServer);
 		return httpServer;
@@ -228,20 +227,21 @@ public class HttpDownloadTest {
 
 	@Test
 	public void downloadFollowsSimpleHttpToHttpRedirect() throws IOException {
-		contentOfUrlShallBe("http://localhost:" + HTTP_PORT + "/http-to-http",
+		contentOfUrlShallBe(
+				"http://localhost:" + httpServer.actualPort() + "/http-to-http",
 				"final-http-body");
 	}
 
 	@Test
 	public void directDownloadFromHttpsWorks() throws IOException {
-		contentOfUrlShallBe("https://localhost:" + HTTPS_PORT + "/final-https",
-				"final-https-body");
+		contentOfUrlShallBe("https://localhost:" + httpsServer.actualPort()
+				+ "/final-https", "final-https-body");
 	}
 
 	@Test
 	public void downloadFollowsHttpToHttpsRedirect() throws IOException {
-		contentOfUrlShallBe("http://localhost:" + HTTP_PORT + "/http-to-https",
-				"final-https-body");
+		contentOfUrlShallBe("http://localhost:" + httpServer.actualPort()
+				+ "/http-to-https", "final-https-body");
 	}
 
 	/**
