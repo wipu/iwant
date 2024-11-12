@@ -108,6 +108,41 @@ public class IwantModules extends JavaModules {
 			"hamcrest-core", "1.3");
 	private final JavaModule junit = binModule("junit", "junit", "4.13.2",
 			hamcrestCore);
+	private static final String JUNIT_PLATFORM_VER = "1.10.2";
+	private final JavaModule junitPlatformLauncher = binModule(
+			"org.junit.platform", "junit-platform-launcher",
+			JUNIT_PLATFORM_VER);
+	private final JavaModule junitPlatformConsole = binModule(
+			"org.junit.platform", "junit-platform-console", JUNIT_PLATFORM_VER,
+			junitPlatformLauncher);
+	private static final String JUNIT_JUPITER_VER = "5.10.2";
+	private final JavaModule junitPlatformCommons = binModule(
+			"org.junit.platform", "junit-platform-commons", JUNIT_PLATFORM_VER);
+	private final JavaModule junitPlatformEngine = binModule(
+			"org.junit.platform", "junit-platform-engine", JUNIT_PLATFORM_VER);
+	private final JavaModule junitJupiter = binModule("org.junit.jupiter",
+			"junit-jupiter", JUNIT_JUPITER_VER, junitPlatformCommons,
+			junitPlatformEngine);
+	private final JavaModule junitJupiterApi = binModule("org.junit.jupiter",
+			"junit-jupiter-api", JUNIT_JUPITER_VER);
+	private final JavaModule junitJupiterEngine = binModule("org.junit.jupiter",
+			"junit-jupiter-engine", JUNIT_JUPITER_VER);
+	private final JavaModule junitJupiterParams = binModule("org.junit.jupiter",
+			"junit-jupiter-params", JUNIT_JUPITER_VER);
+	private final JavaModule junitVintageEngine = binModule("org.junit.vintage",
+			"junit-vintage-engine", JUNIT_JUPITER_VER);
+	private final JavaBinModule opentest4j = binModule("org.opentest4j",
+			"opentest4j", "1.3.0");
+
+	private List<JavaModule> jupiterCompileDeps() {
+		return List.of(junit, junitJupiter, junitJupiterApi);
+	}
+
+	private List<JavaModule> jupiterRtDeps() {
+		return List.of(junitJupiterEngine, junitPlatformCommons,
+				junitJupiterParams, junitPlatformConsole, junitPlatformEngine,
+				junitVintageEngine, opentest4j);
+	}
 
 	private final JavaBinModule ooxmlNiceXmlMessages = binModule(
 			"com.github.oowekyala.ooxml", "nice-xml-messages", "3.1");
@@ -363,8 +398,10 @@ public class IwantModules extends JavaModules {
 			.mainDeps(commonsIo, iwantApiAntrunner, iwantApiCore, iwantApiModel,
 					iwantApiJavamodules, iwantApiTarget, iwantApiZip,
 					iwantCoreAnt, iwantCoreDownload, iwantEntry, iwantEntry3,
-					iwantPluginAnt)
-			.testDeps(junit, iwantApimocks, iwantEmbedded, iwantTestarea).end();
+					iwantPluginAnt, junitPlatformConsole)
+			.mainDeps(jupiterCompileDeps())
+			.testDeps(iwantApimocks, iwantEmbedded, iwantTestarea)
+			.testRuntimeDeps(jupiterRtDeps()).end();
 
 	// TODO don't depend directly on asm, jaxen, ...: pmd depends on them
 	private JavaSrcModule iwantPluginPmd = optionalModule("plugin-pmd")

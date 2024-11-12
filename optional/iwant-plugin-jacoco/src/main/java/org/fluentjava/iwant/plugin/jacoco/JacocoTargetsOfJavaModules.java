@@ -139,7 +139,7 @@ public class JacocoTargetsOfJavaModules {
 		if (mod.testRunner() != null) {
 			return mod.testRunner().mainClassName();
 		}
-		return "org.junit.runner.JUnitCore";
+		return "org.fluentjava.iwant.plugin.jacoco.Junit5Runner";
 	}
 
 	private void dep(JacocoCoverageSpexPlease coverage, JavaModule mod) {

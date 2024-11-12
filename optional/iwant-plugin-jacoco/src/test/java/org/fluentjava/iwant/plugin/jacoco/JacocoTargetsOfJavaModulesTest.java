@@ -87,10 +87,10 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				+ "i:jacoco:\n" + "  jacoco-0.8.10\n" + "i:antJars:\n" + "  "
 				+ antJar() + "\n  " + antLauncherJar() + "\ni:classLocations:\n"
 				+ "  mod-test-classes\n" + "p:mainClassName:\n"
-				+ "  org.junit.runner.JUnitCore\n" + "p:mainClassArgs:\n"
-				+ " null-collection\n" + "i:mainClassArgsFile:\n"
-				+ "  mod-test-class-names\n" + "p:jvmargs:\n",
-				coverage.contentDescriptor());
+				+ "  org.fluentjava.iwant.plugin.jacoco.Junit5Runner\n"
+				+ "p:mainClassArgs:\n" + " null-collection\n"
+				+ "i:mainClassArgsFile:\n" + "  mod-test-class-names\n"
+				+ "p:jvmargs:\n", coverage.contentDescriptor());
 
 		JacocoReport report = jacocoTargets.jacocoReport("report");
 		assertEquals("org.fluentjava.iwant.plugin.jacoco.JacocoReport\n"
@@ -145,7 +145,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 
 		JacocoCoverage coverageOfOneClass = jacocoTargets
 				.jacocoCoverageOf(testedByOneClass);
-		assertEquals("org.junit.runner.JUnitCore",
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.Junit5Runner",
 				coverageOfOneClass.mainClassName());
 		assertEquals("[custom.Test]",
 				coverageOfOneClass.mainClassArgs().toString());
@@ -153,7 +153,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 
 		JacocoCoverage coverageOfManyClasses = jacocoTargets
 				.jacocoCoverageOf(testedByClassnameFilter);
-		assertEquals("org.junit.runner.JUnitCore",
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.Junit5Runner",
 				coverageOfManyClasses.mainClassName());
 		assertNull(coverageOfManyClasses.mainClassArgs());
 		ClassNameList testNames = (ClassNameList) coverageOfManyClasses
@@ -263,7 +263,7 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertSame(env, coverage.env());
 	}
 
-	public void testJunitRunnerIsUsedForCoverageByDefault() {
+	public void testOwnJunitRunnerIsUsedForCoverageByDefault() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
 				.end();
 
@@ -272,7 +272,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				.modules(mod).end();
 
 		JacocoCoverage coverage = jacocoTargets.jacocoCoverageOf(mod);
-		assertEquals("org.junit.runner.JUnitCore", coverage.mainClassName());
+		assertEquals("org.fluentjava.iwant.plugin.jacoco.Junit5Runner",
+				coverage.mainClassName());
 	}
 
 	public void testCustomTestRunnerIsUsedForCoverage() {
