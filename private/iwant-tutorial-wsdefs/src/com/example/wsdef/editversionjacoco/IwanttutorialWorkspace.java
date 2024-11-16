@@ -3,11 +3,13 @@ package com.example.wsdef.editversionjacoco;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.fluentjava.iwant.api.core.Concatenated;
 import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.javamodules.JavaBinModule;
+import org.fluentjava.iwant.api.javamodules.JavaModule;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule.IwantSrcModuleSpex;
 import org.fluentjava.iwant.api.model.Path;
@@ -16,6 +18,7 @@ import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;
 import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
 import org.fluentjava.iwant.api.wsdef.Workspace;
+import org.fluentjava.iwant.api.wsdef.WorkspaceContext;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.core.javamodules.JavaModules;
 import org.fluentjava.iwant.eclipsesettings.EclipseSettings;
@@ -24,16 +27,25 @@ import org.fluentjava.iwant.plugin.jacoco.JacocoTargetsOfJavaModules;
 
 public class IwanttutorialWorkspace implements Workspace {
 
-	static class ExampleModules extends JavaModules {
+	private final Set<JavaModule> junit5Modules;
+	private final ExampleModules modules;
+
+	public IwanttutorialWorkspace(WorkspaceContext wsCtx) {
+		junit5Modules = wsCtx.iwantPlugin().junit5runner().withDependencies();
+		modules = new ExampleModules();
+	}
+
+	private class ExampleModules extends JavaModules {
 
 		@Override
 		protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {
-			return super.commonSettings(m).testDeps(junit);
+			return super.commonSettings(m).testDeps(junit)
+					.testRuntimeDeps(junit5Modules);
 		}
 
 		final JavaBinModule hamcrestCore = binModule("org/hamcrest",
 				"hamcrest-core", "1.3");
-		final JavaBinModule junit = binModule("junit", "junit", "4.11",
+		final JavaBinModule junit = binModule("junit", "junit", "4.13.2",
 				hamcrestCore);
 		final JavaSrcModule helloUtil = srcModule("example-helloutil")
 				.noMainResources().end();
@@ -41,8 +53,6 @@ public class IwanttutorialWorkspace implements Workspace {
 				.mainDeps(helloUtil).end();
 
 	}
-
-	private final ExampleModules modules = new ExampleModules();
 
 	@Override
 	public List<? extends Target> targets(TargetDefinitionContext ctx) {

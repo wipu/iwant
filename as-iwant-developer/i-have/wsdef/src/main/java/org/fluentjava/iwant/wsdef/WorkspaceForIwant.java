@@ -14,6 +14,7 @@ import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.wsdef.SideEffectDefinitionContext;
 import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
 import org.fluentjava.iwant.api.wsdef.Workspace;
+import org.fluentjava.iwant.api.wsdef.WorkspaceContext;
 import org.fluentjava.iwant.core.download.Downloaded;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.eclipsesettings.EclipseSettings;
@@ -29,7 +30,11 @@ public class WorkspaceForIwant implements Workspace {
 
 	private static final Target copyOfLocalIwantWs = new CopyOfLocalIwantWsForTutorial();
 
-	private final IwantModules modules = new IwantModules();
+	private final IwantModules modules;
+
+	public WorkspaceForIwant(WorkspaceContext ctx) {
+		this.modules = new IwantModules(ctx);
+	}
 
 	@Override
 	public List<? extends Target> targets(TargetDefinitionContext ctx) {
@@ -105,11 +110,13 @@ public class WorkspaceForIwant implements Workspace {
 		sh.string("asy -o \"$DEST\" '");
 		sh.unixPathTo(logoAsy());
 		sh.string("'\n");
+		// TODO why and since when does asy add another name extension:
+		sh.string("mv $DEST.eps $DEST\n");
 		return sh.end();
 	}
 
 	private static String imagemagickCommit() {
-		return "977fe08bf69549506243226a2c8f2488a690b28b";
+		return "72fb5349c1489c145a56f49e7f23277fd82af72d";
 	}
 
 	private static Target imagemagickZip() {
@@ -157,6 +164,8 @@ public class WorkspaceForIwant implements Workspace {
 		sh.string("cat '").unixPathTo(logoAsy())
 				.string("' | sed 's/^drawFull();/drawStar();/' > temp.asy\n");
 		sh.string("asy -o temp.eps temp.asy\n");
+		// TODO why and since when does asy add another name extension:
+		sh.string("mv temp.eps.eps temp.eps\n");
 		sh.unixPathTo(imagemagick())
 				.string("/bin/convert temp.eps -resize 32x32 temp.png\n");
 		sh.string("icotool -c -o \"$DEST\" temp.png\n");

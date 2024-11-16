@@ -1,18 +1,14 @@
-package org.fluentjava.iwant.plugin.jacoco;
+package org.fluentjava.iwant.plugin.junit5runner;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.fluentjava.iwant.entry.Iwant;
 import org.junit.platform.console.ConsoleLauncher;
 
 public class Junit5Runner {
 
 	public static void main(String[] args) {
-		Iwant.debugLog(Junit5Runner.class.getCanonicalName(),
-				Arrays.toString(args));
 		List<String> runnerArgs = new ArrayList<>();
 
 		for (String arg : args) {
@@ -20,8 +16,7 @@ public class Junit5Runner {
 			runnerArgs.add(arg);
 		}
 		if (runnerArgs.isEmpty()) {
-			Iwant.debugLog(Junit5Runner.class.getCanonicalName(),
-					"No tests given, exiting.");
+			System.err.println("No tests given, exiting.");
 			return;
 		}
 

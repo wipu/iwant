@@ -1,3 +1,33 @@
+- junit 5
+  + already did before writing this: runner for it
+  + separate module so it can be used in iwant
+  + 3 and 4 support to plugin classpath
+  + cleanup some of the redundant ext dep definitions
+  - change each mod eclipse conf (manually) to run with junit5, convert at least 1 test to 5
+  - simplify iwant for iwant (our iwant.sh): simply use a magic string for tmp, remove by it from cache
+  - optional old runner when defining javamodules: fluent methods for these
+  - convert all tests to junit 5
+
+- fix local website: broken since who know when
+  - fix
+  - make part of continuous practice (maybe after the /tmp usage story)
+
+- all core and plugin dependencies to exactly one place, usable for users, too
+
+- conf: *all* possible caches under /tmp, to save SSD and time. Also to force testing against internet rot.
+  - iwant-test-area especially!
+  - global setting to only use global cache for downloads, nothing else, TODO how?
+    - maybe: user can tell something is so slow it needs to be cached permanently
+  - empty intermediate caches success TODO how to define intermediate? user?
+  - personal projects (c compilation!), imagemagick, all scripts
+  - iwant's all caches (unzipped local etc)
+  - eclipse settings, wish script writing: only write if changes
+    * also may improve laziness with some (future) features
+  - what else
+
+- "text file busy" bug. Still valid and breaking our build. Still neglected.
+  * So: maybe retry and warning logs?
+
 - migrate to java 11 (EDIT: 17)
   * eclipse forced this (11) :/
   + use it, fix things (upgrade libs, don't use deprecated apis etc)

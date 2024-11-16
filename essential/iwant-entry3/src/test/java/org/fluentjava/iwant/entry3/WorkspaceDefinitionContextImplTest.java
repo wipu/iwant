@@ -111,9 +111,11 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 	public void testIwantPluginGithubWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().github().withDependencies();
 
-		assertEquals("[iwant-plugin-github, iwant-api-1, iwant-api-2,"
-				+ " iwant-plugin-ant, ant-1.10.14.jar,"
-				+ " ant-launcher-1.10.14.jar]", mods.toString());
+		assertEquals(
+				"[iwant-plugin-github, iwant-plugin-ant,"
+						+ " iwant-api-1, iwant-api-2,"
+						+ " ant-1.10.14.jar, ant-launcher-1.10.14.jar]",
+				mods.toString());
 	}
 
 	public void testIwantPluginWarWithDependenciesContainsCorrectModules() {
@@ -132,6 +134,19 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 						+ " iwant-plugin-ant, ant-1.10.14.jar,"
 						+ " ant-launcher-1.10.14.jar, commons-io-1.3.2.jar]",
 				mods.toString());
+	}
+
+	public void testIwantPluginJunit5runnerWithDependenciesContainsCorrectModules() {
+		Set<JavaModule> mods = ctx.iwantPlugin().junit5runner()
+				.withDependencies();
+
+		assertEquals("[iwant-plugin-junit5runner,"
+				+ " hamcrest-core-1.3.jar, junit-4.13.2.jar, junit-jupiter-5.10.2.jar,"
+				+ " junit-jupiter-api-5.10.2.jar, junit-jupiter-engine-5.10.2.jar,"
+				+ " junit-platform-commons-1.10.2.jar, junit-jupiter-params-5.10.2.jar,"
+				+ " junit-platform-console-1.10.2.jar, junit-platform-launcher-1.10.2.jar,"
+				+ " junit-platform-engine-1.10.2.jar, junit-vintage-engine-5.10.2.jar,"
+				+ " opentest4j-1.3.0.jar]", mods.toString());
 	}
 
 	public void testIwantPluginTestngWithDependenciesContainsCorrectModules() {

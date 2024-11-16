@@ -47,6 +47,7 @@ public class Iwant2Test extends TestCase {
 	 */
 	@Override
 	public void setUp() {
+		assertRealIwant3IsNotInClasspath();
 		origSecman = System.getSecurityManager();
 		System.setSecurityManager(new ExitCatcher());
 		originalIn = System.in;
@@ -59,6 +60,21 @@ public class Iwant2Test extends TestCase {
 		network = new IwantNetworkMock(testArea);
 		useRealAntJars(network);
 		iwant2 = Iwant2.using(network);
+	}
+
+	/**
+	 * Here we test delegation to the "mocked" Iwant3 from iwant-mock-wsroot.
+	 * OTOH it would be cleaner to just configure Iwant2 to call another FQCN
+	 * but, since iwant gives controle over the exact classpath, we'll simply
+	 * guard against accidental breaks with this.
+	 */
+	private static void assertRealIwant3IsNotInClasspath() {
+		try {
+			Class.forName("org.fluentjava.iwant.entry3.Iwant3");
+			fail("Cannot proceed, *real* Iwant3 was found in the classpath");
+		} catch (ClassNotFoundException e) {
+			// expected
+		}
 	}
 
 	private void useRealAntJars(IwantNetworkMock network) {

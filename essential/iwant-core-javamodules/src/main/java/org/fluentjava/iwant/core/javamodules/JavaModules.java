@@ -3,11 +3,14 @@ package org.fluentjava.iwant.core.javamodules;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Supplier;
 
 import org.fluentjava.iwant.api.javamodules.JavaBinModule;
 import org.fluentjava.iwant.api.javamodules.JavaCompliance;
@@ -21,7 +24,19 @@ import org.fluentjava.iwant.core.download.FromRepository;
 
 public abstract class JavaModules {
 
+	private final Map<String, Object> lazyCache = new HashMap<>();
 	private final SortedSet<JavaSrcModule> allSrcModules = new TreeSet<>();
+
+	protected <T> T lazy(Supplier<T> moduleSupplier) {
+		String caller = new Exception().getStackTrace()[1].getMethodName();
+		@SuppressWarnings("unchecked")
+		T module = (T) lazyCache.get(caller);
+		if (module == null) {
+			module = moduleSupplier.get();
+			lazyCache.put(caller, module);
+		}
+		return module;
+	}
 
 	public SortedSet<JavaSrcModule> allSrcModules() {
 		return allSrcModules;

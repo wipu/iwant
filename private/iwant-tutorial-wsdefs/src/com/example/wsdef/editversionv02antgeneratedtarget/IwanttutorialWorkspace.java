@@ -44,8 +44,8 @@ public class IwanttutorialWorkspace implements Workspace {
 	}
 
 	private static Target antGenerated() {
-		final String antGroup = "org/apache/ant";
-		final String antVersion = "1.7.1";
+		final String antGroup = "org.apache.ant";
+		final String antVersion = "1.10.14";
 		return AntGenerated.with().name("antGenerated")
 				.antJars(
 						FromRepository.repo1MavenOrg().group(antGroup)

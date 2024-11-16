@@ -14,7 +14,6 @@ import org.fluentjava.iwant.api.wsdef.IwantPluginWish;
 import org.fluentjava.iwant.api.wsdef.IwantPluginWishes;
 import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
 import org.fluentjava.iwant.core.download.Downloaded;
-import org.fluentjava.iwant.core.download.FromRepository;
 import org.fluentjava.iwant.core.download.GnvArtifact;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 
@@ -52,13 +51,8 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 		return ExternalSource.at(src);
 	}
 
-	private Set<JavaModule> pluginWithDependencies(String pluginName,
-			Path... dependencies) {
-		Set<JavaModule> depModules = new LinkedHashSet<>();
-		for (Path dependency : dependencies) {
-			depModules.add(JavaBinModule.providing(dependency).end());
-		}
-		return pluginWithDependencies(pluginName, depModules);
+	private static JavaModule mod(Path artifact) {
+		return JavaBinModule.providing(artifact).end();
 	}
 
 	private Set<JavaModule> pluginWithDependencies(String pluginName,
@@ -66,9 +60,6 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 		Path pluginJava = pluginMainJava(pluginName);
 		JavaClassesSpex pluginClasses = JavaClasses.with().name(pluginName)
 				.srcDirs(pluginJava).debug(true);
-		for (JavaModule iwantApiModule : iwantApiModules) {
-			pluginClasses.classLocations(iwantApiModule.mainArtifact());
-		}
 		for (JavaModule dependency : dependencies) {
 			pluginClasses.classLocations(dependency.mainArtifact());
 		}
@@ -76,7 +67,6 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 		Set<JavaModule> mods = new LinkedHashSet<>();
 		mods.add(
 				JavaBinModule.providing(pluginClasses.end(), pluginJava).end());
-		mods.addAll(iwantApiModules);
 		mods.addAll(dependencies);
 		return mods;
 	}
@@ -94,8 +84,11 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 					// launcher needed in case the user of this plugin also
 					// wants to use AntGenerated that dynamically loads ant
 					// (unless we already have a smarter classloader)
-					return pluginWithDependencies("iwant-plugin-ant", antJar(),
-							antLauncherJar());
+					Set<JavaModule> deps = new LinkedHashSet<>();
+					deps.addAll(iwantApiModules);
+					deps.add(apacheAnt());
+					deps.add(apacheAntLauncher());
+					return pluginWithDependencies("iwant-plugin-ant", deps);
 				}
 			};
 		}
@@ -106,7 +99,8 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 				@Override
 				public Set<JavaModule> withDependencies() {
 					Set<JavaModule> deps = new LinkedHashSet<>();
-					deps.add(JavaBinModule.providing(commonsIoJar()).end());
+					deps.addAll(iwantApiModules);
+					deps.add(commonsIo());
 					deps.addAll(ant().withDependencies());
 					return pluginWithDependencies("iwant-plugin-findbugs",
 							deps);
@@ -121,6 +115,7 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 				@Override
 				public Set<JavaModule> withDependencies() {
 					Set<JavaModule> deps = ant().withDependencies();
+					deps.addAll(iwantApiModules);
 					Set<JavaModule> modules = pluginWithDependencies(
 							"iwant-plugin-github", deps);
 					return modules;
@@ -134,9 +129,41 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 				@Override
 				public Set<JavaModule> withDependencies() {
 					Set<JavaModule> deps = new LinkedHashSet<>();
+					deps.addAll(iwantApiModules);
 					deps.addAll(ant().withDependencies());
-					deps.add(JavaBinModule.providing(commonsIoJar()).end());
+					deps.add(commonsIo());
 					return pluginWithDependencies("iwant-plugin-jacoco", deps);
+				}
+
+			};
+		}
+
+		@Override
+		public IwantPluginWish junit5runner() {
+			return new IwantPluginWish() {
+				@Override
+				public Set<JavaModule> withDependencies() {
+					// NOTE: it's important *NOT* to add iwantApiModules as deps
+					// here
+					// because this junit5runner is used for running tests of
+					// iwant's own
+					// modules, and there the existence of real api prevents
+					// using "mocked"
+					// versions of them in tests. (Iwant2Test)
+					// And this module anyway will never need any iwant api: it
+					// simply calls
+					// junit with given tests.
+					Set<JavaModule> deps = new LinkedHashSet<>();
+					for (GnvArtifact<Downloaded> dep : TestedIwantDependencies
+							.junitJupiterCompileDeps()) {
+						deps.add(mod(dep));
+					}
+					for (GnvArtifact<Downloaded> dep : TestedIwantDependencies
+							.junitJupiterRtDeps()) {
+						deps.add(mod(dep));
+					}
+					return pluginWithDependencies("iwant-plugin-junit5runner",
+							deps);
 				}
 
 			};
@@ -147,14 +174,15 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 			return new IwantPluginWish() {
 				@Override
 				public Set<JavaModule> withDependencies() {
-					return pluginWithDependencies("iwant-plugin-pmd", antJar(),
-							FromRepository.repo1MavenOrg().group("asm")
-									.name("asm").version("3.2").jar(),
-							commonsIoJar(),
-							FromRepository.repo1MavenOrg().group("jaxen")
-									.name("jaxen").version("1.1.4").jar(),
-							FromRepository.repo1MavenOrg().group("pmd")
-									.name("pmd").version("4.3").jar());
+					Set<JavaModule> deps = new LinkedHashSet<>();
+					deps.addAll(iwantApiModules);
+					deps.add(apacheAnt());
+					deps.add(asm());
+					deps.add(commonsIo());
+					deps.add(jaxen());
+					deps.add(pmdPmd());
+
+					return pluginWithDependencies("iwant-plugin-pmd", deps);
 				}
 
 			};
@@ -166,8 +194,9 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 				@Override
 				public Set<JavaModule> withDependencies() {
 					Set<JavaModule> deps = new LinkedHashSet<>();
-					deps.add(JavaBinModule.providing(jcommanderJar()).end());
-					deps.add(JavaBinModule.providing(testngJar()).end());
+					deps.addAll(iwantApiModules);
+					deps.add(jcommander());
+					deps.add(orgTestng());
 					return pluginWithDependencies("iwant-plugin-testng", deps);
 				}
 
@@ -179,32 +208,46 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 			return new IwantPluginWish() {
 				@Override
 				public Set<JavaModule> withDependencies() {
-					return pluginWithDependencies("iwant-plugin-war", antJar());
+					Set<JavaModule> deps = new LinkedHashSet<>();
+					deps.addAll(iwantApiModules);
+					deps.add(apacheAnt());
+					return pluginWithDependencies("iwant-plugin-war", deps);
 				}
 			};
 		}
 
 	}
 
-	private static Path antJar() {
-		return TestedIwantDependencies.antJar();
+	private static JavaModule apacheAnt() {
+		return mod(TestedIwantDependencies.antJar());
 	}
 
-	private static Path antLauncherJar() {
-		return TestedIwantDependencies.antLauncherJar();
+	private static JavaModule apacheAntLauncher() {
+		return mod(TestedIwantDependencies.antLauncherJar());
 	}
 
-	private static GnvArtifact<Downloaded> commonsIoJar() {
-		return FromRepository.repo1MavenOrg().group("org/apache/commons")
-				.name("commons-io").version("1.3.2").jar();
+	private static JavaModule commonsIo() {
+		return mod(TestedIwantDependencies.commonsIo());
 	}
 
-	private static Path jcommanderJar() {
-		return TestedIwantDependencies.jcommander();
+	private static JavaModule jcommander() {
+		return mod(TestedIwantDependencies.jcommander());
 	}
 
-	private static Path testngJar() {
-		return TestedIwantDependencies.testng();
+	private static JavaModule orgTestng() {
+		return mod(TestedIwantDependencies.testng());
+	}
+
+	private static JavaModule asm() {
+		return mod(TestedIwantDependencies.asm());
+	}
+
+	private static JavaModule jaxen() {
+		return mod(TestedIwantDependencies.jaxen());
+	}
+
+	private static JavaModule pmdPmd() {
+		return mod(TestedIwantDependencies.pmd());
 	}
 
 }

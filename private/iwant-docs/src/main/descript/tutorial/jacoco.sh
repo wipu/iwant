@@ -18,6 +18,7 @@ cmde "0" "as-iwant-tutorial-developer/with/bash/iwant/side-effect/eclipse-settin
 
 p "Then we define the jacoco-report target."
 
+def-edit wsdef jacoco IwanttutorialWorkspaceFactory
 wsdef-edit jacoco
 
 p "We list targets to refresh the wish scripts and then wish for the coverage report."
