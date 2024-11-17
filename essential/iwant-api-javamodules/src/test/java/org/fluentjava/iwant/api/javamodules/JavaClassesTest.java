@@ -1,5 +1,10 @@
 package org.fluentjava.iwant.api.javamodules;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -16,6 +21,7 @@ import org.fluentjava.iwant.coreservices.FileUtil;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.Test;
 
 public class JavaClassesTest extends IwantTestCase {
 
@@ -24,7 +30,8 @@ public class JavaClassesTest extends IwantTestCase {
 		return true;
 	}
 
-	public void testSrcDirIsAnIgredient() {
+	@Test
+	public void srcDirIsAnIgredient() {
 		Path src = Source.underWsroot("src");
 		Target target = JavaClasses.with().name("classes").srcDirs(src)
 				.classLocations().end();
@@ -32,7 +39,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertTrue(target.ingredients().contains(src));
 	}
 
-	public void testSrcDirsAreIgredients() {
+	@Test
+	public void srcDirsAreIgredients() {
 		Path src1 = Source.underWsroot("src1");
 		Path src2 = Source.underWsroot("src1");
 		Target target = JavaClasses.with().name("classes").srcDirs(src1, src2)
@@ -42,7 +50,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertTrue(target.ingredients().contains(src2));
 	}
 
-	public void testResourceDirsAreIgredients() {
+	@Test
+	public void resourceDirsAreIgredients() {
 		Path res1 = Source.underWsroot("res1");
 		Path res2 = Source.underWsroot("res1");
 		Target target = JavaClasses.with().name("classes")
@@ -52,7 +61,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertTrue(target.ingredients().contains(res2));
 	}
 
-	public void testSrcDirsCanBeEmptiedDuringSpecifyingJavaClasses() {
+	@Test
+	public void srcDirsCanBeEmptiedDuringSpecifyingJavaClasses() {
 		Path src1 = Source.underWsroot("src1");
 		Path src2 = Source.underWsroot("src1");
 		JavaClassesSpex spex = JavaClasses.with().name("classes").srcDirs(src1)
@@ -66,7 +76,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertTrue(target.ingredients().contains(src2));
 	}
 
-	public void testRelevantSettingsAreMentionedInContentDescriptor() {
+	@Test
+	public void relevantSettingsAreMentionedInContentDescriptor() {
 		assertEquals("org.fluentjava.iwant.api.javamodules.JavaClasses\n"
 				+ "i:srcDirs:\n" + "  src\n" + "i:resourceDirs:\n"
 				+ "i:classLocations:\n" + "p:javacOptions:\n" + "  -Xlint\n"
@@ -89,7 +100,8 @@ public class JavaClassesTest extends IwantTestCase {
 						.contentDescriptor());
 	}
 
-	public void testCrapToPathFails() throws Exception {
+	@Test
+	public void crapToPathFails() throws Exception {
 		wsRootHasFile("src/Crap.java", "crap");
 		Source src = Source.underWsroot("src");
 		Target target = JavaClasses.with().name("crap").srcDirs(src)
@@ -103,7 +115,8 @@ public class JavaClassesTest extends IwantTestCase {
 		}
 	}
 
-	public void testSourceCompliance1_7WarnsAboutMissingBootclasspath()
+	@Test
+	public void sourceCompliance1_7WarnsAboutMissingBootclasspath()
 			throws Exception {
 		wsRootHasFile("src/Valid.java", "class Valid {}");
 		Source src = Source.underWsroot("src");
@@ -125,7 +138,8 @@ public class JavaClassesTest extends IwantTestCase {
 	 * Without this we get warning: [options] system modules path not set in
 	 * conjunction with -source 11
 	 */
-	public void testJavacOptionsSourceAndTargetAreReplacedWithReleaseFromJava11On() {
+	@Test
+	public void javacOptionsSourceAndTargetAreReplacedWithReleaseFromJava11On() {
 		Source src = Source.underWsroot("src");
 
 		assertEquals("[-Xlint, -Xlint:-serial, -source, 1.8]",
@@ -144,7 +158,8 @@ public class JavaClassesTest extends IwantTestCase {
 						.end().javacOptions().toString());
 	}
 
-	public void testToPathCompilesFromMultiplePackages() throws Exception {
+	@Test
+	public void toPathCompilesFromMultiplePackages() throws Exception {
 		wsRootHasFile("src/Caller.java",
 				"class Caller {pak1.Callee1 callee1;pak2.Callee2 callee2;}");
 		wsRootHasFile("src/pak1/Callee1.java",
@@ -162,7 +177,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertTrue(new File(cached, "multiple/pak2/Callee2.class").exists());
 	}
 
-	public void testToPathCompilesFromMultipleSrcDirs() throws Exception {
+	@Test
+	public void toPathCompilesFromMultipleSrcDirs() throws Exception {
 		File srcDir1 = new File(wsRoot, "src1");
 		Iwant.newTextFile(new File(srcDir1, "Caller.java"),
 				"class Caller {pak1.Callee1 callee1;pak2.Callee2 callee2;}");
@@ -186,7 +202,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertTrue(new File(cached, "multiple/pak2/Callee2.class").exists());
 	}
 
-	public void testClassWithDepToClassesCompiles() throws Exception {
+	@Test
+	public void classWithDepToClassesCompiles() throws Exception {
 		Class<?> superClass = SuperClassForJavaClassesTestSubclass.class;
 		File superClassFile = new File(getClass()
 				.getResource(superClass.getSimpleName() + ".class").toURI());
@@ -206,7 +223,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertTrue(new File(cached, "valid/Subclass.class").exists());
 	}
 
-	public void testDependenciesAreIgredients() {
+	@Test
+	public void dependenciesAreIgredients() {
 		Target dep1 = new TargetMock("dep1");
 		Target dep2 = new TargetMock("dep2");
 		Target target = JavaClasses.with().name("valid")
@@ -217,7 +235,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertTrue(target.ingredients().contains(dep2));
 	}
 
-	public void testDependenciesAreInContentDescriptor() {
+	@Test
+	public void dependenciesAreInContentDescriptor() {
 		Target dep1 = new TargetMock("dep1");
 		Target dep2 = new TargetMock("dep2");
 		Target target = JavaClasses.with().name("valid")
@@ -232,8 +251,8 @@ public class JavaClassesTest extends IwantTestCase {
 				target.contentDescriptor());
 	}
 
-	public void testEmptySourceDirectoryProducesEmptyClasses()
-			throws Exception {
+	@Test
+	public void emptySourceDirectoryProducesEmptyClasses() throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		Iwant.mkdirs(srcDir);
 		Source src = Source.underWsroot("src");
@@ -245,7 +264,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertEquals("[]", Arrays.toString(new File(cached, "empty").list()));
 	}
 
-	public void testSourceDirectoryWithJustDotKeepInItProducesEmptyClasses()
+	@Test
+	public void sourceDirectoryWithJustDotKeepInItProducesEmptyClasses()
 			throws Exception {
 		wsRootHasFile("src/.keep", "");
 
@@ -258,8 +278,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertEquals("[]", Arrays.toString(new File(cached, "empty").list()));
 	}
 
-	public void testMissingSourceDirectoryCausesFriendlyError()
-			throws Exception {
+	@Test
+	public void missingSourceDirectoryCausesFriendlyError() throws Exception {
 		Source src = Source.underWsroot("missing-src");
 		Target target = JavaClasses.with().name("missing").srcDirs(src)
 				.classLocations().end();
@@ -273,7 +293,8 @@ public class JavaClassesTest extends IwantTestCase {
 		}
 	}
 
-	public void testUsingNonDirectoryAsSourceDirectoryCausesFriendlyError()
+	@Test
+	public void usingNonDirectoryAsSourceDirectoryCausesFriendlyError()
 			throws Exception {
 		Iwant.mkdirs(wsRoot);
 		File srcFile = new File(wsRoot, "Valid.java");
@@ -291,7 +312,8 @@ public class JavaClassesTest extends IwantTestCase {
 		}
 	}
 
-	public void testDebugInformationIsIncludedIffRequested() throws Exception {
+	@Test
+	public void debugInformationIsIncludedIffRequested() throws Exception {
 		String srcDirName = "src";
 		Path src = Source.underWsroot(srcDirName);
 		Iwant.newTextFile(new File(new File(wsRoot, srcDirName), "Foo.java"),
@@ -319,13 +341,15 @@ public class JavaClassesTest extends IwantTestCase {
 		assertTrue(TestArea.bytesContain(debugContent, "greeting"));
 	}
 
-	public void testResourceDirDefinitionAndGetter() {
+	@Test
+	public void resourceDirDefinitionAndGetter() {
 		JavaClasses c = JavaClasses.with()
 				.resourceDirs(Source.underWsroot("res")).end();
 		assertEquals("[res]", c.resourceDirs().toString());
 	}
 
-	public void testClearingResourceDirsAndSpecifyingManyOfThem() {
+	@Test
+	public void clearingResourceDirsAndSpecifyingManyOfThem() {
 		JavaClasses c = JavaClasses.with()
 				.resourceDirs(Source.underWsroot("to-be-removed"))
 				.noResourceDirs().resourceDirs(Source.underWsroot("r1"),
@@ -334,7 +358,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertEquals("[r1, r2]", c.resourceDirs().toString());
 	}
 
-	public void testResourcesAreCopiedAlongsideCompilationFromTheOneDirectoryGiven()
+	@Test
+	public void resourcesAreCopiedAlongsideCompilationFromTheOneDirectoryGiven()
 			throws Exception {
 		wsRootHasFile("src/Foo.java", "public class Foo {}");
 		wsRootHasFile("res/res.txt", "res.txt content");
@@ -348,7 +373,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertEquals("res.txt content", contentOfCached(classes, "res.txt"));
 	}
 
-	public void testMissingResourceDirectoryIsIgnoredWithWarningAndWithoutThrowing()
+	@Test
+	public void missingResourceDirectoryIsIgnoredWithWarningAndWithoutThrowing()
 			throws Exception {
 		wsRootHasFile("src/Foo.java", "public class Foo {}");
 		// wsroot does not have directory "res1"
@@ -369,7 +395,8 @@ public class JavaClassesTest extends IwantTestCase {
 				err());
 	}
 
-	public void testTwoResourceDirsAndNoSrc() throws Exception {
+	@Test
+	public void twoResourceDirsAndNoSrc() throws Exception {
 		Iwant.newTextFile(new File(wsRoot, "res1/pak1/res1.txt"),
 				"res1.txt content");
 		Iwant.newTextFile(new File(wsRoot, "res2/pak2/res2.txt"),
@@ -385,12 +412,14 @@ public class JavaClassesTest extends IwantTestCase {
 				contentOfCached(classes, "pak2/res2.txt"));
 	}
 
-	public void testDefaultCharsetIsUtf8() {
+	@Test
+	public void defaultCharsetIsUtf8() {
 		assertEquals(StandardCharsets.UTF_8,
 				JavaClasses.with().end().encoding());
 	}
 
-	public void testOverridingChracterEncoding() throws Exception {
+	@Test
+	public void overridingChracterEncoding() throws Exception {
 		Charset differentCharset = Charset.forName("ISO-8859-1");
 		assertFalse(differentCharset.equals(Charset.defaultCharset()));
 
@@ -415,7 +444,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertEquals("aumlaut:ä\n", out());
 	}
 
-	public void testDefaultJavacOptionsPassedToServices() throws Exception {
+	@Test
+	public void defaultJavacOptionsPassedToServices() throws Exception {
 		wsRootHasDirectory("src");
 		wsRootHasFile("src/Whatever.java", "public class Whatever {}");
 		JavaClasses classes = JavaClasses.with().name("classes")
@@ -427,7 +457,8 @@ public class JavaClassesTest extends IwantTestCase {
 				ctx.iwant().lastJavacOptions().toString());
 	}
 
-	public void testCustomArgs() throws Exception {
+	@Test
+	public void customArgs() throws Exception {
 		wsRootHasDirectory("src");
 		wsRootHasFile("src/Whatever.java", "public class Whatever {}");
 		JavaClasses classes = JavaClasses.with().name("classes")
@@ -440,7 +471,8 @@ public class JavaClassesTest extends IwantTestCase {
 				ctx.iwant().lastJavacOptions().toString());
 	}
 
-	public void testDifferentJavacOptionsPassedToServices() throws Exception {
+	@Test
+	public void differentJavacOptionsPassedToServices() throws Exception {
 		wsRootHasDirectory("src");
 		wsRootHasFile("src/Whatever.java", "public class Whatever {}");
 		JavaClasses classes = JavaClasses.with().name("classes")
@@ -453,7 +485,8 @@ public class JavaClassesTest extends IwantTestCase {
 				ctx.iwant().lastJavacOptions().toString());
 	}
 
-	public void testJavacOptionsAreInDescriptor() {
+	@Test
+	public void javacOptionsAreInDescriptor() {
 		assertTrue(JavaClasses.with().name("classes")
 				.srcDirs(Source.underWsroot("src")).debug(true)
 				.sourceVersion(JavaCompliance.JAVA_1_6).end()
@@ -472,8 +505,8 @@ public class JavaClassesTest extends IwantTestCase {
 				.contains("  --release\n  11\n  -g"));
 	}
 
-	public void testJava8CompilesWithWarningsAboutBootclasspath()
-			throws Exception {
+	@Test
+	public void java8CompilesWithWarningsAboutBootclasspath() throws Exception {
 		wsRootHasFile("src/UsingJ8.java", "class UsingJ8 {" + "	static {\n"
 				+ "		java.util.Arrays.asList(\"1\")."
 				+ "forEach(s -> System.out.println(s));\n" + "	}\n" + "}");
@@ -490,7 +523,8 @@ public class JavaClassesTest extends IwantTestCase {
 				err());
 	}
 
-	public void testJava11CompilesWithoutWarnings() throws Exception {
+	@Test
+	public void java11CompilesWithoutWarnings() throws Exception {
 		wsRootHasFile("src/UsingJ11.java",
 				"class UsingJ11 {void s() {var s = \"\";System.out.println(s);}}");
 		Source src = Source.underWsroot("src");
@@ -503,7 +537,8 @@ public class JavaClassesTest extends IwantTestCase {
 		assertEquals("", err());
 	}
 
-	public void testJava17CompilesWithoutWarnings() throws Exception {
+	@Test
+	public void java17CompilesWithoutWarnings() throws Exception {
 		wsRootHasFile("src/UsingJ17.java",
 				"public record UsingJ17(String a, int b) {}");
 		Source src = Source.underWsroot("src");

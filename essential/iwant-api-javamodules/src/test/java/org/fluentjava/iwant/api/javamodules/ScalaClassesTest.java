@@ -1,5 +1,8 @@
 package org.fluentjava.iwant.api.javamodules;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.util.Arrays;
 
@@ -8,6 +11,7 @@ import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.entry.Iwant;
+import org.junit.jupiter.api.Test;
 
 public class ScalaClassesTest extends IwantTestCase {
 
@@ -24,7 +28,8 @@ public class ScalaClassesTest extends IwantTestCase {
 				TestedIwantDependencies.antLauncherJar().artifact().url());
 	}
 
-	public void testScalaAndJavaCompileAndRunWhenThereIsACrossDependencyBetweenTheLanguages()
+	@Test
+	public void scalaAndJavaCompileAndRunWhenThereIsACrossDependencyBetweenTheLanguages()
 			throws Exception {
 		wsRootHasDirectory("depsrc/deppak");
 		StringBuilder dep = new StringBuilder();
@@ -98,7 +103,8 @@ public class ScalaClassesTest extends IwantTestCase {
 				out());
 	}
 
-	public void testContentDescriptorAndIngredients() {
+	@Test
+	public void contentDescriptorAndIngredients() {
 		Path dep = Source.underWsroot("dep");
 		ScalaClasses scalaClasses = ScalaClasses.with().name("scala-classes")
 				.scala(SCALA)

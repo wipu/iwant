@@ -1,5 +1,11 @@
 package org.fluentjava.iwant.plugin.jacoco;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.util.List;
 
@@ -11,10 +17,12 @@ import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.SystemEnv;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.entry.Iwant.ExitCalledException;
+import org.junit.jupiter.api.Test;
 
 public class JacocoCoverageTest extends JacocoTestBase {
 
-	public void testParallelismIsDisabledUntilProvenByPracticeItDoesNotCauseProblems() {
+	@Test
+	public void parallelismIsDisabledUntilProvenByPracticeItDoesNotCauseProblems() {
 		Path classes = Source.underWsroot("classes");
 		JacocoInstrumentation instr = JacocoInstrumentation.of(classes)
 				.using(jacoco(), antJar(), antLauncherJar());
@@ -26,7 +34,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		assertFalse(coverage.supportsParallelism());
 	}
 
-	public void testIngredientsAndDescriptorWithMainClassArgsGivenAsStrings()
+	@Test
+	public void ingredientsAndDescriptorWithMainClassArgsGivenAsStrings()
 			throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Main");
@@ -52,7 +61,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				+ "p:jvmargs:\n", coverage.contentDescriptor());
 	}
 
-	public void testIngredientsAndDescriptorWithMainClassArgsGivenAsPath()
+	@Test
+	public void ingredientsAndDescriptorWithMainClassArgsGivenAsPath()
 			throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Main");
@@ -81,7 +91,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				coverage.contentDescriptor());
 	}
 
-	public void testIngredientsAndDescriptorWithJvmArgs() throws Exception {
+	@Test
+	public void ingredientsAndDescriptorWithJvmArgs() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Main");
 		JacocoInstrumentation instr = JacocoInstrumentation
@@ -106,7 +117,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				+ "p:jvmargs:\n" + "  -Xmx1G\n", coverage.contentDescriptor());
 	}
 
-	public void testItProducesTheRequestedExecFile() throws Exception {
+	@Test
+	public void itProducesTheRequestedExecFile() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Hello");
 		JacocoInstrumentation instr = JacocoInstrumentation
@@ -128,7 +140,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 	/**
 	 * We cannot we assert err() because jacoco forks a new jvm process
 	 */
-	public void testItCallsGivenClassWithArgsGivenAsStrings() throws Exception {
+	@Test
+	public void itCallsGivenClassWithArgsGivenAsStrings() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "ArgChecker", "if(!\"[a0, a1]\".equals("
 						+ "java.util.Arrays.toString(args))) System.exit(1);");
@@ -150,7 +163,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 	/**
 	 * We cannot we assert err() because jacoco forks a new jvm process
 	 */
-	public void testItCallsGivenClassWithArgsGivenAsPath() throws Exception {
+	@Test
+	public void itCallsGivenClassWithArgsGivenAsPath() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "ArgChecker", "if(!\"[fa0, fa1]\".equals("
 						+ "java.util.Arrays.toString(args))) System.exit(1);");
@@ -171,7 +185,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		assertTrue(new File(cached, "coverage.exec").exists());
 	}
 
-	public void testItFailsIfMainClassMakeNonZeroExit() throws Exception {
+	@Test
+	public void itFailsIfMainClassMakeNonZeroExit() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Failer", "System.exit(1);");
 		JacocoInstrumentation instr = JacocoInstrumentation
@@ -193,7 +208,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 
 	}
 
-	public void testAllClasspathItemsBothInstrumentedAndNonInstrumentedGoToClasspathInTheSpecifiedOrder()
+	@Test
+	public void allClasspathItemsBothInstrumentedAndNonInstrumentedGoToClasspathInTheSpecifiedOrder()
 			throws Exception {
 		Path classes1 = Source.underWsroot("classes1");
 
@@ -221,8 +237,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 				classpath.toString());
 	}
 
-	public void testJvmArgsContainsSaneDefaultsIfNotSpecified()
-			throws Exception {
+	@Test
+	public void jvmArgsContainsSaneDefaultsIfNotSpecified() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Hello");
 		JacocoInstrumentation instr = JacocoInstrumentation
@@ -238,7 +254,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		assertEquals("[]", coverage.jvmargs().toString());
 	}
 
-	public void testJvmArgsCanBeCleared() throws Exception {
+	@Test
+	public void jvmArgsCanBeCleared() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Hello");
 		JacocoInstrumentation instr = JacocoInstrumentation
@@ -254,7 +271,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		assertEquals("[]", coverage.jvmargs().toString());
 	}
 
-	public void testJvmArgsCanBeDefined() throws Exception {
+	@Test
+	public void jvmArgsCanBeDefined() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Hello");
 		JacocoInstrumentation instr = JacocoInstrumentation
@@ -270,7 +288,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		assertEquals("[jvmarg0, jvmarg1]", coverage.jvmargs().toString());
 	}
 
-	public void testJvmArgsAreUsedInTheAntScriptUnderTmpDir() throws Exception {
+	@Test
+	public void jvmArgsAreUsedInTheAntScriptUnderTmpDir() throws Exception {
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
 				"instrtest", "Hello");
 		JacocoInstrumentation instr = JacocoInstrumentation
@@ -298,7 +317,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 	/**
 	 * We cannot we assert err() because jacoco forks a new jvm process
 	 */
-	public void testItCallsGivenClassWithGivenEnvVariables() throws Exception {
+	@Test
+	public void itCallsGivenClassWithGivenEnvVariables() throws Exception {
 		Path src = Source.underWsroot("aSrc");
 
 		JavaClassesAndSources classesAndSources = newJavaClassesAndSources(
@@ -323,7 +343,8 @@ public class JacocoCoverageTest extends JacocoTestBase {
 		assertTrue(new File(cached, "coverage.exec").exists());
 	}
 
-	public void testEnvIsUsedAsIngredientsAndParameters() {
+	@Test
+	public void envIsUsedAsIngredientsAndParameters() {
 		Path pathForEnv = Source.underWsroot("aSrc");
 		Path classesToInstrument = Source.underWsroot("classes");
 

@@ -1,5 +1,8 @@
 package org.fluentjava.iwant.core.ant;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 
 import org.fluentjava.iwant.api.core.Concatenated;
@@ -14,6 +17,7 @@ import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.embedded.AsEmbeddedIwantUser;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.ExitCalledException;
+import org.junit.jupiter.api.Test;
 
 public class AntGeneratedTest extends IwantTestCase {
 
@@ -41,7 +45,8 @@ public class AntGeneratedTest extends IwantTestCase {
 		return downloaded(TestedIwantDependencies.antLauncherJar());
 	}
 
-	public void testContentDescriptor() {
+	@Test
+	public void contentDescriptor() {
 		assertEquals("org.fluentjava.iwant.core.ant.AntGenerated\n"
 				+ "i:ant-jars:\n  " + Iwant.IWANT_USER_DIR
 				+ "/cached/UnmodifiableUrl/https%3A/%2Frepo1.maven.org/maven2/org/apache/ant/ant/1.10.14/ant-1.10.14.jar\n"
@@ -59,7 +64,8 @@ public class AntGeneratedTest extends IwantTestCase {
 						.contentDescriptor());
 	}
 
-	public void testIngredients() {
+	@Test
+	public void ingredients() {
 		assertEquals("[" + antJar() + ", script]",
 				AntGenerated.with().name("minimal").antJars(antJar())
 						.script(Source.underWsroot("script")).end()
@@ -72,7 +78,8 @@ public class AntGeneratedTest extends IwantTestCase {
 						.ingredients().toString());
 	}
 
-	public void testMinimalEcho() throws Exception {
+	@Test
+	public void minimalEcho() throws Exception {
 		ConcatenatedBuilder scriptContent = Concatenated.named("script");
 		scriptContent.string("<project name='hello' default='hello'>\n");
 		scriptContent.string("  <target name='hello'>\n");
@@ -90,7 +97,8 @@ public class AntGeneratedTest extends IwantTestCase {
 		assertContains(err(), "hello message");
 	}
 
-	public void testMinimalFail() throws Exception {
+	@Test
+	public void minimalFail() throws Exception {
 		ConcatenatedBuilder scriptContent = Concatenated.named("script");
 		scriptContent.string("<project name='fail' default='fail'>\n");
 		scriptContent.string("  <target name='fail'>\n");
@@ -113,7 +121,8 @@ public class AntGeneratedTest extends IwantTestCase {
 		assertContains(err(), "fail message");
 	}
 
-	public void testEchoIwantOutFileProperty() throws Exception {
+	@Test
+	public void echoIwantOutFileProperty() throws Exception {
 		ConcatenatedBuilder scriptContent = Concatenated.named("script");
 		scriptContent.string("<project name='hello' default='hello'>\n");
 		scriptContent.string("  <target name='hello'>\n");
@@ -133,7 +142,8 @@ public class AntGeneratedTest extends IwantTestCase {
 		}
 	}
 
-	public void testFileGeneratingScriptWithIngredients() throws Exception {
+	@Test
+	public void fileGeneratingScriptWithIngredients() throws Exception {
 		HelloTarget ingredient1 = new HelloTarget("ingredient1",
 				"ingredient1 content");
 		ingredient1.path(ctx);

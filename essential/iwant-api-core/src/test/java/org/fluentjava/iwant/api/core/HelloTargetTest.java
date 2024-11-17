@@ -1,12 +1,17 @@
 package org.fluentjava.iwant.api.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
 import org.fluentjava.iwant.coreservices.StreamUtil;
+import org.junit.jupiter.api.Test;
 
 public class HelloTargetTest extends IwantTestCase {
 
-	public void testNullMessageContent() throws Exception {
+	@Test
+	public void nullMessageContent() throws Exception {
 		Target t = new HelloTarget("null", null);
 		try {
 			t.content(ctx);
@@ -16,7 +21,8 @@ public class HelloTargetTest extends IwantTestCase {
 		}
 	}
 
-	public void testNullMessageRefreshTo() throws Exception {
+	@Test
+	public void nullMessageRefreshTo() throws Exception {
 		Target t = new HelloTarget("null", null);
 		try {
 			t.path(ctx);
@@ -26,12 +32,14 @@ public class HelloTargetTest extends IwantTestCase {
 		}
 	}
 
-	public void testNonNullMessageContent() throws Exception {
+	@Test
+	public void nonNullMessageContent() throws Exception {
 		Target t = new HelloTarget("non-null", "hello content");
 		assertEquals("hello content", StreamUtil.toString(t.content(ctx)));
 	}
 
-	public void testNonNullMessagePath() throws Exception {
+	@Test
+	public void nonNullMessagePath() throws Exception {
 		Target target = new HelloTarget("non-null", "hello content");
 
 		target.path(ctx);

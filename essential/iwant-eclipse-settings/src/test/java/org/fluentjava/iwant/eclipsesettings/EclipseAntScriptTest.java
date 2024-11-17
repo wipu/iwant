@@ -1,10 +1,13 @@
 package org.fluentjava.iwant.eclipsesettings;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EclipseAntScriptTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
-	public void testGetters() {
+public class EclipseAntScriptTest {
+
+	@Test
+	public void getters() {
 		EclipseAntScript script = new EclipseAntScript("proj1", "../..",
 				"parent1", "classes1", "src1", "as-proj1-developer");
 
@@ -16,7 +19,8 @@ public class EclipseAntScriptTest extends TestCase {
 		assertEquals("as-proj1-developer", script.asSomeone());
 	}
 
-	public void testFileContent() {
+	@Test
+	public void fileContent() {
 		EclipseAntScript script = new EclipseAntScript("proj2", "../..",
 				"parent-dir", "classes2", "src2", "as-proj2-developer");
 
@@ -75,7 +79,8 @@ public class EclipseAntScriptTest extends TestCase {
 		assertEquals(expected.toString(), script.asFileContent());
 	}
 
-	public void testFileContentWithDifferentValues() {
+	@Test
+	public void fileContentWithDifferentValues() {
 		EclipseAntScript script = new EclipseAntScript("directly-under-wsroot",
 				"..", "", "classes3", "src3",
 				"as-directly-under-wsroot-developer");

@@ -1,13 +1,16 @@
 package org.fluentjava.iwant.eclipsesettings;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class OrgEclipseCoreResourcesPrefsTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+public class OrgEclipseCoreResourcesPrefsTest {
 
 	/**
 	 * No need to test more now that it's 100% constant
 	 */
-	public void testSomePiecesOfOutput() {
+	@Test
+	public void somePiecesOfOutput() {
 		OrgEclipseCoreResourcesPrefs p = OrgEclipseCoreResourcesPrefs
 				.withDefaultValues();
 		String actual = p.asFileContent();

@@ -6,9 +6,9 @@
   - change each mod eclipse conf (manually) to run with junit5, convert at least 1 test to 5
   - simplify iwant for iwant (our iwant.sh): simply use a magic string for tmp, remove by it from cache
   - optional old runner when defining javamodules: fluent methods for these
-  - convert all tests to junit 5
+  + convert all tests to junit 5
     + 4
-    - 3
+    + 3
   - document: in own modules class it's wise to funnel throug a myModule method
     - deprecate and even remove commonSettins
     - ha, maybe even force by defining abstract myModule method

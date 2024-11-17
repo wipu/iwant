@@ -1,5 +1,7 @@
 package org.fluentjava.iwant.eclipsesettings;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Arrays;
 
 import org.fluentjava.iwant.api.core.Concatenated;
@@ -7,12 +9,12 @@ import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+public class ProjectExternalBuilderLaunchTest {
 
-public class ProjectExternalBuilderLaunchTest extends TestCase {
-
-	public void testGettersOfMinimal() {
+	@Test
+	public void gettersOfMinimal() {
 		Target generatedJava = new HelloTarget("genSrc", "");
 		ProjectExternalBuilderLaunch launch = new ProjectExternalBuilderLaunch(
 				"project-name", generatedJava, Arrays.<Source> asList(),
@@ -23,7 +25,8 @@ public class ProjectExternalBuilderLaunchTest extends TestCase {
 		assertEquals("generator-out", launch.relativeOutputDirectory());
 	}
 
-	public void testSourceIngredientsOfGeneratedJavaAreUsedAsGeneratorInputs() {
+	@Test
+	public void sourceIngredientsOfGeneratedJavaAreUsedAsGeneratorInputs() {
 		Path ingr1ForGenerator = new HelloTarget("target-ingr1", "");
 		Path ingr2ForGenerator = Source.underWsroot("src-ingr1");
 		Path ingr3ForGenerator = new HelloTarget("target-ingr2", "");
@@ -42,7 +45,8 @@ public class ProjectExternalBuilderLaunchTest extends TestCase {
 				launch.relativeInputPaths().toString());
 	}
 
-	public void testSourceIngredientsOfGeneratedJavaAreUsedAsGeneratorInputsTogetherWithExplicitlyGivenInputs() {
+	@Test
+	public void sourceIngredientsOfGeneratedJavaAreUsedAsGeneratorInputsTogetherWithExplicitlyGivenInputs() {
 		Source genSrc1 = Source.underWsroot("explicit-gen-src1");
 		Source genSrc2 = Source.underWsroot("explicit-gen-src2");
 
@@ -69,7 +73,8 @@ public class ProjectExternalBuilderLaunchTest extends TestCase {
 	 * TODO this hasn't been tested in real life, and it most probably doesn't
 	 * even make sense so maybe we should require ingredients.
 	 */
-	public void testFileContentOfLaunchWithNoSrcIngredients() {
+	@Test
+	public void fileContentOfLaunchWithNoSrcIngredients() {
 		Concatenated generatedJava = Concatenated.named("genSrc")
 				.string("no ingredients").end();
 		ProjectExternalBuilderLaunch launch = new ProjectExternalBuilderLaunch(
@@ -116,7 +121,8 @@ public class ProjectExternalBuilderLaunchTest extends TestCase {
 		assertEquals(expected.toString(), launch.asFileContent());
 	}
 
-	public void testFileContentOfLaunchWithManySrcIngredients() {
+	@Test
+	public void fileContentOfLaunchWithManySrcIngredients() {
 		Concatenated generatedJava = Concatenated.named("genSrc")
 				.contentOf(Source.underWsroot("module-a/src-for-generator"))
 				.contentOf(Source.underWsroot("module-b/src-for-generator"))

@@ -1,8 +1,13 @@
 package org.fluentjava.iwant.entry3;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -41,10 +46,11 @@ import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class WishEvaluatorTest extends TestCase {
+public class WishEvaluatorTest {
 
 	private TestArea testArea;
 	private File asSomeone;
@@ -68,8 +74,8 @@ public class WishEvaluatorTest extends TestCase {
 	private JavaModule wsdefdefModule;
 	private File cachedIwantSrcRoot;
 
-	@Override
-	public void setUp() throws IOException {
+	@BeforeEach
+	public void before() {
 		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
@@ -107,8 +113,8 @@ public class WishEvaluatorTest extends TestCase {
 		return err.toString();
 	}
 
-	@Override
-	public void tearDown() {
+	@AfterEach
+	public void after() {
 		System.setIn(originalIn);
 		System.setOut(originalOut);
 		System.setErr(originalErr);
@@ -162,7 +168,8 @@ public class WishEvaluatorTest extends TestCase {
 
 	}
 
-	public void testIllegalWishFromHello() {
+	@Test
+	public void illegalWishFromHello() {
 		Workspace hello = new Hello();
 		try {
 			evaluator.iwant("illegal/wish", hello);
@@ -174,13 +181,15 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals("", out.toString());
 	}
 
-	public void testListOfTargetsFromHello() {
+	@Test
+	public void listOfTargetsFromHello() {
 		Workspace hello = new Hello();
 		evaluator.iwant("list-of/targets", hello);
 		assertEquals("hello\n", out.toString());
 	}
 
-	public void testTargetHelloAsPathFromHello() {
+	@Test
+	public void targetHelloAsPathFromHello() {
 		Workspace hello = new Hello();
 
 		evaluator.iwant("target/hello/as-path", hello);
@@ -190,19 +199,22 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals("hello content", testArea.contentOf(cached));
 	}
 
-	public void testTargetHelloContentFromHello() {
+	@Test
+	public void targetHelloContentFromHello() {
 		Workspace hello = new Hello();
 		evaluator.iwant("target/hello/content", hello);
 		assertEquals("hello content", out.toString());
 	}
 
-	public void testListOfTargetsFromTwoHellos() {
+	@Test
+	public void listOfTargetsFromTwoHellos() {
 		Workspace hellos = new TwoHellos();
 		evaluator.iwant("list-of/targets", hellos);
 		assertEquals("hello1\nhello2\n", out.toString());
 	}
 
-	public void testTargetHello1AsPathFromTwoHellos() {
+	@Test
+	public void targetHello1AsPathFromTwoHellos() {
 		Workspace hellos = new TwoHellos();
 
 		evaluator.iwant("target/hello1/as-path", hellos);
@@ -212,13 +224,15 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals("content 1", testArea.contentOf(cached));
 	}
 
-	public void testTargetHello1ContentFromTwoHellos() {
+	@Test
+	public void targetHello1ContentFromTwoHellos() {
 		Workspace hellos = new TwoHellos();
 		evaluator.iwant("target/hello1/content", hellos);
 		assertEquals("content 1", out.toString());
 	}
 
-	public void testTargetHello2AsPathFromTwoHellos() {
+	@Test
+	public void targetHello2AsPathFromTwoHellos() {
 		Workspace hellos = new TwoHellos();
 
 		evaluator.iwant("target/hello2/as-path", hellos);
@@ -228,7 +242,8 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals("content 2", testArea.contentOf(cached));
 	}
 
-	public void testTargetHello2ContentFromTwoHellos() {
+	@Test
+	public void targetHello2ContentFromTwoHellos() {
 		Workspace hellos = new TwoHellos();
 		evaluator.iwant("target/hello2/content", hellos);
 		assertEquals("content 2", out.toString());
@@ -236,7 +251,8 @@ public class WishEvaluatorTest extends TestCase {
 
 	// target without a wsdef
 
-	public void testStandaloneHelloTargetContent() {
+	@Test
+	public void standaloneHelloTargetContent() {
 		Target target = new HelloTarget("standalone",
 				"Hello from standalone target\n");
 		evaluator.content(target);
@@ -245,7 +261,8 @@ public class WishEvaluatorTest extends TestCase {
 
 	// another target as ingredient
 
-	public void testStreamOfTargetThatUsesAnotherTargetStreamAsIngredient() {
+	@Test
+	public void streamOfTargetThatUsesAnotherTargetStreamAsIngredient() {
 		Target ingredient = new HelloTarget("ingredient", "ingredient content");
 		Target target = new TargetThatNeedsAnotherAsStream("target",
 				ingredient);
@@ -254,7 +271,8 @@ public class WishEvaluatorTest extends TestCase {
 				out.toString());
 	}
 
-	public void testPathToTargetThatUsesAnotherTargetStreamAsIngredient() {
+	@Test
+	public void pathToTargetThatUsesAnotherTargetStreamAsIngredient() {
 		Target ingredient = new HelloTarget("ingredient", "ingredient content");
 		Target target = new TargetThatNeedsAnotherAsStream("target",
 				ingredient);
@@ -267,7 +285,8 @@ public class WishEvaluatorTest extends TestCase {
 				testArea.contentOf(cached));
 	}
 
-	public void testStreamOfTargetThatUsesAnotherTargetPathAsIngredient() {
+	@Test
+	public void streamOfTargetThatUsesAnotherTargetPathAsIngredient() {
 		Target ingredient = new HelloTarget("ingredient", "ingredient content");
 		Target target = new TargetThatNeedsAnotherAsPath("target", ingredient);
 		evaluator.content(target);
@@ -275,7 +294,8 @@ public class WishEvaluatorTest extends TestCase {
 				out.toString());
 	}
 
-	public void testPathToTargetThatUsesAnotherTargetPathAsIngredient() {
+	@Test
+	public void pathToTargetThatUsesAnotherTargetPathAsIngredient() {
 		Target ingredient = new HelloTarget("ingredient", "ingredient content");
 		Target target = new TargetThatNeedsAnotherAsPath("target", ingredient);
 
@@ -289,7 +309,8 @@ public class WishEvaluatorTest extends TestCase {
 
 	// source as ingredient
 
-	public void testStreamOfTargetThatUsesASourceStreamAsIngredient() {
+	@Test
+	public void streamOfTargetThatUsesASourceStreamAsIngredient() {
 		testArea.hasFile("wsroot/src", "src content");
 		Path ingredient = Source.underWsroot("src");
 		Target target = new TargetThatNeedsAnotherAsStream("target",
@@ -299,7 +320,8 @@ public class WishEvaluatorTest extends TestCase {
 				out.toString());
 	}
 
-	public void testStreamOfTargetThatUsesASourcePathAsIngredient() {
+	@Test
+	public void streamOfTargetThatUsesASourcePathAsIngredient() {
 		testArea.hasFile("wsroot/src", "src content");
 		Path ingredient = Source.underWsroot("src");
 		Target target = new TargetThatNeedsAnotherAsPath("target", ingredient);
@@ -310,7 +332,8 @@ public class WishEvaluatorTest extends TestCase {
 
 	// ...
 
-	public void testTargetIsRefreshedIfDescriptorOfIngredientsIngredientChanged() {
+	@Test
+	public void targetIsRefreshedIfDescriptorOfIngredientsIngredientChanged() {
 		TargetMock t1 = new TargetMock("t1");
 		t1.hasNoIngredients();
 		t1.hasContent("t1 content 1");
@@ -372,25 +395,29 @@ public class WishEvaluatorTest extends TestCase {
 
 	}
 
-	public void testEmptyListOfSideEffects() {
+	@Test
+	public void emptyListOfSideEffects() {
 		Workspace hellos = new TwoHellos();
 		evaluator.iwant("list-of/side-effects", hellos);
 		assertEquals("", out.toString());
 	}
 
-	public void testListOfSideEffectsOfOnlyEclipseSettingsAsSideEffect() {
+	@Test
+	public void listOfSideEffectsOfOnlyEclipseSettingsAsSideEffect() {
 		Workspace hellos = new OnlyEclipseSettingsAsSideEffect();
 		evaluator.iwant("list-of/side-effects", hellos);
 		assertEquals("eclipse-settings\n", out.toString());
 	}
 
-	public void testListOfSideEffectsOfTwoSideEffects() {
+	@Test
+	public void listOfSideEffectsOfTwoSideEffects() {
 		Workspace hellos = new TwoSideEffects();
 		evaluator.iwant("list-of/side-effects", hellos);
 		assertEquals("hello-1\nhello-2\n", out.toString());
 	}
 
-	public void testHello1EffectiveOfTwoSideEffects() {
+	@Test
+	public void hello1EffectiveOfTwoSideEffects() {
 		Workspace hellos = new TwoSideEffects();
 
 		evaluator.iwant("side-effect/hello-1/effective", hellos);
@@ -398,7 +425,8 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals("hello-1 mutating.\n", err.toString());
 	}
 
-	public void testHello2EffectiveOfTwoSideEffects() {
+	@Test
+	public void hello2EffectiveOfTwoSideEffects() {
 		Workspace hellos = new TwoSideEffects();
 
 		evaluator.iwant("side-effect/hello-2/effective", hellos);
@@ -406,7 +434,8 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals("hello-2 mutating.\n", err.toString());
 	}
 
-	public void testDeletionOfJavaFileIsDetectedAndCompilationIsRetriedAndFailed() {
+	@Test
+	public void deletionOfJavaFileIsDetectedAndCompilationIsRetriedAndFailed() {
 		File srcDir = new File(wsRoot, "src");
 		Iwant.newTextFile(new File(srcDir, "pak1/Caller.java"),
 				"package pak1;\npublic class Caller {pak2.Callee callee;}");
@@ -439,7 +468,8 @@ public class WishEvaluatorTest extends TestCase {
 				.exists());
 	}
 
-	public void testTwoTargetsReferToSamePathButOnlyTheOneThatDeclaresItAsIngredientSucceeds() {
+	@Test
+	public void twoTargetsReferToSamePathButOnlyTheOneThatDeclaresItAsIngredientSucceeds() {
 		Path src = new HelloTarget("src", "src content");
 
 		ConcatenatedBuilder correctSpex = Concatenated.named("correct");
@@ -473,7 +503,8 @@ public class WishEvaluatorTest extends TestCase {
 	 * synchronize too much, preventing concurrency from working properly
 	 * end-to-end
 	 */
-	public void testConcurrencyWorksEndToEnd() throws InterruptedException {
+	@Test
+	public void concurrencyWorksEndToEnd() throws InterruptedException {
 		final int workerCount = 2;
 		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
 				workerCount, wsdefdefJavaModule, wsdefJavaModule, wsdefCtx);
@@ -543,7 +574,8 @@ public class WishEvaluatorTest extends TestCase {
 				new File(asSomeone, ".i-cached/target/listOfParts")));
 	}
 
-	public void testContextUsesThreadNameToMakeSureAllWorkersGetOwnTemporaryDirectory()
+	@Test
+	public void contextUsesThreadNameToMakeSureAllWorkersGetOwnTemporaryDirectory()
 			throws InterruptedException {
 		final List<File> results = Collections
 				.synchronizedList(new ArrayList<File>());
@@ -568,7 +600,8 @@ public class WishEvaluatorTest extends TestCase {
 				results.get(1));
 	}
 
-	public void testScriptsWorkCorrectlyInParallel() {
+	@Test
+	public void scriptsWorkCorrectlyInParallel() {
 		final int workerCount = 8;
 		evaluator = new WishEvaluator(out, err, wsRoot, iwant, wsInfo, caches,
 				workerCount, wsdefdefJavaModule, wsdefJavaModule, wsdefCtx);
@@ -598,7 +631,8 @@ public class WishEvaluatorTest extends TestCase {
 		}
 	}
 
-	public void testSideEffectDefinitionContextPassesIwantApiClasses() {
+	@Test
+	public void sideEffectDefinitionContextPassesIwantApiClasses() {
 		final AtomicReference<Set<? extends JavaModule>> fromCtx = new AtomicReference<>();
 		Workspace ws = new Workspace() {
 
@@ -620,7 +654,8 @@ public class WishEvaluatorTest extends TestCase {
 		assertSame(iwantApiModules, fromCtx.get());
 	}
 
-	public void testSameNameOnPathAndTargetCausesErrorAtListOfOrAsPath() {
+	@Test
+	public void sameNameOnPathAndTargetCausesErrorAtListOfOrAsPath() {
 		Workspace ws = new Workspace() {
 
 			@Override
@@ -668,7 +703,8 @@ public class WishEvaluatorTest extends TestCase {
 	 * it's not retried because no source ingredients are newer than the cached
 	 * descriptor, only cached target files.
 	 */
-	public void testTargetWithNonFreshTargetIngredientAndExistingCachedDescriptorStaysNonFreshEvenIfItFails() {
+	@Test
+	public void targetWithNonFreshTargetIngredientAndExistingCachedDescriptorStaysNonFreshEvenIfItFails() {
 		TargetMock ingredient = new TargetMock("ingredient");
 		ingredient.hasContentDescriptor("ingredient descr 1");
 		ingredient.hasContent("ingredient content");
@@ -702,7 +738,8 @@ public class WishEvaluatorTest extends TestCase {
 		evaluateAndFail("target/failing/as-path", ws, "Simulated failure");
 	}
 
-	public void testTargetRefreshIsRetriedEvenIfReasonWasDirtinessOfIngredientAndItsRefreshWasInterruptedEarlier() {
+	@Test
+	public void targetRefreshIsRetriedEvenIfReasonWasDirtinessOfIngredientAndItsRefreshWasInterruptedEarlier() {
 		TargetMock a = new TargetMock("a");
 		a.hasContentDescriptor("a descr 1");
 		a.hasContent("a content");
@@ -753,7 +790,8 @@ public class WishEvaluatorTest extends TestCase {
 	 * Before the fix this failed, because only source timestamps were checked,
 	 * target dirtiness relied on refreshing them during the same run.
 	 */
-	public void testTargetIsRefreshedEvenIfATargetIngredientWasRefreshedDuringEarlierRun()
+	@Test
+	public void targetIsRefreshedEvenIfATargetIngredientWasRefreshedDuringEarlierRun()
 			throws InterruptedException {
 		TargetMock a = new TargetMock("a");
 		a.hasContentDescriptor("a descr 1");
@@ -803,7 +841,8 @@ public class WishEvaluatorTest extends TestCase {
 		assertEquals(2, c.timesPathWasCalled());
 	}
 
-	public void testSideEffectThatWantsAndUsesTargetsAsPaths() {
+	@Test
+	public void sideEffectThatWantsAndUsesTargetsAsPaths() {
 		final Target target1 = new HelloTarget("target1", "target1 content");
 		final Target target2 = Concatenated.named("target2")
 				.string("target2 using ").contentOf(target1).end();
@@ -879,7 +918,8 @@ public class WishEvaluatorTest extends TestCase {
 
 	}
 
-	public void testSideEffectThatReferencesIwantPlugin() {
+	@Test
+	public void sideEffectThatReferencesIwantPlugin() {
 		Workspace hellos = new IwantPluginReferenceInSideEffectDefinition();
 
 		evaluator.iwant("side-effect/ant-plugin-print/effective", hellos);
@@ -914,7 +954,8 @@ public class WishEvaluatorTest extends TestCase {
 	/**
 	 * More cases are tested in TargetNameCheckerTest
 	 */
-	public void testIllegalTargetNameCausesFailure() {
+	@Test
+	public void illegalTargetNameCausesFailure() {
 		WorkspaceWithTarget ws = new WorkspaceWithTarget(
 				new HelloTarget("a::b", ""));
 		try {
@@ -932,7 +973,8 @@ public class WishEvaluatorTest extends TestCase {
 	 * happens. It also tests the already cached parent is not deleted before
 	 * refreshing the SubPath.
 	 */
-	public void testSubPathPointsToUnderParentAndItHasCorrectCachedContent()
+	@Test
+	public void subPathPointsToUnderParentAndItHasCorrectCachedContent()
 			throws Exception {
 		Target hello = new HelloTarget("hello", "hello content");
 		Directory parent = Directory.named("parent").dir("sub").copyOf(hello)

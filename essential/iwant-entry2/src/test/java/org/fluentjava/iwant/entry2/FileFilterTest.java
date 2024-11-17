@@ -1,19 +1,22 @@
 package org.fluentjava.iwant.entry2;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class FileFilterTest extends TestCase {
+public class FileFilterTest {
 
 	private TestArea testArea;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		testArea = TestArea.forTest(this);
 	}
 
@@ -25,7 +28,8 @@ public class FileFilterTest extends TestCase {
 		}
 	}
 
-	public void testFilesRecursivelyUnderPlainFileIsJustFileItsef() {
+	@Test
+	public void filesRecursivelyUnderPlainFileIsJustFileItsef() {
 		File plain = testArea.hasFile("file", "whatever");
 
 		Collection<File> result = Iwant2
@@ -34,7 +38,8 @@ public class FileFilterTest extends TestCase {
 		assertResult(result, plain);
 	}
 
-	public void testFilesRecursivelyUnderDir() {
+	@Test
+	public void filesRecursivelyUnderDir() {
 		File classes = testArea.newDir("classes");
 		File pack1class1 = testArea.hasFile("classes/example/pack1/C1.class",
 				"whatever");
@@ -49,7 +54,8 @@ public class FileFilterTest extends TestCase {
 		assertResult(result, pack1class1, pack1class2, pack2class);
 	}
 
-	public void testFilesByName() {
+	@Test
+	public void filesByName() {
 		File java = testArea.hasFile("A.java", "whatever");
 		File nonJava = testArea.hasFile("B.nonjava", "whatever");
 

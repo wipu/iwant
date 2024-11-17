@@ -1,15 +1,17 @@
 package org.fluentjava.iwant.plugin.github;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.fluentjava.iwant.api.core.SubPath;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.zip.Unzipped;
 import org.fluentjava.iwant.core.download.Downloaded;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+public class FromGithubTest {
 
-public class FromGithubTest extends TestCase {
-
-	public void testItIsASubPathOfUnzippedDownloaded() {
+	@Test
+	public void itIsASubPathOfUnzippedDownloaded() {
 		Target target = FromGithub.user("aUser").project("aProject")
 				.commit("ff");
 

@@ -1,20 +1,23 @@
 package org.fluentjava.iwant.planner;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Arrays;
 
 import org.fluentjava.iwant.plannerapi.Task;
 import org.fluentjava.iwant.plannerapi.TaskDirtiness;
 import org.fluentjava.iwant.plannermocks.ResourceMock;
 import org.fluentjava.iwant.plannermocks.TaskMock;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class PlannerTest extends TestCase {
+public class PlannerTest {
 
 	Planner planner;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		planner = null;
 	}
 
@@ -46,7 +49,8 @@ public class PlannerTest extends TestCase {
 
 	// ingredientless
 
-	public void testIngredientlessCleanTask() {
+	@Test
+	public void ingredientlessCleanTask() {
 		TaskMock root = TaskMock.named("root").clean().noDeps();
 
 		ensureFresh(root, 2);
@@ -54,7 +58,8 @@ public class PlannerTest extends TestCase {
 		buildEndsSuccessfully();
 	}
 
-	public void testIngredientlessDirtyTask() {
+	@Test
+	public void ingredientlessDirtyTask() {
 		TaskMock root = TaskMock.named("root").dirty().noDeps();
 
 		ensureFresh(root, 2);
@@ -66,7 +71,8 @@ public class PlannerTest extends TestCase {
 
 	// one ingredient
 
-	public void testCleanTaskWithCleanDep() {
+	@Test
+	public void cleanTaskWithCleanDep() {
 		TaskMock dep = TaskMock.named("dep").clean().noDeps();
 		TaskMock root = TaskMock.named("root").clean().deps(dep);
 
@@ -75,7 +81,8 @@ public class PlannerTest extends TestCase {
 		buildEndsSuccessfully();
 	}
 
-	public void testDirtyTaskWithCleanDep() {
+	@Test
+	public void dirtyTaskWithCleanDep() {
 		TaskMock dep = TaskMock.named("dep").clean().noDeps();
 		TaskMock root = TaskMock.named("root").dirty().deps(dep);
 
@@ -86,7 +93,8 @@ public class PlannerTest extends TestCase {
 		buildEndsSuccessfully();
 	}
 
-	public void testCleanTaskWithDirtyDep() {
+	@Test
+	public void cleanTaskWithDirtyDep() {
 		TaskMock dep = TaskMock.named("dep").dirty().noDeps();
 		TaskMock root = TaskMock.named("root").clean().deps(dep);
 
@@ -102,7 +110,8 @@ public class PlannerTest extends TestCase {
 
 	// 2 ingredients
 
-	public void testCleanTaskWith2DirtyDeps() {
+	@Test
+	public void cleanTaskWith2DirtyDeps() {
 		TaskMock dep1 = TaskMock.named("dep1").dirty().noDeps();
 		TaskMock dep2 = TaskMock.named("dep2").dirty().noDeps();
 		TaskMock root = TaskMock.named("root").clean().deps(dep1, dep2);
@@ -121,7 +130,8 @@ public class PlannerTest extends TestCase {
 		buildEndsSuccessfully();
 	}
 
-	public void testCleanTaskWith2DirtyDepsAndFirstDepRefreshFails() {
+	@Test
+	public void cleanTaskWith2DirtyDepsAndFirstDepRefreshFails() {
 		TaskMock dep1 = TaskMock.named("dep1").dirty().noDeps();
 		TaskMock dep2 = TaskMock.named("dep2").dirty().noDeps();
 		TaskMock root = TaskMock.named("root").clean().deps(dep1, dep2);
@@ -137,7 +147,8 @@ public class PlannerTest extends TestCase {
 		buildEndsWithFailure("dep1 failure");
 	}
 
-	public void testTwoDirtyTasksUsingSameResourcePoolOfOne() {
+	@Test
+	public void twoDirtyTasksUsingSameResourcePoolOfOne() {
 		ResourceMock resource = ResourceMock.named("r");
 		ResourcePoolMock pool = ResourcePoolMock.of(resource);
 		TaskMock dep1 = TaskMock.named("dep1").dirty().uses(pool).noDeps();
@@ -158,7 +169,8 @@ public class PlannerTest extends TestCase {
 		buildEndsSuccessfully();
 	}
 
-	public void testTwoDirtyTasksUsingSameResourcePoolOfTwo() {
+	@Test
+	public void twoDirtyTasksUsingSameResourcePoolOfTwo() {
 		ResourceMock resource1 = ResourceMock.named("r1");
 		ResourceMock resource2 = ResourceMock.named("r2");
 		ResourcePoolMock pool = ResourcePoolMock.of(resource1, resource2);
@@ -179,7 +191,8 @@ public class PlannerTest extends TestCase {
 		buildEndsSuccessfully();
 	}
 
-	public void testNonParallelTaskDoesNotStartRefreshIfAnotherIsRunning() {
+	@Test
+	public void nonParallelTaskDoesNotStartRefreshIfAnotherIsRunning() {
 		TaskMock dep1 = TaskMock.named("dep1").dirty()
 				.doesNotSupportParallelism().noDeps();
 		TaskMock dep2 = TaskMock.named("dep2").dirty().noDeps();
@@ -201,7 +214,8 @@ public class PlannerTest extends TestCase {
 		buildEndsSuccessfully();
 	}
 
-	public void testNormalTaskDoesNotStartRefreshIfNonParallelTaskIsRunning() {
+	@Test
+	public void normalTaskDoesNotStartRefreshIfNonParallelTaskIsRunning() {
 		TaskMock dep1 = TaskMock.named("dep1").dirty().noDeps();
 		TaskMock dep2 = TaskMock.named("dep2").dirty()
 				.doesNotSupportParallelism().noDeps();
@@ -223,7 +237,8 @@ public class PlannerTest extends TestCase {
 		buildEndsSuccessfully();
 	}
 
-	public void testTaskStartLogMessage() {
+	@Test
+	public void taskStartLogMessage() {
 		// in practice targets whose dependency target is dirty is clean but
 		// still refreshed and this is what it looks like in the log:
 		TaskMock clean = TaskMock.named("task1").clean().noDeps();
@@ -237,7 +252,8 @@ public class PlannerTest extends TestCase {
 				planner.taskStartMessage(2, 1, dirty));
 	}
 
-	public void testTaskStartLogMessageDoesNotReEvaluateDirtinessForPerformanceReasons() {
+	@Test
+	public void taskStartLogMessageDoesNotReEvaluateDirtinessForPerformanceReasons() {
 		TaskMock dirty = TaskMock.named("task2").dirty().noDeps();
 		planner = new Planner(dirty, 1);
 		assertEquals("(2/1 S~ TaskMock:task2)",
@@ -249,7 +265,8 @@ public class PlannerTest extends TestCase {
 				planner.taskStartMessage(2, 1, dirty));
 	}
 
-	public void testDirtinessStringForLogMessage() {
+	@Test
+	public void dirtinessStringForLogMessage() {
 		assertEquals("  ", Planner.dirtinessToString(TaskDirtiness.NOT_DIRTY));
 		assertEquals("D~", Planner
 				.dirtinessToString(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED));

@@ -1,19 +1,25 @@
 package org.fluentjava.iwant.api.model;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SourceTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
-	public void testToString() {
+public class SourceTest {
+
+	@Test
+	public void toStringIsThePath() {
 		assertEquals("a", Source.underWsroot("a").toString());
 		assertEquals("b", Source.underWsroot("b").toString());
 	}
 
-	public void testItHasNoIngredients() {
+	@Test
+	public void itHasNoIngredients() {
 		assertTrue(Source.underWsroot("whatever").ingredients().isEmpty());
 	}
 
-	public void testWsrootRelativePath() {
+	@Test
+	public void wsrootRelativePath() {
 		assertEquals("a", Source.underWsroot("a").wsRootRelativePath());
 		assertEquals("a/b", Source.underWsroot("a/b").wsRootRelativePath());
 	}

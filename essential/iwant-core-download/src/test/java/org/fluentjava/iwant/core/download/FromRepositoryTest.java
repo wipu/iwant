@@ -1,10 +1,14 @@
 package org.fluentjava.iwant.core.download;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class FromRepositoryTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
-	public void testFactsOfArtifactGivenWithSlashesInGroup() {
+public class FromRepositoryTest {
+
+	@Test
+	public void factsOfArtifactGivenWithSlashesInGroup() {
 		GnvArtifact<Downloaded> t = FromRepository.repo1MavenOrg()
 				.group("org/apache/ant").name("ant").version("1.7.1").jar();
 
@@ -22,7 +26,8 @@ public class FromRepositoryTest extends TestCase {
 		assertNull(t.artifact().md5());
 	}
 
-	public void testFactsOfArtifactGivenWithDotsInGroup() {
+	@Test
+	public void factsOfArtifactGivenWithDotsInGroup() {
 		GnvArtifact<Downloaded> t = FromRepository.repo1MavenOrg()
 				.group("com.google.code.findbugs").name("findbugs")
 				.version("1.3.9").jar();
@@ -40,7 +45,8 @@ public class FromRepositoryTest extends TestCase {
 		assertNull(t.artifact().md5());
 	}
 
-	public void testFactsOfSourceArtifact() {
+	@Test
+	public void factsOfSourceArtifact() {
 		GnvArtifact<Downloaded> t = FromRepository.repo1MavenOrg()
 				.group("com.google.code.findbugs").name("findbugs")
 				.version("1.3.9").sourcesJar();
@@ -58,7 +64,8 @@ public class FromRepositoryTest extends TestCase {
 		assertNull(t.artifact().md5());
 	}
 
-	public void testFactsOfTestArtifact() {
+	@Test
+	public void factsOfTestArtifact() {
 		GnvArtifact<Downloaded> t = FromRepository.repo1MavenOrg()
 				.group("org.apache.kafka").name("kafka_2.11").version("2.0.1")
 				.testJar();
@@ -76,7 +83,8 @@ public class FromRepositoryTest extends TestCase {
 		assertNull(t.artifact().md5());
 	}
 
-	public void testFactsWithCustomUrlPrefix() {
+	@Test
+	public void factsWithCustomUrlPrefix() {
 		GnvArtifact<Downloaded> t = FromRepository
 				.at("https://maven.google.com/").group("androidx.annotation")
 				.name("annotation").version("1.1.0").jar();

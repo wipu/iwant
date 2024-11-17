@@ -1,17 +1,21 @@
 package org.fluentjava.iwant.eclipsesettings;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DotClasspathTest extends TestCase {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+public class DotClasspathTest {
 
 	private StringBuilder out;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		out = new StringBuilder();
 	}
 
-	public void testMinimalWithoutEvenSrc() {
+	@Test
+	public void minimalWithoutEvenSrc() {
 		DotClasspath dp = DotClasspath.with().end();
 		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		out.append("<classpath>\n");
@@ -23,7 +27,8 @@ public class DotClasspathTest extends TestCase {
 		assertEquals(out.toString(), dp.asFileContent());
 	}
 
-	public void testMinimalWithOnlySrc() {
+	@Test
+	public void minimalWithOnlySrc() {
 		DotClasspath dp = DotClasspath.with().src("src").end();
 		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		out.append("<classpath>\n");
@@ -58,7 +63,8 @@ public class DotClasspathTest extends TestCase {
 		assertEquals(out.toString(), dp.asFileContent());
 	}
 
-	public void testLibraryDepWithSourceAttachment() {
+	@Test
+	public void libraryDepWithSourceAttachment() {
 		DotClasspath dp = DotClasspath.with().src("src")
 				.binDep("a.jar", "a-src.zip").end();
 		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -74,7 +80,8 @@ public class DotClasspathTest extends TestCase {
 		assertEquals(out.toString(), dp.asFileContent());
 	}
 
-	public void testKotlinContainer() {
+	@Test
+	public void kotlinContainer() {
 		DotClasspath dp = DotClasspath.with().src("src").kotlinContainer()
 				.end();
 		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -92,7 +99,8 @@ public class DotClasspathTest extends TestCase {
 
 	// code generation
 
-	public void testExportedClassesWithSourceAttachment() {
+	@Test
+	public void exportedClassesWithSourceAttachment() {
 		DotClasspath dp = DotClasspath.with().src("src")
 				.exportedClasses("a.jar", "a-src.zip").end();
 		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");

@@ -1,10 +1,15 @@
 package org.fluentjava.iwant.api.core;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class StringFilterByEqualityTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
-	public void testMatchingAndNonMatching() {
+public class StringFilterByEqualityTest {
+
+	@Test
+	public void matchingAndNonMatching() {
 		StringFilterByEquality a = new StringFilterByEquality("a");
 		assertTrue(a.matches("a"));
 		assertFalse(a.matches("b"));
@@ -14,7 +19,8 @@ public class StringFilterByEqualityTest extends TestCase {
 		assertFalse(b.matches("a"));
 	}
 
-	public void testToString() {
+	@Test
+	public void toStringIsReadable() {
 		assertEquals("StringFilterByEquality:a",
 				new StringFilterByEquality("a").toString());
 		assertEquals("StringFilterByEquality:b",

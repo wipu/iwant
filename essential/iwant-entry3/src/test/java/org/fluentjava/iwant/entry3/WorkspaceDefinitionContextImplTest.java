@@ -1,5 +1,8 @@
 package org.fluentjava.iwant.entry3;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -13,10 +16,10 @@ import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class WorkspaceDefinitionContextImplTest extends TestCase {
+public class WorkspaceDefinitionContextImplTest {
 
 	private Set<JavaModule> apiModules;
 	private WorkspaceModuleContext ctx;
@@ -26,8 +29,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 	private TestArea testArea;
 	private File cachedIwantSrcRoot;
 
-	@Override
-	protected void setUp() throws Exception {
+	@BeforeEach
+	protected void before() throws Exception {
 		iwantApiModule1 = JavaBinModule
 				.providing(Source.underWsroot("iwant-api-1")).end();
 		iwantApiModule2 = JavaBinModule
@@ -45,15 +48,18 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				wsdefdefModule);
 	}
 
-	public void testApiModulesIsGivenAsSuch() {
+	@Test
+	public void apiModulesIsGivenAsSuch() {
 		assertSame(apiModules, ctx.iwantApiModules());
 	}
 
-	public void testWsdefdefModuleIsGivenAsSuch() {
+	@Test
+	public void wsdefdefModuleIsGivenAsSuch() {
 		assertSame(wsdefdefModule, ctx.wsdefdefModule());
 	}
 
-	public void testIwantPluginAntWithDependenciesContainsCorrectModules() {
+	@Test
+	public void iwantPluginAntWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().ant().withDependencies();
 
 		assertEquals(5, mods.size());
@@ -66,7 +72,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		assertEquals("ant-launcher-1.10.14.jar", iterator.next().name());
 	}
 
-	public void testIwantPluginAntMainClassesHasCorrectCompilationClasspath() {
+	@Test
+	public void iwantPluginAntMainClassesHasCorrectCompilationClasspath() {
 		Set<JavaModule> mods = ctx.iwantPlugin().ant().withDependencies();
 
 		JavaBinModule antPlugin = (JavaBinModule) mods.iterator().next();
@@ -78,7 +85,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 		assertEquals("ant-1.10.14.jar", iterator.next().name());
 	}
 
-	public void testIwantPluginAntMainJavaIsASubdirectoryUnderIwantSources() {
+	@Test
+	public void iwantPluginAntMainJavaIsASubdirectoryUnderIwantSources() {
 		Set<JavaModule> mods = ctx.iwantPlugin().ant().withDependencies();
 
 		JavaBinModule antPlugin = (JavaBinModule) mods.iterator().next();
@@ -92,7 +100,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				java.name());
 	}
 
-	public void testIwantPluginPmdWithDependenciesContainsCorrectModules() {
+	@Test
+	public void iwantPluginPmdWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().pmd().withDependencies();
 
 		assertEquals("[iwant-plugin-pmd, iwant-api-1, iwant-api-2,"
@@ -100,7 +109,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				+ " jaxen-1.1.4.jar, pmd-4.3.jar]", mods.toString());
 	}
 
-	public void testIwantPluginFindbugsWithDependenciesContainsCorrectModules() {
+	@Test
+	public void iwantPluginFindbugsWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().findbugs().withDependencies();
 
 		assertEquals("[iwant-plugin-findbugs, iwant-api-1, iwant-api-2,"
@@ -108,7 +118,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				+ " ant-launcher-1.10.14.jar]", mods.toString());
 	}
 
-	public void testIwantPluginGithubWithDependenciesContainsCorrectModules() {
+	@Test
+	public void iwantPluginGithubWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().github().withDependencies();
 
 		assertEquals(
@@ -118,7 +129,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				mods.toString());
 	}
 
-	public void testIwantPluginWarWithDependenciesContainsCorrectModules() {
+	@Test
+	public void iwantPluginWarWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().war().withDependencies();
 
 		assertEquals(
@@ -126,7 +138,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				mods.toString());
 	}
 
-	public void testIwantPluginJacocoWithDependenciesContainsCorrectModules() {
+	@Test
+	public void iwantPluginJacocoWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().jacoco().withDependencies();
 
 		assertEquals(
@@ -136,7 +149,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				mods.toString());
 	}
 
-	public void testIwantPluginJunit5runnerWithDependenciesContainsCorrectModules() {
+	@Test
+	public void iwantPluginJunit5runnerWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().junit5runner()
 				.withDependencies();
 
@@ -149,7 +163,8 @@ public class WorkspaceDefinitionContextImplTest extends TestCase {
 				+ " opentest4j-1.3.0.jar]", mods.toString());
 	}
 
-	public void testIwantPluginTestngWithDependenciesContainsCorrectModules() {
+	@Test
+	public void iwantPluginTestngWithDependenciesContainsCorrectModules() {
 		Set<JavaModule> mods = ctx.iwantPlugin().testng().withDependencies();
 
 		assertEquals(

@@ -1,5 +1,9 @@
 package org.fluentjava.iwant.entry2;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -11,10 +15,11 @@ import org.fluentjava.iwant.entry2.Iwant2.ClassesFromUnmodifiableIwantEssential;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class Iwant2Test extends TestCase {
+public class Iwant2Test {
 
 	private static final String LINE_SEPARATOR_KEY = "line.separator";
 
@@ -45,8 +50,8 @@ public class Iwant2Test extends TestCase {
 	/**
 	 * TODO a reusable main-method testing tools project
 	 */
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		assertRealIwant3IsNotInClasspath();
 		origSecman = System.getSecurityManager();
 		System.setSecurityManager(new ExitCatcher());
@@ -121,8 +126,8 @@ public class Iwant2Test extends TestCase {
 
 	}
 
-	@Override
-	public void tearDown() {
+	@AfterEach
+	public void after() {
 		System.setSecurityManager(origSecman);
 		System.setIn(originalIn);
 		System.setOut(originalOut);
@@ -140,7 +145,8 @@ public class Iwant2Test extends TestCase {
 		return err.toString();
 	}
 
-	public void testIwant2CompilesIwantAndCallsIwant3() throws Exception {
+	@Test
+	public void iwant2CompilesIwantAndCallsIwant3() throws Exception {
 		File iwantEssential = IwantWsRootFinder.mockEssential();
 		network.cachesAt(
 				new ClassesFromUnmodifiableIwantEssential(iwantEssential),
@@ -154,7 +160,8 @@ public class Iwant2Test extends TestCase {
 				+ iwantEssential + ", args, to be, passed]\n", out());
 	}
 
-	public void testIwant2CallsIwant3UsingCorrectClasspath() throws Exception {
+	@Test
+	public void iwant2CallsIwant3UsingCorrectClasspath() throws Exception {
 		File iwantEssential = IwantWsRootFinder.mockEssential();
 		network.cachesAt(
 				new ClassesFromUnmodifiableIwantEssential(iwantEssential),
@@ -178,7 +185,8 @@ public class Iwant2Test extends TestCase {
 				"MockedAsEmbeddedIwantUser");
 	}
 
-	public void testIwant2CompilesIwantWithDebugInformation() throws Exception {
+	@Test
+	public void iwant2CompilesIwantWithDebugInformation() throws Exception {
 		File iwantEssential = IwantWsRootFinder.mockEssential();
 		network.cachesAt(
 				new ClassesFromUnmodifiableIwantEssential(iwantEssential),
@@ -197,7 +205,8 @@ public class Iwant2Test extends TestCase {
 		assertTrue(contentOfClass.contains("localVariable"));
 	}
 
-	public void testFindingJavaFilesUnderSrcDirThatContainsNonJavaAndSvnMetadata() {
+	@Test
+	public void findingJavaFilesUnderSrcDirThatContainsNonJavaAndSvnMetadata() {
 		File src = testArea.newDir("src");
 		Iwant.mkdirs(new File(src, ".svn"));
 		File aJava = Iwant.newTextFile(new File(src, "A.java"), "");
@@ -211,8 +220,8 @@ public class Iwant2Test extends TestCase {
 				Iwant2.javaFilesRecursivelyUnder(src).toString());
 	}
 
-	public void testIwant2CopiesApiBashResourcesToIwantClasses()
-			throws Exception {
+	@Test
+	public void iwant2CopiesApiBashResourcesToIwantClasses() throws Exception {
 		File iwantEssential = IwantWsRootFinder.mockEssential();
 		network.cachesAt(
 				new ClassesFromUnmodifiableIwantEssential(iwantEssential),

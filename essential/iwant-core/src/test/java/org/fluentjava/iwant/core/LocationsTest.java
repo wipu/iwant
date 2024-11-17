@@ -5,9 +5,9 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
-public class LocationsTest extends TestCase {
+public class LocationsTest{
 
-	public void testLocationsCreatedFromIhave() throws IOException {
+	@Test public void locationsCreatedFromIhave() throws IOException {
 		Locations locations = Locations.from(new File("/wsRoot"), new File(
 				"/as-x/i-have"), "wsName", new File(
 				"/as-x/with/bash/iwant/cached/blah/iwant-lib"));

@@ -1,15 +1,22 @@
 package org.fluentjava.iwant.plugin.pmd;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.junit.jupiter.api.Test;
 
 public class CopyPasteReportTest extends PmdTestBase {
 
-	public void testSourceDirectoriesAreIngredients() {
+	@Test
+	public void sourceDirectoriesAreIngredients() {
 		Path src1 = Source.underWsroot("src1");
 		Path src2 = Source.underWsroot("src2");
 
@@ -20,7 +27,8 @@ public class CopyPasteReportTest extends PmdTestBase {
 		assertTrue(report.ingredients().contains(src2));
 	}
 
-	public void testSourceDirectoriesAreInContentDescriptor() {
+	@Test
+	public void sourceDirectoriesAreInContentDescriptor() {
 		Path src1 = Source.underWsroot("src-one");
 		Path src2 = Source.underWsroot("src-two");
 
@@ -31,7 +39,8 @@ public class CopyPasteReportTest extends PmdTestBase {
 		assertTrue(report.contentDescriptor().contains(src2.name()));
 	}
 
-	public void testMinimumTokenCountIsInContentDescriptor() {
+	@Test
+	public void minimumTokenCountIsInContentDescriptor() {
 		Path src = Source.underWsroot("src");
 
 		assertTrue(CopyPasteReport.with().name("report-10").from(src).end()
@@ -41,7 +50,8 @@ public class CopyPasteReportTest extends PmdTestBase {
 				.contains("minimumTokenCount:\n  150\n"));
 	}
 
-	public void testReportOfZeroSrcDirectoriesIsAnError() throws Exception {
+	@Test
+	public void reportOfZeroSrcDirectoriesIsAnError() throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		Iwant.mkdirs(srcDir);
 
@@ -57,7 +67,8 @@ public class CopyPasteReportTest extends PmdTestBase {
 		assertNull(txtReportContent(report));
 	}
 
-	public void testReportOfEmptySrcDirectoryDoesProducesAnEmptyReportFile()
+	@Test
+	public void reportOfEmptySrcDirectoryDoesProducesAnEmptyReportFile()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		Iwant.mkdirs(srcDir);
@@ -69,7 +80,8 @@ public class CopyPasteReportTest extends PmdTestBase {
 		assertEquals("", txtReportContent(report));
 	}
 
-	public void testReportOfTwoSrcDirectoriesIsEmptyWhenMinimumTokenCountIsUndefined()
+	@Test
+	public void reportOfTwoSrcDirectoriesIsEmptyWhenMinimumTokenCountIsUndefined()
 			throws Exception {
 		File src1 = new File(wsRoot, "src1");
 		srcDirHasPmdFodder(src1, "testfodder", "ClassWithPmdIssues");
@@ -86,7 +98,8 @@ public class CopyPasteReportTest extends PmdTestBase {
 		assertEquals("", txtReportContent);
 	}
 
-	public void testReportOfTwoSrcDirectoriesMentionsRedundancyWhenMinimumTokenCountIsLow()
+	@Test
+	public void reportOfTwoSrcDirectoriesMentionsRedundancyWhenMinimumTokenCountIsLow()
 			throws Exception {
 		File src1 = new File(wsRoot, "src1");
 		srcDirHasPmdFodder(src1, "testfodder", "ClassWithPmdIssues");
@@ -104,7 +117,8 @@ public class CopyPasteReportTest extends PmdTestBase {
 				.contains("Found a 9 line (14 tokens) duplication"));
 	}
 
-	public void testReportOfTwoSrcDirectoriesIsEmptyWhenMinimumTokenCountIsHigh()
+	@Test
+	public void reportOfTwoSrcDirectoriesIsEmptyWhenMinimumTokenCountIsHigh()
 			throws Exception {
 		File src1 = new File(wsRoot, "src1");
 		srcDirHasPmdFodder(src1, "testfodder", "ClassWithPmdIssues");

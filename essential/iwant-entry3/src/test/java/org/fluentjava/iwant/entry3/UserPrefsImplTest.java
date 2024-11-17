@@ -1,16 +1,19 @@
 package org.fluentjava.iwant.entry3;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.util.Properties;
 
 import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class UserPrefsImplTest extends TestCase {
+public class UserPrefsImplTest {
 
 	@SuppressWarnings("unused")
-	public void testMissingWorkerCount() {
+	@Test
+	public void missingWorkerCount() {
 		File file = new File("any");
 		Properties p = new Properties();
 		try {
@@ -25,7 +28,8 @@ public class UserPrefsImplTest extends TestCase {
 	}
 
 	@SuppressWarnings("unused")
-	public void testNonIntegerWorkerCount() {
+	@Test
+	public void nonIntegerWorkerCount() {
 		File file = new File("any");
 		Properties p = new Properties();
 		p.put("workerCount", "1.1");
@@ -41,7 +45,8 @@ public class UserPrefsImplTest extends TestCase {
 	}
 
 	@SuppressWarnings("unused")
-	public void testZeroWorkerCount() {
+	@Test
+	public void zeroWorkerCount() {
 		File file = new File("any");
 		Properties p = new Properties();
 		p.put("workerCount", "0");
@@ -56,7 +61,8 @@ public class UserPrefsImplTest extends TestCase {
 
 	}
 
-	public void testValidWorkerCount() {
+	@Test
+	public void validWorkerCount() {
 		File file = new File("any");
 		Properties p = new Properties();
 		p.put("workerCount", "4");

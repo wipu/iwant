@@ -1,5 +1,10 @@
 package org.fluentjava.iwant.core.download;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.net.URL;
 import java.util.LinkedHashMap;
@@ -12,10 +17,10 @@ import org.fluentjava.iwant.apimocks.TargetEvaluationContextMock;
 import org.fluentjava.iwant.apimocks.UrlString;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class DownloadedTest extends TestCase {
+public class DownloadedTest {
 
 	private TestArea testArea;
 	private CachesMock caches;
@@ -24,8 +29,8 @@ public class DownloadedTest extends TestCase {
 	private TargetEvaluationContextMock ctx;
 	private File cached;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		testArea = TestArea.forTest(this);
 		wsRoot = testArea.newDir("wsroot");
 		caches = new CachesMock(wsRoot);
@@ -34,12 +39,14 @@ public class DownloadedTest extends TestCase {
 		cached = new File(testArea.root(), "cachedDownload");
 	}
 
-	public void testThereAreNoIngredients() {
+	@Test
+	public void thereAreNoIngredients() {
 		assertTrue(Downloaded.withName("any").url("http://localhost/any")
 				.md5("any").ingredients().isEmpty());
 	}
 
-	public void testContentDescriptor() {
+	@Test
+	public void contentDescriptor() {
 		assertEquals(
 				"org.fluentjava.iwant.core.download.Downloaded\n" + "p:url:\n"
 						+ "  http://localhost/url1\n" + "p:md5:\n" + "  any\n"
@@ -59,12 +66,14 @@ public class DownloadedTest extends TestCase {
 	 * simplest way to avoid failed downloads because of server refusing the
 	 * connection.
 	 */
-	public void testParallelRefreshIsDisabled() {
+	@Test
+	public void parallelRefreshIsDisabled() {
 		assertFalse(Downloaded.withName("any").url("http://any.com/file")
 				.noCheck().supportsParallelism());
 	}
 
-	public void testDownloadSucceedsWithoutDigestCheck() throws Exception {
+	@Test
+	public void downloadSucceedsWithoutDigestCheck() throws Exception {
 		URL url = Iwant.url("http://localhost");
 		caches.cachesUrlAt(url, cached);
 		iwantMock.shallDownloadContent(url, "valid content");
@@ -77,7 +86,8 @@ public class DownloadedTest extends TestCase {
 		assertEquals("valid content", testArea.contentOf(cached));
 	}
 
-	public void testDownloadSucceedsWithCorrectMd5() throws Exception {
+	@Test
+	public void downloadSucceedsWithCorrectMd5() throws Exception {
 		URL url = Iwant.url("http://localhost");
 		caches.cachesUrlAt(url, cached);
 		iwantMock.shallDownloadContent(url, "valid content");
@@ -91,7 +101,8 @@ public class DownloadedTest extends TestCase {
 		assertEquals("valid content", testArea.contentOf(cached));
 	}
 
-	public void testDownloadFailsAndCachedFileIsRenamedIfMd5Fails()
+	@Test
+	public void downloadFailsAndCachedFileIsRenamedIfMd5Fails()
 			throws Exception {
 		URL url = Iwant.url("http://localhost");
 		caches.cachesUrlAt(url, cached);

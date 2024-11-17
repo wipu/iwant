@@ -2,30 +2,30 @@ package org.fluentjava.iwant.core;
 
 import junit.framework.TestCase;
 
-public class PathDiggerTest extends TestCase {
+public class PathDiggerTest{
 
 	private static final Locations LOCATIONS = new Locations("wsRoot",
 			"as-someone", "cacheDir", "iwant-libs");
 
-	public void testEmptyListOfTargets() {
+	@Test public void emptyListOfTargets() {
 		ContainerPath root = new EmptyWorkspace().wsRoot(LOCATIONS);
 		assertEquals("[]", PathDigger.targets(root).toString());
 	}
 
-	public void testListOfTwoConstantTargetsAmongNonTargetMethods() {
+	@Test public void listOfTwoConstantTargetsAmongNonTargetMethods() {
 		ContainerPath root = new WorkspaceWithTwoConstantTargetFiles()
 				.wsRoot(LOCATIONS);
 		assertEquals("[Target:constant2-container/constant2,"
 				+ " Target:constantOne]", PathDigger.targets(root).toString());
 	}
 
-	public void testTargetByIllegalName() {
+	@Test public void targetByIllegalName() {
 		ContainerPath root = new WorkspaceWithTwoConstantTargetFiles()
 				.wsRoot(LOCATIONS);
 		assertNull(PathDigger.target(root, "illegal"));
 	}
 
-	public void testTargetByName() {
+	@Test public void targetByName() {
 		ContainerPath root = new WorkspaceWithTwoConstantTargetFiles()
 				.wsRoot(LOCATIONS);
 

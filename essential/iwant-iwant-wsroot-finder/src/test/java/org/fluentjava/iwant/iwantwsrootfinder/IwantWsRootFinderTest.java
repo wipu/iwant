@@ -1,15 +1,17 @@
 package org.fluentjava.iwant.iwantwsrootfinder;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+public class IwantWsRootFinderTest {
 
-public class IwantWsRootFinderTest extends TestCase {
-
-	public void testKnownFileIsFoundUnderWsRoot() throws IOException {
+	@Test
+	public void knownFileIsFoundUnderWsRoot() throws IOException {
 		File wsInfo = new File(IwantWsRootFinder.essential().getParentFile(),
 				"as-iwant-developer/i-have/conf/ws-info");
 
@@ -18,7 +20,8 @@ public class IwantWsRootFinderTest extends TestCase {
 				FileUtils.readFileToString(wsInfo).contains("WSNAME=iwant\n"));
 	}
 
-	public void testKnownFileIsFoundUnderMockEssential() throws IOException {
+	@Test
+	public void knownFileIsFoundUnderMockEssential() throws IOException {
 		File mockedApiWsdef = new File(IwantWsRootFinder.mockEssential(),
 				"iwant-api-wsdef/src/main/java/"
 						+ "org/fluentjava/iwant/api/wsdef/MockedApiWsdef.java");

@@ -1,5 +1,9 @@
 package org.fluentjava.iwant.api.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.util.Arrays;
 
@@ -7,10 +11,12 @@ import org.fluentjava.iwant.api.core.Directory.DirectoryContentPlease;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.junit.jupiter.api.Test;
 
 public class DirectoryTest extends IwantTestCase {
 
-	public void testContentDescriptorAndIngredientsOfEmpty() {
+	@Test
+	public void contentDescriptorAndIngredientsOfEmpty() {
 		Directory dir = Directory.named("empty").end();
 
 		assertEquals(
@@ -20,7 +26,8 @@ public class DirectoryTest extends IwantTestCase {
 		assertEquals("[]", dir.ingredients().toString());
 	}
 
-	public void testContentDescriptorAndIngredientsOfDirWithDirsAndPaths() {
+	@Test
+	public void contentDescriptorAndIngredientsOfDirWithDirsAndPaths() {
 		Source ingr1 = Source.underWsroot("src");
 		Target ingr2 = new HelloTarget("hello", "hello content");
 		Directory dir = Directory.named("nonempty").dir("empty-sub").end()
@@ -37,7 +44,8 @@ public class DirectoryTest extends IwantTestCase {
 		assertEquals("[src, hello]", dir.ingredients().toString());
 	}
 
-	public void testCorrectCachedContentOfEmpty() throws Exception {
+	@Test
+	public void correctCachedContentOfEmpty() throws Exception {
 		Directory empty = Directory.named("empty").end();
 
 		empty.path(ctx);
@@ -47,7 +55,8 @@ public class DirectoryTest extends IwantTestCase {
 		assertEquals("[]", Arrays.toString(cachedEmpty.list()));
 	}
 
-	public void testCorrectCachedContentOfNonEmpty() throws Exception {
+	@Test
+	public void correctCachedContentOfNonEmpty() throws Exception {
 		Source src = Source.underWsroot("src");
 		Target hello1 = new HelloTarget("hello1", "hello1 content");
 		Target hello2 = new HelloTarget("hello2", "hello2 content");
@@ -69,7 +78,8 @@ public class DirectoryTest extends IwantTestCase {
 				contentOfCached(nonempty, "nonempty-sub/hello2-renamed"));
 	}
 
-	public void testCopyOfNormalFileIsExecutableOnlyIfDeclaredSo()
+	@Test
+	public void copyOfNormalFileIsExecutableOnlyIfDeclaredSo()
 			throws Exception {
 		Target i1 = new HelloTarget("i1", "i1");
 		Target i2 = new HelloTarget("i2", "i2");
@@ -89,7 +99,8 @@ public class DirectoryTest extends IwantTestCase {
 		assertTrue(new File(cached, "root/i3").canExecute());
 	}
 
-	public void testCopyOfDirectoryIsExecutableUnlessToldNotToBe()
+	@Test
+	public void copyOfDirectoryIsExecutableUnlessToldNotToBe()
 			throws Exception {
 		Target i1 = Directory.named("i1").end();
 		Target i2 = Directory.named("i2").end();

@@ -1,10 +1,13 @@
 package org.fluentjava.iwant.core.download;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestedIwantDependenciesTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
-	public void testNamesOfDownloadedTargets() {
+public class TestedIwantDependenciesTest {
+
+	@Test
+	public void namesOfDownloadedTargets() {
 		// this documents the names, change when upgrading:
 		assertEquals("ant-1.10.14.jar",
 				TestedIwantDependencies.antJar().name());

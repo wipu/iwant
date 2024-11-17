@@ -1,14 +1,19 @@
 package org.fluentjava.iwant.plugin.jacoco;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 
 import org.fluentjava.iwant.api.javamodules.JavaClassesAndSources;
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
+import org.junit.jupiter.api.Test;
 
 public class JacocoReportTest extends JacocoTestBase {
 
-	public void testIngredientsAndContentDescriptor() {
+	@Test
+	public void ingredientsAndContentDescriptor() {
 		Path classes = Source.underWsroot("theclasses");
 		Path sources = Source.underWsroot("thesources");
 		JacocoCoverage coverage = JacocoCoverage.with().name("thecoverage")
@@ -30,8 +35,8 @@ public class JacocoReportTest extends JacocoTestBase {
 				report.contentDescriptor());
 	}
 
-	public void testReportWithNoncoveredAndPartlyCoveredModule()
-			throws Exception {
+	@Test
+	public void reportWithNoncoveredAndPartlyCoveredModule() throws Exception {
 		JavaClassesAndSources badTest = newJavaClassesAndSources("badtest",
 				"BadTest",
 				"System.err.println(\"This test covers nothing.\");");

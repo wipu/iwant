@@ -1,13 +1,17 @@
 package org.fluentjava.iwant.api.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.junit.jupiter.api.Test;
 
 public class ConcatenatedTest extends IwantTestCase {
 
-	public void testIngredients() {
+	@Test
+	public void ingredients() {
 		assertEquals("[]", Concatenated.named("no-paths").bytes(1, 2)
 				.string("s").end().ingredients().toString());
 		assertEquals("[src, target, target2]",
@@ -17,7 +21,8 @@ public class ConcatenatedTest extends IwantTestCase {
 						.ingredients().toString());
 	}
 
-	public void testContentDescriptor() {
+	@Test
+	public void contentDescriptor() {
 		assertEquals(
 				"org.fluentjava.iwant.api.core.Concatenated\n" + "p:bytes:\n"
 						+ "  [1, 2]\n" + "p:string:\n" + "  s\n" + "",
@@ -34,14 +39,16 @@ public class ConcatenatedTest extends IwantTestCase {
 						.contentDescriptor());
 	}
 
-	public void testPathToEmpty() throws Exception {
+	@Test
+	public void pathToEmpty() throws Exception {
 		Concatenated c = Concatenated.named("empty").end();
 		c.path(ctx);
 
 		assertEquals("", contentOf(new File(cached, "empty")));
 	}
 
-	public void testPathToConcatenationOfAllKinds() throws Exception {
+	@Test
+	public void pathToConcatenationOfAllKinds() throws Exception {
 		wsRootHasFile("src", "src-content");
 		Source src = Source.underWsroot("src");
 		HelloTarget target = new HelloTarget("target", "target-content");
@@ -62,7 +69,8 @@ public class ConcatenatedTest extends IwantTestCase {
 	/**
 	 * Handy when generating scripts for cygwin on Windows
 	 */
-	public void testUnixPathVersusNativePath() throws Exception {
+	@Test
+	public void unixPathVersusNativePath() throws Exception {
 		ctx.iwant().shallMockWintoySafePaths();
 
 		Source src = Source.underWsroot("src");

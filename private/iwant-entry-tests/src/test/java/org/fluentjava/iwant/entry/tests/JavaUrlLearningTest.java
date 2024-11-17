@@ -1,13 +1,17 @@
 package org.fluentjava.iwant.entry.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class JavaUrlLearningTest extends TestCase {
+public class JavaUrlLearningTest {
 
-	public void testUrlAppendForLearning() throws MalformedURLException {
+	@Test
+	public void urlAppendForLearning() throws MalformedURLException {
 		URL base = new URL("http://localhost/base");
 		// it replaces the path:
 		assertEquals("http://localhost/sub",
@@ -17,7 +21,8 @@ public class JavaUrlLearningTest extends TestCase {
 				new URL(base + "/sub").toExternalForm());
 	}
 
-	public void testInvalidUrlForTestingErrors() {
+	@Test
+	public void invalidUrlForTestingErrors() {
 		try {
 			@SuppressWarnings("unused")
 			URL url = new URL("crap");

@@ -1,5 +1,9 @@
 package org.fluentjava.iwant.plugin.jacoco;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
@@ -7,10 +11,12 @@ import org.fluentjava.iwant.api.javamodules.JavaClasses;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
+import org.junit.jupiter.api.Test;
 
 public class JacocoInstrumentationTest extends JacocoTestBase {
 
-	public void testNameIsDerivedFromTheNameOfJavaClassesAndSourcesPair() {
+	@Test
+	public void nameIsDerivedFromTheNameOfJavaClassesAndSourcesPair() {
 		assertEquals("one.jacoco-instr",
 				JacocoInstrumentation.of(Source.underWsroot("one"))
 						.using(jacoco(), antJar(), antLauncherJar()).name());
@@ -19,7 +25,8 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 						.using(jacoco(), antJar(), antLauncherJar()).name());
 	}
 
-	public void testIngredients() {
+	@Test
+	public void ingredients() {
 		assertEquals(
 				"[" + jacoco() + ", " + antJar() + ", " + antLauncherJar()
 						+ ", classes]",
@@ -28,7 +35,8 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 						.ingredients().toString());
 	}
 
-	public void testContentDescriptor() {
+	@Test
+	public void contentDescriptor() {
 		assertEquals(
 				"org.fluentjava.iwant.plugin.jacoco.JacocoInstrumentation\n"
 						+ "i:jacoco:\n" + "  jacoco-0.8.10\n" + "i:antJars:\n"
@@ -39,7 +47,8 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 						.contentDescriptor());
 	}
 
-	public void testInstrumentationCreatesAModifiedClass() throws Exception {
+	@Test
+	public void instrumentationCreatesAModifiedClass() throws Exception {
 		wsRootHasFile("src/pak/Foo.java",
 				"package pak;\npublic class Foo {}\n");
 		JavaClasses classes = JavaClasses.with().name("classes")
@@ -58,7 +67,8 @@ public class JacocoInstrumentationTest extends JacocoTestBase {
 		assertFalse(FileUtils.contentEquals(originalClass, instrClass));
 	}
 
-	public void testInstrumentationCreatesAModifiedClassAndCopiesResource()
+	@Test
+	public void instrumentationCreatesAModifiedClassAndCopiesResource()
 			throws Exception {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
 				.mainResources("res").end();

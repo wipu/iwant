@@ -1,13 +1,17 @@
 package org.fluentjava.iwant.api.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.StringFilter;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.junit.jupiter.api.Test;
 
 public class ClassNameListTest extends IwantTestCase {
 
-	public void testGivenClassesIsIngredient() {
+	@Test
+	public void givenClassesIsIngredient() {
 		Path classes = Source.underWsroot("classes");
 
 		ClassNameList list = ClassNameList.with().name("list").classes(classes)
@@ -16,7 +20,8 @@ public class ClassNameListTest extends IwantTestCase {
 		assertEquals("[classes]", list.ingredients().toString());
 	}
 
-	public void testDescriptorOfListWithJustClasses() {
+	@Test
+	public void descriptorOfListWithJustClasses() {
 		Path classes = Source.underWsroot("classes");
 
 		ClassNameList list = ClassNameList.with().name("list").classes(classes)
@@ -42,7 +47,8 @@ public class ClassNameListTest extends IwantTestCase {
 
 	}
 
-	public void testFilterIsIncludedInDescriptor() {
+	@Test
+	public void filterIsIncludedInDescriptor() {
 		Path classes = Source.underWsroot("classes2");
 
 		ClassNameList list = ClassNameList.with().name("list").classes(classes)
@@ -55,7 +61,8 @@ public class ClassNameListTest extends IwantTestCase {
 				list.contentDescriptor());
 	}
 
-	public void testAllClassesFromEmptyDirectory() throws Exception {
+	@Test
+	public void allClassesFromEmptyDirectory() throws Exception {
 		wsRootHasDirectory("classes");
 
 		ClassNameList list = ClassNameList.with().name("list")
@@ -65,7 +72,8 @@ public class ClassNameListTest extends IwantTestCase {
 		assertEquals("", contentOf(ctx.cached(list)));
 	}
 
-	public void testAllClassesFromDirectoryWithOneClassInDefaultPackage()
+	@Test
+	public void allClassesFromDirectoryWithOneClassInDefaultPackage()
 			throws Exception {
 		wsRootHasFile("classes/A.class", "whatever");
 
@@ -76,7 +84,8 @@ public class ClassNameListTest extends IwantTestCase {
 		assertEquals("A\n", contentOf(ctx.cached(list)));
 	}
 
-	public void testAllClassesFromDirectoryWithClassInManyPackages()
+	@Test
+	public void allClassesFromDirectoryWithClassInManyPackages()
 			throws Exception {
 		wsRootHasFile("classes/A.class", "whatever");
 		wsRootHasFile("classes/b/B.class", "whatever");
@@ -89,7 +98,8 @@ public class ClassNameListTest extends IwantTestCase {
 		assertEquals("A\nb.B\nc.subc.C\n", contentOf(ctx.cached(list)));
 	}
 
-	public void testNonClassFilesAreExcludedAutomatically() throws Exception {
+	@Test
+	public void nonClassFilesAreExcludedAutomatically() throws Exception {
 		wsRootHasFile("classes/A.notclass", "whatever");
 		wsRootHasFile("classes/b/B1.class", "whatever");
 		wsRootHasFile("classes/b/B2.notclass", "whatever");
@@ -103,7 +113,8 @@ public class ClassNameListTest extends IwantTestCase {
 		assertEquals("b.B1\nc.subc.C1\n", contentOf(ctx.cached(list)));
 	}
 
-	public void testFilterIsAppliedIfGiven() throws Exception {
+	@Test
+	public void filterIsAppliedIfGiven() throws Exception {
 		wsRootHasFile("classes/a/A.class", "whatever");
 		wsRootHasFile("classes/a/ATest.class", "whatever");
 		wsRootHasFile("classes/a/AbstractATest.class", "whatever");

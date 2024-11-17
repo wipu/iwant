@@ -1,11 +1,15 @@
 package org.fluentjava.iwant.plugin.findbugs;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.fluentjava.iwant.apimocks.IwantTestCase;
 import org.fluentjava.iwant.core.download.Downloaded;
 import org.fluentjava.iwant.entry.Iwant;
+import org.junit.jupiter.api.Test;
 
 public class FindbugsDistributionTest extends IwantTestCase {
 
@@ -14,7 +18,8 @@ public class FindbugsDistributionTest extends IwantTestCase {
 		caches.cachesUrlAt(distroToTest().tarGz().url(), cachedFindbugsTarGz());
 	}
 
-	public void testTarGzIsADownloadedTargetWithCorrectUrlAndNameAndSum() {
+	@Test
+	public void tarGzIsADownloadedTargetWithCorrectUrlAndNameAndSum() {
 		FindbugsDistribution distro300 = FindbugsDistribution._4_7_3;
 		Downloaded tarGz300 = distro300.tarGz();
 
@@ -46,21 +51,24 @@ public class FindbugsDistributionTest extends IwantTestCase {
 				.downloaded(distroToTest().tarGz().url());
 	}
 
-	public void testRealCachedFindbugs301TarGzExistsAndHasCorrectSize() {
+	@Test
+	public void realCachedFindbugs301TarGzExistsAndHasCorrectSize() {
 		File cachedFindbugsJar = cachedFindbugsTarGz();
 
 		assertTrue(cachedFindbugsJar.exists());
 		assertEquals(16035999, cachedFindbugsJar.length());
 	}
 
-	public void testTarGzIsAnIngredientAndMentionedInDescriptor() {
+	@Test
+	public void tarGzIsAnIngredientAndMentionedInDescriptor() {
 		FindbugsDistribution distro = FindbugsDistribution._4_7_3;
 
 		assertTrue(distro.ingredients().contains(distro.tarGz()));
 		assertTrue(distro.contentDescriptor().contains(distro.tarGz().name()));
 	}
 
-	public void testFindbugsHomeDirectoryUnderCachedUntarredDistro()
+	@Test
+	public void findbugsHomeDirectoryUnderCachedUntarredDistro()
 			throws IOException {
 		FindbugsDistribution distro300 = FindbugsDistribution
 				.ofVersion("anotherVersion", "whatever-hash");
@@ -76,7 +84,8 @@ public class FindbugsDistributionTest extends IwantTestCase {
 				distro301.homeDirectory(ctx).getCanonicalPath());
 	}
 
-	public void testFilesWithCorrectNameAreFoundInsideTheRealDistroHomeDir()
+	@Test
+	public void filesWithCorrectNameAreFoundInsideTheRealDistroHomeDir()
 			throws Exception {
 		FindbugsDistribution distro = distroToTest();
 

@@ -1,5 +1,8 @@
 package org.fluentjava.iwant.api.bash;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +15,7 @@ import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.wsdef.TargetDefinitionContext;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.junit.jupiter.api.Test;
 
 public class TargetImplementedInBashTest extends IwantTestCase {
 
@@ -38,7 +42,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		target.setIngredientDefinitionContext(ctx);
 	}
 
-	public void testScriptIsAnIngredient() {
+	@Test
+	public void scriptIsAnIngredient() {
 		wsRootHasFile("script",
 				"path() {\n" + "echo 'hello' > \"$(iwant-dest)\"\n" + "}\n");
 		TargetImplementedInBash target = new TargetImplementedInBash("t",
@@ -51,7 +56,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		assertEquals("script", ingr.name());
 	}
 
-	public void testIngredientlessAsPath() throws Exception {
+	@Test
+	public void ingredientlessAsPath() throws Exception {
 		wsRootHasFile("script",
 				"path() {\n" + "echo 'hello' > \"$IWANT_DEST\"\n" + "}\n");
 		TargetImplementedInBash target = new TargetImplementedInBash("t",
@@ -63,7 +69,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		assertEquals("hello\n", contentOfCached(target));
 	}
 
-	public void testTargetWithTargetIngredient() throws Exception {
+	@Test
+	public void targetWithTargetIngredient() throws Exception {
 		Target ingr = new HelloTarget("ingr", "ingr content");
 		ingr.path(ctx);
 
@@ -82,7 +89,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 				contentOfCached(target));
 	}
 
-	public void testTargetWithSourceIngredient() throws Exception {
+	@Test
+	public void targetWithSourceIngredient() throws Exception {
 		wsRootHasFile("ingr", "ingr content");
 
 		wsRootHasFile("script",
@@ -100,7 +108,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 				contentOfCached(target));
 	}
 
-	public void testIndexWithNoTargetsDefined() {
+	@Test
+	public void indexWithNoTargetsDefined() {
 		File indexSh = wsRootHasFile("_index.sh", "");
 
 		try {
@@ -115,7 +124,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 				err());
 	}
 
-	public void testIndexWithEmptyTargetList() {
+	@Test
+	public void indexWithEmptyTargetList() {
 		wsRootHasFile("_index.sh", "targets() { true; }");
 
 		List<TargetImplementedInBash> targets = TargetImplementedInBash
@@ -124,7 +134,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		assertEquals(0, targets.size());
 	}
 
-	public void testIndexAndSimpleTargetDirectlyInWsroot() {
+	@Test
+	public void indexAndSimpleTargetDirectlyInWsroot() {
 		wsRootHasFile("_index.sh", "targets() { target simple; }");
 
 		List<TargetImplementedInBash> targets = TargetImplementedInBash
@@ -136,7 +147,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		assertEquals("[]", targets.get(0).arguments().toString());
 	}
 
-	public void testIndexAndSimpleTargetUnderSubDirectory() {
+	@Test
+	public void indexAndSimpleTargetUnderSubDirectory() {
 		wsRootHasFile("a/b/_index.sh", "targets() { target simple2; }");
 
 		List<TargetImplementedInBash> targets = TargetImplementedInBash
@@ -149,7 +161,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 		assertEquals("[]", targets.get(0).arguments().toString());
 	}
 
-	public void testIndexWithTargetsWithScriptAndArgs() {
+	@Test
+	public void indexWithTargetsWithScriptAndArgs() {
 		wsRootHasFile("scripts/_index.sh",
 				"targets() { target t0 t0.sh t0a0; target t1 t1.sh t1a0 t1a1; }");
 
@@ -171,7 +184,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 	/**
 	 * There was a bug with this
 	 */
-	public void testIngredientWhoseNameIsContainedInTargetsOwnName()
+	@Test
+	public void ingredientWhoseNameIsContainedInTargetsOwnName()
 			throws Exception {
 		Target ingr = new HelloTarget("ingr", "ingr content");
 		ingr.path(ctx);
@@ -192,7 +206,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 				contentOfCached(target));
 	}
 
-	public void testNonexistentIndexShCausesFriendlyWarning() {
+	@Test
+	public void nonexistentIndexShCausesFriendlyWarning() {
 		try {
 			TargetImplementedInBash.instancesFromIndexSh(tdCtx(),
 					Source.underWsroot("_index.sh"));
@@ -204,7 +219,8 @@ public class TargetImplementedInBashTest extends IwantTestCase {
 
 	}
 
-	public void testNonexistentDefaultIndexShCausesFriendlyWarningWithCorrectLocation() {
+	@Test
+	public void nonexistentDefaultIndexShCausesFriendlyWarningWithCorrectLocation() {
 		ctxMock().hasWsdefModule(JavaSrcModule.with().name("wsdef")
 				.locationUnderWsRoot("wsdef-location").end());
 

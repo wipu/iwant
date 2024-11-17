@@ -1,5 +1,9 @@
 package org.fluentjava.iwant.entry3;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -13,10 +17,10 @@ import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class CachesImplTest extends TestCase {
+public class CachesImplTest {
 
 	private TestArea testArea;
 	private File cacheDir;
@@ -24,8 +28,8 @@ public class CachesImplTest extends TestCase {
 	private File wsRoot;
 	private IwantNetworkMock network;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		testArea = TestArea.forTest(this);
 		wsRoot = testArea.newDir("wsroot");
 		cacheDir = testArea.newDir("cacheDir");
@@ -37,32 +41,37 @@ public class CachesImplTest extends TestCase {
 		assertEquals(expected.getAbsolutePath(), actual.getAbsolutePath());
 	}
 
-	public void testAskedPathCacheIsNotCreated() {
+	@Test
+	public void askedPathCacheIsNotCreated() {
 		File cached = caches.contentOf(new HelloTarget("hello", "whatever"));
 		assertFalse(cached.exists());
 		assertFalse(cached.getParentFile().exists());
 	}
 
-	public void testSourceIsItsOwnCacheAndRelativeToWsRoot() {
+	@Test
+	public void sourceIsItsOwnCacheAndRelativeToWsRoot() {
 		assertFile(new File(wsRoot, "src1"),
 				caches.contentOf(Source.underWsroot("src1")));
 		assertFile(new File(wsRoot, "src/src2"),
 				caches.contentOf(Source.underWsroot("src/src2")));
 	}
 
-	public void testExternalSourceIsItsOwnCache() {
+	@Test
+	public void externalSourceIsItsOwnCache() {
 		File file = new File("/absolute/path");
 		assertFile(file, caches.contentOf(ExternalSource.at(file)));
 	}
 
-	public void testHelloTargetIsCachedAtWorkspaceCache() {
+	@Test
+	public void helloTargetIsCachedAtWorkspaceCache() {
 		assertFile(new File(cacheDir, "target/hello"),
 				caches.contentOf(new HelloTarget("hello", "whatever")));
 		assertFile(new File(cacheDir, "target/hello2"),
 				caches.contentOf(new HelloTarget("hello2", "whatever")));
 	}
 
-	public void testDownloadedIsCachedAtUnmodifiableUrlCache() {
+	@Test
+	public void downloadedIsCachedAtUnmodifiableUrlCache() {
 		String urlString = "file:///an/url";
 		URL url = Iwant.url(urlString);
 		File cached = testArea.newDir("cached-url");
@@ -72,7 +81,8 @@ public class CachesImplTest extends TestCase {
 				Downloaded.withName("downloaded").url(urlString).md5("any")));
 	}
 
-	public void testContentDescriptorOfNormalTarget() {
+	@Test
+	public void contentDescriptorOfNormalTarget() {
 		assertFile(new File(cacheDir, "descriptor/h1"),
 				caches.contentDescriptorOf(new HelloTarget("h1", "")));
 		assertFile(new File(cacheDir, "descriptor/h2"),
@@ -83,7 +93,8 @@ public class CachesImplTest extends TestCase {
 	 * The target itself is inside workspace and so is its content descriptor,
 	 * even though the cached content is reused between workspaces.
 	 */
-	public void testContentDescriptorOfDownloadedTarget() {
+	@Test
+	public void contentDescriptorOfDownloadedTarget() {
 		assertFile(new File(cacheDir, "descriptor/dl1"),
 				caches.contentDescriptorOf(Downloaded.withName("dl1")
 						.url("file:///any").md5("any")));
@@ -92,13 +103,15 @@ public class CachesImplTest extends TestCase {
 						.url("file:///any").md5("any")));
 	}
 
-	public void testRequestedTemporaryDirectoryExistsAndIsDirectory() {
+	@Test
+	public void requestedTemporaryDirectoryExistsAndIsDirectory() {
 		File tmpDir = caches.temporaryDirectory("w");
 		assertTrue(tmpDir.exists());
 		assertTrue(tmpDir.isDirectory());
 	}
 
-	public void testRequestedTemporaryDirectoryIsSameIfAndOnlyIfSameWorkerNameUsed() {
+	@Test
+	public void requestedTemporaryDirectoryIsSameIfAndOnlyIfSameWorkerNameUsed() {
 		File a1 = caches.temporaryDirectory("a");
 		File a2 = caches.temporaryDirectory("a");
 		File b = caches.temporaryDirectory("b");
@@ -107,7 +120,8 @@ public class CachesImplTest extends TestCase {
 		assertFalse(a1.equals(b));
 	}
 
-	public void testTemporaryDirectoryIsEmptiedAfterPreviousUse()
+	@Test
+	public void temporaryDirectoryIsEmptiedAfterPreviousUse()
 			throws IOException {
 		File tmpDir = caches.temporaryDirectory("w");
 		File fileCreatedByPreviousWorker = new File(tmpDir,

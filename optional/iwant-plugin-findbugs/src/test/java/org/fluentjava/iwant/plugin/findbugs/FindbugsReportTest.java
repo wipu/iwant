@@ -1,5 +1,10 @@
 package org.fluentjava.iwant.plugin.findbugs;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -17,6 +22,7 @@ import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.embedded.AsEmbeddedIwantUser;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.plugin.findbugs.FindbugsReport.FindbugsReportSpex;
+import org.junit.jupiter.api.Test;
 
 public class FindbugsReportTest extends IwantTestCase {
 
@@ -87,7 +93,8 @@ public class FindbugsReportTest extends IwantTestCase {
 	// the tests
 	// -----------------------------------------------------
 
-	public void testDistroMustBeGiven() {
+	@Test
+	public void distroMustBeGiven() {
 		wsRootHasDirectory("empty-src");
 		wsRootHasDirectory("empty-classes");
 		Path emptySrc = Source.underWsroot("empty-src");
@@ -105,7 +112,8 @@ public class FindbugsReportTest extends IwantTestCase {
 		}
 	}
 
-	public void testIngredientsAndContentDescriptor() {
+	@Test
+	public void ingredientsAndContentDescriptor() {
 		Path emptySrc = Source.underWsroot("empty-src");
 		Path emptyClasses = Source.underWsroot("empty-classes");
 		Path bin = Source.underWsroot("bin.jar");
@@ -136,7 +144,8 @@ public class FindbugsReportTest extends IwantTestCase {
 				.contains("i:excludeFile:\n" + "  exclude.xml\n"));
 	}
 
-	public void testExplicitHtmlOutputFormat() {
+	@Test
+	public void explicitHtmlOutputFormat() {
 		Path emptySrc = Source.underWsroot("empty-src");
 		Path emptyClasses = Source.underWsroot("empty-classes");
 		Target report = FindbugsReport.with().name("fb-empty")
@@ -150,7 +159,8 @@ public class FindbugsReportTest extends IwantTestCase {
 				report.contentDescriptor().contains("output-format:\n  html"));
 	}
 
-	public void testContentDescriptorWithXmlOutputFormat() {
+	@Test
+	public void contentDescriptorWithXmlOutputFormat() {
 		Path emptySrc = Source.underWsroot("empty-src");
 		Path emptyClasses = Source.underWsroot("empty-classes");
 		Target report = FindbugsReport.with().name("fb-empty")
@@ -168,7 +178,8 @@ public class FindbugsReportTest extends IwantTestCase {
 				+ "  xml\n" + "", report.contentDescriptor());
 	}
 
-	public void testDefaultReportFromEmptyClasses() throws Exception {
+	@Test
+	public void defaultReportFromEmptyClasses() throws Exception {
 		wsRootHasDirectory("empty-src");
 		wsRootHasDirectory("empty-classes");
 		Path emptySrc = Source.underWsroot("empty-src");
@@ -188,7 +199,8 @@ public class FindbugsReportTest extends IwantTestCase {
 		assertEquals("", htmlReportContent);
 	}
 
-	public void testReportMentionsIssuesFromTheGivenClassButOnlyIfNotFiltered()
+	@Test
+	public void reportMentionsIssuesFromTheGivenClassButOnlyIfNotFiltered()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDirHasFindbugsFodder(srcDir, "testfodder",
@@ -230,7 +242,8 @@ public class FindbugsReportTest extends IwantTestCase {
 				htmlReportContent(filteredReport).contains(npeWarningSnippet));
 	}
 
-	public void testReportDoesNotDetectProblemIfDependencyNotInAuxclasses()
+	@Test
+	public void reportDoesNotDetectProblemIfDependencyNotInAuxclasses()
 			throws Exception {
 		File src1Dir = new File(wsRoot, "src1");
 		srcDirHasFindbugsFodder(src1Dir, "testfodder",
@@ -267,7 +280,8 @@ public class FindbugsReportTest extends IwantTestCase {
 				+ "nullReferenceOfValueFromBinaryDependency()</td>";
 	}
 
-	public void testReportDetectsProblemIfDependencyIsInAuxclasses()
+	@Test
+	public void reportDetectsProblemIfDependencyIsInAuxclasses()
 			throws Exception {
 		File src1Dir = new File(wsRoot, "src1");
 		srcDirHasFindbugsFodder(src1Dir, "testfodder",
@@ -297,8 +311,8 @@ public class FindbugsReportTest extends IwantTestCase {
 				.contains(warningAboutBugUsingBinaryDependency()));
 	}
 
-	public void testReportUsesXmlFormatWhenExplicitlyRequested()
-			throws Exception {
+	@Test
+	public void reportUsesXmlFormatWhenExplicitlyRequested() throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDirHasFindbugsFodder(srcDir, "testfodder",
 				"ClassWithFindbugsIssues");
@@ -323,8 +337,8 @@ public class FindbugsReportTest extends IwantTestCase {
 				+ " name=\"nullReference\""));
 	}
 
-	public void testReportUsesTextFormatWhenExplicitlyRequested()
-			throws Exception {
+	@Test
+	public void reportUsesTextFormatWhenExplicitlyRequested() throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDirHasFindbugsFodder(srcDir, "testfodder",
 				"ClassWithFindbugsIssues");
@@ -351,7 +365,8 @@ public class FindbugsReportTest extends IwantTestCase {
 						+ "  Dereferenced at ClassWithFindbugsIssues.java:[line 7]\n"));
 	}
 
-	public void testModulesToAnalyzeMeansSrcsAnalyzedUsingBins() {
+	@Test
+	public void modulesToAnalyzeMeansSrcsAnalyzedUsingBins() {
 		JavaBinModule bin1 = JavaBinModule.providing(Source.underWsroot("bin1"))
 				.end();
 

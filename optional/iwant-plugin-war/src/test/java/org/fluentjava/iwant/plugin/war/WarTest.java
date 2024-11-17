@@ -1,11 +1,15 @@
 package org.fluentjava.iwant.plugin.war;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import java.io.File;
 
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.zip.Unzipped;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
 import org.fluentjava.iwant.entry.Iwant;
+import org.junit.jupiter.api.Test;
 
 public class WarTest extends IwantTestCase {
 
@@ -26,7 +30,8 @@ public class WarTest extends IwantTestCase {
 	// the tests
 	// ------------------
 
-	public void testIngredientsAndDescriptorOfMinimalWar() {
+	@Test
+	public void ingredientsAndDescriptorOfMinimalWar() {
 		War war = War.with().name("test.war")
 				.basedir(Source.underWsroot("empty-basedir"))
 				.webXml(Source.underWsroot("web.xml")).end();
@@ -39,7 +44,8 @@ public class WarTest extends IwantTestCase {
 		assertEquals("[empty-basedir, web.xml]", war.ingredients().toString());
 	}
 
-	public void testIngredientsAndDescriptorOfWarWithFullFeatures() {
+	@Test
+	public void ingredientsAndDescriptorOfWarWithFullFeatures() {
 		War war = War.with().name("test.war")
 				.basedir(Source.underWsroot("empty-basedir"))
 				.exclude("exclude1", "exclude2")
@@ -64,7 +70,8 @@ public class WarTest extends IwantTestCase {
 				war.ingredients().toString());
 	}
 
-	public void testExplicitWebXml() throws Exception {
+	@Test
+	public void explicitWebXml() throws Exception {
 		Source webXml = sourceWithContent("constant-web.xml",
 				"web.xml content");
 		File baseDir = new File(wsRoot, "empty-basedir");
@@ -81,7 +88,8 @@ public class WarTest extends IwantTestCase {
 				contentOf(new File(tmp, "WEB-INF/web.xml")));
 	}
 
-	public void testWebXmlUnderGivenDirectory() throws Exception {
+	@Test
+	public void webXmlUnderGivenDirectory() throws Exception {
 		File generatedConfs = new File(wsRoot, "generated-confs");
 		Iwant.mkdirs(generatedConfs);
 		Iwant.newTextFile(new File(generatedConfs, "generated-web.xml"),
@@ -102,7 +110,8 @@ public class WarTest extends IwantTestCase {
 				contentOf(new File(tmp, "WEB-INF/web.xml")));
 	}
 
-	public void testNonEmptyBasedirWithFilesToExclude() throws Exception {
+	@Test
+	public void nonEmptyBasedirWithFilesToExclude() throws Exception {
 		File web = new File(wsRoot, "web");
 		Iwant.mkdirs(web);
 		Iwant.newTextFile(new File(web, "index.html"), "index.html content");
@@ -135,7 +144,8 @@ public class WarTest extends IwantTestCase {
 		assertFalse(new File(tmp, "subdir/another-file-to-exclude").exists());
 	}
 
-	public void testWarWithClassesLibsAndResources() throws Exception {
+	@Test
+	public void warWithClassesLibsAndResources() throws Exception {
 		File baseDir = new File(wsRoot, "basedir");
 		Iwant.mkdirs(baseDir);
 		Source webXml = sourceWithContent("web.xml", "web.xml content");

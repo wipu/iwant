@@ -1,5 +1,9 @@
 package org.fluentjava.iwant.eclipsesettings;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.util.Arrays;
 
@@ -12,6 +16,7 @@ import org.fluentjava.iwant.api.javamodules.ScalaVersion;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
 import org.fluentjava.iwant.apimocks.TargetMock;
+import org.junit.jupiter.api.Test;
 
 public class EclipseSettingsTest extends IwantTestCase {
 
@@ -43,7 +48,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 		}
 	}
 
-	public void testModulesCanBeAddedInManyPartsBothAsVarargsAndAsCollections() {
+	@Test
+	public void modulesCanBeAddedInManyPartsBothAsVarargsAndAsCollections() {
 		JavaSrcModule m1 = JavaSrcModule.with().name("m1").end();
 		JavaSrcModule m2 = JavaSrcModule.with().name("m2").end();
 		JavaSrcModule m3 = JavaSrcModule.with().name("m3").end();
@@ -55,7 +61,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 		assertEquals("[m1, m2, m3, m4, m5]", es.modules().toString());
 	}
 
-	public void testModulesAreCollectedToSortedSetSoMultipleAddsAndWrongOrderDontAffectIt() {
+	@Test
+	public void modulesAreCollectedToSortedSetSoMultipleAddsAndWrongOrderDontAffectIt() {
 		JavaSrcModule m1 = JavaSrcModule.with().name("m1").end();
 		JavaSrcModule m2 = JavaSrcModule.with().name("m2").end();
 		JavaSrcModule m3 = JavaSrcModule.with().name("m3").end();
@@ -67,7 +74,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 		assertEquals("[m1, m2, m3, m4, m5]", es.modules().toString());
 	}
 
-	public void testMutationUsingWsdefdefAndWsdefAndAnotherModuleUsedByWsdef() {
+	@Test
+	public void mutationUsingWsdefdefAndWsdefAndAnotherModuleUsedByWsdef() {
 		JavaModule iwantClasses = JavaBinModule
 				.providing(TargetMock.ingredientless("iwant-classes"),
 						TargetMock.ingredientless("combined-iwant-sources"))
@@ -115,7 +123,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 						+ " kind=\"src\" path=\"/test-wsdef-tools\"/>");
 	}
 
-	public void testNoSourcesMeansNoSources() {
+	@Test
+	public void noSourcesMeansNoSources() {
 		JavaModule srcless = JavaSrcModule.with().name("any")
 				.locationUnderWsRoot("any").end();
 		wsRootHasDirectory("any");
@@ -129,7 +138,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 				.contains("<classpathentry kind=\"src\" "));
 	}
 
-	public void testTestJavaAndTestDepsAffectDotClasspath() {
+	@Test
+	public void testJavaAndTestDepsAffectDotClasspath() {
 		JavaModule testTools1 = JavaBinModule
 				.providing(TargetMock.ingredientless("test-tools-1"),
 						TargetMock.ingredientless("test-tools-1-src"))
@@ -165,7 +175,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 						+ "/test-tools-2-srcless\"/>");
 	}
 
-	public void testSetOfAllMainAndTestDependencyBinaryClassesAndSourcesGetsRefreshedSoEclipseWontComplainAboutMissingRefs() {
+	@Test
+	public void setOfAllMainAndTestDependencyBinaryClassesAndSourcesGetsRefreshedSoEclipseWontComplainAboutMissingRefs() {
 		// 2 modules depend on this, but it's mentioned only once in refs:
 		JavaModule binWithoutSources = JavaBinModule
 				.providing(TargetMock.ingredientless("binWithoutSources"))
@@ -205,7 +216,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 				seCtx.targetsWantedAsPath().get(0).contentDescriptor());
 	}
 
-	public void testClasspathIsGeneratedButWithWarningIfRefreshOfDepsFails() {
+	@Test
+	public void classpathIsGeneratedButWithWarningIfRefreshOfDepsFails() {
 		JavaModule util = JavaBinModule
 				.providing(TargetMock.ingredientless("util"),
 						TargetMock.ingredientless("util-src"))
@@ -237,7 +249,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 				+ "", seCtx.err().toString());
 	}
 
-	public void testNameOfBinDepRefreshTarget() {
+	@Test
+	public void nameOfBinDepRefreshTarget() {
 		JavaModule util = JavaBinModule
 				.providing(TargetMock.ingredientless("util"),
 						TargetMock.ingredientless("util-src"))
@@ -257,7 +270,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 		assertEquals("es2.bin-refs", seCtx.targetsWantedAsPath().get(1).name());
 	}
 
-	public void testDefaultJavaComplianceIs11() {
+	@Test
+	public void defaultJavaComplianceIs11() {
 		JavaModule mod = JavaSrcModule.with().name("mod")
 				.locationUnderWsRoot("mod").mainJava("src").end();
 
@@ -271,7 +285,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 		assertFileContains(corePrefs, "compiler.source=11");
 	}
 
-	public void testJavaComplianceCanBeDefinedAs17() {
+	@Test
+	public void javaComplianceCanBeDefinedAs17() {
 		JavaModule mod = JavaSrcModule.with().name("mod")
 				.javaCompliance(JavaCompliance.JAVA_1_7)
 				.locationUnderWsRoot("mod").mainJava("src").end();
@@ -286,7 +301,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 		assertFileContains(corePrefs, "compiler.source=1.7");
 	}
 
-	public void testJavaAndResourceDirsAreCreated() {
+	@Test
+	public void javaAndResourceDirsAreCreated() {
 		JavaModule modWithAll = JavaSrcModule.with().name("mod-with-all")
 				.locationUnderWsRoot("mod-with-all").mavenLayout().end();
 		JavaModule modWithNone = JavaSrcModule.with().name("mod-with-none")
@@ -314,7 +330,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 				new File(wsRoot, "mod-with-all/src/test/resources").exists());
 	}
 
-	public void testTestRuntimeDepenencyGoesToDotClasspath() {
+	@Test
+	public void testRuntimeDepenencyGoesToDotClasspath() {
 		JavaModule rtBinTool = JavaBinModule
 				.providing(TargetMock.ingredientless("rtBinTool"),
 						TargetMock.ingredientless("rtBinTool-src"))
@@ -340,7 +357,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 				"<classpathentry combineaccessrules=\"false\" kind=\"src\" path=\"/rtSrcTool\"/>");
 	}
 
-	public void testDotProjectHasScalaSupportIfEnabledByTheModule() {
+	@Test
+	public void dotProjectHasScalaSupportIfEnabledByTheModule() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mixed")
 				.scalaVersion(ScalaVersion._2_11_7()).mainJava("src/main/java")
 				.mainScala("src/main/scala").end();
@@ -356,7 +374,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 				"<nature>org.scala-ide.sdt.core.scalanature</nature>");
 	}
 
-	public void testDotProjectHasKotlinSupportIfEnabledByTheModule() {
+	@Test
+	public void dotProjectHasKotlinSupportIfEnabledByTheModule() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod")
 				.kotlinVersion(KotlinVersion._1_3_60())
 				.mainJava("src/main/java").end();
@@ -372,7 +391,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 				"<nature>org.jetbrains.kotlin.core.kotlinNature</nature>");
 	}
 
-	public void testDotClasspathHasKotlinContainerIfEnabledByTheModule() {
+	@Test
+	public void dotClasspathHasKotlinContainerIfEnabledByTheModule() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod")
 				.kotlinVersion(KotlinVersion._1_3_60())
 				.mainJava("src/main/java").end();
@@ -386,7 +406,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 				"<classpathentry kind=\"con\" path=\"org.jetbrains.kotlin.core.KOTLIN_CONTAINER\"/>");
 	}
 
-	public void testKotlinPreferencesExistIfAndOnlyIfModuleHasKotlinSupport() {
+	@Test
+	public void kotlinPreferencesExistIfAndOnlyIfModuleHasKotlinSupport() {
 		JavaModule withKotlin = JavaSrcModule.with().name("with-kotlin")
 				.kotlinVersion(KotlinVersion._1_3_60()).mainJava("src").end();
 		JavaModule withoutKotlin = JavaSrcModule.with().name("without-kotlin")
@@ -405,7 +426,8 @@ public class EclipseSettingsTest extends IwantTestCase {
 						.exists());
 	}
 
-	public void testEncodingIsUtf8() {
+	@Test
+	public void encodingIsUtf8() {
 		JavaModule mod = JavaSrcModule.with().name("mod")
 				.locationUnderWsRoot("mod").mainJava("src").end();
 

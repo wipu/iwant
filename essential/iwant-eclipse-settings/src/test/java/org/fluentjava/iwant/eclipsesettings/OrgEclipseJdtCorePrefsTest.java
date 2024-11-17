@@ -1,17 +1,21 @@
 package org.fluentjava.iwant.eclipsesettings;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy;
 import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
 import org.fluentjava.iwant.api.javamodules.CodeStyle;
 import org.fluentjava.iwant.api.javamodules.CodeStylePolicy;
 import org.fluentjava.iwant.api.javamodules.CodeStylePolicy.CodeStylePolicySpex;
 import org.fluentjava.iwant.api.javamodules.JavaCompliance;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+public class OrgEclipseJdtCorePrefsTest {
 
-public class OrgEclipseJdtCorePrefsTest extends TestCase {
-
-	public void testDefaultCodeStyle() {
+	@Test
+	public void defaultCodeStyle() {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
@@ -32,7 +36,8 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 						CodeStyle.NON_EXTERNALIZED_STRING_LITERAL));
 	}
 
-	public void testOverriddenCodeStyle() {
+	@Test
+	public void overriddenCodeStyle() {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
 		policy.ignore(CodeStyle.DEAD_CODE);
 		policy.warn(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL);
@@ -55,7 +60,8 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 						CodeStyle.NON_EXTERNALIZED_STRING_LITERAL));
 	}
 
-	public void testAStyleThatIsOnlyDisabledOrEnabled() {
+	@Test
+	public void aStyleThatIsOnlyDisabledOrEnabled() {
 		CodeStyle style = CodeStyle.MISSING_OVERRIDE_ANNOTATION_FOR_INTERFACE_METHOD_IMPLEMENTATION;
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 		assertEquals("org.eclipse.jdt.core.compiler.problem."
@@ -78,7 +84,8 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 								.asPropertyLine(style));
 	}
 
-	public void testDefaultsAsFileContent() {
+	@Test
+	public void defaultsAsFileContent() {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
@@ -798,7 +805,8 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		assertEquals(b.toString(), prefs.asFileContent());
 	}
 
-	public void testOverriddenCodeStylesAffectFileContent() {
+	@Test
+	public void overriddenCodeStylesAffectFileContent() {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
 		policy.ignore(CodeStyle.DEAD_CODE);
 		policy.warn(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL);
@@ -818,7 +826,8 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		}
 	}
 
-	public void testOverriddenCodeFormatterAffectsFileContent() {
+	@Test
+	public void overriddenCodeFormatterAffectsFileContent() {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 		formatter.alignmentForEnumConstants = 48;
@@ -843,7 +852,8 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 		assertTrue(fileContent.contains(lineSplitKey + "=120\n"));
 	}
 
-	public void testJavaCompliance17() {
+	@Test
+	public void javaCompliance17() {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 
@@ -867,7 +877,8 @@ public class OrgEclipseJdtCorePrefsTest extends TestCase {
 				content.contains("org.eclipse.jdt.core.compiler.source=1.7\n"));
 	}
 
-	public void testKotlinSupport() {
+	@Test
+	public void kotlinSupport() {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
 		CodeFormatterPolicy formatter = new CodeFormatterPolicy();
 

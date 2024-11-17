@@ -1,5 +1,10 @@
 package org.fluentjava.iwant.eclipsesettings;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.fluentjava.iwant.api.core.Concatenated;
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy;
@@ -14,10 +19,12 @@ import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
 import org.fluentjava.iwant.apimocks.TargetMock;
+import org.junit.jupiter.api.Test;
 
 public class EclipseProjectTest extends IwantTestCase {
 
-	public void testSimpleSrcModuleDotProject() {
+	@Test
+	public void simpleSrcModuleDotProject() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
 		EclipseProject project = new EclipseProject(module, ctx);
 
@@ -26,7 +33,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals("simple", dotProject.name());
 	}
 
-	public void testMinimalDotClasspath() {
+	@Test
+	public void minimalDotClasspath() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
 		EclipseProject project = new EclipseProject(module, ctx);
 
@@ -36,7 +44,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals("[]", dotClasspath.deps().toString());
 	}
 
-	public void testDotClasspathWithMainJavaOnly() {
+	@Test
+	public void dotClasspathWithMainJavaOnly() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").end();
 		EclipseProject project = new EclipseProject(module, ctx);
@@ -48,7 +57,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals("[]", dotClasspath.deps().toString());
 	}
 
-	public void testDotClasspathWithAllFourSrcs() {
+	@Test
+	public void dotClasspathWithAllFourSrcs() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").mainResources("res").testJava("test")
 				.testResources("testRes").end();
@@ -64,7 +74,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals("[]", dotClasspath.deps().toString());
 	}
 
-	public void testDotClasspathWithMavenLayout() {
+	@Test
+	public void dotClasspathWithMavenLayout() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple").mavenLayout()
 				.end();
 		EclipseProject project = new EclipseProject(module, ctx);
@@ -81,7 +92,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals("[]", dotClasspath.deps().toString());
 	}
 
-	public void testDotClasspathWithOneDepToOtherSrcModule() {
+	@Test
+	public void dotClasspathWithOneDepToOtherSrcModule() {
 		JavaSrcModule util = JavaSrcModule.with().name("util").mainJava("src")
 				.end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
@@ -95,7 +107,8 @@ public class EclipseProjectTest extends IwantTestCase {
 				dotClasspath.deps().toString());
 	}
 
-	public void testDotClasspathWithTwoSrcModulesAsMainDep() {
+	@Test
+	public void dotClasspathWithTwoSrcModulesAsMainDep() {
 		JavaSrcModule util1 = JavaSrcModule.with().name("util1").mainJava("src")
 				.end();
 		JavaSrcModule util2 = JavaSrcModule.with().name("util2").mainJava("src")
@@ -113,7 +126,8 @@ public class EclipseProjectTest extends IwantTestCase {
 				dotClasspath.deps().toString());
 	}
 
-	public void testDotClasspathWithMainDepsAndTestDeps() {
+	@Test
+	public void dotClasspathWithMainDepsAndTestDeps() {
 		JavaSrcModule mainUtil = JavaSrcModule.with().name("main-util")
 				.mainJava("src").end();
 		JavaSrcModule testUtil = JavaSrcModule.with().name("test-util")
@@ -131,7 +145,8 @@ public class EclipseProjectTest extends IwantTestCase {
 				dotClasspath.deps().toString());
 	}
 
-	public void testModuleThatIsBothMainDepAndSrcDepIsOnlyOnceInDotClasspath() {
+	@Test
+	public void moduleThatIsBothMainDepAndSrcDepIsOnlyOnceInDotClasspath() {
 		JavaSrcModule mainUtil = JavaSrcModule.with().name("main-util")
 				.mainJava("src").end();
 		JavaSrcModule testUtil = JavaSrcModule.with().name("test-util")
@@ -150,7 +165,8 @@ public class EclipseProjectTest extends IwantTestCase {
 				dotClasspath.deps().toString());
 	}
 
-	public void testDotClasspathWithOneDepToBinModuleProvidedBySrcModule() {
+	@Test
+	public void dotClasspathWithOneDepToBinModuleProvidedBySrcModule() {
 		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
 		JavaModule util = JavaBinModule.named("util.jar").inside(libs).end();
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
@@ -165,7 +181,8 @@ public class EclipseProjectTest extends IwantTestCase {
 				dotClasspath.deps().toString());
 	}
 
-	public void testDotClasspathWithOneDepToBinModuleWithSourcesProvidedBySrcModule() {
+	@Test
+	public void dotClasspathWithOneDepToBinModuleWithSourcesProvidedBySrcModule() {
 		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
 		JavaModule util = JavaBinModule.named("util.jar").source("util-src.zip")
 				.inside(libs).end();
@@ -181,7 +198,8 @@ public class EclipseProjectTest extends IwantTestCase {
 				dotClasspath.deps().toString());
 	}
 
-	public void testDotClasspathIncludesRuntimeDepOfTestRuntimeBinaryDep() {
+	@Test
+	public void dotClasspathIncludesRuntimeDepOfTestRuntimeBinaryDep() {
 		JavaBinModule depOfBinDep = JavaBinModule
 				.providing(new TargetMock("depOfBinDep.jar")).end();
 		JavaBinModule binDep = JavaBinModule
@@ -203,7 +221,8 @@ public class EclipseProjectTest extends IwantTestCase {
 
 	// code generation
 
-	public void testDotProjectWithReferenceToCodeGenerator() {
+	@Test
+	public void dotProjectWithReferenceToCodeGenerator() {
 		Target generatedSrc = new HelloTarget("generated-src",
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
@@ -219,7 +238,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertTrue(dotProject.hasExternalBuilder());
 	}
 
-	public void testDotClasspathWithCodeGenerator() {
+	@Test
+	public void dotClasspathWithCodeGenerator() {
 		Target generatedSrc = new HelloTarget("generated-src",
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
@@ -238,14 +258,16 @@ public class EclipseProjectTest extends IwantTestCase {
 				dotClasspath.deps().toString());
 	}
 
-	public void testProjectExternalBuilderLaunchIsNullWithoutCodeGeneration() {
+	@Test
+	public void projectExternalBuilderLaunchIsNullWithoutCodeGeneration() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
 		EclipseProject project = new EclipseProject(module, ctx);
 
 		assertNull(project.externalBuilderLaunch());
 	}
 
-	public void testProjectExternalBuilderLaunchHasCorrectContent() {
+	@Test
+	public void projectExternalBuilderLaunchHasCorrectContent() {
 		Target generatedSrc = new HelloTarget("generated-src",
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
@@ -263,7 +285,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals("[]", launch.relativeInputPaths().toString());
 	}
 
-	public void testProjectExternalBuilderLaunchUsesGeneratorSourceAsRelativeInputPaths() {
+	@Test
+	public void projectExternalBuilderLaunchUsesGeneratorSourceAsRelativeInputPaths() {
 		Source srcForGenerator = Source
 				.underWsroot("gen-parent/gen-src-project/gen-src");
 		Target generatedSrc = Concatenated.named("generated-src")
@@ -285,7 +308,8 @@ public class EclipseProjectTest extends IwantTestCase {
 				launch.relativeInputPaths().toString());
 	}
 
-	public void testProjectExternalBuilderLaunchUsesExplicitlyGivenRelativeInputPaths() {
+	@Test
+	public void projectExternalBuilderLaunchUsesExplicitlyGivenRelativeInputPaths() {
 		Source generatorMainJava = Source
 				.underWsroot("gen-parent/generator/src/main/java");
 		Source generatorMainResources = Source
@@ -318,14 +342,16 @@ public class EclipseProjectTest extends IwantTestCase {
 				launch.relativeInputPaths().toString());
 	}
 
-	public void testEclipseAntScriptIsNullWithoutCodeGeneration() {
+	@Test
+	public void eclipseAntScriptIsNullWithoutCodeGeneration() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple").end();
 		EclipseProject project = new EclipseProject(module, ctx);
 
 		assertNull(project.eclipseAntScript("as-ws-developer"));
 	}
 
-	public void testEclipseAntScriptHasCorrectContent() {
+	@Test
+	public void eclipseAntScriptHasCorrectContent() {
 		Target generatedSrc = new HelloTarget("generated-src",
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
@@ -347,7 +373,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals("as-ws-developer", antScript.asSomeone());
 	}
 
-	public void testEclipseAntScriptHasCorrectBasedirAndParentDirWhenModuleIsNotDirectlyUnderWsRoot() {
+	@Test
+	public void eclipseAntScriptHasCorrectBasedirAndParentDirWhenModuleIsNotDirectlyUnderWsRoot() {
 		Target generatedSrc = new HelloTarget("generated-src",
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")
@@ -368,7 +395,8 @@ public class EclipseProjectTest extends IwantTestCase {
 
 	// compiler warnings
 
-	public void testDefaultCompilerSettings() {
+	@Test
+	public void defaultCompilerSettings() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").end();
 		EclipseProject project = new EclipseProject(module, ctx);
@@ -383,7 +411,8 @@ public class EclipseProjectTest extends IwantTestCase {
 						CodeStyle.NON_EXTERNALIZED_STRING_LITERAL));
 	}
 
-	public void testOverriddenCompilerSettings() {
+	@Test
+	public void overriddenCompilerSettings() {
 		CodeStylePolicySpex policy = CodeStylePolicy.defaultsExcept();
 		policy.ignore(CodeStyle.DEAD_CODE);
 		policy.warn(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL);
@@ -404,7 +433,8 @@ public class EclipseProjectTest extends IwantTestCase {
 
 	// formatter
 
-	public void testDefaultFormatterSettings() {
+	@Test
+	public void defaultFormatterSettings() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").end();
 		EclipseProject project = new EclipseProject(module, ctx);
@@ -415,7 +445,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertEquals(Integer.valueOf(0), policy.alignmentForEnumConstants);
 	}
 
-	public void testOverriddenFormatterSettings() {
+	@Test
+	public void overriddenFormatterSettings() {
 		CodeFormatterPolicy policy = new CodeFormatterPolicy();
 		policy.alignmentForEnumConstants = 48;
 
@@ -432,7 +463,8 @@ public class EclipseProjectTest extends IwantTestCase {
 
 	// formatter reference
 
-	public void testProjectGivesUiPrefs() {
+	@Test
+	public void projectGivesUiPrefs() {
 		JavaSrcModule module = JavaSrcModule.with().name("simple")
 				.mainJava("src").end();
 		EclipseProject project = new EclipseProject(module, ctx);
@@ -442,7 +474,8 @@ public class EclipseProjectTest extends IwantTestCase {
 		assertNotNull(uiPrefs);
 	}
 
-	public void testDotProjectHasScalaSupportWhenEnabled() {
+	@Test
+	public void dotProjectHasScalaSupportWhenEnabled() {
 		JavaSrcModule module = JavaSrcModule.with().name("mixed")
 				.scalaVersion(ScalaVersion._2_11_7()).mainJava("src/main/java")
 				.mainScala("src/main/scala").end();

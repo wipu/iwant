@@ -1,11 +1,14 @@
 package org.fluentjava.iwant.eclipsesettings;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.fluentjava.iwant.api.core.Concatenated;
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.javamodules.JavaModule;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.junit.jupiter.api.Test;
 
 public class EclipseSettingsWriterTest extends IwantTestCase {
 
@@ -14,7 +17,8 @@ public class EclipseSettingsWriterTest extends IwantTestCase {
 		seCtx.wsInfo().hasRelativeAsSomeone("as-writer-test");
 	}
 
-	public void testMinimal() {
+	@Test
+	public void minimal() {
 		JavaModule module = JavaSrcModule.with().name("minimal").end();
 
 		EclipseSettingsWriter.with().modules(module).context(seCtx).end()
@@ -35,7 +39,8 @@ public class EclipseSettingsWriterTest extends IwantTestCase {
 						.contains("=UTF-8"));
 	}
 
-	public void testMinimalWithLocationThatDiffersFromName() {
+	@Test
+	public void minimalWithLocationThatDiffersFromName() {
 		JavaModule module = JavaSrcModule.with().name("module-name")
 				.locationUnderWsRoot("parent/dir-name").end();
 
@@ -58,7 +63,8 @@ public class EclipseSettingsWriterTest extends IwantTestCase {
 						.contains("=UTF-8"));
 	}
 
-	public void testCodeGeneration() {
+	@Test
+	public void codeGeneration() {
 		Target generatedSrc = new HelloTarget("generated-src",
 				"in reality this would be a src directory generated from src-for-generator");
 		Target generatedClasses = Concatenated.named("generated-classes")

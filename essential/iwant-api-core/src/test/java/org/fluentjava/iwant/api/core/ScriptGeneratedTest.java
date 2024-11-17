@@ -1,5 +1,8 @@
 package org.fluentjava.iwant.api.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.util.Arrays;
 
@@ -8,10 +11,12 @@ import org.fluentjava.iwant.api.core.ScriptGenerated.ExecutionEnvironment;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
 import org.fluentjava.iwant.entry.Iwant;
+import org.junit.jupiter.api.Test;
 
 public class ScriptGeneratedTest extends IwantTestCase {
 
-	public void testContentDescriptor() {
+	@Test
+	public void contentDescriptor() {
 		assertEquals(
 				"org.fluentjava.iwant.api.core.ScriptGenerated\n"
 						+ "i:script:\n" + "  src1.sh\n" + "",
@@ -26,7 +31,8 @@ public class ScriptGeneratedTest extends IwantTestCase {
 						.contentDescriptor());
 	}
 
-	public void testScriptIsTheIngredient() {
+	@Test
+	public void scriptIsTheIngredient() {
 		assertEquals("[src1.sh]",
 				ScriptGenerated.named("s1")
 						.byScript(Source.underWsroot("src1.sh")).ingredients()
@@ -37,7 +43,8 @@ public class ScriptGeneratedTest extends IwantTestCase {
 						.toString());
 	}
 
-	public void testEchoToDestFile() throws Exception {
+	@Test
+	public void echoToDestFile() throws Exception {
 		ConcatenatedBuilder scriptContent = Concatenated.named("script");
 		scriptContent.string("#!/bin/bash\n");
 		scriptContent.string("set -eu\n");
@@ -55,7 +62,8 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		assertEquals("hello from script\n", contentOfCached(sg));
 	}
 
-	public void testScriptThatDemonstratesItsEnvironment() throws Exception {
+	@Test
+	public void scriptThatDemonstratesItsEnvironment() throws Exception {
 		ConcatenatedBuilder scriptContent = Concatenated.named("script");
 		scriptContent.string("#!/bin/bash\n");
 		scriptContent.string("set -eu\n");
@@ -80,7 +88,8 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		assertEquals("hello from env demo\n", contentOfCached(sg));
 	}
 
-	public void testFailingScript() throws Exception {
+	@Test
+	public void failingScript() throws Exception {
 		ConcatenatedBuilder scriptContent = Concatenated.named("script");
 		scriptContent.string("#!/bin/bash\n");
 		scriptContent.string("set -eu\n");
@@ -107,7 +116,8 @@ public class ScriptGeneratedTest extends IwantTestCase {
 		assertEquals("hello from failing script\n", contentOfCached(sg));
 	}
 
-	public void testExecutionEnvUsesProperWrapperWhenCygwinBashExeExists()
+	@Test
+	public void executionEnvUsesProperWrapperWhenCygwinBashExeExists()
 			throws Exception {
 		File mockCygwinBashExe = new File("mock-bash.exe");
 		ctx.iwant().shallFindCygwinBashExeAt(mockCygwinBashExe);
@@ -137,7 +147,8 @@ public class ScriptGeneratedTest extends IwantTestCase {
 				contentOf(wrapper));
 	}
 
-	public void testExecutionEnvDoesNotUseWrapperWhenCygwinBashExeDoesNotExist()
+	@Test
+	public void executionEnvDoesNotUseWrapperWhenCygwinBashExeDoesNotExist()
 			throws Exception {
 		ctx.iwant().shallNotFindCygwinBash();
 		ctx.iwant().shallMockWintoySafePaths();

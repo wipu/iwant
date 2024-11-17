@@ -2,9 +2,9 @@ package org.fluentjava.iwant.core;
 
 import junit.framework.TestCase;
 
-public class PrintPrefixesTest extends TestCase {
+public class PrintPrefixesTest{
 
-	public void testNullPrefix() {
+	@Test public void nullPrefix() {
 		PrintPrefixes p = PrintPrefixes.fromPrefix(null);
 		assertEquals("", p.prefix());
 		assertEquals("", p.errPrefix());
@@ -12,7 +12,7 @@ public class PrintPrefixesTest extends TestCase {
 		assertEquals("1\n2\n", p.multiLineErr("1\n2\n"));
 	}
 
-	public void testEmptyPrefix() {
+	@Test public void emptyPrefix() {
 		PrintPrefixes p = PrintPrefixes.fromPrefix("");
 		assertEquals("", p.prefix());
 		assertEquals("", p.errPrefix());
@@ -20,7 +20,7 @@ public class PrintPrefixesTest extends TestCase {
 		assertEquals("1\n2\n", p.multiLineErr("1\n2\n"));
 	}
 
-	public void testNonEmptyPrefix() {
+	@Test public void nonEmptyPrefix() {
 		PrintPrefixes p = PrintPrefixes.fromPrefix(":iwant:");
 		assertEquals(":iwant:", p.prefix());
 		assertEquals(":iwant:err:", p.errPrefix());

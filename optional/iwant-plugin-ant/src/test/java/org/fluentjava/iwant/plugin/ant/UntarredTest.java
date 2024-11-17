@@ -1,15 +1,20 @@
 package org.fluentjava.iwant.plugin.ant;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 
 import org.fluentjava.iwant.api.model.ExternalSource;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.junit.jupiter.api.Test;
 
 public class UntarredTest extends IwantTestCase {
 
-	public void testInregedients() {
+	@Test
+	public void inregedients() {
 		assertEquals("[a.tar]",
 				Untarred.with().name("u").from(Source.underWsroot("a.tar"))
 						.end().ingredients().toString());
@@ -18,7 +23,8 @@ public class UntarredTest extends IwantTestCase {
 						.gzCompression().end().ingredients().toString());
 	}
 
-	public void testContentDescriptor() {
+	@Test
+	public void contentDescriptor() {
 		assertEquals(
 				"org.fluentjava.iwant.plugin.ant.Untarred:"
 						+ "compression=null:[a.tar]",
@@ -31,7 +37,8 @@ public class UntarredTest extends IwantTestCase {
 						.gzCompression().end().contentDescriptor());
 	}
 
-	public void testSuccessfullyUntarringDirAndFileTar() throws Exception {
+	@Test
+	public void successfullyUntarringDirAndFileTar() throws Exception {
 		File tarFile = new File(getClass().getResource(
 				"/org/fluentjava/iwant/testresources/untarred/dir-and-file.tar")
 				.toURI());
@@ -44,7 +51,8 @@ public class UntarredTest extends IwantTestCase {
 		assertEquals("file content\n", contentOfCached(untarred, "dir/file"));
 	}
 
-	public void testSuccessfullyUntarringDirAndFileTarGz() throws Exception {
+	@Test
+	public void successfullyUntarringDirAndFileTarGz() throws Exception {
 		File tarFile = new File(getClass().getResource(
 				"/org/fluentjava/iwant/testresources/untarred/dir-and-file.tar.gz")
 				.toURI());

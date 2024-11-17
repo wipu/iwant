@@ -1,5 +1,9 @@
 package org.fluentjava.iwant.entry2;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.SortedSet;
@@ -7,15 +11,15 @@ import java.util.TreeSet;
 
 import org.fluentjava.iwant.entry2.Iwant2.TimestampHandler;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class TimestampHandlerTest extends TestCase {
+public class TimestampHandlerTest {
 
 	private TestArea testArea;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		testArea = TestArea.forTest(this);
 	}
 
@@ -35,7 +39,8 @@ public class TimestampHandlerTest extends TestCase {
 
 	// refresh is needed
 
-	public void testRefreshWhenCachedTargetWithNoSourcesIsMissing() {
+	@Test
+	public void refreshWhenCachedTargetWithNoSourcesIsMissing() {
 		SortedSet<File> sources = new TreeSet<>();
 		File cachedTarget = fileIsMissing("cachedTarget");
 		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr", "", 1);
@@ -50,7 +55,8 @@ public class TimestampHandlerTest extends TestCase {
 	 * Descriptor needs to be deleted anyway so let the handler do it instead of
 	 * its caller.
 	 */
-	public void testExistingSourceDescriptorIsDeletedIfFileNeedsRefresh() {
+	@Test
+	public void existingSourceDescriptorIsDeletedIfFileNeedsRefresh() {
 		SortedSet<File> sources = new TreeSet<>();
 		File cachedTarget = fileIsMissing("cachedTarget");
 		File sourceDescriptor = fileHasContentAndTimestamp("srcDescr", "", 1);
@@ -63,7 +69,8 @@ public class TimestampHandlerTest extends TestCase {
 		assertFalse(sourceDescriptor.exists());
 	}
 
-	public void testFileNeedsRefreshWhenSrcDescriptorOfNoSourcesIsMissing() {
+	@Test
+	public void fileNeedsRefreshWhenSrcDescriptorOfNoSourcesIsMissing() {
 		SortedSet<File> sources = new TreeSet<>();
 		File cachedTarget = fileHasContentAndTimestamp("cachedTarget",
 				"cached content", 1);
@@ -75,7 +82,8 @@ public class TimestampHandlerTest extends TestCase {
 		assertTrue(timestampHandler.needsRefresh());
 	}
 
-	public void testFileNeedsRefreshWhenSrcDescriptorContentDiffersFromCurrentSources() {
+	@Test
+	public void fileNeedsRefreshWhenSrcDescriptorContentDiffersFromCurrentSources() {
 		File src1 = fileHasContentAndTimestamp("src1", "whatever", 1);
 		File src2 = fileHasContentAndTimestamp("src2", "whatever", 1);
 		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
@@ -90,7 +98,8 @@ public class TimestampHandlerTest extends TestCase {
 		assertTrue(timestampHandler.needsRefresh());
 	}
 
-	public void testFileNeedsRefreshWhenOneSourceFileIsNewerThanSourceDescriptor() {
+	@Test
+	public void fileNeedsRefreshWhenOneSourceFileIsNewerThanSourceDescriptor() {
 		File src1 = fileHasContentAndTimestamp("src1", "whatever", 11);
 		File src2 = fileHasContentAndTimestamp("src2", "whatever", 1);
 		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
@@ -107,7 +116,8 @@ public class TimestampHandlerTest extends TestCase {
 
 	// refresh is not needed
 
-	public void testExistingCachedFileThatDoesNotNeedRefresh() {
+	@Test
+	public void existingCachedFileThatDoesNotNeedRefresh() {
 		File src1 = fileHasContentAndTimestamp("src1", "whatever", 1);
 		File src2 = fileHasContentAndTimestamp("src2", "whatever", 1);
 		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
@@ -125,7 +135,8 @@ public class TimestampHandlerTest extends TestCase {
 	/**
 	 * Testrun does not produce any cacheable file so it uses null for it.
 	 */
-	public void testNullCachedFileThatDoesNotNeedRefresh() {
+	@Test
+	public void nullCachedFileThatDoesNotNeedRefresh() {
 		File src1 = fileHasContentAndTimestamp("src1", "whatever", 1);
 		File src2 = fileHasContentAndTimestamp("src2", "whatever", 1);
 		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));
@@ -141,7 +152,8 @@ public class TimestampHandlerTest extends TestCase {
 
 	// tests of method markFresh
 
-	public void testMarkFreshWritesSortedSetOfSourceNamesToSourceDescriptor() {
+	@Test
+	public void markFreshWritesSortedSetOfSourceNamesToSourceDescriptor() {
 		File src1 = fileHasContentAndTimestamp("src1", "whatever", 1);
 		File src2 = fileHasContentAndTimestamp("src2", "whatever", 1);
 		SortedSet<File> sources = new TreeSet<>(Arrays.asList(src1, src2));

@@ -1,21 +1,24 @@
 package org.fluentjava.iwant.entry3;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
 import org.fluentjava.iwant.api.model.WsInfo;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class WsInfoTest extends TestCase {
+public class WsInfoTest {
 
 	private StringBuilder in;
 	private File asSomeone;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		in = new StringBuilder();
 		asSomeone = new File("/project/as-test");
 	}
@@ -25,7 +28,8 @@ public class WsInfoTest extends TestCase {
 				new File("/project/as-test/i-have/conf/wsinfo"), asSomeone);
 	}
 
-	public void testEmpty() throws IOException {
+	@Test
+	public void empty() throws IOException {
 		// empty in
 
 		try {
@@ -39,7 +43,8 @@ public class WsInfoTest extends TestCase {
 
 	}
 
-	public void testMissingWsname() throws IOException {
+	@Test
+	public void missingWsname() throws IOException {
 		in.append("WSROOT=../../..\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
 		in.append(
@@ -56,7 +61,8 @@ public class WsInfoTest extends TestCase {
 
 	}
 
-	public void testMissingWsroot() throws IOException {
+	@Test
+	public void missingWsroot() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
 		in.append(
@@ -73,7 +79,8 @@ public class WsInfoTest extends TestCase {
 
 	}
 
-	public void testMissingWsdefdefModule() throws IOException {
+	@Test
+	public void missingWsdefdefModule() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
 		in.append(
@@ -90,7 +97,8 @@ public class WsInfoTest extends TestCase {
 
 	}
 
-	public void testMissingWsdefdefClass() throws IOException {
+	@Test
+	public void missingWsdefdefClass() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
@@ -106,7 +114,8 @@ public class WsInfoTest extends TestCase {
 
 	}
 
-	public void testAsSomeoneOutsideWsrootIsAnError() throws IOException {
+	@Test
+	public void asSomeoneOutsideWsrootIsAnError() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
@@ -124,7 +133,8 @@ public class WsInfoTest extends TestCase {
 		}
 	}
 
-	public void testValid() throws IOException {
+	@Test
+	public void valid() throws IOException {
 		in.append("WSNAME=example\n");
 		in.append("WSROOT=../../..\n");
 		in.append("WSDEFDEF_MODULE=../wsdef\n");
@@ -151,7 +161,8 @@ public class WsInfoTest extends TestCase {
 		assertEquals("as-test", wsInfo.relativeAsSomeone());
 	}
 
-	public void testValidWithDifferentValues() throws IOException {
+	@Test
+	public void validWithDifferentValues() throws IOException {
 		asSomeone = new File("/project/wsroot/as-test2");
 		in.append("WSNAME=example2\n");
 		in.append("WSROOT=../../../wsroot\n");

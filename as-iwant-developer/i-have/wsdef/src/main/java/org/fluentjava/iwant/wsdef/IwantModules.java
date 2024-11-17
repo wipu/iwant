@@ -244,7 +244,8 @@ public class IwantModules extends JavaModules {
 	private JavaSrcModule iwantApimocks() {
 		return lazy(() -> privateModule("apimocks")
 				.mainDeps(iwantApiModel(), iwantCoreservices(), iwantEntry(),
-						iwantEntrymocks(), iwantTestarea(), junit())
+						iwantEntrymocks(), iwantTestarea())
+				.mainDeps(ctx.iwantPlugin().junit5runner().withDependencies())
 				.noTestJava().end());
 	}
 

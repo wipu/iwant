@@ -1,13 +1,19 @@
 package org.fluentjava.iwant.api.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.junit.jupiter.api.Test;
 
 public class SubPathTest extends IwantTestCase {
 
-	public void testParentAndRelativePath() {
+	@Test
+	public void parentAndRelativePath() {
 		Path parent = Source.underWsroot("parent");
 		SubPath s = new SubPath("s", parent, "rel");
 
@@ -15,7 +21,8 @@ public class SubPathTest extends IwantTestCase {
 		assertEquals("rel", s.relativePath());
 	}
 
-	public void testIngredientsAndContentDescriptor() {
+	@Test
+	public void ingredientsAndContentDescriptor() {
 		Path parent = Source.underWsroot("parent");
 		Path parent2 = Source.underWsroot("parent2");
 		SubPath s = new SubPath("s", parent, "rel");
@@ -34,7 +41,8 @@ public class SubPathTest extends IwantTestCase {
 				s2.contentDescriptor().toString());
 	}
 
-	public void testNonDirectorySubPathAsPath() throws Exception {
+	@Test
+	public void nonDirectorySubPathAsPath() throws Exception {
 		wsRootHasFile("parent/file", "file content");
 		Source parent = Source.underWsroot("parent");
 
@@ -44,7 +52,8 @@ public class SubPathTest extends IwantTestCase {
 		assertEquals("file content", contentOfCached(target));
 	}
 
-	public void testDirectorySubPathAsPath() throws Exception {
+	@Test
+	public void directorySubPathAsPath() throws Exception {
 		wsRootHasFile("parent/subdir/subfile1", "subfile1 content");
 		wsRootHasFile("parent/subdir/subfile2", "subfile2 content");
 		Source parent = Source.underWsroot("parent");
@@ -60,7 +69,8 @@ public class SubPathTest extends IwantTestCase {
 	 * SubPath used to copy but it was unnecessary. This tests no copying
 	 * happens.
 	 */
-	public void testCachedPathPointsDirectlyUnderOriginal() {
+	@Test
+	public void cachedPathPointsDirectlyUnderOriginal() {
 		Source source = Source.underWsroot("source");
 		assertEquals(wsRoot + "/source", ctx.cached(source).getAbsolutePath());
 		assertEquals(wsRoot + "/source/subdir",
@@ -72,7 +82,8 @@ public class SubPathTest extends IwantTestCase {
 	 * This is important since no copying happens: the parent must not be
 	 * deleted when refreshing a subpath of it.
 	 */
-	public void testDeletionOfCachedFileIsNotRequested() {
+	@Test
+	public void deletionOfCachedFileIsNotRequested() {
 		assertFalse(new SubPath("s", Source.underWsroot("parent"), "sub")
 				.expectsCachedTargetMissingBeforeRefresh());
 	}

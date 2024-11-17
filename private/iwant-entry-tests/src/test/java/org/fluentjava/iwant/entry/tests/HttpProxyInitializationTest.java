@@ -1,10 +1,14 @@
 package org.fluentjava.iwant.entry.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.fluentjava.iwant.entry.Iwant;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class HttpProxyInitializationTest extends TestCase {
+public class HttpProxyInitializationTest {
 
 	private static final String H_KEY = "http.proxyHost";
 	private static final String P_KEY = "http.proxyPort";
@@ -16,16 +20,16 @@ public class HttpProxyInitializationTest extends TestCase {
 	private String originalSH;
 	private String originalSP;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		originalH = System.getProperty(H_KEY);
 		originalP = System.getProperty(P_KEY);
 		originalSH = System.getProperty(SH_KEY);
 		originalSP = System.getProperty(SP_KEY);
 	}
 
-	@Override
-	public void tearDown() {
+	@AfterEach
+	public void after() {
 		restore(H_KEY, originalH);
 		restore(P_KEY, originalP);
 		restore(SH_KEY, originalSH);
@@ -51,17 +55,20 @@ public class HttpProxyInitializationTest extends TestCase {
 
 	// the tests
 
-	public void testNullValues() {
+	@Test
+	public void nullValues() {
 		Iwant.unixHttpProxyToJavaHttpProxy(null, null);
 		assertJavaSettings(null, null, null, null);
 	}
 
-	public void testEmptyValues() {
+	@Test
+	public void emptyValues() {
 		Iwant.unixHttpProxyToJavaHttpProxy("", "");
 		assertJavaSettings(null, null, null, null);
 	}
 
-	public void testHttpProxyThatIsInvalidUrlOnlyAHostName() {
+	@Test
+	public void httpProxyThatIsInvalidUrlOnlyAHostName() {
 		try {
 			Iwant.unixHttpProxyToJavaHttpProxy("http-proxy-host", "");
 			fail();
@@ -70,23 +77,27 @@ public class HttpProxyInitializationTest extends TestCase {
 		}
 	}
 
-	public void testHttpProxyHost() {
+	@Test
+	public void httpProxyHost() {
 		Iwant.unixHttpProxyToJavaHttpProxy("http://http-proxy-host", "");
 		assertJavaSettings("http-proxy-host", null, null, null);
 	}
 
-	public void testHttpProxyHostAndPort() {
+	@Test
+	public void httpProxyHostAndPort() {
 		Iwant.unixHttpProxyToJavaHttpProxy("http://http-proxy-host:8080", "");
 		assertJavaSettings("http-proxy-host", "8080", null, null);
 	}
 
-	public void testHttpProxyHostAndPortAndHttpsProxyHost() {
+	@Test
+	public void httpProxyHostAndPortAndHttpsProxyHost() {
 		Iwant.unixHttpProxyToJavaHttpProxy("http://http-proxy-host:8080",
 				"http://https-proxy-host");
 		assertJavaSettings("http-proxy-host", "8080", "https-proxy-host", null);
 	}
 
-	public void testHttpProxyHostAndPortAndHttpsProxyHostAndPort() {
+	@Test
+	public void httpProxyHostAndPortAndHttpsProxyHostAndPort() {
 		Iwant.unixHttpProxyToJavaHttpProxy("http://http-proxy-host:8080",
 				"http://https-proxy-host:8081");
 		assertJavaSettings("http-proxy-host", "8080", "https-proxy-host",

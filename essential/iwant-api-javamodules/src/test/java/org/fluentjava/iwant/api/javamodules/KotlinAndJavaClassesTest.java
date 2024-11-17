@@ -1,5 +1,9 @@
 package org.fluentjava.iwant.api.javamodules;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.util.Arrays;
 
@@ -8,6 +12,7 @@ import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
+import org.junit.jupiter.api.Test;
 
 public class KotlinAndJavaClassesTest extends IwantTestCase {
 
@@ -25,7 +30,8 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 		KOTLIN.kotlinAntJar().path(ctx);
 	}
 
-	public void testSrcDirsAreIgredients() {
+	@Test
+	public void srcDirsAreIgredients() {
 		Path src1 = Source.underWsroot("src1");
 		Path src2 = Source.underWsroot("src1");
 		Target target = new KotlinAndJavaClasses("classes", KOTLIN,
@@ -35,7 +41,8 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 		assertTrue(target.ingredients().contains(src2));
 	}
 
-	public void testResourceDirsAreIgredients() {
+	@Test
+	public void resourceDirsAreIgredients() {
 		Path res1 = Source.underWsroot("res1");
 		Path res2 = Source.underWsroot("res1");
 		Target target = new KotlinAndJavaClasses("classes", KOTLIN,
@@ -45,7 +52,8 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 		assertTrue(target.ingredients().contains(res2));
 	}
 
-	public void testCrapJavaToPathFails() throws Exception {
+	@Test
+	public void crapJavaToPathFails() throws Exception {
 		wsRootHasFile("src/Crap.java", "crap");
 		Source src = Source.underWsroot("src");
 		Target target = new KotlinAndJavaClasses("classes", KOTLIN,
@@ -61,7 +69,8 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 		assertTrue(err().contains("crap"));
 	}
 
-	public void testJavaOnlyCompiles() throws Exception {
+	@Test
+	public void javaOnlyCompiles() throws Exception {
 		wsRootHasFile("src/Minimal.java", "class Minimal {}");
 		Source src = Source.underWsroot("src");
 		Target target = new KotlinAndJavaClasses("classes", KOTLIN,
@@ -72,7 +81,8 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 		assertTrue(new File(cached, "classes/Minimal.class").exists());
 	}
 
-	public void testMixedJavanAndKotlinCompile() throws Exception {
+	@Test
+	public void mixedJavanAndKotlinCompile() throws Exception {
 		wsRootHasFile("src/MinimalJava.java", "class MinimalJava {}");
 		wsRootHasFile("src/MinimalKotlin.kt", "class MinimalKotlin {}");
 		Source src = Source.underWsroot("src");
@@ -89,7 +99,8 @@ public class KotlinAndJavaClassesTest extends IwantTestCase {
 	 * Using AntRunner leaked memory. It is either kotlinc itself or its ant
 	 * adapter. Now we fork a new process via a shell script.
 	 */
-	public void testTargetDoesRunOutOfMemoryWhenRepeated() throws Exception {
+	@Test
+	public void targetDoesRunOutOfMemoryWhenRepeated() throws Exception {
 		if (true) {
 			System.err
 					.println("Not running the slow testTargetDoesNotLeakMemory"

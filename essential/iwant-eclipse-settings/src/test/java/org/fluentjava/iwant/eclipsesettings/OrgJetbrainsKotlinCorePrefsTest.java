@@ -1,13 +1,16 @@
 package org.fluentjava.iwant.eclipsesettings;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class OrgJetbrainsKotlinCorePrefsTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+public class OrgJetbrainsKotlinCorePrefsTest {
 
 	/**
 	 * No need to test more now that it's 100% constant
 	 */
-	public void testSomePiecesOfOutput() {
+	@Test
+	public void somePiecesOfOutput() {
 		OrgJetbrainsKotlinCorePrefs p = OrgJetbrainsKotlinCorePrefs
 				.withDefaultValues();
 		String actual = p.asFileContent();

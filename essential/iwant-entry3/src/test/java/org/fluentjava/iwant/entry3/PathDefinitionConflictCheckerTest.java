@@ -1,5 +1,8 @@
 package org.fluentjava.iwant.entry3;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Arrays;
 
 import org.fluentjava.iwant.api.core.Concatenated;
@@ -8,10 +11,9 @@ import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.apimocks.TargetMock;
 import org.fluentjava.iwant.entry.Iwant;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class PathDefinitionConflictCheckerTest extends TestCase {
+public class PathDefinitionConflictCheckerTest {
 
 	private static void assertError(String errorMessage, Path... paths) {
 		try {
@@ -28,11 +30,13 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 		}
 	}
 
-	public void testTwoIdenticalTargets() {
+	@Test
+	public void twoIdenticalTargets() {
 		assertError(null, new HelloTarget("a", "a"), new HelloTarget("a", "a"));
 	}
 
-	public void testTwoIdenticalTargetsWithIngredients() {
+	@Test
+	public void twoIdenticalTargetsWithIngredients() {
 		Path p1 = Concatenated.named("a")
 				.nativePathTo(Source.underWsroot("ingr")).end();
 		Path p2 = Concatenated.named("a")
@@ -41,7 +45,8 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 		assertError(null, p1, p2);
 	}
 
-	public void testTwoRootTargetsWithDifferentClass() {
+	@Test
+	public void twoRootTargetsWithDifferentClass() {
 		HelloTarget helloA = new HelloTarget("a", "a");
 		Concatenated concatenatedA = Concatenated.named("a").end();
 
@@ -53,7 +58,8 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 				helloA, concatenatedA);
 	}
 
-	public void testPathIngredientOfTargetConflictsWithAnotherTarget() {
+	@Test
+	public void pathIngredientOfTargetConflictsWithAnotherTarget() {
 		Path targetB = new HelloTarget("b", "b");
 		Path sourceB = Source.underWsroot("b");
 		Path a = Concatenated.named("a").nativePathTo(sourceB).end();
@@ -66,7 +72,8 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 				a, targetB);
 	}
 
-	public void testTwoConcatenatedsHaveIngredientsOfDifferentName() {
+	@Test
+	public void twoConcatenatedsHaveIngredientsOfDifferentName() {
 		Path p1 = Concatenated.named("a")
 				.nativePathTo(Source.underWsroot("ingr1")).end();
 		Path p2 = Concatenated.named("a")
@@ -80,7 +87,8 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 				+ "i:native-path:\n" + "  ingr1\n" + "", p1, p2);
 	}
 
-	public void testOneConcatenatedHasNullIngredientInsteadOfNotNull() {
+	@Test
+	public void oneConcatenatedHasNullIngredientInsteadOfNotNull() {
 		Path p1 = Concatenated.named("a")
 				.nativePathTo(Source.underWsroot("ingr1")).end();
 		Path p2 = Concatenated.named("a").nativePathTo(null).end();
@@ -96,7 +104,8 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 		assertError("Null Path", p2, p1);
 	}
 
-	public void testTwoConcatenatedsHaveDifferentNumberOfIngredients() {
+	@Test
+	public void twoConcatenatedsHaveDifferentNumberOfIngredients() {
 		Path p1 = Concatenated.named("a")
 				.nativePathTo(Source.underWsroot("common")).end();
 		Path p2 = Concatenated.named("a")
@@ -112,7 +121,8 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 				+ "i:native-path:\n" + "  common\n" + "", p1, p2);
 	}
 
-	public void testBuggyTargetsThatGiveIdenticalDescriptorButDifferentIngredients() {
+	@Test
+	public void buggyTargetsThatGiveIdenticalDescriptorButDifferentIngredients() {
 		TargetMock a1 = new TargetMock("a");
 		a1.hasContentDescriptor("a descriptor");
 		a1.hasIngredients(Source.underWsroot("ingr1"));
@@ -125,7 +135,8 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 				+ "while another has:\n" + " 'ingr1'\n", a1, a2);
 	}
 
-	public void testBuggyTargetsThatGiveIdenticalDescriptorButDifferentNumberOfIngredients() {
+	@Test
+	public void buggyTargetsThatGiveIdenticalDescriptorButDifferentNumberOfIngredients() {
 		TargetMock a1 = new TargetMock("a");
 		a1.hasContentDescriptor("a descriptor");
 		a1.hasIngredients(Source.underWsroot("ingr1"));
@@ -140,7 +151,8 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 				a1, a2);
 	}
 
-	public void testBuggyTargetsThatGiveIdenticalDescriptorButAnotherGivesNullIngredient() {
+	@Test
+	public void buggyTargetsThatGiveIdenticalDescriptorButAnotherGivesNullIngredient() {
 		TargetMock a1 = new TargetMock("a");
 		a1.hasContentDescriptor("a descriptor");
 		a1.hasIngredients(Source.underWsroot("ingr1"));
@@ -153,7 +165,8 @@ public class PathDefinitionConflictCheckerTest extends TestCase {
 				+ "while another has:\n" + " 'ingr1'\n", a1, a2);
 	}
 
-	public void testNullName() {
+	@Test
+	public void nullName() {
 		Path path = new HelloTarget(null, "");
 
 		assertError("A Path of class "

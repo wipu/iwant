@@ -2,7 +2,7 @@ package org.fluentjava.iwant.core;
 
 import junit.framework.TestCase;
 
-public class ContentDefinitionsTest extends TestCase {
+public class ContentDefinitionsTest{
 
 	private String descr;
 
@@ -21,14 +21,14 @@ public class ContentDefinitionsTest extends TestCase {
 
 	// the tests
 
-	public void testConstant() {
+	@Test public void constant() {
 		Constant content = Constant.value("value");
 		descrChanged(content);
 		content = Constant.value("some-other-value");
 		descrChanged(content);
 	}
 
-	public void testJavaClasses() {
+	@Test public void javaClasses() {
 		JavaClasses content = JavaClasses.compiledFrom(new Source("src"));
 		descrChanged(content);
 		content = JavaClasses.compiledFrom(new Source("other-src"));
@@ -39,7 +39,7 @@ public class ContentDefinitionsTest extends TestCase {
 		descrChanged(content);
 	}
 
-	public void testJunitResult() {
+	@Test public void junitResult() {
 		JunitResult content = JunitResult.ofClass("ATest");
 		descrChanged(content);
 		content = JunitResult.ofClass("SomeOtherTest");

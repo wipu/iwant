@@ -4,7 +4,7 @@ import java.io.File;
 
 import junit.framework.TestCase;
 
-public class RefresherTest extends TestCase {
+public class RefresherTest{
 
 	private static final Locations LOCATIONS = new Locations("wsRoot",
 			"as-someone", "cacheDir", "iwant-libs");
@@ -21,7 +21,7 @@ public class RefresherTest extends TestCase {
 		content = new ContentMock();
 	}
 
-	public void testMissingTargetWithNoSrcIsRefreshed() throws Exception {
+	@Test public void missingTargetWithNoSrcIsRefreshed() throws Exception {
 		ts.doesNotExist("cacheDir/target/missing");
 		Target<ContentMock> target = new Target<ContentMock>("missing", content);
 		refresher.refresh(target);
@@ -29,7 +29,7 @@ public class RefresherTest extends TestCase {
 				.refreshedDestinations().toString());
 	}
 
-	public void testMissingTargetWithSrcIsRefreshed() throws Exception {
+	@Test public void missingTargetWithSrcIsRefreshed() throws Exception {
 		content.ingredients().add(new Source("src"));
 		ts.modifiedAt("wsRoot/src", 1);
 		ts.doesNotExist("cacheDir/target/classes");
@@ -39,7 +39,7 @@ public class RefresherTest extends TestCase {
 				.refreshedDestinations().toString());
 	}
 
-	public void testExistingTargetWithNoSrcAndUnchangedDescrIsNotRefreshed()
+	@Test public void existingTargetWithNoSrcAndUnchangedDescrIsNotRefreshed()
 			throws Exception {
 		ts.modifiedAt("cacheDir/target/constant", 1);
 		Target<ContentMock> target = new Target<ContentMock>("constant",
@@ -49,7 +49,7 @@ public class RefresherTest extends TestCase {
 		assertEquals("[]", content.refreshedDestinations().toString());
 	}
 
-	public void testExistingTargetWithNoSrcAndNoCachedDescrIsRefreshed()
+	@Test public void existingTargetWithNoSrcAndNoCachedDescrIsRefreshed()
 			throws Exception {
 		ts.modifiedAt("cacheDir/target/constant", 1);
 		Target<ContentMock> target = new Target<ContentMock>("constant",
@@ -59,7 +59,7 @@ public class RefresherTest extends TestCase {
 				.refreshedDestinations().toString());
 	}
 
-	public void testExistingTargetWithMissingSrcIsRefreshed() throws Exception {
+	@Test public void existingTargetWithMissingSrcIsRefreshed() throws Exception {
 		content.ingredients().add(new Source("src"));
 		ts.modifiedAt("cacheDir/target/classes", 1);
 		ts.doesNotExist("wsRoot/src");
@@ -69,7 +69,7 @@ public class RefresherTest extends TestCase {
 				.refreshedDestinations().toString());
 	}
 
-	public void testTargetOlderThanItsSourceIsRefreshed() throws Exception {
+	@Test public void targetOlderThanItsSourceIsRefreshed() throws Exception {
 		content.ingredients().add(new Source("src"));
 		ts.modifiedAt("cacheDir/target/classes", 1);
 		ts.modifiedAt("wsRoot/src", 2);
@@ -79,7 +79,7 @@ public class RefresherTest extends TestCase {
 				.refreshedDestinations().toString());
 	}
 
-	public void testTargetNotOlderThanItsSourceAndUnchangedContentDescriptionIsNotRefreshed()
+	@Test public void targetNotOlderThanItsSourceAndUnchangedContentDescriptionIsNotRefreshed()
 			throws Exception {
 		content.ingredients().add(new Source("src"));
 		ts.modifiedAt("wsRoot/src", 1);
@@ -91,7 +91,7 @@ public class RefresherTest extends TestCase {
 		assertEquals("[]", descrCache.recachedTargets().toString());
 	}
 
-	public void testTargetNotOlderThanItsSourceIsRefreshedIfItsContentDescriptionHasChanged()
+	@Test public void targetNotOlderThanItsSourceIsRefreshedIfItsContentDescriptionHasChanged()
 			throws Exception {
 		content.ingredients().add(new Source("src"));
 		content.definitionDescription("new-description");

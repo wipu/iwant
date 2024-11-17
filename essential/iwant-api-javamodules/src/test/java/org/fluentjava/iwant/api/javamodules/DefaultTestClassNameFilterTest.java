@@ -1,24 +1,30 @@
 package org.fluentjava.iwant.api.javamodules;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.fluentjava.iwant.api.model.StringFilter;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class DefaultTestClassNameFilterTest extends TestCase {
+public class DefaultTestClassNameFilterTest {
 
 	private StringFilter filter;
 
-	@Override
-	protected void setUp() throws Exception {
+	@BeforeEach
+	protected void before() throws Exception {
 		filter = new DefaultTestClassNameFilter();
 	}
 
-	public void testPositives() {
+	@Test
+	public void positives() {
 		assertTrue(filter.matches("com.example.NormalTest"));
 		assertTrue(filter.matches("org.anotherexample.AnotherNormalTest"));
 	}
 
-	public void testNegatives() {
+	@Test
+	public void negatives() {
 		assertFalse(filter.matches("com.example.TestUtility"));
 		assertFalse(filter.matches("com.example.ServiceMock"));
 		assertFalse(filter.matches("com.example.NormalTest$1"));
@@ -26,7 +32,8 @@ public class DefaultTestClassNameFilterTest extends TestCase {
 		assertFalse(filter.matches("com.example.AbstractUiTest"));
 	}
 
-	public void testToStringIsConstantSoItCanBeUsedInTargetContentDefinition() {
+	@Test
+	public void toStringIsConstantSoItCanBeUsedInTargetContentDefinition() {
 		assertEquals(
 				"org.fluentjava.iwant.api.javamodules.DefaultTestClassNameFilter",
 				filter.toString());

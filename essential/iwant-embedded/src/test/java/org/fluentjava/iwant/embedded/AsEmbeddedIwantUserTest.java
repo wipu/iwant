@@ -1,5 +1,8 @@
 package org.fluentjava.iwant.embedded;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -11,17 +14,17 @@ import org.fluentjava.iwant.coreservices.FileUtil;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry3.UserPrefs;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class AsEmbeddedIwantUserTest extends TestCase {
+public class AsEmbeddedIwantUserTest {
 
 	private TestArea testArea;
 	private File cacheDir;
 	private File wsRoot;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		testArea = TestArea.forTest(this);
 		wsRoot = testArea.newDir("wsRoot");
 		cacheDir = testArea.newDir("cached");
@@ -31,7 +34,8 @@ public class AsEmbeddedIwantUserTest extends TestCase {
 		assertEquals(expected.getAbsolutePath(), actual.getAbsolutePath());
 	}
 
-	public void testHelloAsPath() {
+	@Test
+	public void helloAsPath() {
 		File cached = AsEmbeddedIwantUser.with().workspaceAt(wsRoot)
 				.cacheAt(cacheDir).iwant()
 				.target(new HelloTarget("hello", "hello message")).asPath();
@@ -40,7 +44,8 @@ public class AsEmbeddedIwantUserTest extends TestCase {
 		assertEquals("hello message", testArea.contentOf(cached));
 	}
 
-	public void testCustomUserPrefs() {
+	@Test
+	public void customUserPrefs() {
 		class ThreadDetector extends TargetBase {
 
 			AtomicReference<String> threadName = new AtomicReference<>();

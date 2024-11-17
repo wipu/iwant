@@ -1,5 +1,9 @@
 package org.fluentjava.iwant.plugin.pmd;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -7,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.entry.Iwant;
+import org.junit.jupiter.api.Test;
 
 public class PmdReportTest extends PmdTestBase {
 
@@ -18,7 +23,8 @@ public class PmdReportTest extends PmdTestBase {
 	// the tests
 	// -----------------------------------------------------
 
-	public void testSourceDirectoriesAreIngredients() {
+	@Test
+	public void sourceDirectoriesAreIngredients() {
 		Path src1 = Source.underWsroot("src1");
 		Path src2 = Source.underWsroot("src2");
 
@@ -29,7 +35,8 @@ public class PmdReportTest extends PmdTestBase {
 		assertTrue(report.ingredients().contains(src2));
 	}
 
-	public void testSourceDirectoriesAreInContentDescriptor() {
+	@Test
+	public void sourceDirectoriesAreInContentDescriptor() {
 		Path src1 = Source.underWsroot("src-one");
 		Path src2 = Source.underWsroot("src-two");
 
@@ -40,7 +47,8 @@ public class PmdReportTest extends PmdTestBase {
 		assertTrue(report.contentDescriptor().contains(src2.name()));
 	}
 
-	public void testRulesetIsInIngredientsIffDefined() {
+	@Test
+	public void rulesetIsInIngredientsIffDefined() {
 		Path src = Source.underWsroot("src");
 		Path rules = Source.underWsroot("rules.xml");
 
@@ -51,7 +59,8 @@ public class PmdReportTest extends PmdTestBase {
 				.ingredients().toString());
 	}
 
-	public void testReportOfZeroSrcDirectoriesProducesReportFiles()
+	@Test
+	public void reportOfZeroSrcDirectoriesProducesReportFiles()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		Iwant.mkdirs(srcDir);
@@ -63,7 +72,8 @@ public class PmdReportTest extends PmdTestBase {
 		assertTrue(txtReportContent(report).length() == 0);
 	}
 
-	public void testReportOfEmptySrcDirectoryProducesReportFiles()
+	@Test
+	public void reportOfEmptySrcDirectoryProducesReportFiles()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		Iwant.mkdirs(srcDir);
@@ -76,7 +86,8 @@ public class PmdReportTest extends PmdTestBase {
 		assertTrue(txtReportContent(report).length() == 0);
 	}
 
-	public void testAllReportFormatsOfOneClassesDirWithOneClassWithIssues()
+	@Test
+	public void allReportFormatsOfOneClassesDirWithOneClassWithIssues()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDirHasPmdFodder(srcDir, "testfodder", "ClassWithPmdIssues");
@@ -112,7 +123,8 @@ public class PmdReportTest extends PmdTestBase {
 						+ " method=\"methodThatWritesParameter\""));
 	}
 
-	public void testReportOnlyContainsIssuesDefinedInGivenRulesPath()
+	@Test
+	public void reportOnlyContainsIssuesDefinedInGivenRulesPath()
 			throws Exception {
 		File srcDir = new File(wsRoot, "src");
 		srcDirHasPmdFodder(srcDir, "testfodder", "ClassWithPmdIssues");

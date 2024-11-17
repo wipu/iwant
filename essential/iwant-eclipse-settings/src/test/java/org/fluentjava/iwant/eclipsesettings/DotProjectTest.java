@@ -1,17 +1,23 @@
 package org.fluentjava.iwant.eclipsesettings;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DotProjectTest extends TestCase {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+public class DotProjectTest {
 
 	private StringBuilder expected;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		expected = new StringBuilder();
 	}
 
-	public void testMinimalProjectA() {
+	@Test
+	public void minimalProjectA() {
 		DotProject dp = DotProject.named("a").end();
 		expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		expected.append("<projectDescription>\n");
@@ -35,7 +41,8 @@ public class DotProjectTest extends TestCase {
 		assertEquals(expected.toString(), dp.asFileContent());
 	}
 
-	public void testMinimalProjectB() {
+	@Test
+	public void minimalProjectB() {
 		DotProject dp = DotProject.named("b").end();
 		expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		expected.append("<projectDescription>\n");
@@ -59,14 +66,16 @@ public class DotProjectTest extends TestCase {
 		assertEquals(expected.toString(), dp.asFileContent());
 	}
 
-	public void testHasExternalBuilder() {
+	@Test
+	public void hasExternalBuilder() {
 		assertTrue(DotProject.named("codegen").hasExternalBuilder(true).end()
 				.hasExternalBuilder());
 		assertFalse(DotProject.named("no-codegen").hasExternalBuilder(false)
 				.end().hasExternalBuilder());
 	}
 
-	public void testExternalBuilderReferenceInContent() {
+	@Test
+	public void externalBuilderReferenceInContent() {
 		DotProject dp = DotProject.named("codegen").hasExternalBuilder(true)
 				.end();
 		expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -103,7 +112,8 @@ public class DotProjectTest extends TestCase {
 		assertEquals(expected.toString(), dp.asFileContent());
 	}
 
-	public void testScalaSupport() {
+	@Test
+	public void scalaSupport() {
 		DotProject dp = DotProject.named("mixed").hasScalaSupport(true).end();
 		expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		expected.append("<projectDescription>\n");
@@ -129,7 +139,8 @@ public class DotProjectTest extends TestCase {
 		assertEquals(expected.toString(), dp.asFileContent());
 	}
 
-	public void testKotlinSupport() {
+	@Test
+	public void kotlinSupport() {
 		DotProject dp = DotProject.named("kotlin-project")
 				.hasKotlinSupport(true).end();
 		expected.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");

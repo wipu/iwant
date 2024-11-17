@@ -1,5 +1,10 @@
 package org.fluentjava.iwant.entry3;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -22,10 +27,11 @@ import org.fluentjava.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantEssent
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class Iwant3Test extends TestCase {
+public class Iwant3Test {
 
 	private static final String LINE_SEPARATOR_KEY = "line.separator";
 	private static final int NCPU = Runtime.getRuntime().availableProcessors();
@@ -42,8 +48,8 @@ public class Iwant3Test extends TestCase {
 	private String originalLineSeparator;
 	private File combinedIwantSrc;
 
-	@Override
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void before() throws Exception {
 		testArea = TestArea.forTest(this);
 		String asSomeone = "wsroot/as-example-developer";
 		testArea.hasFile(asSomeone + "/with/bash/iwant/help.sh",
@@ -118,8 +124,8 @@ public class Iwant3Test extends TestCase {
 		return err.toString().replaceAll("\\([^\n]*\n", "");
 	}
 
-	@Override
-	public void tearDown() {
+	@AfterEach
+	public void after() {
 		System.setIn(originalIn);
 		System.setOut(originalOut);
 		System.setErr(originalErr);
@@ -150,24 +156,28 @@ public class Iwant3Test extends TestCase {
 						"wsroot/as-example-developer/i-have/conf/ws-info"));
 	}
 
-	public void testMissingAsSomeoneCausesFriendlyFailureAndExampleCreation()
+	@Test
+	public void missingAsSomeoneCausesFriendlyFailureAndExampleCreation()
 			throws Exception {
 		evaluateAndExpectFriendlyFailureAndExampleWsInfoCreation();
 	}
 
-	public void testMissingIHaveCausesFriendlyFailureAndExampleCreation()
+	@Test
+	public void missingIHaveCausesFriendlyFailureAndExampleCreation()
 			throws Exception {
 		testArea.newDir("as-example-developer");
 		evaluateAndExpectFriendlyFailureAndExampleWsInfoCreation();
 	}
 
-	public void testMissingWsInfoCausesFriendlyFailureAndExampleCreation()
+	@Test
+	public void missingWsInfoCausesFriendlyFailureAndExampleCreation()
 			throws Exception {
 		testArea.newDir("as-example-developer/i-have");
 		evaluateAndExpectFriendlyFailureAndExampleWsInfoCreation();
 	}
 
-	public void testInvalidWsInfoCausesFailure() throws Exception {
+	@Test
+	public void invalidWsInfoCausesFailure() throws Exception {
 		testArea.hasFile("wsroot/as-example-developer/i-have/conf/ws-info",
 				"invalid\n");
 		try {
@@ -179,7 +189,8 @@ public class Iwant3Test extends TestCase {
 		}
 	}
 
-	public void testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation()
+	@Test
+	public void missingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation()
 			throws Exception {
 		testArea.hasFile("wsroot/as-example-developer/i-have/conf/ws-info",
 				"WSNAME=example\n" + "WSROOT=../../..\n"
@@ -235,9 +246,9 @@ public class Iwant3Test extends TestCase {
 		Thread.sleep(1000L);
 	}
 
-	public void testIwant3AlsoCreatesWishScriptsForExampleWsDef()
-			throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
+	@Test
+	public void iwant3AlsoCreatesWishScriptsForExampleWsDef() throws Exception {
+		missingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		// targets:
 		assertTrue(testArea.contentOf(
 				"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
@@ -254,9 +265,10 @@ public class Iwant3Test extends TestCase {
 				.startsWith("#!/bin/bash\n"));
 	}
 
-	public void testIwant3DoesNotLeaveOldWishScriptsWhenTargetWasRenamedAndThereAreNoSideEffectsAnyMore()
+	@Test
+	public void iwant3DoesNotLeaveOldWishScriptsWhenTargetWasRenamedAndThereAreNoSideEffectsAnyMore()
 			throws Exception {
-		testIwant3AlsoCreatesWishScriptsForExampleWsDef();
+		iwant3AlsoCreatesWishScriptsForExampleWsDef();
 
 		String wsdefRelpath = "wsroot/as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWorkspace.java";
 		String wsdefContent = testArea.contentOf(wsdefRelpath);
@@ -301,9 +313,10 @@ public class Iwant3Test extends TestCase {
 				.startsWith("#!/bin/bash\n"));
 	}
 
-	public void testIwant3DoesNotLeaveOldWishScriptsWhenSideEffectWasRenamedAndThereAreNoTargetsAnyMore()
+	@Test
+	public void iwant3DoesNotLeaveOldWishScriptsWhenSideEffectWasRenamedAndThereAreNoTargetsAnyMore()
 			throws Exception {
-		testIwant3AlsoCreatesWishScriptsForExampleWsDef();
+		iwant3AlsoCreatesWishScriptsForExampleWsDef();
 
 		String wsdefRelpath = "wsroot/as-example-developer/i-have/wsdef/src/main/java/com/example/wsdef/ExampleWorkspace.java";
 		String wsdefContent = testArea.contentOf(wsdefRelpath);
@@ -351,8 +364,9 @@ public class Iwant3Test extends TestCase {
 				.startsWith("#!/bin/bash\n"));
 	}
 
-	public void testListOfTargetsOfExampleWsDef() throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
+	@Test
+	public void listOfTargetsOfExampleWsDef() throws Exception {
+		missingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "list-of/targets");
@@ -361,8 +375,9 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", errIgnoringDebugLog());
 	}
 
-	public void testListOfSideEffectsOfExampleWsDef() throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
+	@Test
+	public void listOfSideEffectsOfExampleWsDef() throws Exception {
+		missingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "list-of/side-effects");
@@ -371,8 +386,9 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", errIgnoringDebugLog());
 	}
 
-	public void testIwant3CreatesCombinedSources() throws Exception {
-		testListOfSideEffectsOfExampleWsDef();
+	@Test
+	public void iwant3CreatesCombinedSources() throws Exception {
+		listOfSideEffectsOfExampleWsDef();
 
 		assertTrue(combinedIwantSrc.exists());
 		assertTrue(new File(combinedIwantSrc,
@@ -486,7 +502,8 @@ public class Iwant3Test extends TestCase {
 		return b.toString();
 	}
 
-	public void testListOfTargetsOfModifiedWsDef() throws Exception {
+	@Test
+	public void listOfTargetsOfModifiedWsDef() throws Exception {
 		testArea.hasFile("wsroot/as-example-developer/i-have/conf/ws-info",
 				"WSNAME=example\n" + "WSROOT=../../..\n"
 						+ "WSDEFDEF_MODULE=../wsdefdef\n"
@@ -515,7 +532,8 @@ public class Iwant3Test extends TestCase {
 	 * version-control where the original author commited it after generating
 	 * with the iwant wizard.
 	 */
-	public void testEmptyWishCreatesWishScriptsEvenWhenWsdefdefAndWsdefExist()
+	@Test
+	public void emptyWishCreatesWishScriptsEvenWhenWsdefdefAndWsdefExist()
 			throws Exception {
 		testArea.hasFile("wsroot/as-example-developer/i-have/conf/ws-info",
 				"WSNAME=example\n" + "WSROOT=../../..\n"
@@ -560,9 +578,10 @@ public class Iwant3Test extends TestCase {
 						.exists());
 	}
 
-	public void testListOfTargetsOfModifiedWsDefAlsoCreatesWishScripts()
+	@Test
+	public void listOfTargetsOfModifiedWsDefAlsoCreatesWishScripts()
 			throws Exception {
-		testListOfTargetsOfModifiedWsDef();
+		listOfTargetsOfModifiedWsDef();
 
 		assertTrue(testArea.contentOf(
 				"wsroot/as-example-developer/with/bash/iwant/list-of/targets")
@@ -579,8 +598,9 @@ public class Iwant3Test extends TestCase {
 						.exists());
 	}
 
-	public void testTargetHelloAsPathOfExampleWsDef() throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
+	@Test
+	public void targetHelloAsPathOfExampleWsDef() throws Exception {
+		missingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "target/hello/as-path");
@@ -592,9 +612,10 @@ public class Iwant3Test extends TestCase {
 		assertEquals("hello from iwant\n", testArea.contentOf(cached));
 	}
 
-	public void testSideEffectEclipseSettingsEffectiveOfExampleWsDef()
+	@Test
+	public void sideEffectEclipseSettingsEffectiveOfExampleWsDef()
 			throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
+		missingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		iwant3.evaluate(asTest, "side-effect/eclipse-settings/effective");
@@ -641,8 +662,8 @@ public class Iwant3Test extends TestCase {
 				"formatter_profile=_iwant-generated\n");
 	}
 
-	public void testTargetModifiedHelloAsPathOfModifiedWsDef()
-			throws Exception {
+	@Test
+	public void targetModifiedHelloAsPathOfModifiedWsDef() throws Exception {
 		testArea.hasFile("wsroot/as-example-developer/i-have/conf/ws-info",
 				"WSNAME=example\n" + "WSROOT=../../..\n"
 						+ "WSDEFDEF_MODULE=../wsdefdef\n"
@@ -669,8 +690,8 @@ public class Iwant3Test extends TestCase {
 		assertEquals("content 1", testArea.contentOf(cached));
 	}
 
-	public void testListOfTargetsFailsIfWsDefdefDoesNotCompile()
-			throws Exception {
+	@Test
+	public void listOfTargetsFailsIfWsDefdefDoesNotCompile() throws Exception {
 		testArea.hasFile("wsroot/as-example-developer/i-have/conf/ws-info",
 				"WSNAME=example\n" + "WSROOT=../../..\n"
 						+ "WSDEFDEF_MODULE=../wsdefdef\n"
@@ -696,7 +717,8 @@ public class Iwant3Test extends TestCase {
 	 * A learning test: the interface to cast to must come from the classloader
 	 * of the running class, not by loading it again.
 	 */
-	public void testToLearnThatEvenTwoInstancesOfSameClassloaderLoadIncompatibleClasses()
+	@Test
+	public void toLearnThatEvenTwoInstancesOfSameClassloaderLoadIncompatibleClasses()
 			throws Exception {
 		Class<?> exampleClass = Iwant3.class;
 		File classes = new File(exampleClass
@@ -718,8 +740,9 @@ public class Iwant3Test extends TestCase {
 	/**
 	 * Corresponds to calling help.sh once more
 	 */
-	public void testEmptyWishAfterCreationOfExampleWsDef() throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
+	@Test
+	public void emptyWishAfterCreationOfExampleWsDef() throws Exception {
+		missingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		spendSomeTimeLikeARealUser();
@@ -743,9 +766,10 @@ public class Iwant3Test extends TestCase {
 	/**
 	 * Corresponds to calling help.sh once more
 	 */
-	public void testEmptyWishAfterCreationOfUserPreferencesFiles()
+	@Test
+	public void emptyWishAfterCreationOfUserPreferencesFiles()
 			throws Exception {
-		testEmptyWishAfterCreationOfExampleWsDef();
+		emptyWishAfterCreationOfExampleWsDef();
 		startOfOutAndErrCapture();
 
 		Iwant.newTextFile(new File(asTest, "i-have/conf/user-preferences"),
@@ -771,7 +795,8 @@ public class Iwant3Test extends TestCase {
 	 * TODO extract class for this functionality and move these to its test, the
 	 * setup is very different from other tests here.
 	 */
-	public void testWsdefRuntimeClasspathWhenWsdefClassesTargetDefinesNoExtra() {
+	@Test
+	public void wsdefRuntimeClasspathWhenWsdefClassesTargetDefinesNoExtra() {
 		File wsRoot = testArea.newDir("wsroot");
 		CachesMock caches = new CachesMock(wsRoot);
 		TargetEvaluationContextMock ctx = new TargetEvaluationContextMock(
@@ -792,7 +817,8 @@ public class Iwant3Test extends TestCase {
 				cp.toString());
 	}
 
-	public void testWsdefRuntimeClasspathWhenWsdefClassesTargetDefinesAnExternalLibrary() {
+	@Test
+	public void wsdefRuntimeClasspathWhenWsdefClassesTargetDefinesAnExternalLibrary() {
 		File wsRoot = testArea.newDir("wsroot");
 		CachesMock caches = new CachesMock(wsRoot);
 		TargetEvaluationContextMock ctx = new TargetEvaluationContextMock(
@@ -816,9 +842,10 @@ public class Iwant3Test extends TestCase {
 				cp.toString());
 	}
 
-	public void testListOfSideEffectsOfExampleWsDefWorksFromUnderSymbolicLinkOfWorkspace()
+	@Test
+	public void listOfSideEffectsOfExampleWsDefWorksFromUnderSymbolicLinkOfWorkspace()
 			throws Exception {
-		testMissingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
+		missingWsdefdefCausesFriendlyFailureAndExampleWsdefdefAndWsdefAndWsCreation();
 		startOfOutAndErrCapture();
 
 		File symlinkToWsRoot = new File(testArea.root(), "symlink-to-wsroot");
@@ -831,11 +858,12 @@ public class Iwant3Test extends TestCase {
 		assertEquals("", errIgnoringDebugLog());
 	}
 
-	public void testUsersWsClassesAreNotRecompiledIfNoIngredientHasChanged()
+	@Test
+	public void usersWsClassesAreNotRecompiledIfNoIngredientHasChanged()
 			throws Exception {
 		Iwant.fileLog(
 				"Starting testUsersWsClassesAreNotRecompiledIfNoIngredientHasChanged");
-		testEmptyWishAfterCreationOfExampleWsDef();
+		emptyWishAfterCreationOfExampleWsDef();
 
 		File wsdefdefClasses = new File(asTest, ".i-cached/wsdefdef-classes");
 		long t1 = wsdefdefClasses.lastModified();

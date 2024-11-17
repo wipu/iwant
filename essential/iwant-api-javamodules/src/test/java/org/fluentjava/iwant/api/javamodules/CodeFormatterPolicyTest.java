@@ -1,20 +1,21 @@
 package org.fluentjava.iwant.api.javamodules;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy.FormatterSettingsListener;
 import org.fluentjava.iwant.api.javamodules.CodeFormatterPolicy.TabulationCharValue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.testing.EqualsTester;
 
-import junit.framework.TestCase;
-
-public class CodeFormatterPolicyTest extends TestCase
-		implements FormatterSettingsListener {
+public class CodeFormatterPolicyTest implements FormatterSettingsListener {
 
 	private Integer alignmentForEnumConstants;
 	private TabulationCharValue tabulationChar;
 
-	@Override
-	protected void setUp() throws Exception {
+	@BeforeEach
+	protected void before() throws Exception {
 		alignmentForEnumConstants = null;
 		tabulationChar = null;
 	}
@@ -31,7 +32,8 @@ public class CodeFormatterPolicyTest extends TestCase
 
 	// the tests
 
-	public void testWriteCallsListenerWithDefaultValues() {
+	@Test
+	public void writeCallsListenerWithDefaultValues() {
 		CodeFormatterPolicy policy = new CodeFormatterPolicy();
 
 		policy.write(this);
@@ -40,7 +42,8 @@ public class CodeFormatterPolicyTest extends TestCase
 		assertEquals(TabulationCharValue.TAB, tabulationChar);
 	}
 
-	public void testWriteCallsListenerWithChangedValues() {
+	@Test
+	public void writeCallsListenerWithChangedValues() {
 		CodeFormatterPolicy policy = new CodeFormatterPolicy();
 		policy.alignmentForEnumConstants = 48;
 		policy.tabulationChar = TabulationCharValue.SPACE;
@@ -51,7 +54,8 @@ public class CodeFormatterPolicyTest extends TestCase
 		assertEquals(TabulationCharValue.SPACE, tabulationChar);
 	}
 
-	public void testEqualsAndHashcode() {
+	@Test
+	public void equalsAndHashcode() {
 		EqualsTester et = new EqualsTester();
 		et.addEqualityGroup(CodeFormatterPolicy.defaults(),
 				CodeFormatterPolicy.defaults(), new CodeFormatterPolicy());

@@ -1,10 +1,14 @@
 package org.fluentjava.iwant.api.javamodules;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CodeStylePolicyTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
-	public void testDefaults() {
+public class CodeStylePolicyTest {
+
+	@Test
+	public void defaults() {
 		CodeStylePolicy policy = CodeStylePolicy.defaultsExcept().end();
 
 		assertEquals(CodeStyleValue.FAIL,
@@ -16,7 +20,8 @@ public class CodeStylePolicyTest extends TestCase {
 				policy.valueOf(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL));
 	}
 
-	public void testOverrides() {
+	@Test
+	public void overrides() {
 		CodeStylePolicy policy = CodeStylePolicy.defaultsExcept()
 				.ignore(CodeStyle.ASSERT_IDENTIFIER)
 				.warn(CodeStyle.NON_EXTERNALIZED_STRING_LITERAL)
@@ -33,12 +38,13 @@ public class CodeStylePolicyTest extends TestCase {
 				policy.valueOf(CodeStyle.DEPRECATION_IN_DEPRECATED_CODE));
 	}
 
-	public void testIteratingStylesFromDefaultGivesNonNullValues() {
+	@Test
+	public void iteratingStylesFromDefaultGivesNonNullValues() {
 		CodeStylePolicy policy = CodeStylePolicy.defaultsExcept().end();
 
 		for (CodeStyle style : CodeStyle.values()) {
 			CodeStyleValue value = policy.valueOf(style);
-			assertNotNull("Please define default for " + style, value);
+			assertNotNull(value, "Please define default for " + style);
 		}
 	}
 

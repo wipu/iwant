@@ -1,5 +1,9 @@
 package org.fluentjava.iwant.entry3;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 
 import org.fluentjava.iwant.api.core.HelloTarget;
@@ -14,10 +18,10 @@ import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
 import org.fluentjava.iwant.entry3.IngredientCheckingTargetEvaluationContext.ReferenceLegalityCheckCache;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
+public class IngredientCheckingTargetEvaluationContextTest {
 
 	private Iwant iwant;
 	private IwantNetwork network;
@@ -27,8 +31,8 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 	private TargetMock target;
 	private IngredientCheckingTargetEvaluationContext ctx;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		TestArea testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
@@ -44,7 +48,8 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 				refLegalityCheckCache);
 	}
 
-	public void testReferenceToCachedSelfIsDelegated() {
+	@Test
+	public void referenceToCachedSelfIsDelegated() {
 		target.hasNoIngredients();
 		assertEquals(delegate.cached(target), ctx.cached(target));
 	}
@@ -53,7 +58,8 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 	 * In some weird situation a target may refer to another instance of itself
 	 * so no ingredient check done here.
 	 */
-	public void testReferenceToCopyOfCachedSelfIsDelegated() {
+	@Test
+	public void referenceToCopyOfCachedSelfIsDelegated() {
 		target.hasNoIngredients();
 		assertEquals(delegate.cached(target),
 				ctx.cached(new TargetMock("target")));
@@ -63,7 +69,8 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 	 * With current design it would be too much to require proper equals from
 	 * all Target implementations.
 	 */
-	public void testComparisonUsesNameSoEvenADifferentPathWithSameNameIsInterpretedAsTargetItself() {
+	@Test
+	public void comparisonUsesNameSoEvenADifferentPathWithSameNameIsInterpretedAsTargetItself() {
 		target.hasNoIngredients();
 
 		HelloTarget differentTargetImplWithSameName = new HelloTarget("target",
@@ -77,13 +84,15 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 				ctx.cached(sourceWithSameName));
 	}
 
-	public void testReferenceToIngredientIsDelegated() {
+	@Test
+	public void referenceToIngredientIsDelegated() {
 		TargetMock ingredient = new TargetMock("ingredient");
 		target.hasIngredients(ingredient);
 		assertEquals(delegate.cached(ingredient), ctx.cached(ingredient));
 	}
 
-	public void testReferenceToNonIngredientCausesAFailure() {
+	@Test
+	public void referenceToNonIngredientCausesAFailure() {
 		target.hasNoIngredients();
 		try {
 			ctx.cached(new TargetMock("implicit ingredient"));
@@ -100,7 +109,8 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 	 * It's ok to use ingredients of ingredients, otherwise you would have to
 	 * declare everything recursively
 	 */
-	public void testReferenceToIngredientOfIngredientIsDelegated() {
+	@Test
+	public void referenceToIngredientOfIngredientIsDelegated() {
 		TargetMock ingredientOfIngredient = new TargetMock(
 				"ingredient-of-ingredient");
 		ingredientOfIngredient.hasNoIngredients();
@@ -118,7 +128,8 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 	/**
 	 * See the other name related test for explanation
 	 */
-	public void testIngredientOfIngredientIsAlsoComparedByNameNotEquality() {
+	@Test
+	public void ingredientOfIngredientIsAlsoComparedByNameNotEquality() {
 		TargetMock ingredientOfIngredient = new TargetMock(
 				"ingredient-of-ingredient");
 		ingredientOfIngredient.hasNoIngredients();
@@ -131,7 +142,8 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 				ctx.cached(ingredientOfIngredient));
 	}
 
-	public void testNullIngredientIsReportedAsFriendlyException() {
+	@Test
+	public void nullIngredientIsReportedAsFriendlyException() {
 		TargetMock ingredient = new TargetMock("ingredient");
 		ingredient.hasIngredients(new Path[] { null });
 		target.hasIngredients(ingredient);
@@ -144,7 +156,8 @@ public class IngredientCheckingTargetEvaluationContextTest extends TestCase {
 		}
 	}
 
-	public void testOtherMethodsAreJustDelegated() {
+	@Test
+	public void otherMethodsAreJustDelegated() {
 		assertSame(delegate.iwant(), ctx.iwant());
 		assertSame(delegate.wsRoot(), ctx.wsRoot());
 		assertSame(delegate.freshTemporaryDirectory(),

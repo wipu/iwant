@@ -1,5 +1,9 @@
 package org.fluentjava.iwant.plugin.jacoco;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.io.File;
 
 import org.fluentjava.iwant.api.core.ClassNameList;
@@ -10,10 +14,12 @@ import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.StringFilter;
 import org.fluentjava.iwant.api.model.SystemEnv;
 import org.fluentjava.iwant.api.model.Target;
+import org.junit.jupiter.api.Test;
 
 public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 
-	public void testTargetsFromOneMinimalTestlessModule() {
+	@Test
+	public void targetsFromOneMinimalTestlessModule() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").mainJava("src")
 				.end();
 
@@ -42,7 +48,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				report.contentDescriptor());
 	}
 
-	public void testReportName() {
+	@Test
+	public void reportName() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").end();
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
 				.with().jacoco(jacoco()).antJars(antJar(), antLauncherJar())
@@ -52,7 +59,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertEquals("name2", jacocoTargets.jacocoReport("name2").name());
 	}
 
-	public void testTargetsFromOneMinimalCodelessModule() {
+	@Test
+	public void targetsFromOneMinimalCodelessModule() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").end();
 
 		JacocoTargetsOfJavaModules jacocoTargets = JacocoTargetsOfJavaModules
@@ -71,7 +79,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				report.contentDescriptor());
 	}
 
-	public void testTargetsFromOneMinimalTestOnlyModule() {
+	@Test
+	public void targetsFromOneMinimalTestOnlyModule() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
 				.end();
 
@@ -100,7 +109,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				+ "i:sources:\n" + "", report.contentDescriptor());
 	}
 
-	public void testTargetsFromOneBinaryModule() {
+	@Test
+	public void targetsFromOneBinaryModule() {
 		JavaBinModule mod = JavaBinModule.providing(Source.underWsroot("lib"))
 				.end();
 
@@ -120,7 +130,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				report.contentDescriptor());
 	}
 
-	public void testCoverageArgsForJunitIsClassNameListUnlessOnlyOneTestDefined() {
+	@Test
+	public void coverageArgsForJunitIsClassNameListUnlessOnlyOneTestDefined() {
 		JavaSrcModule testedByOneClass = JavaSrcModule.with()
 				.name("testedByOneClass").testJava("test")
 				.testedBy("custom.Test").end();
@@ -165,7 +176,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				testNames.contentDescriptor());
 	}
 
-	public void testCoverageOfJavaSrcModuleWithCumulativeDeps() {
+	@Test
+	public void coverageOfJavaSrcModuleWithCumulativeDeps() {
 		JavaBinModule bin1 = JavaBinModule.providing(Source.underWsroot("bin1"))
 				.end();
 		JavaSrcModule src1 = JavaSrcModule.with().name("src1").mainJava("src")
@@ -196,7 +208,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				coverage.classLocations().toString());
 	}
 
-	public void testCoverageOfSubsetOfSrcModulesWithDepToModuleOutsideTheSubset()
+	@Test
+	public void coverageOfSubsetOfSrcModulesWithDepToModuleOutsideTheSubset()
 			throws Exception {
 		JavaSrcModule uninteresting = JavaSrcModule.with().name("uninteresting")
 				.mainJava("src").end();
@@ -248,7 +261,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				contentOf(new File(ctx.cached(report), "report.csv")));
 	}
 
-	public void testJacocoCoverageUsesModulesTestEnv() {
+	@Test
+	public void jacocoCoverageUsesModulesTestEnv() {
 		SystemEnv env = SystemEnv.with().string("a", "a1")
 				.path("b", Source.underWsroot("b")).end();
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
@@ -263,7 +277,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 		assertSame(env, coverage.env());
 	}
 
-	public void testOwnJunitRunnerIsUsedForCoverageByDefault() {
+	@Test
+	public void ownJunitRunnerIsUsedForCoverageByDefault() {
 		JavaSrcModule mod = JavaSrcModule.with().name("mod").testJava("test")
 				.end();
 
@@ -276,7 +291,8 @@ public class JacocoTargetsOfJavaModulesTest extends JacocoTestBase {
 				coverage.mainClassName());
 	}
 
-	public void testCustomTestRunnerIsUsedForCoverage() {
+	@Test
+	public void customTestRunnerIsUsedForCoverage() {
 		class CustomRunner implements TestRunner {
 			@Override
 			public String mainClassName() {

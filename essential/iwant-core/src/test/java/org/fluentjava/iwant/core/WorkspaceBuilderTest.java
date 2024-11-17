@@ -11,20 +11,20 @@ import org.fluentjava.iwant.core.Concatenated.ConcatenatedBuilder;
 @SuppressWarnings("resource")
 public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
-	public void testListOfTargetsOfEmptyWs() {
+	@Test public void listOfTargetsOfEmptyWs() {
 		at(EmptyWorkspace.class).iwant("list-of/targets");
 		assertEquals("", out());
 		assertEquals("", err());
 	}
 
-	public void testListOfTargetsWithTwoConstantTargetFiles() {
+	@Test public void listOfTargetsWithTwoConstantTargetFiles() {
 		at(WorkspaceWithTwoConstantTargetFiles.class).iwant("list-of/targets");
 		assertEquals("pout:constant2-container/constant2\npout:constantOne\n",
 				out());
 		assertEquals("", err());
 	}
 
-	public void testIllegalTargetAsPath() {
+	@Test public void illegalTargetAsPath() {
 		try {
 			at(WorkspaceWithTwoConstantTargetFiles.class).iwant(
 					"target/illegal/as-path");
@@ -36,7 +36,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("", err());
 	}
 
-	public void testConstantOneAsPathAndItsContent() throws IOException {
+	@Test public void constantOneAsPathAndItsContent() throws IOException {
 		at(WorkspaceWithTwoConstantTargetFiles.class).iwant(
 				"target/constantOne/as-path");
 		assertEquals(pathLine("constantOne"), out());
@@ -45,7 +45,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("constantOne content\n", cachedContent("constantOne"));
 	}
 
-	public void testConstantTwoAsPathAndItsContent() throws IOException {
+	@Test public void constantTwoAsPathAndItsContent() throws IOException {
 		at(WorkspaceWithTwoConstantTargetFiles.class).iwant(
 				"target/constant2-container/constant2/as-path");
 		assertEquals(pathLine("constant2-container/constant2"), out());
@@ -85,7 +85,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	/**
 	 * Further java compilation testing is done in the tutorial
 	 */
-	public void testGeneratedJavaClassIsNonempty() throws Exception {
+	@Test public void generatedJavaClassIsNonempty() throws Exception {
 		directoryExists("src");
 		file("src/Empty.java").withContent().line("public class Empty {}")
 				.exists();
@@ -138,7 +138,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	/**
 	 * Further java compilation testing is done in the tutorial
 	 */
-	public void testClassWithDependencyCompiles() throws Exception {
+	@Test public void classWithDependencyCompiles() throws Exception {
 		directoryExists("src1");
 		file("src1/Util.java").withContent().line("public class Util {}")
 				.exists();
@@ -205,7 +205,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	}
 
-	public void testJunitResultOfFailingTest() {
+	@Test public void junitResultOfFailingTest() {
 		directoryExists("tests");
 		file("tests/ATest.java").withContent();
 		line("public class ATest extends junit.framework.TestCase {");
@@ -223,7 +223,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("perr:Test ATest FAILED\n", err());
 	}
 
-	public void testJunitResultOfPassingTest() throws Exception {
+	@Test public void junitResultOfPassingTest() throws Exception {
 		new File(wsRoot() + "/tests").mkdir();
 		new FileWriter(wsRoot() + "/tests/ATest.java").append(
 				"public class ATest extends junit.framework.TestCase {"
@@ -242,7 +242,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	/**
 	 * Let's test laziness when sources are directories like for javac
 	 */
-	public void testJunitResultIsFailureEvenIfSourcesAreTouchedAfterSuccess()
+	@Test public void junitResultIsFailureEvenIfSourcesAreTouchedAfterSuccess()
 			throws Exception {
 		testJunitResultOfPassingTest();
 		sleep();
@@ -287,7 +287,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	}
 
-	public void testDownloadFailsIfFileDoesNotExist() {
+	@Test public void downloadFailsIfFileDoesNotExist() {
 		try {
 			at(WorkspaceWithDownloadedContent.class).iwant(
 					"target/aDownloadedFile/as-path");
@@ -299,7 +299,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertTrue(err().contains("Error getting"));
 	}
 
-	public void testDownloadFailsIfDownloadedFileIsCorrupt() throws Exception {
+	@Test public void downloadFailsIfDownloadedFileIsCorrupt() throws Exception {
 		new FileWriter(mockWeb() + "/aFileInTheWeb").append("corrupted\n")
 				.close();
 		try {
@@ -313,7 +313,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertTrue(err().contains("Checksum failed"));
 	}
 
-	public void testDownloadFailsIfShaDoesNotMatch() throws Exception {
+	@Test public void downloadFailsIfShaDoesNotMatch() throws Exception {
 		new FileWriter(mockWeb() + "/aFileInTheWeb").append("corrupted\n")
 				.close();
 		try {
@@ -327,7 +327,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertTrue(err().contains("Checksum failed"));
 	}
 
-	public void testDownloadRetryWorksAfterFailedDownload() throws Exception {
+	@Test public void downloadRetryWorksAfterFailedDownload() throws Exception {
 		testDownloadFailsIfDownloadedFileIsCorrupt();
 		new FileWriter(mockWeb() + "/aFileInTheWeb").append("correct\n")
 				.close();
@@ -342,7 +342,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	 * Custom cache invalidation logic needed to negate this feature, if needed
 	 * for the paranoid among us
 	 */
-	public void testDownloadDoesNotFailIfAlreadyCachedFileIsCorrupt()
+	@Test public void downloadDoesNotFailIfAlreadyCachedFileIsCorrupt()
 			throws Exception {
 		testSuccessfulFirstDownload();
 		sleep();
@@ -355,7 +355,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("corrupted\n", cachedContent("aDownloadedFile"));
 	}
 
-	public void testSuccessfulFirstDownload() throws Exception {
+	@Test public void successfulFirstDownload() throws Exception {
 		new FileWriter(mockWeb() + "/aFileInTheWeb").append("correct\n")
 				.close();
 		at(WorkspaceWithDownloadedContent.class).iwant(
@@ -365,7 +365,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("correct\n", cachedContent("aDownloadedFile"));
 	}
 
-	public void testSuccessfulFirstDownloadWithSha() throws Exception {
+	@Test public void successfulFirstDownloadWithSha() throws Exception {
 		new FileWriter(mockWeb() + "/aFileInTheWeb").append("correct\n")
 				.close();
 		at(WorkspaceWithDownloadedContent.class).iwant(
@@ -375,7 +375,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("correct\n", cachedContent("aDownloadedFileWithSha"));
 	}
 
-	public void testSuccessfulLazyDownloadWhenCorrectCachedFileExists()
+	@Test public void successfulLazyDownloadWhenCorrectCachedFileExists()
 			throws Exception {
 		testSuccessfulFirstDownload();
 
@@ -453,7 +453,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	}
 
-	public void testEclipseProjectsFailsIfCompilationFails() throws IOException {
+	@Test public void eclipseProjectsFailsIfCompilationFails() throws IOException {
 		ensureEmpty(wsRoot() + "/a/src");
 		ensureEmpty(wsRoot() + "/b/src");
 		new FileWriter(wsRoot() + "/b/src/B.java").append(
@@ -467,7 +467,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		}
 	}
 
-	public void testEclipseProjectsWithTwoMinimalProjectsWithDependency()
+	@Test public void eclipseProjectsWithTwoMinimalProjectsWithDependency()
 			throws IOException {
 		ensureEmpty(wsRoot() + "/a/src");
 		ensureEmpty(wsRoot() + "/b/src");
@@ -733,7 +733,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		return b.toString();
 	}
 
-	public void testListOfTargetsContainsPhase2Target() throws IOException {
+	@Test public void listOfTargetsContainsPhase2Target() throws IOException {
 		ensureEmpty(wsRoot() + "/phase2/src/com/example/phasetwo");
 		new FileWriter(wsRoot()
 				+ "/phase2/src/com/example/phasetwo/Phase2.java").append(
@@ -743,7 +743,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("pout:phase2Classes\npout:targetInPhase2\n", out());
 	}
 
-	public void testPhase2TargetContent() throws IOException {
+	@Test public void phase2TargetContent() throws IOException {
 		ensureEmpty(wsRoot() + "/phase2/src/com/example/phasetwo");
 		new FileWriter(wsRoot()
 				+ "/phase2/src/com/example/phasetwo/Phase2.java").append(
@@ -842,7 +842,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	}
 
-	public void testSuccessfulShellScript() throws IOException {
+	@Test public void successfulShellScript() throws IOException {
 		at(WorkspaceWithShellScript.class).iwant(
 				"target/successfulScriptOutput/as-path");
 
@@ -864,7 +864,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	/**
 	 * A bug made the second run run the first script again.
 	 */
-	public void testAnotherScriptAfterOneScript() throws IOException {
+	@Test public void anotherScriptAfterOneScript() throws IOException {
 		testSuccessfulShellScript();
 		startOfOutAndErrCapture();
 		at(WorkspaceWithShellScript.class).iwant(
@@ -877,7 +877,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				cachedContent("anotherSuccessfulScriptOutput"));
 	}
 
-	public void testFailingShellScript() {
+	@Test public void failingShellScript() {
 		try {
 			at(WorkspaceWithShellScript.class).iwant(
 					"target/failingScriptOutput/as-path");
@@ -899,7 +899,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				.exists());
 	}
 
-	public void testConcatenatedSrc() throws IOException {
+	@Test public void concatenatedSrc() throws IOException {
 		new FileWriter(wsRoot() + "/src").append("src content\n").close();
 		at(WorkspaceWithConcatenatedContent.class).iwant(
 				"target/copyOfSrc/as-path");
@@ -910,7 +910,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("src content\n", cachedContent("copyOfSrc"));
 	}
 
-	public void testConcatenatedSrcAfterSrcChanges() throws IOException {
+	@Test public void concatenatedSrcAfterSrcChanges() throws IOException {
 		testConcatenatedSrc();
 		sleep();
 		new FileWriter(wsRoot() + "/src").append("new src content\n").close();
@@ -923,7 +923,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("new src content\n", cachedContent("copyOfSrc"));
 	}
 
-	public void testAnotherTargetContentAndBytesConcatenated()
+	@Test public void anotherTargetContentAndBytesConcatenated()
 			throws IOException {
 		new FileWriter(wsRoot() + "/src").append("src content\n").close();
 		at(WorkspaceWithConcatenatedContent.class).iwant(
@@ -937,7 +937,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 				cachedContent("anotherTargetContentAndBytesConcatenated"));
 	}
 
-	public void testAnotherTargetPathAndStringConcatenated() throws IOException {
+	@Test public void anotherTargetPathAndStringConcatenated() throws IOException {
 		new FileWriter(wsRoot() + "/src").append("src content\n").close();
 		at(WorkspaceWithConcatenatedContent.class).iwant(
 				"target/anotherTargetPathAndStringConcatenated/as-path");
@@ -954,7 +954,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	 * ensuring scripts get rerun when paths referenced in them have been
 	 * refreshed, because this way the scripts themselves get touched.
 	 */
-	public void testAnotherTargetPathAndStringConcatenatedIsRefreshedWhenSrcChanges()
+	@Test public void anotherTargetPathAndStringConcatenatedIsRefreshedWhenSrcChanges()
 			throws IOException, InterruptedException {
 		testAnotherTargetPathAndStringConcatenated();
 		long firstModTime = new File(
@@ -984,7 +984,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 	/**
 	 * This tests iwant deletes the cached target before calling refresh
 	 */
-	public void testScriptThatCreatesDirWorksTwice() throws IOException {
+	@Test public void scriptThatCreatesDirWorksTwice() throws IOException {
 		file("mkdirScriptSource").withContent().line("1").exists();
 		at(WorkspaceWithShellScript.class).iwant(
 				"target/mkdirScriptGeneratedContent/as-path");
@@ -1058,7 +1058,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 
 	}
 
-	public void testListOfTargetsFromExplicitCollectionWithDynamicTargets() {
+	@Test public void listOfTargetsFromExplicitCollectionWithDynamicTargets() {
 		at(WorkspaceWithExplicitTargetCollection.class)
 				.iwant("list-of/targets");
 		assertEquals(
@@ -1067,7 +1067,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("", err());
 	}
 
-	public void testRefreshOfDynamicTarget() throws IOException {
+	@Test public void refreshOfDynamicTarget() throws IOException {
 		at(WorkspaceWithExplicitTargetCollection.class).iwant(
 				"target/dynamic-2/as-path");
 
@@ -1077,7 +1077,7 @@ public class WorkspaceBuilderTest extends WorkspaceBuilderTestBase {
 		assertEquals("content of dynamic-2", cachedContent("dynamic-2"));
 	}
 
-	public void testRefreshOfPublicMethodTargetFailsWhenItDoesNotBelongToExplicitCollection() {
+	@Test public void refreshOfPublicMethodTargetFailsWhenItDoesNotBelongToExplicitCollection() {
 		try {
 			at(WorkspaceWithExplicitTargetCollection.class).iwant(
 					"target/invisible/as-path");

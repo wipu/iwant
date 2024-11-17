@@ -1,5 +1,10 @@
 package org.fluentjava.iwant.entry.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -16,10 +21,11 @@ import org.fluentjava.iwant.entry.Iwant.UnmodifiableIwantBootstrapperClassesFrom
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class IwantTest extends TestCase {
+public class IwantTest {
 
 	private static final String LINE_SEPARATOR_KEY = "line.separator";
 
@@ -42,8 +48,8 @@ public class IwantTest extends TestCase {
 	/**
 	 * TODO a reusable main-method testing tools project
 	 */
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		testArea = TestArea.forTest(this);
 		origSecman = System.getSecurityManager();
 		System.setSecurityManager(new ExitCatcher());
@@ -90,8 +96,8 @@ public class IwantTest extends TestCase {
 
 	}
 
-	@Override
-	public void tearDown() {
+	@AfterEach
+	public void after() {
 		System.setSecurityManager(origSecman);
 		System.setIn(originalIn);
 		System.setOut(originalOut);
@@ -129,7 +135,8 @@ public class IwantTest extends TestCase {
 		}
 	}
 
-	public void testMainFailsAndExitsIfGivenZeroArguments() throws Exception {
+	@Test
+	public void mainFailsAndExitsIfGivenZeroArguments() throws Exception {
 		try {
 			Iwant.main(new String[] {});
 			fail();
@@ -142,7 +149,8 @@ public class IwantTest extends TestCase {
 				err());
 	}
 
-	public void testMainFailsAndExitsIfGivenAsSomeoneDoesNotExist()
+	@Test
+	public void mainFailsAndExitsIfGivenAsSomeoneDoesNotExist()
 			throws Exception {
 		try {
 			Iwant.main(new String[] { testArea.root() + "/as-missing" });
@@ -155,7 +163,8 @@ public class IwantTest extends TestCase {
 				+ "/as-missing\n", err());
 	}
 
-	public void testMainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist()
+	@Test
+	public void mainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist()
 			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
 		try {
@@ -176,7 +185,8 @@ public class IwantTest extends TestCase {
 				testArea.contentOf("as-test/i-have/conf/iwant-from"));
 	}
 
-	public void testMainCreatesIwantFromAndPrintsHelpIfIwantFromDoesNotExist()
+	@Test
+	public void mainCreatesIwantFromAndPrintsHelpIfIwantFromDoesNotExist()
 			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
 		testArea.newDir("as-test/i-have");
@@ -198,9 +208,10 @@ public class IwantTest extends TestCase {
 				testArea.contentOf("as-test/i-have/conf/iwant-from"));
 	}
 
-	public void testUserGetsFriendlyErrorIfRerunsIwantWithoutEditingIwantFrom()
+	@Test
+	public void userGetsFriendlyErrorIfRerunsIwantWithoutEditingIwantFrom()
 			throws Exception {
-		testMainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist();
+		mainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist();
 		startOfOutAndErrCapture();
 
 		File asSomeone = testArea.newDir("as-test");
@@ -216,9 +227,10 @@ public class IwantTest extends TestCase {
 				+ Iwant.EXAMPLE_IWANT_FROM_CONTENT + "\n", err());
 	}
 
-	public void testUserGetsFriendlyErrorIfIwantFromFileDoesNotSpecifyIwantFrom()
+	@Test
+	public void userGetsFriendlyErrorIfIwantFromFileDoesNotSpecifyIwantFrom()
 			throws Exception {
-		testMainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist();
+		mainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist();
 		startOfOutAndErrCapture();
 
 		File asSomeone = testArea.newDir("as-test");
@@ -236,9 +248,10 @@ public class IwantTest extends TestCase {
 				+ Iwant.EXAMPLE_IWANT_FROM_CONTENT + "\n", err());
 	}
 
-	public void testUserGetsFriendlyErrorIfIwantFromFileContainsInvalidIwantFromUrl()
+	@Test
+	public void userGetsFriendlyErrorIfIwantFromFileContainsInvalidIwantFromUrl()
 			throws Exception {
-		testMainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist();
+		mainCreatesIwantFromAndPrintsHelpIfIHaveDoesNotExist();
 		startOfOutAndErrCapture();
 
 		File asSomeone = testArea.newDir("as-test");
@@ -257,7 +270,8 @@ public class IwantTest extends TestCase {
 				+ Iwant.EXAMPLE_IWANT_FROM_CONTENT + "\n", err());
 	}
 
-	public void testIwantSourceZipIsAcquiredWhenItDoesntExist() {
+	@Test
+	public void iwantSourceZipIsAcquiredWhenItDoesntExist() {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantZip = mockWsRootZip();
@@ -275,7 +289,8 @@ public class IwantTest extends TestCase {
 				testArea.contentOf(cachedIwantZip));
 	}
 
-	public void testIwantSourceIsAcquiredWhenItDoesntExist() {
+	@Test
+	public void iwantSourceIsAcquiredWhenItDoesntExist() {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantZip = mockWsRootZip();
@@ -301,7 +316,8 @@ public class IwantTest extends TestCase {
 				new File(cachedIwantSrc, "essential/iwant-api-bash").exists());
 	}
 
-	public void testIwantBootstrapsWhenNothingHasBeenDownloadedAndJustIwantFromFileIsGiven()
+	@Test
+	public void iwantBootstrapsWhenNothingHasBeenDownloadedAndJustIwantFromFileIsGiven()
 			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
@@ -333,7 +349,8 @@ public class IwantTest extends TestCase {
 		assertTrue(err().endsWith("And syserr message from mocked entry2\n"));
 	}
 
-	public void testTrailingSlashRemoval() {
+	@Test
+	public void trailingSlashRemoval() {
 		assertEquals("", Iwant.withoutTrailingSlash(""));
 		assertEquals("", Iwant.withoutTrailingSlash("/"));
 		assertEquals("a", Iwant.withoutTrailingSlash("a"));
@@ -346,7 +363,8 @@ public class IwantTest extends TestCase {
 	 * File to uri to url ends with slash iff dir exists so it's too random for
 	 * us
 	 */
-	public void testFileToUrlNeverEndsInSlashRegardlessOfExistenceOfFile() {
+	@Test
+	public void fileToUrlNeverEndsInSlashRegardlessOfExistenceOfFile() {
 		File dir = new File(testArea.root(), "dir");
 		UnmodifiableIwantBootstrapperClassesFromIwantWsRoot without = new UnmodifiableIwantBootstrapperClassesFromIwantWsRoot(
 				dir);
@@ -360,7 +378,8 @@ public class IwantTest extends TestCase {
 	/**
 	 * This happens when JRE is used instead of JDK
 	 */
-	public void testIwantGivesNiceErrorMessageIfSystemJavaCompilerIsNotFound()
+	@Test
+	public void iwantGivesNiceErrorMessageIfSystemJavaCompilerIsNotFound()
 			throws Exception {
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
@@ -394,7 +413,8 @@ public class IwantTest extends TestCase {
 		}
 	}
 
-	public void testBootstrapperIsNotCompiledIfNotNecessary() throws Exception {
+	@Test
+	public void bootstrapperIsNotCompiledIfNotNecessary() throws Exception {
 		Iwant.fileLog("Starting testBootstrapperIsNotCompiledIfNotNecessary");
 		File asSomeone = testArea.newDir("as-test");
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
@@ -434,7 +454,8 @@ public class IwantTest extends TestCase {
 		assertEquals(t1, t2);
 	}
 
-	public void testMkdirsCreatesDirectoryWithParent() {
+	@Test
+	public void mkdirsCreatesDirectoryWithParent() {
 		File dir = new File(testArea.root(), "a/b");
 		Iwant.mkdirs(dir);
 
@@ -442,7 +463,8 @@ public class IwantTest extends TestCase {
 		assertTrue(dir.isDirectory());
 	}
 
-	public void testMkdirsIsOkForExistentDirectory() {
+	@Test
+	public void mkdirsIsOkForExistentDirectory() {
 		File dir = new File(testArea.root(), "a/b");
 		Iwant.mkdirs(dir);
 		Iwant.mkdirs(dir);
@@ -451,7 +473,8 @@ public class IwantTest extends TestCase {
 		assertTrue(dir.isDirectory());
 	}
 
-	public void testMkdirsThrowsAndRefusesToTouchExistingNonDir() {
+	@Test
+	public void mkdirsThrowsAndRefusesToTouchExistingNonDir() {
 		File nondir = testArea.hasFile("nondir", "anything");
 
 		try {
@@ -464,7 +487,8 @@ public class IwantTest extends TestCase {
 		}
 	}
 
-	public void testMkdirsThrowsIfNoPermissions() {
+	@Test
+	public void mkdirsThrowsIfNoPermissions() {
 		File parent = testArea.newDir("parent");
 		File dir = new File(parent, "a/b");
 
@@ -482,7 +506,8 @@ public class IwantTest extends TestCase {
 		}
 	}
 
-	public void testDelDeletesEvenANonEmptyDirectory() {
+	@Test
+	public void delDeletesEvenANonEmptyDirectory() {
 		File dirToDelete = testArea.newDir("dir");
 		testArea.hasFile("dir/file", "anything");
 
@@ -491,7 +516,8 @@ public class IwantTest extends TestCase {
 		assertFalse(dirToDelete.exists());
 	}
 
-	public void testDelDoesNotComplainAboutNonexistentFile() {
+	@Test
+	public void delDoesNotComplainAboutNonexistentFile() {
 		File nonexistent = new File(testArea.root(), "nonexistent");
 		assertFalse(nonexistent.exists());
 
@@ -500,7 +526,8 @@ public class IwantTest extends TestCase {
 		assertFalse(nonexistent.exists());
 	}
 
-	public void testDelThrowsIfNoPermissions() {
+	@Test
+	public void delThrowsIfNoPermissions() {
 		File parent = testArea.newDir("parent");
 		File fileToDelete = new File(parent, "file");
 		testArea.fileHasContent(fileToDelete, "anything");
@@ -519,7 +546,8 @@ public class IwantTest extends TestCase {
 		}
 	}
 
-	public void testDelWorksEvenWithBrokenSymlinkUnderDirToDelete()
+	@Test
+	public void delWorksEvenWithBrokenSymlinkUnderDirToDelete()
 			throws IOException, InterruptedException {
 		File parent = testArea.newDir("parent");
 		ScriptGenerated.execute(parent, Arrays.asList("ln", "-s",

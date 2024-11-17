@@ -2,7 +2,7 @@ package org.fluentjava.iwant.core;
 
 import junit.framework.TestCase;
 
-public class EmbeddedUsageTest extends TestCase {
+public class EmbeddedUsageTest{
 
 	private TestArea testArea;
 
@@ -11,7 +11,7 @@ public class EmbeddedUsageTest extends TestCase {
 		testArea = TestArea.newEmpty();
 	}
 
-	public void testNonexistentTargetAsPath() {
+	@Test public void nonexistentTargetAsPath() {
 		Workspace ws = Workspace.with().name("test").target("hello")
 				.content(Concatenated.from().string("hello world").end())
 				.endWorkspace();
@@ -24,7 +24,7 @@ public class EmbeddedUsageTest extends TestCase {
 		}
 	}
 
-	public void testSuccessfulHelloAsPath() throws Exception {
+	@Test public void successfulHelloAsPath() throws Exception {
 		Workspace ws = Workspace.with().name("test").target("hello")
 				.content(Concatenated.from().string("hello world").end())
 				.endWorkspace();

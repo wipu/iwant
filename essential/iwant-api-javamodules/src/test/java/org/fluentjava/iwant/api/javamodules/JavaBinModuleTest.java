@@ -1,5 +1,11 @@
 package org.fluentjava.iwant.api.javamodules;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.fluentjava.iwant.api.core.HelloTarget;
 import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.ProductionCode;
 import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.ProductionConfiguration;
@@ -8,12 +14,14 @@ import org.fluentjava.iwant.api.javamodules.StandardCharacteristics.TestUtility;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.apimocks.IwantTestCase;
+import org.junit.jupiter.api.Test;
 
 public class JavaBinModuleTest extends IwantTestCase {
 
 	// provided by src module
 
-	public void testToStringOfProjectProvidedBinIsTheName() {
+	@Test
+	public void toStringOfProjectProvidedBinIsTheName() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaModule lib = JavaBinModule.named("lib.jar").inside(libsModule)
 				.end();
@@ -22,7 +30,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 	}
 
 	@SuppressWarnings("unlikely-arg-type")
-	public void testEqualsUsesNameAndClass() {
+	@Test
+	public void equalsUsesNameAndClass() {
 		assertTrue(JavaBinModule.providing(Source.underWsroot("a")).end()
 				.equals(JavaBinModule.providing(Source.underWsroot("a"))
 						.end()));
@@ -34,7 +43,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 						.end()));
 	}
 
-	public void testHashCodeIsSameIfNameIsSame() {
+	@Test
+	public void hashCodeIsSameIfNameIsSame() {
 		assertTrue(JavaBinModule.providing(Source.underWsroot("a")).end()
 				.hashCode() == JavaBinModule.providing(Source.underWsroot("a"))
 						.end().hashCode());
@@ -42,7 +52,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 				.hashCode() == JavaSrcModule.with().name("a").end().hashCode());
 	}
 
-	public void testMainArtifactOfBinModuleIsTheJarAsSource() {
+	@Test
+	public void mainArtifactOfBinModuleIsTheJarAsSource() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaModule lib = JavaBinModule.named("lib.jar").inside(libsModule)
 				.end();
@@ -51,7 +62,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		assertEquals("libs/lib.jar", artifact.name());
 	}
 
-	public void testEclipsePathsOfBinInsideLibProject() {
+	@Test
+	public void eclipsePathsOfBinInsideLibProject() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaBinModule lib = JavaBinModule.named("lib.jar").inside(libsModule)
 				.end();
@@ -60,7 +72,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		assertEquals(null, lib.eclipseSourceReference(ctx));
 	}
 
-	public void testEclipsePathsOfBinInsideLibProjectAndWithSources() {
+	@Test
+	public void eclipsePathsOfBinInsideLibProjectAndWithSources() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaBinModule lib = JavaBinModule.named("lib2.jar")
 				.source("lib2-src.zip").inside(libsModule).end();
@@ -69,7 +82,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		assertEquals("/libs/lib2-src.zip", lib.eclipseSourceReference(ctx));
 	}
 
-	public void testSourceOfBinInsideProjectWhenGivenAndWhenNot() {
+	@Test
+	public void sourceOfBinInsideProjectWhenGivenAndWhenNot() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaBinModule lib = JavaBinModule.named("sourced.jar")
 				.source("sourced-src.zip").inside(libsModule).end();
@@ -81,7 +95,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 				.source());
 	}
 
-	public void testCharacteristicsForBinaryModuleInsideLibraryModule() {
+	@Test
+	public void characteristicsForBinaryModuleInsideLibraryModule() {
 		JavaSrcModule libsModule = JavaSrcModule.with().name("libs").end();
 		JavaBinModule bin = JavaBinModule.named("mod.jar")
 				.has(ProductionCode.class).inside(libsModule).end();
@@ -92,7 +107,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		assertTrue(bin.doesHave(ProductionRuntimeData.class));
 	}
 
-	public void testObservableDepsOfBinInsideLibraryModuleThatHasRuntimeDeps() {
+	@Test
+	public void observableDepsOfBinInsideLibraryModuleThatHasRuntimeDeps() {
 		JavaBinModule dep1 = JavaBinModule
 				.providing(Source.underWsroot("dep1.jar")).end();
 		JavaBinModule dep2 = JavaBinModule
@@ -116,7 +132,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		assertEquals("[]", lib.effectivePathForTestRuntime().toString());
 	}
 
-	public void testModuleLikeABinUnderLibsIsReallyLikeIt() {
+	@Test
+	public void moduleLikeABinUnderLibsIsReallyLikeIt() {
 		JavaSrcModule libs = JavaSrcModule.with().name("libs").end();
 		JavaBinModule m1 = JavaBinModule.named("bin.jar").has(TestUtility.class)
 				.runtimeDeps(JavaBinModule
@@ -136,7 +153,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 
 	// path provider module
 
-	public void testToStringOfPathProviderBinIsTheName() {
+	@Test
+	public void toStringOfPathProviderBinIsTheName() {
 		Target libJar = new HelloTarget("lib.jar", "");
 		JavaBinModule libJarModule = JavaBinModule.providing(libJar, null)
 				.end();
@@ -144,7 +162,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		assertEquals("lib.jar", libJarModule.toString());
 	}
 
-	public void testBinModuleThatProvidesAMainArtifactTarget() {
+	@Test
+	public void binModuleThatProvidesAMainArtifactTarget() {
 		Target libJar = new HelloTarget("lib.jar", "");
 		JavaBinModule libJarModule = JavaBinModule.providing(libJar, null)
 				.end();
@@ -153,7 +172,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		assertSame(libJar, libJarModule.mainArtifact());
 	}
 
-	public void testEclipsePathsOfModuleThatProvidesAMainArtifactTarget() {
+	@Test
+	public void eclipsePathsOfModuleThatProvidesAMainArtifactTarget() {
 		Target libJar = new HelloTarget("lib.jar", "");
 		JavaBinModule libJarModule = JavaBinModule.providing(libJar).end();
 
@@ -162,7 +182,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		assertEquals(null, libJarModule.eclipseSourceReference(ctx));
 	}
 
-	public void testEclipsePathsOfModuleThatProvidesAMainArtifactTargetWithSources() {
+	@Test
+	public void eclipsePathsOfModuleThatProvidesAMainArtifactTargetWithSources() {
 		Target libJar = new HelloTarget("lib.jar", "");
 		Target libSrc = new HelloTarget("lib-src.zip", "");
 		JavaBinModule libJarModule = JavaBinModule.providing(libJar, libSrc)
@@ -174,7 +195,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 				libJarModule.eclipseSourceReference(ctx));
 	}
 
-	public void testBinaryModulesDontHaveMainDepsForCompilation() {
+	@Test
+	public void binaryModulesDontHaveMainDepsForCompilation() {
 		assertTrue(JavaBinModule.named("lib")
 				.inside(JavaSrcModule.with().name("libs").end()).end()
 				.mainDepsForCompilation().isEmpty());
@@ -183,7 +205,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 				.mainDepsForCompilation().isEmpty());
 	}
 
-	public void testBinaryModulesDontHaveTestDepsOfAnyKind() {
+	@Test
+	public void binaryModulesDontHaveTestDepsOfAnyKind() {
 		JavaBinModule binInsideLibs = JavaBinModule.named("lib")
 				.inside(JavaSrcModule.with().name("libs").end()).end();
 		assertTrue(binInsideLibs.testDepsForCompilationExcludingMainDeps()
@@ -206,14 +229,16 @@ public class JavaBinModuleTest extends IwantTestCase {
 				binInsideLibs.effectivePathForTestRuntime().toString());
 	}
 
-	public void testSourcesOfProviderModule() {
+	@Test
+	public void sourcesOfProviderModule() {
 		Source src = Source.underWsroot("src");
 
 		assertSame(src, JavaBinModule.providing(Source.underWsroot("bin"), src)
 				.end().source());
 	}
 
-	public void testCharacteristicsOfProviderModule() {
+	@Test
+	public void characteristicsOfProviderModule() {
 		JavaBinModule mod = JavaBinModule
 				.providing(new HelloTarget("lib.jar", ""), null)
 				.has(ProductionConfiguration.class).end();
@@ -224,7 +249,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		assertTrue(mod.doesHave(ProductionRuntimeData.class));
 	}
 
-	public void testObservableDepsOfPathProviderModuleThatHasRuntimeDeps() {
+	@Test
+	public void observableDepsOfPathProviderModuleThatHasRuntimeDeps() {
 		JavaBinModule dep1 = JavaBinModule
 				.providing(Source.underWsroot("dep1.jar")).end();
 		JavaBinModule dep2 = JavaBinModule
@@ -248,7 +274,8 @@ public class JavaBinModuleTest extends IwantTestCase {
 		assertEquals("[]", lib.effectivePathForTestRuntime().toString());
 	}
 
-	public void testModuleLikeAPathProviderIsReallyLikeIt() {
+	@Test
+	public void moduleLikeAPathProviderIsReallyLikeIt() {
 		JavaBinModule m1 = JavaBinModule
 				.providing(Source.underWsroot("lib.jar"),
 						Source.underWsroot("lib-src.zip"))

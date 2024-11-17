@@ -1,17 +1,20 @@
 package org.fluentjava.iwant.entry3;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class ExampleWsDefGeneratorTest extends TestCase {
+public class ExampleWsDefGeneratorTest {
 
 	private StringBuilder expectedWsdefdefStart;
 	private StringBuilder expectedWsdefStart;
 	private TestArea testArea;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		expectedWsdefdefStart = new StringBuilder();
 		expectedWsdefStart = new StringBuilder();
 		testArea = TestArea.forTest(this);
@@ -44,12 +47,14 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		String actualWsdefdef = ExampleWsDefGenerator.exampleWsdefdef(
 				testArea.root(), newPackage, newName, wsDefSrc, wsdefClassName);
 
-		assertTrue("actual:\n" + actualWsdefdef,
-				actualWsdefdef.startsWith(expectedWsdefdefStart.toString()));
-		assertTrue("actual:\n" + actualWsdefdef,
-				actualWsdefdef.endsWith("\n}\n"));
-		assertTrue("actual:\n" + actualWsdefdef, actualWsdefdef
-				.contains("return \"" + wsdefClassName + "Factory\";"));
+		assertTrue(actualWsdefdef.startsWith(expectedWsdefdefStart.toString()),
+				"actual:\n" + actualWsdefdef);
+		assertTrue(actualWsdefdef.endsWith("\n}\n"),
+				"actual:\n" + actualWsdefdef);
+		assertTrue(
+				actualWsdefdef
+						.contains("return \"" + wsdefClassName + "Factory\";"),
+				"actual:\n" + actualWsdefdef);
 	}
 
 	private void assertChangeWsdefTo(String newPackage, String newName) {
@@ -66,11 +71,11 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		String actualWsdef = ExampleWsDefGenerator.exampleWsdef(testArea.root(),
 				newPackage, newName);
 
-		assertTrue("actual:\n" + actualWsdef,
-				actualWsdef.startsWith(expectedWsdefStart.toString()));
-		assertTrue("actual:\n" + actualWsdef,
-				actualWsdef.contains("return new " + newName + "("));
-		assertTrue("actual:\n" + actualWsdef, actualWsdef.endsWith("\n}\n"));
+		assertTrue(actualWsdef.startsWith(expectedWsdefStart.toString()),
+				"actual:\n" + actualWsdef);
+		assertTrue(actualWsdef.contains("return new " + newName + "("),
+				"actual:\n" + actualWsdef);
+		assertTrue(actualWsdef.endsWith("\n}\n"), "actual:\n" + actualWsdef);
 	}
 
 	private void assertChangeWsTo(String newPackage, String newName) {
@@ -83,12 +88,13 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		String actualWs = ExampleWsDefGenerator.exampleWs(testArea.root(),
 				newPackage, newName);
 
-		assertTrue("actual:\n" + actualWs,
-				actualWs.startsWith(expectedWsdefStart.toString()));
-		assertTrue("actual:\n" + actualWs, actualWs.endsWith("\n}\n"));
+		assertTrue(actualWs.startsWith(expectedWsdefStart.toString()),
+				"actual:\n" + actualWs);
+		assertTrue(actualWs.endsWith("\n}\n"), "actual:\n" + actualWs);
 	}
 
-	public void testWsdefdefName1() {
+	@Test
+	public void wsdefdefName1() {
 		expectedWsdefdefStart.append("package new.package1;\n");
 		expectedWsdefdefStart.append(
 				"public class Ws1 implements WorkspaceModuleProvider {\n");
@@ -103,7 +109,8 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 				"new.wsdefpack.Wsdef");
 	}
 
-	public void testWsdefdefName2() {
+	@Test
+	public void wsdefdefName2() {
 		expectedWsdefdefStart.append("package new.package2;\n");
 		expectedWsdefdefStart.append(
 				"public class Ws2 implements WorkspaceModuleProvider {\n");
@@ -118,7 +125,8 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 				"new.wsdefpak2.Wsdef2");
 	}
 
-	public void testWsdefName1() {
+	@Test
+	public void wsdefName1() {
 		expectedWsdefStart.append("package new.package1;\n");
 		expectedWsdefStart
 				.append("public class Ws1Factory implements WorkspaceFactory ");
@@ -126,7 +134,8 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		assertChangeWsdefTo("new.package1", "Ws1");
 	}
 
-	public void testWsdefName2() {
+	@Test
+	public void wsdefName2() {
 		expectedWsdefStart.append("package new.package2;\n");
 		expectedWsdefStart
 				.append("public class Ws2Factory implements WorkspaceFactory ");
@@ -134,21 +143,24 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 		assertChangeWsdefTo("new.package2", "Ws2");
 	}
 
-	public void testWsName1() {
+	@Test
+	public void wsName1() {
 		expectedWsdefStart.append("package new.package1;\n");
 		expectedWsdefStart.append("public class Ws1 implements Workspace ");
 
 		assertChangeWsTo("new.package1", "Ws1");
 	}
 
-	public void testWsName2() {
+	@Test
+	public void wsName2() {
 		expectedWsdefStart.append("package new.package2;\n");
 		expectedWsdefStart.append("public class Ws2 implements Workspace ");
 
 		assertChangeWsTo("new.package2", "Ws2");
 	}
 
-	public void testProposedWsdefPackage() {
+	@Test
+	public void proposedWsdefPackage() {
 		assertEquals("com.example.project.wsdef", ExampleWsDefGenerator
 				.proposedWsdefPackage("com.example.project.wsdefdef"));
 		assertEquals("org.oikarinen.reuhu.wsdef", ExampleWsDefGenerator
@@ -158,7 +170,8 @@ public class ExampleWsDefGeneratorTest extends TestCase {
 						"net.esimerkki.nonwsdefdefpackage"));
 	}
 
-	public void testProposedWsdefSimpleName() {
+	@Test
+	public void proposedWsdefSimpleName() {
 		assertEquals("Ws0Workspace",
 				ExampleWsDefGenerator.proposedWsdefSimpleName("ws0"));
 		assertEquals("OthernameWorkspace",

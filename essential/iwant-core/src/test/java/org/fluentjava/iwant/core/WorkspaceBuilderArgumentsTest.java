@@ -2,7 +2,7 @@ package org.fluentjava.iwant.core;
 
 public class WorkspaceBuilderArgumentsTest extends WorkspaceBuilderTestBase {
 
-	public void testTooFewArguments() {
+	@Test public void tooFewArguments() {
 		try {
 			WorkspaceBuilder
 					.build(new String[] { EmptyWorkspace.class.getName(),

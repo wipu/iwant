@@ -1,19 +1,25 @@
 package org.fluentjava.iwant.planner;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
 
 import org.fluentjava.iwant.plannerapi.Task;
 import org.fluentjava.iwant.plannermocks.ResourceMock;
 import org.fluentjava.iwant.plannermocks.TaskMock;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class TaskQueueTest extends TestCase {
+public class TaskQueueTest {
 
 	private TaskQueue queue;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		queue = null;
 	}
 
@@ -41,7 +47,8 @@ public class TaskQueueTest extends TestCase {
 		queue.markDone(allocation);
 	}
 
-	public void testObservableStateOfDeplessClean() {
+	@Test
+	public void observableStateOfDeplessClean() {
 		Task root = TaskMock.named("clean").clean().noDeps();
 		queue = new TaskQueue(root);
 
@@ -49,7 +56,8 @@ public class TaskQueueTest extends TestCase {
 		assertNull(queue.next());
 	}
 
-	public void testOneDeplessDirty() {
+	@Test
+	public void oneDeplessDirty() {
 		TaskMock root = TaskMock.named("dirty").dirty().noDeps();
 		queue = new TaskQueue(root);
 
@@ -61,7 +69,8 @@ public class TaskQueueTest extends TestCase {
 		queueIsEmpty();
 	}
 
-	public void testCleanTaskWithTwoDirtyDeps() {
+	@Test
+	public void cleanTaskWithTwoDirtyDeps() {
 		TaskMock dep1 = TaskMock.named("dep1").dirty().noDeps();
 		TaskMock dep2 = TaskMock.named("dep2").dirty().noDeps();
 		TaskMock root = TaskMock.named("root").clean().deps(dep1, dep2);
@@ -84,7 +93,8 @@ public class TaskQueueTest extends TestCase {
 
 	// resources
 
-	public void testOnlyOneTaskRunsAtATimeWhenUsingTheSameSingletonResource() {
+	@Test
+	public void onlyOneTaskRunsAtATimeWhenUsingTheSameSingletonResource() {
 		ResourceMock res = ResourceMock.named("r");
 		ResourcePoolMock pool = ResourcePoolMock.of(res);
 		TaskMock dep1 = TaskMock.named("dep1").dirty().uses(pool).noDeps();
@@ -105,7 +115,8 @@ public class TaskQueueTest extends TestCase {
 		// and so on
 	}
 
-	public void testTwoTasksRunsInParallelWhenTheirCommonPoolIsBigEnough() {
+	@Test
+	public void twoTasksRunsInParallelWhenTheirCommonPoolIsBigEnough() {
 		ResourceMock res1 = ResourceMock.named("r1");
 		ResourceMock res2 = ResourceMock.named("r2");
 		ResourcePoolMock pool = ResourcePoolMock.of(res1, res2);
@@ -126,7 +137,8 @@ public class TaskQueueTest extends TestCase {
 		// and so on
 	}
 
-	public void testTaskDoesNotReserveAnyResourcesIfItCantGetAll() {
+	@Test
+	public void taskDoesNotReserveAnyResourcesIfItCantGetAll() {
 		ResourceMock pool1res = ResourceMock.named("p1r");
 		ResourceMock pool2res = ResourceMock.named("p2r");
 		ResourcePoolMock pool1 = ResourcePoolMock.of(pool1res);
@@ -158,7 +170,8 @@ public class TaskQueueTest extends TestCase {
 
 	// non-parallel task
 
-	public void testNonParallelTaskDoesNotStartRefreshIfAnotherIsRunning() {
+	@Test
+	public void nonParallelTaskDoesNotStartRefreshIfAnotherIsRunning() {
 		TaskMock dep1 = TaskMock.named("dep1").dirty()
 				.doesNotSupportParallelism().noDeps();
 		TaskMock dep2 = TaskMock.named("dep2").dirty().noDeps();
@@ -179,7 +192,8 @@ public class TaskQueueTest extends TestCase {
 		queueIsEmpty();
 	}
 
-	public void testNormalTaskDoesNotStartRefreshIfNonParallelTaskIsRunning() {
+	@Test
+	public void normalTaskDoesNotStartRefreshIfNonParallelTaskIsRunning() {
 		TaskMock dep1 = TaskMock.named("dep1").dirty().noDeps();
 		TaskMock dep2 = TaskMock.named("dep2").dirty()
 				.doesNotSupportParallelism().noDeps();
@@ -202,7 +216,8 @@ public class TaskQueueTest extends TestCase {
 
 	// other
 
-	public void testManyInstancesOfTheSameTargetAreHandledAsOne() {
+	@Test
+	public void manyInstancesOfTheSameTargetAreHandledAsOne() {
 		TaskMock utilCopy1 = TaskMock.named("util").dirty().noDeps();
 		TaskMock utilCopy2 = TaskMock.named("util").dirty().noDeps();
 

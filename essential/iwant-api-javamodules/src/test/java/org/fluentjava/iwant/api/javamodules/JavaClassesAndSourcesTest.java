@@ -1,12 +1,14 @@
 package org.fluentjava.iwant.api.javamodules;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.fluentjava.iwant.api.model.Source;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+public class JavaClassesAndSourcesTest {
 
-public class JavaClassesAndSourcesTest extends TestCase {
-
-	public void testNameIsThatOfClasses() {
+	@Test
+	public void nameIsThatOfClasses() {
 		assertEquals("one", new JavaClassesAndSources(Source.underWsroot("one"),
 				Source.underWsroot("irrelevant")).name());
 		assertEquals("two", new JavaClassesAndSources(Source.underWsroot("two"),

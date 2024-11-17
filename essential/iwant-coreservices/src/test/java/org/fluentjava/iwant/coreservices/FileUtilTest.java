@@ -1,15 +1,20 @@
 package org.fluentjava.iwant.coreservices;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+public class FileUtilTest {
 
-public class FileUtilTest extends TestCase {
-
-	public void testRelativePathFailsWithDifferentParent() {
+	@Test
+	public void relativePathFailsWithDifferentParent() {
 		File parent = new File("/a");
 		try {
 			FileUtil.relativePathOfFileUnderParent(new File("/b"), parent);
@@ -19,7 +24,8 @@ public class FileUtilTest extends TestCase {
 		}
 	}
 
-	public void testRelativePathFailsWithFileUnderDifferentParent() {
+	@Test
+	public void relativePathFailsWithFileUnderDifferentParent() {
 		File parent = new File("/a");
 		try {
 			FileUtil.relativePathOfFileUnderParent(new File("/b/c"), parent);
@@ -29,7 +35,8 @@ public class FileUtilTest extends TestCase {
 		}
 	}
 
-	public void testRelativePathFailsWithRoot() {
+	@Test
+	public void relativePathFailsWithRoot() {
 		File parent = new File("/a");
 		try {
 			FileUtil.relativePathOfFileUnderParent(new File("/"), parent);
@@ -39,7 +46,8 @@ public class FileUtilTest extends TestCase {
 		}
 	}
 
-	public void testRelativePathFailsWithNull() {
+	@Test
+	public void relativePathFailsWithNull() {
 		File parent = new File("/a");
 		try {
 			FileUtil.relativePathOfFileUnderParent(null, parent);
@@ -49,31 +57,36 @@ public class FileUtilTest extends TestCase {
 		}
 	}
 
-	public void testRelativePathIsEmptyForParentItself() {
+	@Test
+	public void relativePathIsEmptyForParentItself() {
 		File parent = new File("/a");
 		assertEquals("",
 				FileUtil.relativePathOfFileUnderParent(new File("/a"), parent));
 	}
 
-	public void testRelativePathIsEmptyForRoot() {
+	@Test
+	public void relativePathIsEmptyForRoot() {
 		File parent = new File("/");
 		assertEquals("",
 				FileUtil.relativePathOfFileUnderParent(new File("/"), parent));
 	}
 
-	public void testRelativePathIsBForAB() {
+	@Test
+	public void relativePathIsBForAB() {
 		File parent = new File("/a");
 		assertEquals("b", FileUtil
 				.relativePathOfFileUnderParent(new File("/a/b"), parent));
 	}
 
-	public void testRelativePathIsBCForABC() {
+	@Test
+	public void relativePathIsBCForABC() {
 		File parent = new File("/a");
 		assertEquals("b/c", FileUtil
 				.relativePathOfFileUnderParent(new File("/a/b/c"), parent));
 	}
 
-	public void testCopyMissingFilesExcludesSvnMetafiles() throws IOException {
+	@Test
+	public void copyMissingFilesExcludesSvnMetafiles() throws IOException {
 		TestArea testArea = TestArea.forTest(this);
 		File from = testArea.newDir("from");
 		testArea.newDir("from/.svn");
@@ -92,7 +105,8 @@ public class FileUtilTest extends TestCase {
 		assertTrue(new File(to, "b/B").exists());
 	}
 
-	public void testCopyRecursivelyIncludesSvnMetafilesIfToldSo()
+	@Test
+	public void copyRecursivelyIncludesSvnMetafilesIfToldSo()
 			throws IOException {
 		TestArea testArea = TestArea.forTest(this);
 		File from = testArea.newDir("from");
@@ -112,7 +126,8 @@ public class FileUtilTest extends TestCase {
 		assertTrue(new File(to, "b/B").exists());
 	}
 
-	public void testCopyRecursivelyPreservedXFlag() throws IOException {
+	@Test
+	public void copyRecursivelyPreservedXFlag() throws IOException {
 		TestArea testArea = TestArea.forTest(this);
 		File from = testArea.newDir("from");
 		testArea.hasFile("from/x", "").setExecutable(true);

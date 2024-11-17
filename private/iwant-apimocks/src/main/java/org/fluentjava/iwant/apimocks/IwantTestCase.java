@@ -13,10 +13,10 @@ import org.fluentjava.iwant.coreservices.StreamUtil;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import junit.framework.TestCase;
-
-public abstract class IwantTestCase extends TestCase {
+public abstract class IwantTestCase {
 
 	private IwantMockEnvironment e;
 	private TestArea testArea;
@@ -31,8 +31,8 @@ public abstract class IwantTestCase extends TestCase {
 	private Iwant iwant;
 	private IwantCoreServices realCoreServices;
 
-	@Override
-	public final void setUp() throws Exception {
+	@BeforeEach
+	public final void before() throws Exception {
 		e = IwantMockEnvironment.forTest(this).end();
 		testArea = e.testArea();
 		wsRoot = e.wsRoot();
@@ -56,7 +56,7 @@ public abstract class IwantTestCase extends TestCase {
 		// override if needed
 	}
 
-	@Override
+	@AfterEach
 	public final void tearDown() throws Exception {
 		if (captureOn) {
 			restoreSystemOutAndErr();

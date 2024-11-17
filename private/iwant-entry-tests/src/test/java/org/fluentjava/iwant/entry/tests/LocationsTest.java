@@ -1,5 +1,8 @@
 package org.fluentjava.iwant.entry.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -8,12 +11,12 @@ import org.fluentjava.iwant.entry.Iwant.IwantNetwork;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+public class LocationsTest {
 
-public class LocationsTest extends TestCase {
-
-	public void testNetworkGetter() {
+	@Test
+	public void networkGetter() {
 		TestArea testArea = TestArea.forTest(this);
 		IwantNetwork network = new IwantNetworkMock(testArea);
 		Iwant iwant = Iwant.using(network);
@@ -21,7 +24,8 @@ public class LocationsTest extends TestCase {
 		assertSame(network, iwant.network());
 	}
 
-	public void testRealCacheLocationEscapesUrl() throws MalformedURLException {
+	@Test
+	public void realCacheLocationEscapesUrl() throws MalformedURLException {
 		URL nastyUrl = new URL(
 				"http://localhost/very/../nasty?url&needs=\"escaping");
 		assertEquals(

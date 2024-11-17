@@ -9,7 +9,7 @@ import java.io.PrintStream;
 
 import junit.framework.TestCase;
 
-public abstract class WorkspaceBuilderTestBase extends TestCase {
+public abstract class WorkspaceBuilderTestBase{
 
 	private static final boolean SHOW_OUTPUT = false;
 

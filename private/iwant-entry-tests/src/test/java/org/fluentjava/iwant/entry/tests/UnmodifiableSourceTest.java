@@ -6,15 +6,14 @@ import java.net.URL;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableSource;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableUrl;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableZip;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.testing.EqualsTester;
 
-import junit.framework.TestCase;
+public class UnmodifiableSourceTest {
 
-public class UnmodifiableSourceTest extends TestCase {
-
-	public void testEqualsComparesTypeAndLocation()
-			throws MalformedURLException {
+	@Test
+	public void equalsComparesTypeAndLocation() throws MalformedURLException {
 		UnmodifiableSource<URL> url1a = new UnmodifiableUrl(
 				new URL("http://localhost/one"));
 		UnmodifiableSource<URL> url1b = new UnmodifiableUrl(url1a.location());

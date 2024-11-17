@@ -1,5 +1,9 @@
 package org.fluentjava.iwant.coreservices;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,10 +11,10 @@ import java.util.Properties;
 
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class IwantCoreServicesImplTest extends TestCase {
+public class IwantCoreServicesImplTest {
 
 	private TestArea testArea;
 	private Properties sysprops;
@@ -18,8 +22,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 	private Iwant iwant;
 	private IwantCoreServicesImpl services;
 
-	@Override
-	protected void setUp() throws Exception {
+	@BeforeEach
+	protected void before() throws Exception {
 		iwant = null;
 		testArea = TestArea.forTest(this);
 		sysprops = new Properties();
@@ -54,7 +58,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 		existingProgramFilesGitBash();
 	}
 
-	public void testWindowsBashExeIsNullOnLinux() {
+	@Test
+	public void windowsBashExeIsNullOnLinux() {
 		sysprops.put("os.name", "Linux");
 
 		allWindowsBashesExist();
@@ -62,7 +67,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 		assertNull(services.windowsBashExe());
 	}
 
-	public void testWindosBashExeIsNullOnUnknownOs() {
+	@Test
+	public void windosBashExeIsNullOnUnknownOs() {
 		sysprops.put("os.name", "SomethingExotic");
 
 		allWindowsBashesExist();
@@ -70,21 +76,24 @@ public class IwantCoreServicesImplTest extends TestCase {
 		assertNull(services.windowsBashExe());
 	}
 
-	public void testCygwin64ExeIsFoundOnWindows7() {
+	@Test
+	public void cygwin64ExeIsFoundOnWindows7() {
 		sysprops.put("os.name", "Windows 7");
 		File bashExe = existingCygwin64Bash();
 
 		assertEquals(bashExe, services.windowsBashExe());
 	}
 
-	public void testCygwinExeIsFoundOnWindows7() {
+	@Test
+	public void cygwinExeIsFoundOnWindows7() {
 		sysprops.put("os.name", "Windows 7");
 		File bashExe = existingCygwinBash();
 
 		assertEquals(bashExe, services.windowsBashExe());
 	}
 
-	public void testHomeGitBashExeIsFoundOnWindows7() {
+	@Test
+	public void homeGitBashExeIsFoundOnWindows7() {
 		sysprops.put("os.name", "Windows 7");
 
 		File bashExe = existingHomeGitBash();
@@ -92,7 +101,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 		assertEquals(bashExe, services.windowsBashExe());
 	}
 
-	public void testProgramFilesGitBashExeIsFoundOnWindows7() {
+	@Test
+	public void programFilesGitBashExeIsFoundOnWindows7() {
 		sysprops.put("os.name", "Windows 7");
 
 		File bashExe = existingProgramFilesGitBash();
@@ -100,7 +110,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 		assertEquals(bashExe, services.windowsBashExe());
 	}
 
-	public void testGitBashDeducedFromEnvIsPreferredOverExistingBashes() {
+	@Test
+	public void gitBashDeducedFromEnvIsPreferredOverExistingBashes() {
 		File customBash = testArea.hasFile("custom/gitbash/bin/bash.exe",
 				"ignored");
 		File customMingw = testArea.newDir("custom/gitbash/mingw");
@@ -115,7 +126,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 		assertEquals("/c/a/path", services.toNativeBashFormat("C:/a/path"));
 	}
 
-	public void testEnvVariableShellIsIgnoredIfWeCannotDeduceItsNature() {
+	@Test
+	public void envVariableShellIsIgnoredIfWeCannotDeduceItsNature() {
 		File customBash = testArea.hasFile("custom/gitbash/bin/bash.exe",
 				"ignored");
 		sysprops.put("os.name", "Windows 7");
@@ -133,7 +145,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 				services.toNativeBashFormat("C:/a/path"));
 	}
 
-	public void testCygwin64IsPreferredOverCygwinAndGitBash() {
+	@Test
+	public void cygwin64IsPreferredOverCygwinAndGitBash() {
 		sysprops.put("os.name", "Windows 7");
 		File bash64Exe = existingCygwin64Bash();
 		existingCygwinBash();
@@ -143,14 +156,16 @@ public class IwantCoreServicesImplTest extends TestCase {
 		assertEquals(bash64Exe, services.windowsBashExe());
 	}
 
-	public void testCygwin64ExeIsFoundOnSomeUnknownFlavourOfWindows() {
+	@Test
+	public void cygwin64ExeIsFoundOnSomeUnknownFlavourOfWindows() {
 		sysprops.put("os.name", "Windows the last one");
 		File bashExe = existingCygwin64Bash();
 
 		assertEquals(bashExe, services.windowsBashExe());
 	}
 
-	public void testMissingBashIsAnErrorOnWindows7() {
+	@Test
+	public void missingBashIsAnErrorOnWindows7() {
 		sysprops.put("os.name", "Windows 7");
 
 		try {
@@ -162,7 +177,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 		}
 	}
 
-	public void testNativeBashFormatIsTheOriginalOnNonWindows() {
+	@Test
+	public void nativeBashFormatIsTheOriginalOnNonWindows() {
 		sysprops.put("os.name", "Anything but Windows");
 
 		assertEquals("C:\\this\\is\\fine",
@@ -171,7 +187,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 				services.toNativeBashFormat("C:/also/fine"));
 	}
 
-	public void testNativeBashFormatIsCygdriveFormatOnWindowsWithCygwin64() {
+	@Test
+	public void nativeBashFormatIsCygdriveFormatOnWindowsWithCygwin64() {
 		sysprops.put("os.name", "Windows 7");
 		existingCygwin64Bash();
 
@@ -181,7 +198,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 				services.toNativeBashFormat("C:/some/path"));
 	}
 
-	public void testNativeBashFormatIsCygdriveFormatOnWindowsWithCygwin() {
+	@Test
+	public void nativeBashFormatIsCygdriveFormatOnWindowsWithCygwin() {
 		sysprops.put("os.name", "Windows 7");
 		existingCygwinBash();
 
@@ -191,7 +209,8 @@ public class IwantCoreServicesImplTest extends TestCase {
 				services.toNativeBashFormat("C:/some/path"));
 	}
 
-	public void testNativeBashFormatIsSlashCFormatOnWindowsWithGitBash() {
+	@Test
+	public void nativeBashFormatIsSlashCFormatOnWindowsWithGitBash() {
 		sysprops.put("os.name", "Windows 7");
 		existingHomeGitBash();
 

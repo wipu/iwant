@@ -54,7 +54,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		super.tearDown();
 	}
 
-	public void testMissingAsSomebodyIsAnInternalFailure() throws Exception {
+	@Test public void missingAsSomebodyIsAnInternalFailure() throws Exception {
 		try {
 			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "",
 					iwantLibs });
@@ -68,7 +68,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				+ "/as-x-developer/i-have\n", err());
 	}
 
-	public void testMissingIHaveIsAnInternalFailure() throws Exception {
+	@Test public void missingIHaveIsAnInternalFailure() throws Exception {
 		directoryExists("as-x-developer");
 		try {
 			Iwant.main(new String[] { wsRoot() + "/as-x-developer", "",
@@ -83,7 +83,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				+ "/as-x-developer/i-have\n", err());
 	}
 
-	public void testMissingIHaveWsInfoGetsCreatedThenBuildAborts()
+	@Test public void missingIHaveWsInfoGetsCreatedThenBuildAborts()
 			throws Exception {
 		directoryExists("as-x-developer/i-have");
 		try {
@@ -104,7 +104,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				contentOf(wsRoot() + "/as-x-developer/i-have/ws-info.conf"));
 	}
 
-	public void testMissingWsDefJavaGetsCreatedThenBuildAborts()
+	@Test public void missingWsDefJavaGetsCreatedThenBuildAborts()
 			throws Exception {
 		directoryExists("as-x-developer/i-have");
 		file("as-x-developer/i-have/ws-info.conf").withContent();
@@ -135,7 +135,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				.contains("class TestWorkspace implements WorkspaceDefinition {"));
 	}
 
-	public void testEmptyWishCausesAHelpMessage() throws Exception {
+	@Test public void emptyWishCausesAHelpMessage() throws Exception {
 		testMissingWsDefJavaGetsCreatedThenBuildAborts();
 		startOfOutAndErrCapture();
 		try {
@@ -150,7 +150,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				err().startsWith("perr:Please tell what you want."));
 	}
 
-	public void testEmptyWishAlsoGeneratesWishScripts() throws Exception {
+	@Test public void emptyWishAlsoGeneratesWishScripts() throws Exception {
 		testEmptyWishCausesAHelpMessage();
 		// just a few examples asserted, descript tests more:
 		assertEquals("#!/bin/bash\n" + "HERE=$(dirname \"$0\")\n"
@@ -168,7 +168,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				.canExecute());
 	}
 
-	public void testWishScriptsAreNotDeletedWhenTargetDetectionFails()
+	@Test public void wishScriptsAreNotDeletedWhenTargetDetectionFails()
 			throws Exception {
 		testEmptyWishAlsoGeneratesWishScripts();
 		file(
@@ -198,7 +198,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				.length() > 0);
 	}
 
-	public void testListOfTargetsWorksAndRenamesWishScriptAfterTargetRename()
+	@Test public void listOfTargetsWorksAndRenamesWishScriptAfterTargetRename()
 			throws Exception {
 		testEmptyWishAlsoGeneratesWishScripts();
 
@@ -227,7 +227,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				.exists());
 	}
 
-	public void testListOfTargets() throws Exception {
+	@Test public void listOfTargets() throws Exception {
 		testMissingWsDefJavaGetsCreatedThenBuildAborts();
 		startOfOutAndErrCapture();
 
@@ -237,7 +237,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 		assertEquals("", err());
 	}
 
-	public void testRefreshingNonExistentTargetCausesErrorMessage()
+	@Test public void refreshingNonExistentTargetCausesErrorMessage()
 			throws Exception {
 		testMissingWsDefJavaGetsCreatedThenBuildAborts();
 		startOfOutAndErrCapture();
@@ -254,7 +254,7 @@ public class IwantTest extends WorkspaceBuilderTestBase {
 				err());
 	}
 
-	public void testRefreshingOfAConstant() throws Exception {
+	@Test public void refreshingOfAConstant() throws Exception {
 		testMissingWsDefJavaGetsCreatedThenBuildAborts();
 		startOfOutAndErrCapture();
 

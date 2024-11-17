@@ -1,23 +1,27 @@
 package org.fluentjava.iwant.entry.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class TheSoleChildOfTest extends TestCase {
+public class TheSoleChildOfTest {
 
 	private TestArea testArea;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		testArea = TestArea.forTest(this);
 	}
 
-	public void testNonDirectoryIsError() {
+	@Test
+	public void nonDirectoryIsError() {
 		File nondir = testArea.hasFile("nondir", "anything");
 
 		try {
@@ -29,7 +33,8 @@ public class TheSoleChildOfTest extends TestCase {
 		}
 	}
 
-	public void testEmptyDirectoryIsError() {
+	@Test
+	public void emptyDirectoryIsError() {
 		File dir = testArea.newDir("empty");
 
 		try {
@@ -41,7 +46,8 @@ public class TheSoleChildOfTest extends TestCase {
 		}
 	}
 
-	public void testDirectoryWith2ChildrenIsError() {
+	@Test
+	public void directoryWith2ChildrenIsError() {
 		File dir = testArea.newDir("dir");
 		testArea.hasFile("dir/1", "1");
 		testArea.hasFile("dir/2", "2");
@@ -55,7 +61,8 @@ public class TheSoleChildOfTest extends TestCase {
 		}
 	}
 
-	public void testSoleChildOfDirIsReturned() {
+	@Test
+	public void soleChildOfDirIsReturned() {
 		File dir = testArea.newDir("dir");
 		File theone = testArea.hasFile("dir/theone", "theone");
 

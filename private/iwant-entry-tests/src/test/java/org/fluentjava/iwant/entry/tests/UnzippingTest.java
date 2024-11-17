@@ -1,5 +1,10 @@
 package org.fluentjava.iwant.entry.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,17 +16,17 @@ import org.fluentjava.iwant.entry.Iwant.IwantException;
 import org.fluentjava.iwant.entry.Iwant.UnmodifiableZip;
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.testarea.TestArea;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class UnzippingTest extends TestCase {
+public class UnzippingTest {
 
 	private TestArea testArea;
 	private IwantNetworkMock network;
 	private Iwant iwant;
 
-	@Override
-	public void setUp() {
+	@BeforeEach
+	public void before() {
 		testArea = TestArea.forTest(this);
 		network = new IwantNetworkMock(testArea);
 		iwant = Iwant.using(network);
@@ -31,7 +36,8 @@ public class UnzippingTest extends TestCase {
 		return getClass().getResource("dir-containing-a-and-b.zip");
 	}
 
-	public void testStreamIsCorrectlyUnzippedToCacheWhenCacheDoesNotExist()
+	@Test
+	public void streamIsCorrectlyUnzippedToCacheWhenCacheDoesNotExist()
 			throws FileNotFoundException, IOException {
 		URL url = dirContainingAAndBZip();
 		UnmodifiableZip src = new UnmodifiableZip(url);
@@ -48,7 +54,8 @@ public class UnzippingTest extends TestCase {
 		assertEquals("b\n", testArea.contentOf(new File(unzipped, "dir/b")));
 	}
 
-	public void testCacheIsReturnedWithoutUnzippingWhenCacheExists() {
+	@Test
+	public void cacheIsReturnedWithoutUnzippingWhenCacheExists() {
 		URL zip = Iwant
 				.fileToUrl(new File(testArea.root(), "not-to-be-accessed"));
 		File unzipped = network.cachesZipAt(zip, "unzipped");
@@ -62,7 +69,8 @@ public class UnzippingTest extends TestCase {
 		assertEquals("unzipped content", testArea.contentOf("unzipped/file"));
 	}
 
-	public void testUnzipHandlesSubDirectoriesToo()
+	@Test
+	public void unzipHandlesSubDirectoriesToo()
 			throws FileNotFoundException, IOException {
 		URL url = getClass().getResource("zip-with-subdir.zip");
 		UnmodifiableZip src = new UnmodifiableZip(url);
@@ -83,7 +91,8 @@ public class UnzippingTest extends TestCase {
 	/**
 	 * This way the error message will be seen again on later runs
 	 */
-	public void testUnzipLeavesNoResultIfUnzipFails() throws IOException {
+	@Test
+	public void unzipLeavesNoResultIfUnzipFails() throws IOException {
 		File zip = new File(testArea.root(), "zip");
 		UnmodifiableZip src = new UnmodifiableZip(zip.toURI().toURL());
 		File cachedZip = network.cachesAt(src, "unzipped");

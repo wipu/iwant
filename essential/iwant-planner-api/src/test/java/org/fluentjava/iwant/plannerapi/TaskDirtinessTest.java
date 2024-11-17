@@ -1,10 +1,14 @@
 package org.fluentjava.iwant.plannerapi;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TaskDirtinessTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
-	public void testDirtinessBoolean() {
+public class TaskDirtinessTest {
+
+	@Test
+	public void dirtinessBoolean() {
 		assertFalse(TaskDirtiness.NOT_DIRTY.isDirty());
 		assertTrue(TaskDirtiness.DIRTY_DESCRIPTOR_CHANGED.isDirty());
 		assertTrue(TaskDirtiness.DIRTY_CACHED_CONTENT_MISSING.isDirty());
