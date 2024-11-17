@@ -2,6 +2,7 @@ package org.fluentjava.iwant.plugin.findbugs;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -170,7 +171,8 @@ public class FindbugsReport extends TargetBase {
 		Iwant.mkdirs(dest);
 
 		File buildXml = new File(dest, "build.xml");
-		FileUtils.writeStringToFile(buildXml, antScript(ctx));
+		FileUtils.writeStringToFile(buildXml, antScript(ctx),
+				StandardCharsets.UTF_8);
 
 		List<File> cachedAnts = new ArrayList<>();
 		cachedAnts.add(ctx.cached(antJar));

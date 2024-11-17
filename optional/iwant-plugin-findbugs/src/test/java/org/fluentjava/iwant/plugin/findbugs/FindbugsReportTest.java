@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.FileUtils;
 import org.fluentjava.iwant.api.javamodules.JavaBinModule;
@@ -72,7 +73,8 @@ public class FindbugsReportTest extends IwantTestCase {
 		if (!reportFile.exists()) {
 			return null;
 		}
-		String reportFileContent = FileUtils.readFileToString(reportFile);
+		String reportFileContent = FileUtils.readFileToString(reportFile,
+				StandardCharsets.UTF_8);
 		return reportFileContent;
 	}
 

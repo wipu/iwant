@@ -3,6 +3,7 @@ package org.fluentjava.iwant.plugin.jacoco;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -229,7 +230,8 @@ public class JacocoCoverage extends TargetBase {
 	private static List<String> mainArgsFromFile(File argumentsFile)
 			throws IOException {
 		List<String> lines = new ArrayList<>();
-		for (Object line : FileUtils.readLines(argumentsFile)) {
+		for (Object line : FileUtils.readLines(argumentsFile,
+				StandardCharsets.UTF_8)) {
 			lines.add((String) line);
 		}
 		return lines;

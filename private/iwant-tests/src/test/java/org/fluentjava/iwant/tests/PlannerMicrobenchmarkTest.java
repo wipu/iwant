@@ -3,6 +3,7 @@ package org.fluentjava.iwant.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -150,7 +151,7 @@ public class PlannerMicrobenchmarkTest {
 			for (T dep : deps) {
 				File cachedDep = ctx.cached(dep);
 				FileUtils.writeStringToFile(new File(dest, dep.name()),
-						cachedDep.getAbsolutePath());
+						cachedDep.getAbsolutePath(), StandardCharsets.UTF_8);
 			}
 			targetRefreshCount.incrementAndGet();
 		}

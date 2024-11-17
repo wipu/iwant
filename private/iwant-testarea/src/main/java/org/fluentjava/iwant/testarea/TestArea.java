@@ -1,5 +1,7 @@
 package org.fluentjava.iwant.testarea;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -7,8 +9,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import org.fluentjava.iwant.entry.Iwant;
-
-import junit.framework.Assert;
 
 public final class TestArea {
 
@@ -144,8 +144,8 @@ public final class TestArea {
 	public void shallContainFragmentIn(String path, String fragment) {
 		String actual = contentOf(path);
 		if (!actual.contains(fragment)) {
-			Assert.assertEquals(
-					"File " + path + "\nshould contain:\n" + fragment, actual);
+			assertEquals("File " + path + "\nshould contain:\n" + fragment,
+					actual);
 		}
 	}
 

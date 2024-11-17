@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,8 @@ public class IwantWsRootFinderTest {
 				"as-iwant-developer/i-have/conf/ws-info");
 
 		assertTrue(wsInfo.exists());
-		assertTrue(
-				FileUtils.readFileToString(wsInfo).contains("WSNAME=iwant\n"));
+		assertTrue(FileUtils.readFileToString(wsInfo, StandardCharsets.UTF_8)
+				.contains("WSNAME=iwant\n"));
 	}
 
 	@Test
@@ -27,7 +28,8 @@ public class IwantWsRootFinderTest {
 						+ "org/fluentjava/iwant/api/wsdef/MockedApiWsdef.java");
 
 		assertTrue(mockedApiWsdef.exists());
-		assertTrue(FileUtils.readFileToString(mockedApiWsdef)
+		assertTrue(FileUtils
+				.readFileToString(mockedApiWsdef, StandardCharsets.UTF_8)
 				.contains("public class MockedApiWsdef"));
 	}
 

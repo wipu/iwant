@@ -1,5 +1,7 @@
 package org.fluentjava.iwant.plannermocks;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,8 +12,6 @@ import org.fluentjava.iwant.plannerapi.Resource;
 import org.fluentjava.iwant.plannerapi.ResourcePool;
 import org.fluentjava.iwant.plannerapi.Task;
 import org.fluentjava.iwant.plannerapi.TaskDirtiness;
-
-import junit.framework.Assert;
 
 public class TaskMock implements Task {
 
@@ -100,7 +100,7 @@ public class TaskMock implements Task {
 					throw new IllegalStateException(e);
 				}
 			}
-			Assert.assertEquals(Arrays.toString(expectedAllocatedResource),
+			assertEquals(Arrays.toString(expectedAllocatedResource),
 					allocatedResources.values().toString());
 		}
 		log(this, "did eventually start refresh with ",

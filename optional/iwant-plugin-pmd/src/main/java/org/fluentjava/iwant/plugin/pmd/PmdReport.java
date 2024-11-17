@@ -3,6 +3,7 @@ package org.fluentjava.iwant.plugin.pmd;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -132,7 +133,8 @@ public class PmdReport extends TargetBase {
 
 	private File generatedRuleset(File dest) throws IOException {
 		File generated = new File(dest, "ruleset.xml");
-		FileUtils.writeStringToFile(generated, rulesetXml());
+		FileUtils.writeStringToFile(generated, rulesetXml(),
+				StandardCharsets.UTF_8);
 		return generated;
 	}
 

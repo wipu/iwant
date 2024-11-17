@@ -108,10 +108,6 @@ public class IwantModules extends JavaModules {
 					.name("jaxen").version("2.0.0").jar())
 			.end();
 
-	private static final JavaModule junit() {
-		return JavaBinModule.providing(TestedIwantDependencies.junit()).end();
-	}
-
 	private static final Set<JavaModule> junitJupiterModules() {
 		// TODO rm redundancy between this and WorkspaceDefinitionContextImpl
 		Set<JavaModule> deps = new LinkedHashSet<>();
@@ -219,7 +215,7 @@ public class IwantModules extends JavaModules {
 
 	private JavaSrcModule iwantTestarea() {
 		return lazy(() -> privateModule("testarea").noTestJava()
-				.mainDeps(iwantEntry(), junit()).end());
+				.mainDeps(iwantEntry()).mainDeps(junitJupiterModules()).end());
 	}
 
 	private JavaSrcModule iwantEntrymocks() {
@@ -319,7 +315,8 @@ public class IwantModules extends JavaModules {
 
 	private JavaSrcModule iwantPlannerMocks() {
 		return lazy(() -> essentialModule("planner-mocks").noTestJava()
-				.mainDeps(iwantPlannerApi(), junit()).end());
+				.mainDeps(iwantPlannerApi()).mainDeps(junitJupiterModules())
+				.end());
 	}
 
 	private JavaSrcModule iwantPlanner() {
@@ -500,9 +497,9 @@ public class IwantModules extends JavaModules {
 						iwantEclipseSettings(), iwantPluginAnt(),
 						iwantPluginFindbugs(), iwantPluginGithub(),
 						iwantPluginJacoco(), iwantPluginPmd(),
-						iwantPluginTestng(), iwantPluginWar(), junit(),
-						scalaLibrary, testng)
-				.end());
+						iwantPluginTestng(), iwantPluginWar(), scalaLibrary,
+						testng)
+				.mainDeps(junitJupiterModules()).end());
 	}
 
 	private final Target extendedIwantEnumsJava = new ExtendedIwantEnums(
