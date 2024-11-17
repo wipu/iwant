@@ -8,7 +8,7 @@ import java.util.Map;
 import org.fluentjava.iwant.api.core.Concatenated;
 import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
 import org.fluentjava.iwant.api.model.Target;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TargetNameCheckerMicrobenchmarkTest {
 

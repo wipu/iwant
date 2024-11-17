@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 
 import org.fluentjava.iwant.api.core.ScriptGenerated;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BashScriptTest {
 

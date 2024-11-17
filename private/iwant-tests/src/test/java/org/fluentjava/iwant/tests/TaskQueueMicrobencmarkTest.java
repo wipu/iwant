@@ -1,6 +1,6 @@
 package org.fluentjava.iwant.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +17,7 @@ import org.fluentjava.iwant.plannerapi.Resource;
 import org.fluentjava.iwant.plannerapi.ResourcePool;
 import org.fluentjava.iwant.plannerapi.Task;
 import org.fluentjava.iwant.plannerapi.TaskDirtiness;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TaskQueueMicrobencmarkTest {
 

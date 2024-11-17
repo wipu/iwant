@@ -1,7 +1,7 @@
 package org.fluentjava.iwant.core.javafinder;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Set;
 
@@ -12,14 +12,14 @@ import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.wsdef.IwantPluginWishes;
 import org.fluentjava.iwant.api.wsdef.WishDefinitionContext;
 import org.fluentjava.iwant.entry.Iwant.IwantException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class WsdefJavaOfTest {
 
 	private Ctx ctx;
 
-	@Before
+	@BeforeEach
 	public void before() {
 		ctx = new Ctx();
 	}

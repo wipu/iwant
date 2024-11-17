@@ -1,7 +1,7 @@
 package org.fluentjava.iwant.core.javafinder;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
@@ -9,7 +9,7 @@ import org.fluentjava.iwant.api.javamodules.JavaModule;
 import org.fluentjava.iwant.api.model.ExternalSource;
 import org.fluentjava.iwant.api.model.Path;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PathToClasspathLocationOfTest {
 

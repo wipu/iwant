@@ -1,16 +1,16 @@
 package org.fluentjava.iwant.api.antrunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.Project;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class MinimalAntLoggerTest {
 
@@ -19,7 +19,7 @@ public class MinimalAntLoggerTest {
 	private PrintStream err;
 	private Project project;
 
-	@Before
+	@BeforeEach
 	public void before() {
 		logger = new MinimalAntLogger();
 		errBytes = new ByteArrayOutputStream();
@@ -28,7 +28,7 @@ public class MinimalAntLoggerTest {
 		project = new Project();
 	}
 
-	@After
+	@AfterEach
 	public void after() {
 		err.close();
 	}

@@ -1,8 +1,8 @@
 package org.fluentjava.iwant.entry.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,10 +31,10 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.commons.io.FileUtils;
 import org.fluentjava.iwant.entry.Iwant;
 import org.fluentjava.iwant.testarea.TestArea;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
@@ -53,12 +53,12 @@ public class HttpDownloadTest {
 	private SSLSocketFactory defaultSocketFactory;
 	private TrustManager[] defaultTrustManagers;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		vertx = Vertx.vertx();
 	}
 
-	@Before
+	@BeforeEach
 	public void before() throws InterruptedException, URISyntaxException,
 			NoSuchAlgorithmException, KeyStoreException, KeyManagementException,
 			UnrecoverableKeyException {
@@ -67,7 +67,7 @@ public class HttpDownloadTest {
 		disableCertificateChecks();
 	}
 
-	@After
+	@AfterEach
 	public void after() throws InterruptedException, KeyManagementException,
 			NoSuchAlgorithmException {
 		enableDefaultCertificateChecks();

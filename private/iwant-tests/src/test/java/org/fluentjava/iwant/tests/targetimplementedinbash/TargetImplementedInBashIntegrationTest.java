@@ -1,6 +1,6 @@
 package org.fluentjava.iwant.tests.targetimplementedinbash;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -23,10 +23,10 @@ import org.fluentjava.iwant.entry3.Iwant3.CombinedSrcFromUnmodifiableIwantEssent
 import org.fluentjava.iwant.entrymocks.IwantNetworkMock;
 import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import org.fluentjava.iwant.testarea.TestArea;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TargetImplementedInBashIntegrationTest {
 
@@ -44,13 +44,13 @@ public class TargetImplementedInBashIntegrationTest {
 	private ByteArrayOutputStream err;
 	private String originalLineSeparator;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		File iwantWs = IwantWsRootFinder.essential().getParentFile();
 		srcDir = new File(iwantWs, "private/iwant-tests/src/test/java");
 	}
 
-	@Before
+	@BeforeEach
 	public void before() throws Exception {
 		testArea = TestArea.forTest(this);
 		wsRoot = new File(testArea.root(), "wsroot");
@@ -134,7 +134,7 @@ public class TargetImplementedInBashIntegrationTest {
 		return err.toString();
 	}
 
-	@After
+	@AfterEach
 	public void after() {
 		System.setIn(originalIn);
 		System.setOut(originalOut);

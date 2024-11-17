@@ -1,7 +1,7 @@
 package org.fluentjava.iwant.entry3;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 
@@ -10,7 +10,7 @@ import org.fluentjava.iwant.api.core.Concatenated.ConcatenatedBuilder;
 import org.fluentjava.iwant.api.model.Path;
 import org.fluentjava.iwant.api.model.Source;
 import org.fluentjava.iwant.api.model.Target;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TargetNameCheckerTest {
 

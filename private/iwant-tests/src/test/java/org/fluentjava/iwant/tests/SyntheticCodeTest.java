@@ -11,7 +11,7 @@ import org.fluentjava.iwant.iwantwsrootfinder.IwantWsRootFinder;
 import org.fluentjava.iwant.plannerapi.TaskDirtiness;
 import org.fluentjava.iwant.plugin.findbugs.FindbugsOutputFormat;
 import org.fluentjava.iwant.plugin.github.FromGithub;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SyntheticCodeTest {
 

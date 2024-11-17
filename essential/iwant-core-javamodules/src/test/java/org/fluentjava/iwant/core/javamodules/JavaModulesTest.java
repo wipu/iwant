@@ -1,7 +1,7 @@
 package org.fluentjava.iwant.core.javamodules;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +16,7 @@ import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.zip.Jar;
 import org.fluentjava.iwant.core.download.Downloaded;
 import org.fluentjava.iwant.core.download.GnvArtifact;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JavaModulesTest {
 

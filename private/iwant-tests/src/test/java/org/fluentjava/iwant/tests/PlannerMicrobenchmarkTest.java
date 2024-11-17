@@ -1,6 +1,6 @@
 package org.fluentjava.iwant.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ import org.fluentjava.iwant.entry3.TargetRefreshTask;
 import org.fluentjava.iwant.planner.Planner;
 import org.fluentjava.iwant.plannerapi.Task;
 import org.fluentjava.iwant.testarea.TestArea;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class PlannerMicrobenchmarkTest {
 
@@ -36,7 +36,7 @@ public class PlannerMicrobenchmarkTest {
 	private int targetCount;
 	private AtomicInteger targetRefreshCount;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		testArea = TestArea.forTest(this);
 		wsRoot = testArea.newDir("wsroot");

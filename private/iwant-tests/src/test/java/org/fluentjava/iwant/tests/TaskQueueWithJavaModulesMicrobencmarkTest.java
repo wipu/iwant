@@ -1,6 +1,6 @@
 package org.fluentjava.iwant.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,8 +26,8 @@ import org.fluentjava.iwant.planner.TaskAllocation;
 import org.fluentjava.iwant.planner.TaskQueue;
 import org.fluentjava.iwant.plannerapi.Task;
 import org.fluentjava.iwant.testarea.TestArea;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TaskQueueWithJavaModulesMicrobencmarkTest {
 
@@ -35,7 +35,7 @@ public class TaskQueueWithJavaModulesMicrobencmarkTest {
 	private CachesMock caches;
 	private TargetEvaluationContext ctx;
 
-	@Before
+	@BeforeEach
 	public void before() {
 		testArea = TestArea.forTest(this);
 		caches = new CachesMock(testArea.root());

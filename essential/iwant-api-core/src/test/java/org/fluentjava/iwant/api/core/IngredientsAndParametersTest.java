@@ -1,6 +1,6 @@
 package org.fluentjava.iwant.api.core;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.fluentjava.iwant.api.model.Target;
 import org.fluentjava.iwant.api.model.TargetEvaluationContext;
 import org.fluentjava.iwant.api.target.TargetBase;
 import org.fluentjava.iwant.apimocks.TargetMock;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class IngredientsAndParametersTest {
 
@@ -20,7 +20,7 @@ public class IngredientsAndParametersTest {
 	private Path i3s;
 	private Path i4t;
 
-	@Before
+	@BeforeEach
 	public void before() {
 		i1s = Source.underWsroot("i1");
 		i2t = new TargetMock("i2");
