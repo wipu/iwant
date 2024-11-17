@@ -61,8 +61,7 @@ public class AsEmbeddedIwantUser {
 				}
 
 				public File asPath() {
-					try {
-						ByteArrayOutputStream out = new ByteArrayOutputStream();
+					try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 						OutputStream err = System.err;
 						File iwantApiClasses = null;
 						Iwant iwant = Iwant.usingRealNetwork();
@@ -77,7 +76,6 @@ public class AsEmbeddedIwantUser {
 								wsRoot, iwant, wsInfo, caches, workerCount,
 								wsdefdefJavaModule, wsdefJavaModule, wsdefCtx);
 						evaluator.asPath(target);
-						out.close();
 						String cachedTarget = out.toString();
 						// TODO refactoring needed, we shouldn't be parsing
 						// strings from our own code

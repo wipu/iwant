@@ -42,9 +42,9 @@ class TargetThatNeedsAnotherAsPath extends Target {
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File path = ctx.cached(this);
-		OutputStream out = new FileOutputStream(path);
-		StreamUtil.pipe(content(ctx), out);
-		out.close();
+		try (OutputStream out = new FileOutputStream(path)) {
+			StreamUtil.pipe(content(ctx), out);
+		}
 	}
 
 	@Override

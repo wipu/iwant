@@ -73,14 +73,12 @@ public final class TestArea {
 
 	@SuppressWarnings("static-method")
 	public String contentOf(File file) {
-		try {
-			FileReader reader = new FileReader(file);
+		try (FileReader reader = new FileReader(file)) {
 			StringBuilder actual = new StringBuilder();
 			int c;
 			while ((c = reader.read()) >= 0) {
 				actual.append((char) c);
 			}
-			reader.close();
 			return actual.toString();
 		} catch (RuntimeException e) {
 			throw e;

@@ -87,20 +87,20 @@ public class WishEvaluator {
 		TargetNameChecker.check(targets);
 
 		if ("list-of/targets".equals(wish)) {
-			PrintWriter wr = new PrintWriter(out);
-			for (Target target : ws.targets(ctx)) {
-				wr.println(target.name());
+			try (PrintWriter wr = new PrintWriter(out)) {
+				for (Target target : ws.targets(ctx)) {
+					wr.println(target.name());
+				}
+				return;
 			}
-			wr.close();
-			return;
 		}
 		if ("list-of/side-effects".equals(wish)) {
-			PrintWriter wr = new PrintWriter(out);
-			for (SideEffect se : ws.sideEffects(ctx)) {
-				wr.println(se.name());
+			try (PrintWriter wr = new PrintWriter(out)) {
+				for (SideEffect se : ws.sideEffects(ctx)) {
+					wr.println(se.name());
+				}
+				return;
 			}
-			wr.close();
-			return;
 		}
 		for (Target target : targets) {
 			if (wish.equals("target/" + target.name() + "/as-path")) {
@@ -170,9 +170,9 @@ public class WishEvaluator {
 
 	public void asPath(Path path) {
 		File cachedContent = freshCachedContent(path);
-		PrintWriter wr = new PrintWriter(out);
-		wr.println(cachedContent);
-		wr.close();
+		try (PrintWriter wr = new PrintWriter(out)) {
+			wr.println(cachedContent);
+		}
 	}
 
 	private class Ctx implements IKnowWhatIAmDoingContext {

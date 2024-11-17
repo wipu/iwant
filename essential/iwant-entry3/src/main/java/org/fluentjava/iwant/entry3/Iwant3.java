@@ -215,13 +215,10 @@ public class Iwant3 {
 		if (!userPrefsFile.exists()) {
 			return new DefaultUserPrefs(userPrefsFile);
 		}
-		FileReader reader = new FileReader(userPrefsFile);
-		try {
+		try (FileReader reader = new FileReader(userPrefsFile)) {
 			Properties props = new Properties();
 			props.load(reader);
 			return new UserPrefsImpl(props, userPrefsFile);
-		} finally {
-			reader.close();
 		}
 	}
 

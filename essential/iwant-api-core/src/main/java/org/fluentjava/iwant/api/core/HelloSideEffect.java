@@ -26,12 +26,12 @@ public class HelloSideEffect implements SideEffect {
 
 	@Override
 	public void mutate(SideEffectContext ctx) throws Exception {
-		PrintWriter err = new PrintWriter(ctx.err());
-		err.print(name() + " mutating.\n");
-		if (message != null) {
-			err.print(message);
+		try (PrintWriter err = new PrintWriter(ctx.err())) {
+			err.print(name() + " mutating.\n");
+			if (message != null) {
+				err.print(message);
+			}
 		}
-		err.close();
 	}
 
 }

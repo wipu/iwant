@@ -47,11 +47,11 @@ public class EclipseSettings implements SideEffect {
 			generateEclipseSettings(ctx);
 			ensureSrcDirs(ctx);
 			if (refreshFailure != null) {
-				PrintWriter err = new PrintWriter(ctx.err());
-				err.println(
-						"WARNING: Refresh of eclipse settings references failed:\n"
-								+ refreshFailure);
-				err.close();
+				try (PrintWriter err = new PrintWriter(ctx.err())) {
+					err.println(
+							"WARNING: Refresh of eclipse settings references failed:\n"
+									+ refreshFailure);
+				}
 			}
 		} catch (RuntimeException e) {
 			throw e;

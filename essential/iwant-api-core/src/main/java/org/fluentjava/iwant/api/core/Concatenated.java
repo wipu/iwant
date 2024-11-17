@@ -124,11 +124,8 @@ public class Concatenated extends TargetBase {
 		@Override
 		public void writeTo(OutputStream out, TargetEvaluationContext ctx)
 				throws IOException {
-			InputStream in = new FileInputStream(ctx.cached(value));
-			try {
+			try (InputStream in = new FileInputStream(ctx.cached(value))) {
 				ctx.iwant().pipe(in, out);
-			} finally {
-				in.close();
 			}
 		}
 
@@ -223,13 +220,10 @@ public class Concatenated extends TargetBase {
 
 	@Override
 	public void path(TargetEvaluationContext ctx) throws Exception {
-		OutputStream out = new FileOutputStream(ctx.cached(this));
-		try {
+		try (OutputStream out = new FileOutputStream(ctx.cached(this))) {
 			for (Fragment fragment : fragments) {
 				fragment.writeTo(out, ctx);
 			}
-		} finally {
-			out.close();
 		}
 	}
 

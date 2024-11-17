@@ -289,20 +289,10 @@ public class Iwant2 {
 	}
 
 	public static String contentAsString(File file) {
-		InputStream in = null;
-		try {
-			in = new FileInputStream(file);
+		try (InputStream in = new FileInputStream(file)) {
 			return toString(in);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
-		} finally {
-			try {
-				if (in != null) {
-					in.close();
-				}
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
 		}
 	}
 
