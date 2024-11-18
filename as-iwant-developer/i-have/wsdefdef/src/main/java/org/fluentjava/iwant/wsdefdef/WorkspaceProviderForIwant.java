@@ -6,7 +6,7 @@ import org.fluentjava.iwant.api.javamodules.JavaModule;
 import org.fluentjava.iwant.api.javamodules.JavaSrcModule;
 import org.fluentjava.iwant.api.wsdef.WorkspaceModuleContext;
 import org.fluentjava.iwant.api.wsdef.WorkspaceModuleProvider;
-import org.fluentjava.iwant.core.download.FromRepository;
+import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 
 public class WorkspaceProviderForIwant implements WorkspaceModuleProvider {
 
@@ -16,6 +16,7 @@ public class WorkspaceProviderForIwant implements WorkspaceModuleProvider {
 				.locationUnderWsRoot("as-iwant-developer/i-have/wsdef")
 				.javaCompliance(JavaCompliance.of("17"))
 				.mainJava("src/main/java").mainDeps(ctx.iwantApiModules())
+				.mainDeps(ctx.wsdefdefModule())
 				.mainDeps(ctx.iwantPlugin().findbugs().withDependencies())
 				.mainDeps(ctx.iwantPlugin().jacoco().withDependencies())
 				.mainDeps(ctx.iwantPlugin().junit5runner().withDependencies())
@@ -27,9 +28,8 @@ public class WorkspaceProviderForIwant implements WorkspaceModuleProvider {
 		return "org.fluentjava.iwant.wsdef.WorkspaceFactoryForIwant";
 	}
 
-	private static JavaModule commonsIo() {
-		return JavaBinModule.providing(FromRepository.repo1MavenOrg()
-				.group("commons-io").name("commons-io").version("1.4").jar())
+	public static JavaModule commonsIo() {
+		return JavaBinModule.providing(TestedIwantDependencies.commonsIo())
 				.end();
 	}
 

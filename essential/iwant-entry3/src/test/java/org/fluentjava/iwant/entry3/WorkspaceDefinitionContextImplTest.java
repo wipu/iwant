@@ -105,7 +105,7 @@ public class WorkspaceDefinitionContextImplTest {
 		Set<JavaModule> mods = ctx.iwantPlugin().pmd().withDependencies();
 
 		assertEquals("[iwant-plugin-pmd, iwant-api-1, iwant-api-2,"
-				+ " ant-1.10.14.jar, asm-3.2.jar, commons-io-1.3.2.jar,"
+				+ " ant-1.10.14.jar, asm-3.2.jar, commons-io-2.17.0.jar,"
 				+ " jaxen-1.1.4.jar, pmd-4.3.jar]", mods.toString());
 	}
 
@@ -114,7 +114,7 @@ public class WorkspaceDefinitionContextImplTest {
 		Set<JavaModule> mods = ctx.iwantPlugin().findbugs().withDependencies();
 
 		assertEquals("[iwant-plugin-findbugs, iwant-api-1, iwant-api-2,"
-				+ " commons-io-1.3.2.jar, iwant-plugin-ant, ant-1.10.14.jar,"
+				+ " commons-io-2.17.0.jar, iwant-plugin-ant, ant-1.10.14.jar,"
 				+ " ant-launcher-1.10.14.jar]", mods.toString());
 	}
 
@@ -145,7 +145,7 @@ public class WorkspaceDefinitionContextImplTest {
 		assertEquals(
 				"[iwant-plugin-jacoco, iwant-api-1, iwant-api-2,"
 						+ " iwant-plugin-ant, ant-1.10.14.jar,"
-						+ " ant-launcher-1.10.14.jar, commons-io-1.3.2.jar]",
+						+ " ant-launcher-1.10.14.jar, commons-io-2.17.0.jar]",
 				mods.toString());
 	}
 

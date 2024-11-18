@@ -22,6 +22,7 @@ import org.fluentjava.iwant.core.download.FromRepository;
 import org.fluentjava.iwant.core.download.GnvArtifact;
 import org.fluentjava.iwant.core.download.TestedIwantDependencies;
 import org.fluentjava.iwant.core.javamodules.JavaModules;
+import org.fluentjava.iwant.wsdefdef.WorkspaceProviderForIwant;
 
 public class IwantModules extends JavaModules {
 
@@ -78,10 +79,7 @@ public class IwantModules extends JavaModules {
 					.name("asm").version("9.7").jar())
 			.end();
 
-	private JavaModule commonsIo = JavaBinModule
-			.providing(FromRepository.repo1MavenOrg().group("commons-io")
-					.name("commons-io").version("2.16.1").jar())
-			.end();
+	private JavaModule commonsIo = WorkspaceProviderForIwant.commonsIo();
 
 	private JavaModule commonsLang3 = binModule("org.apache.commons",
 			"commons-lang3", "3.16.0");

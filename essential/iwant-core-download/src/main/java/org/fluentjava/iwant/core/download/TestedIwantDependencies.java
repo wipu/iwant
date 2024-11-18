@@ -39,7 +39,7 @@ public class TestedIwantDependencies {
 	}
 
 	public static GnvArtifact<Downloaded> commonsIo() {
-		return gnv("org.apache.commons", "commons-io", "1.3.2");
+		return gnv("commons-io", "commons-io", "2.17.0");
 	}
 
 	public static GnvArtifact<Downloaded> junit() {
