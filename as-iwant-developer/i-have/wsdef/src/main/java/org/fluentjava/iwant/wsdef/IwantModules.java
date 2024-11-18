@@ -31,6 +31,8 @@ public class IwantModules extends JavaModules {
 
 	public IwantModules(WorkspaceContext ctx) {
 		this.ctx = ctx;
+		// make sure all are defined, for example for eclipse-settings:
+		modulesNotDependedByOthers();
 	}
 
 	@Override
@@ -527,16 +529,21 @@ public class IwantModules extends JavaModules {
 	}
 
 	private final JavaSrcModule iwantTests() {
+		SortedSet<JavaModule> deps = new TreeSet<>();
+		deps.addAll(runtimeDepsOf(iwantEntry(), iwantEntry2(), iwantEntry3(),
+				iwantEmbedded()));
+		deps.addAll(
+				runtimeDepsOf(iwantCoreJavamodules(), iwantEclipseSettings()));
+		deps.addAll(runtimeDepsOf(iwantApimocks()));
+		deps.addAll(runtimeDepsOf(iwantPluginFindbugs(), iwantPluginGithub(),
+				iwantPluginJacoco()));
+
 		return lazy(() -> privateModule("tests").noMainJava()
 				.testResources("src/test/resources")
-				.testDeps(iwantExtendedEnums()).testDeps(allSrcModules())
+				.testDeps(iwantExtendedEnums()).testDeps(deps)
 				.testDeps(commonsIo).end());
 	}
 
-	/**
-	 * Just for documenting, to help detect dead stuff
-	 */
-	@SuppressWarnings("unused")
 	private List<JavaSrcModule> modulesNotDependedByOthers() {
 		List<JavaSrcModule> m = new ArrayList<>();
 
