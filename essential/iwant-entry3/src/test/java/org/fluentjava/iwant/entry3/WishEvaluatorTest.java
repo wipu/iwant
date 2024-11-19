@@ -594,10 +594,10 @@ public class WishEvaluatorTest {
 		worker2.start();
 		worker2.join();
 
-		assertEquals(new File(asSomeone, ".i-cached/temp/worker-1"),
-				results.get(0));
-		assertEquals(new File(asSomeone, ".i-cached/temp/worker-2"),
-				results.get(1));
+		File tempsForThisWs = new File(Iwant.IWANT_GLOBAL_TMP_DIR,
+				asSomeone + "/.i-cached/temp");
+		assertEquals(new File(tempsForThisWs, "worker-1"), results.get(0));
+		assertEquals(new File(tempsForThisWs, "worker-2"), results.get(1));
 	}
 
 	@Test

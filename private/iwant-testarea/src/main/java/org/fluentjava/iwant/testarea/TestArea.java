@@ -31,10 +31,15 @@ public final class TestArea {
 					.toURI());
 			while (wsRootCandidate.getParentFile() != null) {
 				wsRootCandidate = wsRootCandidate.getParentFile();
-				File testAreaRootCandidate = new File(wsRootCandidate,
+				File marker = new File(wsRootCandidate,
 						"private/iwant-testarea/testarea-root");
-				if (testAreaRootCandidate.exists()) {
-					return testAreaRootCandidate;
+				if (marker.exists()) {
+					// earlier testarea-root was used as such, now we are saving
+					// SSD and using /tmp instead, simply putting wsroot as
+					// child dir for isolation:
+					File testAreaRoot = new File(Iwant.IWANT_GLOBAL_TMP_DIR,
+							"iwant-testarea/" + wsRootCandidate);
+					return testAreaRoot;
 				}
 			}
 			throw new IllegalStateException("Cannot find testarea root");

@@ -45,6 +45,14 @@ public class Iwant {
 
 	private static final boolean DEBUG_LOG = "a".contains("b");
 
+	private static final File SYSTEM_TMP_DIR = new File(
+			System.getProperty("java.io.tmpdir"));
+
+	private static final String USERNAME = System.getProperty("user.name");
+
+	public static final File IWANT_GLOBAL_TMP_DIR = new File(SYSTEM_TMP_DIR,
+			".org.fluentjava.iwant/" + USERNAME);
+
 	private static final File HOME = new File(System.getProperty("user.home"));
 
 	public static final File IWANT_USER_DIR = new File(HOME,
@@ -59,6 +67,7 @@ public class Iwant {
 			+ EXAMPLE_COMMIT + ".zip\n";
 
 	static {
+		mkdirs(IWANT_GLOBAL_TMP_DIR);
 		mkdirs(IWANT_USER_DIR);
 	}
 
@@ -695,8 +704,8 @@ public class Iwant {
 	}
 
 	public static void fileLog(String msg) {
-		try (FileWriter fw = new FileWriter(new File(IWANT_USER_DIR, "log"),
-				true)) {
+		try (FileWriter fw = new FileWriter(
+				new File(IWANT_GLOBAL_TMP_DIR, "log"), true)) {
 			fw.append(new Date().toString()).append(" - ").append(msg)
 					.append("\n");
 		} catch (IOException e) {

@@ -58,6 +58,12 @@ public class CachesImpl implements Caches {
 	public File temporaryDirectory(String workerName) {
 		File parent = new File(wsCache, "temp");
 		File tmpDir = new File(parent, workerName);
+
+		// earlier tmpDir was used as such, now we are saving
+		// SSD and using /tmp instead, simply putting tmpDir as
+		// child dir for isolation:
+		tmpDir = new File(Iwant.IWANT_GLOBAL_TMP_DIR + "/" + tmpDir);
+
 		Iwant.del(tmpDir);
 		Iwant.mkdirs(tmpDir);
 		return tmpDir;
