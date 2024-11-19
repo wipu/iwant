@@ -180,14 +180,16 @@ public class JavaClassesTest extends IwantTestCase {
 	@Test
 	public void toPathCompilesFromMultipleSrcDirs() throws Exception {
 		File srcDir1 = new File(wsRoot, "src1");
-		Iwant.newTextFile(new File(srcDir1, "Caller.java"),
+		Iwant.textFileEnsuredToHaveContent(new File(srcDir1, "Caller.java"),
 				"class Caller {pak1.Callee1 callee1;pak2.Callee2 callee2;}");
 
 		File srcDir2 = new File(wsRoot, "src2");
-		Iwant.newTextFile(new File(srcDir2, "pak1/Callee1.java"),
+		Iwant.textFileEnsuredToHaveContent(
+				new File(srcDir2, "pak1/Callee1.java"),
 				"package pak1;\npublic class Callee1 {}");
 		File srcDir3 = new File(wsRoot, "src3");
-		Iwant.newTextFile(new File(srcDir3, "pak2/Callee2.java"),
+		Iwant.textFileEnsuredToHaveContent(
+				new File(srcDir3, "pak2/Callee2.java"),
 				"package pak2;\npublic class Callee2 {}");
 
 		Target target = JavaClasses
@@ -208,7 +210,7 @@ public class JavaClassesTest extends IwantTestCase {
 		File superClassFile = new File(getClass()
 				.getResource(superClass.getSimpleName() + ".class").toURI());
 		File srcDir = new File(wsRoot, "src");
-		Iwant.newTextFile(new File(srcDir, "Subclass.java"),
+		Iwant.textFileEnsuredToHaveContent(new File(srcDir, "Subclass.java"),
 				"class Subclass extends " + superClass.getCanonicalName()
 						+ "{}");
 		Source src = Source.underWsroot("src");
@@ -298,7 +300,7 @@ public class JavaClassesTest extends IwantTestCase {
 			throws Exception {
 		Iwant.mkdirs(wsRoot);
 		File srcFile = new File(wsRoot, "Valid.java");
-		Iwant.newTextFile(srcFile, "class Valid {}");
+		Iwant.textFileEnsuredToHaveContent(srcFile, "class Valid {}");
 		Source src = Source.underWsroot("Valid.java");
 		Target target = JavaClasses.with().name("non-dir").srcDirs(src)
 				.classLocations().end();
@@ -316,7 +318,8 @@ public class JavaClassesTest extends IwantTestCase {
 	public void debugInformationIsIncludedIffRequested() throws Exception {
 		String srcDirName = "src";
 		Path src = Source.underWsroot(srcDirName);
-		Iwant.newTextFile(new File(new File(wsRoot, srcDirName), "Foo.java"),
+		Iwant.textFileEnsuredToHaveContent(
+				new File(new File(wsRoot, srcDirName), "Foo.java"),
 				"public class Foo {\n"
 						+ "  public String hello(String message) {\n"
 						+ "    final String greeting = \"Moi \";\n"
@@ -397,10 +400,10 @@ public class JavaClassesTest extends IwantTestCase {
 
 	@Test
 	public void twoResourceDirsAndNoSrc() throws Exception {
-		Iwant.newTextFile(new File(wsRoot, "res1/pak1/res1.txt"),
-				"res1.txt content");
-		Iwant.newTextFile(new File(wsRoot, "res2/pak2/res2.txt"),
-				"res2.txt content");
+		Iwant.textFileEnsuredToHaveContent(
+				new File(wsRoot, "res1/pak1/res1.txt"), "res1.txt content");
+		Iwant.textFileEnsuredToHaveContent(
+				new File(wsRoot, "res2/pak2/res2.txt"), "res2.txt content");
 
 		JavaClasses classes = JavaClasses.with().name("classes").resourceDirs(
 				Source.underWsroot("res1"), Source.underWsroot("res2")).end();

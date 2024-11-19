@@ -56,9 +56,9 @@ public class KotlinAndJavaClasses extends TargetBase {
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		File tmp = ctx.freshTemporaryDirectory();
 		File buildXml = new File(tmp, "build.xml");
-		FileUtil.newTextFile(buildXml, buildXml(ctx));
+		FileUtil.textFileEnsuredToHaveContent(buildXml, buildXml(ctx));
 		File buildSh = new File(tmp, "build.sh");
-		FileUtil.newTextFile(buildSh, buildSh());
+		FileUtil.textFileEnsuredToHaveContent(buildSh, buildSh());
 		buildSh.setExecutable(true);
 
 		ScriptGenerated.execute(tmp, Arrays.asList("./build.sh"));

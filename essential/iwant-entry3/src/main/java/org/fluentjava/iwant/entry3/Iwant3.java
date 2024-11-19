@@ -229,7 +229,7 @@ public class Iwant3 {
 				.proposedWsdefPackage(wsInfo.wsdefdefPackage());
 		String wsDefName = ExampleWsDefGenerator
 				.proposedWsdefSimpleName(wsInfo.wsName());
-		FileUtil.newTextFile(wsInfo.wsdefdefJava(),
+		FileUtil.textFileEnsuredToHaveContent(wsInfo.wsdefdefJava(),
 				ExampleWsDefGenerator.exampleWsdefdef(essential,
 						wsInfo.wsdefdefPackage(),
 						wsInfo.wsdefdefClassSimpleName(), wsInfo.wsName(),
@@ -237,12 +237,12 @@ public class Iwant3 {
 		File wsDefJava = new File(iHave,
 				"/wsdef/src/main/java" + "/" + wsDefPackage.replace(".", "/")
 						+ "/" + wsDefName + "Factory.java");
-		FileUtil.newTextFile(wsDefJava, ExampleWsDefGenerator
+		FileUtil.textFileEnsuredToHaveContent(wsDefJava, ExampleWsDefGenerator
 				.exampleWsdef(essential, wsDefPackage, wsDefName));
 		File wsJava = new File(iHave, "/wsdef/src/main/java" + "/"
 				+ wsDefPackage.replace(".", "/") + "/" + wsDefName + ".java");
-		FileUtil.newTextFile(wsJava, ExampleWsDefGenerator.exampleWs(essential,
-				wsDefPackage, wsDefName));
+		FileUtil.textFileEnsuredToHaveContent(wsJava, ExampleWsDefGenerator
+				.exampleWs(essential, wsDefPackage, wsDefName));
 		// TODO it's a bit ugly to create dummy target and side-effect just to
 		// get proper names for wish scripts:
 		HelloSideEffect stubEclipseSettingsSe = new HelloSideEffect(
@@ -399,7 +399,7 @@ public class Iwant3 {
 	}
 
 	private static void createExampleWsInfo(File wsInfo) {
-		FileUtil.newTextFile(wsInfo,
+		FileUtil.textFileEnsuredToHaveContent(wsInfo,
 				"# paths are relative to this file's directory\n"
 						+ "WSNAME=example\n" + "WSROOT=../../..\n"
 						+ "WSDEFDEF_MODULE=../wsdefdef\n"
@@ -407,7 +407,7 @@ public class Iwant3 {
 	}
 
 	private static void createScript(File file, String content) {
-		FileUtil.newTextFile(file, content);
+		FileUtil.textFileEnsuredToHaveContent(file, content);
 		file.setExecutable(true);
 	}
 

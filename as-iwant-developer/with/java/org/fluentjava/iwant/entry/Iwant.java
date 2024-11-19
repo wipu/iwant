@@ -21,6 +21,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -345,7 +346,7 @@ public class Iwant {
 			mkdirs(iwantFromParent);
 		}
 		if (!iwantFrom.exists()) {
-			newTextFile(iwantFrom, EXAMPLE_IWANT_FROM_CONTENT);
+			textFileEnsuredToHaveContent(iwantFrom, EXAMPLE_IWANT_FROM_CONTENT);
 			throw new IwantException("I created " + iwantFrom
 					+ "\nPlease edit and uncomment the properties in it and rerun me.");
 		}
@@ -371,12 +372,34 @@ public class Iwant {
 		}
 	}
 
-	public static File newTextFile(File file, String content) {
+	public static File textFileEnsuredToHaveContentAndBeTouched(File file,
+			String content) {
 		try {
 			return tryToWriteTextFile(file, content);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
+	}
+
+	public static synchronized File textFileEnsuredToHaveContent(File file,
+			String content) {
+		try {
+			if (existsAndHasContent(file, content)) {
+				return file;
+			}
+			return tryToWriteTextFile(file, content);
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+	private static boolean existsAndHasContent(File file, String content)
+			throws IOException {
+		if (!file.exists()) {
+			return false;
+		}
+		String currentContent = Files.readString(file.toPath());
+		return content.equals(currentContent);
 	}
 
 	private File iwantBootstrapperClasses(File iwantEssential) {

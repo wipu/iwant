@@ -65,8 +65,8 @@ public abstract class JacocoTestBase extends IwantTestCase {
 		code.append("  }\n");
 		code.append("}\n");
 
-		Iwant.newTextFile(new File(srcDir, className + ".java"),
-				code.toString());
+		Iwant.textFileEnsuredToHaveContent(
+				new File(srcDir, className + ".java"), code.toString());
 		JavaClasses classes = JavaClasses.with().name(name + "-classes")
 				.srcDirs(Source.underWsroot(srcDirString)).classLocations()
 				.end();

@@ -63,7 +63,7 @@ public class AsEmbeddedIwantUserTest {
 			@Override
 			public void path(TargetEvaluationContext ctx) throws Exception {
 				File dest = ctx.cached(this);
-				FileUtil.newTextFile(dest, name());
+				FileUtil.textFileEnsuredToHaveContent(dest, name());
 				threadName.set(Thread.currentThread().getName());
 			}
 

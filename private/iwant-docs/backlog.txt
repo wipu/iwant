@@ -13,6 +13,8 @@
     - deprecate and even remove commonSettins
     - ha, maybe even force by defining abstract myModule method
 
+- now with newer java simplify file IO, what else?
+
 - fix local website: broken since who know when
   - fix
   - make part of continuous practice (maybe after the /tmp usage story)
@@ -20,13 +22,14 @@
 - all core and plugin dependencies to exactly one place, usable for users, too
 
 - conf: *all* possible caches under /tmp, to save SSD and time. Also to force testing against internet rot.
-  - iwant-test-area especially!
+  + iwant-test-area especially!
+  + target temp dirs
   - global setting to only use global cache for downloads, nothing else, TODO how?
     - maybe: user can tell something is so slow it needs to be cached permanently
   - empty intermediate caches success TODO how to define intermediate? user?
   - personal projects (c compilation!), imagemagick, all scripts
   - iwant's all caches (unzipped local etc)
-  - eclipse settings, wish script writing: only write if changes
+  + eclipse settings, wish script writing: only write if changes
     * also may improve laziness with some (future) features
   - what else
 

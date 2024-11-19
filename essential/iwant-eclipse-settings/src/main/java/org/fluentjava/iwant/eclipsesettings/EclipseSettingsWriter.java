@@ -111,7 +111,8 @@ public class EclipseSettingsWriter {
 	private static void writeFile(File modDir, String fileName,
 			String fileContent) {
 		System.err.println("(  " + fileName + ")");
-		Iwant.newTextFile(new File(modDir, fileName), fileContent);
+		Iwant.textFileEnsuredToHaveContent(new File(modDir, fileName),
+				fileContent);
 	}
 
 }

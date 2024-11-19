@@ -209,12 +209,14 @@ public class Iwant2Test {
 	public void findingJavaFilesUnderSrcDirThatContainsNonJavaAndSvnMetadata() {
 		File src = testArea.newDir("src");
 		Iwant.mkdirs(new File(src, ".svn"));
-		File aJava = Iwant.newTextFile(new File(src, "A.java"), "");
+		File aJava = Iwant.textFileEnsuredToHaveContent(new File(src, "A.java"),
+				"");
 
 		File pak1 = new File(src, "pak1");
 		Iwant.mkdirs(new File(pak1, ".svn"));
-		File bJava = Iwant.newTextFile(new File(pak1, "B.java"), "");
-		Iwant.newTextFile(new File(pak1, "crap.notjava"), "");
+		File bJava = Iwant
+				.textFileEnsuredToHaveContent(new File(pak1, "B.java"), "");
+		Iwant.textFileEnsuredToHaveContent(new File(pak1, "crap.notjava"), "");
 
 		assertEquals("[" + aJava + ", " + bJava + "]",
 				Iwant2.javaFilesRecursivelyUnder(src).toString());

@@ -96,7 +96,7 @@ public class ScalaClasses extends TargetBase {
 
 		File tmp = ctx.freshTemporaryDirectory();
 		File buildXml = new File(tmp, "build.xml");
-		FileUtil.newTextFile(buildXml, antScript(ctx));
+		FileUtil.textFileEnsuredToHaveContent(buildXml, antScript(ctx));
 
 		List<File> antJars = Arrays.asList(ctx.cached(antJar),
 				ctx.cached(antLauncherJar));

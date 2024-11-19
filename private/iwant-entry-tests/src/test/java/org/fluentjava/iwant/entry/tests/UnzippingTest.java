@@ -59,7 +59,8 @@ public class UnzippingTest {
 		URL zip = Iwant
 				.fileToUrl(new File(testArea.root(), "not-to-be-accessed"));
 		File unzipped = network.cachesZipAt(zip, "unzipped");
-		Iwant.newTextFile(new File(unzipped, "file"), "unzipped content");
+		Iwant.textFileEnsuredToHaveContent(new File(unzipped, "file"),
+				"unzipped content");
 
 		File unzippedAgain = iwant
 				.unmodifiableZipUnzipped(new UnmodifiableZip(zip));

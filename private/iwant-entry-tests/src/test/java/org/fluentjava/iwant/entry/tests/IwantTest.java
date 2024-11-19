@@ -2,6 +2,7 @@ package org.fluentjava.iwant.entry.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -234,7 +235,8 @@ public class IwantTest {
 		startOfOutAndErrCapture();
 
 		File asSomeone = testArea.newDir("as-test");
-		Iwant.newTextFile(new File(asSomeone, "/i-have/conf/iwant-from"),
+		Iwant.textFileEnsuredToHaveContent(
+				new File(asSomeone, "/i-have/conf/iwant-from"),
 				"just-something=else\n");
 		try {
 			Iwant.main(new String[] { asSomeone.getCanonicalPath() });
@@ -255,7 +257,8 @@ public class IwantTest {
 		startOfOutAndErrCapture();
 
 		File asSomeone = testArea.newDir("as-test");
-		Iwant.newTextFile(new File(asSomeone, "/i-have/conf/iwant-from"),
+		Iwant.textFileEnsuredToHaveContent(
+				new File(asSomeone, "/i-have/conf/iwant-from"),
 				"iwant-from=crap\n");
 		try {
 			Iwant.main(new String[] { asSomeone.getCanonicalPath() });
@@ -276,7 +279,7 @@ public class IwantTest {
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantZip = mockWsRootZip();
 		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
-		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
+		Iwant.textFileEnsuredToHaveContent(new File(iHaveConf, "iwant-from"),
 				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
@@ -295,7 +298,7 @@ public class IwantTest {
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantZip = mockWsRootZip();
 		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
-		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
+		Iwant.textFileEnsuredToHaveContent(new File(iHaveConf, "iwant-from"),
 				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
@@ -323,7 +326,7 @@ public class IwantTest {
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantZip = mockWsRootZip();
 		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
-		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
+		Iwant.textFileEnsuredToHaveContent(new File(iHaveConf, "iwant-from"),
 				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
@@ -385,7 +388,7 @@ public class IwantTest {
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantZip = mockWsRootZip();
 		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
-		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
+		Iwant.textFileEnsuredToHaveContent(new File(iHaveConf, "iwant-from"),
 				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
@@ -420,7 +423,7 @@ public class IwantTest {
 		File iHaveConf = testArea.newDir("as-test/i-have/conf");
 		File iwantZip = mockWsRootZip();
 		URL iwantFromUrl = Iwant.fileToUrl(iwantZip);
-		Iwant.newTextFile(new File(iHaveConf, "iwant-from"),
+		Iwant.textFileEnsuredToHaveContent(new File(iHaveConf, "iwant-from"),
 				"iwant-from=" + iwantFromUrl + "\n");
 
 		IwantNetworkMock network = new IwantNetworkMock(testArea);
@@ -556,6 +559,35 @@ public class IwantTest {
 		Iwant.del(parent);
 
 		assertFalse(parent.exists());
+	}
+
+	@Test
+	public void textFileEnsuredToHaveContent() throws InterruptedException {
+		File a = new File(testArea.root(), "someDir/a");
+		assertFalse(a.exists());
+
+		// 1. creation
+
+		assertSame(a, Iwant.textFileEnsuredToHaveContent(a, "a\nä\n1"));
+		assertTrue(a.exists());
+		assertEquals("a\nä\n1", testArea.contentOf(a));
+		long aModTime = a.lastModified();
+
+		// 2. ensure same content => no write happens
+
+		while (System.currentTimeMillis() <= aModTime) {
+			Thread.sleep(1L);
+		}
+
+		assertSame(a, Iwant.textFileEnsuredToHaveContent(a, "a\nä\n1"));
+		assertEquals(aModTime, a.lastModified());
+		assertTrue(a.exists());
+		assertEquals("a\nä\n1", testArea.contentOf(a));
+
+		// 3. ensure new content => write happens
+
+		assertSame(a, Iwant.textFileEnsuredToHaveContent(a, "a\nä\n2"));
+		assertEquals("a\nä\n2", testArea.contentOf(a));
 	}
 
 }

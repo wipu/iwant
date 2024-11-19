@@ -38,7 +38,8 @@ public class ExtendedIwantEnums extends TargetBase {
 	private static void extend(TargetEvaluationContext ctx, EnumSrc enumSrc) {
 		String content = FileUtil.contentAsString(ctx.cached(enumSrc.source()));
 		content = content.replaceFirst("([A-Z_]*,)", "_ILLEGAL_, $1");
-		FileUtil.newTextFile(enumSrc.destination(ctx), content);
+		FileUtil.textFileEnsuredToHaveContent(enumSrc.destination(ctx),
+				content);
 	}
 
 	private class EnumSrc {

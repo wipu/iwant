@@ -23,7 +23,7 @@ public class WarTest extends IwantTestCase {
 	private Source sourceWithContent(String path, String content) {
 		File file = new File(wsRoot, path);
 		Iwant.mkdirs(file.getParentFile());
-		Iwant.newTextFile(file, content);
+		Iwant.textFileEnsuredToHaveContent(file, content);
 		return Source.underWsroot(path);
 	}
 
@@ -92,7 +92,8 @@ public class WarTest extends IwantTestCase {
 	public void webXmlUnderGivenDirectory() throws Exception {
 		File generatedConfs = new File(wsRoot, "generated-confs");
 		Iwant.mkdirs(generatedConfs);
-		Iwant.newTextFile(new File(generatedConfs, "generated-web.xml"),
+		Iwant.textFileEnsuredToHaveContent(
+				new File(generatedConfs, "generated-web.xml"),
 				"generated web.xml content");
 		File baseDir = new File(wsRoot, "empty-basedir");
 		Iwant.mkdirs(baseDir);
@@ -114,16 +115,18 @@ public class WarTest extends IwantTestCase {
 	public void nonEmptyBasedirWithFilesToExclude() throws Exception {
 		File web = new File(wsRoot, "web");
 		Iwant.mkdirs(web);
-		Iwant.newTextFile(new File(web, "index.html"), "index.html content");
-		Iwant.newTextFile(new File(web, "file-to-exclude"),
+		Iwant.textFileEnsuredToHaveContent(new File(web, "index.html"),
+				"index.html content");
+		Iwant.textFileEnsuredToHaveContent(new File(web, "file-to-exclude"),
 				"file-to-exclude content");
-		Iwant.newTextFile(new File(web, "subdir/another-file-to-exclude"),
+		Iwant.textFileEnsuredToHaveContent(
+				new File(web, "subdir/another-file-to-exclude"),
 				"file-to-exclude content");
-		Iwant.newTextFile(new File(web, "subdir/file.html"),
+		Iwant.textFileEnsuredToHaveContent(new File(web, "subdir/file.html"),
 				"file.html content");
-		Iwant.newTextFile(new File(web, "WEB-INF/web.xml"),
+		Iwant.textFileEnsuredToHaveContent(new File(web, "WEB-INF/web.xml"),
 				"web.xml content to exclude");
-		Iwant.newTextFile(new File(wsRoot, "correct-web.xml"),
+		Iwant.textFileEnsuredToHaveContent(new File(wsRoot, "correct-web.xml"),
 				"web.xml content to use");
 
 		War war = War.with().name("test.war").basedir(Source.underWsroot("web"))

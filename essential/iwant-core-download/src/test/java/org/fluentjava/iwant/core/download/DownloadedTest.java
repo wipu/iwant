@@ -160,7 +160,7 @@ public class DownloadedTest {
 				throw new IllegalStateException(
 						"You forgot to teach content of " + from);
 			}
-			Iwant.newTextFile(to, content);
+			Iwant.textFileEnsuredToHaveContent(to, content);
 		}
 
 		public void shallDownloadContent(URL from, String content) {

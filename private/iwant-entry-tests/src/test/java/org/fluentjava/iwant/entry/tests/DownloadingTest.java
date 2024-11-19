@@ -28,12 +28,12 @@ public class DownloadingTest {
 	private void cachedFileContains(URL url, String content) {
 		File cached = iwant.network()
 				.cacheOfContentFrom(new UnmodifiableUrl(url));
-		Iwant.newTextFile(cached, content);
+		Iwant.textFileEnsuredToHaveContent(cached, content);
 	}
 
 	private File remoteFileContains(String path, String content) {
 		File remoteFile = new File(testArea.root(), path);
-		Iwant.newTextFile(remoteFile, content);
+		Iwant.textFileEnsuredToHaveContent(remoteFile, content);
 		return remoteFile;
 	}
 

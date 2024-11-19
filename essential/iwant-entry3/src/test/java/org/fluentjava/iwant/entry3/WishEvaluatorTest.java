@@ -437,10 +437,11 @@ public class WishEvaluatorTest {
 	@Test
 	public void deletionOfJavaFileIsDetectedAndCompilationIsRetriedAndFailed() {
 		File srcDir = new File(wsRoot, "src");
-		Iwant.newTextFile(new File(srcDir, "pak1/Caller.java"),
+		Iwant.textFileEnsuredToHaveContent(new File(srcDir, "pak1/Caller.java"),
 				"package pak1;\npublic class Caller {pak2.Callee callee;}");
 		File calleeJava = new File(srcDir, "pak2/Callee.java");
-		Iwant.newTextFile(calleeJava, "package pak2;\npublic class Callee {}");
+		Iwant.textFileEnsuredToHaveContent(calleeJava,
+				"package pak2;\npublic class Callee {}");
 		Source src = Source.underWsroot("src");
 		Target target = JavaClasses.with().name("multiple").srcDirs(src)
 				.classLocations().end();

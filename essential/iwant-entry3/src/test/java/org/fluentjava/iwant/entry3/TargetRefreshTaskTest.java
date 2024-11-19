@@ -74,8 +74,8 @@ public class TargetRefreshTaskTest {
 
 	private File cacheContainsDescriptor(Target target,
 			String cachedDescriptor) {
-		return Iwant.newTextFile(new File(cachedDescriptors, target.name()),
-				cachedDescriptor);
+		return Iwant.textFileEnsuredToHaveContent(
+				new File(cachedDescriptors, target.name()), cachedDescriptor);
 	}
 
 	private TargetRefreshTask task(Target target) {
@@ -459,7 +459,7 @@ public class TargetRefreshTaskTest {
 				fail("Parent of " + dest + " should exist.");
 			}
 			File subFile = new File(dest, fileNameToCreateUnderDirectory);
-			Iwant.newTextFile(subFile,
+			Iwant.textFileEnsuredToHaveContentAndBeTouched(subFile,
 					fileNameToCreateUnderDirectory + " content");
 		}
 

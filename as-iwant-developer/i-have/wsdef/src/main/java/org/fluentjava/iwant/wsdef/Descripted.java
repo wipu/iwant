@@ -140,8 +140,8 @@ public class Descripted extends Target {
 		sh.append("cat '" + htmlHeader + "' '" + htmlBodyContent + "' '"
 				+ htmlFooter + "' > '" + fullHtml + "'\n");
 
-		File script = Iwant.newTextFile(new File(dest, name() + ".sh"),
-				sh.toString());
+		File script = Iwant.textFileEnsuredToHaveContent(
+				new File(dest, name() + ".sh"), sh.toString());
 		script.setExecutable(true);
 		ScriptGenerated.execute(ctx, dest, script, new String[] {});
 	}
@@ -158,7 +158,7 @@ public class Descripted extends Target {
 		html.append("</head>\n");
 		html.append("<body>\n");
 		appendNavigationLinkPanelPlaceholder(html);
-		return Iwant.newTextFile(new File(dest, "header.html"),
+		return Iwant.textFileEnsuredToHaveContent(new File(dest, "header.html"),
 				html.toString());
 	}
 
@@ -171,7 +171,7 @@ public class Descripted extends Target {
 		StringBuilder html = new StringBuilder();
 		appendNavigationLinkPanelPlaceholder(html);
 		html.append("</body></html>\n");
-		return Iwant.newTextFile(new File(dest, "footer.html"),
+		return Iwant.textFileEnsuredToHaveContent(new File(dest, "footer.html"),
 				html.toString());
 	}
 

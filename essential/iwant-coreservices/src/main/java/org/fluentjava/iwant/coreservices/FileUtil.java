@@ -83,8 +83,8 @@ public class FileUtil {
 		return Iwant2.contentAsString(file);
 	}
 
-	public static File newTextFile(File file, String content) {
-		return Iwant.newTextFile(file, content);
+	public static File textFileEnsuredToHaveContent(File file, String content) {
+		return Iwant.textFileEnsuredToHaveContent(file, content);
 	}
 
 	public static int copyMissingFiles(File from, File to) throws IOException {

@@ -70,7 +70,8 @@ public class TargetRefreshTask implements Task {
 		try {
 			target.path(new IngredientCheckingTargetEvaluationContext(target,
 					ctx, refLegalityCheckCache));
-			Iwant.newTextFile(cachedDescriptor, target.contentDescriptor());
+			Iwant.textFileEnsuredToHaveContent(cachedDescriptor,
+					target.contentDescriptor());
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {

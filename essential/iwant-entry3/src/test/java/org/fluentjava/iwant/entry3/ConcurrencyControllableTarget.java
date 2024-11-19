@@ -34,7 +34,7 @@ public class ConcurrencyControllableTarget extends TargetBase {
 	public void path(TargetEvaluationContext ctx) throws Exception {
 		log(this, "path starting");
 		task.refresh(Collections.<ResourcePool, Resource> emptyMap());
-		Iwant.newTextFile(ctx.cached(this), name());
+		Iwant.textFileEnsuredToHaveContent(ctx.cached(this), name());
 		log(this, "path returning");
 	}
 

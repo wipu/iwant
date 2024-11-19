@@ -286,7 +286,8 @@ public class TargetImplementedInBash extends TargetBase {
 			deprefsContent.append(ctx.cached(ingr).getCanonicalPath());
 			deprefsContent.append("\n");
 		}
-		FileUtil.newTextFile(deprefs, deprefsContent.toString());
+		FileUtil.textFileEnsuredToHaveContent(deprefs,
+				deprefsContent.toString());
 
 		File runDir = new File(tmpDir, "rundir");
 		Iwant.mkdirs(runDir);

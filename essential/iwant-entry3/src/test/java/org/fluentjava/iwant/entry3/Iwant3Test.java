@@ -772,7 +772,8 @@ public class Iwant3Test {
 		emptyWishAfterCreationOfExampleWsDef();
 		startOfOutAndErrCapture();
 
-		Iwant.newTextFile(new File(asTest, "i-have/conf/user-preferences"),
+		Iwant.textFileEnsuredToHaveContent(
+				new File(asTest, "i-have/conf/user-preferences"),
 				"workerCount=3");
 
 		try {

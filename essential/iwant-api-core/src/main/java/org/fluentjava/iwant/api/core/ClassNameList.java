@@ -67,7 +67,7 @@ public class ClassNameList extends TargetBase {
 			}
 		}
 
-		Iwant.newTextFile(ctx.cached(this), out.toString());
+		Iwant.textFileEnsuredToHaveContent(ctx.cached(this), out.toString());
 	}
 
 	private boolean isAcceptedByFilter(String className) {

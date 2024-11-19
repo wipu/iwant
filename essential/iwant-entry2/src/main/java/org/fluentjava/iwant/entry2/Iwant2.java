@@ -241,7 +241,7 @@ public class Iwant2 {
 
 		void markFresh() {
 			Iwant.fileLog("Writing " + sourceDescriptor);
-			Iwant.newTextFile(sourceDescriptor,
+			Iwant.textFileEnsuredToHaveContentAndBeTouched(sourceDescriptor,
 					currentSourceDescriptorContent());
 		}
 

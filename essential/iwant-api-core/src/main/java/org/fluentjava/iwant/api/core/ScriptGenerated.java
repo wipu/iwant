@@ -78,7 +78,7 @@ public class ScriptGenerated extends TargetBase {
 			executable = cygwinBashExe;
 
 			File wrapper = FileUtil
-					.newTextFile(
+					.textFileEnsuredToHaveContent(
 							new File(dir,
 									userExecutable.getName()
 											+ "-cygwinwrapper.sh"),
