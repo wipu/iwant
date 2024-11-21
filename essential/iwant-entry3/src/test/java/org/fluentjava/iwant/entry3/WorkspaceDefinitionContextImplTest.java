@@ -156,7 +156,8 @@ public class WorkspaceDefinitionContextImplTest {
 
 		assertEquals("[iwant-plugin-junit5runner,"
 				+ " hamcrest-core-1.3.jar, junit-4.13.2.jar, junit-jupiter-5.10.2.jar,"
-				+ " junit-jupiter-api-5.10.2.jar, junit-jupiter-engine-5.10.2.jar,"
+				+ " junit-jupiter-api-5.10.2.jar, apiguardian-api-1.1.2.jar,"
+				+ " junit-jupiter-engine-5.10.2.jar,"
 				+ " junit-platform-commons-1.10.2.jar, junit-jupiter-params-5.10.2.jar,"
 				+ " junit-platform-console-1.10.2.jar, junit-platform-launcher-1.10.2.jar,"
 				+ " junit-platform-engine-1.10.2.jar, junit-vintage-engine-5.10.2.jar,"

@@ -20,10 +20,10 @@ public class TestedIwantDependencies {
 	}
 
 	public static List<GnvArtifact<Downloaded>> junitJupiterRtDeps() {
-		return List.of(junitJupiterEngine(), junitPlatformCommons(),
-				junitJupiterParams(), junitPlatformConsole(),
-				junitPlatformLauncher(), junitPlatformEngine(),
-				junitVintageEngine(), opentest4j());
+		return List.of(apiguardianApi(), junitJupiterEngine(),
+				junitPlatformCommons(), junitJupiterParams(),
+				junitPlatformConsole(), junitPlatformLauncher(),
+				junitPlatformEngine(), junitVintageEngine(), opentest4j());
 	}
 
 	public static GnvArtifact<Downloaded> antJar() {
@@ -99,6 +99,10 @@ public class TestedIwantDependencies {
 	public static GnvArtifact<Downloaded> junitVintageEngine() {
 		return gnv("org.junit.vintage", "junit-vintage-engine",
 				JUNIT_JUPITER_VER);
+	}
+
+	public static GnvArtifact<Downloaded> apiguardianApi() {
+		return gnv("org.apiguardian", "apiguardian-api", "1.1.2");
 	}
 
 	public static GnvArtifact<Downloaded> opentest4j() {
