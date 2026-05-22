@@ -271,7 +271,7 @@ public class EclipseSettingsTest extends IwantTestCase {
 	}
 
 	@Test
-	public void defaultJavaComplianceIs11() {
+	public void defaultJavaCompliance() {
 		JavaModule mod = JavaSrcModule.with().name("mod")
 				.locationUnderWsRoot("mod").mainJava("src").end();
 
@@ -280,9 +280,9 @@ public class EclipseSettingsTest extends IwantTestCase {
 		es.mutate(seCtx);
 
 		String corePrefs = "mod/.settings/org.eclipse.jdt.core.prefs";
-		assertFileContains(corePrefs, "targetPlatform=11");
-		assertFileContains(corePrefs, "compiler.compliance=11");
-		assertFileContains(corePrefs, "compiler.source=11");
+		assertFileContains(corePrefs, "targetPlatform=21");
+		assertFileContains(corePrefs, "compiler.compliance=21");
+		assertFileContains(corePrefs, "compiler.source=21");
 	}
 
 	@Test

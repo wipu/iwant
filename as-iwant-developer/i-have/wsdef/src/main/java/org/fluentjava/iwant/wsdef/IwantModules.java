@@ -26,7 +26,7 @@ import org.fluentjava.iwant.wsdefdef.WorkspaceProviderForIwant;
 
 public class IwantModules extends JavaModules {
 
-	private static final ScalaVersion SCALA_VER = ScalaVersion.of("2.12.3");
+	private static final ScalaVersion SCALA_VER = ScalaVersion.of("2.12.19");
 	private final WorkspaceContext ctx;
 
 	public IwantModules(WorkspaceContext ctx) {
@@ -37,7 +37,7 @@ public class IwantModules extends JavaModules {
 
 	@Override
 	protected IwantSrcModuleSpex commonSettings(IwantSrcModuleSpex m) {
-		return m.javaCompliance(JavaCompliance.of("17"))
+		return m.javaCompliance(JavaCompliance.of("21"))
 				.mainJava("src/main/java").testJava("src/test/java");
 	}
 
