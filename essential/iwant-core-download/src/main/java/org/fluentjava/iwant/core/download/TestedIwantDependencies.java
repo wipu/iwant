@@ -9,6 +9,8 @@ public class TestedIwantDependencies {
 	public static final String ANT_VER = Iwant2.ANT_VER;
 	public static final String JUNIT_PLATFORM_VER = "1.10.2";
 	public static final String JUNIT_JUPITER_VER = "5.10.2";
+	public static final String SLF4J_VER = "2.0.16";
+	public static final String LOGBACK_VER = "1.5.3";
 
 	private static GnvArtifact<Downloaded> gnv(String g, String n, String v) {
 		return FromRepository.repo1MavenOrg().group(g).name(n).version(v).jar();
@@ -40,6 +42,10 @@ public class TestedIwantDependencies {
 
 	public static GnvArtifact<Downloaded> commonsIo() {
 		return gnv("commons-io", "commons-io", "2.17.0");
+	}
+
+	public static GnvArtifact<Downloaded> commonsLang3() {
+		return gnv("org.apache.commons", "commons-lang3", "3.16.0");
 	}
 
 	public static GnvArtifact<Downloaded> junit() {
@@ -117,8 +123,32 @@ public class TestedIwantDependencies {
 		return gnv("jaxen", "jaxen", "1.1.4");
 	}
 
-	public static GnvArtifact<Downloaded> pmd() {
-		return gnv("pmd", "pmd", "4.3");
+	public static GnvArtifact<Downloaded> pmdCore() {
+		return gnv("net.sourceforge.pmd", "pmd-core", "7.16.0");
+	}
+
+	public static GnvArtifact<Downloaded> pmdAnt() {
+		return gnv("net.sourceforge.pmd", "pmd-ant", "7.16.0");
+	}
+
+	public static GnvArtifact<Downloaded> slf4jApi() {
+		return gnv("org.slf4j", "slf4j-api", SLF4J_VER);
+	}
+
+	public static GnvArtifact<Downloaded> slf4jJulToSlf4j() {
+		return gnv("org.slf4j", "jul-to-slf4j", SLF4J_VER);
+	}
+
+	public static GnvArtifact<Downloaded> slf4jSimple() {
+		return gnv("org.slf4j", "slf4j-simple", SLF4J_VER);
+	}
+
+	public static GnvArtifact<Downloaded> oowekyalaOoxmlNiceXmlMessages() {
+		return gnv("com.github.oowekyala.ooxml", "nice-xml-messages", "3.1");
+	}
+
+	public static GnvArtifact<Downloaded> pcollections() {
+		return gnv("org.pcollections", "pcollections", "5.0.0");
 	}
 
 }

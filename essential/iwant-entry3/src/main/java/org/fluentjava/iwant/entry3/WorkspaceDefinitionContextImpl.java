@@ -179,9 +179,15 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 					deps.add(apacheAnt());
 					deps.add(asm());
 					deps.add(commonsIo());
+					deps.add(commonsLang3());
 					deps.add(jaxen());
-					deps.add(pmdPmd());
-
+					deps.add(pmdCore());
+					deps.add(pmdAnt());
+					deps.add(slf4jApi());
+					deps.add(slf4jJulToSlf4j());
+					deps.add(slf4jSimple());
+					deps.add(oowekyalaOoxmlNiceXmlMessages());
+					deps.add(pcollections());
 					return pluginWithDependencies("iwant-plugin-pmd", deps);
 				}
 
@@ -230,6 +236,10 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 		return mod(TestedIwantDependencies.commonsIo());
 	}
 
+	private static JavaModule commonsLang3() {
+		return mod(TestedIwantDependencies.commonsLang3());
+	}
+
 	private static JavaModule jcommander() {
 		return mod(TestedIwantDependencies.jcommander());
 	}
@@ -246,8 +256,32 @@ public class WorkspaceDefinitionContextImpl implements WorkspaceModuleContext {
 		return mod(TestedIwantDependencies.jaxen());
 	}
 
-	private static JavaModule pmdPmd() {
-		return mod(TestedIwantDependencies.pmd());
+	private static JavaModule pmdCore() {
+		return mod(TestedIwantDependencies.pmdCore());
+	}
+
+	private static JavaModule pmdAnt() {
+		return mod(TestedIwantDependencies.pmdAnt());
+	}
+
+	private static JavaModule slf4jApi() {
+		return mod(TestedIwantDependencies.slf4jApi());
+	}
+
+	private static JavaModule slf4jJulToSlf4j() {
+		return mod(TestedIwantDependencies.slf4jJulToSlf4j());
+	}
+
+	private static JavaModule slf4jSimple() {
+		return mod(TestedIwantDependencies.slf4jSimple());
+	}
+
+	private static JavaModule oowekyalaOoxmlNiceXmlMessages() {
+		return mod(TestedIwantDependencies.oowekyalaOoxmlNiceXmlMessages());
+	}
+
+	private static JavaModule pcollections() {
+		return mod(TestedIwantDependencies.pcollections());
 	}
 
 }

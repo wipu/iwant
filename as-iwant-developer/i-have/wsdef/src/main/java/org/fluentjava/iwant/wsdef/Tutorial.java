@@ -3,6 +3,7 @@ package org.fluentjava.iwant.wsdef;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,7 +179,7 @@ public class Tutorial extends Target {
 		index.append("</body></html>\n");
 
 		FileUtils.writeStringToFile(new File(dest, "tutorial.html"),
-				index.toString());
+				index.toString(), StandardCharsets.UTF_8);
 
 		FileUtils.copyFileToDirectory(ctx.cached(styleCss), dest);
 	}
@@ -190,10 +191,11 @@ public class Tutorial extends Target {
 		File to = new File(dest, fileName);
 		File from = new File(ctx.cached(fromPath), "doc.html");
 		System.err.println(to.getName() + " <- " + from);
-		String content = FileUtils.readFileToString(from);
+		String content = FileUtils.readFileToString(from,
+				StandardCharsets.UTF_8);
 		content = content.replaceAll("NAVIGATION_LINK_PANEL_PLACEHOLDER",
 				navigationPanel(prev, next));
-		FileUtils.writeStringToFile(to, content);
+		FileUtils.writeStringToFile(to, content, StandardCharsets.UTF_8);
 		return fileName;
 	}
 

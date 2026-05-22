@@ -105,8 +105,11 @@ public class WorkspaceDefinitionContextImplTest {
 		Set<JavaModule> mods = ctx.iwantPlugin().pmd().withDependencies();
 
 		assertEquals("[iwant-plugin-pmd, iwant-api-1, iwant-api-2,"
-				+ " ant-1.10.14.jar, asm-3.2.jar, commons-io-2.17.0.jar,"
-				+ " jaxen-1.1.4.jar, pmd-4.3.jar]", mods.toString());
+				+ " ant-1.10.14.jar, asm-3.2.jar, commons-io-2.17.0.jar, commons-lang3-3.16.0.jar,"
+				+ " jaxen-1.1.4.jar, pmd-core-7.16.0.jar, pmd-ant-7.16.0.jar,"
+				+ " slf4j-api-2.0.16.jar, jul-to-slf4j-2.0.16.jar, slf4j-simple-2.0.16.jar,"
+				+ " nice-xml-messages-3.1.jar, pcollections-5.0.0.jar]",
+				mods.toString());
 	}
 
 	@Test
