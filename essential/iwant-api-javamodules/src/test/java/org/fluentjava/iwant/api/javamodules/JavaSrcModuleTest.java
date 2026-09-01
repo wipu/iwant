@@ -430,11 +430,11 @@ public class JavaSrcModuleTest {
 
 		JavaClasses main = (JavaClasses) mod.mainArtifact();
 		assertEquals(
-				"[-Xlint, -Xlint:-serial, --release, 11, -g, -bootclasspath, /mock/jdk-1.7]",
+				"[-Xlint, -Xlint:-serial, --release, 21, -g, -bootclasspath, /mock/jdk-1.7]",
 				main.javacOptions().toString());
 		JavaClasses test = (JavaClasses) mod.testArtifact();
 		assertEquals(
-				"[-Xlint, -Xlint:-serial, --release, 11, -g, -bootclasspath, /mock/jdk-1.7]",
+				"[-Xlint, -Xlint:-serial, --release, 21, -g, -bootclasspath, /mock/jdk-1.7]",
 				test.javacOptions().toString());
 	}
 
